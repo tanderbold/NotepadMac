@@ -1,0 +1,38 @@
+use uo;
+use os;
+
+include "include/skillCheck";
+
+program use_bandage(who, bandage)
+    if (!ReserveItem(bandage))
+        return;
+    endif
+    SendSysMessage(who, "Who will you use the bandages on?");
+    var patient := Target(who);
+    if (!patient || !CheckLineOfSight(who, patient))
+        SendSysMessage(who, "You cannot see that.");
+        return;
+    endif
+
+    var skill := GetEffectiveSkill(who, SKILLID_HEALING);
+    case (patient.graphic)
+        0x190:
+        0x191:
+            HealHuman(who, patient, skill);
+        default:
+            SendSysMessage(who, "You can only heal people with that.");
+    endcase
+    SubtractAmount(bandage, 1);
+endprogram
+
+function HealHuman(who, patient, skill)
+    var delay := 5000 - CInt(skill * 20);
+    detach();
+    sleepms(delay);
+    if (Distance(who, patient) > 1)
+        SendSysMessage(who, "You are too far away.");
+        return 0;
+    endif
+    HealDamage(patient, CInt(skill / 5) + RandomDiceRoll("2d4"));
+    return 1;
+endfunction

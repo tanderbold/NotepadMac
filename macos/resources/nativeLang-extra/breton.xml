@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/breton.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Brezhoneg">
+    <Item english="About NotepadMac" text="Diwar-benn NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Kuzhat NotepadMac"/>
+    <Item english="Hide Others" text="Kuzhat ar re all"/>
+    <Item english="Show All" text="Diskouez pep-tra"/>
+    <Item english="Quit NotepadMac" text="Kuitaat NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Digeriñ an doser endelc'her e-barzh Finder"/>
+    <Item english="Toggle Fold" text="Plegañ/Diblegañ"/>
+    <Item english="Show All Hidden Lines" text="Diskouez an holl linennoù kuzhet"/>
+    <Item english="Move to Trash" text="Kas d'ar pod-lastez"/>
+    <Item english="Save Current Command…" text="Enrollañ an urzhiad-red…"/>
+    <Item english="Manage Saved Commands…" text="Merañ an urzhiadoù enrollet…"/>
+    <Item english="Open Plugins Folder…" text="Digeriñ doser al lugantoù…"/>
+    <Item english="Sort Keys" text="Rummañ an alc'hwezioù"/>
+    <Item english="Compare" text="Keñveriañ"/>
+    <Item english="Compare with File…" text="Keñveriañ gant ur restr…"/>
+    <Item english="Next Difference" text="Diforc'h da-heul"/>
+    <Item english="Previous Difference" text="Diforc'h kent"/>
+    <Item english="First Difference" text="Diforc'h 1añ"/>
+    <Item english="Last Difference" text="Diforc'h diwezhañ"/>
+    <Item english="Ignore Case" text="Na ober van ouzh ar skritur"/>
+    <Item english="Ignore Spaces" text="Na ober van ouzh ar spasoù"/>
+    <Item english="Ignore Empty Lines" text="Na ober van ouzh al linennoù goullo"/>
+    <Item english="Connections…" text="Kevreadennoù…"/>
+    <Item english="Connect…" text="Kevreañ…"/>
+    <Item english="Disconnect" text="Digevreañ"/>
+    <Item english="Show Remote Files" text="Diskouez ar restroù a-bell"/>
+    <Item english="Dock Left" text="Eoriñ war-gleiz"/>
+    <Item english="Dock Right" text="Eoriñ war-zehoù"/>
+    <Item english="Remember which panels were open" text="Derc'hel soñj eus ar panelloù digor"/>
+    <Item english="Show the toolbar" text="Diskouez barrenn an ostilhoù"/>
+    <Item english="Toolbar buttons" text="Boutonoù barrenn an ostilhoù"/>
+    <Item english="Icons only" text="Ikonioù hepken"/>
+    <Item english="Icons and labels" text="Ikonioù ha tikedennoù"/>
+    <Item english="Labels only" text="Tikedennoù hepken"/>
+    <Item english="Toolbar size" text="Ment barrenn an ostilhoù"/>
+    <Item english="Small" text="Bihan"/>
+    <Item english="Icons" text="Ikonioù"/>
+    <Item english="Hidden" text="Kuzhet"/>
+    <Item english="Follow the system" text="Heuliañ ar reizhiad"/>
+    <Item english="Light theme" text="Tem sklaer"/>
+    <Item english="Dark theme" text="Tem teñval"/>
+    <Item english="A line" text="Ul linenn"/>
+    <Item english="3 parts" text="3 lodenn"/>
+    <Item english="4 parts" text="4 lodenn"/>
+    <Item english="5 parts" text="5 lodenn"/>
+    <Item english="6 parts" text="6 lodenn"/>
+    <Item english="7 parts" text="7 lodenn"/>
+    <Item english="8 parts" text="8 lodenn"/>
+    <Item english="9 parts" text="9 lodenn"/>
+    <Item english="Compare: ignore case" text="Keñveriañ: na ober van ouzh ar skritur"/>
+    <Item english="Compare: ignore spaces" text="Keñveriañ: na ober van ouzh ar spasoù"/>
+    <Item english="Compare: ignore empty lines" text="Keñveriañ: na ober van ouzh al linennoù goullo"/>
+    <Item english="Notepad++ update" text="Hizivadur Notepad++"/>
+    <Item english="Fonts…" text="Skrituroù…"/>
+    <Item english="FTP connections" text="Kevreadennoù FTP"/>
+    <Item english="Searching..." text="O klask..."/>
+    <Item english="Transparent" text="Treuzwelus"/>
+    <Item english="View 1" text="Gwel 1"/>
+    <Item english="View 2" text="Gwel 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="Random" text="Dre zegouezh"/>
+    <Item english="Version:" text="Stumm:"/>
+    <Item english="Memory (KiB):" text="Memor (KiB):"/>
+    <Item english="Verify" text="Gwiriañ"/>
+    <Item english="The version must be 2a, 2b or 2y." text="Ar stumm a rank bezañ 2a, 2b pe 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N a rank bezañ etre 2^1 ha 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r ha p a rank bezañ etre 1 ha 64."/>
+    <Item english="Encode" text="Enkodañ"/>
+    <Item english="Input:" text="Enmont:"/>
+    <Item english="Result:" text="Disoc'h:"/>
+    <Item english="Text:" text="Testenn:"/>
+    <Item english="Password Generator" text="Ganer gerioù-tremen"/>
+    <Item english="Length:" text="Hirder:"/>
+    <Item english="Number of passwords:" text="Niver a c'herioù-tremen:"/>
+    <Item english="Uppercase letters (A-Z)" text="Lizherennoù bras (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Lizherennoù munut (a-z)"/>
+    <Item english="Digits (0-9)" text="Sifroù (0-9)"/>
+    <Item english="Symbols:" text="Arouezioù:"/>
+    <Item english="Insert into Document" text="Enlakaat en teuliad"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Reked HTTP"/>
+    <Item english="Send" text="Kas"/>
+    <Item english="Parameters" text="Arventennoù"/>
+    <Item english="Headers" text="Talbennoù"/>
+    <Item english="Body" text="Korf"/>
+    <Item english="Options" text="Dibarzhioù"/>
+    <Item english="User name:" text="Anv arveriad:"/>
+    <Item english="Password:" text="Ger-tremen:"/>
+    <Item english="Paste curl Command" text="Pegañ un urzhiad curl"/>
+    <Item english="Copy as curl" text="Eilañ evel curl"/>
+    <Item english="Open in New Document" text="Digeriñ en un teuliad nevez"/>
+    <Item english="This is not a curl command." text="N'eo ket un urzhiad curl."/>
+</NativeLangExtra>

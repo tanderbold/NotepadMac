@@ -1,0 +1,31 @@
+/* Tables, loops and string functions */
+Local scores = {}
+scores["anna"] = 12
+scores["ben"] = 7
+scores["cleo"] = 19
+
+Function p_Best(t)
+    Local name$, best = "", -1
+    For k$, v In Pairs(t)
+        If v > best
+            best = v
+            name$ = k$
+        EndIf
+    Next
+    Return(name$, best)
+EndFunction
+
+Local who$, points = p_Best(scores)
+NPrint("Best: " .. UpperStr(who$) .. " with " .. points .. " points")
+
+Switch points
+Case 19:
+    NPrint("A perfect round")
+Default:
+    NPrint("Try again")
+EndSwitch
+
+While points > 0
+    points = points - 5
+Wend
+DebugPrint(StrLen(who$), LeftStr(who$, 2))

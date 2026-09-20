@@ -1,0 +1,31 @@
+; Logon script for the office network
+Break On
+$rc = SetOption("Explicit", "On")
+Dim $group, $share
+
+? "Good morning, " + @FULLNAME
+? "Logging on to " + @LDOMAIN + " from " + @WKSTA
+
+USE * /DELETE /PERSISTENT
+USE H: "\\fileserver\home\@USERID"
+USE S: "\\fileserver\shared"
+
+IF INGROUP("Accounting")
+    USE P: "\\fileserver\accounting"
+ENDIF
+
+SELECT
+    CASE INGROUP("Domain Admins")
+        USE T: "\\fileserver\tools"
+    CASE INGROUP("Sales") OR INGROUP("Marketing")
+        USE M: "\\fileserver\marketing"
+    CASE 1
+        ? "No department shares."
+ENDSELECT
+
+IF @ERROR <> 0
+    ? "Mapping failed: " + @SERROR
+ENDIF
+
+CALL "@LSERVER\netlogon\printers.kix"
+EXIT 0

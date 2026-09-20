@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/latvian.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Latviešu">
+    <Item english="About NotepadMac" text="Par NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Paslēpt NotepadMac"/>
+    <Item english="Hide Others" text="Paslēpt pārējās"/>
+    <Item english="Show All" text="Rādīt visas"/>
+    <Item english="Quit NotepadMac" text="Iziet no NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Atvērt faila mapi ar Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Atvērt faila mapi terminālī"/>
+    <Item english="Toggle Insert/Overtype" text="Pārslēgt ievietošanu/pārrakstīšanu"/>
+    <Item english="Toggle Fold" text="Sakļaut/izvērst"/>
+    <Item english="Show All Hidden Lines" text="Rādīt visas paslēptās rindas"/>
+    <Item english="Recent Window" text="Iepriekšējais logs"/>
+    <Item english="Move to Trash" text="Pārvietot uz atkritni"/>
+    <Item english="Save Current Command…" text="Saglabāt pašreizējo komandu…"/>
+    <Item english="Manage Saved Commands…" text="Pārvaldīt saglabātās komandas…"/>
+    <Item english="Show Console" text="Rādīt konsoli"/>
+    <Item english="Validate shortcuts" text="Pārbaudīt īsceļus"/>
+    <Item english="Open Plugins Folder…" text="Atvērt spraudņu mapi…"/>
+    <Item english="Format" text="Formatēt"/>
+    <Item english="Compact" text="Saspiest"/>
+    <Item english="Sort Keys" text="Kārtot atslēgas"/>
+    <Item english="Validate" text="Pārbaudīt"/>
+    <Item english="Show JSON Tree" text="Rādīt JSON koku"/>
+    <Item english="Set as First to Compare" text="Iestatīt kā pirmo salīdzināšanai"/>
+    <Item english="Compare" text="Salīdzināt"/>
+    <Item english="Compare with File…" text="Salīdzināt ar failu…"/>
+    <Item english="Next Difference" text="Nākošā atšķirība"/>
+    <Item english="Previous Difference" text="Iepriekšējā atšķirība"/>
+    <Item english="First Difference" text="Pirmā atšķirība"/>
+    <Item english="Last Difference" text="Pēdējā atšķirība"/>
+    <Item english="Compare Summary" text="Salīdzināšanas kopsavilkums"/>
+    <Item english="Ignore Case" text="Ignorēt reģistru"/>
+    <Item english="Ignore Spaces" text="Ignorēt atstarpes"/>
+    <Item english="Ignore Empty Lines" text="Ignorēt tukšās rindas"/>
+    <Item english="Clear Active Compare" text="Notīrīt pašreizējo salīdzināšanu"/>
+    <Item english="Clear All Compares" text="Notīrīt visas salīdzināšanas"/>
+    <Item english="Pretty Print" text="Glīti noformēt"/>
+    <Item english="Pretty Print — Indent Attributes" text="Glīti noformēt — ar atribūtu atkāpēm"/>
+    <Item english="Linearize" text="Apvienot vienā rindā"/>
+    <Item english="Check XML Syntax Now" text="Pārbaudīt XML sintaksi tagad"/>
+    <Item english="Validate Against Schema…" text="Pārbaudīt pēc shēmas…"/>
+    <Item english="Validate Against DTD" text="Pārbaudīt pēc DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Izrēķināt XPath izteiksmi…"/>
+    <Item english="Current XML Path" text="Pašreizējais XML ceļš"/>
+    <Item english="Current XML Path with Predicates" text="Pašreizējais XML ceļš ar predikātiem"/>
+    <Item english="Apply XSL Transformation…" text="Lietot XSL transformāciju…"/>
+    <Item english="Connections…" text="Savienojumi…"/>
+    <Item english="Connect…" text="Savienoties…"/>
+    <Item english="Disconnect" text="Atvienoties"/>
+    <Item english="Show Remote Files" text="Rādīt attālos failus"/>
+    <Item english="Upload Current File" text="Augšupielādēt pašreizējo failu"/>
+    <Item english="Execute NppExec Script…" text="Izpildīt NppExec skriptu…"/>
+    <Item english="Execute Previous NppExec Script" text="Izpildīt iepriekšējo NppExec skriptu"/>
+    <Item english="Stop Running NppExec Script" text="Apturēt izpildāmo NppExec skriptu"/>
+    <Item english="Show NppExec Console" text="Rādīt NppExec konsoli"/>
+    <Item english="Execute NppExec Script" text="Izpildīt NppExec skriptu"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;pagaidu skripts&gt;"/>
+    <Item english="Script name" text="Skripta nosaukums"/>
+    <Item english="Dock Left" text="Piestiprināt pa kreisi"/>
+    <Item english="Dock Right" text="Piestiprināt pa labi"/>
+    <Item english="Dock Top" text="Piestiprināt augšā"/>
+    <Item english="Dock Bottom" text="Piestiprināt apakšā"/>
+    <Item english="Float" text="Atsevišķā logā"/>
+    <Item english="Remember which panels were open" text="Atcerēties, kuri paneļi bija atvērti"/>
+    <Item english="Show the toolbar" text="Rādīt rīkjoslu"/>
+    <Item english="Toolbar buttons" text="Rīkjoslas pogas"/>
+    <Item english="Icons only" text="Tikai ikonas"/>
+    <Item english="Icons and labels" text="Ikonas un paraksti"/>
+    <Item english="Labels only" text="Tikai paraksti"/>
+    <Item english="Toolbar size" text="Rīkjoslas izmērs"/>
+    <Item english="Regular" text="Parasts"/>
+    <Item english="Small" text="Mazs"/>
+    <Item english="Icons" text="Ikonas"/>
+    <Item english="Hidden" text="Paslēpta"/>
+    <Item english="1 pixel" text="1 pikselis"/>
+    <Item english="2 pixels" text="2 pikseļi"/>
+    <Item english="3 pixels" text="3 pikseļi"/>
+    <Item english="Selected text can be dragged" text="Iezīmēto tekstu var vilkt"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Ieslēgt rediģēšanu vairākās vietās (Cmd+klikšķis/iezīmēšana)"/>
+    <Item english="Follow the system" text="Kā sistēmā"/>
+    <Item english="Light theme" text="Gaišais motīvs"/>
+    <Item english="Dark theme" text="Tumšais motīvs"/>
+    <Item english="Show the fold margin" text="Rādīt sakļaušanas malu"/>
+    <Item english="A line" text="Līnija"/>
+    <Item english="Columns (space separated)" text="Slejas (atdalītas ar atstarpēm)"/>
+    <Item english="3 parts" text="3 daļas"/>
+    <Item english="4 parts" text="4 daļas"/>
+    <Item english="5 parts" text="5 daļas"/>
+    <Item english="6 parts" text="6 daļas"/>
+    <Item english="7 parts" text="7 daļas"/>
+    <Item english="8 parts" text="8 daļas"/>
+    <Item english="9 parts" text="9 daļas"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Noteikt valodu pēc satura, ja nosaukums to neatklāj"/>
+    <Item english="Highlight matching braces" text="Izcelt sakrītošās iekavas"/>
+    <Item english="Header font (blank for the editor's)" text="Galvenes fonts (tukšs — kā redaktorā)"/>
+    <Item english="Header font size" text="Galvenes fonta lielums"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Malas: kreisā, augšējā, labā, apakšējā (punktos)"/>
+    <Item english="Characters before it opens" text="Rakstzīmju skaits, līdz tas atveras"/>
+    <Item english="Add characters to the word list" text="Pievienot rakstzīmes vārda rakstzīmju sarakstam"/>
+    <Item english="A fixed folder" text="Noteikta mape"/>
+    <Item english="Fixed folder" text="Noteikta mape"/>
+    <Item english="Confirm Replace All" text="Apstiprināt „Aizstāt visus”"/>
+    <Item english="Compare: ignore case" text="Salīdzināšana: ignorēt reģistru"/>
+    <Item english="Compare: ignore spaces" text="Salīdzināšana: ignorēt atstarpes"/>
+    <Item english="Compare: ignore empty lines" text="Salīdzināšana: ignorēt tukšās rindas"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maks. rakstzīmju skaits meklēšanas lauka automātiskai aizpildīšanai"/>
+    <Item english="Releases repository" text="Laidienu krātuve"/>
+    <Item english="Notepad++ update" text="Notepad++ atjauninājums"/>
+    <Item english="No update is available." text="Atjauninājumu nav."/>
+    <Item english="An update package is available, do you want to download it?" text="Ir pieejama atjauninājuma pakotne. Vai vēlaties to lejupielādēt?"/>
+    <Item english="Open the Releases Page" text="Atvērt laidienu lapu"/>
+    <Item english="Copy debug info to clipboard" text="Kopēt atkļūdošanas informāciju starpliktuvē"/>
+    <Item english="Fonts…" text="Fonti…"/>
+    <Item english="This document is not valid JSON." text="Šis dokuments nav derīgs JSON."/>
+    <Item english="Valid JSON." text="Derīgs JSON."/>
+    <Item english="Invalid JSON." text="Nederīgs JSON."/>
+    <Item english="Set as the first file to compare." text="Iestatīts kā pirmais fails salīdzināšanai."/>
+    <Item english="Nothing to compare with." text="Nav ar ko salīdzināt."/>
+    <Item english="The document is valid XML." text="Dokuments ir derīgs XML."/>
+    <Item english="FTP connections" text="FTP savienojumi"/>
+    <Item english="Cannot connect." text="Neizdevās savienoties."/>
+    <Item english="That file is open in another tab." text="Šis fails ir atvērts citā cilnē."/>
+    <Item english="Close it first, or choose another name." text="Vispirms aizveriet to vai izvēlieties citu nosaukumu."/>
+    <Item english="Which language is this?" text="Kāda valoda šī ir?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Dažas rakstzīmes šajā kodējumā nevar attēlot."/>
+    <Item english="Converting will replace them." text="Pārveidojot tās tiks aizstātas."/>
+    <Item english="Press the keys." text="Nospiediet taustiņus."/>
+    <Item english="Nothing is marked" text="Nekas nav atzīmēts"/>
+    <Item english="Marked text copied" text="Atzīmētais teksts nokopēts"/>
+    <Item english="Choose a folder first" text="Vispirms izvēlieties mapi"/>
+    <Item english="This document has no folder" text="Šim dokumentam nav mapes"/>
+    <Item english="The ticked project panels have no files" text="Atzīmētajos projektu paneļos nav failu"/>
+    <Item english="Searching..." text="Meklē..."/>
+    <Item english="Stopping..." text="Aptur..."/>
+    <Item english="Marks cleared" text="Atzīmes noņemtas"/>
+    <Item english="Transparent" text="Caurspīdīgs"/>
+    <Item english="View 1" text="1. skats"/>
+    <Item english="View 2" text="2. skats"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Jaucējkodi"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC atslēga (neobligāta):"/>
+    <Item english="Salt (hexadecimal):" text="Sāls (heksadecimāla):"/>
+    <Item english="Random" text="Nejauša"/>
+    <Item english="Cost (4-31):" text="Izmaksas (4-31):"/>
+    <Item english="Version:" text="Versija:"/>
+    <Item english="N, as a power of 2:" text="N kā skaitļa 2 pakāpe:"/>
+    <Item english="Block size (r):" text="Bloka izmērs (r):"/>
+    <Item english="Parallelism (p):" text="Paralēlisms (p):"/>
+    <Item english="Variant:" text="Variants:"/>
+    <Item english="Memory (KiB):" text="Atmiņa (KiB):"/>
+    <Item english="Iterations:" text="Iterācijas:"/>
+    <Item english="Parallelism:" text="Paralēlisms:"/>
+    <Item english="Digest:" text="Jaucējfunkcija:"/>
+    <Item english="Hash length (bytes):" text="Jaucējkoda garums (baitos):"/>
+    <Item english="Hash:" text="Jaucējkods:"/>
+    <Item english="Verify" text="Pārbaudīt"/>
+    <Item english="Hash to check the password against:" text="Jaucējkods, ar kuru pārbaudīt paroli:"/>
+    <Item english="The salt is not valid hexadecimal." text="Sāls nav derīgs heksadecimāls pieraksts."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt vajadzīga tieši 16 baitu sāls."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 vajadzīga vismaz 8 baitu sāls."/>
+    <Item english="The hash could not be generated with these settings." text="Ar šiem iestatījumiem jaucējkodu neizdevās izveidot."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Šis nav bcrypt, scrypt, Argon2 vai PBKDF2 jaucējkods."/>
+    <Item english="The password matches the hash." text="Parole atbilst jaucējkodam."/>
+    <Item english="The password does not match the hash." text="Parole neatbilst jaucējkodam."/>
+    <Item english="The cost must be between 4 and 31." text="Izmaksām jābūt no 4 līdz 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versijai jābūt 2a, 2b vai 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N jābūt no 2^1 līdz 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r un p jābūt no 1 līdz 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Šiem iestatījumiem vajag vairāk nekā 2 GB atmiņas."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralēlismam jābūt no 1 līdz 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Iterāciju skaitam jābūt no 1 līdz 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Atmiņai jābūt vismaz 8 KiB katram pavedienam."/>
+    <Item english="These settings need more than 4 GB of memory." text="Šiem iestatījumiem vajag vairāk nekā 4 GB atmiņas."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Jaucējfunkcijai jābūt SHA-1, SHA-256 vai SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Iterāciju skaitam jābūt no 1 līdz 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Jaucējkoda garumam jābūt no 4 līdz 1024 baitiem."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (piemērots URL)"/>
+    <Item english="Encode" text="Kodēt"/>
+    <Item english="Decode" text="Dekodēt"/>
+    <Item english="The input is:" text="Ievade ir:"/>
+    <Item english="Bytes in hexadecimal" text="Baiti heksadecimālā pierakstā"/>
+    <Item english="Input:" text="Ievade:"/>
+    <Item english="Result:" text="Rezultāts:"/>
+    <Item english="Text:" text="Teksts:"/>
+    <Item english="Bytes in hexadecimal:" text="Baiti heksadecimālā pierakstā:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Ievade nav baiti heksadecimālā pierakstā."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Ievade nav derīgs $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Dekodētie baiti nav UTF-8 teksts; tie parādīti tikai heksadecimālā pierakstā."/>
+    <Item english="Password Generator" text="Paroļu ģenerators"/>
+    <Item english="Length:" text="Garums:"/>
+    <Item english="Number of passwords:" text="Paroļu skaits:"/>
+    <Item english="Uppercase letters (A-Z)" text="Lielie burti (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Mazie burti (a-z)"/>
+    <Item english="Digits (0-9)" text="Cipari (0-9)"/>
+    <Item english="Symbols:" text="Simboli:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Izlaist līdzīga izskata rakstzīmes (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Vismaz viena katra veida rakstzīme"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropija bitos: aptuveni $INT_REPLACE$"/>
+    <Item english="Choose at least one kind of character." text="Izvēlieties vismaz vienu rakstzīmju veidu."/>
+    <Item english="Insert into Document" text="Ievietot dokumentā"/>
+    <Item english="Show the bare key in hexadecimal" text="Rādīt pašu atslēgu heksadecimālā pierakstā"/>
+    <Item english="Empty: a random salt each time" text="Tukšs: katrreiz nejauša sāls"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt nolasa tikai pirmos 72 baitus."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP pieprasījums"/>
+    <Item english="Send" text="Sūtīt"/>
+    <Item english="Parameters" text="Parametri"/>
+    <Item english="Headers" text="Galvenes"/>
+    <Item english="Body" text="Saturs"/>
+    <Item english="Options" text="Opcijas"/>
+    <Item english="Content type:" text="Satura tips:"/>
+    <Item english="User name:" text="Lietotājvārds:"/>
+    <Item english="Password:" text="Parole:"/>
+    <Item english="Timeout (seconds):" text="Noildze (sekundēs):"/>
+    <Item english="Follow redirects" text="Sekot pāradresācijām"/>
+    <Item english="Allow invalid certificates" text="Atļaut nederīgus sertifikātus"/>
+    <Item english="Format JSON" text="Formatēt JSON"/>
+    <Item english="Paste curl Command" text="Ielīmēt curl komandu"/>
+    <Item english="Copy as curl" text="Kopēt kā curl"/>
+    <Item english="Open in New Document" text="Atvērt jaunā dokumentā"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Pa vienam rindā: nosaukums=vērtība. Tos kodētus pievieno adresei."/>
+    <Item english="One to a line: Name: value" text="Pa vienam rindā: Nosaukums: vērtība"/>
+    <Item english="Sent as it is written, in UTF-8." text="Tiek nosūtīts tā, kā rakstīts, UTF-8 kodējumā."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Atbilde nav teksts: $INT_REPLACE$ baiti."/>
+    <Item english="The address is not an http or https address." text="Adrese nav http vai https adrese."/>
+    <Item english="This is not a curl command." text="Šī nav curl komanda."/>
+    <Item english="The command has no address." text="Komandā nav adreses."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Komanda nolasa datus no faila, kas šeit netiek darīts."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Veidlapas un failu augšupielādes no komandas netiek nolasītas."/>
+    <Item english="The command's address is not an http or https address." text="Komandas adrese nav http vai https adrese."/>
+</NativeLangExtra>

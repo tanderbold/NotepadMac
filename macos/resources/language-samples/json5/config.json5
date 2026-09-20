@@ -1,0 +1,20 @@
+// Application settings
+{
+  name: 'demo-app',
+  version: '1.4.0',
+  debug: false,
+  port: 0x1F90,            // hexadecimal is allowed
+  ratio: .75,
+  timeout: +30,
+  hosts: [
+    'alpha.example.com',
+    'beta.example.com',     // trailing commas too
+  ],
+  paths: {
+    data: '/var/lib/demo',
+    "log-file": '/var/log/demo.log',
+  },
+  banner: 'Welcome \
+to the demo',
+  limit: Infinity,
+}

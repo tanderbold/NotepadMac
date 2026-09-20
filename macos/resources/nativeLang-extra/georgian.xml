@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/georgian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="ქართული">
+    <Item english="About NotepadMac" text="NotepadMac-ის შესახებ"/>
+    <Item english="Hide NotepadMac" text="NotepadMac-ის დამალვა"/>
+    <Item english="Hide Others" text="სხვების დამალვა"/>
+    <Item english="Show All" text="ყველას ჩვენება"/>
+    <Item english="Quit NotepadMac" text="NotepadMac-იდან გამოსვლა"/>
+    <Item english="Open Containing Folder in Finder" text="დოკუმენტის საქაღალდის გახსნა Finder-ში"/>
+    <Item english="Open Containing Folder in Terminal" text="დოკუმენტის საქაღალდის გახსნა ტერმინალში"/>
+    <Item english="Toggle Insert/Overtype" text="ჩასმა/გადაწერის რეჟიმის შეცვლა"/>
+    <Item english="Toggle Fold" text="ბლოკის აკეცვა/გაშლა"/>
+    <Item english="Show All Hidden Lines" text="ყველა დამალული ხაზის ჩვენება"/>
+    <Item english="Recent Window" text="წინა ფანჯარა"/>
+    <Item english="Move to Trash" text="სანაგვე ყუთში გადატანა"/>
+    <Item english="Save Current Command…" text="მიმდინარე ბრძანების შენახვა…"/>
+    <Item english="Manage Saved Commands…" text="შენახული ბრძანებების მართვა…"/>
+    <Item english="Show Console" text="კონსოლის ჩვენება"/>
+    <Item english="Validate shortcuts" text="ცხელი კლავიშების შემოწმება"/>
+    <Item english="Open Plugins Folder…" text="დანამატების საქაღალდის გახსნა…"/>
+    <Item english="Format" text="ფორმატირება"/>
+    <Item english="Compact" text="შეკუმშვა"/>
+    <Item english="Sort Keys" text="გასაღებების დახარისხება"/>
+    <Item english="Validate" text="შემოწმება"/>
+    <Item english="Show JSON Tree" text="JSON-ის ხის ჩვენება"/>
+    <Item english="Set as First to Compare" text="პირველ შესადარებლად მონიშვნა"/>
+    <Item english="Compare" text="შედარება"/>
+    <Item english="Compare with File…" text="ფაილთან შედარება…"/>
+    <Item english="Next Difference" text="შემდეგი განსხვავება"/>
+    <Item english="Previous Difference" text="წინა განსხვავება"/>
+    <Item english="First Difference" text="პირველი განსხვავება"/>
+    <Item english="Last Difference" text="ბოლო განსხვავება"/>
+    <Item english="Compare Summary" text="შედარების შეჯამება"/>
+    <Item english="Ignore Case" text="რეგისტრის მიუხედავად"/>
+    <Item english="Ignore Spaces" text="დაშორებების უგულებელყოფა"/>
+    <Item english="Ignore Empty Lines" text="ცარიელი ხაზების უგულებელყოფა"/>
+    <Item english="Clear Active Compare" text="მიმდინარე შედარების გასუფთავება"/>
+    <Item english="Clear All Compares" text="ყველა შედარების გასუფთავება"/>
+    <Item english="Check XML Syntax Now" text="XML სინტაქსის შემოწმება ახლავე"/>
+    <Item english="Validate Against Schema…" text="სქემასთან შემოწმება…"/>
+    <Item english="Validate Against DTD" text="DTD-სთან შემოწმება"/>
+    <Item english="Evaluate XPath Expression…" text="XPath გამოსახულების გამოთვლა…"/>
+    <Item english="Current XML Path" text="მიმდინარე XML მისამართი"/>
+    <Item english="Apply XSL Transformation…" text="XSL გარდაქმნის გამოყენება…"/>
+    <Item english="Connections…" text="კავშირები…"/>
+    <Item english="Connect…" text="დაკავშირება…"/>
+    <Item english="Disconnect" text="კავშირის გაწყვეტა"/>
+    <Item english="Show Remote Files" text="დაშორებული ფაილების ჩვენება"/>
+    <Item english="Upload Current File" text="მიმდინარე ფაილის ატვირთვა"/>
+    <Item english="Execute NppExec Script…" text="NppExec სკრიპტის გაშვება…"/>
+    <Item english="Execute Previous NppExec Script" text="წინა NppExec სკრიპტის გაშვება"/>
+    <Item english="Stop Running NppExec Script" text="NppExec სკრიპტის გაჩერება"/>
+    <Item english="Show NppExec Console" text="NppExec კონსოლის ჩვენება"/>
+    <Item english="Execute NppExec Script" text="NppExec სკრიპტის გაშვება"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;დროებითი სკრიპტი&gt;"/>
+    <Item english="Script name" text="სკრიპტის სახელი"/>
+    <Item english="Dock Left" text="მიმაგრება მარცხნივ"/>
+    <Item english="Dock Right" text="მიმაგრება მარჯვნივ"/>
+    <Item english="Dock Top" text="მიმაგრება ზემოთ"/>
+    <Item english="Dock Bottom" text="მიმაგრება ქვემოთ"/>
+    <Item english="Float" text="მცურავი"/>
+    <Item english="Remember which panels were open" text="დამახსოვრდეს, რომელი პანელები იყო გახსნილი"/>
+    <Item english="Show the toolbar" text="ხელსაწყოების პანელის ჩვენება"/>
+    <Item english="Toolbar buttons" text="ხელსაწყოების პანელის ღილაკები"/>
+    <Item english="Icons only" text="მხოლოდ ხატულები"/>
+    <Item english="Icons and labels" text="ხატულები და წარწერები"/>
+    <Item english="Labels only" text="მხოლოდ წარწერები"/>
+    <Item english="Toolbar size" text="ხელსაწყოების პანელის ზომა"/>
+    <Item english="Regular" text="ჩვეულებრივი"/>
+    <Item english="Small" text="პატარა"/>
+    <Item english="Icons" text="ხატულები"/>
+    <Item english="Hidden" text="დამალული"/>
+    <Item english="1 pixel" text="1 პიქსელი"/>
+    <Item english="2 pixels" text="2 პიქსელი"/>
+    <Item english="3 pixels" text="3 პიქსელი"/>
+    <Item english="Selected text can be dragged" text="მონიშნული ტექსტის გადათრევა შესაძლებელია"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="მრავლობითი რედაქტირების ჩართვა (Cmd+დაწკაპუნება/მონიშვნა)"/>
+    <Item english="Follow the system" text="სისტემის მიხედვით"/>
+    <Item english="Light theme" text="ღია გაფორმება"/>
+    <Item english="Dark theme" text="მუქი გაფორმება"/>
+    <Item english="Show the fold margin" text="აკეცვის ველის ჩვენება"/>
+    <Item english="A line" text="ხაზი"/>
+    <Item english="Columns (space separated)" text="სვეტები (დაშორებით გამოყოფილი)"/>
+    <Item english="3 parts" text="3 ნაწილი"/>
+    <Item english="4 parts" text="4 ნაწილი"/>
+    <Item english="5 parts" text="5 ნაწილი"/>
+    <Item english="6 parts" text="6 ნაწილი"/>
+    <Item english="7 parts" text="7 ნაწილი"/>
+    <Item english="8 parts" text="8 ნაწილი"/>
+    <Item english="9 parts" text="9 ნაწილი"/>
+    <Item english="Work the language out from the contents when the name does not say" text="ენის დადგენა შიგთავსის მიხედვით, როცა სახელი არ მიუთითებს"/>
+    <Item english="Highlight matching braces" text="დამთხვეული სამაგრების გამოკვეთა"/>
+    <Item english="Header font (blank for the editor's)" text="სათაურის შრიფტი (ცარიელი — რედაქტორისა)"/>
+    <Item english="Header font size" text="სათაურის შრიფტის ზომა"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="კიდეები: მარცხენა, ზედა, მარჯვენა, ქვედა (პუნქტი)"/>
+    <Item english="Characters before it opens" text="სიმბოლოების რაოდენობა გახსნამდე"/>
+    <Item english="Add characters to the word list" text="სიმბოლოების დამატება სიტყვის სიაში"/>
+    <Item english="A fixed folder" text="ფიქსირებული საქაღალდე"/>
+    <Item english="Fixed folder" text="ფიქსირებული საქაღალდე"/>
+    <Item english="Confirm Replace All" text="ყველგან ჩანაცვლების დადასტურება"/>
+    <Item english="Compare: ignore case" text="შედარება: რეგისტრის მიუხედავად"/>
+    <Item english="Compare: ignore spaces" text="შედარება: დაშორებების უგულებელყოფა"/>
+    <Item english="Compare: ignore empty lines" text="შედარება: ცარიელი ხაზების უგულებელყოფა"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="ძებნის ველის ავტოშევსების მაქსიმალური სიმბოლოები"/>
+    <Item english="Releases repository" text="რელიზების საცავი"/>
+    <Item english="Notepad++ update" text="Notepad++-ის განახლება"/>
+    <Item english="No update is available." text="განახლება არ არის ხელმისაწვდომი."/>
+    <Item english="An update package is available, do you want to download it?" text="ხელმისაწვდომია განახლების პაკეტი, გსურთ მისი გადმოწერა?"/>
+    <Item english="Open the Releases Page" text="რელიზების გვერდის გახსნა"/>
+    <Item english="Copy debug info to clipboard" text="გამართვის ინფორმაციის კოპირება ბუფერში"/>
+    <Item english="Fonts…" text="შრიფტები…"/>
+    <Item english="This document is not valid JSON." text="ეს დოკუმენტი არ არის სწორი JSON."/>
+    <Item english="Valid JSON." text="სწორი JSON."/>
+    <Item english="Invalid JSON." text="არასწორი JSON."/>
+    <Item english="Set as the first file to compare." text="მონიშნულია პირველ შესადარებელ ფაილად."/>
+    <Item english="Nothing to compare with." text="შესადარებელი არაფერია."/>
+    <Item english="The document is valid XML." text="დოკუმენტი სწორი XML-ია."/>
+    <Item english="FTP connections" text="FTP კავშირები"/>
+    <Item english="Cannot connect." text="დაკავშირება ვერ მოხერხდა."/>
+    <Item english="That file is open in another tab." text="ეს ფაილი გახსნილია სხვა ჩანართში."/>
+    <Item english="Close it first, or choose another name." text="ჯერ დახურეთ, ან აირჩიეთ სხვა სახელი."/>
+    <Item english="Which language is this?" text="რომელი ენაა ეს?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="ზოგიერთი სიმბოლო ვერ გამოისახება ამ კოდირებაში."/>
+    <Item english="Converting will replace them." text="გადაყვანა ჩაანაცვლებს მათ."/>
+    <Item english="Press the keys." text="დააჭირეთ კლავიშებს."/>
+    <Item english="Nothing is marked" text="არაფერია მონიშნული"/>
+    <Item english="Marked text copied" text="მონიშნული ტექსტი დაკოპირდა"/>
+    <Item english="Choose a folder first" text="ჯერ აირჩიეთ საქაღალდე"/>
+    <Item english="This document has no folder" text="ამ დოკუმენტს საქაღალდე არ აქვს"/>
+    <Item english="The ticked project panels have no files" text="მონიშნულ პროექტის პანელებში ფაილები არ არის"/>
+    <Item english="Searching..." text="მიმდინარეობს ძებნა..."/>
+    <Item english="Stopping..." text="ჩერდება..."/>
+    <Item english="Marks cleared" text="ნიშნულები გასუფთავდა"/>
+    <Item english="Transparent" text="გამჭვირვალე"/>
+    <Item english="View 1" text="ხედი 1"/>
+    <Item english="View 2" text="ხედი 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="ჰეშები"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC გასაღები (არასავალდებულო):"/>
+    <Item english="Salt (hexadecimal):" text="მარილი (თექვსმეტობითი):"/>
+    <Item english="Random" text="შემთხვევითი"/>
+    <Item english="Cost (4-31):" text="ღირებულება (4-31):"/>
+    <Item english="Version:" text="ვერსია:"/>
+    <Item english="N, as a power of 2:" text="N, 2-ის ხარისხად:"/>
+    <Item english="Block size (r):" text="ბლოკის ზომა (r):"/>
+    <Item english="Parallelism (p):" text="პარალელიზმი (p):"/>
+    <Item english="Variant:" text="ვარიანტი:"/>
+    <Item english="Memory (KiB):" text="მეხსიერება (KiB):"/>
+    <Item english="Iterations:" text="იტერაციები:"/>
+    <Item english="Parallelism:" text="პარალელიზმი:"/>
+    <Item english="Digest:" text="ჰეშ-ფუნქცია:"/>
+    <Item english="Hash length (bytes):" text="ჰეშის სიგრძე (ბაიტი):"/>
+    <Item english="Hash:" text="ჰეში:"/>
+    <Item english="Verify" text="შემოწმება"/>
+    <Item english="Hash to check the password against:" text="ჰეში პაროლის შესამოწმებლად:"/>
+    <Item english="The salt is not valid hexadecimal." text="მარილი არ არის სწორი თექვსმეტობითი ჩანაწერი."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt-ს ზუსტად 16-ბაიტიანი მარილი სჭირდება."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2-ს მინიმუმ 8-ბაიტიანი მარილი სჭირდება."/>
+    <Item english="The hash could not be generated with these settings." text="ამ პარამეტრებით ჰეშის შექმნა ვერ მოხერხდა."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="ეს არ არის bcrypt, scrypt, Argon2 ან PBKDF2 ჰეში."/>
+    <Item english="The password matches the hash." text="პაროლი ემთხვევა ჰეშს."/>
+    <Item english="The password does not match the hash." text="პაროლი არ ემთხვევა ჰეშს."/>
+    <Item english="The cost must be between 4 and 31." text="ღირებულება 4-დან 31-მდე უნდა იყოს."/>
+    <Item english="The version must be 2a, 2b or 2y." text="ვერსია 2a, 2b ან 2y უნდა იყოს."/>
+    <Item english="N must be between 2^1 and 2^24." text="N 2^1-დან 2^24-მდე უნდა იყოს."/>
+    <Item english="r and p must be between 1 and 64." text="r და p 1-დან 64-მდე უნდა იყოს."/>
+    <Item english="These settings need more than 2 GB of memory." text="ამ პარამეტრებს 2 GB-ზე მეტი მეხსიერება სჭირდება."/>
+    <Item english="The parallelism must be between 1 and 64." text="პარალელიზმი 1-დან 64-მდე უნდა იყოს."/>
+    <Item english="The iterations must be between 1 and 1000." text="იტერაციების რაოდენობა 1-დან 1000-მდე უნდა იყოს."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="მეხსიერება თითოეული ნაკადისთვის მინიმუმ 8 KiB უნდა იყოს."/>
+    <Item english="These settings need more than 4 GB of memory." text="ამ პარამეტრებს 4 GB-ზე მეტი მეხსიერება სჭირდება."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="ჰეშ-ფუნქცია SHA-1, SHA-256 ან SHA-512 უნდა იყოს."/>
+    <Item english="The iterations must be between 1 and 100000000." text="იტერაციების რაოდენობა 1-დან 100000000-მდე უნდა იყოს."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="ჰეშის სიგრძე 4-დან 1024 ბაიტამდე უნდა იყოს."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-ისთვის)"/>
+    <Item english="Encode" text="კოდირება"/>
+    <Item english="Decode" text="დეკოდირება"/>
+    <Item english="The input is:" text="შეყვანის ტიპი:"/>
+    <Item english="Bytes in hexadecimal" text="ბაიტები თექვსმეტობით ფორმატში"/>
+    <Item english="Input:" text="შეყვანა:"/>
+    <Item english="Result:" text="შედეგი:"/>
+    <Item english="Text:" text="ტექსტი:"/>
+    <Item english="Bytes in hexadecimal:" text="ბაიტები თექვსმეტობით ფორმატში:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="შეყვანილი მნიშვნელობა არ არის თექვსმეტობით ფორმატში ჩაწერილი ბაიტები."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="შეყვანილი მნიშვნელობა არ არის სწორი $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="დეკოდირებული ბაიტები UTF-8 ტექსტი არ არის; ისინი ნაჩვენებია მხოლოდ თექვსმეტობით ფორმატში."/>
+    <Item english="Password Generator" text="პაროლების გენერატორი"/>
+    <Item english="Length:" text="სიგრძე:"/>
+    <Item english="Number of passwords:" text="პაროლების რაოდენობა:"/>
+    <Item english="Uppercase letters (A-Z)" text="დიდი ასოები (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="პატარა ასოები (a-z)"/>
+    <Item english="Digits (0-9)" text="ციფრები (0-9)"/>
+    <Item english="Symbols:" text="სიმბოლოები:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="მსგავსი სიმბოლოების გამორიცხვა (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="მინიმუმ ერთი სიმბოლო თითოეული სახეობიდან"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="ენტროპია: დაახლოებით $INT_REPLACE$ ბიტი"/>
+    <Item english="Choose at least one kind of character." text="აირჩიეთ სიმბოლოების მინიმუმ ერთი სახეობა."/>
+    <Item english="Insert into Document" text="დოკუმენტში ჩასმა"/>
+    <Item english="Show the bare key in hexadecimal" text="მხოლოდ გასაღების ჩვენება თექვსმეტობით ფორმატში"/>
+    <Item english="Empty: a random salt each time" text="ცარიელი: ყოველ ჯერ შემთხვევითი მარილი"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt მხოლოდ პირველ 72 ბაიტს კითხულობს."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP მოთხოვნა"/>
+    <Item english="Send" text="გაგზავნა"/>
+    <Item english="Parameters" text="პარამეტრები"/>
+    <Item english="Headers" text="თავსართები"/>
+    <Item english="Body" text="სხეული"/>
+    <Item english="Options" text="ოფციები"/>
+    <Item english="Content type:" text="შიგთავსის ტიპი:"/>
+    <Item english="User name:" text="მომხმარებლის სახელი:"/>
+    <Item english="Password:" text="პაროლი:"/>
+    <Item english="Timeout (seconds):" text="დროის ლიმიტი (წამი):"/>
+    <Item english="Follow redirects" text="გადამისამართებების მიყოლა"/>
+    <Item english="Allow invalid certificates" text="არასწორი სერტიფიკატების დაშვება"/>
+    <Item english="Format JSON" text="JSON-ის ფორმატირება"/>
+    <Item english="Paste curl Command" text="curl ბრძანების ჩასმა"/>
+    <Item english="Copy as curl" text="კოპირება curl-ის სახით"/>
+    <Item english="Open in New Document" text="გახსნა ახალ დოკუმენტში"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="თითო სტრიქონში ერთი: სახელი=მნიშვნელობა. ისინი კოდირებული სახით ემატება მისამართს."/>
+    <Item english="One to a line: Name: value" text="თითო სტრიქონში ერთი: სახელი: მნიშვნელობა"/>
+    <Item english="Sent as it is written, in UTF-8." text="იგზავნება ისე, როგორც დაწერილია, UTF-8 კოდირებით."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="პასუხი ტექსტი არ არის: $INT_REPLACE$ ბაიტი."/>
+    <Item english="The address is not an http or https address." text="მისამართი არ არის http ან https მისამართი."/>
+    <Item english="This is not a curl command." text="ეს არ არის curl ბრძანება."/>
+    <Item english="The command has no address." text="ბრძანებაში მისამართი არ არის."/>
+    <Item english="The command reads its data from a file, which is not done here." text="ბრძანება მონაცემებს ფაილიდან კითხულობს, რაც აქ არ ხდება."/>
+    <Item english="Forms and uploads of files are not read from a command." text="ფორმები და ფაილების ატვირთვა ბრძანებიდან არ იკითხება."/>
+    <Item english="The command's address is not an http or https address." text="ბრძანების მისამართი არ არის http ან https მისამართი."/>
+</NativeLangExtra>

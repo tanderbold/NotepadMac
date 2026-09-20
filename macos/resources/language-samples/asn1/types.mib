@@ -1,0 +1,26 @@
+Demo-Protocol DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+EXPORTS Message, Header;
+
+Message ::= SEQUENCE {
+    header   Header,
+    body     CHOICE {
+        text     UTF8String (SIZE (0..1024)),
+        binary   OCTET STRING,
+        nothing  NULL
+    },
+    priority ENUMERATED { low(0), normal(1), high(2) } DEFAULT normal,
+    tags     SET OF PrintableString OPTIONAL
+}
+
+Header ::= SEQUENCE {
+    version   INTEGER { v1(1), v2(2) },
+    sender    IA5String,
+    sentAt    GeneralizedTime,
+    flags     BIT STRING { urgent(0), encrypted(1) } OPTIONAL
+}
+
+maxHops INTEGER ::= 16
+rootOid OBJECT IDENTIFIER ::= { iso(1) org(3) dod(6) internet(1) private(4) 99999 }
+
+END

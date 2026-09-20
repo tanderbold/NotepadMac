@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Replaces the upstream rust_function parser.
+
+    What the original does: its list of modifiers before `fn` is
+    "async | const | extern "..." | unsafe", with no `pub`. So `pub fn` — which
+    is most of the functions in a Rust library — is never found. It also has no
+    classRange, so nothing is grouped under the `impl` block it belongs to.
+
+    What this does: accepts `pub`, including `pub(crate)` and friends, in any
+    order with the other modifiers, and adds `impl` blocks as ranges so methods
+    are listed under the type they belong to.
+-->
+<NotepadPlus>
+    <functionList>
+        <parser
+            displayName="Rust"
+            id         ="rust_function"
+            commentExpr="(?s:/\*.*?\*/)|(?m-s://.*?$)"
+        >
+            <classRange
+                mainExpr    ="^\h*impl\b[^\{]*\{"
+                openSymbole ="\{"
+                closeSymbole="\}"
+            >
+                <className>
+                    <nameExpr expr="[A-Za-z_][\w:]*\s*(?:&lt;[^&gt;]*&gt;)?\s*\{" />
+                    <nameExpr expr="[A-Za-z_][\w:]*" />
+                </className>
+                <function
+                    mainExpr="^\h*(?:pub\s*(?:\([^)]*\)\s*)?)?(?:(?:async|const|unsafe|extern\s+&quot;[^&quot;]*&quot;)\s+)*fn\s+\K[A-Za-z_]\w*"
+                >
+                    <functionName>
+                        <funcNameExpr expr="[A-Za-z_]\w*" />
+                    </functionName>
+                </function>
+            </classRange>
+            <function
+                mainExpr="^\h*(?:pub\s*(?:\([^)]*\)\s*)?)?(?:(?:async|const|unsafe|extern\s+&quot;[^&quot;]*&quot;)\s+)*fn\s+\K[A-Za-z_]\w*"
+            >
+                <functionName>
+                    <nameExpr expr="[A-Za-z_]\w*" />
+                </functionName>
+            </function>
+        </parser>
+    </functionList>
+</NotepadPlus>

@@ -1,0 +1,16 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.fontSize": 13,
+    "editor.tabSize": 4,
+    "editor.rulers": [80, 120],
+    "files.exclude": {
+        "**/.git": true,
+        "**/node_modules": true, // too many files
+    },
+    /* terminal */
+    "terminal.integrated.fontFamily": "Menlo",
+    "workbench.colorTheme": "Default Dark+",
+    "[markdown]": {
+        "editor.wordWrap": "on",
+    },
+}

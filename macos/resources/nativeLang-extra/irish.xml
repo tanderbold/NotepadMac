@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/irish.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Gaeilge">
+    <Item english="About NotepadMac" text="Maidir le NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Folaigh NotepadMac"/>
+    <Item english="Hide Others" text="Folaigh na cinn eile"/>
+    <Item english="Show All" text="Taispeáin uile"/>
+    <Item english="Quit NotepadMac" text="Scoir NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Oscail an fillteán ina bhfuil i Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Oscail an fillteán ina bhfuil sa Teirminéal"/>
+    <Item english="Show All Hidden Lines" text="Taispeáin na línte folaithe uile"/>
+    <Item english="Recent Window" text="An fhuinneog is déanaí"/>
+    <Item english="Move to Trash" text="Bog go dtí an Bruscar"/>
+    <Item english="Save Current Command…" text="Taisc an t-ordú reatha…"/>
+    <Item english="Manage Saved Commands…" text="Bainistigh na horduithe taiscthe…"/>
+    <Item english="Show Console" text="Taispeáin an consól"/>
+    <Item english="Validate shortcuts" text="Bailíochtaigh na haicearraí"/>
+    <Item english="Open Plugins Folder…" text="Oscail fillteán na mbreiseán…"/>
+    <Item english="Format" text="Formáidigh"/>
+    <Item english="Compact" text="Dlúthaigh"/>
+    <Item english="Sort Keys" text="Sórtáil na heochracha"/>
+    <Item english="Validate" text="Bailíochtaigh"/>
+    <Item english="Show JSON Tree" text="Taispeáin crann JSON"/>
+    <Item english="Set as First to Compare" text="Socraigh mar an chéad cheann le comparáid"/>
+    <Item english="Compare" text="Cuir i gcomparáid"/>
+    <Item english="Compare with File…" text="Cuir i gcomparáid le comhad…"/>
+    <Item english="Next Difference" text="An difríocht ar aghaidh"/>
+    <Item english="Previous Difference" text="An difríocht roimhe"/>
+    <Item english="First Difference" text="An chéad difríocht"/>
+    <Item english="Last Difference" text="An difríocht dheireanach"/>
+    <Item english="Compare Summary" text="Achoimre na comparáide"/>
+    <Item english="Ignore Case" text="Ná bac le cás na litreacha"/>
+    <Item english="Ignore Spaces" text="Ná bac le spásanna"/>
+    <Item english="Ignore Empty Lines" text="Ná bac le línte folmha"/>
+    <Item english="Clear Active Compare" text="Glan an chomparáid reatha"/>
+    <Item english="Clear All Compares" text="Glan gach comparáid"/>
+    <Item english="Check XML Syntax Now" text="Seiceáil comhréir XML anois"/>
+    <Item english="Validate Against Schema…" text="Bailíochtaigh in aghaidh scéimre…"/>
+    <Item english="Validate Against DTD" text="Bailíochtaigh in aghaidh DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Luacháil slonn XPath…"/>
+    <Item english="Current XML Path" text="Conair XML reatha"/>
+    <Item english="Apply XSL Transformation…" text="Cuir trasfhoirmiú XSL i bhfeidhm…"/>
+    <Item english="Connections…" text="Naisc…"/>
+    <Item english="Connect…" text="Ceangail…"/>
+    <Item english="Disconnect" text="Dícheangail"/>
+    <Item english="Show Remote Files" text="Taispeáin comhaid chianda"/>
+    <Item english="Upload Current File" text="Uaslódáil an comhad reatha"/>
+    <Item english="Execute NppExec Script…" text="Rith script NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Rith an script NppExec roimhe"/>
+    <Item english="Stop Running NppExec Script" text="Stop an script NppExec"/>
+    <Item english="Show NppExec Console" text="Taispeáin consól NppExec"/>
+    <Item english="Execute NppExec Script" text="Rith script NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;script sealadach&gt;"/>
+    <Item english="Script name" text="Ainm na scripte"/>
+    <Item english="Remember which panels were open" text="Cuimhnigh ar na painéil a bhí oscailte"/>
+    <Item english="Show the toolbar" text="Taispeáin an barra uirlisí"/>
+    <Item english="Toolbar buttons" text="Cnaipí an bharra uirlisí"/>
+    <Item english="Icons only" text="Deilbhíní amháin"/>
+    <Item english="Icons and labels" text="Deilbhíní agus lipéid"/>
+    <Item english="Labels only" text="Lipéid amháin"/>
+    <Item english="Toolbar size" text="Méid an bharra uirlisí"/>
+    <Item english="Regular" text="Gnách"/>
+    <Item english="Small" text="Beag"/>
+    <Item english="Icons" text="Deilbhíní"/>
+    <Item english="Hidden" text="Folaithe"/>
+    <Item english="1 pixel" text="1 picteilín"/>
+    <Item english="2 pixels" text="2 phicteilín"/>
+    <Item english="3 pixels" text="3 phicteilín"/>
+    <Item english="Selected text can be dragged" text="Is féidir an téacs roghnaithe a tharraingt"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Cumasaigh il-eagarthóireacht (Cmd+cliceáil/roghnú)"/>
+    <Item english="Follow the system" text="Lean an córas"/>
+    <Item english="Light theme" text="Téama geal"/>
+    <Item english="Dark theme" text="Téama dorcha"/>
+    <Item english="Show the fold margin" text="Taispeáin imeall na bhfilltí"/>
+    <Item english="A line" text="Líne"/>
+    <Item english="Columns (space separated)" text="Colúin (scartha le spásanna)"/>
+    <Item english="3 parts" text="3 chuid"/>
+    <Item english="4 parts" text="4 chuid"/>
+    <Item english="5 parts" text="5 chuid"/>
+    <Item english="6 parts" text="6 chuid"/>
+    <Item english="7 parts" text="7 gcuid"/>
+    <Item english="8 parts" text="8 gcuid"/>
+    <Item english="9 parts" text="9 gcuid"/>
+    <Item english="Highlight matching braces" text="Aibhsigh na lúibíní comhoiriúnacha"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Imill: clé, barr, deas, bun (pointí)"/>
+    <Item english="Characters before it opens" text="Carachtair sula n-osclaíonn sé"/>
+    <Item english="Add characters to the word list" text="Cuir carachtair leis an liosta focal"/>
+    <Item english="A fixed folder" text="Fillteán socraithe"/>
+    <Item english="Fixed folder" text="Fillteán socraithe"/>
+    <Item english="Compare: ignore case" text="Comparáid: ná bac le cás na litreacha"/>
+    <Item english="Compare: ignore spaces" text="Comparáid: ná bac le spásanna"/>
+    <Item english="Compare: ignore empty lines" text="Comparáid: ná bac le línte folmha"/>
+    <Item english="Notepad++ update" text="Nuashonrú Notepad++"/>
+    <Item english="No update is available." text="Níl nuashonrú ar fáil."/>
+    <Item english="An update package is available, do you want to download it?" text="Tá pacáiste nuashonraithe ar fáil, ar mhaith leat é a íoslódáil?"/>
+    <Item english="Copy debug info to clipboard" text="Cóipeáil an t-eolas dífhabhtaithe chuig an ngearrthaisce"/>
+    <Item english="Fonts…" text="Clófhoirne…"/>
+    <Item english="This document is not valid JSON." text="Ní JSON bailí í an cháipéis seo."/>
+    <Item english="Valid JSON." text="JSON bailí."/>
+    <Item english="Invalid JSON." text="JSON neamhbhailí."/>
+    <Item english="Set as the first file to compare." text="Socraithe mar an chéad chomhad le comparáid."/>
+    <Item english="Nothing to compare with." text="Níl aon rud le cur i gcomparáid leis."/>
+    <Item english="The document is valid XML." text="Is XML bailí í an cháipéis."/>
+    <Item english="FTP connections" text="Naisc FTP"/>
+    <Item english="Cannot connect." text="Ní féidir ceangal."/>
+    <Item english="That file is open in another tab." text="Tá an comhad sin oscailte i gcluaisín eile."/>
+    <Item english="Close it first, or choose another name." text="Dún é ar dtús, nó roghnaigh ainm eile."/>
+    <Item english="Which language is this?" text="Cén teanga í seo?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Ní féidir roinnt carachtar a léiriú san ionchódú seo."/>
+    <Item english="Press the keys." text="Brúigh na heochracha."/>
+    <Item english="Nothing is marked" text="Níl aon rud marcáilte"/>
+    <Item english="Marked text copied" text="Cóipeáladh an téacs marcáilte"/>
+    <Item english="Choose a folder first" text="Roghnaigh fillteán ar dtús"/>
+    <Item english="This document has no folder" text="Níl fillteán ag an gcáipéis seo"/>
+    <Item english="Searching..." text="Ag cuardach..."/>
+    <Item english="Stopping..." text="Ag stopadh..."/>
+    <Item english="Marks cleared" text="Glanadh na marcanna"/>
+    <Item english="Transparent" text="Trédhearcach"/>
+    <Item english="View 1" text="Amharc 1"/>
+    <Item english="View 2" text="Amharc 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Haisfheidhmeanna"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Eochair HMAC (roghnach):"/>
+    <Item english="Salt (hexadecimal):" text="Salann (heicsidheachúlach):"/>
+    <Item english="Random" text="Randamach"/>
+    <Item english="Cost (4-31):" text="Costas (4-31):"/>
+    <Item english="Version:" text="Leagan:"/>
+    <Item english="Block size (r):" text="Méid an bhloic (r):"/>
+    <Item english="Memory (KiB):" text="Cuimhne (KiB):"/>
+    <Item english="Iterations:" text="Atriallta:"/>
+    <Item english="Digest:" text="Haisfheidhm:"/>
+    <Item english="Hash:" text="Hais:"/>
+    <Item english="Verify" text="Fíoraigh"/>
+    <Item english="Hash to check the password against:" text="Hais chun an pasfhocal a sheiceáil ina choinne:"/>
+    <Item english="The salt is not valid hexadecimal." text="Ní heicsidheachúlach bailí é an salann."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="Teastaíonn salann 16 bheart go beacht ó bcrypt."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Teastaíonn salann 8 mbeart ar a laghad ó Argon2."/>
+    <Item english="The hash could not be generated with these settings." text="Níorbh fhéidir an hais a chruthú leis na socruithe seo."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Ní hais bcrypt, scrypt, Argon2 ná PBKDF2 é seo."/>
+    <Item english="The password matches the hash." text="Tá an pasfhocal ag teacht leis an hais."/>
+    <Item english="The password does not match the hash." text="Níl an pasfhocal ag teacht leis an hais."/>
+    <Item english="The cost must be between 4 and 31." text="Caithfidh an costas a bheith idir 4 agus 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Caithfidh an leagan a bheith 2a, 2b nó 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="Caithfidh N a bheith idir 2^1 agus 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="Caithfidh r agus p a bheith idir 1 agus 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Teastaíonn níos mó ná 2 GB cuimhne do na socruithe seo."/>
+    <Item english="The iterations must be between 1 and 1000." text="Caithfidh líon na n-atriallta a bheith idir 1 agus 1000."/>
+    <Item english="These settings need more than 4 GB of memory." text="Teastaíonn níos mó ná 4 GB cuimhne do na socruithe seo."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Caithfidh an haisfheidhm a bheith SHA-1, SHA-256 nó SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Caithfidh líon na n-atriallta a bheith idir 1 agus 100000000."/>
+    <Item english="Encode" text="Ionchódaigh"/>
+    <Item english="Decode" text="Díchódaigh"/>
+    <Item english="The input is:" text="Is é an t-ionchur:"/>
+    <Item english="Bytes in hexadecimal" text="Bearta i bhfoirm heicsidheachúlach"/>
+    <Item english="Input:" text="Ionchur:"/>
+    <Item english="Result:" text="Toradh:"/>
+    <Item english="Text:" text="Téacs:"/>
+    <Item english="Bytes in hexadecimal:" text="Bearta i bhfoirm heicsidheachúlach:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Ní bearta i bhfoirm heicsidheachúlach é an t-ionchur."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Ní $STR_REPLACE$ bailí é an t-ionchur."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Ní téacs UTF-8 iad na bearta díchódaithe; taispeántar i bhfoirm heicsidheachúlach amháin iad."/>
+    <Item english="Password Generator" text="Gineadóir pasfhocal"/>
+    <Item english="Length:" text="Fad:"/>
+    <Item english="Number of passwords:" text="Líon na bpasfhocal:"/>
+    <Item english="Uppercase letters (A-Z)" text="Ceannlitreacha (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Litreacha beaga (a-z)"/>
+    <Item english="Digits (0-9)" text="Digití (0-9)"/>
+    <Item english="Symbols:" text="Siombailí:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Fág carachtair atá cosúil lena chéile ar lár (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Carachtar amháin ar a laghad de gach cineál"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Eantrópacht: thart ar $INT_REPLACE$ giotán"/>
+    <Item english="Choose at least one kind of character." text="Roghnaigh cineál amháin carachtar ar a laghad."/>
+    <Item english="Insert into Document" text="Ionsáigh sa cháipéis"/>
+    <Item english="Show the bare key in hexadecimal" text="Taispeáin an eochair lom i bhfoirm heicsidheachúlach"/>
+    <Item english="Empty: a random salt each time" text="Folamh: salann randamach gach uair"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="Ní léann bcrypt ach an chéad 72 bheart."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Iarratas HTTP"/>
+    <Item english="Send" text="Seol"/>
+    <Item english="Parameters" text="Paraiméadair"/>
+    <Item english="Headers" text="Ceanntásca"/>
+    <Item english="Body" text="Corp"/>
+    <Item english="Options" text="Roghanna"/>
+    <Item english="Content type:" text="Cineál ábhair:"/>
+    <Item english="User name:" text="Ainm úsáideora:"/>
+    <Item english="Password:" text="Pasfhocal:"/>
+    <Item english="Timeout (seconds):" text="Teorainn ama (soicindí):"/>
+    <Item english="Follow redirects" text="Lean atreoruithe"/>
+    <Item english="Allow invalid certificates" text="Ceadaigh teastais neamhbhailí"/>
+    <Item english="Format JSON" text="Formáidigh JSON"/>
+    <Item english="Paste curl Command" text="Greamaigh ordú curl"/>
+    <Item english="Copy as curl" text="Cóipeáil mar curl"/>
+    <Item english="Open in New Document" text="Oscail i gcáipéis nua"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Ceann amháin in aghaidh na líne: ainm=luach. Cuirtear leis an seoladh iad, ionchódaithe."/>
+    <Item english="One to a line: Name: value" text="Ceann amháin in aghaidh na líne: Ainm: luach"/>
+    <Item english="Sent as it is written, in UTF-8." text="Seoltar é mar atá sé scríofa, in UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Ní téacs é an freagra: $INT_REPLACE$ beart."/>
+    <Item english="The address is not an http or https address." text="Ní seoladh http ná https é an seoladh."/>
+    <Item english="This is not a curl command." text="Ní ordú curl é seo."/>
+    <Item english="The command has no address." text="Níl seoladh ar bith san ordú."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Léann an t-ordú a chuid sonraí ó chomhad, rud nach ndéantar anseo."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Ní léitear foirmeacha ná uaslódálacha comhad ó ordú."/>
+    <Item english="The command's address is not an http or https address." text="Ní seoladh http ná https é seoladh an ordaithe."/>
+</NativeLangExtra>

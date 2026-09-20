@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/sinhala.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Sinhala">
+    <Item english="About NotepadMac" text="NotepadMac ගැන"/>
+    <Item english="Hide NotepadMac" text="NotepadMac සඟවන්න"/>
+    <Item english="Hide Others" text="අනෙක් ඒවා සඟවන්න"/>
+    <Item english="Show All" text="සියල්ල පෙන්වන්න"/>
+    <Item english="Quit NotepadMac" text="NotepadMac වසා දමන්න"/>
+    <Item english="Open Containing Folder in Finder" text="Finder තුළ ගොනුවේ ෆෝල්ඩරය විවෘත කරන්න"/>
+    <Item english="Open Containing Folder in Terminal" text="ටර්මිනලයේ ගොනුවේ ෆෝල්ඩරය විවෘත කරන්න"/>
+    <Item english="Toggle Insert/Overtype" text="ඇතුළත් කිරීම/උඩින් ලිවීම ටොගල කරන්න"/>
+    <Item english="Toggle Fold" text="හැකිලීම ටොගල කරන්න"/>
+    <Item english="Show All Hidden Lines" text="සැඟවූ සියලු පේලි පෙන්වන්න"/>
+    <Item english="Recent Window" text="පෙර කවුළුව"/>
+    <Item english="Move to Trash" text="කුණු කූඩයට යවන්න"/>
+    <Item english="Save Current Command…" text="වත්මන් විධානය සුරකින්න…"/>
+    <Item english="Manage Saved Commands…" text="සුරැකි විධාන කළමනාකරණය කරන්න…"/>
+    <Item english="Show Console" text="කොන්සෝලය පෙන්වන්න"/>
+    <Item english="Validate shortcuts" text="කෙටිමං පරීක්ෂා කරන්න"/>
+    <Item english="Open Plugins Folder…" text="පේනු මෘදුකාංග ෆෝල්ඩරය විවෘත කරන්න…"/>
+    <Item english="Format" text="ආකෘතිගත කරන්න"/>
+    <Item english="Compact" text="සංයුක්ත කරන්න"/>
+    <Item english="Sort Keys" text="යතුරු පෙළගස්වන්න"/>
+    <Item english="Validate" text="පරීක්ෂා කරන්න"/>
+    <Item english="Show JSON Tree" text="JSON ගස පෙන්වන්න"/>
+    <Item english="Set as First to Compare" text="සැසඳීමට පළමු ගොනුව ලෙස තබන්න"/>
+    <Item english="Compare" text="සසඳන්න"/>
+    <Item english="Compare with File…" text="ගොනුවක් සමඟ සසඳන්න…"/>
+    <Item english="Next Difference" text="ඊළඟ වෙනස"/>
+    <Item english="Previous Difference" text="පෙර වෙනස"/>
+    <Item english="First Difference" text="පළමු වෙනස"/>
+    <Item english="Last Difference" text="අවසාන වෙනස"/>
+    <Item english="Compare Summary" text="සැසඳීමේ සාරාංශය"/>
+    <Item english="Ignore Case" text="අක්ෂර තත්වය නොසලකන්න"/>
+    <Item english="Ignore Spaces" text="ඉඩ නොසලකන්න"/>
+    <Item english="Ignore Empty Lines" text="හිස් පේලි නොසලකන්න"/>
+    <Item english="Clear Active Compare" text="වත්මන් සැසඳීම හිස් කරන්න"/>
+    <Item english="Clear All Compares" text="සියලු සැසඳීම් හිස් කරන්න"/>
+    <Item english="Pretty Print" text="ලස්සනට ආකෘතිගත කරන්න"/>
+    <Item english="Linearize" text="එක් පේලියකට හකුළන්න"/>
+    <Item english="Check XML Syntax Now" text="දැන් XML ව්‍යාකරණ පරීක්ෂා කරන්න"/>
+    <Item english="Validate Against DTD" text="DTD අනුව පරීක්ෂා කරන්න"/>
+    <Item english="Evaluate XPath Expression…" text="XPath ප්‍රකාශනය ඇගයන්න…"/>
+    <Item english="Current XML Path" text="වත්මන් XML පෙත"/>
+    <Item english="Apply XSL Transformation…" text="XSL පරිවර්තනය යොදන්න…"/>
+    <Item english="Connections…" text="සම්බන්ධතා…"/>
+    <Item english="Connect…" text="සම්බන්ධ වන්න…"/>
+    <Item english="Disconnect" text="විසන්ධි වන්න"/>
+    <Item english="Show Remote Files" text="දුරස්ථ ගොනු පෙන්වන්න"/>
+    <Item english="Upload Current File" text="වත්මන් ගොනුව උඩුගත කරන්න"/>
+    <Item english="Execute NppExec Script…" text="NppExec ස්ක්‍රිප්ට් ධාවනය කරන්න…"/>
+    <Item english="Execute Previous NppExec Script" text="පෙර NppExec ස්ක්‍රිප්ට් ධාවනය කරන්න"/>
+    <Item english="Stop Running NppExec Script" text="ධාවනය වන NppExec ස්ක්‍රිප්ට් නවත්වන්න"/>
+    <Item english="Show NppExec Console" text="NppExec කොන්සෝලය පෙන්වන්න"/>
+    <Item english="Execute NppExec Script" text="NppExec ස්ක්‍රිප්ට් ධාවනය කරන්න"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;තාවකාලික ස්ක්‍රිප්ට්&gt;"/>
+    <Item english="Script name" text="ස්ක්‍රිප්ටයේ නම"/>
+    <Item english="Dock Left" text="වම් පසට ඈඳන්න"/>
+    <Item english="Dock Right" text="දකුණු පසට ඈඳන්න"/>
+    <Item english="Dock Top" text="ඉහළට ඈඳන්න"/>
+    <Item english="Dock Bottom" text="පහළට ඈඳන්න"/>
+    <Item english="Float" text="පාවෙන"/>
+    <Item english="Remember which panels were open" text="විවෘතව තිබූ පුවරු මතක තබාගන්න"/>
+    <Item english="Show the toolbar" text="මෙවලම් තීරුව පෙන්වන්න"/>
+    <Item english="Toolbar buttons" text="මෙවලම් තීරුවේ බොත්තම්"/>
+    <Item english="Icons only" text="අයිකන පමණි"/>
+    <Item english="Icons and labels" text="අයිකන සහ නම්"/>
+    <Item english="Labels only" text="නම් පමණි"/>
+    <Item english="Toolbar size" text="මෙවලම් තීරුවේ ප්‍රමාණය"/>
+    <Item english="Regular" text="සාමාන්‍ය"/>
+    <Item english="Small" text="කුඩා"/>
+    <Item english="Icons" text="අයිකන"/>
+    <Item english="Hidden" text="සැඟවූ"/>
+    <Item english="1 pixel" text="1 පික්සෙල"/>
+    <Item english="2 pixels" text="2 පික්සෙල"/>
+    <Item english="3 pixels" text="3 පික්සෙල"/>
+    <Item english="Selected text can be dragged" text="තෝරාගත් පාඨය ඇදගෙන යා හැක"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="බහු-සංස්කරණය සක්‍රීයකරන්න (Cmd+ක්ලික්/තේරීම)"/>
+    <Item english="Follow the system" text="පද්ධතිය අනුව"/>
+    <Item english="Light theme" text="ලා තේමාව"/>
+    <Item english="Dark theme" text="අඳුරු තේමාව"/>
+    <Item english="Show the fold margin" text="හැකිලීමේ තීරුව පෙන්වන්න"/>
+    <Item english="A line" text="රේඛාවක්"/>
+    <Item english="Columns (space separated)" text="තීරු (ඉඩකින් වෙන් කළ)"/>
+    <Item english="3 parts" text="කොටස් 3"/>
+    <Item english="4 parts" text="කොටස් 4"/>
+    <Item english="5 parts" text="කොටස් 5"/>
+    <Item english="6 parts" text="කොටස් 6"/>
+    <Item english="7 parts" text="කොටස් 7"/>
+    <Item english="8 parts" text="කොටස් 8"/>
+    <Item english="9 parts" text="කොටස් 9"/>
+    <Item english="Work the language out from the contents when the name does not say" text="නම නොකියන විට අන්තර්ගතයෙන් භාෂාව හඳුනාගන්න"/>
+    <Item english="Highlight matching braces" text="ගැලපෙන වරහන් උද්දීපනය කරන්න"/>
+    <Item english="Header font (blank for the editor's)" text="හෙඩිමේ අකුරු (හිස් නම් සංස්කාරකයේ)"/>
+    <Item english="Header font size" text="හෙඩිමේ අකුරු විශාලත්වය"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="ආන්තික: වම, ඉහල, දකුණ, පහල (පොයින්ට්)"/>
+    <Item english="Characters before it opens" text="විවෘත වීමට පෙර අක්ෂර ගණන"/>
+    <Item english="Add characters to the word list" text="වචන ලැයිස්තුවට අක්ෂර එක් කරන්න"/>
+    <Item english="A fixed folder" text="ස්ථිර ෆෝල්ඩරයක්"/>
+    <Item english="Fixed folder" text="ස්ථිර ෆෝල්ඩරය"/>
+    <Item english="Confirm Replace All" text="සියල්ල ප්‍රතිස්ථානගත කිරීම තහවුරු කරන්න"/>
+    <Item english="Compare: ignore case" text="සැසඳීම: අක්ෂර තත්වය නොසලකන්න"/>
+    <Item english="Compare: ignore spaces" text="සැසඳීම: ඉඩ නොසලකන්න"/>
+    <Item english="Compare: ignore empty lines" text="සැසඳීම: හිස් පේලි නොසලකන්න"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="සෙවුම් කොටුව ස්වයංක්‍රීයව පිරවීමට උපරිම අක්ෂර ගණන"/>
+    <Item english="Releases repository" text="නිකුතු ගබඩාව"/>
+    <Item english="Notepad++ update" text="Notepad++ යාවත්කාලීනය"/>
+    <Item english="No update is available." text="යාවත්කාලීනයක් නොමැත."/>
+    <Item english="An update package is available, do you want to download it?" text="යාවත්කාලීන පැකේජයක් ඇත, එය බාගත කරන්නද?"/>
+    <Item english="Open the Releases Page" text="නිකුතු පිටුව විවෘත කරන්න"/>
+    <Item english="Copy debug info to clipboard" text="දෝෂ තොරතුරු ඇමුණුම් පුවරුවට පිටපත් කරන්න"/>
+    <Item english="Fonts…" text="අකුරු…"/>
+    <Item english="This document is not valid JSON." text="මෙම ලේඛනය වලංගු JSON නොවේ."/>
+    <Item english="Valid JSON." text="වලංගු JSON."/>
+    <Item english="Invalid JSON." text="අවලංගු JSON."/>
+    <Item english="Set as the first file to compare." text="සැසඳීමට පළමු ගොනුව ලෙස තබන ලදී."/>
+    <Item english="Nothing to compare with." text="සැසඳීමට කිසිවක් නැත."/>
+    <Item english="The document is valid XML." text="ලේඛනය වලංගු XML වේ."/>
+    <Item english="FTP connections" text="FTP සම්බන්ධතා"/>
+    <Item english="Cannot connect." text="සම්බන්ධ විය නොහැක."/>
+    <Item english="That file is open in another tab." text="එම ගොනුව වෙනත් පටිත්තක විවෘතව ඇත."/>
+    <Item english="Close it first, or choose another name." text="පළමුව එය වසන්න, නැතහොත් වෙනත් නමක් තෝරන්න."/>
+    <Item english="Which language is this?" text="මෙය කුමන භාෂාවද?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="සමහර අක්ෂර මෙම කේතාංකනයෙන් නිරූපණය කළ නොහැක."/>
+    <Item english="Converting will replace them." text="පරිවර්තනය කිරීමෙන් ඒවා ප්‍රතිස්ථාපනය වේ."/>
+    <Item english="Press the keys." text="යතුරු ඔබන්න."/>
+    <Item english="Nothing is marked" text="කිසිවක් ලකුණු කර නැත"/>
+    <Item english="Marked text copied" text="ලකුණු කළ පාඨය පිටපත් විය"/>
+    <Item english="Choose a folder first" text="පළමුව ෆෝල්ඩරයක් තෝරන්න"/>
+    <Item english="This document has no folder" text="මෙම ලේඛනයට ෆෝල්ඩරයක් නැත"/>
+    <Item english="The ticked project panels have no files" text="තෝරාගත් ව්‍යාපෘති පුවරුවල ගොනු නැත"/>
+    <Item english="Searching..." text="සොයමින්..."/>
+    <Item english="Stopping..." text="නවත්වමින්..."/>
+    <Item english="Marks cleared" text="ලකුණු ඉවත් කෙරිණි"/>
+    <Item english="Transparent" text="විනිවිද පෙනෙන"/>
+    <Item english="View 1" text="පෙනුම 1"/>
+    <Item english="View 2" text="පෙනුම 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="හෑෂ්"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC යතුර (විකල්ප):"/>
+    <Item english="Salt (hexadecimal):" text="සෝල්ට් (ෂඩ්දශම):"/>
+    <Item english="Random" text="අහඹු"/>
+    <Item english="Cost (4-31):" text="පිරිවැය (4-31):"/>
+    <Item english="Version:" text="අනුවාදය:"/>
+    <Item english="N, as a power of 2:" text="N, 2 හි බලයක් ලෙස:"/>
+    <Item english="Block size (r):" text="බ්ලොක් ප්‍රමාණය (r):"/>
+    <Item english="Parallelism (p):" text="සමාන්තරතාව (p):"/>
+    <Item english="Variant:" text="ප්‍රභේදය:"/>
+    <Item english="Memory (KiB):" text="මතකය (KiB):"/>
+    <Item english="Iterations:" text="පුනරාවර්තන:"/>
+    <Item english="Parallelism:" text="සමාන්තරතාව:"/>
+    <Item english="Digest:" text="හෑෂ් ශ්‍රිතය:"/>
+    <Item english="Hash length (bytes):" text="හෑෂ් දිග (බයිට):"/>
+    <Item english="Hash:" text="හෑෂ්:"/>
+    <Item english="Verify" text="සත්‍යාපනය කරන්න"/>
+    <Item english="Hash to check the password against:" text="මුරපදය පරීක්ෂා කළ යුතු හෑෂ් එක:"/>
+    <Item english="The salt is not valid hexadecimal." text="සෝල්ට් එක වලංගු ෂඩ්දශම නොවේ."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt සඳහා හරියටම බයිට 16 ක සෝල්ට් එකක් අවශ්‍යයි."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 සඳහා අවම වශයෙන් බයිට 8 ක සෝල්ට් එකක් අවශ්‍යයි."/>
+    <Item english="The hash could not be generated with these settings." text="මෙම සිටවුම් සමඟ හෑෂ් එක ජනනය කළ නොහැකි විය."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="මෙය bcrypt, scrypt, Argon2 හෝ PBKDF2 හෑෂ් එකක් නොවේ."/>
+    <Item english="The password matches the hash." text="මුරපදය හෑෂ් එකට ගැළපේ."/>
+    <Item english="The password does not match the hash." text="මුරපදය හෑෂ් එකට නොගැළපේ."/>
+    <Item english="The cost must be between 4 and 31." text="පිරිවැය 4 සහ 31 අතර විය යුතුය."/>
+    <Item english="The version must be 2a, 2b or 2y." text="අනුවාදය 2a, 2b හෝ 2y විය යුතුය."/>
+    <Item english="N must be between 2^1 and 2^24." text="N 2^1 සහ 2^24 අතර විය යුතුය."/>
+    <Item english="r and p must be between 1 and 64." text="r සහ p 1 සහ 64 අතර විය යුතුය."/>
+    <Item english="These settings need more than 2 GB of memory." text="මෙම සිටවුම් සඳහා 2 GB ට වඩා මතකය අවශ්‍යයි."/>
+    <Item english="The parallelism must be between 1 and 64." text="සමාන්තරතාව 1 සහ 64 අතර විය යුතුය."/>
+    <Item english="The iterations must be between 1 and 1000." text="පුනරාවර්තන 1 සහ 1000 අතර විය යුතුය."/>
+    <Item english="These settings need more than 4 GB of memory." text="මෙම සිටවුම් සඳහා 4 GB ට වඩා මතකය අවශ්‍යයි."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="හෑෂ් ශ්‍රිතය SHA-1, SHA-256 හෝ SHA-512 විය යුතුය."/>
+    <Item english="The iterations must be between 1 and 100000000." text="පුනරාවර්තන 1 සහ 100000000 අතර විය යුතුය."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="හෑෂ් දිග බයිට 4 සහ 1024 අතර විය යුතුය."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-ආරක්ෂිත)"/>
+    <Item english="Encode" text="කේතනය කරන්න"/>
+    <Item english="Decode" text="විකේතනය කරන්න"/>
+    <Item english="The input is:" text="ආදාන වර්ගය:"/>
+    <Item english="Bytes in hexadecimal" text="ෂඩ්දශම බයිට"/>
+    <Item english="Input:" text="ආදානය:"/>
+    <Item english="Result:" text="ප්‍රතිඵලය:"/>
+    <Item english="Text:" text="පාඨය:"/>
+    <Item english="Bytes in hexadecimal:" text="ෂඩ්දශම බයිට:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="ආදානය ෂඩ්දශමයෙන් ලියූ බයිට නොවේ."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="ආදානය වලංගු $STR_REPLACE$ නොවේ."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="විකේතනය කළ බයිට UTF-8 පාඨයක් නොවේ; ඒවා පෙන්වන්නේ ෂඩ්දශමයෙන් පමණි."/>
+    <Item english="Password Generator" text="මුරපද ජනකය"/>
+    <Item english="Length:" text="දිග:"/>
+    <Item english="Number of passwords:" text="මුරපද ගණන:"/>
+    <Item english="Uppercase letters (A-Z)" text="ලොකු අකුරු (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="කුඩා අකුරු (a-z)"/>
+    <Item english="Digits (0-9)" text="ඉලක්කම් (0-9)"/>
+    <Item english="Symbols:" text="සංකේත:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="එක සමාන ලෙස පෙනෙන අක්ෂර අත්හරින්න (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="එක් එක් වර්ගයෙන් අවම වශයෙන් එක් අක්ෂරයක්"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="එන්ට්‍රොපිය: බිටු $INT_REPLACE$ ක් පමණ"/>
+    <Item english="Choose at least one kind of character." text="අවම වශයෙන් එක් අක්ෂර වර්ගයක් තෝරන්න."/>
+    <Item english="Insert into Document" text="ලේඛනයට ඇතුළු කරන්න"/>
+    <Item english="Show the bare key in hexadecimal" text="යතුර පමණක් ෂඩ්දශමයෙන් පෙන්වන්න"/>
+    <Item english="Empty: a random salt each time" text="හිස්: සෑම වරම අහඹු සෝල්ට් එකක්"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt කියවන්නේ පළමු බයිට 72 පමණි."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP ඉල්ලීම"/>
+    <Item english="Send" text="යවන්න"/>
+    <Item english="Parameters" text="පරාමිති"/>
+    <Item english="Headers" text="ශීර්ෂ"/>
+    <Item english="Options" text="විකල්ප"/>
+    <Item english="Content type:" text="අන්තර්ගත වර්ගය:"/>
+    <Item english="User name:" text="පරිශීලක නාමය:"/>
+    <Item english="Password:" text="මුරපදය:"/>
+    <Item english="Timeout (seconds):" text="කල් ඉකුත්වීම (තත්පර):"/>
+    <Item english="Follow redirects" text="යළි-යොමුකිරීම් අනුගමනය කරන්න"/>
+    <Item english="Allow invalid certificates" text="වලංගු නොවන සහතික වලට ඉඩ දෙන්න"/>
+    <Item english="Format JSON" text="JSON ආකෘතිගත කරන්න"/>
+    <Item english="Paste curl Command" text="curl විධානය අලවන්න"/>
+    <Item english="Copy as curl" text="curl ලෙස පිටපත් කරන්න"/>
+    <Item english="Open in New Document" text="නව ලේඛනයක විවෘත කරන්න"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="පේලියකට එකක්: නම=අගය. ඒවා කේතනය කර ලිපිනයට එක් කෙරේ."/>
+    <Item english="One to a line: Name: value" text="පේලියකට එකක්: නම: අගය"/>
+    <Item english="Sent as it is written, in UTF-8." text="ලියා ඇති ආකාරයටම, UTF-8 වලින් යවනු ලැබේ."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="ප්‍රතිචාරය පාඨයක් නොවේ: බයිට $INT_REPLACE$."/>
+    <Item english="The address is not an http or https address." text="ලිපිනය http හෝ https ලිපිනයක් නොවේ."/>
+    <Item english="This is not a curl command." text="මෙය curl විධානයක් නොවේ."/>
+    <Item english="The command has no address." text="විධානයේ ලිපිනයක් නැත."/>
+    <Item english="The command reads its data from a file, which is not done here." text="විධානය එහි දත්ත ගොනුවකින් කියවයි; එය මෙහි සිදු නොකෙරේ."/>
+    <Item english="Forms and uploads of files are not read from a command." text="ආකෘති පත්‍ර සහ ගොනු උඩුගත කිරීම් විධානයකින් කියවනු නොලැබේ."/>
+    <Item english="The command's address is not an http or https address." text="විධානයේ ලිපිනය http හෝ https ලිපිනයක් නොවේ."/>
+</NativeLangExtra>

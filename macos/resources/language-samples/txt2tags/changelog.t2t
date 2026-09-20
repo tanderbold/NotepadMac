@@ -1,0 +1,25 @@
+Changelog
+
+
+%!target: txt
+
+= Version 2.1 =[v21]
+
+- Fixed the table parser on empty cells.
+- New ``--width`` option.
+- See the [installation notes #install].
+
+
+= Version 2.0 =
+
+- **Incompatible**: configuration moved to ``~/.tinyrc``.
+- Tables accept ``||`` title rows.
+  - Nested lists are allowed.
+  - Up to five levels.
+
+
+- Faster.
+
+----------------------------------------
+
+%%toc

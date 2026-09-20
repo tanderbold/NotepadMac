@@ -1,0 +1,36 @@
+Tiny Tool User Manual
+Jane Doe
+%%mtime(%Y-%m-%d)
+
+%!target: html
+%!options: --toc --toc-level 2
+%!encoding: utf-8
+%!postproc(html): '<HEAD>' '<HEAD><link rel="stylesheet" href="manual.css">'
+
+= Introduction =
+
+Tiny Tool converts **plain** files into //fancy// ones. It
+is written in ``Python`` and needs no other software.
+
+== Installing ==
+
++ Download the archive from [the web site https://example.org/tinytool].
++ Unpack it anywhere.
++ Run ``tinytool --help``.
+
+
+== Options ==
+
+|| Option | Meaning |
+| -o FILE | write the result to FILE |
+| -q | quiet, no messages |
+| -v | print the version |
+
+```
+$ tinytool -o out.html notes.txt
+converted 12 lines
+```
+
+% this comment is not shown in the output
+- __Note__: options may be combined.
+- --Deprecated--: the old ``-x`` switch.

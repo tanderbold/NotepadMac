@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/chineseSimplified.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="简体中文">
+    <Item english="About NotepadMac" text="关于 NotepadMac"/>
+    <Item english="Hide NotepadMac" text="隐藏 NotepadMac"/>
+    <Item english="Hide Others" text="隐藏其他"/>
+    <Item english="Show All" text="全部显示"/>
+    <Item english="Quit NotepadMac" text="退出 NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="在 Finder 中打开所在文件夹"/>
+    <Item english="Open Containing Folder in Terminal" text="在终端中打开所在文件夹"/>
+    <Item english="Toggle Insert/Overtype" text="切换插入/改写模式"/>
+    <Item english="Toggle Fold" text="切换折叠"/>
+    <Item english="Show All Hidden Lines" text="显示所有隐藏行"/>
+    <Item english="Recent Window" text="最近的窗口"/>
+    <Item english="Move to Trash" text="移到废纸篓"/>
+    <Item english="Save Current Command…" text="保存当前命令…"/>
+    <Item english="Manage Saved Commands…" text="管理已保存的命令…"/>
+    <Item english="Show Console" text="显示控制台"/>
+    <Item english="Validate shortcuts" text="检查快捷键"/>
+    <Item english="Open Plugins Folder…" text="打开插件文件夹…"/>
+    <Item english="Format" text="格式化"/>
+    <Item english="Compact" text="压缩"/>
+    <Item english="Sort Keys" text="键排序"/>
+    <Item english="Validate" text="验证"/>
+    <Item english="Show JSON Tree" text="显示 JSON 树"/>
+    <Item english="Set as First to Compare" text="设为比较的第一个文件"/>
+    <Item english="Compare" text="比较"/>
+    <Item english="Compare with File…" text="与文件比较…"/>
+    <Item english="Next Difference" text="下一处差异"/>
+    <Item english="Previous Difference" text="上一处差异"/>
+    <Item english="First Difference" text="第一处差异"/>
+    <Item english="Last Difference" text="最后一处差异"/>
+    <Item english="Compare Summary" text="比较摘要"/>
+    <Item english="Ignore Case" text="忽略大小写"/>
+    <Item english="Ignore Spaces" text="忽略空格"/>
+    <Item english="Ignore Empty Lines" text="忽略空行"/>
+    <Item english="Clear Active Compare" text="清除当前比较"/>
+    <Item english="Clear All Compares" text="清除所有比较"/>
+    <Item english="Pretty Print" text="美化格式"/>
+    <Item english="Pretty Print — Indent Attributes" text="美化格式 — 属性缩进"/>
+    <Item english="Linearize" text="转为单行"/>
+    <Item english="Check XML Syntax Now" text="立即检查 XML 语法"/>
+    <Item english="Validate Against Schema…" text="按 Schema 验证…"/>
+    <Item english="Validate Against DTD" text="按 DTD 验证"/>
+    <Item english="Evaluate XPath Expression…" text="计算 XPath 表达式…"/>
+    <Item english="Current XML Path" text="当前 XML 路径"/>
+    <Item english="Current XML Path with Predicates" text="当前 XML 路径（含谓词）"/>
+    <Item english="Apply XSL Transformation…" text="应用 XSL 转换…"/>
+    <Item english="Escape Characters in Selection" text="转义选中内容中的字符"/>
+    <Item english="Unescape Characters in Selection" text="还原选中内容中的转义字符"/>
+    <Item english="Connections…" text="连接管理…"/>
+    <Item english="Connect…" text="连接…"/>
+    <Item english="Disconnect" text="断开连接"/>
+    <Item english="Show Remote Files" text="显示远程文件"/>
+    <Item english="Upload Current File" text="上传当前文件"/>
+    <Item english="Execute NppExec Script…" text="执行 NppExec 脚本…"/>
+    <Item english="Execute Previous NppExec Script" text="执行上一个 NppExec 脚本"/>
+    <Item english="Stop Running NppExec Script" text="停止正在运行的 NppExec 脚本"/>
+    <Item english="Show NppExec Console" text="显示 NppExec 控制台"/>
+    <Item english="Execute NppExec Script" text="执行 NppExec 脚本"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;临时脚本&gt;"/>
+    <Item english="Script name" text="脚本名称"/>
+    <Item english="Dock Left" text="停靠到左侧"/>
+    <Item english="Dock Right" text="停靠到右侧"/>
+    <Item english="Dock Top" text="停靠到顶部"/>
+    <Item english="Dock Bottom" text="停靠到底部"/>
+    <Item english="Float" text="浮动"/>
+    <Item english="Remember which panels were open" text="记住已打开的面板"/>
+    <Item english="Show the toolbar" text="显示工具栏"/>
+    <Item english="Toolbar buttons" text="工具栏按钮"/>
+    <Item english="Icons only" text="仅图标"/>
+    <Item english="Icons and labels" text="图标和文字"/>
+    <Item english="Labels only" text="仅文字"/>
+    <Item english="Toolbar size" text="工具栏大小"/>
+    <Item english="Regular" text="常规"/>
+    <Item english="Small" text="小"/>
+    <Item english="Icons" text="图标"/>
+    <Item english="Hidden" text="隐藏"/>
+    <Item english="1 pixel" text="1 像素"/>
+    <Item english="2 pixels" text="2 像素"/>
+    <Item english="3 pixels" text="3 像素"/>
+    <Item english="Selected text can be dragged" text="可拖动选中的文本"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="启用多重编辑 (Cmd+鼠标点选)"/>
+    <Item english="Follow the system" text="跟随系统"/>
+    <Item english="Light theme" text="浅色主题"/>
+    <Item english="Dark theme" text="深色主题"/>
+    <Item english="Show the fold margin" text="显示折叠栏"/>
+    <Item english="A line" text="线"/>
+    <Item english="Columns (space separated)" text="列（以空格分隔）"/>
+    <Item english="3 parts" text="3 部分"/>
+    <Item english="4 parts" text="4 部分"/>
+    <Item english="5 parts" text="5 部分"/>
+    <Item english="6 parts" text="6 部分"/>
+    <Item english="7 parts" text="7 部分"/>
+    <Item english="8 parts" text="8 部分"/>
+    <Item english="9 parts" text="9 部分"/>
+    <Item english="Work the language out from the contents when the name does not say" text="文件名无法判断语言时，根据内容判断"/>
+    <Item english="Highlight matching braces" text="高亮显示匹配的括号"/>
+    <Item english="Header font (blank for the editor's)" text="页眉字体（留空则使用编辑器字体）"/>
+    <Item english="Header font size" text="页眉字体大小"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="页边距：左、上、右、下（磅）"/>
+    <Item english="Characters before it opens" text="输入多少个字符后弹出"/>
+    <Item english="Add characters to the word list" text="向单词字符列表添加字符"/>
+    <Item english="A fixed folder" text="固定文件夹"/>
+    <Item english="Fixed folder" text="固定文件夹"/>
+    <Item english="Confirm Replace All" text="全部替换前确认"/>
+    <Item english="Compare: ignore case" text="比较：忽略大小写"/>
+    <Item english="Compare: ignore spaces" text="比较：忽略空格"/>
+    <Item english="Compare: ignore empty lines" text="比较：忽略空行"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="自动填入查找框的最大字符数"/>
+    <Item english="Releases repository" text="发布版本仓库"/>
+    <Item english="Notepad++ update" text="Notepad++ 更新"/>
+    <Item english="No update is available." text="没有可用的更新。"/>
+    <Item english="An update package is available, do you want to download it?" text="有可用的更新包，是否下载？"/>
+    <Item english="Open the Releases Page" text="打开发布页面"/>
+    <Item english="Copy debug info to clipboard" text="复制调试信息到剪贴板"/>
+    <Item english="Fonts…" text="字体…"/>
+    <Item english="This document is not valid JSON." text="此文档不是有效的 JSON。"/>
+    <Item english="Valid JSON." text="有效的 JSON。"/>
+    <Item english="Invalid JSON." text="无效的 JSON。"/>
+    <Item english="Set as the first file to compare." text="已设为比较的第一个文件。"/>
+    <Item english="Nothing to compare with." text="没有可比较的对象。"/>
+    <Item english="The document is valid XML." text="此文档是有效的 XML。"/>
+    <Item english="FTP connections" text="FTP 连接"/>
+    <Item english="Cannot connect." text="无法连接。"/>
+    <Item english="That file is open in another tab." text="该文件已在另一个标签页中打开。"/>
+    <Item english="Close it first, or choose another name." text="请先将其关闭，或选择其他名称。"/>
+    <Item english="Which language is this?" text="这是哪种语言？"/>
+    <Item english="Some characters cannot be represented in this encoding." text="某些字符无法用此编码表示。"/>
+    <Item english="Converting will replace them." text="转换时它们将被替换。"/>
+    <Item english="Press the keys." text="请按下按键。"/>
+    <Item english="Nothing is marked" text="没有已标记的内容"/>
+    <Item english="Marked text copied" text="已复制标记的文本"/>
+    <Item english="Choose a folder first" text="请先选择文件夹"/>
+    <Item english="This document has no folder" text="此文档没有所在文件夹"/>
+    <Item english="The ticked project panels have no files" text="勾选的项目面板中没有文件"/>
+    <Item english="Searching..." text="正在搜索..."/>
+    <Item english="Stopping..." text="正在停止..."/>
+    <Item english="Marks cleared" text="已清除标记"/>
+    <Item english="Transparent" text="透明"/>
+    <Item english="View 1" text="视图 1"/>
+    <Item english="View 2" text="视图 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="哈希"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC 密钥（可选）："/>
+    <Item english="Salt (hexadecimal):" text="盐（十六进制）："/>
+    <Item english="Random" text="随机"/>
+    <Item english="Cost (4-31):" text="成本 (4-31)："/>
+    <Item english="Version:" text="版本："/>
+    <Item english="N, as a power of 2:" text="N（2 的幂次）："/>
+    <Item english="Block size (r):" text="块大小 (r)："/>
+    <Item english="Parallelism (p):" text="并行度 (p)："/>
+    <Item english="Variant:" text="变体："/>
+    <Item english="Memory (KiB):" text="内存 (KiB)："/>
+    <Item english="Iterations:" text="迭代次数："/>
+    <Item english="Parallelism:" text="并行度："/>
+    <Item english="Digest:" text="哈希函数："/>
+    <Item english="Hash length (bytes):" text="哈希长度（字节）："/>
+    <Item english="Hash:" text="哈希："/>
+    <Item english="Verify" text="验证"/>
+    <Item english="Hash to check the password against:" text="用于核对密码的哈希："/>
+    <Item english="The salt is not valid hexadecimal." text="盐不是有效的十六进制。"/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt 需要恰好 16 字节的盐。"/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 需要至少 8 字节的盐。"/>
+    <Item english="The hash could not be generated with these settings." text="无法使用这些设置生成哈希。"/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="这不是 bcrypt、scrypt、Argon2 或 PBKDF2 哈希。"/>
+    <Item english="The password matches the hash." text="密码与哈希匹配。"/>
+    <Item english="The password does not match the hash." text="密码与哈希不匹配。"/>
+    <Item english="The cost must be between 4 and 31." text="成本必须在 4 到 31 之间。"/>
+    <Item english="The version must be 2a, 2b or 2y." text="版本必须是 2a、2b 或 2y。"/>
+    <Item english="N must be between 2^1 and 2^24." text="N 必须在 2^1 到 2^24 之间。"/>
+    <Item english="r and p must be between 1 and 64." text="r 和 p 必须在 1 到 64 之间。"/>
+    <Item english="These settings need more than 2 GB of memory." text="这些设置需要超过 2 GB 的内存。"/>
+    <Item english="The parallelism must be between 1 and 64." text="并行度必须在 1 到 64 之间。"/>
+    <Item english="The iterations must be between 1 and 1000." text="迭代次数必须在 1 到 1000 之间。"/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="每个线程的内存至少为 8 KiB。"/>
+    <Item english="These settings need more than 4 GB of memory." text="这些设置需要超过 4 GB 的内存。"/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="哈希函数必须是 SHA-1、SHA-256 或 SHA-512。"/>
+    <Item english="The iterations must be between 1 and 100000000." text="迭代次数必须在 1 到 100000000 之间。"/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="哈希长度必须在 4 到 1024 字节之间。"/>
+    <Item english="Base64 (URL-safe)" text="Base64（URL 安全）"/>
+    <Item english="Encode" text="编码"/>
+    <Item english="Decode" text="解码"/>
+    <Item english="The input is:" text="输入内容为："/>
+    <Item english="Bytes in hexadecimal" text="十六进制字节"/>
+    <Item english="Input:" text="输入："/>
+    <Item english="Result:" text="结果："/>
+    <Item english="Text:" text="文本："/>
+    <Item english="Bytes in hexadecimal:" text="十六进制字节："/>
+    <Item english="The input is not bytes written in hexadecimal." text="输入不是以十六进制表示的字节。"/>
+    <Item english="The input is not valid $STR_REPLACE$." text="输入不是有效的 $STR_REPLACE$。"/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="解码后的字节不是 UTF-8 文本，仅以十六进制显示。"/>
+    <Item english="Password Generator" text="密码生成器"/>
+    <Item english="Length:" text="长度："/>
+    <Item english="Number of passwords:" text="密码数量："/>
+    <Item english="Uppercase letters (A-Z)" text="大写字母 (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="小写字母 (a-z)"/>
+    <Item english="Digits (0-9)" text="数字 (0-9)"/>
+    <Item english="Symbols:" text="符号："/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="排除外形相似的字符 (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="每种字符至少包含一个"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="熵：约 $INT_REPLACE$ 位"/>
+    <Item english="Choose at least one kind of character." text="请至少选择一种字符。"/>
+    <Item english="Insert into Document" text="插入到文档"/>
+    <Item english="Show the bare key in hexadecimal" text="以十六进制显示原始密钥"/>
+    <Item english="Empty: a random salt each time" text="留空：每次使用随机盐"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt 只读取前 72 字节。"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP 请求"/>
+    <Item english="Send" text="发送"/>
+    <Item english="Parameters" text="参数"/>
+    <Item english="Headers" text="标头"/>
+    <Item english="Body" text="正文"/>
+    <Item english="Options" text="选项"/>
+    <Item english="Content type:" text="内容类型："/>
+    <Item english="User name:" text="用户名："/>
+    <Item english="Password:" text="密码："/>
+    <Item english="Timeout (seconds):" text="超时（秒）："/>
+    <Item english="Follow redirects" text="跟随重定向"/>
+    <Item english="Allow invalid certificates" text="允许无效证书"/>
+    <Item english="Format JSON" text="格式化 JSON"/>
+    <Item english="Paste curl Command" text="粘贴 curl 命令"/>
+    <Item english="Copy as curl" text="复制为 curl"/>
+    <Item english="Open in New Document" text="在新文档中打开"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="每行一个：名称=值。它们经编码后添加到地址中。"/>
+    <Item english="One to a line: Name: value" text="每行一个：名称: 值"/>
+    <Item english="Sent as it is written, in UTF-8." text="按原样以 UTF-8 发送。"/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="响应不是文本：$INT_REPLACE$ 字节。"/>
+    <Item english="The address is not an http or https address." text="该地址不是 http 或 https 地址。"/>
+    <Item english="This is not a curl command." text="这不是 curl 命令。"/>
+    <Item english="The command has no address." text="命令中没有地址。"/>
+    <Item english="The command reads its data from a file, which is not done here." text="该命令从文件读取数据，此处不支持。"/>
+    <Item english="Forms and uploads of files are not read from a command." text="不会从命令中读取表单和文件上传。"/>
+    <Item english="The command's address is not an http or https address." text="命令中的地址不是 http 或 https 地址。"/>
+</NativeLangExtra>

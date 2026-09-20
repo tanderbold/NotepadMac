@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/ligurian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Zeneize">
+    <Item english="About NotepadMac" text="Informaçioin in sce NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Ascondi NotepadMac"/>
+    <Item english="Hide Others" text="Ascondi i atri"/>
+    <Item english="Show All" text="Mostra tutto"/>
+    <Item english="Quit NotepadMac" text="Sciòrti da NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Arvi a cartèlla into Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Arvi a cartèlla into Terminal"/>
+    <Item english="Toggle Fold" text="Conprimmi/Espandi"/>
+    <Item english="Show All Hidden Lines" text="Mostra tutte e righe ascoze"/>
+    <Item english="Save Current Command…" text="Sarva o comando atoale…"/>
+    <Item english="Validate shortcuts" text="Controlla i tasti de mòddo veloce"/>
+    <Item english="Open Plugins Folder…" text="Arvi a cartèlla di conplementi…"/>
+    <Item english="Format" text="Formato"/>
+    <Item english="Validate" text="Controlla"/>
+    <Item english="Set as First to Compare" text="Inpòsta comme primmo file da confrontâ"/>
+    <Item english="Compare" text="Confronta"/>
+    <Item english="Compare with File…" text="Confronta con 'n file…"/>
+    <Item english="Next Difference" text="Diferensa sucesciva"/>
+    <Item english="Previous Difference" text="Diferensa precedente"/>
+    <Item english="First Difference" text="Primma diferensa"/>
+    <Item english="Last Difference" text="Urtima diferensa"/>
+    <Item english="Compare Summary" text="Somaio do confronto"/>
+    <Item english="Ignore Case" text="Ignora maiuscole/minuscole"/>
+    <Item english="Ignore Spaces" text="Ignora i spaççi"/>
+    <Item english="Ignore Empty Lines" text="Ignora e righe veue"/>
+    <Item english="Clear Active Compare" text="Netezza questo confronto"/>
+    <Item english="Clear All Compares" text="Netezza tutti i confronti"/>
+    <Item english="Current XML Path" text="Percorso XML atoale"/>
+    <Item english="Apply XSL Transformation…" text="Aplica a trasformaçion XSL…"/>
+    <Item english="Connections…" text="Conescioin…"/>
+    <Item english="Execute NppExec Script…" text="Ezegoî 'n script NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Ezegoî o script NppExec precedente"/>
+    <Item english="Stop Running NppExec Script" text="Ferma o script NppExec"/>
+    <Item english="Execute NppExec Script" text="Ezegoî o script NppExec"/>
+    <Item english="Script name" text="Nomme do script"/>
+    <Item english="Show the toolbar" text="Mostra a bara di strumenti"/>
+    <Item english="Toolbar buttons" text="Pomelli da bara di strumenti"/>
+    <Item english="Icons only" text="Solo figue"/>
+    <Item english="Toolbar size" text="Mezua da bara di strumenti"/>
+    <Item english="Regular" text="Normale"/>
+    <Item english="Small" text="Picinn-a"/>
+    <Item english="Icons" text="Figue"/>
+    <Item english="Hidden" text="Ascoza"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Abilita a seleçion multipla (Cmd+sciacâ/seleçion)"/>
+    <Item english="Light theme" text="Tema ciæo"/>
+    <Item english="Dark theme" text="Tema scuo"/>
+    <Item english="A line" text="'Na riga"/>
+    <Item english="Columns (space separated)" text="Colònne (separæ da spaççi)"/>
+    <Item english="Highlight matching braces" text="Evidensia e parentexi corispondenti"/>
+    <Item english="Header font size" text="Mezua do caratere de l'intestaçion"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Margini: a mancinn-a, supeiô, a drita, inferiô (punti)"/>
+    <Item english="Add characters to the word list" text="Azonzi carateri a-o listin de paròlle"/>
+    <Item english="A fixed folder" text="'Na cartèlla fissa"/>
+    <Item english="Fixed folder" text="Cartèlla fissa"/>
+    <Item english="Confirm Replace All" text="Conferma Sostitoisci tutti"/>
+    <Item english="Compare: ignore case" text="Confronto: ignora maiuscole/minuscole"/>
+    <Item english="Compare: ignore spaces" text="Confronto: ignora i spaççi"/>
+    <Item english="Compare: ignore empty lines" text="Confronto: ignora e righe veue"/>
+    <Item english="Notepad++ update" text="Agiornamento de Notepad++"/>
+    <Item english="Open the Releases Page" text="Arvi a pagina de verscioin"/>
+    <Item english="Copy debug info to clipboard" text="Còpia e informaçioin de debug inti aponti"/>
+    <Item english="Fonts…" text="Carateri…"/>
+    <Item english="Valid JSON." text="JSON valido."/>
+    <Item english="Invalid JSON." text="JSON no valido."/>
+    <Item english="FTP connections" text="Conescioin FTP"/>
+    <Item english="Choose a folder first" text="Primma seleçionn-a 'na cartèlla"/>
+    <Item english="Transparent" text="Trasparente"/>
+    <Item english="View 1" text="Vista 1"/>
+    <Item english="View 2" text="Vista 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hash"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="Salt (hexadecimal):" text="Sâ (ezadeximale):"/>
+    <Item english="Cost (4-31):" text="Costo (4-31):"/>
+    <Item english="Version:" text="Verscion:"/>
+    <Item english="Block size (r):" text="Dimenscion do blòcco (r):"/>
+    <Item english="Parallelism (p):" text="Paralelismo (p):"/>
+    <Item english="Variant:" text="Variante:"/>
+    <Item english="Iterations:" text="Iteraçioin:"/>
+    <Item english="Parallelism:" text="Paralelismo:"/>
+    <Item english="Hash length (bytes):" text="Longhessa do hash (byte):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Verifica"/>
+    <Item english="Base64 (URL-safe)" text="Base64 (pe URL)"/>
+    <Item english="Encode" text="Codifica"/>
+    <Item english="Decode" text="Decodifica"/>
+    <Item english="Bytes in hexadecimal" text="Byte in ezadeximale"/>
+    <Item english="Text:" text="Tèsto:"/>
+    <Item english="Bytes in hexadecimal:" text="Byte in ezadeximale:"/>
+    <Item english="Length:" text="Longhessa:"/>
+    <Item english="Number of passwords:" text="Numero de password:"/>
+    <Item english="Uppercase letters (A-Z)" text="Maiuscole (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Minuscole (a-z)"/>
+    <Item english="Digits (0-9)" text="Numeri (0-9)"/>
+    <Item english="Symbols:" text="Scinboli:"/>
+    <Item english="Insert into Document" text="Introduxi into documento"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="Parameters" text="Parametri"/>
+    <Item english="Headers" text="Intestaçioin"/>
+    <Item english="User name:" text="Nomme utente:"/>
+    <Item english="Password:" text="Password:"/>
+    <Item english="Paste curl Command" text="Incòlla comando curl"/>
+    <Item english="Copy as curl" text="Còpia comme curl"/>
+    <Item english="Open in New Document" text="Arvi inte 'n neuvo documento"/>
+</NativeLangExtra>

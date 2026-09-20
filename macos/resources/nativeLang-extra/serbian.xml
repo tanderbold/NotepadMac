@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/serbian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Srpski">
+    <Item english="About NotepadMac" text="O programu NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Sakrij NotepadMac"/>
+    <Item english="Hide Others" text="Sakrij ostale"/>
+    <Item english="Show All" text="Prikaži sve"/>
+    <Item english="Quit NotepadMac" text="Zatvori NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Otvori trenutni folder u Finder-u"/>
+    <Item english="Open Containing Folder in Terminal" text="Otvori trenutni folder u Terminalu"/>
+    <Item english="Toggle Insert/Overtype" text="Prebaci ubacivanje/prepisivanje"/>
+    <Item english="Toggle Fold" text="Sklopi/rasklopi"/>
+    <Item english="Show All Hidden Lines" text="Prikaži sve skrivene linije"/>
+    <Item english="Recent Window" text="Prethodni prozor"/>
+    <Item english="Move to Trash" text="Pomeri u kantu"/>
+    <Item english="Save Current Command…" text="Sačuvaj trenutnu komandu…"/>
+    <Item english="Manage Saved Commands…" text="Upravljaj sačuvanim komandama…"/>
+    <Item english="Show Console" text="Prikaži konzolu"/>
+    <Item english="Validate shortcuts" text="Proveri prečice"/>
+    <Item english="Open Plugins Folder…" text="Otvori folder sa dodacima…"/>
+    <Item english="Format" text="Formatiraj"/>
+    <Item english="Compact" text="Sažmi"/>
+    <Item english="Sort Keys" text="Poređaj ključeve"/>
+    <Item english="Validate" text="Proveri"/>
+    <Item english="Show JSON Tree" text="Prikaži JSON stablo"/>
+    <Item english="Set as First to Compare" text="Postavi kao prvi za poređenje"/>
+    <Item english="Compare" text="Uporedi"/>
+    <Item english="Compare with File…" text="Uporedi sa datotekom…"/>
+    <Item english="Next Difference" text="Sledeća razlika"/>
+    <Item english="Previous Difference" text="Prethodna razlika"/>
+    <Item english="First Difference" text="Prva razlika"/>
+    <Item english="Last Difference" text="Poslednja razlika"/>
+    <Item english="Compare Summary" text="Rezime poređenja"/>
+    <Item english="Ignore Case" text="Zanemari veličinu slova"/>
+    <Item english="Ignore Spaces" text="Zanemari razmake"/>
+    <Item english="Ignore Empty Lines" text="Zanemari prazne linije"/>
+    <Item english="Clear Active Compare" text="Očisti aktivno poređenje"/>
+    <Item english="Clear All Compares" text="Očisti sva poređenja"/>
+    <Item english="Pretty Print" text="Lepo formatiraj"/>
+    <Item english="Pretty Print — Indent Attributes" text="Lepo formatiraj — uvuci atribute"/>
+    <Item english="Linearize" text="U jednu liniju"/>
+    <Item english="Check XML Syntax Now" text="Proveri XML sintaksu"/>
+    <Item english="Validate Against Schema…" text="Proveri prema šemi…"/>
+    <Item english="Validate Against DTD" text="Proveri prema DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Izračunaj XPath izraz…"/>
+    <Item english="Current XML Path" text="Trenutna XML putanja"/>
+    <Item english="Current XML Path with Predicates" text="Trenutna XML putanja sa predikatima"/>
+    <Item english="Apply XSL Transformation…" text="Primeni XSL transformaciju…"/>
+    <Item english="Escape Characters in Selection" text="Zameni specijalne karaktere u odabiru"/>
+    <Item english="Unescape Characters in Selection" text="Vrati specijalne karaktere u odabiru"/>
+    <Item english="Connections…" text="Veze…"/>
+    <Item english="Connect…" text="Poveži se…"/>
+    <Item english="Disconnect" text="Prekini vezu"/>
+    <Item english="Show Remote Files" text="Prikaži udaljene datoteke"/>
+    <Item english="Upload Current File" text="Otpremi trenutnu datoteku"/>
+    <Item english="Execute NppExec Script…" text="Izvrši NppExec skriptu…"/>
+    <Item english="Execute Previous NppExec Script" text="Izvrši prethodnu NppExec skriptu"/>
+    <Item english="Stop Running NppExec Script" text="Zaustavi pokrenutu NppExec skriptu"/>
+    <Item english="Show NppExec Console" text="Prikaži NppExec konzolu"/>
+    <Item english="Execute NppExec Script" text="Izvrši NppExec skriptu"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;privremena skripta&gt;"/>
+    <Item english="Script name" text="Naziv skripte"/>
+    <Item english="Dock Left" text="Prikači levo"/>
+    <Item english="Dock Right" text="Prikači desno"/>
+    <Item english="Dock Top" text="Prikači gore"/>
+    <Item english="Dock Bottom" text="Prikači dole"/>
+    <Item english="Float" text="Otkači"/>
+    <Item english="Remember which panels were open" text="Zapamti koji su paneli bili otvoreni"/>
+    <Item english="Show the toolbar" text="Prikaži traku sa alatima"/>
+    <Item english="Toolbar buttons" text="Dugmad trake sa alatima"/>
+    <Item english="Icons only" text="Samo ikonice"/>
+    <Item english="Icons and labels" text="Ikonice i natpisi"/>
+    <Item english="Labels only" text="Samo natpisi"/>
+    <Item english="Toolbar size" text="Veličina trake sa alatima"/>
+    <Item english="Regular" text="Obična"/>
+    <Item english="Small" text="Mala"/>
+    <Item english="Icons" text="Ikonice"/>
+    <Item english="Hidden" text="Sakrivena"/>
+    <Item english="1 pixel" text="1 piksel"/>
+    <Item english="2 pixels" text="2 piksela"/>
+    <Item english="3 pixels" text="3 piksela"/>
+    <Item english="Selected text can be dragged" text="Odabrani tekst može da se prevlači"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Omogući višestruko uređivanje (Cmd+klik/odabir)"/>
+    <Item english="Follow the system" text="Prati sistem"/>
+    <Item english="Light theme" text="Svetla tema"/>
+    <Item english="Dark theme" text="Tamna tema"/>
+    <Item english="Show the fold margin" text="Prikaži sklapajuću marginu"/>
+    <Item english="A line" text="Linija"/>
+    <Item english="Columns (space separated)" text="Kolone (razdvojene razmakom)"/>
+    <Item english="3 parts" text="3 dela"/>
+    <Item english="4 parts" text="4 dela"/>
+    <Item english="5 parts" text="5 delova"/>
+    <Item english="6 parts" text="6 delova"/>
+    <Item english="7 parts" text="7 delova"/>
+    <Item english="8 parts" text="8 delova"/>
+    <Item english="9 parts" text="9 delova"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Odredi jezik na osnovu sadržaja kada ga naziv ne otkriva"/>
+    <Item english="Highlight matching braces" text="Istakni podudarne zagrade"/>
+    <Item english="Header font (blank for the editor's)" text="Font zaglavlja (prazno — kao u editoru)"/>
+    <Item english="Header font size" text="Veličina fonta zaglavlja"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Margine: levo, gore, desno, dole (tačke)"/>
+    <Item english="Characters before it opens" text="Broj karaktera pre otvaranja"/>
+    <Item english="Add characters to the word list" text="Dodaj karaktere u listu karaktera reči"/>
+    <Item english="A fixed folder" text="Fiksni folder"/>
+    <Item english="Fixed folder" text="Fiksni folder"/>
+    <Item english="Confirm Replace All" text="Potvrdi &quot;Zameni sve&quot;"/>
+    <Item english="Compare: ignore case" text="Poređenje: zanemari veličinu slova"/>
+    <Item english="Compare: ignore spaces" text="Poređenje: zanemari razmake"/>
+    <Item english="Compare: ignore empty lines" text="Poređenje: zanemari prazne linije"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maks. karaktera za automatsko popunjavanje polja za pretragu"/>
+    <Item english="Releases repository" text="Repozitorijum izdanja"/>
+    <Item english="Notepad++ update" text="Ažuriranje Notepad++"/>
+    <Item english="No update is available." text="Nema dostupnih ažuriranja."/>
+    <Item english="An update package is available, do you want to download it?" text="Dostupno je ažuriranje, želite li da ga preuzmete?"/>
+    <Item english="Open the Releases Page" text="Otvori stranicu izdanja"/>
+    <Item english="Copy debug info to clipboard" text="Kopiraj informacije za debagovanje u clipboard"/>
+    <Item english="Fonts…" text="Fontovi…"/>
+    <Item english="This document is not valid JSON." text="Ovaj dokument nije ispravan JSON."/>
+    <Item english="Valid JSON." text="Ispravan JSON."/>
+    <Item english="Invalid JSON." text="Neispravan JSON."/>
+    <Item english="Set as the first file to compare." text="Postavljeno kao prva datoteka za poređenje."/>
+    <Item english="Nothing to compare with." text="Nema sa čim da se uporedi."/>
+    <Item english="The document is valid XML." text="Dokument je ispravan XML."/>
+    <Item english="FTP connections" text="FTP veze"/>
+    <Item english="Cannot connect." text="Povezivanje nije uspelo."/>
+    <Item english="That file is open in another tab." text="Ta datoteka je otvorena u drugom tabu."/>
+    <Item english="Close it first, or choose another name." text="Prvo je zatvorite ili izaberite drugi naziv."/>
+    <Item english="Which language is this?" text="Koji je ovo jezik?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Neki karakteri ne mogu da se predstave u ovom kodiranju."/>
+    <Item english="Converting will replace them." text="Konverzija će ih zameniti."/>
+    <Item english="Press the keys." text="Pritisnite tastere."/>
+    <Item english="Nothing is marked" text="Ništa nije markirano"/>
+    <Item english="Marked text copied" text="Markirani tekst je kopiran"/>
+    <Item english="Choose a folder first" text="Prvo izaberite folder"/>
+    <Item english="This document has no folder" text="Ovaj dokument nema folder"/>
+    <Item english="The ticked project panels have no files" text="Označeni paneli projekata nemaju datoteke"/>
+    <Item english="Searching..." text="Pretraga..."/>
+    <Item english="Stopping..." text="Zaustavljanje..."/>
+    <Item english="Marks cleared" text="Oznake su očišćene"/>
+    <Item english="Transparent" text="Providno"/>
+    <Item english="View 1" text="Prikaz 1"/>
+    <Item english="View 2" text="Prikaz 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Heševi"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC ključ (opciono):"/>
+    <Item english="Salt (hexadecimal):" text="So (heksadecimalno):"/>
+    <Item english="Random" text="Nasumična"/>
+    <Item english="Cost (4-31):" text="Trošak (4-31):"/>
+    <Item english="Version:" text="Verzija:"/>
+    <Item english="N, as a power of 2:" text="N, kao stepen broja 2:"/>
+    <Item english="Block size (r):" text="Veličina bloka (r):"/>
+    <Item english="Parallelism (p):" text="Paralelizam (p):"/>
+    <Item english="Variant:" text="Varijanta:"/>
+    <Item english="Memory (KiB):" text="Memorija (KiB):"/>
+    <Item english="Iterations:" text="Iteracije:"/>
+    <Item english="Parallelism:" text="Paralelizam:"/>
+    <Item english="Digest:" text="Heš funkcija:"/>
+    <Item english="Hash length (bytes):" text="Dužina heša (bajtovi):"/>
+    <Item english="Hash:" text="Heš:"/>
+    <Item english="Verify" text="Proveri"/>
+    <Item english="Hash to check the password against:" text="Heš sa kojim se proverava lozinka:"/>
+    <Item english="The salt is not valid hexadecimal." text="So nije ispravan heksadecimalni zapis."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt zahteva so od tačno 16 bajtova."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 zahteva so od najmanje 8 bajtova."/>
+    <Item english="The hash could not be generated with these settings." text="Heš nije mogao biti generisan sa ovim podešavanjima."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Ovo nije bcrypt, scrypt, Argon2 ili PBKDF2 heš."/>
+    <Item english="The password matches the hash." text="Lozinka odgovara hešu."/>
+    <Item english="The password does not match the hash." text="Lozinka ne odgovara hešu."/>
+    <Item english="The cost must be between 4 and 31." text="Trošak mora biti između 4 i 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Verzija mora biti 2a, 2b ili 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N mora biti između 2^1 i 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r i p moraju biti između 1 i 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Ova podešavanja zahtevaju više od 2 GB memorije."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralelizam mora biti između 1 i 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Broj iteracija mora biti između 1 i 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Memorija mora biti najmanje 8 KiB za svaku nit."/>
+    <Item english="These settings need more than 4 GB of memory." text="Ova podešavanja zahtevaju više od 4 GB memorije."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Heš funkcija mora biti SHA-1, SHA-256 ili SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Broj iteracija mora biti između 1 i 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Dužina heša mora biti između 4 i 1024 bajta."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (bezbedan za URL)"/>
+    <Item english="Encode" text="Kodiraj"/>
+    <Item english="Decode" text="Dekodiraj"/>
+    <Item english="The input is:" text="Ulaz je:"/>
+    <Item english="Bytes in hexadecimal" text="Bajtovi u heksadecimalnom zapisu"/>
+    <Item english="Input:" text="Ulaz:"/>
+    <Item english="Result:" text="Rezultat:"/>
+    <Item english="Text:" text="Tekst:"/>
+    <Item english="Bytes in hexadecimal:" text="Bajtovi u heksadecimalnom zapisu:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Ulaz nisu bajtovi u heksadecimalnom zapisu."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Ulaz nije ispravan $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Dekodirani bajtovi nisu UTF-8 tekst; prikazani su samo heksadecimalno."/>
+    <Item english="Password Generator" text="Generator lozinki"/>
+    <Item english="Length:" text="Dužina:"/>
+    <Item english="Number of passwords:" text="Broj lozinki:"/>
+    <Item english="Uppercase letters (A-Z)" text="Velika slova (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Mala slova (a-z)"/>
+    <Item english="Digits (0-9)" text="Cifre (0-9)"/>
+    <Item english="Symbols:" text="Simboli:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Izostavi karaktere koji liče jedan na drugi (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Najmanje jedan karakter svake vrste"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropija: oko $INT_REPLACE$ bita"/>
+    <Item english="Choose at least one kind of character." text="Izaberite najmanje jednu vrstu karaktera."/>
+    <Item english="Insert into Document" text="Ubaci u dokument"/>
+    <Item english="Show the bare key in hexadecimal" text="Prikaži sam ključ heksadecimalno"/>
+    <Item english="Empty: a random salt each time" text="Prazno: svaki put nasumična so"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt čita samo prva 72 bajta."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP zahtev"/>
+    <Item english="Send" text="Pošalji"/>
+    <Item english="Parameters" text="Parametri"/>
+    <Item english="Headers" text="Zaglavlja"/>
+    <Item english="Body" text="Telo"/>
+    <Item english="Options" text="Opcije"/>
+    <Item english="Content type:" text="Tip sadržaja:"/>
+    <Item english="User name:" text="Korisničko ime:"/>
+    <Item english="Password:" text="Lozinka:"/>
+    <Item english="Timeout (seconds):" text="Vremensko ograničenje (sekunde):"/>
+    <Item english="Follow redirects" text="Prati preusmeravanja"/>
+    <Item english="Allow invalid certificates" text="Dozvoli neispravne sertifikate"/>
+    <Item english="Format JSON" text="Formatiraj JSON"/>
+    <Item english="Paste curl Command" text="Nalepi curl komandu"/>
+    <Item english="Copy as curl" text="Kopiraj kao curl"/>
+    <Item english="Open in New Document" text="Otvori u novom dokumentu"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Po jedan u liniji: ime=vrednost. Dodaju se adresi, kodirani."/>
+    <Item english="One to a line: Name: value" text="Po jedan u liniji: Ime: vrednost"/>
+    <Item english="Sent as it is written, in UTF-8." text="Šalje se onako kako je napisano, u UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Odgovor nije tekst (bajtova: $INT_REPLACE$)."/>
+    <Item english="The address is not an http or https address." text="Adresa nije http ili https adresa."/>
+    <Item english="This is not a curl command." text="Ovo nije curl komanda."/>
+    <Item english="The command has no address." text="Komanda nema adresu."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Komanda čita podatke iz datoteke, što se ovde ne radi."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Obrasci i otpremanje datoteka se ne čitaju iz komande."/>
+    <Item english="The command's address is not an http or https address." text="Adresa u komandi nije http ili https adresa."/>
+</NativeLangExtra>

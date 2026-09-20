@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/albanian.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Shqip">
+    <Item english="About NotepadMac" text="Rreth NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Fsheh NotepadMac"/>
+    <Item english="Hide Others" text="Fsheh të tjerat"/>
+    <Item english="Show All" text="Shfaq të gjitha"/>
+    <Item english="Quit NotepadMac" text="Mbyll NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Hap dosjen e përmbajtjes në Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Hap dosjen e përmbajtjes në Terminal"/>
+    <Item english="Toggle Fold" text="Nyjëto palosjen"/>
+    <Item english="Show All Hidden Lines" text="Shfaq të gjitha linjat e fshehta"/>
+    <Item english="Recent Window" text="Dritarja e mëparshme"/>
+    <Item english="Move to Trash" text="Lëviz te Koshi"/>
+    <Item english="Save Current Command…" text="Ruaj komandën aktuale…"/>
+    <Item english="Manage Saved Commands…" text="Menaxho komandat e ruajtura…"/>
+    <Item english="Show Console" text="Shfaq konsolën"/>
+    <Item english="Validate shortcuts" text="Verifiko shkurtkalimet"/>
+    <Item english="Open Plugins Folder…" text="Hap dosjen e shtojcave…"/>
+    <Item english="Format" text="Formato"/>
+    <Item english="Compact" text="Ngjesh"/>
+    <Item english="Sort Keys" text="Rendit çelësat"/>
+    <Item english="Validate" text="Verifiko"/>
+    <Item english="Show JSON Tree" text="Shfaq pemën JSON"/>
+    <Item english="Set as First to Compare" text="Cakto si të parin për krahasim"/>
+    <Item english="Compare" text="Krahaso"/>
+    <Item english="Compare with File…" text="Krahaso me file…"/>
+    <Item english="Next Difference" text="Dallimi tjetër"/>
+    <Item english="Previous Difference" text="Dallimi i mëparshëm"/>
+    <Item english="First Difference" text="Dallimi i parë"/>
+    <Item english="Last Difference" text="Dallimi i fundit"/>
+    <Item english="Compare Summary" text="Përmbledhja e krahasimit"/>
+    <Item english="Ignore Case" text="Injoro kasën"/>
+    <Item english="Ignore Spaces" text="Injoro hapësirat"/>
+    <Item english="Ignore Empty Lines" text="Injoro linjat e zbrazëta"/>
+    <Item english="Clear Active Compare" text="Pastro krahasimin aktiv"/>
+    <Item english="Clear All Compares" text="Pastro të gjitha krahasimet"/>
+    <Item english="Check XML Syntax Now" text="Kontrollo sintaksën XML tani"/>
+    <Item english="Validate Against Schema…" text="Verifiko sipas skemës…"/>
+    <Item english="Validate Against DTD" text="Verifiko sipas DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Vlerëso shprehjen XPath…"/>
+    <Item english="Current XML Path" text="Rruga aktuale XML"/>
+    <Item english="Apply XSL Transformation…" text="Apliko transformimin XSL…"/>
+    <Item english="Connections…" text="Lidhjet…"/>
+    <Item english="Connect…" text="Lidhu…"/>
+    <Item english="Disconnect" text="Shkëputu"/>
+    <Item english="Show Remote Files" text="Shfaq filet në distancë"/>
+    <Item english="Upload Current File" text="Ngarko filin aktual"/>
+    <Item english="Execute NppExec Script…" text="Ekzekuto skriptin NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Ekzekuto skriptin e mëparshëm NppExec"/>
+    <Item english="Stop Running NppExec Script" text="Ndalo skriptin NppExec që po ekzekutohet"/>
+    <Item english="Show NppExec Console" text="Shfaq konsolën NppExec"/>
+    <Item english="Execute NppExec Script" text="Ekzekuto skriptin NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;skript i përkohshëm&gt;"/>
+    <Item english="Script name" text="Emri i skriptit"/>
+    <Item english="Remember which panels were open" text="Kujto cilat panele ishin të hapura"/>
+    <Item english="Show the toolbar" text="Shfaq shiritin e veglave"/>
+    <Item english="Toolbar buttons" text="Butonat e shiritit të veglave"/>
+    <Item english="Icons only" text="Vetëm ikona"/>
+    <Item english="Icons and labels" text="Ikona dhe etiketa"/>
+    <Item english="Labels only" text="Vetëm etiketa"/>
+    <Item english="Toolbar size" text="Madhësia e shiritit të veglave"/>
+    <Item english="Regular" text="Normale"/>
+    <Item english="Small" text="E vogël"/>
+    <Item english="Icons" text="Ikona"/>
+    <Item english="Hidden" text="I fshehur"/>
+    <Item english="1 pixel" text="1 piksel"/>
+    <Item english="2 pixels" text="2 pikselë"/>
+    <Item english="3 pixels" text="3 pikselë"/>
+    <Item english="Selected text can be dragged" text="Teksti i zgjedhur mund të tërhiqet"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Aktivo multi-editimin (Cmd+klikim/zgjedhje)"/>
+    <Item english="Follow the system" text="Ndjek sistemin"/>
+    <Item english="Light theme" text="Model i çelët"/>
+    <Item english="Dark theme" text="Model i errët"/>
+    <Item english="Show the fold margin" text="Shfaq margjinën e palosjes"/>
+    <Item english="A line" text="Linjë"/>
+    <Item english="Columns (space separated)" text="Kolona (të ndara me hapësirë)"/>
+    <Item english="3 parts" text="3 pjesë"/>
+    <Item english="4 parts" text="4 pjesë"/>
+    <Item english="5 parts" text="5 pjesë"/>
+    <Item english="6 parts" text="6 pjesë"/>
+    <Item english="7 parts" text="7 pjesë"/>
+    <Item english="8 parts" text="8 pjesë"/>
+    <Item english="9 parts" text="9 pjesë"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Përcakto gjuhën nga përmbajtja kur emri nuk e tregon"/>
+    <Item english="Highlight matching braces" text="Thekso kllapat që përkojnë"/>
+    <Item english="Header font size" text="Madhësia e shkrimit të kokës"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Anët: majtas, lart, djathtas, poshtë (pikë)"/>
+    <Item english="Characters before it opens" text="Karaktere para se të hapet"/>
+    <Item english="Add characters to the word list" text="Shto karaktere në listën e karaktereve të fjalës"/>
+    <Item english="A fixed folder" text="Dosje e caktuar"/>
+    <Item english="Fixed folder" text="Dosje e caktuar"/>
+    <Item english="Confirm Replace All" text="Konfirmo „Zëvendëso të gjitha“"/>
+    <Item english="Compare: ignore case" text="Krahasimi: injoro kasën"/>
+    <Item english="Compare: ignore spaces" text="Krahasimi: injoro hapësirat"/>
+    <Item english="Compare: ignore empty lines" text="Krahasimi: injoro linjat e zbrazëta"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maks. i karaktereve për auto-plotësimin e fushës së kërkimit"/>
+    <Item english="Notepad++ update" text="Aktualizimi i Notepad++"/>
+    <Item english="No update is available." text="Nuk ka aktualizim."/>
+    <Item english="An update package is available, do you want to download it?" text="Një paketë aktualizimi është e disponueshme, a doni ta shkarkoni?"/>
+    <Item english="Open the Releases Page" text="Hap faqen e versioneve"/>
+    <Item english="Fonts…" text="Fontet…"/>
+    <Item english="This document is not valid JSON." text="Ky dokument nuk është JSON i vlefshëm."/>
+    <Item english="Valid JSON." text="JSON i vlefshëm."/>
+    <Item english="Invalid JSON." text="JSON i pavlefshëm."/>
+    <Item english="Set as the first file to compare." text="U caktua si file i parë për krahasim."/>
+    <Item english="Nothing to compare with." text="Nuk ka asgjë për të krahasuar."/>
+    <Item english="The document is valid XML." text="Dokumenti është XML i vlefshëm."/>
+    <Item english="FTP connections" text="Lidhjet FTP"/>
+    <Item english="Cannot connect." text="Nuk mund të lidhet."/>
+    <Item english="That file is open in another tab." text="Ky file është i hapur në një tabelor tjetër."/>
+    <Item english="Close it first, or choose another name." text="Mbylle së pari, ose zgjedh një emër tjetër."/>
+    <Item english="Which language is this?" text="Cila gjuhë është kjo?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Disa karaktere nuk mund të paraqiten në këtë kodim."/>
+    <Item english="Converting will replace them." text="Konvertimi do t'i zëvendësojë."/>
+    <Item english="Press the keys." text="Shtyp tastet."/>
+    <Item english="Nothing is marked" text="Asgjë nuk është shënuar"/>
+    <Item english="Marked text copied" text="Teksti i shënuar u kopjua"/>
+    <Item english="Choose a folder first" text="Së pari zgjedh një dosje"/>
+    <Item english="This document has no folder" text="Ky dokument nuk ka dosje"/>
+    <Item english="The ticked project panels have no files" text="Panelet e zgjedhura të projektit nuk kanë file"/>
+    <Item english="Searching..." text="Duke kërkuar..."/>
+    <Item english="Stopping..." text="Duke ndalur..."/>
+    <Item english="Marks cleared" text="Shenjat u pastruan"/>
+    <Item english="Transparent" text="Transparent"/>
+    <Item english="View 1" text="Pamja 1"/>
+    <Item english="View 2" text="Pamja 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hash-e"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Çelësi HMAC (opsional):"/>
+    <Item english="Salt (hexadecimal):" text="Kripa (heksadecimale):"/>
+    <Item english="Random" text="E rastësishme"/>
+    <Item english="Cost (4-31):" text="Kostoja (4-31):"/>
+    <Item english="Version:" text="Versioni:"/>
+    <Item english="N, as a power of 2:" text="N, si fuqi e 2:"/>
+    <Item english="Block size (r):" text="Madhësia e bllokut (r):"/>
+    <Item english="Parallelism (p):" text="Paralelizmi (p):"/>
+    <Item english="Variant:" text="Varianti:"/>
+    <Item english="Memory (KiB):" text="Memoria (KiB):"/>
+    <Item english="Iterations:" text="Përsëritjet:"/>
+    <Item english="Parallelism:" text="Paralelizmi:"/>
+    <Item english="Digest:" text="Funksioni hash:"/>
+    <Item english="Hash length (bytes):" text="Gjatësia e hash-it (bajt):"/>
+    <Item english="Hash:" text="Hash-i:"/>
+    <Item english="Verify" text="Verifiko"/>
+    <Item english="Hash to check the password against:" text="Hash-i me të cilin kontrollohet fjalëkalimi:"/>
+    <Item english="The salt is not valid hexadecimal." text="Kripa nuk është heksadecimale e vlefshme."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt kërkon një kripë prej saktësisht 16 bajtësh."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 kërkon një kripë prej të paktën 8 bajtësh."/>
+    <Item english="The hash could not be generated with these settings." text="Hash-i nuk mund të gjenerohej me këto cilësime."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Ky nuk është hash bcrypt, scrypt, Argon2 ose PBKDF2."/>
+    <Item english="The password matches the hash." text="Fjalëkalimi përputhet me hash-in."/>
+    <Item english="The password does not match the hash." text="Fjalëkalimi nuk përputhet me hash-in."/>
+    <Item english="The cost must be between 4 and 31." text="Kostoja duhet të jetë midis 4 dhe 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versioni duhet të jetë 2a, 2b ose 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N duhet të jetë midis 2^1 dhe 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r dhe p duhet të jenë midis 1 dhe 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Këto cilësime kërkojnë më shumë se 2 GB memorie."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralelizmi duhet të jetë midis 1 dhe 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Përsëritjet duhet të jenë midis 1 dhe 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Memoria duhet të jetë të paktën 8 KiB për secilën fije."/>
+    <Item english="These settings need more than 4 GB of memory." text="Këto cilësime kërkojnë më shumë se 4 GB memorie."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Funksioni hash duhet të jetë SHA-1, SHA-256 ose SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Përsëritjet duhet të jenë midis 1 dhe 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Gjatësia e hash-it duhet të jetë midis 4 dhe 1024 bajtësh."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (i sigurt për URL)"/>
+    <Item english="Encode" text="Kodo"/>
+    <Item english="Decode" text="Dekodo"/>
+    <Item english="The input is:" text="Hyrja është:"/>
+    <Item english="Bytes in hexadecimal" text="Bajte në heksadecimal"/>
+    <Item english="Input:" text="Hyrja:"/>
+    <Item english="Result:" text="Rezultati:"/>
+    <Item english="Text:" text="Teksti:"/>
+    <Item english="Bytes in hexadecimal:" text="Bajte në heksadecimal:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Hyrja nuk është bajte të shkruara në heksadecimal."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Hyrja nuk është $STR_REPLACE$ i vlefshëm."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Bajtet e dekoduara nuk janë tekst UTF-8; ato shfaqen vetëm në heksadecimal."/>
+    <Item english="Password Generator" text="Gjeneruesi i fjalëkalimeve"/>
+    <Item english="Length:" text="Gjatësia:"/>
+    <Item english="Number of passwords:" text="Numri i fjalëkalimeve:"/>
+    <Item english="Uppercase letters (A-Z)" text="Shkronja të mëdha (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Shkronja të vogla (a-z)"/>
+    <Item english="Digits (0-9)" text="Shifra (0-9)"/>
+    <Item english="Symbols:" text="Simbole:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Lëri jashtë karakteret që ngjajnë (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Të paktën një karakter nga secili lloj"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropia: rreth $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Zgjidh të paktën një lloj karakteresh."/>
+    <Item english="Insert into Document" text="Fut në dokument"/>
+    <Item english="Show the bare key in hexadecimal" text="Shfaq vetë çelësin në heksadecimal"/>
+    <Item english="Empty: a random salt each time" text="Bosh: kripë e rastësishme çdo herë"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt lexon vetëm 72 bajtët e parë."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Kërkesë HTTP"/>
+    <Item english="Send" text="Dërgo"/>
+    <Item english="Parameters" text="Parametrat"/>
+    <Item english="Headers" text="Kokat"/>
+    <Item english="Body" text="Trupi"/>
+    <Item english="Options" text="Opsionet"/>
+    <Item english="Content type:" text="Lloji i përmbajtjes:"/>
+    <Item english="User name:" text="Emri i përdoruesit:"/>
+    <Item english="Password:" text="Fjalëkalimi:"/>
+    <Item english="Timeout (seconds):" text="Koha e pritjes (sekonda):"/>
+    <Item english="Follow redirects" text="Ndiq ridrejtimet"/>
+    <Item english="Allow invalid certificates" text="Lejo certifikata të pavlefshme"/>
+    <Item english="Format JSON" text="Formato JSON"/>
+    <Item english="Paste curl Command" text="Ngjit komandën curl"/>
+    <Item english="Copy as curl" text="Kopjo si curl"/>
+    <Item english="Open in New Document" text="Hap në dokument të ri"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Një për rresht: emri=vlera. Shtohen te adresa, të koduara."/>
+    <Item english="One to a line: Name: value" text="Një për rresht: Emri: vlera"/>
+    <Item english="Sent as it is written, in UTF-8." text="Dërgohet siç është shkruar, në UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Përgjigjja nuk është tekst: $INT_REPLACE$ bajte."/>
+    <Item english="The address is not an http or https address." text="Adresa nuk është adresë http ose https."/>
+    <Item english="This is not a curl command." text="Kjo nuk është komandë curl."/>
+    <Item english="The command has no address." text="Komanda nuk ka adresë."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Komanda i lexon të dhënat nga një fil, gjë që nuk bëhet këtu."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formularët dhe ngarkimet e fileve nuk lexohen nga një komandë."/>
+    <Item english="The command's address is not an http or https address." text="Adresa e komandës nuk është adresë http ose https."/>
+</NativeLangExtra>

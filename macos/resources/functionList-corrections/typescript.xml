@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Replaces the upstream typescript_function parser.
+
+    What the original does: one pattern, requiring the literal word `function`
+    followed by a parameter list and a brace. So it misses a method in a class, a
+    function with a return type annotation (`function f(x): number {`, which is
+    the ordinary way to write TypeScript), and anything assigned as an arrow.
+    It has no classRange either, so nothing is grouped under its class.
+
+    What this does: classes as ranges with their methods under them, functions
+    with or without a return type, and arrow functions bound to a name.
+-->
+<NotepadPlus>
+    <functionList>
+        <parser
+            displayName="TypeScript"
+            id         ="typescript_function"
+            commentExpr="(?s:/\*.*?\*/)|(?m-s://.*?$)"
+        >
+            <classRange
+                mainExpr    ="^\h*(?:export\s+)?(?:default\s+)?(?:abstract\s+)?class\s+[^\{]*\{"
+                openSymbole ="\{"
+                closeSymbole="\}"
+            >
+                <className>
+                    <nameExpr expr="class\s+\K[A-Za-z_$][\w$]*" />
+                </className>
+                <function
+                    mainExpr="^\h*(?:(?:public|private|protected|static|readonly|abstract|async|get|set)\s+)*(?!(?:if|for|while|switch|catch|return|function|new)\b)\K[A-Za-z_$][\w$]*\s*(?:&lt;[^&gt;]*&gt;)?\s*\([^()]*\)\s*(?::[^;{]*)?\s*\{"
+                >
+                    <functionName>
+                        <funcNameExpr expr="[A-Za-z_$][\w$]*" />
+                    </functionName>
+                </function>
+            </classRange>
+            <function
+                mainExpr="(?:^\h*(?:export\s+(?:default\s+)?)?(?:async\s+)?function\s*\*?\s*\K[A-Za-z_$][\w$]*)|(?:^\h*(?:export\s+)?(?:const|let|var)\s+\K[A-Za-z_$][\w$]*(?=\s*(?::[^=]*?)?=\s*(?:async\s*)?(?:\([^()]*\)|[A-Za-z_$][\w$]*)\s*(?::[^=]*?)?=&gt;))"
+            >
+                <functionName>
+                    <nameExpr expr="[A-Za-z_$][\w$]*" />
+                </functionName>
+            </function>
+        </parser>
+    </functionList>
+</NotepadPlus>

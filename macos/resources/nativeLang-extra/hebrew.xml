@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/hebrew.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Hebrew">
+    <Item english="About NotepadMac" text="אודות NotepadMac"/>
+    <Item english="Hide NotepadMac" text="הסתר את NotepadMac"/>
+    <Item english="Hide Others" text="הסתר אחרים"/>
+    <Item english="Show All" text="הצג הכול"/>
+    <Item english="Quit NotepadMac" text="צא מ-NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="פתח את התיקיה המכילה ב-Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="פתח את התיקיה המכילה במסוף"/>
+    <Item english="Toggle Insert/Overtype" text="החלף מצב הוספה/דריסה"/>
+    <Item english="Toggle Fold" text="קפל/פרוש"/>
+    <Item english="Show All Hidden Lines" text="הצג את כל השורות המוסתרות"/>
+    <Item english="Recent Window" text="חלון אחרון"/>
+    <Item english="Move to Trash" text="העבר לפח"/>
+    <Item english="Save Current Command…" text="שמור פקודה נוכחית…"/>
+    <Item english="Manage Saved Commands…" text="נהל פקודות שמורות…"/>
+    <Item english="Show Console" text="הצג קונסולה"/>
+    <Item english="Validate shortcuts" text="בדוק קיצורי מקשים"/>
+    <Item english="Open Plugins Folder…" text="פתח תיקיית תוספים…"/>
+    <Item english="Format" text="עצב"/>
+    <Item english="Compact" text="צמצם"/>
+    <Item english="Sort Keys" text="מיין מפתחות"/>
+    <Item english="Validate" text="אמת"/>
+    <Item english="Show JSON Tree" text="הצג עץ JSON"/>
+    <Item english="Set as First to Compare" text="קבע כראשון להשוואה"/>
+    <Item english="Compare" text="השווה"/>
+    <Item english="Compare with File…" text="השווה לקובץ…"/>
+    <Item english="Next Difference" text="ההבדל הבא"/>
+    <Item english="Previous Difference" text="ההבדל הקודם"/>
+    <Item english="First Difference" text="ההבדל הראשון"/>
+    <Item english="Last Difference" text="ההבדל האחרון"/>
+    <Item english="Compare Summary" text="סיכום השוואה"/>
+    <Item english="Ignore Case" text="התעלם מרישיות"/>
+    <Item english="Ignore Spaces" text="התעלם מרווחים"/>
+    <Item english="Ignore Empty Lines" text="התעלם משורות ריקות"/>
+    <Item english="Clear Active Compare" text="נקה השוואה פעילה"/>
+    <Item english="Clear All Compares" text="נקה את כל ההשוואות"/>
+    <Item english="Pretty Print" text="עצב בצורה קריאה"/>
+    <Item english="Pretty Print — Indent Attributes" text="עצב בצורה קריאה — הזח תכונות"/>
+    <Item english="Linearize" text="הפוך לשורה אחת"/>
+    <Item english="Check XML Syntax Now" text="בדוק תחביר XML כעת"/>
+    <Item english="Validate Against Schema…" text="אמת מול סכימה…"/>
+    <Item english="Validate Against DTD" text="אמת מול DTD"/>
+    <Item english="Evaluate XPath Expression…" text="חשב ביטוי XPath…"/>
+    <Item english="Current XML Path" text="נתיב XML נוכחי"/>
+    <Item english="Current XML Path with Predicates" text="נתיב XML נוכחי עם פרדיקטים"/>
+    <Item english="Apply XSL Transformation…" text="החל טרנספורמציית XSL…"/>
+    <Item english="Escape Characters in Selection" text="מלט תווים בבחירה"/>
+    <Item english="Unescape Characters in Selection" text="בטל מילוט תווים בבחירה"/>
+    <Item english="Connections…" text="חיבורים…"/>
+    <Item english="Connect…" text="התחבר…"/>
+    <Item english="Disconnect" text="התנתק"/>
+    <Item english="Show Remote Files" text="הצג קבצים מרוחקים"/>
+    <Item english="Upload Current File" text="העלה קובץ נוכחי"/>
+    <Item english="Execute NppExec Script…" text="הרץ סקריפט NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="הרץ סקריפט NppExec קודם"/>
+    <Item english="Stop Running NppExec Script" text="עצור סקריפט NppExec פועל"/>
+    <Item english="Show NppExec Console" text="הצג קונסולת NppExec"/>
+    <Item english="Execute NppExec Script" text="הרץ סקריפט NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;סקריפט זמני&gt;"/>
+    <Item english="Script name" text="שם הסקריפט"/>
+    <Item english="Dock Left" text="עגן משמאל"/>
+    <Item english="Dock Right" text="עגן מימין"/>
+    <Item english="Dock Top" text="עגן למעלה"/>
+    <Item english="Dock Bottom" text="עגן למטה"/>
+    <Item english="Float" text="הצף"/>
+    <Item english="Remember which panels were open" text="זכור אילו חלוניות היו פתוחות"/>
+    <Item english="Show the toolbar" text="הצג את סרגל הכלים"/>
+    <Item english="Toolbar buttons" text="לחצני סרגל הכלים"/>
+    <Item english="Icons only" text="סמלים בלבד"/>
+    <Item english="Icons and labels" text="סמלים ותוויות"/>
+    <Item english="Labels only" text="תוויות בלבד"/>
+    <Item english="Toolbar size" text="גודל סרגל הכלים"/>
+    <Item english="Regular" text="רגיל"/>
+    <Item english="Small" text="קטן"/>
+    <Item english="Icons" text="סמלים"/>
+    <Item english="Hidden" text="מוסתר"/>
+    <Item english="1 pixel" text="פיקסל אחד"/>
+    <Item english="2 pixels" text="2 פיקסלים"/>
+    <Item english="3 pixels" text="3 פיקסלים"/>
+    <Item english="Selected text can be dragged" text="ניתן לגרור טקסט נבחר"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="אפשר עריכה מרובה (Cmd+לחיצה/בחירה)"/>
+    <Item english="Follow the system" text="לפי המערכת"/>
+    <Item english="Light theme" text="ערכת נושא בהירה"/>
+    <Item english="Dark theme" text="ערכת נושא כהה"/>
+    <Item english="Show the fold margin" text="הצג את שולי הקיפול"/>
+    <Item english="A line" text="קו"/>
+    <Item english="Columns (space separated)" text="עמודות (מופרדות ברווחים)"/>
+    <Item english="3 parts" text="3 חלקים"/>
+    <Item english="4 parts" text="4 חלקים"/>
+    <Item english="5 parts" text="5 חלקים"/>
+    <Item english="6 parts" text="6 חלקים"/>
+    <Item english="7 parts" text="7 חלקים"/>
+    <Item english="8 parts" text="8 חלקים"/>
+    <Item english="9 parts" text="9 חלקים"/>
+    <Item english="Work the language out from the contents when the name does not say" text="זהה את השפה לפי התוכן כשהשם אינו מעיד עליה"/>
+    <Item english="Highlight matching braces" text="הדגש סוגריים תואמים"/>
+    <Item english="Header font (blank for the editor's)" text="פונט כותרת (ריק — הפונט של העורך)"/>
+    <Item english="Header font size" text="גודל פונט כותרת"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="שוליים: שמאל, עליון, ימין, תחתון (נקודות)"/>
+    <Item english="Characters before it opens" text="מספר תווים לפני הפתיחה"/>
+    <Item english="Add characters to the word list" text="הוסף תווים לרשימת תווי המילה"/>
+    <Item english="A fixed folder" text="תיקיה קבועה"/>
+    <Item english="Fixed folder" text="תיקיה קבועה"/>
+    <Item english="Confirm Replace All" text="בקש אישור ל&quot;החלף הכל&quot;"/>
+    <Item english="Compare: ignore case" text="השוואה: התעלם מרישיות"/>
+    <Item english="Compare: ignore spaces" text="השוואה: התעלם מרווחים"/>
+    <Item english="Compare: ignore empty lines" text="השוואה: התעלם משורות ריקות"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="מספר תווים מרבי למילוי אוטומטי של שדה החיפוש"/>
+    <Item english="Releases repository" text="מאגר הגרסאות"/>
+    <Item english="Notepad++ update" text="עדכון Notepad++"/>
+    <Item english="No update is available." text="אין עדכון זמין."/>
+    <Item english="An update package is available, do you want to download it?" text="חבילת עדכון זמינה, האם ברצונך להוריד אותה?"/>
+    <Item english="Open the Releases Page" text="פתח את דף הגרסאות"/>
+    <Item english="Copy debug info to clipboard" text="העתק מידע ניפוי שגיאות לזיכרון"/>
+    <Item english="Fonts…" text="פונטים…"/>
+    <Item english="This document is not valid JSON." text="מסמך זה אינו JSON תקין."/>
+    <Item english="Valid JSON." text="JSON תקין."/>
+    <Item english="Invalid JSON." text="JSON לא תקין."/>
+    <Item english="Set as the first file to compare." text="נקבע כקובץ הראשון להשוואה."/>
+    <Item english="Nothing to compare with." text="אין למה להשוות."/>
+    <Item english="The document is valid XML." text="המסמך הוא XML תקין."/>
+    <Item english="FTP connections" text="חיבורי FTP"/>
+    <Item english="Cannot connect." text="לא ניתן להתחבר."/>
+    <Item english="That file is open in another tab." text="קובץ זה פתוח בלשונית אחרת."/>
+    <Item english="Close it first, or choose another name." text="סגור אותו תחילה, או בחר שם אחר."/>
+    <Item english="Which language is this?" text="איזו שפה זו?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="לא ניתן לייצג חלק מהתווים בקידוד זה."/>
+    <Item english="Converting will replace them." text="ההמרה תחליף אותם."/>
+    <Item english="Press the keys." text="לחץ על המקשים."/>
+    <Item english="Nothing is marked" text="דבר אינו מסומן"/>
+    <Item english="Marked text copied" text="הטקסט המסומן הועתק"/>
+    <Item english="Choose a folder first" text="בחר תיקיה תחילה"/>
+    <Item english="This document has no folder" text="למסמך זה אין תיקיה"/>
+    <Item english="The ticked project panels have no files" text="בחלוניות הפרויקט המסומנות אין קבצים"/>
+    <Item english="Searching..." text="מחפש..."/>
+    <Item english="Stopping..." text="עוצר..."/>
+    <Item english="Marks cleared" text="הסימונים נוקו"/>
+    <Item english="Transparent" text="שקוף"/>
+    <Item english="View 1" text="תצוגה 1"/>
+    <Item english="View 2" text="תצוגה 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="גיבובים"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="מפתח HMAC (אופציונלי):"/>
+    <Item english="Salt (hexadecimal):" text="מלח (הקסדצימלי):"/>
+    <Item english="Random" text="אקראי"/>
+    <Item english="Cost (4-31):" text="עלות (4-31):"/>
+    <Item english="Version:" text="גרסה:"/>
+    <Item english="N, as a power of 2:" text="N, כחזקה של 2:"/>
+    <Item english="Block size (r):" text="גודל בלוק (r):"/>
+    <Item english="Parallelism (p):" text="מקביליות (p):"/>
+    <Item english="Variant:" text="וריאנט:"/>
+    <Item english="Memory (KiB):" text="זיכרון (KiB):"/>
+    <Item english="Iterations:" text="איטרציות:"/>
+    <Item english="Parallelism:" text="מקביליות:"/>
+    <Item english="Digest:" text="פונקציית גיבוב:"/>
+    <Item english="Hash length (bytes):" text="אורך הגיבוב (בתים):"/>
+    <Item english="Hash:" text="גיבוב:"/>
+    <Item english="Verify" text="אמת"/>
+    <Item english="Hash to check the password against:" text="גיבוב לבדיקת הסיסמה מולו:"/>
+    <Item english="The salt is not valid hexadecimal." text="המלח אינו ערך הקסדצימלי תקין."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt דורש מלח של 16 בתים בדיוק."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 דורש מלח של 8 בתים לפחות."/>
+    <Item english="The hash could not be generated with these settings." text="לא ניתן ליצור את הגיבוב עם הגדרות אלה."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="זה אינו גיבוב bcrypt, scrypt, Argon2 או PBKDF2."/>
+    <Item english="The password matches the hash." text="הסיסמה תואמת לגיבוב."/>
+    <Item english="The password does not match the hash." text="הסיסמה אינה תואמת לגיבוב."/>
+    <Item english="The cost must be between 4 and 31." text="העלות חייבת להיות בין 4 ל-31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="הגרסה חייבת להיות 2a, 2b או 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N חייב להיות בין 2^1 ל-2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r ו-p חייבים להיות בין 1 ל-64."/>
+    <Item english="These settings need more than 2 GB of memory." text="הגדרות אלה דורשות יותר מ-2 GB של זיכרון."/>
+    <Item english="The parallelism must be between 1 and 64." text="המקביליות חייבת להיות בין 1 ל-64."/>
+    <Item english="The iterations must be between 1 and 1000." text="מספר האיטרציות חייב להיות בין 1 ל-1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="הזיכרון חייב להיות לפחות 8 KiB לכל נתיב."/>
+    <Item english="These settings need more than 4 GB of memory." text="הגדרות אלה דורשות יותר מ-4 GB של זיכרון."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="פונקציית הגיבוב חייבת להיות SHA-1, SHA-256 או SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="מספר האיטרציות חייב להיות בין 1 ל-100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="אורך הגיבוב חייב להיות בין 4 ל-1024 בתים."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (בטוח ל-URL)"/>
+    <Item english="Encode" text="קודד"/>
+    <Item english="Decode" text="פענח"/>
+    <Item english="The input is:" text="סוג הקלט:"/>
+    <Item english="Bytes in hexadecimal" text="בתים בהקסדצימלי"/>
+    <Item english="Input:" text="קלט:"/>
+    <Item english="Result:" text="תוצאה:"/>
+    <Item english="Text:" text="טקסט:"/>
+    <Item english="Bytes in hexadecimal:" text="בתים בהקסדצימלי:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="הקלט אינו בתים הכתובים בהקסדצימלי."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="הקלט אינו $STR_REPLACE$ תקין."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="הבתים המפוענחים אינם טקסט UTF-8; הם מוצגים בהקסדצימלי בלבד."/>
+    <Item english="Password Generator" text="מחולל סיסמאות"/>
+    <Item english="Length:" text="אורך:"/>
+    <Item english="Number of passwords:" text="מספר הסיסמאות:"/>
+    <Item english="Uppercase letters (A-Z)" text="אותיות רישיות (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="אותיות קטנות (a-z)"/>
+    <Item english="Digits (0-9)" text="ספרות (0-9)"/>
+    <Item english="Symbols:" text="סמלים:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="השמט תווים דומים זה לזה (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="לפחות תו אחד מכל סוג"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="אנטרופיה: כ-$INT_REPLACE$ ביטים"/>
+    <Item english="Choose at least one kind of character." text="בחר לפחות סוג אחד של תווים."/>
+    <Item english="Insert into Document" text="הוסף למסמך"/>
+    <Item english="Show the bare key in hexadecimal" text="הצג את המפתח עצמו בהקסדצימלי"/>
+    <Item english="Empty: a random salt each time" text="ריק: מלח אקראי בכל פעם"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt קורא רק את 72 הבתים הראשונים."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="בקשת HTTP"/>
+    <Item english="Send" text="שלח"/>
+    <Item english="Parameters" text="פרמטרים"/>
+    <Item english="Headers" text="כותרות"/>
+    <Item english="Body" text="גוף"/>
+    <Item english="Options" text="אפשרויות"/>
+    <Item english="Content type:" text="סוג תוכן:"/>
+    <Item english="User name:" text="שם משתמש:"/>
+    <Item english="Password:" text="סיסמה:"/>
+    <Item english="Timeout (seconds):" text="זמן קצוב (שניות):"/>
+    <Item english="Follow redirects" text="עקוב אחר הפניות"/>
+    <Item english="Allow invalid certificates" text="אפשר תעודות לא תקינות"/>
+    <Item english="Format JSON" text="עצב JSON"/>
+    <Item english="Paste curl Command" text="הדבק פקודת curl"/>
+    <Item english="Copy as curl" text="העתק כ-curl"/>
+    <Item english="Open in New Document" text="פתח במסמך חדש"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="אחד בכל שורה: שם=ערך. הם מתווספים לכתובת, מקודדים."/>
+    <Item english="One to a line: Name: value" text="אחד בכל שורה: שם: ערך"/>
+    <Item english="Sent as it is written, in UTF-8." text="נשלח כפי שנכתב, ב-UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="התשובה אינה טקסט: $INT_REPLACE$ בתים."/>
+    <Item english="The address is not an http or https address." text="הכתובת אינה כתובת http או https."/>
+    <Item english="This is not a curl command." text="זו אינה פקודת curl."/>
+    <Item english="The command has no address." text="בפקודה אין כתובת."/>
+    <Item english="The command reads its data from a file, which is not done here." text="הפקודה קוראת את הנתונים שלה מקובץ, וזה לא נעשה כאן."/>
+    <Item english="Forms and uploads of files are not read from a command." text="טפסים והעלאות קבצים אינם נקראים מפקודה."/>
+    <Item english="The command's address is not an http or https address." text="הכתובת שבפקודה אינה כתובת http או https."/>
+</NativeLangExtra>

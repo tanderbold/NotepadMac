@@ -1,0 +1,11 @@
+Windows Registry Editor Version 5.00
+
+; Show file extensions and hidden files in Explorer
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:00000000
+"Hidden"=dword:00000001
+"ShowSuperHidden"=dword:00000000
+"LaunchTo"=dword:00000001
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState]
+"FullPath"=dword:00000001

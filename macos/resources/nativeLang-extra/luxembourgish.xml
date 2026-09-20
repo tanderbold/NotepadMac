@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/luxembourgish.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Lëtzebuergesch">
+    <Item english="About NotepadMac" text="Iwwer NotepadMac"/>
+    <Item english="Hide NotepadMac" text="NotepadMac ausblenden"/>
+    <Item english="Hide Others" text="Anerer ausblenden"/>
+    <Item english="Show All" text="Alles uweisen"/>
+    <Item english="Quit NotepadMac" text="NotepadMac zoumaachen"/>
+    <Item english="Open Containing Folder in Finder" text="Repertoire am Finder opmaachen"/>
+    <Item english="Open Containing Folder in Terminal" text="Repertoire am Terminal opmaachen"/>
+    <Item english="Toggle Insert/Overtype" text="Afügen/Iwwerschreiwen ëmschalten"/>
+    <Item english="Toggle Fold" text="Textblock op-/zoumaachen"/>
+    <Item english="Show All Hidden Lines" text="Déi ausgeblent Zeilen alleguer uweisen"/>
+    <Item english="Recent Window" text="Lescht Fënster"/>
+    <Item english="Move to Trash" text="An de Pabeierkuerf réckelen"/>
+    <Item english="Save Current Command…" text="Aktuelle Befeel späicheren …"/>
+    <Item english="Manage Saved Commands…" text="Gespäichert Befeeler verwalten …"/>
+    <Item english="Show Console" text="Konsol uweisen"/>
+    <Item english="Validate shortcuts" text="Tastekombinatiounen iwwerpréiwen"/>
+    <Item english="Open Plugins Folder…" text="Repertoire vun den Erweiderungen opmaachen …"/>
+    <Item english="Format" text="Formatéieren"/>
+    <Item english="Compact" text="Kompriméieren"/>
+    <Item english="Sort Keys" text="Schlëssele sortéieren"/>
+    <Item english="Validate" text="Validéieren"/>
+    <Item english="Show JSON Tree" text="JSON-Bam uweisen"/>
+    <Item english="Set as First to Compare" text="Als éischt Datei fir de Verglach festleeën"/>
+    <Item english="Compare" text="Vergläichen"/>
+    <Item english="Compare with File…" text="Mat Datei vergläichen …"/>
+    <Item english="Next Difference" text="Nächsten Ënnerscheed"/>
+    <Item english="Previous Difference" text="Viregten Ënnerscheed"/>
+    <Item english="First Difference" text="Éischten Ënnerscheed"/>
+    <Item english="Last Difference" text="Leschten Ënnerscheed"/>
+    <Item english="Compare Summary" text="Iwwersiicht vum Verglach"/>
+    <Item english="Ignore Case" text="Grouss/kleng ignoréieren"/>
+    <Item english="Ignore Spaces" text="Ofstänn ignoréieren"/>
+    <Item english="Ignore Empty Lines" text="Eidel Zeilen ignoréieren"/>
+    <Item english="Clear Active Compare" text="Aktive Verglach ophiewen"/>
+    <Item english="Clear All Compares" text="All Vergläicher ophiewen"/>
+    <Item english="Check XML Syntax Now" text="XML-Syntax elo iwwerpréiwen"/>
+    <Item english="Validate Against Schema…" text="Géint Schema validéieren …"/>
+    <Item english="Validate Against DTD" text="Géint DTD validéieren"/>
+    <Item english="Evaluate XPath Expression…" text="XPath-Ausdrock auswäerten …"/>
+    <Item english="Current XML Path" text="Aktuellen XML-Pad"/>
+    <Item english="Current XML Path with Predicates" text="Aktuellen XML-Pad mat Prädikater"/>
+    <Item english="Apply XSL Transformation…" text="XSL-Transformatioun uwenden …"/>
+    <Item english="Connections…" text="Verbindungen …"/>
+    <Item english="Connect…" text="Verbannen …"/>
+    <Item english="Disconnect" text="Trennen"/>
+    <Item english="Show Remote Files" text="Dateien um Server uweisen"/>
+    <Item english="Upload Current File" text="Aktuell Datei eroplueden"/>
+    <Item english="Execute NppExec Script…" text="NppExec-Skript ausféieren …"/>
+    <Item english="Execute Previous NppExec Script" text="Viregt NppExec-Skript ausféieren"/>
+    <Item english="Stop Running NppExec Script" text="Lafend NppExec-Skript stoppen"/>
+    <Item english="Show NppExec Console" text="NppExec-Konsol uweisen"/>
+    <Item english="Execute NppExec Script" text="NppExec-Skript ausféieren"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;temporäert Skript&gt;"/>
+    <Item english="Script name" text="Skriptnumm"/>
+    <Item english="Show the toolbar" text="Symbolleescht uweisen"/>
+    <Item english="Toolbar buttons" text="Knäppercher vun der Symbolleescht"/>
+    <Item english="Icons only" text="Nëmme Symboler"/>
+    <Item english="Icons and labels" text="Symboler a Beschrëftungen"/>
+    <Item english="Labels only" text="Nëmme Beschrëftungen"/>
+    <Item english="Toolbar size" text="Gréisst vun der Symbolleescht"/>
+    <Item english="Regular" text="Normal"/>
+    <Item english="Small" text="Kleng"/>
+    <Item english="Icons" text="Symboler"/>
+    <Item english="Hidden" text="Ausgeblent"/>
+    <Item english="1 pixel" text="1 Pixel"/>
+    <Item english="2 pixels" text="2 Pixel"/>
+    <Item english="3 pixels" text="3 Pixel"/>
+    <Item english="Selected text can be dragged" text="Markéierten Text kann gezu ginn"/>
+    <Item english="Follow the system" text="Wéi de System"/>
+    <Item english="A line" text="Eng Linn"/>
+    <Item english="Columns (space separated)" text="Spalten (mat Ofstänn getrennt)"/>
+    <Item english="3 parts" text="3 Deeler"/>
+    <Item english="4 parts" text="4 Deeler"/>
+    <Item english="5 parts" text="5 Deeler"/>
+    <Item english="6 parts" text="6 Deeler"/>
+    <Item english="7 parts" text="7 Deeler"/>
+    <Item english="8 parts" text="8 Deeler"/>
+    <Item english="9 parts" text="9 Deeler"/>
+    <Item english="Work the language out from the contents when the name does not say" text="D'Sprooch aus dem Inhalt erkennen, wann den Numm se net verréit"/>
+    <Item english="Highlight matching braces" text="Zesummegehéiereg Klammeren hervirhiewen"/>
+    <Item english="Header font (blank for the editor's)" text="Schrëftart vum Kappdeel (eidel: wéi am Editor)"/>
+    <Item english="Header font size" text="Schrëftgréisst vum Kappdeel"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Säitenränner: lénks, uewen, riets, ënnen (Punkten)"/>
+    <Item english="Characters before it opens" text="Zeechen, ier d'Lëscht opgeet"/>
+    <Item english="A fixed folder" text="E fixe Repertoire"/>
+    <Item english="Fixed folder" text="Fixe Repertoire"/>
+    <Item english="Confirm Replace All" text="&quot;Alles remplacéieren&quot; bestätegen"/>
+    <Item english="Compare: ignore case" text="Verglach: Grouss/kleng ignoréieren"/>
+    <Item english="Compare: ignore spaces" text="Verglach: Ofstänn ignoréieren"/>
+    <Item english="Compare: ignore empty lines" text="Verglach: eidel Zeilen ignoréieren"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Max. Zeechen fir d'automatescht Ausfëllen vum Sichfeld"/>
+    <Item english="Notepad++ update" text="Aktualiséierung vun Notepad++"/>
+    <Item english="No update is available." text="Et ass keng Aktualiséierung disponibel."/>
+    <Item english="An update package is available, do you want to download it?" text="Eng Aktualiséierung ass disponibel. Wëllt Dir se eroflueden?"/>
+    <Item english="Copy debug info to clipboard" text="Debug-Info an d'Tëschentablag kopéieren"/>
+    <Item english="Fonts…" text="Schrëften …"/>
+    <Item english="This document is not valid JSON." text="Dëst Dokument ass kee gültegen JSON."/>
+    <Item english="Valid JSON." text="Gültegen JSON."/>
+    <Item english="Invalid JSON." text="Ongültegen JSON."/>
+    <Item english="Set as the first file to compare." text="Als éischt Datei fir de Verglach festgeluecht."/>
+    <Item english="Nothing to compare with." text="Näischt fir ze vergläichen."/>
+    <Item english="The document is valid XML." text="D'Dokument ass gültegen XML."/>
+    <Item english="FTP connections" text="FTP-Verbindungen"/>
+    <Item english="Cannot connect." text="Verbindung net méiglech."/>
+    <Item english="That file is open in another tab." text="Dës Datei ass an engem aneren Tab op."/>
+    <Item english="Close it first, or choose another name." text="Maacht se fir d'éischt zou oder wielt en aneren Numm."/>
+    <Item english="Which language is this?" text="Wéi eng Sprooch ass dat?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Verschidden Zeechen kënnen an dëser Kodierung net duergestallt ginn."/>
+    <Item english="Converting will replace them." text="Beim Konvertéiere gi se ersat."/>
+    <Item english="Press the keys." text="Dréckt d'Tasten."/>
+    <Item english="Nothing is marked" text="Näischt ass markéiert"/>
+    <Item english="Marked text copied" text="Markéierten Text kopéiert"/>
+    <Item english="Choose a folder first" text="Fir d'éischt e Repertoire wielen"/>
+    <Item english="This document has no folder" text="Dëst Dokument huet kee Repertoire"/>
+    <Item english="Searching..." text="Sichen ..."/>
+    <Item english="Stopping..." text="Stoppen ..."/>
+    <Item english="Marks cleared" text="Markéierunge geläscht"/>
+    <Item english="Transparent" text="Transparent"/>
+    <Item english="View 1" text="Usiicht 1"/>
+    <Item english="View 2" text="Usiicht 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hashes"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-Schlëssel (optional):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (hexadezimal):"/>
+    <Item english="Random" text="Zoufälleg"/>
+    <Item english="Version:" text="Versioun:"/>
+    <Item english="N, as a power of 2:" text="N, als Potenz vun 2:"/>
+    <Item english="Block size (r):" text="Blockgréisst (r):"/>
+    <Item english="Variant:" text="Variant:"/>
+    <Item english="Memory (KiB):" text="Späicher (KiB):"/>
+    <Item english="Iterations:" text="Iteratiounen:"/>
+    <Item english="Digest:" text="Hashfunktioun:"/>
+    <Item english="Hash length (bytes):" text="Hash-Längt (Bytes):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Iwwerpréiwen"/>
+    <Item english="Hash to check the password against:" text="Hash, géint deen d'Passwuert gepréift gëtt:"/>
+    <Item english="The salt is not valid hexadecimal." text="De Salt ass net gülteg hexadezimal."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt brauch e Salt vu genee 16 Bytes."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 brauch e Salt vu mindestens 8 Bytes."/>
+    <Item english="The hash could not be generated with these settings." text="Den Hash konnt mat dësen Astellungen net generéiert ginn."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Dëst ass kee bcrypt-, scrypt-, Argon2- oder PBKDF2-Hash."/>
+    <Item english="The password matches the hash." text="D'Passwuert passt zum Hash."/>
+    <Item english="The password does not match the hash." text="D'Passwuert passt net zum Hash."/>
+    <Item english="The version must be 2a, 2b or 2y." text="D'Versioun muss 2a, 2b oder 2y sinn."/>
+    <Item english="N must be between 2^1 and 2^24." text="N muss tëscht 2^1 an 2^24 leien."/>
+    <Item english="r and p must be between 1 and 64." text="r a p mussen tëscht 1 a 64 leien."/>
+    <Item english="These settings need more than 2 GB of memory." text="Dës Astellunge brauche méi wéi 2 GB Späicher."/>
+    <Item english="The iterations must be between 1 and 1000." text="D'Unzuel vun den Iteratioune muss tëscht 1 an 1000 leien."/>
+    <Item english="These settings need more than 4 GB of memory." text="Dës Astellunge brauche méi wéi 4 GB Späicher."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="D'Hashfunktioun muss SHA-1, SHA-256 oder SHA-512 sinn."/>
+    <Item english="The iterations must be between 1 and 100000000." text="D'Unzuel vun den Iteratioune muss tëscht 1 an 100000000 leien."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="D'Hash-Längt muss tëscht 4 an 1024 Bytes leien."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-sécher)"/>
+    <Item english="Encode" text="Kodéieren"/>
+    <Item english="Decode" text="Dekodéieren"/>
+    <Item english="The input is:" text="D'Agab ass:"/>
+    <Item english="Bytes in hexadecimal" text="Bytes am Hexadezimalformat"/>
+    <Item english="Input:" text="Agab:"/>
+    <Item english="Result:" text="Resultat:"/>
+    <Item english="Text:" text="Text:"/>
+    <Item english="Bytes in hexadecimal:" text="Bytes am Hexadezimalformat:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="D'Agab besteet net aus hexadezimal geschriwwene Bytes."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="D'Agab ass kee gültege $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Déi dekodéiert Bytes si keen UTF-8-Text; si ginn nëmmen hexadezimal ugewisen."/>
+    <Item english="Password Generator" text="Passwuert-Generator"/>
+    <Item english="Length:" text="Längt:"/>
+    <Item english="Number of passwords:" text="Unzuel vu Passwierder:"/>
+    <Item english="Uppercase letters (A-Z)" text="Groussbuschtawen (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Klengbuschtawen (a-z)"/>
+    <Item english="Digits (0-9)" text="Zifferen (0-9)"/>
+    <Item english="Symbols:" text="Symboler:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Zeechen ewechloossen, déi sech gläichen (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Mindestens een Zeechen vun all Zort"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropie: ongeféier $INT_REPLACE$ Bits"/>
+    <Item english="Choose at least one kind of character." text="Wielt mindestens eng Zort Zeechen."/>
+    <Item english="Insert into Document" text="An d'Dokument afügen"/>
+    <Item english="Show the bare key in hexadecimal" text="De renge Schlëssel hexadezimal uweisen"/>
+    <Item english="Empty: a random salt each time" text="Eidel: all Kéier en zoufällege Salt"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt liest nëmmen déi éischt 72 Bytes."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-Ufro"/>
+    <Item english="Send" text="Schécken"/>
+    <Item english="Parameters" text="Parameteren"/>
+    <Item english="Headers" text="Headeren"/>
+    <Item english="Options" text="Optiounen"/>
+    <Item english="Content type:" text="Inhaltstyp:"/>
+    <Item english="User name:" text="Benotzernumm:"/>
+    <Item english="Password:" text="Passwuert:"/>
+    <Item english="Timeout (seconds):" text="Timeout (Sekonnen):"/>
+    <Item english="Follow redirects" text="Weiderleedunge follegen"/>
+    <Item english="Allow invalid certificates" text="Ongülteg Zertifikater erlaben"/>
+    <Item english="Format JSON" text="JSON formatéieren"/>
+    <Item english="Paste curl Command" text="curl-Befeel afügen"/>
+    <Item english="Copy as curl" text="Als curl kopéieren"/>
+    <Item english="Open in New Document" text="An engem neien Dokument opmaachen"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Ee pro Zeil: Numm=Wäert. Si ginn un d'Adress ugehaangen, kodéiert."/>
+    <Item english="One to a line: Name: value" text="Ee pro Zeil: Numm: Wäert"/>
+    <Item english="Sent as it is written, in UTF-8." text="Gëtt esou geschéckt, wéi et geschriwwen ass, an UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="D'Äntwert ass keen Text: $INT_REPLACE$ Bytes."/>
+    <Item english="The address is not an http or https address." text="D'Adress ass keng http- oder https-Adress."/>
+    <Item english="This is not a curl command." text="Dëst ass kee curl-Befeel."/>
+    <Item english="The command has no address." text="De Befeel huet keng Adress."/>
+    <Item english="The command reads its data from a file, which is not done here." text="De Befeel liest seng Daten aus enger Datei, wat hei net gemaach gëtt."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formulairen an Datei-Uploads ginn net aus engem Befeel gelies."/>
+    <Item english="The command's address is not an http or https address." text="D'Adress vum Befeel ass keng http- oder https-Adress."/>
+</NativeLangExtra>

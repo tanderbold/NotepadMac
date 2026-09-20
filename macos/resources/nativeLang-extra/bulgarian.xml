@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/bulgarian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Български">
+    <Item english="About NotepadMac" text="Относно NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Скриване на NotepadMac"/>
+    <Item english="Hide Others" text="Скриване на другите"/>
+    <Item english="Show All" text="Показване на всички"/>
+    <Item english="Quit NotepadMac" text="Изход от NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Отваряне папката на файла във Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Отваряне папката на файла в Терминал"/>
+    <Item english="Toggle Insert/Overtype" text="Превключване вмъкване/заместване"/>
+    <Item english="Toggle Fold" text="Свиване/разгъване на блока"/>
+    <Item english="Show All Hidden Lines" text="Показване на всички скрити редове"/>
+    <Item english="Recent Window" text="Предишен прозорец"/>
+    <Item english="Move to Trash" text="Преместване в кошчето"/>
+    <Item english="Save Current Command…" text="Запис на текущата команда…"/>
+    <Item english="Manage Saved Commands…" text="Управление на записаните команди…"/>
+    <Item english="Show Console" text="Показване на конзолата"/>
+    <Item english="Validate shortcuts" text="Проверка на бързите клавиши"/>
+    <Item english="Open Plugins Folder…" text="Отваряне на папката с добавки…"/>
+    <Item english="Format" text="Форматиране"/>
+    <Item english="Compact" text="Компактен вид"/>
+    <Item english="Sort Keys" text="Подреждане на ключовете"/>
+    <Item english="Validate" text="Проверка"/>
+    <Item english="Show JSON Tree" text="Показване на дървото на JSON"/>
+    <Item english="Set as First to Compare" text="Задаване като първи за сравняване"/>
+    <Item english="Compare" text="Сравняване"/>
+    <Item english="Compare with File…" text="Сравняване с файл…"/>
+    <Item english="Next Difference" text="Следваща разлика"/>
+    <Item english="Previous Difference" text="Предходна разлика"/>
+    <Item english="First Difference" text="Първа разлика"/>
+    <Item english="Last Difference" text="Последна разлика"/>
+    <Item english="Compare Summary" text="Обобщение на сравнението"/>
+    <Item english="Ignore Case" text="Пренебрегване на главни/малки букви"/>
+    <Item english="Ignore Spaces" text="Пренебрегване на интервалите"/>
+    <Item english="Ignore Empty Lines" text="Пренебрегване на празните редове"/>
+    <Item english="Clear Active Compare" text="Изчистване на текущото сравнение"/>
+    <Item english="Clear All Compares" text="Изчистване на всички сравнения"/>
+    <Item english="Pretty Print" text="Форматиране"/>
+    <Item english="Pretty Print — Indent Attributes" text="Форматиране — с отстъп на атрибутите"/>
+    <Item english="Linearize" text="На един ред"/>
+    <Item english="Check XML Syntax Now" text="Проверка на синтаксиса на XML"/>
+    <Item english="Validate Against Schema…" text="Проверка по схема…"/>
+    <Item english="Validate Against DTD" text="Проверка по DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Изчисляване на XPath израз…"/>
+    <Item english="Current XML Path" text="Текущ път в XML"/>
+    <Item english="Current XML Path with Predicates" text="Текущ път в XML с предикати"/>
+    <Item english="Apply XSL Transformation…" text="Прилагане на XSL трансформация…"/>
+    <Item english="Escape Characters in Selection" text="Екраниране на знаците в избраното"/>
+    <Item english="Unescape Characters in Selection" text="Премахване на екранирането в избраното"/>
+    <Item english="Connections…" text="Връзки…"/>
+    <Item english="Connect…" text="Свързване…"/>
+    <Item english="Disconnect" text="Прекъсване на връзката"/>
+    <Item english="Show Remote Files" text="Показване на отдалечените файлове"/>
+    <Item english="Upload Current File" text="Качване на текущия файл"/>
+    <Item english="Execute NppExec Script…" text="Изпълнение на NppExec скрипт…"/>
+    <Item english="Execute Previous NppExec Script" text="Изпълнение на предишния NppExec скрипт"/>
+    <Item english="Stop Running NppExec Script" text="Спиране на изпълнявания NppExec скрипт"/>
+    <Item english="Show NppExec Console" text="Показване на конзолата на NppExec"/>
+    <Item english="Execute NppExec Script" text="Изпълнение на NppExec скрипт"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;временен скрипт&gt;"/>
+    <Item english="Script name" text="Име на скрипта"/>
+    <Item english="Dock Left" text="Закачане отляво"/>
+    <Item english="Dock Right" text="Закачане отдясно"/>
+    <Item english="Dock Top" text="Закачане отгоре"/>
+    <Item english="Dock Bottom" text="Закачане отдолу"/>
+    <Item english="Float" text="Откачане"/>
+    <Item english="Remember which panels were open" text="Запомняне на отворените панели"/>
+    <Item english="Show the toolbar" text="Показване на лентата с инструменти"/>
+    <Item english="Toolbar buttons" text="Бутони на лентата с инструменти"/>
+    <Item english="Icons only" text="Само икони"/>
+    <Item english="Icons and labels" text="Икони и надписи"/>
+    <Item english="Labels only" text="Само надписи"/>
+    <Item english="Toolbar size" text="Размер на лентата с инструменти"/>
+    <Item english="Regular" text="Обикновен"/>
+    <Item english="Small" text="Малък"/>
+    <Item english="Icons" text="Икони"/>
+    <Item english="Hidden" text="Скрита"/>
+    <Item english="1 pixel" text="1 пиксел"/>
+    <Item english="2 pixels" text="2 пиксела"/>
+    <Item english="3 pixels" text="3 пиксела"/>
+    <Item english="Selected text can be dragged" text="Избраният текст може да се влачи"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Включване на множествено редактиране (Cmd + щракване/избор)"/>
+    <Item english="Follow the system" text="Използване на системните настройки"/>
+    <Item english="Light theme" text="Светла тема"/>
+    <Item english="Dark theme" text="Тъмна тема"/>
+    <Item english="Show the fold margin" text="Показване на свиващото поле"/>
+    <Item english="A line" text="Линия"/>
+    <Item english="Columns (space separated)" text="Колони (разделени с интервал)"/>
+    <Item english="3 parts" text="3 части"/>
+    <Item english="4 parts" text="4 части"/>
+    <Item english="5 parts" text="5 части"/>
+    <Item english="6 parts" text="6 части"/>
+    <Item english="7 parts" text="7 части"/>
+    <Item english="8 parts" text="8 части"/>
+    <Item english="9 parts" text="9 части"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Определяне на синтаксиса по съдържанието, когато името не го показва"/>
+    <Item english="Highlight matching braces" text="Открояване на съответстващите скоби"/>
+    <Item english="Header font (blank for the editor's)" text="Шрифт на колонтитулите (празно — като в редактора)"/>
+    <Item english="Header font size" text="Размер на шрифта на колонтитулите"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Полета: ляво, горно, дясно, долно (пунктове)"/>
+    <Item english="Characters before it opens" text="Брой знаци преди показване на списъка"/>
+    <Item english="Add characters to the word list" text="Добавяне на знаци към списъка със знаци"/>
+    <Item english="A fixed folder" text="Зададена папка"/>
+    <Item english="Fixed folder" text="Зададена папка"/>
+    <Item english="Confirm Replace All" text="Потвърждение при &quot;Замяна на всичко&quot;"/>
+    <Item english="Compare: ignore case" text="Сравняване: пренебрегване на главни/малки букви"/>
+    <Item english="Compare: ignore spaces" text="Сравняване: пренебрегване на интервалите"/>
+    <Item english="Compare: ignore empty lines" text="Сравняване: пренебрегване на празните редове"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Макс. брой знаци за автоматично попълване на полето за търсене"/>
+    <Item english="Releases repository" text="Хранилище на изданията"/>
+    <Item english="Notepad++ update" text="Обновяване на Notepad++"/>
+    <Item english="No update is available." text="Няма налично обновяване."/>
+    <Item english="An update package is available, do you want to download it?" text="Налично е обновяване. Желаете ли да го изтеглите?"/>
+    <Item english="Open the Releases Page" text="Отваряне на страницата с изданията"/>
+    <Item english="Copy debug info to clipboard" text="Копиране на информацията за отстраняване на грешки в системния буфер"/>
+    <Item english="Fonts…" text="Шрифтове…"/>
+    <Item english="This document is not valid JSON." text="Този документ не е валиден JSON."/>
+    <Item english="Valid JSON." text="Валиден JSON."/>
+    <Item english="Invalid JSON." text="Невалиден JSON."/>
+    <Item english="Set as the first file to compare." text="Зададен като първи файл за сравняване."/>
+    <Item english="Nothing to compare with." text="Няма с какво да се сравни."/>
+    <Item english="The document is valid XML." text="Документът е валиден XML."/>
+    <Item english="FTP connections" text="FTP връзки"/>
+    <Item english="Cannot connect." text="Неуспешно свързване."/>
+    <Item english="That file is open in another tab." text="Този файл е отворен в друг раздел."/>
+    <Item english="Close it first, or choose another name." text="Първо го затворете или изберете друго име."/>
+    <Item english="Which language is this?" text="Какъв е този синтаксис?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Някои знаци не могат да бъдат представени в тази кодировка."/>
+    <Item english="Converting will replace them." text="При преобразуването те ще бъдат заменени."/>
+    <Item english="Press the keys." text="Натиснете клавишите."/>
+    <Item english="Nothing is marked" text="Няма нищо маркирано"/>
+    <Item english="Marked text copied" text="Маркираният текст е копиран"/>
+    <Item english="Choose a folder first" text="Първо изберете папка"/>
+    <Item english="This document has no folder" text="Този документ няма папка"/>
+    <Item english="The ticked project panels have no files" text="В отметнатите проектни панели няма файлове"/>
+    <Item english="Searching..." text="Търсене..."/>
+    <Item english="Stopping..." text="Спиране..."/>
+    <Item english="Marks cleared" text="Маркировките са изчистени"/>
+    <Item english="Transparent" text="Прозрачно"/>
+    <Item english="View 1" text="Изглед 1"/>
+    <Item english="View 2" text="Изглед 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Хешове"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC ключ (по избор):"/>
+    <Item english="Salt (hexadecimal):" text="Сол (шестнадесетична):"/>
+    <Item english="Random" text="Случайна"/>
+    <Item english="Cost (4-31):" text="Цена (4-31):"/>
+    <Item english="Version:" text="Версия:"/>
+    <Item english="N, as a power of 2:" text="N, като степен на 2:"/>
+    <Item english="Block size (r):" text="Размер на блока (r):"/>
+    <Item english="Parallelism (p):" text="Паралелизъм (p):"/>
+    <Item english="Variant:" text="Вариант:"/>
+    <Item english="Memory (KiB):" text="Памет (KiB):"/>
+    <Item english="Iterations:" text="Итерации:"/>
+    <Item english="Parallelism:" text="Паралелизъм:"/>
+    <Item english="Digest:" text="Хеш функция:"/>
+    <Item english="Hash length (bytes):" text="Дължина на хеша (байтове):"/>
+    <Item english="Hash:" text="Хеш:"/>
+    <Item english="Verify" text="Проверка"/>
+    <Item english="Hash to check the password against:" text="Хеш, с който да се провери паролата:"/>
+    <Item english="The salt is not valid hexadecimal." text="Солта не е валиден шестнадесетичен запис."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt изисква сол от точно 16 байта."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 изисква сол от поне 8 байта."/>
+    <Item english="The hash could not be generated with these settings." text="Хешът не може да бъде генериран с тези настройки."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Това не е хеш на bcrypt, scrypt, Argon2 или PBKDF2."/>
+    <Item english="The password matches the hash." text="Паролата съответства на хеша."/>
+    <Item english="The password does not match the hash." text="Паролата не съответства на хеша."/>
+    <Item english="The cost must be between 4 and 31." text="Цената трябва да е между 4 и 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Версията трябва да е 2a, 2b или 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N трябва да е между 2^1 и 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r и p трябва да са между 1 и 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Тези настройки изискват повече от 2 GB памет."/>
+    <Item english="The parallelism must be between 1 and 64." text="Паралелизмът трябва да е между 1 и 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Итерациите трябва да са между 1 и 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Паметта трябва да е поне 8 KiB за всяка нишка."/>
+    <Item english="These settings need more than 4 GB of memory." text="Тези настройки изискват повече от 4 GB памет."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Хеш функцията трябва да е SHA-1, SHA-256 или SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Итерациите трябва да са между 1 и 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Дължината на хеша трябва да е между 4 и 1024 байта."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (безопасен за URL)"/>
+    <Item english="Encode" text="Кодиране"/>
+    <Item english="Decode" text="Декодиране"/>
+    <Item english="The input is:" text="Входът е:"/>
+    <Item english="Bytes in hexadecimal" text="Байтове в шестнадесетичен вид"/>
+    <Item english="Input:" text="Вход:"/>
+    <Item english="Result:" text="Резултат:"/>
+    <Item english="Text:" text="Текст:"/>
+    <Item english="Bytes in hexadecimal:" text="Байтове в шестнадесетичен вид:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Входът не е байтове в шестнадесетичен запис."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Входът не е валиден $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Декодираните байтове не са UTF-8 текст; показани са само в шестнадесетичен вид."/>
+    <Item english="Password Generator" text="Генератор на пароли"/>
+    <Item english="Length:" text="Дължина:"/>
+    <Item english="Number of passwords:" text="Брой пароли:"/>
+    <Item english="Uppercase letters (A-Z)" text="Главни букви (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Малки букви (a-z)"/>
+    <Item english="Digits (0-9)" text="Цифри (0-9)"/>
+    <Item english="Symbols:" text="Символи:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Без знаци, които си приличат (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Поне един знак от всеки вид"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Ентропия: около $INT_REPLACE$ бита"/>
+    <Item english="Choose at least one kind of character." text="Изберете поне един вид знаци."/>
+    <Item english="Insert into Document" text="Вмъкване в документа"/>
+    <Item english="Show the bare key in hexadecimal" text="Показване на самия ключ в шестнадесетичен вид"/>
+    <Item english="Empty: a random salt each time" text="Празно: всеки път случайна сол"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt чете само първите 72 байта."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP заявка"/>
+    <Item english="Send" text="Изпращане"/>
+    <Item english="Parameters" text="Параметри"/>
+    <Item english="Headers" text="Заглавки"/>
+    <Item english="Body" text="Тяло"/>
+    <Item english="Options" text="Опции"/>
+    <Item english="Content type:" text="Тип на съдържанието:"/>
+    <Item english="User name:" text="Потребителско име:"/>
+    <Item english="Password:" text="Парола:"/>
+    <Item english="Timeout (seconds):" text="Време за изчакване (секунди):"/>
+    <Item english="Follow redirects" text="Следване на пренасочвания"/>
+    <Item english="Allow invalid certificates" text="Разрешаване на невалидни сертификати"/>
+    <Item english="Format JSON" text="Форматиране на JSON"/>
+    <Item english="Paste curl Command" text="Поставяне на команда curl"/>
+    <Item english="Copy as curl" text="Копиране като curl"/>
+    <Item english="Open in New Document" text="Отваряне в нов документ"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="По един на ред: име=стойност. Добавят се към адреса, кодирани."/>
+    <Item english="One to a line: Name: value" text="По една на ред: Име: стойност"/>
+    <Item english="Sent as it is written, in UTF-8." text="Изпраща се както е написано, в UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Отговорът не е текст: $INT_REPLACE$ байта."/>
+    <Item english="The address is not an http or https address." text="Адресът не е http или https адрес."/>
+    <Item english="This is not a curl command." text="Това не е команда curl."/>
+    <Item english="The command has no address." text="Командата няма адрес."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Командата чете данните си от файл, което тук не се прави."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Формуляри и качване на файлове не се четат от команда."/>
+    <Item english="The command's address is not an http or https address." text="Адресът в командата не е http или https адрес."/>
+</NativeLangExtra>

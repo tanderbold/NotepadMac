@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/lithuanian.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Lithuanian">
+    <Item english="About NotepadMac" text="Apie NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Slėpti NotepadMac"/>
+    <Item english="Hide Others" text="Slėpti kitas"/>
+    <Item english="Show All" text="Rodyti visas"/>
+    <Item english="Quit NotepadMac" text="Baigti NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Atidaryti katalogą programoje Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Atidaryti katalogą terminale"/>
+    <Item english="Toggle Insert/Overtype" text="Perjungti įterpimą/perrašymą"/>
+    <Item english="Toggle Fold" text="Suskleisti/išskleisti"/>
+    <Item english="Show All Hidden Lines" text="Rodyti visas paslėptas eilutes"/>
+    <Item english="Recent Window" text="Ankstesnis langas"/>
+    <Item english="Move to Trash" text="Perkelti į šiukšlinę"/>
+    <Item english="Save Current Command…" text="Išsaugoti dabartinę komandą…"/>
+    <Item english="Manage Saved Commands…" text="Tvarkyti išsaugotas komandas…"/>
+    <Item english="Show Console" text="Rodyti konsolę"/>
+    <Item english="Validate shortcuts" text="Tikrinti sparčiuosius klavišus"/>
+    <Item english="Open Plugins Folder…" text="Atidaryti papildinių katalogą…"/>
+    <Item english="Format" text="Formatuoti"/>
+    <Item english="Compact" text="Suglaudinti"/>
+    <Item english="Sort Keys" text="Rikiuoti raktus"/>
+    <Item english="Validate" text="Tikrinti"/>
+    <Item english="Show JSON Tree" text="Rodyti JSON medį"/>
+    <Item english="Set as First to Compare" text="Nustatyti pirmuoju palyginimui"/>
+    <Item english="Compare" text="Palyginti"/>
+    <Item english="Compare with File…" text="Palyginti su failu…"/>
+    <Item english="Next Difference" text="Kitas skirtumas"/>
+    <Item english="Previous Difference" text="Ankstesnis skirtumas"/>
+    <Item english="First Difference" text="Pirmas skirtumas"/>
+    <Item english="Last Difference" text="Paskutinis skirtumas"/>
+    <Item english="Compare Summary" text="Palyginimo santrauka"/>
+    <Item english="Ignore Case" text="Ignoruoti registrą"/>
+    <Item english="Ignore Spaces" text="Ignoruoti tarpus"/>
+    <Item english="Ignore Empty Lines" text="Ignoruoti tuščias eilutes"/>
+    <Item english="Clear Active Compare" text="Išvalyti dabartinį palyginimą"/>
+    <Item english="Clear All Compares" text="Išvalyti visus palyginimus"/>
+    <Item english="Pretty Print" text="Gražiai suformatuoti"/>
+    <Item english="Pretty Print — Indent Attributes" text="Gražiai suformatuoti — su atributų įtraukomis"/>
+    <Item english="Linearize" text="Sujungti į vieną eilutę"/>
+    <Item english="Check XML Syntax Now" text="Tikrinti XML sintaksę dabar"/>
+    <Item english="Validate Against Schema…" text="Tikrinti pagal schemą…"/>
+    <Item english="Validate Against DTD" text="Tikrinti pagal DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Įvertinti XPath išraišką…"/>
+    <Item english="Current XML Path" text="Dabartinis XML kelias"/>
+    <Item english="Current XML Path with Predicates" text="Dabartinis XML kelias su predikatais"/>
+    <Item english="Apply XSL Transformation…" text="Taikyti XSL transformaciją…"/>
+    <Item english="Connections…" text="Ryšiai…"/>
+    <Item english="Connect…" text="Prisijungti…"/>
+    <Item english="Disconnect" text="Atsijungti"/>
+    <Item english="Show Remote Files" text="Rodyti nuotolinius failus"/>
+    <Item english="Upload Current File" text="Išsiųsti dabartinį failą"/>
+    <Item english="Execute NppExec Script…" text="Vykdyti NppExec scenarijų…"/>
+    <Item english="Execute Previous NppExec Script" text="Vykdyti ankstesnį NppExec scenarijų"/>
+    <Item english="Stop Running NppExec Script" text="Stabdyti vykdomą NppExec scenarijų"/>
+    <Item english="Show NppExec Console" text="Rodyti NppExec konsolę"/>
+    <Item english="Execute NppExec Script" text="Vykdyti NppExec scenarijų"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;laikinas scenarijus&gt;"/>
+    <Item english="Script name" text="Scenarijaus pavadinimas"/>
+    <Item english="Dock Left" text="Įstatyti kairėje"/>
+    <Item english="Dock Right" text="Įstatyti dešinėje"/>
+    <Item english="Dock Top" text="Įstatyti viršuje"/>
+    <Item english="Dock Bottom" text="Įstatyti apačioje"/>
+    <Item english="Float" text="Atskiras langas"/>
+    <Item english="Remember which panels were open" text="Įsiminti, kurie skydeliai buvo atidaryti"/>
+    <Item english="Show the toolbar" text="Rodyti įrankių juostą"/>
+    <Item english="Toolbar buttons" text="Įrankių juostos mygtukai"/>
+    <Item english="Icons only" text="Tik piktogramos"/>
+    <Item english="Icons and labels" text="Piktogramos ir užrašai"/>
+    <Item english="Labels only" text="Tik užrašai"/>
+    <Item english="Toolbar size" text="Įrankių juostos dydis"/>
+    <Item english="Regular" text="Įprastas"/>
+    <Item english="Small" text="Mažas"/>
+    <Item english="Icons" text="Piktogramos"/>
+    <Item english="Hidden" text="Paslėpta"/>
+    <Item english="1 pixel" text="1 pikselis"/>
+    <Item english="2 pixels" text="2 pikseliai"/>
+    <Item english="3 pixels" text="3 pikseliai"/>
+    <Item english="Selected text can be dragged" text="Pažymėtą tekstą galima vilkti"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Įjungti kelių vietų redagavimą (Cmd+spustelėjimas/žymėjimas)"/>
+    <Item english="Follow the system" text="Kaip sistemoje"/>
+    <Item english="Light theme" text="Šviesi tema"/>
+    <Item english="Dark theme" text="Tamsi tema"/>
+    <Item english="Show the fold margin" text="Rodyti suskleidimo paraštę"/>
+    <Item english="A line" text="Linija"/>
+    <Item english="Columns (space separated)" text="Stulpeliai (atskirti tarpais)"/>
+    <Item english="3 parts" text="3 dalys"/>
+    <Item english="4 parts" text="4 dalys"/>
+    <Item english="5 parts" text="5 dalys"/>
+    <Item english="6 parts" text="6 dalys"/>
+    <Item english="7 parts" text="7 dalys"/>
+    <Item english="8 parts" text="8 dalys"/>
+    <Item english="9 parts" text="9 dalys"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Nustatyti kalbą pagal turinį, kai jos neišduoda pavadinimas"/>
+    <Item english="Highlight matching braces" text="Paryškinti atitinkančius skliaustus"/>
+    <Item english="Header font (blank for the editor's)" text="Antraštės šriftas (tuščia – kaip redaktoriaus)"/>
+    <Item english="Header font size" text="Antraštės šrifto dydis"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Paraštės: kairė, viršus, dešinė, apačia (taškais)"/>
+    <Item english="Characters before it opens" text="Ženklų skaičius iki atsidarymo"/>
+    <Item english="Add characters to the word list" text="Pridėti ženklus prie žodžių ženklų sąrašo"/>
+    <Item english="A fixed folder" text="Nurodytas katalogas"/>
+    <Item english="Fixed folder" text="Nurodytas katalogas"/>
+    <Item english="Confirm Replace All" text="Patvirtinti „Keisti viską“"/>
+    <Item english="Compare: ignore case" text="Palyginimas: ignoruoti registrą"/>
+    <Item english="Compare: ignore spaces" text="Palyginimas: ignoruoti tarpus"/>
+    <Item english="Compare: ignore empty lines" text="Palyginimas: ignoruoti tuščias eilutes"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Didž. ženklų skaičius automatiniam paieškos lauko užpildymui"/>
+    <Item english="Releases repository" text="Laidų saugykla"/>
+    <Item english="Notepad++ update" text="Notepad++ atnaujinimas"/>
+    <Item english="No update is available." text="Atnaujinimų nėra."/>
+    <Item english="An update package is available, do you want to download it?" text="Yra atnaujinimo paketas. Ar norite jį atsisiųsti?"/>
+    <Item english="Open the Releases Page" text="Atidaryti laidų puslapį"/>
+    <Item english="Copy debug info to clipboard" text="Kopijuoti derinimo informaciją į mainų sritį"/>
+    <Item english="Fonts…" text="Šriftai…"/>
+    <Item english="This document is not valid JSON." text="Šis dokumentas nėra teisingas JSON."/>
+    <Item english="Valid JSON." text="Teisingas JSON."/>
+    <Item english="Invalid JSON." text="Neteisingas JSON."/>
+    <Item english="Set as the first file to compare." text="Nustatytas pirmuoju failu palyginimui."/>
+    <Item english="Nothing to compare with." text="Nėra su kuo palyginti."/>
+    <Item english="The document is valid XML." text="Dokumentas yra teisingas XML."/>
+    <Item english="FTP connections" text="FTP ryšiai"/>
+    <Item english="Cannot connect." text="Nepavyko prisijungti."/>
+    <Item english="That file is open in another tab." text="Šis failas atidarytas kitoje kortelėje."/>
+    <Item english="Close it first, or choose another name." text="Pirmiausia jį uždarykite arba pasirinkite kitą pavadinimą."/>
+    <Item english="Which language is this?" text="Kokia tai kalba?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Kai kurių ženklų negalima pavaizduoti šia koduote."/>
+    <Item english="Converting will replace them." text="Konvertuojant jie bus pakeisti."/>
+    <Item english="Press the keys." text="Paspauskite klavišus."/>
+    <Item english="Nothing is marked" text="Niekas nepažymėta"/>
+    <Item english="Marked text copied" text="Pažymėtas tekstas nukopijuotas"/>
+    <Item english="Choose a folder first" text="Pirmiausia pasirinkite katalogą"/>
+    <Item english="This document has no folder" text="Šis dokumentas neturi katalogo"/>
+    <Item english="The ticked project panels have no files" text="Pažymėtose projektų kortelėse nėra failų"/>
+    <Item english="Searching..." text="Ieškoma..."/>
+    <Item english="Stopping..." text="Stabdoma..."/>
+    <Item english="Marks cleared" text="Žymės išvalytos"/>
+    <Item english="Transparent" text="Permatomas"/>
+    <Item english="View 1" text="1 vaizdas"/>
+    <Item english="View 2" text="2 vaizdas"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Santraukos"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC raktas (neprivalomas):"/>
+    <Item english="Salt (hexadecimal):" text="Druska (šešioliktainė):"/>
+    <Item english="Random" text="Atsitiktinė"/>
+    <Item english="Cost (4-31):" text="Kaina (4-31):"/>
+    <Item english="Version:" text="Versija:"/>
+    <Item english="N, as a power of 2:" text="N, kaip 2 laipsnis:"/>
+    <Item english="Block size (r):" text="Bloko dydis (r):"/>
+    <Item english="Parallelism (p):" text="Lygiagretumas (p):"/>
+    <Item english="Variant:" text="Variantas:"/>
+    <Item english="Memory (KiB):" text="Atmintis (KiB):"/>
+    <Item english="Iterations:" text="Iteracijos:"/>
+    <Item english="Parallelism:" text="Lygiagretumas:"/>
+    <Item english="Digest:" text="Santraukos funkcija:"/>
+    <Item english="Hash length (bytes):" text="Santraukos ilgis (baitais):"/>
+    <Item english="Hash:" text="Santrauka:"/>
+    <Item english="Verify" text="Tikrinti"/>
+    <Item english="Hash to check the password against:" text="Santrauka, su kuria tikrinamas slaptažodis:"/>
+    <Item english="The salt is not valid hexadecimal." text="Druska užrašyta ne šešioliktainiu formatu."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt reikia lygiai 16 baitų druskos."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 reikia bent 8 baitų druskos."/>
+    <Item english="The hash could not be generated with these settings." text="Su šiais nustatymais santraukos sugeneruoti nepavyko."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Tai nėra bcrypt, scrypt, Argon2 ar PBKDF2 santrauka."/>
+    <Item english="The password matches the hash." text="Slaptažodis atitinka santrauką."/>
+    <Item english="The password does not match the hash." text="Slaptažodis neatitinka santraukos."/>
+    <Item english="The cost must be between 4 and 31." text="Kaina turi būti nuo 4 iki 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versija turi būti 2a, 2b arba 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N turi būti nuo 2^1 iki 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r ir p turi būti nuo 1 iki 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Šiems nustatymams reikia daugiau nei 2 GB atminties."/>
+    <Item english="The parallelism must be between 1 and 64." text="Lygiagretumas turi būti nuo 1 iki 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Iteracijų skaičius turi būti nuo 1 iki 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Kiekvienai gijai turi tekti bent 8 KiB atminties."/>
+    <Item english="These settings need more than 4 GB of memory." text="Šiems nustatymams reikia daugiau nei 4 GB atminties."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Santraukos funkcija turi būti SHA-1, SHA-256 arba SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Iteracijų skaičius turi būti nuo 1 iki 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Santraukos ilgis turi būti nuo 4 iki 1024 baitų."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (tinka URL)"/>
+    <Item english="Encode" text="Koduoti"/>
+    <Item english="Decode" text="Dekoduoti"/>
+    <Item english="The input is:" text="Įvestis yra:"/>
+    <Item english="Bytes in hexadecimal" text="Baitai šešioliktainiu formatu"/>
+    <Item english="Input:" text="Įvestis:"/>
+    <Item english="Result:" text="Rezultatas:"/>
+    <Item english="Text:" text="Tekstas:"/>
+    <Item english="Bytes in hexadecimal:" text="Baitai šešioliktainiu formatu:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Įvestis nėra baitai, užrašyti šešioliktainiu formatu."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Įvestis nėra tinkamas $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Dekoduoti baitai nėra UTF-8 tekstas; jie rodomi tik šešioliktainiu formatu."/>
+    <Item english="Password Generator" text="Slaptažodžių generatorius"/>
+    <Item english="Length:" text="Ilgis:"/>
+    <Item english="Number of passwords:" text="Slaptažodžių skaičius:"/>
+    <Item english="Uppercase letters (A-Z)" text="Didžiosios raidės (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Mažosios raidės (a-z)"/>
+    <Item english="Digits (0-9)" text="Skaitmenys (0-9)"/>
+    <Item english="Symbols:" text="Simboliai:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Praleisti panašiai atrodančius ženklus (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Bent po vieną kiekvienos rūšies ženklą"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropija bitais: apie $INT_REPLACE$"/>
+    <Item english="Choose at least one kind of character." text="Pasirinkite bent vieną ženklų rūšį."/>
+    <Item english="Insert into Document" text="Įterpti į dokumentą"/>
+    <Item english="Show the bare key in hexadecimal" text="Rodyti patį raktą šešioliktainiu formatu"/>
+    <Item english="Empty: a random salt each time" text="Tuščia: kaskart atsitiktinė druska"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt nuskaito tik pirmuosius 72 baitus."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP užklausa"/>
+    <Item english="Send" text="Siųsti"/>
+    <Item english="Parameters" text="Parametrai"/>
+    <Item english="Headers" text="Antraštės"/>
+    <Item english="Body" text="Turinys"/>
+    <Item english="Options" text="Parinktys"/>
+    <Item english="Content type:" text="Turinio tipas:"/>
+    <Item english="User name:" text="Vartotojo vardas:"/>
+    <Item english="Password:" text="Slaptažodis:"/>
+    <Item english="Timeout (seconds):" text="Laukimo laikas (sekundėmis):"/>
+    <Item english="Follow redirects" text="Sekti peradresavimus"/>
+    <Item english="Allow invalid certificates" text="Leisti negaliojančius sertifikatus"/>
+    <Item english="Format JSON" text="Formatuoti JSON"/>
+    <Item english="Paste curl Command" text="Įklijuoti curl komandą"/>
+    <Item english="Copy as curl" text="Kopijuoti kaip curl"/>
+    <Item english="Open in New Document" text="Atidaryti naujame dokumente"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Po vieną eilutėje: pavadinimas=reikšmė. Jie užkoduoti pridedami prie adreso."/>
+    <Item english="One to a line: Name: value" text="Po vieną eilutėje: Pavadinimas: reikšmė"/>
+    <Item english="Sent as it is written, in UTF-8." text="Siunčiama taip, kaip parašyta, UTF-8 koduote."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Atsakymas nėra tekstas: $INT_REPLACE$ baitų."/>
+    <Item english="The address is not an http or https address." text="Adresas nėra http arba https adresas."/>
+    <Item english="This is not a curl command." text="Tai nėra curl komanda."/>
+    <Item english="The command has no address." text="Komandoje nėra adreso."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Komanda duomenis skaito iš failo, o čia tai nepalaikoma."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formos ir failų siuntimai iš komandos neskaitomi."/>
+    <Item english="The command's address is not an http or https address." text="Komandos adresas nėra http arba https adresas."/>
+</NativeLangExtra>

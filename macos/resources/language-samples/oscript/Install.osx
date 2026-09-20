@@ -1,0 +1,35 @@
+package MYMODULE
+
+public object Install inherits MYMODULE::InstallBase
+
+	override	String	fModuleName = 'mymodule'
+	override	Integer	fVersion = 3
+
+	/* Creates the module's tables on a first install and upgrades them after */
+	override function Assoc Upgrade( Object prgCtx, Integer fromVersion )
+		Assoc	status = Assoc.CreateAssoc()
+		Dynamic	result
+
+		status.ok = TRUE
+		switch fromVersion
+			case 0
+				result = .ExecSQL( prgCtx, "create table MyModuleLog ( ID int, Message varchar(255), Stamp date )" )
+			end
+			case 1, 2
+				result = .ExecSQL( prgCtx, "alter table MyModuleLog add Severity int" )
+			end
+			default
+				result = undefined
+			end
+		end
+
+		if IsError( result )
+			status.ok = FALSE
+			status.errMsg = Str.String( result )
+		elseif IsUndefined( result )
+			echo( "nothing to upgrade from version ", fromVersion )
+		end
+		return status
+	end
+
+end

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/piglatin.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Pig Latin">
+    <Item english="About NotepadMac" text="Aboutyay NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Idehay NotepadMac"/>
+    <Item english="Hide Others" text="Idehay Othersyay"/>
+    <Item english="Show All" text="Owshay Allyay"/>
+    <Item english="Quit NotepadMac" text="Uitqay NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Openyay Ontainingcay Olderfay inyay Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Openyay Ontainingcay Olderfay inyay Erminaltay"/>
+    <Item english="Toggle Insert/Overtype" text="Oggletay Insertyay/Overtypeyay"/>
+    <Item english="Toggle Fold" text="Oggletay Oldfay"/>
+    <Item english="Show All Hidden Lines" text="Owshay Allyay Iddenhay Ineslay"/>
+    <Item english="Recent Window" text="Ecentray Indowway"/>
+    <Item english="Move to Trash" text="Ovemay otay Ashtray"/>
+    <Item english="Save Current Command…" text="Avesay Urrentcay Ommandcay…"/>
+    <Item english="Manage Saved Commands…" text="Anagemay Avedsay Ommandscay…"/>
+    <Item english="Show Console" text="Owshay Onsolecay"/>
+    <Item english="Validate shortcuts" text="Alidatevay ortcutsshay"/>
+    <Item english="Open Plugins Folder…" text="Openyay Uginsplay Olderfay…"/>
+    <Item english="Format" text="Ormatfay"/>
+    <Item english="Compact" text="Ompactcay"/>
+    <Item english="Sort Keys" text="Ortsay Eyskay"/>
+    <Item english="Validate" text="Alidatevay"/>
+    <Item english="Show JSON Tree" text="Owshay JSON Eetray"/>
+    <Item english="Set as First to Compare" text="Etsay asyay Irstfay otay Omparecay"/>
+    <Item english="Compare" text="Omparecay"/>
+    <Item english="Compare with File…" text="Omparecay ithway Ilefay…"/>
+    <Item english="Next Difference" text="Extnay Ifferenceday"/>
+    <Item english="Previous Difference" text="Eviouspray Ifferenceday"/>
+    <Item english="First Difference" text="Irstfay Ifferenceday"/>
+    <Item english="Last Difference" text="Astlay Ifferenceday"/>
+    <Item english="Compare Summary" text="Omparecay Ummarysay"/>
+    <Item english="Ignore Case" text="Ignoreyay Asecay"/>
+    <Item english="Ignore Spaces" text="Ignoreyay Acesspay"/>
+    <Item english="Ignore Empty Lines" text="Ignoreyay Emptyyay Ineslay"/>
+    <Item english="Clear Active Compare" text="Earclay Activeyay Omparecay"/>
+    <Item english="Clear All Compares" text="Earclay Allyay Omparescay"/>
+    <Item english="Pretty Print" text="Ettypray Intpray"/>
+    <Item english="Pretty Print — Indent Attributes" text="Ettypray Intpray — Indentyay Attributesyay"/>
+    <Item english="Linearize" text="Inearizelay"/>
+    <Item english="Check XML Syntax Now" text="Eckchay XML Yntaxsay Ownay"/>
+    <Item english="Validate Against Schema…" text="Alidatevay Againstyay Emaschay…"/>
+    <Item english="Validate Against DTD" text="Alidatevay Againstyay DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Evaluateyay XPath Expressionyay…"/>
+    <Item english="Current XML Path" text="Urrentcay XML Athpay"/>
+    <Item english="Current XML Path with Predicates" text="Urrentcay XML Athpay ithway Edicatespray"/>
+    <Item english="Apply XSL Transformation…" text="Applyyay XSL Ansformationtray…"/>
+    <Item english="Escape Characters in Selection" text="Escapeyay Aracterschay inyay Electionsay"/>
+    <Item english="Unescape Characters in Selection" text="Unescapeyay Aracterschay inyay Electionsay"/>
+    <Item english="Connections…" text="Onnectionscay…"/>
+    <Item english="Connect…" text="Onnectcay…"/>
+    <Item english="Disconnect" text="Isconnectday"/>
+    <Item english="Show Remote Files" text="Owshay Emoteray Ilesfay"/>
+    <Item english="Upload Current File" text="Uploadyay Urrentcay Ilefay"/>
+    <Item english="Execute NppExec Script…" text="Executeyay NppExec Iptscray…"/>
+    <Item english="Execute Previous NppExec Script" text="Executeyay Eviouspray NppExec Iptscray"/>
+    <Item english="Stop Running NppExec Script" text="Opstay Unningray NppExec Iptscray"/>
+    <Item english="Show NppExec Console" text="Owshay NppExec Onsolecay"/>
+    <Item english="Execute NppExec Script" text="Executeyay NppExec Iptscray"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;emporarytay iptscray&gt;"/>
+    <Item english="Script name" text="Iptscray amenay"/>
+    <Item english="Dock Left" text="Ockday Eftlay"/>
+    <Item english="Dock Right" text="Ockday Ightray"/>
+    <Item english="Dock Top" text="Ockday Optay"/>
+    <Item english="Dock Bottom" text="Ockday Ottombay"/>
+    <Item english="Float" text="Oatflay"/>
+    <Item english="Remember which panels were open" text="Ememberray ichwhay anelspay ereway openyay"/>
+    <Item english="Show the toolbar" text="Owshay ethay oolbartay"/>
+    <Item english="Toolbar buttons" text="Oolbartay uttonsbay"/>
+    <Item english="Icons only" text="Iconsyay onlyyay"/>
+    <Item english="Icons and labels" text="Iconsyay andyay abelslay"/>
+    <Item english="Labels only" text="Abelslay onlyyay"/>
+    <Item english="Toolbar size" text="Oolbartay izesay"/>
+    <Item english="Regular" text="Egularray"/>
+    <Item english="Small" text="Allsmay"/>
+    <Item english="Icons" text="Iconsyay"/>
+    <Item english="Hidden" text="Iddenhay"/>
+    <Item english="1 pixel" text="1 ixelpay"/>
+    <Item english="2 pixels" text="2 ixelspay"/>
+    <Item english="3 pixels" text="3 ixelspay"/>
+    <Item english="Selected text can be dragged" text="Electedsay exttay ancay ebay aggeddray"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Enableyay Ultimay-Editingyay (Cmd+ickclay/electionsay)"/>
+    <Item english="Follow the system" text="Ollowfay ethay ystemsay"/>
+    <Item english="Light theme" text="Ightlay emethay"/>
+    <Item english="Dark theme" text="Arkday emethay"/>
+    <Item english="Show the fold margin" text="Owshay ethay oldfay arginmay"/>
+    <Item english="A line" text="Ayay inelay"/>
+    <Item english="Columns (space separated)" text="Olumnscay (acespay eparatedsay)"/>
+    <Item english="3 parts" text="3 artspay"/>
+    <Item english="4 parts" text="4 artspay"/>
+    <Item english="5 parts" text="5 artspay"/>
+    <Item english="6 parts" text="6 artspay"/>
+    <Item english="7 parts" text="7 artspay"/>
+    <Item english="8 parts" text="8 artspay"/>
+    <Item english="9 parts" text="9 artspay"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Orkway ethay anguagelay outyay omfray ethay ontentscay enwhay ethay amenay oesday otnay aysay"/>
+    <Item english="Highlight matching braces" text="Ighlighthay atchingmay acesbray"/>
+    <Item english="Header font (blank for the editor's)" text="Eaderhay ontfay (ankblay orfay ethay editor'syay)"/>
+    <Item english="Header font size" text="Eaderhay ontfay izesay"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Arginsmay: eftlay, optay, ightray, ottombay (ointspay)"/>
+    <Item english="Characters before it opens" text="Aracterschay eforebay ityay opensyay"/>
+    <Item english="Add characters to the word list" text="Addyay aracterschay otay ethay ordway istlay"/>
+    <Item english="A fixed folder" text="Ayay ixedfay olderfay"/>
+    <Item english="Fixed folder" text="Ixedfay olderfay"/>
+    <Item english="Confirm Replace All" text="Onfirmcay Eplaceray Allyay"/>
+    <Item english="Compare: ignore case" text="Omparecay: ignoreyay asecay"/>
+    <Item english="Compare: ignore spaces" text="Omparecay: ignoreyay acesspay"/>
+    <Item english="Compare: ignore empty lines" text="Omparecay: ignoreyay emptyyay ineslay"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Axmay Aracterschay otay Autoyay-Illfay Indfay Ieldfay"/>
+    <Item english="Releases repository" text="Eleasesray epositoryray"/>
+    <Item english="Notepad++ update" text="Notepad++ updateyay"/>
+    <Item english="No update is available." text="Onay updateyay isyay availableyay."/>
+    <Item english="An update package is available, do you want to download it?" text="Anyay updateyay ackagepay isyay availableyay, oday youyay antway otay ownloadday ityay?"/>
+    <Item english="Open the Releases Page" text="Openyay ethay Eleasesray Agepay"/>
+    <Item english="Copy debug info to clipboard" text="Opycay ebugday infoyay otay ipboardclay"/>
+    <Item english="Fonts…" text="Ontsfay…"/>
+    <Item english="This document is not valid JSON." text="Isthay ocumentday isyay otnay alidvay JSON."/>
+    <Item english="Valid JSON." text="Alidvay JSON."/>
+    <Item english="Invalid JSON." text="Invalidyay JSON."/>
+    <Item english="Set as the first file to compare." text="Etsay asyay ethay irstfay ilefay otay omparecay."/>
+    <Item english="Nothing to compare with." text="Othingnay otay omparecay ithway."/>
+    <Item english="The document is valid XML." text="Ethay ocumentday isyay alidvay XML."/>
+    <Item english="FTP connections" text="FTP onnectionscay"/>
+    <Item english="Cannot connect." text="Annotcay onnectcay."/>
+    <Item english="That file is open in another tab." text="Atthay ilefay isyay openyay inyay anotheryay abtay."/>
+    <Item english="Close it first, or choose another name." text="Oseclay ityay irstfay, oryay oosechay anotheryay amenay."/>
+    <Item english="Which language is this?" text="Ichwhay anguagelay isyay isthay?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Omesay aracterschay annotcay ebay epresentedray inyay isthay encodingyay."/>
+    <Item english="Converting will replace them." text="Onvertingcay illway eplaceray emthay."/>
+    <Item english="Press the keys." text="Esspray ethay eyskay."/>
+    <Item english="Nothing is marked" text="Othingnay isyay arkedmay"/>
+    <Item english="Marked text copied" text="Arkedmay exttay opiedcay"/>
+    <Item english="Choose a folder first" text="Oosechay ayay olderfay irstfay"/>
+    <Item english="This document has no folder" text="Isthay ocumentday ashay onay olderfay"/>
+    <Item english="The ticked project panels have no files" text="Ethay ickedtay ojectpray anelspay avehay onay ilesfay"/>
+    <Item english="Searching..." text="Earchingsay..."/>
+    <Item english="Stopping..." text="Oppingstay..."/>
+    <Item english="Marks cleared" text="Arksmay earedclay"/>
+    <Item english="Transparent" text="Ansparenttray"/>
+    <Item english="View 1" text="Iewvay 1"/>
+    <Item english="View 2" text="Iewvay 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Asheshay"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC eykay (optionalyay):"/>
+    <Item english="Salt (hexadecimal):" text="Altsay (exadecimalhay):"/>
+    <Item english="Random" text="Andomray"/>
+    <Item english="Cost (4-31):" text="Ostcay (4-31):"/>
+    <Item english="Version:" text="Ersionvay:"/>
+    <Item english="N, as a power of 2:" text="N, asyay ayay owerpay ofyay 2:"/>
+    <Item english="Block size (r):" text="Ockblay izesay (r):"/>
+    <Item english="Parallelism (p):" text="Arallelismpay (p):"/>
+    <Item english="Variant:" text="Ariantvay:"/>
+    <Item english="Memory (KiB):" text="Emorymay (KiB):"/>
+    <Item english="Iterations:" text="Iterationsyay:"/>
+    <Item english="Parallelism:" text="Arallelismpay:"/>
+    <Item english="Digest:" text="Igestday:"/>
+    <Item english="Hash length (bytes):" text="Ashhay engthlay (ytesbay):"/>
+    <Item english="Hash:" text="Ashhay:"/>
+    <Item english="Verify" text="Erifyvay"/>
+    <Item english="Hash to check the password against:" text="Ashhay otay eckchay ethay asswordpay againstyay:"/>
+    <Item english="The salt is not valid hexadecimal." text="Ethay altsay isyay otnay alidvay exadecimalhay."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt akestay ayay altsay ofyay exactlyyay 16 ytesbay."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 akestay ayay altsay ofyay atyay eastlay 8 ytesbay."/>
+    <Item english="The hash could not be generated with these settings." text="Ethay ashhay ouldcay otnay ebay eneratedgay ithway esethay ettingssay."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Isthay isyay otnay ayay bcrypt, scrypt, Argon2 oryay PBKDF2 ashhay."/>
+    <Item english="The password matches the hash." text="Ethay asswordpay atchesmay ethay ashhay."/>
+    <Item english="The password does not match the hash." text="Ethay asswordpay oesday otnay atchmay ethay ashhay."/>
+    <Item english="The cost must be between 4 and 31." text="Ethay ostcay ustmay ebay etweenbay 4 andyay 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Ethay ersionvay ustmay ebay 2a, 2b oryay 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N ustmay ebay etweenbay 2^1 andyay 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r andyay p ustmay ebay etweenbay 1 andyay 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Esethay ettingssay eednay oremay anthay 2 GB ofyay emorymay."/>
+    <Item english="The parallelism must be between 1 and 64." text="Ethay arallelismpay ustmay ebay etweenbay 1 andyay 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Ethay iterationsyay ustmay ebay etweenbay 1 andyay 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Ethay emorymay ustmay ebay atyay eastlay 8 KiB orfay eachyay anelay."/>
+    <Item english="These settings need more than 4 GB of memory." text="Esethay ettingssay eednay oremay anthay 4 GB ofyay emorymay."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Ethay igestday ustmay ebay SHA-1, SHA-256 oryay SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Ethay iterationsyay ustmay ebay etweenbay 1 andyay 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Ethay ashhay engthlay ustmay ebay etweenbay 4 andyay 1024 ytesbay."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-afesay)"/>
+    <Item english="Encode" text="Encodeyay"/>
+    <Item english="Decode" text="Ecodeday"/>
+    <Item english="The input is:" text="Ethay inputyay isyay:"/>
+    <Item english="Bytes in hexadecimal" text="Ytesbay inyay exadecimalhay"/>
+    <Item english="Input:" text="Inputyay:"/>
+    <Item english="Result:" text="Esultray:"/>
+    <Item english="Text:" text="Exttay:"/>
+    <Item english="Bytes in hexadecimal:" text="Ytesbay inyay exadecimalhay:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Ethay inputyay isyay otnay ytesbay ittenwray inyay exadecimalhay."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Ethay inputyay isyay otnay alidvay $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Ethay ecodedday ytesbay areyay otnay UTF-8 exttay; eythay areyay ownshay inyay exadecimalhay onlyyay."/>
+    <Item english="Password Generator" text="Asswordpay Eneratorgay"/>
+    <Item english="Length:" text="Engthlay:"/>
+    <Item english="Number of passwords:" text="Umbernay ofyay asswordspay:"/>
+    <Item english="Uppercase letters (A-Z)" text="Uppercaseyay etterslay (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Owercaselay etterslay (a-z)"/>
+    <Item english="Digits (0-9)" text="Igitsday (0-9)"/>
+    <Item english="Symbols:" text="Ymbolssay:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Eavelay outyay aracterschay atthay ooklay alikeyay (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Atyay eastlay oneyay aracterchay ofyay eachyay indkay"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropyyay: aboutyay $INT_REPLACE$ itsbay"/>
+    <Item english="Choose at least one kind of character." text="Oosechay atyay eastlay oneyay indkay ofyay aracterchay."/>
+    <Item english="Insert into Document" text="Insertyay intoyay Ocumentday"/>
+    <Item english="Show the bare key in hexadecimal" text="Owshay ethay arebay eykay inyay exadecimalhay"/>
+    <Item english="Empty: a random salt each time" text="Emptyyay: ayay andomray altsay eachyay imetay"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt eadsray onlyyay ethay irstfay 72 ytesbay."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP Equestray"/>
+    <Item english="Send" text="Endsay"/>
+    <Item english="Parameters" text="Arameterspay"/>
+    <Item english="Headers" text="Eadershay"/>
+    <Item english="Body" text="Odybay"/>
+    <Item english="Options" text="Optionsyay"/>
+    <Item english="Content type:" text="Ontentcay ypetay:"/>
+    <Item english="User name:" text="Useryay amenay:"/>
+    <Item english="Password:" text="Asswordpay:"/>
+    <Item english="Timeout (seconds):" text="Imeouttay (econdssay):"/>
+    <Item english="Follow redirects" text="Ollowfay edirectsray"/>
+    <Item english="Allow invalid certificates" text="Allowyay invalidyay ertificatescay"/>
+    <Item english="Format JSON" text="Ormatfay JSON"/>
+    <Item english="Paste curl Command" text="Astepay curl Ommandcay"/>
+    <Item english="Copy as curl" text="Opycay asyay curl"/>
+    <Item english="Open in New Document" text="Openyay inyay Ewnay Ocumentday"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Oneyay otay ayay inelay: amenay=aluevay. Eythay areyay addedyay otay ethay addressyay, encodedyay."/>
+    <Item english="One to a line: Name: value" text="Oneyay otay ayay inelay: Amenay: aluevay"/>
+    <Item english="Sent as it is written, in UTF-8." text="Entsay asyay ityay isyay ittenwray, inyay UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Ethay answeryay isyay otnay exttay: $INT_REPLACE$ ytesbay."/>
+    <Item english="The address is not an http or https address." text="Ethay addressyay isyay otnay anyay http oryay https addressyay."/>
+    <Item english="This is not a curl command." text="Isthay isyay otnay ayay curl ommandcay."/>
+    <Item english="The command has no address." text="Ethay ommandcay ashay onay addressyay."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Ethay ommandcay eadsray itsyay ataday omfray ayay ilefay, ichwhay isyay otnay oneday erehay."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Ormsfay andyay uploadsyay ofyay ilesfay areyay otnay eadray omfray ayay ommandcay."/>
+    <Item english="The command's address is not an http or https address." text="Ethay ommand'scay addressyay isyay otnay anyay http oryay https addressyay."/>
+</NativeLangExtra>

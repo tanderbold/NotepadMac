@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/dutch.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Nederlands">
+    <Item english="About NotepadMac" text="Over NotepadMac"/>
+    <Item english="Hide NotepadMac" text="NotepadMac verbergen"/>
+    <Item english="Hide Others" text="Andere verbergen"/>
+    <Item english="Show All" text="Alles weergeven"/>
+    <Item english="Quit NotepadMac" text="NotepadMac afsluiten"/>
+    <Item english="Open Containing Folder in Finder" text="Bevattende map in Finder openen"/>
+    <Item english="Open Containing Folder in Terminal" text="Bevattende map in Terminal openen"/>
+    <Item english="Toggle Insert/Overtype" text="Invoegen/overschrijven wisselen"/>
+    <Item english="Toggle Fold" text="Samenvouwen/uitvouwen"/>
+    <Item english="Show All Hidden Lines" text="Alle verborgen regels weergeven"/>
+    <Item english="Recent Window" text="Recent venster"/>
+    <Item english="Move to Trash" text="Naar prullenmand verplaatsen"/>
+    <Item english="Save Current Command…" text="Huidige opdracht opslaan…"/>
+    <Item english="Manage Saved Commands…" text="Opgeslagen opdrachten beheren…"/>
+    <Item english="Show Console" text="Console weergeven"/>
+    <Item english="Validate shortcuts" text="Sneltoetsen controleren"/>
+    <Item english="Open Plugins Folder…" text="Plugin-map openen…"/>
+    <Item english="Format" text="Opmaken"/>
+    <Item english="Compact" text="Compact maken"/>
+    <Item english="Sort Keys" text="Sleutels sorteren"/>
+    <Item english="Validate" text="Valideren"/>
+    <Item english="Show JSON Tree" text="JSON-boom weergeven"/>
+    <Item english="Set as First to Compare" text="Instellen als eerste om te vergelijken"/>
+    <Item english="Compare" text="Vergelijken"/>
+    <Item english="Compare with File…" text="Vergelijken met bestand…"/>
+    <Item english="Next Difference" text="Volgend verschil"/>
+    <Item english="Previous Difference" text="Vorig verschil"/>
+    <Item english="First Difference" text="Eerste verschil"/>
+    <Item english="Last Difference" text="Laatste verschil"/>
+    <Item english="Compare Summary" text="Samenvatting van vergelijking"/>
+    <Item english="Ignore Case" text="Hoofdletters negeren"/>
+    <Item english="Ignore Spaces" text="Spaties negeren"/>
+    <Item english="Ignore Empty Lines" text="Lege regels negeren"/>
+    <Item english="Clear Active Compare" text="Actieve vergelijking wissen"/>
+    <Item english="Clear All Compares" text="Alle vergelijkingen wissen"/>
+    <Item english="Pretty Print" text="Netjes opmaken"/>
+    <Item english="Pretty Print — Indent Attributes" text="Netjes opmaken — attributen inspringen"/>
+    <Item english="Linearize" text="Op één regel zetten"/>
+    <Item english="Check XML Syntax Now" text="XML-syntaxis nu controleren"/>
+    <Item english="Validate Against Schema…" text="Valideren met schema…"/>
+    <Item english="Validate Against DTD" text="Valideren met DTD"/>
+    <Item english="Evaluate XPath Expression…" text="XPath-expressie evalueren…"/>
+    <Item english="Current XML Path" text="Huidig XML-pad"/>
+    <Item english="Current XML Path with Predicates" text="Huidig XML-pad met predicaten"/>
+    <Item english="Apply XSL Transformation…" text="XSL-transformatie toepassen…"/>
+    <Item english="Escape Characters in Selection" text="Tekens in selectie escapen"/>
+    <Item english="Unescape Characters in Selection" text="Escapes in selectie ongedaan maken"/>
+    <Item english="Connections…" text="Verbindingen…"/>
+    <Item english="Connect…" text="Verbinden…"/>
+    <Item english="Disconnect" text="Verbinding verbreken"/>
+    <Item english="Show Remote Files" text="Externe bestanden weergeven"/>
+    <Item english="Upload Current File" text="Huidig bestand uploaden"/>
+    <Item english="Execute NppExec Script…" text="NppExec-script uitvoeren…"/>
+    <Item english="Execute Previous NppExec Script" text="Vorig NppExec-script uitvoeren"/>
+    <Item english="Stop Running NppExec Script" text="Actief NppExec-script stoppen"/>
+    <Item english="Show NppExec Console" text="NppExec-console weergeven"/>
+    <Item english="Execute NppExec Script" text="NppExec-script uitvoeren"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;tijdelijk script&gt;"/>
+    <Item english="Script name" text="Scriptnaam"/>
+    <Item english="Dock Left" text="Links vastzetten"/>
+    <Item english="Dock Right" text="Rechts vastzetten"/>
+    <Item english="Dock Top" text="Boven vastzetten"/>
+    <Item english="Dock Bottom" text="Onder vastzetten"/>
+    <Item english="Float" text="Zwevend"/>
+    <Item english="Remember which panels were open" text="Onthouden welke panelen geopend waren"/>
+    <Item english="Show the toolbar" text="Werkbalk weergeven"/>
+    <Item english="Toolbar buttons" text="Werkbalkknoppen"/>
+    <Item english="Icons only" text="Alleen pictogrammen"/>
+    <Item english="Icons and labels" text="Pictogrammen en labels"/>
+    <Item english="Labels only" text="Alleen labels"/>
+    <Item english="Toolbar size" text="Grootte van werkbalk"/>
+    <Item english="Regular" text="Normaal"/>
+    <Item english="Small" text="Klein"/>
+    <Item english="Icons" text="Pictogrammen"/>
+    <Item english="Hidden" text="Verborgen"/>
+    <Item english="1 pixel" text="1 pixel"/>
+    <Item english="2 pixels" text="2 pixels"/>
+    <Item english="3 pixels" text="3 pixels"/>
+    <Item english="Selected text can be dragged" text="Geselecteerde tekst kan worden gesleept"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Meervoudig bewerken inschakelen (Cmd+klikken/selectie)"/>
+    <Item english="Follow the system" text="Systeem volgen"/>
+    <Item english="Light theme" text="Licht thema"/>
+    <Item english="Dark theme" text="Donker thema"/>
+    <Item english="Show the fold margin" text="Vouwmarge weergeven"/>
+    <Item english="A line" text="Een lijn"/>
+    <Item english="Columns (space separated)" text="Kolommen (gescheiden door spaties)"/>
+    <Item english="3 parts" text="3 delen"/>
+    <Item english="4 parts" text="4 delen"/>
+    <Item english="5 parts" text="5 delen"/>
+    <Item english="6 parts" text="6 delen"/>
+    <Item english="7 parts" text="7 delen"/>
+    <Item english="8 parts" text="8 delen"/>
+    <Item english="9 parts" text="9 delen"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Syntaxis afleiden uit de inhoud als de naam die niet aangeeft"/>
+    <Item english="Highlight matching braces" text="Overeenkomende haakjes markeren"/>
+    <Item english="Header font (blank for the editor's)" text="Lettertype van koptekst (leeg: dat van de editor)"/>
+    <Item english="Header font size" text="Tekengrootte van koptekst"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Marges: links, boven, rechts, onder (punten)"/>
+    <Item english="Characters before it opens" text="Aantal tekens voordat de lijst opent"/>
+    <Item english="Add characters to the word list" text="Tekens aan de woordtekenlijst toevoegen"/>
+    <Item english="A fixed folder" text="Een vaste map"/>
+    <Item english="Fixed folder" text="Vaste map"/>
+    <Item english="Confirm Replace All" text="Alles vervangen bevestigen"/>
+    <Item english="Compare: ignore case" text="Vergelijken: hoofdletters negeren"/>
+    <Item english="Compare: ignore spaces" text="Vergelijken: spaties negeren"/>
+    <Item english="Compare: ignore empty lines" text="Vergelijken: lege regels negeren"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maximaal aantal tekens voor automatisch invullen van zoekveld"/>
+    <Item english="Releases repository" text="Repository met releases"/>
+    <Item english="Notepad++ update" text="Notepad++ bijwerken"/>
+    <Item english="No update is available." text="Er is geen update beschikbaar."/>
+    <Item english="An update package is available, do you want to download it?" text="Er is een updatepakket beschikbaar. Wilt u het downloaden?"/>
+    <Item english="Open the Releases Page" text="Releasepagina openen"/>
+    <Item english="Copy debug info to clipboard" text="Debug-info naar klembord kopiëren"/>
+    <Item english="Fonts…" text="Lettertypen…"/>
+    <Item english="This document is not valid JSON." text="Dit document is geen geldige JSON."/>
+    <Item english="Valid JSON." text="Geldige JSON."/>
+    <Item english="Invalid JSON." text="Ongeldige JSON."/>
+    <Item english="Set as the first file to compare." text="Ingesteld als eerste bestand om te vergelijken."/>
+    <Item english="Nothing to compare with." text="Niets om mee te vergelijken."/>
+    <Item english="The document is valid XML." text="Het document is geldige XML."/>
+    <Item english="FTP connections" text="FTP-verbindingen"/>
+    <Item english="Cannot connect." text="Kan geen verbinding maken."/>
+    <Item english="That file is open in another tab." text="Dat bestand is geopend in een ander tabblad."/>
+    <Item english="Close it first, or choose another name." text="Sluit het eerst, of kies een andere naam."/>
+    <Item english="Which language is this?" text="Welke syntaxis is dit?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Sommige tekens kunnen niet worden weergegeven in deze tekenset."/>
+    <Item english="Converting will replace them." text="Bij het converteren worden ze vervangen."/>
+    <Item english="Press the keys." text="Druk op de toetsen."/>
+    <Item english="Nothing is marked" text="Er is niets gemarkeerd"/>
+    <Item english="Marked text copied" text="Gemarkeerde tekst gekopieerd"/>
+    <Item english="Choose a folder first" text="Kies eerst een map"/>
+    <Item english="This document has no folder" text="Dit document heeft geen map"/>
+    <Item english="The ticked project panels have no files" text="De aangevinkte projectpanelen bevatten geen bestanden"/>
+    <Item english="Searching..." text="Zoeken..."/>
+    <Item english="Stopping..." text="Stoppen..."/>
+    <Item english="Marks cleared" text="Markeringen gewist"/>
+    <Item english="Transparent" text="Transparant"/>
+    <Item english="View 1" text="Deelvenster 1"/>
+    <Item english="View 2" text="Deelvenster 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hashes"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-sleutel (optioneel):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (hexadecimaal):"/>
+    <Item english="Random" text="Willekeurig"/>
+    <Item english="Cost (4-31):" text="Kostenfactor (4-31):"/>
+    <Item english="Version:" text="Versie:"/>
+    <Item english="N, as a power of 2:" text="N, als macht van 2:"/>
+    <Item english="Block size (r):" text="Blokgrootte (r):"/>
+    <Item english="Parallelism (p):" text="Parallellisme (p):"/>
+    <Item english="Variant:" text="Variant:"/>
+    <Item english="Memory (KiB):" text="Geheugen (KiB):"/>
+    <Item english="Iterations:" text="Iteraties:"/>
+    <Item english="Parallelism:" text="Parallellisme:"/>
+    <Item english="Digest:" text="Hashfunctie:"/>
+    <Item english="Hash length (bytes):" text="Hashlengte (bytes):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Verifiëren"/>
+    <Item english="Hash to check the password against:" text="Hash waarmee het wachtwoord wordt vergeleken:"/>
+    <Item english="The salt is not valid hexadecimal." text="De salt is niet geldig hexadecimaal."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt vereist een salt van precies 16 bytes."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 vereist een salt van ten minste 8 bytes."/>
+    <Item english="The hash could not be generated with these settings." text="De hash kon met deze instellingen niet worden gegenereerd."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Dit is geen bcrypt-, scrypt-, Argon2- of PBKDF2-hash."/>
+    <Item english="The password matches the hash." text="Het wachtwoord komt overeen met de hash."/>
+    <Item english="The password does not match the hash." text="Het wachtwoord komt niet overeen met de hash."/>
+    <Item english="The cost must be between 4 and 31." text="De kostenfactor moet tussen 4 en 31 liggen."/>
+    <Item english="The version must be 2a, 2b or 2y." text="De versie moet 2a, 2b of 2y zijn."/>
+    <Item english="N must be between 2^1 and 2^24." text="N moet tussen 2^1 en 2^24 liggen."/>
+    <Item english="r and p must be between 1 and 64." text="r en p moeten tussen 1 en 64 liggen."/>
+    <Item english="These settings need more than 2 GB of memory." text="Deze instellingen vereisen meer dan 2 GB geheugen."/>
+    <Item english="The parallelism must be between 1 and 64." text="Het parallellisme moet tussen 1 en 64 liggen."/>
+    <Item english="The iterations must be between 1 and 1000." text="Het aantal iteraties moet tussen 1 en 1000 liggen."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Het geheugen moet ten minste 8 KiB per thread zijn."/>
+    <Item english="These settings need more than 4 GB of memory." text="Deze instellingen vereisen meer dan 4 GB geheugen."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="De hashfunctie moet SHA-1, SHA-256 of SHA-512 zijn."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Het aantal iteraties moet tussen 1 en 100000000 liggen."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="De hashlengte moet tussen 4 en 1024 bytes liggen."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-veilig)"/>
+    <Item english="Encode" text="Coderen"/>
+    <Item english="Decode" text="Decoderen"/>
+    <Item english="The input is:" text="De invoer is:"/>
+    <Item english="Bytes in hexadecimal" text="Bytes in hexadecimale notatie"/>
+    <Item english="Input:" text="Invoer:"/>
+    <Item english="Result:" text="Resultaat:"/>
+    <Item english="Text:" text="Tekst:"/>
+    <Item english="Bytes in hexadecimal:" text="Bytes in hexadecimale notatie:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="De invoer bestaat niet uit hexadecimaal geschreven bytes."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="De invoer is geen geldige $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="De gedecodeerde bytes zijn geen UTF-8-tekst; ze worden alleen hexadecimaal weergegeven."/>
+    <Item english="Password Generator" text="Wachtwoordgenerator"/>
+    <Item english="Length:" text="Lengte:"/>
+    <Item english="Number of passwords:" text="Aantal wachtwoorden:"/>
+    <Item english="Uppercase letters (A-Z)" text="Hoofdletters (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Kleine letters (a-z)"/>
+    <Item english="Digits (0-9)" text="Cijfers (0-9)"/>
+    <Item english="Symbols:" text="Symbolen:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Tekens die op elkaar lijken weglaten (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Ten minste één teken van elke soort"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropie: ongeveer $INT_REPLACE$ bits"/>
+    <Item english="Choose at least one kind of character." text="Kies ten minste één soort teken."/>
+    <Item english="Insert into Document" text="In document invoegen"/>
+    <Item english="Show the bare key in hexadecimal" text="De kale sleutel hexadecimaal weergeven"/>
+    <Item english="Empty: a random salt each time" text="Leeg: elke keer een willekeurige salt"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt leest alleen de eerste 72 bytes."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-verzoek"/>
+    <Item english="Send" text="Verzenden"/>
+    <Item english="Parameters" text="Parameters"/>
+    <Item english="Headers" text="Headers"/>
+    <Item english="Body" text="Body"/>
+    <Item english="Options" text="Opties"/>
+    <Item english="Content type:" text="Inhoudstype:"/>
+    <Item english="User name:" text="Gebruikersnaam:"/>
+    <Item english="Password:" text="Wachtwoord:"/>
+    <Item english="Timeout (seconds):" text="Time-out (seconden):"/>
+    <Item english="Follow redirects" text="Omleidingen volgen"/>
+    <Item english="Allow invalid certificates" text="Ongeldige certificaten toestaan"/>
+    <Item english="Format JSON" text="JSON opmaken"/>
+    <Item english="Paste curl Command" text="curl-opdracht plakken"/>
+    <Item english="Copy as curl" text="Als curl kopiëren"/>
+    <Item english="Open in New Document" text="In nieuw document openen"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Eén per regel: naam=waarde. Ze worden gecodeerd aan het adres toegevoegd."/>
+    <Item english="One to a line: Name: value" text="Eén per regel: Naam: waarde"/>
+    <Item english="Sent as it is written, in UTF-8." text="Wordt verzonden zoals het geschreven is, in UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Het antwoord is geen tekst: $INT_REPLACE$ bytes."/>
+    <Item english="The address is not an http or https address." text="Het adres is geen http- of https-adres."/>
+    <Item english="This is not a curl command." text="Dit is geen curl-opdracht."/>
+    <Item english="The command has no address." text="De opdracht bevat geen adres."/>
+    <Item english="The command reads its data from a file, which is not done here." text="De opdracht leest zijn gegevens uit een bestand; dat wordt hier niet gedaan."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formulieren en bestandsuploads worden niet uit een opdracht gelezen."/>
+    <Item english="The command's address is not an http or https address." text="Het adres van de opdracht is geen http- of https-adres."/>
+</NativeLangExtra>

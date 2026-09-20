@@ -1,0 +1,18 @@
+Diode rectifier with a control block
+V1 a 0 SIN(0 10 50)
+D1 a b D1N4148
+C1 b 0 100u IC=0
+R1 b 0 1k
+.model D1N4148 D(IS=2.52n RS=0.568 N=1.752 CJO=4p M=0.4 TT=20n)
+.ic V(b)=0
+.options reltol=1e-4 abstol=1e-12
+
+.control
+  set filetype=ascii
+  tran 100u 100m
+  meas tran ripple PP v(b) from=60m to=100m
+  plot v(a) v(b)
+  wrdata rectifier.txt v(b)
+  echo "ripple is $&ripple volts"
+.endc
+.end

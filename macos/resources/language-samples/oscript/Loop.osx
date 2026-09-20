@@ -1,0 +1,26 @@
+// Scratch script: summarises the audit trail for yesterday
+Object		prgCtx = $PrgSession
+Date		since = Date.Now() - 86400
+RecArray	events = CAPI.Exec( prgCtx.fDBConnect.fConnection, "select UserID, AuditStr from DAuditNew where AuditDate > :A1", since )
+Assoc		perUser = Assoc.CreateAssoc()
+Record		e
+Integer		count
+
+for e in events
+	count = IsDefined( perUser.( e.UserID ) ) ? perUser.( e.UserID ) : 0
+	perUser.( e.UserID ) = count + 1
+end
+
+String	key
+for key in Assoc.Keys( perUser )
+	echo( Str.Format( "%1: %2 events", key, perUser.( key ) ) )
+end
+
+Integer i = 0
+repeat
+	i += 1
+until i >= 3
+
+while i > 0
+	i -= 1
+end

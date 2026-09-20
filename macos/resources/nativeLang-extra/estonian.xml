@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/estonian.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Estonian">
+    <Item english="About NotepadMac" text="Teave NotepadMaci kohta"/>
+    <Item english="Hide NotepadMac" text="Peida NotepadMac"/>
+    <Item english="Hide Others" text="Peida teised"/>
+    <Item english="Show All" text="Näita kõiki"/>
+    <Item english="Quit NotepadMac" text="Välju NotepadMacist"/>
+    <Item english="Open Containing Folder in Finder" text="Ava faili sisaldav kaust Finderis"/>
+    <Item english="Open Containing Folder in Terminal" text="Ava faili sisaldav kaust Terminalis"/>
+    <Item english="Toggle Insert/Overtype" text="Lülita lisamine/ülekirjutamine"/>
+    <Item english="Toggle Fold" text="Voldi kinni/lahti"/>
+    <Item english="Show All Hidden Lines" text="Näita kõiki peidetud ridu"/>
+    <Item english="Recent Window" text="Eelmine aken"/>
+    <Item english="Move to Trash" text="Teisalda prügikasti"/>
+    <Item english="Save Current Command…" text="Salvesta praegune käsk…"/>
+    <Item english="Manage Saved Commands…" text="Halda salvestatud käske…"/>
+    <Item english="Show Console" text="Näita konsooli"/>
+    <Item english="Validate shortcuts" text="Kontrolli otseteid"/>
+    <Item english="Open Plugins Folder…" text="Ava pluginate kaust…"/>
+    <Item english="Format" text="Vorminda"/>
+    <Item english="Compact" text="Tihenda"/>
+    <Item english="Sort Keys" text="Sordi võtmed"/>
+    <Item english="Validate" text="Valideeri"/>
+    <Item english="Show JSON Tree" text="Näita JSON-puud"/>
+    <Item english="Set as First to Compare" text="Määra esimeseks võrreldavaks"/>
+    <Item english="Compare" text="Võrdle"/>
+    <Item english="Compare with File…" text="Võrdle failiga…"/>
+    <Item english="Next Difference" text="Järgmine erinevus"/>
+    <Item english="Previous Difference" text="Eelmine erinevus"/>
+    <Item english="First Difference" text="Esimene erinevus"/>
+    <Item english="Last Difference" text="Viimane erinevus"/>
+    <Item english="Compare Summary" text="Võrdluse kokkuvõte"/>
+    <Item english="Ignore Case" text="Mitte-tõstutundlik"/>
+    <Item english="Ignore Spaces" text="Eira tühikuid"/>
+    <Item english="Ignore Empty Lines" text="Eira tühje ridu"/>
+    <Item english="Clear Active Compare" text="Tühista aktiivne võrdlus"/>
+    <Item english="Clear All Compares" text="Tühista kõik võrdlused"/>
+    <Item english="Pretty Print" text="Vorminda loetavaks"/>
+    <Item english="Pretty Print — Indent Attributes" text="Vorminda loetavaks — taanda atribuudid"/>
+    <Item english="Linearize" text="Vii ühele reale"/>
+    <Item english="Check XML Syntax Now" text="Kontrolli XML-i süntaksit kohe"/>
+    <Item english="Validate Against Schema…" text="Valideeri skeemi järgi…"/>
+    <Item english="Validate Against DTD" text="Valideeri DTD järgi"/>
+    <Item english="Evaluate XPath Expression…" text="Arvuta XPath-avaldis…"/>
+    <Item english="Current XML Path" text="Praegune XML-i tee"/>
+    <Item english="Current XML Path with Predicates" text="Praegune XML-i tee koos predikaatidega"/>
+    <Item english="Apply XSL Transformation…" text="Rakenda XSL-teisendus…"/>
+    <Item english="Connections…" text="Ühendused…"/>
+    <Item english="Connect…" text="Ühenda…"/>
+    <Item english="Disconnect" text="Katkesta ühendus"/>
+    <Item english="Show Remote Files" text="Näita kaugfaile"/>
+    <Item english="Upload Current File" text="Laadi praegune fail üles"/>
+    <Item english="Execute NppExec Script…" text="Käivita NppExec-skript…"/>
+    <Item english="Execute Previous NppExec Script" text="Käivita eelmine NppExec-skript"/>
+    <Item english="Stop Running NppExec Script" text="Peata töötav NppExec-skript"/>
+    <Item english="Show NppExec Console" text="Näita NppExec-konsooli"/>
+    <Item english="Execute NppExec Script" text="Käivita NppExec-skript"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;ajutine skript&gt;"/>
+    <Item english="Script name" text="Skripti nimi"/>
+    <Item english="Dock Left" text="Doki vasakule"/>
+    <Item english="Dock Right" text="Doki paremale"/>
+    <Item english="Dock Top" text="Doki üles"/>
+    <Item english="Dock Bottom" text="Doki alla"/>
+    <Item english="Float" text="Eraldi aknas"/>
+    <Item english="Remember which panels were open" text="Jäta meelde, millised paneelid olid avatud"/>
+    <Item english="Show the toolbar" text="Näita tööriistariba"/>
+    <Item english="Toolbar buttons" text="Tööriistariba nupud"/>
+    <Item english="Icons only" text="Ainult ikoonid"/>
+    <Item english="Icons and labels" text="Ikoonid ja sildid"/>
+    <Item english="Labels only" text="Ainult sildid"/>
+    <Item english="Toolbar size" text="Tööriistariba suurus"/>
+    <Item english="Regular" text="Tavaline"/>
+    <Item english="Small" text="Väike"/>
+    <Item english="Icons" text="Ikoonid"/>
+    <Item english="Hidden" text="Peidetud"/>
+    <Item english="1 pixel" text="1 piksel"/>
+    <Item english="2 pixels" text="2 pikslit"/>
+    <Item english="3 pixels" text="3 pikslit"/>
+    <Item english="Selected text can be dragged" text="Valitud teksti saab lohistada"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Luba mitmes kohas redigeerimine (Cmd+klõps/valik)"/>
+    <Item english="Follow the system" text="Nagu süsteemis"/>
+    <Item english="Light theme" text="Hele teema"/>
+    <Item english="Dark theme" text="Tume teema"/>
+    <Item english="Show the fold margin" text="Näita voltimisveerist"/>
+    <Item english="A line" text="Joon"/>
+    <Item english="Columns (space separated)" text="Veerud (tühikutega eraldatud)"/>
+    <Item english="3 parts" text="3 osa"/>
+    <Item english="4 parts" text="4 osa"/>
+    <Item english="5 parts" text="5 osa"/>
+    <Item english="6 parts" text="6 osa"/>
+    <Item english="7 parts" text="7 osa"/>
+    <Item english="8 parts" text="8 osa"/>
+    <Item english="9 parts" text="9 osa"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Tuvasta keel sisu järgi, kui nimi seda ei ütle"/>
+    <Item english="Highlight matching braces" text="Tõsta esile teineteisele vastavad sulud"/>
+    <Item english="Header font (blank for the editor's)" text="Päise font (tühi: sama mis redaktoris)"/>
+    <Item english="Header font size" text="Päise fondi suurus"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Veerised: vasak, ülemine, parem, alumine (punktides)"/>
+    <Item english="Characters before it opens" text="Tähemärke enne avanemist"/>
+    <Item english="Add characters to the word list" text="Lisa tähemärke sõna tähemärkide loendisse"/>
+    <Item english="A fixed folder" text="Kindel kaust"/>
+    <Item english="Fixed folder" text="Kindel kaust"/>
+    <Item english="Confirm Replace All" text="Kinnita „Asenda kõik”"/>
+    <Item english="Compare: ignore case" text="Võrdlus: mitte-tõstutundlik"/>
+    <Item english="Compare: ignore spaces" text="Võrdlus: eira tühikuid"/>
+    <Item english="Compare: ignore empty lines" text="Võrdlus: eira tühje ridu"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maks. tähemärkide arv otsinguvälja automaatsel täitmisel"/>
+    <Item english="Releases repository" text="Väljalasete hoidla"/>
+    <Item english="Notepad++ update" text="Notepad++-i värskendus"/>
+    <Item english="No update is available." text="Värskendusi ei ole saadaval."/>
+    <Item english="An update package is available, do you want to download it?" text="Värskenduspakett on saadaval. Kas soovid selle alla laadida?"/>
+    <Item english="Open the Releases Page" text="Ava väljalasete leht"/>
+    <Item english="Copy debug info to clipboard" text="Kopeeri silumisinfo lõikepuhvrisse"/>
+    <Item english="Fonts…" text="Fondid…"/>
+    <Item english="This document is not valid JSON." text="See dokument ei ole kehtiv JSON."/>
+    <Item english="Valid JSON." text="Kehtiv JSON."/>
+    <Item english="Invalid JSON." text="Vigane JSON."/>
+    <Item english="Set as the first file to compare." text="Määratud esimeseks võrreldavaks failiks."/>
+    <Item english="Nothing to compare with." text="Pole millegagi võrrelda."/>
+    <Item english="The document is valid XML." text="Dokument on kehtiv XML."/>
+    <Item english="FTP connections" text="FTP-ühendused"/>
+    <Item english="Cannot connect." text="Ühendamine ebaõnnestus."/>
+    <Item english="That file is open in another tab." text="See fail on avatud teisel sakil."/>
+    <Item english="Close it first, or choose another name." text="Sulge see esmalt või vali teine nimi."/>
+    <Item english="Which language is this?" text="Mis keel see on?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Mõnda tähemärki ei saa selles kodeeringus esitada."/>
+    <Item english="Converting will replace them." text="Teisendamisel need asendatakse."/>
+    <Item english="Press the keys." text="Vajuta klahve."/>
+    <Item english="Nothing is marked" text="Midagi pole märgitud"/>
+    <Item english="Marked text copied" text="Märgitud tekst kopeeritud"/>
+    <Item english="Choose a folder first" text="Vali esmalt kaust"/>
+    <Item english="This document has no folder" text="Sellel dokumendil pole kausta"/>
+    <Item english="The ticked project panels have no files" text="Märgitud projektipaneelides pole faile"/>
+    <Item english="Searching..." text="Otsimine..."/>
+    <Item english="Stopping..." text="Peatamine..."/>
+    <Item english="Marks cleared" text="Märkimised eemaldatud"/>
+    <Item english="Transparent" text="Läbipaistev"/>
+    <Item english="View 1" text="Vaade 1"/>
+    <Item english="View 2" text="Vaade 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Räsid"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-võti (valikuline):"/>
+    <Item english="Salt (hexadecimal):" text="Sool (heksadetsimaalne):"/>
+    <Item english="Random" text="Juhuslik"/>
+    <Item english="Cost (4-31):" text="Kulu (4-31):"/>
+    <Item english="Version:" text="Versioon:"/>
+    <Item english="N, as a power of 2:" text="N, arvu 2 astmena:"/>
+    <Item english="Block size (r):" text="Ploki suurus (r):"/>
+    <Item english="Parallelism (p):" text="Paralleelsus (p):"/>
+    <Item english="Variant:" text="Variant:"/>
+    <Item english="Memory (KiB):" text="Mälu (KiB):"/>
+    <Item english="Iterations:" text="Iteratsioonid:"/>
+    <Item english="Parallelism:" text="Paralleelsus:"/>
+    <Item english="Digest:" text="Räsifunktsioon:"/>
+    <Item english="Hash length (bytes):" text="Räsi pikkus (baitides):"/>
+    <Item english="Hash:" text="Räsi:"/>
+    <Item english="Verify" text="Kontrolli"/>
+    <Item english="Hash to check the password against:" text="Räsi, millega parooli võrrelda:"/>
+    <Item english="The salt is not valid hexadecimal." text="Sool ei ole korrektsel heksadetsimaalkujul."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt vajab täpselt 16-baidist soola."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 vajab vähemalt 8-baidist soola."/>
+    <Item english="The hash could not be generated with these settings." text="Nende sätetega ei õnnestunud räsi arvutada."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="See ei ole bcrypt-, scrypt-, Argon2- ega PBKDF2-räsi."/>
+    <Item english="The password matches the hash." text="Parool vastab räsile."/>
+    <Item english="The password does not match the hash." text="Parool ei vasta räsile."/>
+    <Item english="The cost must be between 4 and 31." text="Kulu peab olema vahemikus 4–31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versioon peab olema 2a, 2b või 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N peab olema vahemikus 2^1–2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r ja p peavad olema vahemikus 1–64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Need sätted vajavad üle 2 GB mälu."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralleelsus peab olema vahemikus 1–64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Iteratsioonide arv peab olema vahemikus 1–1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Mälu peab olema vähemalt 8 KiB iga lõime kohta."/>
+    <Item english="These settings need more than 4 GB of memory." text="Need sätted vajavad üle 4 GB mälu."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Räsifunktsioon peab olema SHA-1, SHA-256 või SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Iteratsioonide arv peab olema vahemikus 1–100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Räsi pikkus peab olema vahemikus 4–1024 baiti."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-ile sobiv)"/>
+    <Item english="Encode" text="Kodeeri"/>
+    <Item english="Decode" text="Dekodeeri"/>
+    <Item english="The input is:" text="Sisend on:"/>
+    <Item english="Bytes in hexadecimal" text="Baidid heksadetsimaalkujul"/>
+    <Item english="Input:" text="Sisend:"/>
+    <Item english="Result:" text="Tulemus:"/>
+    <Item english="Text:" text="Tekst:"/>
+    <Item english="Bytes in hexadecimal:" text="Baidid heksadetsimaalkujul:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Sisend ei ole heksadetsimaalkujul kirjutatud baidid."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Sisend ei ole korrektne $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Dekodeeritud baidid ei ole UTF-8 tekst; neid kuvatakse ainult heksadetsimaalkujul."/>
+    <Item english="Password Generator" text="Parooligeneraator"/>
+    <Item english="Length:" text="Pikkus:"/>
+    <Item english="Number of passwords:" text="Paroolide arv:"/>
+    <Item english="Uppercase letters (A-Z)" text="Suurtähed (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Väiketähed (a-z)"/>
+    <Item english="Digits (0-9)" text="Numbrid (0-9)"/>
+    <Item english="Symbols:" text="Sümbolid:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Jäta välja sarnase välimusega märgid (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Vähemalt üks märk igast liigist"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entroopia: umbes $INT_REPLACE$ bitti"/>
+    <Item english="Choose at least one kind of character." text="Vali vähemalt üks märgiliik."/>
+    <Item english="Insert into Document" text="Sisesta dokumenti"/>
+    <Item english="Show the bare key in hexadecimal" text="Näita võtit ennast heksadetsimaalkujul"/>
+    <Item english="Empty: a random salt each time" text="Tühi: iga kord juhuslik sool"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt loeb ainult esimesed 72 baiti."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-päring"/>
+    <Item english="Send" text="Saada"/>
+    <Item english="Parameters" text="Parameetrid"/>
+    <Item english="Headers" text="Päised"/>
+    <Item english="Body" text="Keha"/>
+    <Item english="Options" text="Valikud"/>
+    <Item english="Content type:" text="Sisu tüüp:"/>
+    <Item english="User name:" text="Kasutajanimi:"/>
+    <Item english="Password:" text="Parool:"/>
+    <Item english="Timeout (seconds):" text="Ajalimiit (sekundites):"/>
+    <Item english="Follow redirects" text="Järgi ümbersuunamisi"/>
+    <Item english="Allow invalid certificates" text="Luba kehtetud sertifikaadid"/>
+    <Item english="Format JSON" text="Vorminda JSON"/>
+    <Item english="Paste curl Command" text="Kleebi curli käsk"/>
+    <Item english="Copy as curl" text="Kopeeri curli käsuna"/>
+    <Item english="Open in New Document" text="Ava uues dokumendis"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Igale reale üks: nimi=väärtus. Need lisatakse aadressile kodeeritult."/>
+    <Item english="One to a line: Name: value" text="Igale reale üks: Nimi: väärtus"/>
+    <Item english="Sent as it is written, in UTF-8." text="Saadetakse nii, nagu on kirjutatud, UTF-8 kodeeringus."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Vastus ei ole tekst: $INT_REPLACE$ baiti."/>
+    <Item english="The address is not an http or https address." text="Aadress ei ole http- ega https-aadress."/>
+    <Item english="This is not a curl command." text="See ei ole curli käsk."/>
+    <Item english="The command has no address." text="Käsus puudub aadress."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Käsk loeb oma andmed failist, mida siin ei tehta."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Vorme ja failide üleslaadimisi käsust ei loeta."/>
+    <Item english="The command's address is not an http or https address." text="Käsu aadress ei ole http- ega https-aadress."/>
+</NativeLangExtra>

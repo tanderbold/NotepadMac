@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/slovak.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Slovenčina">
+    <Item english="About NotepadMac" text="O aplikácii NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Skryť NotepadMac"/>
+    <Item english="Hide Others" text="Skryť ostatné"/>
+    <Item english="Show All" text="Zobraziť všetko"/>
+    <Item english="Quit NotepadMac" text="Ukončiť NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Otvoriť priečinok súboru vo Finderi"/>
+    <Item english="Open Containing Folder in Terminal" text="Otvoriť priečinok súboru v Termináli"/>
+    <Item english="Toggle Insert/Overtype" text="Prepnúť vkladanie/prepisovanie"/>
+    <Item english="Toggle Fold" text="Zbaliť/rozbaliť"/>
+    <Item english="Show All Hidden Lines" text="Zobraziť všetky skryté riadky"/>
+    <Item english="Recent Window" text="Predchádzajúce okno"/>
+    <Item english="Move to Trash" text="Presunúť do koša"/>
+    <Item english="Save Current Command…" text="Uložiť aktuálny príkaz…"/>
+    <Item english="Manage Saved Commands…" text="Spravovať uložené príkazy…"/>
+    <Item english="Show Console" text="Zobraziť konzolu"/>
+    <Item english="Validate shortcuts" text="Overiť klávesové skratky"/>
+    <Item english="Open Plugins Folder…" text="Otvoriť priečinok doplnkov…"/>
+    <Item english="Format" text="Formátovať"/>
+    <Item english="Compact" text="Zhutniť"/>
+    <Item english="Sort Keys" text="Usporiadať kľúče"/>
+    <Item english="Validate" text="Overiť"/>
+    <Item english="Show JSON Tree" text="Zobraziť strom JSON"/>
+    <Item english="Set as First to Compare" text="Nastaviť ako prvý na porovnanie"/>
+    <Item english="Compare" text="Porovnať"/>
+    <Item english="Compare with File…" text="Porovnať so súborom…"/>
+    <Item english="Next Difference" text="Ďalší rozdiel"/>
+    <Item english="Previous Difference" text="Predchádzajúci rozdiel"/>
+    <Item english="First Difference" text="Prvý rozdiel"/>
+    <Item english="Last Difference" text="Posledný rozdiel"/>
+    <Item english="Compare Summary" text="Súhrn porovnania"/>
+    <Item english="Ignore Case" text="Ignorovať veľkosť písmen"/>
+    <Item english="Ignore Spaces" text="Ignorovať medzery"/>
+    <Item english="Ignore Empty Lines" text="Ignorovať prázdne riadky"/>
+    <Item english="Clear Active Compare" text="Zrušiť aktívne porovnanie"/>
+    <Item english="Clear All Compares" text="Zrušiť všetky porovnania"/>
+    <Item english="Pretty Print" text="Pekne naformátovať"/>
+    <Item english="Pretty Print — Indent Attributes" text="Pekne naformátovať — odsadiť atribúty"/>
+    <Item english="Linearize" text="Do jedného riadka"/>
+    <Item english="Check XML Syntax Now" text="Skontrolovať syntax XML"/>
+    <Item english="Validate Against Schema…" text="Overiť podľa schémy…"/>
+    <Item english="Validate Against DTD" text="Overiť podľa DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Vyhodnotiť výraz XPath…"/>
+    <Item english="Current XML Path" text="Aktuálna cesta XML"/>
+    <Item english="Current XML Path with Predicates" text="Aktuálna cesta XML s predikátmi"/>
+    <Item english="Apply XSL Transformation…" text="Použiť transformáciu XSL…"/>
+    <Item english="Escape Characters in Selection" text="Nahradiť špeciálne znaky vo výbere entitami"/>
+    <Item english="Unescape Characters in Selection" text="Nahradiť entity vo výbere znakmi"/>
+    <Item english="Connections…" text="Pripojenia…"/>
+    <Item english="Connect…" text="Pripojiť…"/>
+    <Item english="Disconnect" text="Odpojiť"/>
+    <Item english="Show Remote Files" text="Zobraziť vzdialené súbory"/>
+    <Item english="Upload Current File" text="Nahrať aktuálny súbor"/>
+    <Item english="Execute NppExec Script…" text="Spustiť skript NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Spustiť predchádzajúci skript NppExec"/>
+    <Item english="Stop Running NppExec Script" text="Zastaviť bežiaci skript NppExec"/>
+    <Item english="Show NppExec Console" text="Zobraziť konzolu NppExec"/>
+    <Item english="Execute NppExec Script" text="Spustiť skript NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;dočasný skript&gt;"/>
+    <Item english="Script name" text="Názov skriptu"/>
+    <Item english="Dock Left" text="Pripnúť vľavo"/>
+    <Item english="Dock Right" text="Pripnúť vpravo"/>
+    <Item english="Dock Top" text="Pripnúť hore"/>
+    <Item english="Dock Bottom" text="Pripnúť dole"/>
+    <Item english="Float" text="Odopnúť"/>
+    <Item english="Remember which panels were open" text="Pamätať si, ktoré panely boli otvorené"/>
+    <Item english="Show the toolbar" text="Zobraziť panel nástrojov"/>
+    <Item english="Toolbar buttons" text="Tlačidlá panela nástrojov"/>
+    <Item english="Icons only" text="Iba ikony"/>
+    <Item english="Icons and labels" text="Ikony a popisy"/>
+    <Item english="Labels only" text="Iba popisy"/>
+    <Item english="Toolbar size" text="Veľkosť panela nástrojov"/>
+    <Item english="Regular" text="Bežná"/>
+    <Item english="Small" text="Malá"/>
+    <Item english="Icons" text="Ikony"/>
+    <Item english="Hidden" text="Skrytý"/>
+    <Item english="1 pixel" text="1 pixel"/>
+    <Item english="2 pixels" text="2 pixely"/>
+    <Item english="3 pixels" text="3 pixely"/>
+    <Item english="Selected text can be dragged" text="Vybraný text možno presúvať"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Povoliť viacnásobnú úpravu (Cmd+klik/výber)"/>
+    <Item english="Follow the system" text="Podľa systému"/>
+    <Item english="Light theme" text="Svetlý motív"/>
+    <Item english="Dark theme" text="Tmavý motív"/>
+    <Item english="Show the fold margin" text="Zobraziť okraj na zbaľovanie"/>
+    <Item english="A line" text="Čiara"/>
+    <Item english="Columns (space separated)" text="Stĺpce (oddelené medzerou)"/>
+    <Item english="3 parts" text="3 časti"/>
+    <Item english="4 parts" text="4 časti"/>
+    <Item english="5 parts" text="5 častí"/>
+    <Item english="6 parts" text="6 častí"/>
+    <Item english="7 parts" text="7 častí"/>
+    <Item english="8 parts" text="8 častí"/>
+    <Item english="9 parts" text="9 častí"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Určiť jazyk podľa obsahu, keď ho neprezrádza názov"/>
+    <Item english="Highlight matching braces" text="Zvýrazňovať párové zátvorky"/>
+    <Item english="Header font (blank for the editor's)" text="Písmo hlavičky (prázdne = písmo editora)"/>
+    <Item english="Header font size" text="Veľkosť písma hlavičky"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Okraje: vľavo, hore, vpravo, dole (body)"/>
+    <Item english="Characters before it opens" text="Počet znakov pred otvorením"/>
+    <Item english="Add characters to the word list" text="Pridať znaky do zoznamu znakov slova"/>
+    <Item english="A fixed folder" text="Pevný priečinok"/>
+    <Item english="Fixed folder" text="Pevný priečinok"/>
+    <Item english="Confirm Replace All" text="Potvrdiť Nahradiť všetko"/>
+    <Item english="Compare: ignore case" text="Porovnanie: ignorovať veľkosť písmen"/>
+    <Item english="Compare: ignore spaces" text="Porovnanie: ignorovať medzery"/>
+    <Item english="Compare: ignore empty lines" text="Porovnanie: ignorovať prázdne riadky"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maximálny počet znakov na automatické vloženie do poľa Hľadať"/>
+    <Item english="Releases repository" text="Repozitár vydaní"/>
+    <Item english="Notepad++ update" text="Aktualizácia Notepad++"/>
+    <Item english="No update is available." text="Žiadna aktualizácia nie je k dispozícii."/>
+    <Item english="An update package is available, do you want to download it?" text="K dispozícii je aktualizácia, chcete ju stiahnuť?"/>
+    <Item english="Open the Releases Page" text="Otvoriť stránku vydaní"/>
+    <Item english="Copy debug info to clipboard" text="Kopírovať informácie o ladení do schránky"/>
+    <Item english="Fonts…" text="Písma…"/>
+    <Item english="This document is not valid JSON." text="Tento dokument nie je platný JSON."/>
+    <Item english="Valid JSON." text="Platný JSON."/>
+    <Item english="Invalid JSON." text="Neplatný JSON."/>
+    <Item english="Set as the first file to compare." text="Nastavený ako prvý súbor na porovnanie."/>
+    <Item english="Nothing to compare with." text="Nie je s čím porovnávať."/>
+    <Item english="The document is valid XML." text="Dokument je platný XML."/>
+    <Item english="FTP connections" text="Pripojenia FTP"/>
+    <Item english="Cannot connect." text="Nedá sa pripojiť."/>
+    <Item english="That file is open in another tab." text="Tento súbor je otvorený na inej karte."/>
+    <Item english="Close it first, or choose another name." text="Najprv ho zavrite alebo zvoľte iný názov."/>
+    <Item english="Which language is this?" text="Aký je to jazyk?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Niektoré znaky sa v tomto kódovaní nedajú vyjadriť."/>
+    <Item english="Converting will replace them." text="Konverzia ich nahradí."/>
+    <Item english="Press the keys." text="Stlačte klávesy."/>
+    <Item english="Nothing is marked" text="Nič nie je označené"/>
+    <Item english="Marked text copied" text="Označený text skopírovaný"/>
+    <Item english="Choose a folder first" text="Najprv vyberte priečinok"/>
+    <Item english="This document has no folder" text="Tento dokument nemá priečinok"/>
+    <Item english="The ticked project panels have no files" text="Zaškrtnuté panely projektu neobsahujú žiadne súbory"/>
+    <Item english="Searching..." text="Hľadá sa..."/>
+    <Item english="Stopping..." text="Zastavuje sa..."/>
+    <Item english="Marks cleared" text="Označenie odstránené"/>
+    <Item english="Transparent" text="Priehľadné"/>
+    <Item english="View 1" text="Zobrazenie 1"/>
+    <Item english="View 2" text="Zobrazenie 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hashe"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Kľúč HMAC (voliteľný):"/>
+    <Item english="Salt (hexadecimal):" text="Soľ (šestnástkovo):"/>
+    <Item english="Random" text="Náhodná"/>
+    <Item english="Cost (4-31):" text="Náročnosť (4-31):"/>
+    <Item english="Version:" text="Verzia:"/>
+    <Item english="N, as a power of 2:" text="N ako mocnina 2:"/>
+    <Item english="Block size (r):" text="Veľkosť bloku (r):"/>
+    <Item english="Parallelism (p):" text="Paralelizmus (p):"/>
+    <Item english="Variant:" text="Variant:"/>
+    <Item english="Memory (KiB):" text="Pamäť (KiB):"/>
+    <Item english="Iterations:" text="Iterácie:"/>
+    <Item english="Parallelism:" text="Paralelizmus:"/>
+    <Item english="Digest:" text="Hashovacia funkcia:"/>
+    <Item english="Hash length (bytes):" text="Dĺžka hashu (bajty):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Overiť"/>
+    <Item english="Hash to check the password against:" text="Hash, voči ktorému sa má heslo overiť:"/>
+    <Item english="The salt is not valid hexadecimal." text="Soľ nie je platný šestnástkový zápis."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt vyžaduje soľ s dĺžkou presne 16 bajtov."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 vyžaduje soľ s dĺžkou aspoň 8 bajtov."/>
+    <Item english="The hash could not be generated with these settings." text="S týmito nastaveniami sa hash nepodarilo vytvoriť."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Toto nie je hash bcrypt, scrypt, Argon2 ani PBKDF2."/>
+    <Item english="The password matches the hash." text="Heslo zodpovedá hashu."/>
+    <Item english="The password does not match the hash." text="Heslo nezodpovedá hashu."/>
+    <Item english="The cost must be between 4 and 31." text="Náročnosť musí byť od 4 do 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Verzia musí byť 2a, 2b alebo 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N musí byť od 2^1 do 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r a p musia byť od 1 do 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Tieto nastavenia vyžadujú viac ako 2 GB pamäte."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralelizmus musí byť od 1 do 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Počet iterácií musí byť od 1 do 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Pamäť musí byť aspoň 8 KiB na každé vlákno."/>
+    <Item english="These settings need more than 4 GB of memory." text="Tieto nastavenia vyžadujú viac ako 4 GB pamäte."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Hashovacia funkcia musí byť SHA-1, SHA-256 alebo SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Počet iterácií musí byť od 1 do 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Dĺžka hashu musí byť od 4 do 1024 bajtov."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (bezpečné pre URL)"/>
+    <Item english="Encode" text="Zakódovať"/>
+    <Item english="Decode" text="Dekódovať"/>
+    <Item english="The input is:" text="Vstup je:"/>
+    <Item english="Bytes in hexadecimal" text="Bajty v šestnástkovom zápise"/>
+    <Item english="Input:" text="Vstup:"/>
+    <Item english="Result:" text="Výsledok:"/>
+    <Item english="Text:" text="Text:"/>
+    <Item english="Bytes in hexadecimal:" text="Bajty v šestnástkovom zápise:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Vstup nie sú bajty v šestnástkovom zápise."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Vstup nie je platný $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Dekódované bajty nie sú text UTF-8; zobrazujú sa iba šestnástkovo."/>
+    <Item english="Password Generator" text="Generátor hesiel"/>
+    <Item english="Length:" text="Dĺžka:"/>
+    <Item english="Number of passwords:" text="Počet hesiel:"/>
+    <Item english="Uppercase letters (A-Z)" text="Veľké písmená (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Malé písmená (a-z)"/>
+    <Item english="Digits (0-9)" text="Číslice (0-9)"/>
+    <Item english="Symbols:" text="Symboly:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Vynechať podobne vyzerajúce znaky (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Aspoň jeden znak z každého druhu"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropia: približne $INT_REPLACE$ bitov"/>
+    <Item english="Choose at least one kind of character." text="Vyberte aspoň jeden druh znakov."/>
+    <Item english="Insert into Document" text="Vložiť do dokumentu"/>
+    <Item english="Show the bare key in hexadecimal" text="Zobraziť samotný kľúč šestnástkovo"/>
+    <Item english="Empty: a random salt each time" text="Prázdne: zakaždým náhodná soľ"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt číta iba prvých 72 bajtov."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Požiadavka HTTP"/>
+    <Item english="Send" text="Odoslať"/>
+    <Item english="Parameters" text="Parametre"/>
+    <Item english="Headers" text="Hlavičky"/>
+    <Item english="Body" text="Telo"/>
+    <Item english="Options" text="Možnosti"/>
+    <Item english="Content type:" text="Typ obsahu:"/>
+    <Item english="User name:" text="Meno používateľa:"/>
+    <Item english="Password:" text="Heslo:"/>
+    <Item english="Timeout (seconds):" text="Časový limit (sekundy):"/>
+    <Item english="Follow redirects" text="Nasledovať presmerovania"/>
+    <Item english="Allow invalid certificates" text="Povoliť neplatné certifikáty"/>
+    <Item english="Format JSON" text="Formátovať JSON"/>
+    <Item english="Paste curl Command" text="Prilepiť príkaz curl"/>
+    <Item english="Copy as curl" text="Kopírovať ako curl"/>
+    <Item english="Open in New Document" text="Otvoriť v novom dokumente"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Jeden na riadok: názov=hodnota. Pridajú sa k adrese, zakódované."/>
+    <Item english="One to a line: Name: value" text="Jeden na riadok: Názov: hodnota"/>
+    <Item english="Sent as it is written, in UTF-8." text="Odošle sa tak, ako je napísané, v UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Odpoveď nie je text (bajtov: $INT_REPLACE$)."/>
+    <Item english="The address is not an http or https address." text="Adresa nie je adresa http ani https."/>
+    <Item english="This is not a curl command." text="Toto nie je príkaz curl."/>
+    <Item english="The command has no address." text="Príkaz neobsahuje adresu."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Príkaz číta údaje zo súboru, čo sa tu nerobí."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formuláre a nahrávanie súborov sa z príkazu nečítajú."/>
+    <Item english="The command's address is not an http or https address." text="Adresa v príkaze nie je adresa http ani https."/>
+</NativeLangExtra>

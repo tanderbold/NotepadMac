@@ -1,0 +1,17 @@
+; Connects the printers for the user's site
+$site = ReadValue("HKEY_LOCAL_MACHINE\SOFTWARE\Company", "Site")
+$printers = Split("laser1,laser2,colour", ",")
+
+FOR EACH $printer IN $printers
+    $path = "\\print-" + $site + "\" + $printer
+    IF AddPrinterConnection($path) = 0
+        ? "Connected " + $path
+    ELSE
+        ? "Could not connect " + $path + " (" + @ERROR + ")"
+    ENDIF
+NEXT
+
+IF SetDefaultPrinter("\\print-" + $site + "\laser1") = 0
+    ? "Default printer set"
+ENDIF
+RETURN

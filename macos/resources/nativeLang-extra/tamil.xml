@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/tamil.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="தமிழ்">
+    <Item english="About NotepadMac" text="NotepadMac பற்றி"/>
+    <Item english="Hide NotepadMac" text="NotepadMac ஐ மறை"/>
+    <Item english="Hide Others" text="மற்றவற்றை மறை"/>
+    <Item english="Show All" text="அனைத்தையும் காட்டு"/>
+    <Item english="Quit NotepadMac" text="NotepadMac இலிருந்து வெளியேறு"/>
+    <Item english="Open Containing Folder in Finder" text="உள்ளடக்கும் கோப்புறையை Finder இல் திற"/>
+    <Item english="Open Containing Folder in Terminal" text="உள்ளடக்கும் கோப்புறையை முனையத்தில் திற"/>
+    <Item english="Toggle Insert/Overtype" text="செருகு/மேலெழுது நிலைமாற்று"/>
+    <Item english="Toggle Fold" text="மடிப்பை நிலைமாற்று"/>
+    <Item english="Show All Hidden Lines" text="மறைக்கப்பட்ட அனைத்து வரிகளையும் காட்டு"/>
+    <Item english="Recent Window" text="சமீபத்திய சாளரம்"/>
+    <Item english="Move to Trash" text="குப்பைத்தொட்டிக்கு நகர்த்து"/>
+    <Item english="Save Current Command…" text="நடப்பு கட்டளையை சேமி…"/>
+    <Item english="Manage Saved Commands…" text="சேமித்த கட்டளைகளை நிர்வகி…"/>
+    <Item english="Show Console" text="கன்சோலைக் காட்டு"/>
+    <Item english="Validate shortcuts" text="குறுக்குவழிகளை சரிபார்"/>
+    <Item english="Open Plugins Folder…" text="செருகுநிரல்கள் கோப்புறையைத் திற…"/>
+    <Item english="Format" text="வடிவமை"/>
+    <Item english="Compact" text="சுருக்கு"/>
+    <Item english="Sort Keys" text="விசைகளை வரிசைப்படுத்து"/>
+    <Item english="Validate" text="சரிபார்"/>
+    <Item english="Show JSON Tree" text="JSON மரத்தைக் காட்டு"/>
+    <Item english="Set as First to Compare" text="ஒப்பிட முதலாவதாக அமை"/>
+    <Item english="Compare" text="ஒப்பிடு"/>
+    <Item english="Compare with File…" text="கோப்புடன் ஒப்பிடு…"/>
+    <Item english="Next Difference" text="அடுத்த வேறுபாடு"/>
+    <Item english="Previous Difference" text="முந்தைய வேறுபாடு"/>
+    <Item english="First Difference" text="முதல் வேறுபாடு"/>
+    <Item english="Last Difference" text="கடைசி வேறுபாடு"/>
+    <Item english="Compare Summary" text="ஒப்பீட்டுச் சுருக்கம்"/>
+    <Item english="Ignore Case" text="எழுத்துவகையை புறக்கணி"/>
+    <Item english="Ignore Spaces" text="இடைவெளிகளை புறக்கணி"/>
+    <Item english="Ignore Empty Lines" text="காலி வரிகளை புறக்கணி"/>
+    <Item english="Clear Active Compare" text="நடப்பு ஒப்பீட்டை நீக்கு"/>
+    <Item english="Clear All Compares" text="அனைத்து ஒப்பீடுகளையும் நீக்கு"/>
+    <Item english="Pretty Print" text="அழகாக வடிவமை"/>
+    <Item english="Pretty Print — Indent Attributes" text="அழகாக வடிவமை — பண்புகளை உள்தள்ளு"/>
+    <Item english="Linearize" text="ஒரே வரியாக்கு"/>
+    <Item english="Check XML Syntax Now" text="XML தொடரியலை இப்போது சரிபார்"/>
+    <Item english="Validate Against Schema…" text="ஸ்கீமாவுடன் சரிபார்…"/>
+    <Item english="Validate Against DTD" text="DTD உடன் சரிபார்"/>
+    <Item english="Evaluate XPath Expression…" text="XPath கோவையை மதிப்பிடு…"/>
+    <Item english="Current XML Path" text="நடப்பு XML பாதை"/>
+    <Item english="Apply XSL Transformation…" text="XSL உருமாற்றத்தைப் பயன்படுத்து…"/>
+    <Item english="Escape Characters in Selection" text="தேர்வில் உள்ள எழுத்துகளை எஸ்கேப் செய்"/>
+    <Item english="Unescape Characters in Selection" text="தேர்வில் உள்ள எழுத்துகளை அன்எஸ்கேப் செய்"/>
+    <Item english="Connections…" text="இணைப்புகள்…"/>
+    <Item english="Connect…" text="இணை…"/>
+    <Item english="Disconnect" text="இணைப்பைத் துண்டி"/>
+    <Item english="Show Remote Files" text="தொலைநிலைக் கோப்புகளைக் காட்டு"/>
+    <Item english="Upload Current File" text="நடப்புக் கோப்பை பதிவேற்று"/>
+    <Item english="Execute NppExec Script…" text="NppExec ஸ்கிரிப்டை இயக்கு…"/>
+    <Item english="Execute Previous NppExec Script" text="முந்தைய NppExec ஸ்கிரிப்டை இயக்கு"/>
+    <Item english="Stop Running NppExec Script" text="இயங்கும் NppExec ஸ்கிரிப்டை நிறுத்து"/>
+    <Item english="Show NppExec Console" text="NppExec கன்சோலைக் காட்டு"/>
+    <Item english="Execute NppExec Script" text="NppExec ஸ்கிரிப்டை இயக்கு"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;தற்காலிக ஸ்கிரிப்ட்&gt;"/>
+    <Item english="Script name" text="ஸ்கிரிப்ட் பெயர்"/>
+    <Item english="Dock Left" text="இடதுபுறம் பொருத்து"/>
+    <Item english="Dock Right" text="வலதுபுறம் பொருத்து"/>
+    <Item english="Dock Top" text="மேலே பொருத்து"/>
+    <Item english="Dock Bottom" text="கீழே பொருத்து"/>
+    <Item english="Float" text="மிதக்கவிடு"/>
+    <Item english="Remember which panels were open" text="திறந்திருந்த பலகங்களை நினைவில்வை"/>
+    <Item english="Show the toolbar" text="கருவிப்பட்டையைக் காட்டு"/>
+    <Item english="Toolbar buttons" text="கருவிப்பட்டை பொத்தான்கள்"/>
+    <Item english="Icons only" text="படவுருக்கள் மட்டும்"/>
+    <Item english="Icons and labels" text="படவுருக்களும் பெயர்களும்"/>
+    <Item english="Labels only" text="பெயர்கள் மட்டும்"/>
+    <Item english="Toolbar size" text="கருவிப்பட்டை அளவு"/>
+    <Item english="Regular" text="வழக்கமான"/>
+    <Item english="Small" text="சிறிய"/>
+    <Item english="Icons" text="படவுருக்கள்"/>
+    <Item english="Hidden" text="மறைக்கப்பட்டது"/>
+    <Item english="1 pixel" text="1 பிக்சல்"/>
+    <Item english="2 pixels" text="2 பிக்சல்கள்"/>
+    <Item english="3 pixels" text="3 பிக்சல்கள்"/>
+    <Item english="Selected text can be dragged" text="தேர்ந்தெடுத்த உரையை இழுக்கலாம்"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="பல-திருத்தத்தை செயல்படுத்து (Cmd+சொடுக்கு/தேர்வு)"/>
+    <Item english="Follow the system" text="கணினி அமைப்பைப் பின்பற்று"/>
+    <Item english="Light theme" text="வெளிர் தீம்"/>
+    <Item english="Dark theme" text="இருண்ட தீம்"/>
+    <Item english="Show the fold margin" text="மடிப்பு எல்லைக்கோட்டைக் காட்டு"/>
+    <Item english="A line" text="ஒரு கோடு"/>
+    <Item english="Columns (space separated)" text="நெடுவரிசைகள் (இடைவெளியால் பிரிக்கப்பட்டவை)"/>
+    <Item english="3 parts" text="3 பகுதிகள்"/>
+    <Item english="4 parts" text="4 பகுதிகள்"/>
+    <Item english="5 parts" text="5 பகுதிகள்"/>
+    <Item english="6 parts" text="6 பகுதிகள்"/>
+    <Item english="7 parts" text="7 பகுதிகள்"/>
+    <Item english="8 parts" text="8 பகுதிகள்"/>
+    <Item english="9 parts" text="9 பகுதிகள்"/>
+    <Item english="Work the language out from the contents when the name does not say" text="பெயர் தெரிவிக்காதபோது உள்ளடக்கத்திலிருந்து மொழியைக் கண்டறி"/>
+    <Item english="Highlight matching braces" text="பொருந்தும் அடைப்புக்குறிகளை தனிப்படுத்திக் காட்டு"/>
+    <Item english="Header font (blank for the editor's)" text="மேற்குறிப்பு எழுத்துரு (திருத்தியின் எழுத்துருவுக்கு காலியாக விடு)"/>
+    <Item english="Header font size" text="மேற்குறிப்பு எழுத்துரு அளவு"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="எல்லைக்கோடுகள்: இடது, மேல், வலது, கீழ் (புள்ளிகள்)"/>
+    <Item english="Characters before it opens" text="திறப்பதற்கு முன் எழுத்துகளின் எண்ணிக்கை"/>
+    <Item english="Add characters to the word list" text="சொல் பட்டியலில் எழுத்துகளைச் சேர்"/>
+    <Item english="A fixed folder" text="ஒரு நிலையான கோப்புறை"/>
+    <Item english="Fixed folder" text="நிலையான கோப்புறை"/>
+    <Item english="Confirm Replace All" text="&quot;அனைத்தும் மாற்று&quot; என்பதை உறுதிப்படுத்து"/>
+    <Item english="Compare: ignore case" text="ஒப்பிடு: எழுத்துவகையை புறக்கணி"/>
+    <Item english="Compare: ignore spaces" text="ஒப்பிடு: இடைவெளிகளை புறக்கணி"/>
+    <Item english="Compare: ignore empty lines" text="ஒப்பிடு: காலி வரிகளை புறக்கணி"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="தேடல் புலத்தை தானாக நிரப்ப அதிகபட்ச எழுத்துகள்"/>
+    <Item english="Releases repository" text="வெளியீடுகள் களஞ்சியம்"/>
+    <Item english="Notepad++ update" text="Notepad++ இற்றைப்படுத்தல்"/>
+    <Item english="No update is available." text="இற்றைப்படுத்தல் எதுவும் இல்லை."/>
+    <Item english="An update package is available, do you want to download it?" text="ஒரு இற்றைப்படுத்தல் தொகுப்பு கிடைக்கிறது, அதைப் பதிவிறக்க விரும்புகிறீர்களா?"/>
+    <Item english="Open the Releases Page" text="வெளியீடுகள் பக்கத்தைத் திற"/>
+    <Item english="Copy debug info to clipboard" text="பிழைத்திருத்தத் தகவலை ஒட்டுப்பலகைக்கு நகலெடு"/>
+    <Item english="Fonts…" text="எழுத்துருக்கள்…"/>
+    <Item english="This document is not valid JSON." text="இந்த ஆவணம் சரியான JSON அல்ல."/>
+    <Item english="Valid JSON." text="சரியான JSON."/>
+    <Item english="Invalid JSON." text="தவறான JSON."/>
+    <Item english="Set as the first file to compare." text="ஒப்பிட முதல் கோப்பாக அமைக்கப்பட்டது."/>
+    <Item english="Nothing to compare with." text="ஒப்பிட எதுவும் இல்லை."/>
+    <Item english="The document is valid XML." text="ஆவணம் சரியான XML ஆகும்."/>
+    <Item english="FTP connections" text="FTP இணைப்புகள்"/>
+    <Item english="Cannot connect." text="இணைக்க முடியவில்லை."/>
+    <Item english="That file is open in another tab." text="அந்தக் கோப்பு வேறொரு தாவலில் திறந்துள்ளது."/>
+    <Item english="Close it first, or choose another name." text="முதலில் அதை மூடவும், அல்லது வேறு பெயரைத் தேர்வுசெய்யவும்."/>
+    <Item english="Which language is this?" text="இது எந்த மொழி?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="சில எழுத்துகளை இந்தக் குறிமுறையில் குறிக்க முடியாது."/>
+    <Item english="Converting will replace them." text="மாற்றினால் அவை மாற்றீடு செய்யப்படும்."/>
+    <Item english="Press the keys." text="விசைகளை அழுத்தவும்."/>
+    <Item english="Nothing is marked" text="எதுவும் குறிக்கப்படவில்லை"/>
+    <Item english="Marked text copied" text="குறிக்கப்பட்ட உரை நகலெடுக்கப்பட்டது"/>
+    <Item english="Choose a folder first" text="முதலில் ஒரு கோப்புறையைத் தேர்வுசெய்"/>
+    <Item english="This document has no folder" text="இந்த ஆவணத்திற்கு கோப்புறை இல்லை"/>
+    <Item english="The ticked project panels have no files" text="தேர்வுசெய்த திட்டப் பலகங்களில் கோப்புகள் இல்லை"/>
+    <Item english="Searching..." text="தேடுகிறது..."/>
+    <Item english="Stopping..." text="நிறுத்துகிறது..."/>
+    <Item english="Marks cleared" text="குறிகள் நீக்கப்பட்டன"/>
+    <Item english="Transparent" text="வெளிப்படையான"/>
+    <Item english="View 1" text="காட்சி 1"/>
+    <Item english="View 2" text="காட்சி 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="ஹாஷ்கள்"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC திறவுகோல் (விருப்பத்தேர்வு):"/>
+    <Item english="Salt (hexadecimal):" text="சால்ட் (பதினறுமம்):"/>
+    <Item english="Random" text="சீரற்றது"/>
+    <Item english="Cost (4-31):" text="செலவு (4-31):"/>
+    <Item english="Version:" text="பதிப்பு:"/>
+    <Item english="N, as a power of 2:" text="N, 2-இன் அடுக்காக:"/>
+    <Item english="Block size (r):" text="தொகுதி அளவு (r):"/>
+    <Item english="Parallelism (p):" text="இணைச் செயலாக்கம் (p):"/>
+    <Item english="Variant:" text="மாறுபாடு:"/>
+    <Item english="Memory (KiB):" text="நினைவகம் (KiB):"/>
+    <Item english="Iterations:" text="மறுசெய்கைகள்:"/>
+    <Item english="Parallelism:" text="இணைச் செயலாக்கம்:"/>
+    <Item english="Digest:" text="ஹாஷ் செயற்கூறு:"/>
+    <Item english="Hash length (bytes):" text="ஹாஷ் நீளம் (பைட்டுகள்):"/>
+    <Item english="Hash:" text="ஹாஷ்:"/>
+    <Item english="Verify" text="சரிபார்"/>
+    <Item english="Hash to check the password against:" text="கடவுச்சொல்லைச் சரிபார்க்க வேண்டிய ஹாஷ்:"/>
+    <Item english="The salt is not valid hexadecimal." text="சால்ட் சரியான பதினறுமம் அல்ல."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt-க்கு சரியாக 16 பைட்டுகள் கொண்ட சால்ட் தேவை."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2-க்கு குறைந்தது 8 பைட்டுகள் கொண்ட சால்ட் தேவை."/>
+    <Item english="The hash could not be generated with these settings." text="இந்த அமைப்புகளுடன் ஹாஷை உருவாக்க முடியவில்லை."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="இது bcrypt, scrypt, Argon2 அல்லது PBKDF2 ஹாஷ் அல்ல."/>
+    <Item english="The password matches the hash." text="கடவுச்சொல் ஹாஷுடன் பொருந்துகிறது."/>
+    <Item english="The password does not match the hash." text="கடவுச்சொல் ஹாஷுடன் பொருந்தவில்லை."/>
+    <Item english="The cost must be between 4 and 31." text="செலவு 4 முதல் 31 வரை இருக்க வேண்டும்."/>
+    <Item english="The version must be 2a, 2b or 2y." text="பதிப்பு 2a, 2b அல்லது 2y ஆக இருக்க வேண்டும்."/>
+    <Item english="N must be between 2^1 and 2^24." text="N 2^1 முதல் 2^24 வரை இருக்க வேண்டும்."/>
+    <Item english="r and p must be between 1 and 64." text="r மற்றும் p 1 முதல் 64 வரை இருக்க வேண்டும்."/>
+    <Item english="These settings need more than 2 GB of memory." text="இந்த அமைப்புகளுக்கு 2 GB-க்கு மேல் நினைவகம் தேவை."/>
+    <Item english="The parallelism must be between 1 and 64." text="இணைச் செயலாக்கம் 1 முதல் 64 வரை இருக்க வேண்டும்."/>
+    <Item english="The iterations must be between 1 and 1000." text="மறுசெய்கைகள் 1 முதல் 1000 வரை இருக்க வேண்டும்."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="ஒவ்வொரு இழைக்கும் நினைவகம் குறைந்தது 8 KiB இருக்க வேண்டும்."/>
+    <Item english="These settings need more than 4 GB of memory." text="இந்த அமைப்புகளுக்கு 4 GB-க்கு மேல் நினைவகம் தேவை."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="ஹாஷ் செயற்கூறு SHA-1, SHA-256 அல்லது SHA-512 ஆக இருக்க வேண்டும்."/>
+    <Item english="The iterations must be between 1 and 100000000." text="மறுசெய்கைகள் 1 முதல் 100000000 வரை இருக்க வேண்டும்."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="ஹாஷ் நீளம் 4 முதல் 1024 பைட்டுகள் வரை இருக்க வேண்டும்."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-பாதுகாப்பானது)"/>
+    <Item english="Encode" text="என்கோட் செய்"/>
+    <Item english="Decode" text="டிகோட் செய்"/>
+    <Item english="The input is:" text="உள்ளீட்டு வகை:"/>
+    <Item english="Bytes in hexadecimal" text="பதினறுமத்தில் பைட்டுகள்"/>
+    <Item english="Input:" text="உள்ளீடு:"/>
+    <Item english="Result:" text="முடிவு:"/>
+    <Item english="Text:" text="உரை:"/>
+    <Item english="Bytes in hexadecimal:" text="பதினறுமத்தில் பைட்டுகள்:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="உள்ளீடு பதினறுமத்தில் எழுதப்பட்ட பைட்டுகள் அல்ல."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="உள்ளீடு சரியான $STR_REPLACE$ அல்ல."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="டிகோட் செய்த பைட்டுகள் UTF-8 உரை அல்ல; அவை பதினறுமத்தில் மட்டுமே காட்டப்படுகின்றன."/>
+    <Item english="Password Generator" text="கடவுச்சொல் உருவாக்கி"/>
+    <Item english="Length:" text="நீளம்:"/>
+    <Item english="Number of passwords:" text="கடவுச்சொற்களின் எண்ணிக்கை:"/>
+    <Item english="Uppercase letters (A-Z)" text="பேரெழுத்துகள் (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="சிற்றெழுத்துகள் (a-z)"/>
+    <Item english="Digits (0-9)" text="இலக்கங்கள் (0-9)"/>
+    <Item english="Symbols:" text="குறியீடுகள்:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="ஒரே மாதிரி தோன்றும் எழுத்துகளைத் தவிர் (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="ஒவ்வொரு வகையிலும் குறைந்தது ஒரு எழுத்து"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="என்ட்ரோபி: சுமார் $INT_REPLACE$ பிட்கள்"/>
+    <Item english="Choose at least one kind of character." text="குறைந்தது ஒரு வகை எழுத்தைத் தேர்வுசெய்யவும்."/>
+    <Item english="Insert into Document" text="ஆவணத்தில் செருகு"/>
+    <Item english="Show the bare key in hexadecimal" text="வெறும் திறவுகோலைப் பதினறுமத்தில் காட்டு"/>
+    <Item english="Empty: a random salt each time" text="காலி: ஒவ்வொரு முறையும் சீரற்ற சால்ட்"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt முதல் 72 பைட்டுகளை மட்டுமே படிக்கிறது."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP கோரிக்கை"/>
+    <Item english="Send" text="அனுப்பு"/>
+    <Item english="Parameters" text="அளவுருக்கள்"/>
+    <Item english="Headers" text="தலைப்புகள்"/>
+    <Item english="Body" text="உடற்பகுதி"/>
+    <Item english="Options" text="விருப்பங்கள்"/>
+    <Item english="Content type:" text="உள்ளடக்க வகை:"/>
+    <Item english="User name:" text="பயனர் பெயர்:"/>
+    <Item english="Password:" text="கடவுச்சொல்:"/>
+    <Item english="Timeout (seconds):" text="காலாவதி நேரம் (நொடிகள்):"/>
+    <Item english="Follow redirects" text="திசைமாற்றங்களைப் பின்தொடர்"/>
+    <Item english="Allow invalid certificates" text="செல்லாத சான்றிதழ்களை அனுமதி"/>
+    <Item english="Format JSON" text="JSON-ஐ வடிவமை"/>
+    <Item english="Paste curl Command" text="curl கட்டளையை ஒட்டு"/>
+    <Item english="Copy as curl" text="curl ஆக நகலெடு"/>
+    <Item english="Open in New Document" text="புதிய ஆவணத்தில் திற"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="வரிக்கு ஒன்று: பெயர்=மதிப்பு. இவை குறியாக்கம் செய்யப்பட்டு முகவரியுடன் சேர்க்கப்படும்."/>
+    <Item english="One to a line: Name: value" text="வரிக்கு ஒன்று: பெயர்: மதிப்பு"/>
+    <Item english="Sent as it is written, in UTF-8." text="எழுதியபடியே UTF-8 இல் அனுப்பப்படும்."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="பதில் உரை அல்ல: $INT_REPLACE$ பைட்டுகள்."/>
+    <Item english="The address is not an http or https address." text="இந்த முகவரி http அல்லது https முகவரி அல்ல."/>
+    <Item english="This is not a curl command." text="இது curl கட்டளை அல்ல."/>
+    <Item english="The command has no address." text="கட்டளையில் முகவரி இல்லை."/>
+    <Item english="The command reads its data from a file, which is not done here." text="கட்டளை தன் தரவை ஒரு கோப்பிலிருந்து படிக்கிறது; அது இங்கு செய்யப்படுவதில்லை."/>
+    <Item english="Forms and uploads of files are not read from a command." text="படிவங்களும் கோப்புப் பதிவேற்றங்களும் கட்டளையிலிருந்து படிக்கப்படுவதில்லை."/>
+    <Item english="The command's address is not an http or https address." text="கட்டளையின் முகவரி http அல்லது https முகவரி அல்ல."/>
+</NativeLangExtra>

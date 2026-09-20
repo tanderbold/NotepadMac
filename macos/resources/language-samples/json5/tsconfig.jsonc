@@ -1,0 +1,26 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
+    "jsx": "react-jsx",
+
+    /* Modules */
+    "module": "commonjs",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": { "@app/*": ["src/*"] },
+
+    /* Emit */
+    "outDir": "./dist",
+    "sourceMap": true,
+    // "removeComments": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noUnusedLocals": true,
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
+}

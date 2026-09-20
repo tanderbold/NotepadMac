@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/arabic.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Arabic">
+    <Item english="About NotepadMac" text="عن NotepadMac"/>
+    <Item english="Hide NotepadMac" text="إخفاء NotepadMac"/>
+    <Item english="Hide Others" text="إخفاء الآخرين"/>
+    <Item english="Show All" text="إظهار الكل"/>
+    <Item english="Quit NotepadMac" text="إنهاء NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="فتح مجلد الهدف في Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="فتح مجلد الهدف في الطرفية"/>
+    <Item english="Toggle Insert/Overtype" text="تبديل الإدراج/الكتابة فوق النص"/>
+    <Item english="Toggle Fold" text="تبديل الطي"/>
+    <Item english="Show All Hidden Lines" text="إظهار كل الأسطر المخفية"/>
+    <Item english="Recent Window" text="النافذة الأخيرة"/>
+    <Item english="Move to Trash" text="نقل إلى سلة المهملات"/>
+    <Item english="Save Current Command…" text="حفظ الأمر الحالي…"/>
+    <Item english="Manage Saved Commands…" text="إدارة الأوامر المحفوظة…"/>
+    <Item english="Show Console" text="إظهار وحدة التحكم"/>
+    <Item english="Validate shortcuts" text="التحقق من الاختصارات"/>
+    <Item english="Open Plugins Folder…" text="فتح مجلد الإضافات…"/>
+    <Item english="Format" text="تنسيق"/>
+    <Item english="Compact" text="ضغط"/>
+    <Item english="Sort Keys" text="ترتيب المفاتيح"/>
+    <Item english="Validate" text="التحقق من الصحة"/>
+    <Item english="Show JSON Tree" text="إظهار شجرة JSON"/>
+    <Item english="Set as First to Compare" text="تعيين كأول ملف للمقارنة"/>
+    <Item english="Compare" text="مقارنة"/>
+    <Item english="Compare with File…" text="مقارنة مع ملف…"/>
+    <Item english="Next Difference" text="الاختلاف التالي"/>
+    <Item english="Previous Difference" text="الاختلاف السابق"/>
+    <Item english="First Difference" text="الاختلاف الأول"/>
+    <Item english="Last Difference" text="الاختلاف الأخير"/>
+    <Item english="Compare Summary" text="ملخص المقارنة"/>
+    <Item english="Ignore Case" text="تجاهل حالة الأحرف"/>
+    <Item english="Ignore Spaces" text="تجاهل المسافات"/>
+    <Item english="Ignore Empty Lines" text="تجاهل الأسطر الفارغة"/>
+    <Item english="Clear Active Compare" text="مسح المقارنة النشطة"/>
+    <Item english="Clear All Compares" text="مسح كل المقارنات"/>
+    <Item english="Pretty Print" text="تنسيق مرتب"/>
+    <Item english="Pretty Print — Indent Attributes" text="تنسيق مرتب — إزاحة السمات"/>
+    <Item english="Linearize" text="تحويل إلى سطر واحد"/>
+    <Item english="Check XML Syntax Now" text="فحص بناء جملة XML الآن"/>
+    <Item english="Validate Against Schema…" text="التحقق وفق المخطط…"/>
+    <Item english="Validate Against DTD" text="التحقق وفق DTD"/>
+    <Item english="Evaluate XPath Expression…" text="تقييم تعبير XPath…"/>
+    <Item english="Current XML Path" text="مسار XML الحالي"/>
+    <Item english="Current XML Path with Predicates" text="مسار XML الحالي مع المسندات"/>
+    <Item english="Apply XSL Transformation…" text="تطبيق تحويل XSL…"/>
+    <Item english="Escape Characters in Selection" text="إفلات الأحرف في المحدد"/>
+    <Item english="Unescape Characters in Selection" text="إلغاء إفلات الأحرف في المحدد"/>
+    <Item english="Connections…" text="الاتصالات…"/>
+    <Item english="Connect…" text="اتصال…"/>
+    <Item english="Disconnect" text="قطع الاتصال"/>
+    <Item english="Show Remote Files" text="إظهار الملفات البعيدة"/>
+    <Item english="Upload Current File" text="رفع الملف الحالي"/>
+    <Item english="Execute NppExec Script…" text="تنفيذ نص NppExec البرمجي…"/>
+    <Item english="Execute Previous NppExec Script" text="تنفيذ نص NppExec البرمجي السابق"/>
+    <Item english="Stop Running NppExec Script" text="إيقاف نص NppExec البرمجي قيد التشغيل"/>
+    <Item english="Show NppExec Console" text="إظهار وحدة تحكم NppExec"/>
+    <Item english="Execute NppExec Script" text="تنفيذ نص NppExec البرمجي"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;نص برمجي مؤقت&gt;"/>
+    <Item english="Script name" text="اسم النص البرمجي"/>
+    <Item english="Dock Left" text="إرساء إلى اليسار"/>
+    <Item english="Dock Right" text="إرساء إلى اليمين"/>
+    <Item english="Dock Top" text="إرساء في الأعلى"/>
+    <Item english="Dock Bottom" text="إرساء في الأسفل"/>
+    <Item english="Float" text="تعويم"/>
+    <Item english="Remember which panels were open" text="تذكر اللوحات التي كانت مفتوحة"/>
+    <Item english="Show the toolbar" text="إظهار شريط الأدوات"/>
+    <Item english="Toolbar buttons" text="أزرار شريط الأدوات"/>
+    <Item english="Icons only" text="أيقونات فقط"/>
+    <Item english="Icons and labels" text="أيقونات وتسميات"/>
+    <Item english="Labels only" text="تسميات فقط"/>
+    <Item english="Toolbar size" text="حجم شريط الأدوات"/>
+    <Item english="Regular" text="عادي"/>
+    <Item english="Small" text="صغير"/>
+    <Item english="Icons" text="أيقونات"/>
+    <Item english="Hidden" text="مخفي"/>
+    <Item english="1 pixel" text="1 بكسل"/>
+    <Item english="2 pixels" text="2 بكسل"/>
+    <Item english="3 pixels" text="3 بكسل"/>
+    <Item english="Selected text can be dragged" text="يمكن سحب النص المحدد"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="تفعيل التعديل المتعدد (Cmd + نقر/تحديد)"/>
+    <Item english="Follow the system" text="اتباع النظام"/>
+    <Item english="Light theme" text="المظهر الفاتح"/>
+    <Item english="Dark theme" text="المظهر الداكن"/>
+    <Item english="Show the fold margin" text="إظهار هامش الطي"/>
+    <Item english="A line" text="خط"/>
+    <Item english="Columns (space separated)" text="أعمدة (مفصولة بمسافات)"/>
+    <Item english="3 parts" text="3 أجزاء"/>
+    <Item english="4 parts" text="4 أجزاء"/>
+    <Item english="5 parts" text="5 أجزاء"/>
+    <Item english="6 parts" text="6 أجزاء"/>
+    <Item english="7 parts" text="7 أجزاء"/>
+    <Item english="8 parts" text="8 أجزاء"/>
+    <Item english="9 parts" text="9 أجزاء"/>
+    <Item english="Work the language out from the contents when the name does not say" text="استنتاج اللغة من المحتوى عندما لا يدل الاسم عليها"/>
+    <Item english="Highlight matching braces" text="تمييز الأقواس المتطابقة"/>
+    <Item english="Header font (blank for the editor's)" text="خط الترويسة (فارغ لاستخدام خط المحرر)"/>
+    <Item english="Header font size" text="حجم خط الترويسة"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="الهوامش: يسار، أعلى، يمين، أسفل (نقاط)"/>
+    <Item english="Characters before it opens" text="عدد الأحرف قبل أن يفتح"/>
+    <Item english="Add characters to the word list" text="إضافة أحرف إلى قائمة أحرف الكلمة"/>
+    <Item english="A fixed folder" text="مجلد ثابت"/>
+    <Item english="Fixed folder" text="المجلد الثابت"/>
+    <Item english="Confirm Replace All" text="تأكيد استبدال الكل"/>
+    <Item english="Compare: ignore case" text="المقارنة: تجاهل حالة الأحرف"/>
+    <Item english="Compare: ignore spaces" text="المقارنة: تجاهل المسافات"/>
+    <Item english="Compare: ignore empty lines" text="المقارنة: تجاهل الأسطر الفارغة"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="أقصى عدد أحرف للتعبئة التلقائية لحقل البحث"/>
+    <Item english="Releases repository" text="مستودع الإصدارات"/>
+    <Item english="Notepad++ update" text="تحديث Notepad++"/>
+    <Item english="No update is available." text="لا يوجد تحديث متوفر."/>
+    <Item english="An update package is available, do you want to download it?" text="تتوفر حزمة تحديث، هل تريد تنزيلها؟"/>
+    <Item english="Open the Releases Page" text="فتح صفحة الإصدارات"/>
+    <Item english="Copy debug info to clipboard" text="نسخ معلومات تصحيح الأخطاء إلى الذاكرة"/>
+    <Item english="Fonts…" text="الخطوط…"/>
+    <Item english="This document is not valid JSON." text="هذا المستند ليس JSON صالحاً."/>
+    <Item english="Valid JSON." text="JSON صالح."/>
+    <Item english="Invalid JSON." text="JSON غير صالح."/>
+    <Item english="Set as the first file to compare." text="تم تعيينه كأول ملف للمقارنة."/>
+    <Item english="Nothing to compare with." text="لا يوجد ما يمكن المقارنة معه."/>
+    <Item english="The document is valid XML." text="المستند XML صالح."/>
+    <Item english="FTP connections" text="اتصالات FTP"/>
+    <Item english="Cannot connect." text="تعذر الاتصال."/>
+    <Item english="That file is open in another tab." text="هذا الملف مفتوح في علامة تبويب أخرى."/>
+    <Item english="Close it first, or choose another name." text="أغلقه أولاً، أو اختر اسماً آخر."/>
+    <Item english="Which language is this?" text="ما هي هذه اللغة؟"/>
+    <Item english="Some characters cannot be represented in this encoding." text="لا يمكن تمثيل بعض الأحرف في هذا الترميز."/>
+    <Item english="Converting will replace them." text="سيؤدي التحويل إلى استبدالها."/>
+    <Item english="Press the keys." text="اضغط المفاتيح."/>
+    <Item english="Nothing is marked" text="لا يوجد نص معلَّم"/>
+    <Item english="Marked text copied" text="تم نسخ النص المعلَّم"/>
+    <Item english="Choose a folder first" text="اختر مجلداً أولاً"/>
+    <Item english="This document has no folder" text="هذا المستند ليس له مجلد"/>
+    <Item english="The ticked project panels have no files" text="لوحات المشاريع المحددة لا تحتوي على ملفات"/>
+    <Item english="Searching..." text="جارٍ البحث..."/>
+    <Item english="Stopping..." text="جارٍ الإيقاف..."/>
+    <Item english="Marks cleared" text="تم مسح العلامات"/>
+    <Item english="Transparent" text="شفاف"/>
+    <Item english="View 1" text="العرض 1"/>
+    <Item english="View 2" text="العرض 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="التجزئات"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="مفتاح HMAC (اختياري):"/>
+    <Item english="Salt (hexadecimal):" text="الملح (ست عشري):"/>
+    <Item english="Random" text="عشوائي"/>
+    <Item english="Cost (4-31):" text="التكلفة (4-31):"/>
+    <Item english="Version:" text="النسخة:"/>
+    <Item english="N, as a power of 2:" text="N، كأسّ للعدد 2:"/>
+    <Item english="Block size (r):" text="حجم الكتلة (r):"/>
+    <Item english="Parallelism (p):" text="التوازي (p):"/>
+    <Item english="Variant:" text="النوع:"/>
+    <Item english="Memory (KiB):" text="الذاكرة (KiB):"/>
+    <Item english="Iterations:" text="التكرارات:"/>
+    <Item english="Parallelism:" text="التوازي:"/>
+    <Item english="Digest:" text="دالة التجزئة:"/>
+    <Item english="Hash length (bytes):" text="طول التجزئة (بايت):"/>
+    <Item english="Hash:" text="التجزئة:"/>
+    <Item english="Verify" text="تحقق"/>
+    <Item english="Hash to check the password against:" text="التجزئة المطلوب مطابقة كلمة المرور معها:"/>
+    <Item english="The salt is not valid hexadecimal." text="الملح ليس قيمة ست عشرية صالحة."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="يتطلب bcrypt ملحاً من 16 بايت بالضبط."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="يتطلب Argon2 ملحاً لا يقل عن 8 بايت."/>
+    <Item english="The hash could not be generated with these settings." text="تعذر توليد التجزئة بهذه الإعدادات."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="هذه ليست تجزئة bcrypt أو scrypt أو Argon2 أو PBKDF2."/>
+    <Item english="The password matches the hash." text="كلمة المرور تطابق التجزئة."/>
+    <Item english="The password does not match the hash." text="كلمة المرور لا تطابق التجزئة."/>
+    <Item english="The cost must be between 4 and 31." text="يجب أن تكون التكلفة بين 4 و 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="يجب أن تكون النسخة 2a أو 2b أو 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="يجب أن يكون N بين 2^1 و 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="يجب أن يكون r و p بين 1 و 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="تحتاج هذه الإعدادات إلى أكثر من 2 GB من الذاكرة."/>
+    <Item english="The parallelism must be between 1 and 64." text="يجب أن يكون التوازي بين 1 و 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="يجب أن يكون عدد التكرارات بين 1 و 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="يجب ألا تقل الذاكرة عن 8 KiB لكل مسار."/>
+    <Item english="These settings need more than 4 GB of memory." text="تحتاج هذه الإعدادات إلى أكثر من 4 GB من الذاكرة."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="يجب أن تكون دالة التجزئة SHA-1 أو SHA-256 أو SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="يجب أن يكون عدد التكرارات بين 1 و 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="يجب أن يكون طول التجزئة بين 4 و 1024 بايت."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (آمن لعناوين URL)"/>
+    <Item english="Encode" text="ترميز"/>
+    <Item english="Decode" text="فك الترميز"/>
+    <Item english="The input is:" text="نوع الإدخال:"/>
+    <Item english="Bytes in hexadecimal" text="بايتات بالنظام الست عشري"/>
+    <Item english="Input:" text="الإدخال:"/>
+    <Item english="Result:" text="النتيجة:"/>
+    <Item english="Text:" text="النص:"/>
+    <Item english="Bytes in hexadecimal:" text="بايتات بالنظام الست عشري:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="الإدخال ليس بايتات مكتوبة بالنظام الست عشري."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="الإدخال ليس $STR_REPLACE$ صالحاً."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="البايتات بعد فك الترميز ليست نص UTF-8؛ لذا تُعرض بالنظام الست عشري فقط."/>
+    <Item english="Password Generator" text="مولد كلمات المرور"/>
+    <Item english="Length:" text="الطول:"/>
+    <Item english="Number of passwords:" text="عدد كلمات المرور:"/>
+    <Item english="Uppercase letters (A-Z)" text="أحرف كبيرة (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="أحرف صغيرة (a-z)"/>
+    <Item english="Digits (0-9)" text="أرقام (0-9)"/>
+    <Item english="Symbols:" text="الرموز:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="استبعاد الأحرف المتشابهة (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="حرف واحد على الأقل من كل نوع"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="الإنتروبيا: حوالي $INT_REPLACE$ بت"/>
+    <Item english="Choose at least one kind of character." text="اختر نوعاً واحداً على الأقل من الأحرف."/>
+    <Item english="Insert into Document" text="إدراج في المستند"/>
+    <Item english="Show the bare key in hexadecimal" text="إظهار المفتاح نفسه بالنظام الست عشري"/>
+    <Item english="Empty: a random salt each time" text="فارغ: ملح عشوائي في كل مرة"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="يقرأ bcrypt أول 72 بايت فقط."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="طلب HTTP"/>
+    <Item english="Send" text="إرسال"/>
+    <Item english="Parameters" text="المعاملات"/>
+    <Item english="Headers" text="الترويسات"/>
+    <Item english="Body" text="الجسم"/>
+    <Item english="Options" text="خيارات"/>
+    <Item english="Content type:" text="نوع المحتوى:"/>
+    <Item english="User name:" text="اسم المستخدم:"/>
+    <Item english="Password:" text="كلمة المرور:"/>
+    <Item english="Timeout (seconds):" text="المهلة (بالثواني):"/>
+    <Item english="Follow redirects" text="اتباع عمليات إعادة التوجيه"/>
+    <Item english="Allow invalid certificates" text="السماح بالشهادات غير الصالحة"/>
+    <Item english="Format JSON" text="تنسيق JSON"/>
+    <Item english="Paste curl Command" text="لصق أمر curl"/>
+    <Item english="Copy as curl" text="نسخ بصيغة curl"/>
+    <Item english="Open in New Document" text="فتح في مستند جديد"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="واحد في كل سطر: الاسم=القيمة. تُضاف إلى العنوان بعد ترميزها."/>
+    <Item english="One to a line: Name: value" text="واحدة في كل سطر: الاسم: القيمة"/>
+    <Item english="Sent as it is written, in UTF-8." text="يُرسل كما هو مكتوب، بترميز UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="الرد ليس نصاً: $INT_REPLACE$ بايت."/>
+    <Item english="The address is not an http or https address." text="العنوان ليس عنوان http أو https."/>
+    <Item english="This is not a curl command." text="هذا ليس أمر curl."/>
+    <Item english="The command has no address." text="الأمر لا يحتوي على عنوان."/>
+    <Item english="The command reads its data from a file, which is not done here." text="يقرأ الأمر بياناته من ملف، وهذا غير مدعوم هنا."/>
+    <Item english="Forms and uploads of files are not read from a command." text="لا تُقرأ النماذج وعمليات رفع الملفات من الأمر."/>
+    <Item english="The command's address is not an http or https address." text="عنوان الأمر ليس عنوان http أو https."/>
+</NativeLangExtra>

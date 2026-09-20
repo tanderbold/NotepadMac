@@ -1,0 +1,31 @@
+G4C FileList
+
+Window 50 50 400 300 "Files"
+     WinAttr style sizable/close/maximize
+
+xOnLoad
+     dir = "C:\Temp"
+     GuiOpen #this
+     gosub #this Refresh
+
+xListView 5 5 390 250 "" sel ""
+     attr id files
+     attr resize 0022
+     LvAdd Column 0 200 "Name"
+     LvAdd Column 1 80 "Size"
+
+xOnDoubleClick files
+     Launch RUN "$dir\$sel"
+
+xButton 5 265 80 24 "Refresh"
+     gosub #this Refresh
+
+xRoutine Refresh
+     LvUse #this files
+     LvClear
+     For $dir\*.* name
+          FileInfo $name size sz
+          LvAdd $name
+          LvPut 1 $sz
+     EndFor
+     SetWinTitle #this "Files in $dir"

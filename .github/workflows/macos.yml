@@ -1,0 +1,43 @@
+# Builds the macOS port and runs its built-in suite on every push and pull
+# request that touches it. The suite drives a real window, which the macOS
+# runners allow; its exit code is the result.
+name: macOS
+
+on:
+  push:
+    branches: [main]
+    paths: ['macos/**', 'scintilla/**', 'lexilla/**', 'PowerEditor/src/*.xml',
+            'PowerEditor/installer/**', 'PowerEditor/src/uchardet/**', '.github/workflows/macos.yml']
+  pull_request:
+    paths: ['macos/**', 'scintilla/**', 'lexilla/**', '.github/workflows/macos.yml']
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build (universal)
+        run: bash macos/build.sh
+
+      - name: Test
+        run: bash macos/test.sh
+
+      - name: Keep the test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-run
+          path: macos/build/last-test-run.txt
+          if-no-files-found: ignore
+
+      - name: Package
+        run: bash macos/package.sh
+
+      - name: Keep the disk image
+        uses: actions/upload-artifact@v4
+        with:
+          name: NotepadMac
+          path: macos/build/NotepadMac-*.dmg

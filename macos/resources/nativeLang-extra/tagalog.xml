@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/tagalog.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Tagalog">
+    <Item english="About NotepadMac" text="Tungkol sa NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Itago ang NotepadMac"/>
+    <Item english="Hide Others" text="Itago ang Iba"/>
+    <Item english="Show All" text="Ipakita Lahat"/>
+    <Item english="Quit NotepadMac" text="Umalis sa NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Buksan ang Folder ng Pila sa Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Buksan ang Folder ng Pila sa Terminal"/>
+    <Item english="Show All Hidden Lines" text="Ipakita Lahat ng Nakatagong Taludtod"/>
+    <Item english="Recent Window" text="Kamakailang Dungawan"/>
+    <Item english="Move to Trash" text="Ilipat sa Basurahan"/>
+    <Item english="Save Current Command…" text="Itabi ang Kasalukuyang Utos…"/>
+    <Item english="Manage Saved Commands…" text="Pamahalaan ang mga Itinabing Utos…"/>
+    <Item english="Show Console" text="Ipakita ang Console"/>
+    <Item english="Validate shortcuts" text="Suriin ang mga shortcut"/>
+    <Item english="Open Plugins Folder…" text="Buksan ang Folder ng mga Plugin…"/>
+    <Item english="Show JSON Tree" text="Ipakita ang Puno ng JSON"/>
+    <Item english="Set as First to Compare" text="Itakda Bilang Una sa Paghahambing"/>
+    <Item english="Compare" text="Ihambing"/>
+    <Item english="Compare with File…" text="Ihambing sa Pila…"/>
+    <Item english="Next Difference" text="Susunod na Pagkakaiba"/>
+    <Item english="Previous Difference" text="Nakaraang Pagkakaiba"/>
+    <Item english="First Difference" text="Unang Pagkakaiba"/>
+    <Item english="Last Difference" text="Huling Pagkakaiba"/>
+    <Item english="Compare Summary" text="Buod ng Paghahambing"/>
+    <Item english="Ignore Case" text="Baliwalain ang Kaso"/>
+    <Item english="Ignore Spaces" text="Baliwalain ang mga Puwang"/>
+    <Item english="Ignore Empty Lines" text="Baliwalain ang mga Taludtod na Walang Laman"/>
+    <Item english="Clear Active Compare" text="Burahin ang Kasalukuyang Paghahambing"/>
+    <Item english="Clear All Compares" text="Burahin Lahat ng Paghahambing"/>
+    <Item english="Check XML Syntax Now" text="Suriin ang Syntax ng XML Ngayon"/>
+    <Item english="Current XML Path" text="Kasalukuyang Path ng XML"/>
+    <Item english="Connections…" text="Mga Koneksyon…"/>
+    <Item english="Connect…" text="Kumonekta…"/>
+    <Item english="Disconnect" text="Idiskonekta"/>
+    <Item english="Upload Current File" text="I-upload ang Kasalukuyang Pila"/>
+    <Item english="Execute NppExec Script…" text="Patakbuhin ang Script ng NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Patakbuhin ang Nakaraang Script ng NppExec"/>
+    <Item english="Stop Running NppExec Script" text="Ihinto ang Tumatakbong Script ng NppExec"/>
+    <Item english="Show NppExec Console" text="Ipakita ang Console ng NppExec"/>
+    <Item english="Execute NppExec Script" text="Patakbuhin ang Script ng NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;pansamantalang script&gt;"/>
+    <Item english="Script name" text="Ngalan ng script"/>
+    <Item english="Remember which panels were open" text="Tandaan ang mga panel na nakabukas"/>
+    <Item english="Show the toolbar" text="Ipakita ang toolbar"/>
+    <Item english="Toolbar buttons" text="Mga button ng toolbar"/>
+    <Item english="Icons only" text="Mga icon lamang"/>
+    <Item english="Icons and labels" text="Mga icon at label"/>
+    <Item english="Labels only" text="Mga label lamang"/>
+    <Item english="Toolbar size" text="Laki ng toolbar"/>
+    <Item english="Regular" text="Karaniwan"/>
+    <Item english="Small" text="Maliit"/>
+    <Item english="Icons" text="Mga icon"/>
+    <Item english="Hidden" text="Nakatago"/>
+    <Item english="1 pixel" text="1 pixel"/>
+    <Item english="2 pixels" text="2 pixel"/>
+    <Item english="3 pixels" text="3 pixel"/>
+    <Item english="Selected text can be dragged" text="Maaaring i-drag ang napiling teksto"/>
+    <Item english="Follow the system" text="Sundan ang system"/>
+    <Item english="Light theme" text="Maliwanag na paksa"/>
+    <Item english="Dark theme" text="Madilim na paksa"/>
+    <Item english="A line" text="Isang guhit"/>
+    <Item english="3 parts" text="3 bahagi"/>
+    <Item english="4 parts" text="4 bahagi"/>
+    <Item english="5 parts" text="5 bahagi"/>
+    <Item english="6 parts" text="6 bahagi"/>
+    <Item english="7 parts" text="7 bahagi"/>
+    <Item english="8 parts" text="8 bahagi"/>
+    <Item english="9 parts" text="9 bahagi"/>
+    <Item english="Header font (blank for the editor's)" text="Font ng ulunan (iwanang blangko para gamitin ang font ng editor)"/>
+    <Item english="Header font size" text="Laki ng font ng ulunan"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Mga margin: kaliwa, taas, kanan, baba (point)"/>
+    <Item english="Confirm Replace All" text="Kumpirmahin ang Palitan Lahat"/>
+    <Item english="Compare: ignore case" text="Paghahambing: baliwalain ang kaso"/>
+    <Item english="Compare: ignore spaces" text="Paghahambing: baliwalain ang mga puwang"/>
+    <Item english="Compare: ignore empty lines" text="Paghahambing: baliwalain ang mga taludtod na walang laman"/>
+    <Item english="Notepad++ update" text="Update ng Notepad++"/>
+    <Item english="No update is available." text="Walang available na update."/>
+    <Item english="An update package is available, do you want to download it?" text="May available na update package, nais ba ninyong i-download ito?"/>
+    <Item english="Copy debug info to clipboard" text="Isipi ang debug info sa klipbord"/>
+    <Item english="Fonts…" text="Mga Font…"/>
+    <Item english="This document is not valid JSON." text="Ang kasulatang ito ay hindi valid na JSON."/>
+    <Item english="Valid JSON." text="Valid na JSON."/>
+    <Item english="Invalid JSON." text="Hindi valid na JSON."/>
+    <Item english="Set as the first file to compare." text="Itinakda bilang unang pila sa paghahambing."/>
+    <Item english="Nothing to compare with." text="Walang mapaghahambingan."/>
+    <Item english="The document is valid XML." text="Ang kasulatan ay valid na XML."/>
+    <Item english="FTP connections" text="Mga koneksyon ng FTP"/>
+    <Item english="Cannot connect." text="Hindi makakonekta."/>
+    <Item english="That file is open in another tab." text="Nakabukas ang pilang iyon sa ibang tab."/>
+    <Item english="Close it first, or choose another name." text="Isara ito muna, o pumili ng ibang ngalan."/>
+    <Item english="Which language is this?" text="Anong wika ito?"/>
+    <Item english="Press the keys." text="Pindutin ang mga key."/>
+    <Item english="Choose a folder first" text="Pumili muna ng folder"/>
+    <Item english="This document has no folder" text="Walang folder ang kasulatang ito"/>
+    <Item english="Searching..." text="Naghahanap..."/>
+    <Item english="Stopping..." text="Inihihinto..."/>
+    <Item english="View 1" text="Tanawin 1"/>
+    <Item english="View 2" text="Tanawin 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Mga Hash"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Susi ng HMAC (opsyonal):"/>
+    <Item english="Version:" text="Bersyon:"/>
+    <Item english="Block size (r):" text="Laki ng block (r):"/>
+    <Item english="Memory (KiB):" text="Memorya (KiB):"/>
+    <Item english="Iterations:" text="Bilang ng pag-uulit:"/>
+    <Item english="Hash length (bytes):" text="Haba ng hash (mga byte):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Beripikahin"/>
+    <Item english="Hash to check the password against:" text="Hash para sa pagsuri ng password:"/>
+    <Item english="The salt is not valid hexadecimal." text="Ang salt ay hindi valid na hexadecimal."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="Kailangan ng bcrypt ang salt na eksaktong 16 byte."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Kailangan ng Argon2 ang salt na hindi bababa sa 8 byte."/>
+    <Item english="The hash could not be generated with these settings." text="Hindi malikha ang hash gamit ang mga kalagayang ito."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Hindi ito hash ng bcrypt, scrypt, Argon2 o PBKDF2."/>
+    <Item english="The password matches the hash." text="Tumutugma ang password sa hash."/>
+    <Item english="The password does not match the hash." text="Hindi tumutugma ang password sa hash."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Ang bersyon ay dapat 2a, 2b o 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="Ang N ay dapat nasa pagitan ng 2^1 at 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="Ang r at p ay dapat nasa pagitan ng 1 at 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Kailangan ng mga kalagayang ito ang higit sa 2 GB ng memorya."/>
+    <Item english="The iterations must be between 1 and 1000." text="Ang bilang ng pag-uulit ay dapat nasa pagitan ng 1 at 1000."/>
+    <Item english="These settings need more than 4 GB of memory." text="Kailangan ng mga kalagayang ito ang higit sa 4 GB ng memorya."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Ang bilang ng pag-uulit ay dapat nasa pagitan ng 1 at 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Ang haba ng hash ay dapat nasa pagitan ng 4 at 1024 byte."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (ligtas sa URL)"/>
+    <Item english="Encode" text="I-Encode"/>
+    <Item english="Decode" text="I-Decode"/>
+    <Item english="The input is:" text="Ang input ay:"/>
+    <Item english="Bytes in hexadecimal" text="Mga byte sa hexadecimal"/>
+    <Item english="Result:" text="Resulta:"/>
+    <Item english="Text:" text="Teksto:"/>
+    <Item english="Bytes in hexadecimal:" text="Mga byte sa hexadecimal:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Ang input ay hindi mga byte na nakasulat sa hexadecimal."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Ang input ay hindi valid na $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Ang mga na-decode na byte ay hindi tekstong UTF-8; ipinapakita ang mga ito sa hexadecimal lamang."/>
+    <Item english="Password Generator" text="Tagalikha ng Password"/>
+    <Item english="Length:" text="Haba:"/>
+    <Item english="Number of passwords:" text="Bilang ng password:"/>
+    <Item english="Uppercase letters (A-Z)" text="Malalaking titik (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Maliliit na titik (a-z)"/>
+    <Item english="Digits (0-9)" text="Mga numero (0-9)"/>
+    <Item english="Symbols:" text="Mga sagisag:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Huwag isama ang mga character na magkahawig (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Hindi bababa sa isang character ng bawat uri"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropy: humigit-kumulang $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Pumili ng hindi bababa sa isang uri ng character."/>
+    <Item english="Insert into Document" text="Isingit sa Kasulatan"/>
+    <Item english="Show the bare key in hexadecimal" text="Ipakita ang hilaw na susi sa hexadecimal"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="Binabasa ng bcrypt ang unang 72 byte lamang."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="Send" text="Ipadala"/>
+    <Item english="Parameters" text="Mga Parameter"/>
+    <Item english="Headers" text="Mga Header"/>
+    <Item english="Content type:" text="Uri ng nilalaman:"/>
+    <Item english="User name:" text="Pangalan ng user:"/>
+    <Item english="Password:" text="Password:"/>
+    <Item english="Timeout (seconds):" text="Timeout (segundo):"/>
+    <Item english="Follow redirects" text="Sundan ang mga redirect"/>
+    <Item english="Allow invalid certificates" text="Pahintulutan ang mga hindi valid na sertipiko"/>
+    <Item english="Format JSON" text="I-format ang JSON"/>
+    <Item english="Paste curl Command" text="Idikit ang Utos ng curl"/>
+    <Item english="Copy as curl" text="Sipiin bilang curl"/>
+    <Item english="Open in New Document" text="Buksan sa Bagong Kasulatan"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Isa sa bawat taludtod: pangalan=halaga. Idinadagdag ang mga ito sa address, naka-encode."/>
+    <Item english="One to a line: Name: value" text="Isa sa bawat taludtod: Pangalan: halaga"/>
+    <Item english="Sent as it is written, in UTF-8." text="Ipinapadala gaya ng nakasulat, sa UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Ang tugon ay hindi teksto: $INT_REPLACE$ byte."/>
+    <Item english="The address is not an http or https address." text="Ang address ay hindi http o https address."/>
+    <Item english="This is not a curl command." text="Hindi ito utos ng curl."/>
+    <Item english="The command has no address." text="Walang address ang utos."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Binabasa ng utos ang data nito mula sa isang pila, na hindi ginagawa rito."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Hindi binabasa mula sa utos ang mga form at pag-upload ng pila."/>
+    <Item english="The command's address is not an http or https address." text="Ang address ng utos ay hindi http o https address."/>
+</NativeLangExtra>

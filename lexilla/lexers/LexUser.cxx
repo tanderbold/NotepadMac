@@ -21,7 +21,10 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <map>
 #include <vector>
 #include <assert.h>
+#include <cstdio>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 #include "ILexer.h"
 #include "LexAccessor.h"
@@ -1239,17 +1242,17 @@ static void ColouriseUserDoc(Sci_PositionU startPos, Sci_Position length, int in
     prefixes[13] = styler.GetPropertyInt("userDefine.prefixKeywords7", 0) != 0;
     prefixes[14] = styler.GetPropertyInt("userDefine.prefixKeywords8", 0) != 0;
 
-    char nestingBuffer[] = "userDefine.nesting.00";     // "00" is only a placeholder, the actual number is set by _itoa
-    _itoa(SCE_USER_STYLE_COMMENT,       (nestingBuffer+20), 10);    int commentNesting      = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_COMMENTLINE,   (nestingBuffer+20), 10);    int lineCommentNesting  = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_DELIMITER1,    (nestingBuffer+19), 10);    int delim1Nesting       = styler.GetPropertyInt(nestingBuffer, 0);  // one byte difference
-    _itoa(SCE_USER_STYLE_DELIMITER2,    (nestingBuffer+19), 10);    int delim2Nesting       = styler.GetPropertyInt(nestingBuffer, 0);  // for two-digit numbers
-    _itoa(SCE_USER_STYLE_DELIMITER3,    (nestingBuffer+19), 10);    int delim3Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_DELIMITER4,    (nestingBuffer+19), 10);    int delim4Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_DELIMITER5,    (nestingBuffer+19), 10);    int delim5Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_DELIMITER6,    (nestingBuffer+19), 10);    int delim6Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_DELIMITER7,    (nestingBuffer+19), 10);    int delim7Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
-    _itoa(SCE_USER_STYLE_DELIMITER8,    (nestingBuffer+19), 10);    int delim8Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
+    char nestingBuffer[] = "userDefine.nesting.00";     // "00" is only a placeholder, the actual number is set by snprintf
+    snprintf(nestingBuffer + 20, 2, "%d", SCE_USER_STYLE_COMMENT);    int commentNesting      = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 20, 2, "%d", SCE_USER_STYLE_COMMENTLINE);    int lineCommentNesting  = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER1);    int delim1Nesting       = styler.GetPropertyInt(nestingBuffer, 0);  // one byte difference
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER2);    int delim2Nesting       = styler.GetPropertyInt(nestingBuffer, 0);  // for two-digit numbers
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER3);    int delim3Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER4);    int delim4Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER5);    int delim5Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER6);    int delim6Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER7);    int delim7Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
+    snprintf(nestingBuffer + 19, 3, "%d", SCE_USER_STYLE_DELIMITER8);    int delim8Nesting       = styler.GetPropertyInt(nestingBuffer, 0);
 
     commentNesting  |= SCE_USER_MASK_NESTING_FOLDERS_IN_COMMENT_OPEN
                     |  SCE_USER_MASK_NESTING_FOLDERS_IN_COMMENT_MIDDLE

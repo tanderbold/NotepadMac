@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/extremaduran.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Estremeñu">
+    <Item english="About NotepadMac" text="Azerca e NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Escuendel NotepadMac"/>
+    <Item english="Hide Others" text="Escuendel los otrus"/>
+    <Item english="Show All" text="Muestral tó"/>
+    <Item english="Quit NotepadMac" text="Salil de NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Abril el direhtoriu en Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Abril el direhtoriu en Terminal"/>
+    <Item english="Toggle Fold" text="Plegal/Despregal"/>
+    <Item english="Recent Window" text="Ventana rezienti"/>
+    <Item english="Validate shortcuts" text="Comprebal los atahus de tecláu"/>
+    <Item english="Open Plugins Folder…" text="Abril el direhtoriu e los 'plugins'…"/>
+    <Item english="Format" text="Hormatu"/>
+    <Item english="Validate" text="Comprebal"/>
+    <Item english="Compare" text="Comparal"/>
+    <Item english="Compare with File…" text="Comparal con un archivu…"/>
+    <Item english="Ignore Case" text="Inoral may./mín."/>
+    <Item english="Ignore Spaces" text="Inoral los espazius"/>
+    <Item english="Current XML Path" text="Ruta XML ahtual"/>
+    <Item english="Remember which panels were open" text="Recuerdal los panelis abiertus"/>
+    <Item english="Icons only" text="Sólu iconus"/>
+    <Item english="Icons" text="Iconus"/>
+    <Item english="1 pixel" text="1 píxel"/>
+    <Item english="2 pixels" text="2 píxelis"/>
+    <Item english="3 pixels" text="3 píxelis"/>
+    <Item english="A line" text="Una línia"/>
+    <Item english="Columns (space separated)" text="Colunas (separás pol espazius)"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Márhenis : gocha, zimará, direcha, embahu (puntus)"/>
+    <Item english="A fixed folder" text="Un direhtoriu fihu"/>
+    <Item english="Fixed folder" text="Direhtoriu fihu"/>
+    <Item english="Notepad++ update" text="Ahtualizazión de Notepad++"/>
+    <Item english="Fonts…" text="Tipografías…"/>
+    <Item english="Valid JSON." text="JSON váliu."/>
+    <Item english="View 1" text="Vista 1"/>
+    <Item english="View 2" text="Vista 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="Version:" text="Versión :"/>
+    <Item english="Variant:" text="Varianti :"/>
+    <Item english="Memory (KiB):" text="Memoria (KiB) :"/>
+    <Item english="Iterations:" text="Iterazionis :"/>
+    <Item english="Verify" text="Comprebal"/>
+    <Item english="Encode" text="Coifical"/>
+    <Item english="Input:" text="Entrá :"/>
+    <Item english="Result:" text="Resultáu :"/>
+    <Item english="Text:" text="Testu :"/>
+    <Item english="Uppercase letters (A-Z)" text="Letras mayúsculas (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Letras minúsculas (a-z)"/>
+    <Item english="Symbols:" text="Símbolus :"/>
+    <Item english="Insert into Document" text="Insertal nel documentu"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="Options" text="Ozionis"/>
+</NativeLangExtra>

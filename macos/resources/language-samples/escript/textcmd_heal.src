@@ -1,0 +1,32 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include "include/attributes";
+
+const HEAL_DELAY := 5;
+
+program textcmd_heal(who, text)
+    var targ := Target(who, TGTOPT_HELPFUL);
+    if (!targ)
+        SendSysMessage(who, "Cancelled.");
+        return 0;
+    endif
+
+    if (!targ.isA(POLCLASS_MOBILE))
+        SendSysMessage(who, "That cannot be healed.", 3, 40);
+        return 0;
+    endif
+
+    var amount := CInt(text);
+    if (amount <= 0)
+        amount := GetMaxHp(targ) - GetHp(targ);
+    endif
+
+    SetHp(targ, GetHp(targ) + amount);
+    PlaySoundEffect(targ, 0x1f3);
+    PlayObjectCenteredEffect(targ, FX_SPARK_EFFECT, 7, 0x10);
+    SendSysMessage(who, "Healed " + targ.name + " for " + amount + " points.");
+    return 1;
+endprogram

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/mongolian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Mongolian">
+    <Item english="About NotepadMac" text="NotepadMac-ийн тухай"/>
+    <Item english="Hide NotepadMac" text="NotepadMac-ийг нуух"/>
+    <Item english="Hide Others" text="Бусдыг нуух"/>
+    <Item english="Show All" text="Бүгдийг харуулах"/>
+    <Item english="Quit NotepadMac" text="NotepadMac-аас гарах"/>
+    <Item english="Open Containing Folder in Finder" text="Файлын хавтсыг Finder-д нээх"/>
+    <Item english="Open Containing Folder in Terminal" text="Файлын хавтсыг Терминалд нээх"/>
+    <Item english="Toggle Insert/Overtype" text="Оруулах/Дарж бичих горимыг сэлгэх"/>
+    <Item english="Toggle Fold" text="Хураах/дэлгэх"/>
+    <Item english="Show All Hidden Lines" text="Нуугдсан бүх мөрийг харуулах"/>
+    <Item english="Recent Window" text="Өмнөх цонх"/>
+    <Item english="Move to Trash" text="Хогийн сав руу зөөх"/>
+    <Item english="Save Current Command…" text="Энэ тушаалыг хадгалах…"/>
+    <Item english="Manage Saved Commands…" text="Хадгалсан тушаалуудыг удирдах…"/>
+    <Item english="Show Console" text="Консолыг харуулах"/>
+    <Item english="Validate shortcuts" text="Товчлолуудыг шалгах"/>
+    <Item english="Open Plugins Folder…" text="Нэмэлтүүдийн хавтсыг нээх…"/>
+    <Item english="Format" text="Хэлбэржүүлэх"/>
+    <Item english="Compact" text="Нягтруулах"/>
+    <Item english="Sort Keys" text="Түлхүүрүүдийг эрэмбэлэх"/>
+    <Item english="Validate" text="Шалгах"/>
+    <Item english="Show JSON Tree" text="JSON модыг харуулах"/>
+    <Item english="Set as First to Compare" text="Харьцуулах эхний файл болгох"/>
+    <Item english="Compare" text="Харьцуулах"/>
+    <Item english="Compare with File…" text="Файлтай харьцуулах…"/>
+    <Item english="Next Difference" text="Дараагийн ялгаа"/>
+    <Item english="Previous Difference" text="Өмнөх ялгаа"/>
+    <Item english="First Difference" text="Эхний ялгаа"/>
+    <Item english="Last Difference" text="Сүүлийн ялгаа"/>
+    <Item english="Compare Summary" text="Харьцуулалтын дүн"/>
+    <Item english="Ignore Case" text="Том/жижиг үсгийг үл харгалзах"/>
+    <Item english="Ignore Spaces" text="Хоосон зайг үл харгалзах"/>
+    <Item english="Ignore Empty Lines" text="Хоосон мөрийг үл харгалзах"/>
+    <Item english="Clear Active Compare" text="Идэвхтэй харьцуулалтыг цэвэрлэх"/>
+    <Item english="Clear All Compares" text="Бүх харьцуулалтыг цэвэрлэх"/>
+    <Item english="Check XML Syntax Now" text="XML синтаксыг одоо шалгах"/>
+    <Item english="Validate Against Schema…" text="Схемээр шалгах…"/>
+    <Item english="Validate Against DTD" text="DTD-ээр шалгах"/>
+    <Item english="Evaluate XPath Expression…" text="XPath илэрхийллийг тооцоолох…"/>
+    <Item english="Current XML Path" text="Одоогийн XML зам"/>
+    <Item english="Apply XSL Transformation…" text="XSL хувиргалтыг хэрэглэх…"/>
+    <Item english="Connections…" text="Холболтууд…"/>
+    <Item english="Connect…" text="Холбогдох…"/>
+    <Item english="Disconnect" text="Салгах"/>
+    <Item english="Show Remote Files" text="Алсын файлуудыг харуулах"/>
+    <Item english="Upload Current File" text="Энэ файлыг байршуулах"/>
+    <Item english="Execute NppExec Script…" text="NppExec скриптийг ажиллуулах…"/>
+    <Item english="Execute Previous NppExec Script" text="Өмнөх NppExec скриптийг ажиллуулах"/>
+    <Item english="Stop Running NppExec Script" text="NppExec скриптийг зогсоох"/>
+    <Item english="Show NppExec Console" text="NppExec консолыг харуулах"/>
+    <Item english="Execute NppExec Script" text="NppExec скриптийг ажиллуулах"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;түр зуурын скрипт&gt;"/>
+    <Item english="Script name" text="Скриптийн нэр"/>
+    <Item english="Dock Left" text="Зүүн талд тулгах"/>
+    <Item english="Dock Right" text="Баруун талд тулгах"/>
+    <Item english="Dock Top" text="Дээд талд тулгах"/>
+    <Item english="Dock Bottom" text="Доод талд тулгах"/>
+    <Item english="Float" text="Хөвөх"/>
+    <Item english="Remember which panels were open" text="Ямар хавтангууд нээлттэй байсныг санах"/>
+    <Item english="Show the toolbar" text="Хэрэгслийн самбарыг харуулах"/>
+    <Item english="Toolbar buttons" text="Хэрэгслийн самбарын товчнууд"/>
+    <Item english="Icons only" text="Зөвхөн дүрс"/>
+    <Item english="Icons and labels" text="Дүрс ба нэр"/>
+    <Item english="Labels only" text="Зөвхөн нэр"/>
+    <Item english="Toolbar size" text="Хэрэгслийн самбарын хэмжээ"/>
+    <Item english="Regular" text="Энгийн"/>
+    <Item english="Small" text="Жижиг"/>
+    <Item english="Icons" text="Дүрс"/>
+    <Item english="Hidden" text="Нуусан"/>
+    <Item english="1 pixel" text="1 пиксел"/>
+    <Item english="2 pixels" text="2 пиксел"/>
+    <Item english="3 pixels" text="3 пиксел"/>
+    <Item english="Selected text can be dragged" text="Сонгосон бичвэрийг чирч болно"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Олон засварлалтыг идэвхжүүлэх (Cmd+товших/сонголт)"/>
+    <Item english="Follow the system" text="Системийг дагах"/>
+    <Item english="Light theme" text="Цайвар загвар"/>
+    <Item english="Dark theme" text="Бараан загвар"/>
+    <Item english="Show the fold margin" text="Хураах талбарыг харуулах"/>
+    <Item english="A line" text="Мөр"/>
+    <Item english="Columns (space separated)" text="Багана (хоосон зайгаар тусгаарласан)"/>
+    <Item english="3 parts" text="3 хэсэг"/>
+    <Item english="4 parts" text="4 хэсэг"/>
+    <Item english="5 parts" text="5 хэсэг"/>
+    <Item english="6 parts" text="6 хэсэг"/>
+    <Item english="7 parts" text="7 хэсэг"/>
+    <Item english="8 parts" text="8 хэсэг"/>
+    <Item english="9 parts" text="9 хэсэг"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Нэрээс тодорхойгүй үед хэлийг агуулгаас нь тогтоох"/>
+    <Item english="Highlight matching braces" text="Тохирох хаалтыг тодруулах"/>
+    <Item english="Header font (blank for the editor's)" text="Толгойн фонт (хоосон бол засварлагчийнх)"/>
+    <Item english="Header font size" text="Толгойн фонтын хэмжээ"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Зах: зүүн, дээд, баруун, доод (цэг)"/>
+    <Item english="Characters before it opens" text="Нээгдэхээс өмнөх тэмдэгтийн тоо"/>
+    <Item english="Add characters to the word list" text="Үгийн жагсаалтад тэмдэгт нэмэх"/>
+    <Item english="A fixed folder" text="Тогтмол хавтас"/>
+    <Item english="Fixed folder" text="Тогтмол хавтас"/>
+    <Item english="Confirm Replace All" text="Бүгдийг солихыг баталгаажуулах"/>
+    <Item english="Compare: ignore case" text="Харьцуулалт: том/жижиг үсгийг үл харгалзах"/>
+    <Item english="Compare: ignore spaces" text="Харьцуулалт: хоосон зайг үл харгалзах"/>
+    <Item english="Compare: ignore empty lines" text="Харьцуулалт: хоосон мөрийг үл харгалзах"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Хайх талбарыг автоматаар дүүргэх тэмдэгтийн дээд тоо"/>
+    <Item english="Releases repository" text="Хувилбаруудын сан"/>
+    <Item english="Notepad++ update" text="Notepad++-ийн шинэчлэл"/>
+    <Item english="No update is available." text="Шинэчлэл байхгүй байна."/>
+    <Item english="An update package is available, do you want to download it?" text="Шинэчлэлийн багц байна, татаж авах уу?"/>
+    <Item english="Open the Releases Page" text="Хувилбаруудын хуудсыг нээх"/>
+    <Item english="Copy debug info to clipboard" text="Алдаа засварлах мэдээллийг түр санах ойд хуулах"/>
+    <Item english="Fonts…" text="Фонтууд…"/>
+    <Item english="This document is not valid JSON." text="Энэ баримт зөв JSON биш байна."/>
+    <Item english="Valid JSON." text="Зөв JSON."/>
+    <Item english="Invalid JSON." text="Буруу JSON."/>
+    <Item english="Set as the first file to compare." text="Харьцуулах эхний файл болголоо."/>
+    <Item english="Nothing to compare with." text="Харьцуулах зүйл алга."/>
+    <Item english="The document is valid XML." text="Баримт зөв XML байна."/>
+    <Item english="FTP connections" text="FTP холболтууд"/>
+    <Item english="Cannot connect." text="Холбогдож чадсангүй."/>
+    <Item english="That file is open in another tab." text="Тэр файл өөр табд нээлттэй байна."/>
+    <Item english="Close it first, or choose another name." text="Эхлээд хаагаад, эсвэл өөр нэр сонгоно уу."/>
+    <Item english="Which language is this?" text="Энэ ямар хэл вэ?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Зарим тэмдэгтийг энэ кодчилолд илэрхийлэх боломжгүй."/>
+    <Item english="Converting will replace them." text="Хөрвүүлбэл тэдгээр нь солигдоно."/>
+    <Item english="Press the keys." text="Товчлууруудыг дарна уу."/>
+    <Item english="Nothing is marked" text="Юу ч тэмдэглэгдээгүй"/>
+    <Item english="Marked text copied" text="Тэмдэглэсэн бичвэрийг хууллаа"/>
+    <Item english="Choose a folder first" text="Эхлээд хавтас сонгоно уу"/>
+    <Item english="This document has no folder" text="Энэ баримт хавтасгүй байна"/>
+    <Item english="The ticked project panels have no files" text="Сонгосон төслийн хавтангуудад файл алга"/>
+    <Item english="Searching..." text="Хайж байна..."/>
+    <Item english="Stopping..." text="Зогсож байна..."/>
+    <Item english="Marks cleared" text="Тэмдэглэгээг арилгалаа"/>
+    <Item english="Transparent" text="Тунгалаг"/>
+    <Item english="View 1" text="Харагдац 1"/>
+    <Item english="View 2" text="Харагдац 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Хэшүүд"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC түлхүүр (заавал биш):"/>
+    <Item english="Salt (hexadecimal):" text="Давс (16-тын тооллоор):"/>
+    <Item english="Random" text="Санамсаргүй"/>
+    <Item english="Cost (4-31):" text="Өртөг (4-31):"/>
+    <Item english="Version:" text="Хувилбар:"/>
+    <Item english="N, as a power of 2:" text="N, 2-ын зэргээр:"/>
+    <Item english="Block size (r):" text="Блокийн хэмжээ (r):"/>
+    <Item english="Parallelism (p):" text="Зэрэгцээ байдал (p):"/>
+    <Item english="Variant:" text="Төрөл:"/>
+    <Item english="Memory (KiB):" text="Санах ой (KiB):"/>
+    <Item english="Iterations:" text="Давталт:"/>
+    <Item english="Parallelism:" text="Зэрэгцээ байдал:"/>
+    <Item english="Digest:" text="Хэш функц:"/>
+    <Item english="Hash length (bytes):" text="Хэшийн урт (байт):"/>
+    <Item english="Hash:" text="Хэш:"/>
+    <Item english="Verify" text="Шалгах"/>
+    <Item english="Hash to check the password against:" text="Нууц үгийг шалгах хэш:"/>
+    <Item english="The salt is not valid hexadecimal." text="Давс нь зөв 16-тын тооллын бичлэг биш байна."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt-д яг 16 байтын давс хэрэгтэй."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2-д дор хаяж 8 байтын давс хэрэгтэй."/>
+    <Item english="The hash could not be generated with these settings." text="Эдгээр тохиргоогоор хэш үүсгэж чадсангүй."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Энэ нь bcrypt, scrypt, Argon2 эсвэл PBKDF2 хэш биш байна."/>
+    <Item english="The password matches the hash." text="Нууц үг хэштэй таарч байна."/>
+    <Item english="The password does not match the hash." text="Нууц үг хэштэй таарахгүй байна."/>
+    <Item english="The cost must be between 4 and 31." text="Өртөг нь 4-өөс 31 хүртэл байх ёстой."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Хувилбар нь 2a, 2b эсвэл 2y байх ёстой."/>
+    <Item english="N must be between 2^1 and 2^24." text="N нь 2^1-ээс 2^24 хүртэл байх ёстой."/>
+    <Item english="r and p must be between 1 and 64." text="r ба p нь 1-ээс 64 хүртэл байх ёстой."/>
+    <Item english="These settings need more than 2 GB of memory." text="Эдгээр тохиргоонд 2 GB-аас их санах ой хэрэгтэй."/>
+    <Item english="The parallelism must be between 1 and 64." text="Зэрэгцээ байдал нь 1-ээс 64 хүртэл байх ёстой."/>
+    <Item english="The iterations must be between 1 and 1000." text="Давталтын тоо нь 1-ээс 1000 хүртэл байх ёстой."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Санах ой нь урсгал бүрт дор хаяж 8 KiB байх ёстой."/>
+    <Item english="These settings need more than 4 GB of memory." text="Эдгээр тохиргоонд 4 GB-аас их санах ой хэрэгтэй."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Хэш функц нь SHA-1, SHA-256 эсвэл SHA-512 байх ёстой."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Давталтын тоо нь 1-ээс 100000000 хүртэл байх ёстой."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Хэшийн урт нь 4-өөс 1024 байт хүртэл байх ёстой."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-д зориулсан)"/>
+    <Item english="Encode" text="Кодлох"/>
+    <Item english="Decode" text="Код тайлах"/>
+    <Item english="The input is:" text="Оролт нь:"/>
+    <Item english="Bytes in hexadecimal" text="16-тын тооллоор бичсэн байт"/>
+    <Item english="Input:" text="Оролт:"/>
+    <Item english="Result:" text="Үр дүн:"/>
+    <Item english="Text:" text="Текст:"/>
+    <Item english="Bytes in hexadecimal:" text="16-тын тооллоор бичсэн байт:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Оролт нь 16-тын тооллоор бичсэн байт биш байна."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Оролт нь зөв $STR_REPLACE$ биш байна."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Тайлсан байтууд нь UTF-8 текст биш; тэдгээрийг зөвхөн 16-тын тооллоор харууллаа."/>
+    <Item english="Password Generator" text="Нууц үг үүсгэгч"/>
+    <Item english="Length:" text="Урт:"/>
+    <Item english="Number of passwords:" text="Нууц үгийн тоо:"/>
+    <Item english="Uppercase letters (A-Z)" text="Том үсэг (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Жижиг үсэг (a-z)"/>
+    <Item english="Digits (0-9)" text="Цифр (0-9)"/>
+    <Item english="Symbols:" text="Тусгай тэмдэгт:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Төстэй харагддаг тэмдэгтийг хасах (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Төрөл бүрээс дор хаяж нэг тэмдэгт"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Энтропи: ойролцоогоор $INT_REPLACE$ бит"/>
+    <Item english="Choose at least one kind of character." text="Дор хаяж нэг төрлийн тэмдэгт сонгоно уу."/>
+    <Item english="Insert into Document" text="Баримтад оруулах"/>
+    <Item english="Show the bare key in hexadecimal" text="Түлхүүрийг дангаар нь 16-тын тооллоор харуулах"/>
+    <Item english="Empty: a random salt each time" text="Хоосон: тухай бүрд санамсаргүй давс"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt зөвхөн эхний 72 байтыг уншина."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP хүсэлт"/>
+    <Item english="Send" text="Илгээх"/>
+    <Item english="Parameters" text="Параметрүүд"/>
+    <Item english="Headers" text="Толгой мэдээлэл"/>
+    <Item english="Body" text="Их бие"/>
+    <Item english="Options" text="Сонголтууд"/>
+    <Item english="Content type:" text="Агуулгын төрөл:"/>
+    <Item english="User name:" text="Хэрэглэгчийн нэр:"/>
+    <Item english="Password:" text="Нууц үг:"/>
+    <Item english="Timeout (seconds):" text="Хүлээх хугацаа (секунд):"/>
+    <Item english="Follow redirects" text="Дахин чиглүүлэлтийг дагах"/>
+    <Item english="Allow invalid certificates" text="Хүчингүй гэрчилгээг зөвшөөрөх"/>
+    <Item english="Format JSON" text="JSON хэлбэржүүлэх"/>
+    <Item english="Paste curl Command" text="curl тушаал наах"/>
+    <Item english="Copy as curl" text="curl хэлбэрээр хуулах"/>
+    <Item english="Open in New Document" text="Шинэ баримтад нээх"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Мөр бүрд нэг: нэр=утга. Тэдгээрийг кодлоод хаягт нэмнэ."/>
+    <Item english="One to a line: Name: value" text="Мөр бүрд нэг: Нэр: утга"/>
+    <Item english="Sent as it is written, in UTF-8." text="Бичсэн чигээр нь UTF-8-аар илгээнэ."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Хариу нь текст биш: $INT_REPLACE$ байт."/>
+    <Item english="The address is not an http or https address." text="Хаяг нь http эсвэл https хаяг биш байна."/>
+    <Item english="This is not a curl command." text="Энэ нь curl тушаал биш байна."/>
+    <Item english="The command has no address." text="Тушаалд хаяг алга."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Тушаал өгөгдлөө файлаас уншдаг бөгөөд үүнийг энд дэмжээгүй."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Маягт болон файл байршуулалтыг тушаалаас уншихгүй."/>
+    <Item english="The command's address is not an http or https address." text="Тушаалын хаяг нь http эсвэл https хаяг биш байна."/>
+</NativeLangExtra>

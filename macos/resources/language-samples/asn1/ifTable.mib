@@ -1,0 +1,44 @@
+DEMO-IF-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    OBJECT-TYPE, Gauge32, mib-2 FROM SNMPv2-SMI
+    PhysAddress FROM SNMPv2-TC;
+
+demoInterfaces OBJECT IDENTIFIER ::= { mib-2 222 }
+
+demoIfTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF DemoIfEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A list of interface entries."
+    ::= { demoInterfaces 1 }
+
+demoIfEntry OBJECT-TYPE
+    SYNTAX      DemoIfEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "One interface."
+    INDEX       { demoIfIndex }
+    ::= { demoIfTable 1 }
+
+DemoIfEntry ::= SEQUENCE {
+    demoIfIndex     INTEGER,
+    demoIfSpeed     Gauge32,
+    demoIfPhysAddr  PhysAddress
+}
+
+demoIfIndex OBJECT-TYPE
+    SYNTAX      INTEGER (1..2147483647)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "A unique value for each interface."
+    ::= { demoIfEntry 1 }
+
+demoIfSpeed OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Bits per second."
+    ::= { demoIfEntry 2 }
+
+END

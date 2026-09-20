@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/korean.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="한국어">
+    <Item english="About NotepadMac" text="NotepadMac 정보"/>
+    <Item english="Hide NotepadMac" text="NotepadMac 숨기기"/>
+    <Item english="Hide Others" text="기타 숨기기"/>
+    <Item english="Show All" text="모두 표시"/>
+    <Item english="Quit NotepadMac" text="NotepadMac 종료"/>
+    <Item english="Open Containing Folder in Finder" text="Finder에서 현재 폴더 열기"/>
+    <Item english="Open Containing Folder in Terminal" text="터미널에서 현재 폴더 열기"/>
+    <Item english="Toggle Insert/Overtype" text="삽입/겹쳐쓰기 전환"/>
+    <Item english="Toggle Fold" text="접기/펼치기"/>
+    <Item english="Show All Hidden Lines" text="숨긴 줄 모두 표시"/>
+    <Item english="Recent Window" text="최근 창"/>
+    <Item english="Move to Trash" text="휴지통으로 이동"/>
+    <Item english="Save Current Command…" text="현재 명령 저장…"/>
+    <Item english="Manage Saved Commands…" text="저장한 명령 관리…"/>
+    <Item english="Show Console" text="콘솔 표시"/>
+    <Item english="Validate shortcuts" text="단축키 검사"/>
+    <Item english="Open Plugins Folder…" text="플러그인 폴더 열기…"/>
+    <Item english="Format" text="서식 정리"/>
+    <Item english="Compact" text="압축"/>
+    <Item english="Sort Keys" text="키 정렬"/>
+    <Item english="Validate" text="유효성 검사"/>
+    <Item english="Show JSON Tree" text="JSON 트리 표시"/>
+    <Item english="Set as First to Compare" text="비교할 첫 번째 파일로 지정"/>
+    <Item english="Compare" text="비교"/>
+    <Item english="Compare with File…" text="파일과 비교…"/>
+    <Item english="Next Difference" text="다음 차이점"/>
+    <Item english="Previous Difference" text="이전 차이점"/>
+    <Item english="First Difference" text="첫 번째 차이점"/>
+    <Item english="Last Difference" text="마지막 차이점"/>
+    <Item english="Compare Summary" text="비교 요약"/>
+    <Item english="Ignore Case" text="대소문자 무시"/>
+    <Item english="Ignore Spaces" text="공백 무시"/>
+    <Item english="Ignore Empty Lines" text="빈 줄 무시"/>
+    <Item english="Clear Active Compare" text="현재 비교 지우기"/>
+    <Item english="Clear All Compares" text="모든 비교 지우기"/>
+    <Item english="Pretty Print" text="보기 좋게 정렬"/>
+    <Item english="Pretty Print — Indent Attributes" text="보기 좋게 정렬 — 속성 들여쓰기"/>
+    <Item english="Linearize" text="한 줄로 만들기"/>
+    <Item english="Check XML Syntax Now" text="지금 XML 구문 검사"/>
+    <Item english="Validate Against Schema…" text="스키마로 유효성 검사…"/>
+    <Item english="Validate Against DTD" text="DTD로 유효성 검사"/>
+    <Item english="Evaluate XPath Expression…" text="XPath 식 계산…"/>
+    <Item english="Current XML Path" text="현재 XML 경로"/>
+    <Item english="Current XML Path with Predicates" text="현재 XML 경로 (조건 포함)"/>
+    <Item english="Apply XSL Transformation…" text="XSL 변환 적용…"/>
+    <Item english="Escape Characters in Selection" text="선택한 영역의 문자 이스케이프"/>
+    <Item english="Unescape Characters in Selection" text="선택한 영역의 문자 이스케이프 해제"/>
+    <Item english="Connections…" text="연결 설정…"/>
+    <Item english="Connect…" text="연결…"/>
+    <Item english="Disconnect" text="연결 끊기"/>
+    <Item english="Show Remote Files" text="원격 파일 표시"/>
+    <Item english="Upload Current File" text="현재 파일 업로드"/>
+    <Item english="Execute NppExec Script…" text="NppExec 스크립트 실행…"/>
+    <Item english="Execute Previous NppExec Script" text="이전 NppExec 스크립트 실행"/>
+    <Item english="Stop Running NppExec Script" text="실행 중인 NppExec 스크립트 중지"/>
+    <Item english="Show NppExec Console" text="NppExec 콘솔 표시"/>
+    <Item english="Execute NppExec Script" text="NppExec 스크립트 실행"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;임시 스크립트&gt;"/>
+    <Item english="Script name" text="스크립트 이름"/>
+    <Item english="Dock Left" text="왼쪽에 고정"/>
+    <Item english="Dock Right" text="오른쪽에 고정"/>
+    <Item english="Dock Top" text="위쪽에 고정"/>
+    <Item english="Dock Bottom" text="아래쪽에 고정"/>
+    <Item english="Float" text="고정 해제"/>
+    <Item english="Remember which panels were open" text="열려 있던 패널 기억하기"/>
+    <Item english="Show the toolbar" text="도구 모음 표시"/>
+    <Item english="Toolbar buttons" text="도구 모음 버튼"/>
+    <Item english="Icons only" text="아이콘만"/>
+    <Item english="Icons and labels" text="아이콘과 이름"/>
+    <Item english="Labels only" text="이름만"/>
+    <Item english="Toolbar size" text="도구 모음 크기"/>
+    <Item english="Regular" text="보통"/>
+    <Item english="Small" text="작게"/>
+    <Item english="Icons" text="아이콘"/>
+    <Item english="Hidden" text="숨김"/>
+    <Item english="1 pixel" text="1 픽셀"/>
+    <Item english="2 pixels" text="2 픽셀"/>
+    <Item english="3 pixels" text="3 픽셀"/>
+    <Item english="Selected text can be dragged" text="선택한 텍스트를 드래그할 수 있음"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="다중 편집 활성화 (Cmd+마우스 클릭/선택)"/>
+    <Item english="Follow the system" text="시스템 설정을 따름"/>
+    <Item english="Light theme" text="라이트 테마"/>
+    <Item english="Dark theme" text="다크 테마"/>
+    <Item english="Show the fold margin" text="접기 여백 표시"/>
+    <Item english="A line" text="선"/>
+    <Item english="Columns (space separated)" text="열 (공백으로 구분)"/>
+    <Item english="3 parts" text="3개 영역"/>
+    <Item english="4 parts" text="4개 영역"/>
+    <Item english="5 parts" text="5개 영역"/>
+    <Item english="6 parts" text="6개 영역"/>
+    <Item english="7 parts" text="7개 영역"/>
+    <Item english="8 parts" text="8개 영역"/>
+    <Item english="9 parts" text="9개 영역"/>
+    <Item english="Work the language out from the contents when the name does not say" text="이름으로 알 수 없으면 내용으로 언어 판별"/>
+    <Item english="Highlight matching braces" text="일치하는 괄호 강조"/>
+    <Item english="Header font (blank for the editor's)" text="머리글 글꼴 (비워 두면 편집기 글꼴)"/>
+    <Item english="Header font size" text="머리글 글꼴 크기"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="여백: 왼쪽, 위, 오른쪽, 아래 (포인트)"/>
+    <Item english="Characters before it opens" text="목록이 열리기까지의 글자 수"/>
+    <Item english="Add characters to the word list" text="단어 문자 목록에 문자 추가"/>
+    <Item english="A fixed folder" text="고정 폴더"/>
+    <Item english="Fixed folder" text="고정 폴더"/>
+    <Item english="Confirm Replace All" text="모두 바꾸기 전에 확인"/>
+    <Item english="Compare: ignore case" text="비교: 대소문자 무시"/>
+    <Item english="Compare: ignore spaces" text="비교: 공백 무시"/>
+    <Item english="Compare: ignore empty lines" text="비교: 빈 줄 무시"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="찾기 입력란에 자동으로 채울 최대 글자 수"/>
+    <Item english="Releases repository" text="릴리스 저장소"/>
+    <Item english="Notepad++ update" text="Notepad++ 업데이트"/>
+    <Item english="No update is available." text="사용할 수 있는 업데이트가 없습니다."/>
+    <Item english="An update package is available, do you want to download it?" text="업데이트 패키지가 있습니다. 다운로드하시겠습니까?"/>
+    <Item english="Open the Releases Page" text="릴리스 페이지 열기"/>
+    <Item english="Copy debug info to clipboard" text="디버그 정보를 클립보드에 복사"/>
+    <Item english="Fonts…" text="글꼴…"/>
+    <Item english="This document is not valid JSON." text="이 문서는 유효한 JSON이 아닙니다."/>
+    <Item english="Valid JSON." text="유효한 JSON입니다."/>
+    <Item english="Invalid JSON." text="유효하지 않은 JSON입니다."/>
+    <Item english="Set as the first file to compare." text="비교할 첫 번째 파일로 지정했습니다."/>
+    <Item english="Nothing to compare with." text="비교할 대상이 없습니다."/>
+    <Item english="The document is valid XML." text="이 문서는 유효한 XML입니다."/>
+    <Item english="FTP connections" text="FTP 연결"/>
+    <Item english="Cannot connect." text="연결할 수 없습니다."/>
+    <Item english="That file is open in another tab." text="그 파일은 다른 탭에 열려 있습니다."/>
+    <Item english="Close it first, or choose another name." text="먼저 그 탭을 닫거나 다른 이름을 선택하세요."/>
+    <Item english="Which language is this?" text="어떤 언어입니까?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="일부 문자는 이 인코딩으로 표현할 수 없습니다."/>
+    <Item english="Converting will replace them." text="변환하면 해당 문자가 대체됩니다."/>
+    <Item english="Press the keys." text="키를 누르세요."/>
+    <Item english="Nothing is marked" text="책갈피한 내용 없음"/>
+    <Item english="Marked text copied" text="책갈피한 문자 복사됨"/>
+    <Item english="Choose a folder first" text="먼저 폴더를 선택하세요"/>
+    <Item english="This document has no folder" text="이 문서에는 폴더가 없습니다"/>
+    <Item english="The ticked project panels have no files" text="선택한 프로젝트 패널에 파일이 없습니다"/>
+    <Item english="Searching..." text="찾는 중..."/>
+    <Item english="Stopping..." text="중지하는 중..."/>
+    <Item english="Marks cleared" text="책갈피를 모두 지움"/>
+    <Item english="Transparent" text="투명"/>
+    <Item english="View 1" text="보기 1"/>
+    <Item english="View 2" text="보기 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="해시"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC 키 (선택 사항):"/>
+    <Item english="Salt (hexadecimal):" text="솔트 (16진수):"/>
+    <Item english="Random" text="무작위"/>
+    <Item english="Cost (4-31):" text="비용 (4-31):"/>
+    <Item english="Version:" text="버전:"/>
+    <Item english="N, as a power of 2:" text="N (2의 거듭제곱):"/>
+    <Item english="Block size (r):" text="블록 크기 (r):"/>
+    <Item english="Parallelism (p):" text="병렬도 (p):"/>
+    <Item english="Variant:" text="변형:"/>
+    <Item english="Memory (KiB):" text="메모리 (KiB):"/>
+    <Item english="Iterations:" text="반복 횟수:"/>
+    <Item english="Parallelism:" text="병렬도:"/>
+    <Item english="Digest:" text="해시 함수:"/>
+    <Item english="Hash length (bytes):" text="해시 길이 (바이트):"/>
+    <Item english="Hash:" text="해시:"/>
+    <Item english="Verify" text="검증"/>
+    <Item english="Hash to check the password against:" text="비밀번호를 대조할 해시:"/>
+    <Item english="The salt is not valid hexadecimal." text="솔트가 유효한 16진수가 아닙니다."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt에는 정확히 16바이트의 솔트가 필요합니다."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2에는 8바이트 이상의 솔트가 필요합니다."/>
+    <Item english="The hash could not be generated with these settings." text="이 설정으로는 해시를 생성할 수 없습니다."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="bcrypt, scrypt, Argon2 또는 PBKDF2 해시가 아닙니다."/>
+    <Item english="The password matches the hash." text="비밀번호가 해시와 일치합니다."/>
+    <Item english="The password does not match the hash." text="비밀번호가 해시와 일치하지 않습니다."/>
+    <Item english="The cost must be between 4 and 31." text="비용은 4에서 31 사이여야 합니다."/>
+    <Item english="The version must be 2a, 2b or 2y." text="버전은 2a, 2b 또는 2y여야 합니다."/>
+    <Item english="N must be between 2^1 and 2^24." text="N은 2^1에서 2^24 사이여야 합니다."/>
+    <Item english="r and p must be between 1 and 64." text="r과 p는 1에서 64 사이여야 합니다."/>
+    <Item english="These settings need more than 2 GB of memory." text="이 설정에는 2 GB가 넘는 메모리가 필요합니다."/>
+    <Item english="The parallelism must be between 1 and 64." text="병렬도는 1에서 64 사이여야 합니다."/>
+    <Item english="The iterations must be between 1 and 1000." text="반복 횟수는 1에서 1000 사이여야 합니다."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="메모리는 스레드당 8 KiB 이상이어야 합니다."/>
+    <Item english="These settings need more than 4 GB of memory." text="이 설정에는 4 GB가 넘는 메모리가 필요합니다."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="해시 함수는 SHA-1, SHA-256 또는 SHA-512여야 합니다."/>
+    <Item english="The iterations must be between 1 and 100000000." text="반복 횟수는 1에서 100000000 사이여야 합니다."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="해시 길이는 4에서 1024바이트 사이여야 합니다."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL 안전)"/>
+    <Item english="Encode" text="인코딩"/>
+    <Item english="Decode" text="디코딩"/>
+    <Item english="The input is:" text="입력 형식:"/>
+    <Item english="Bytes in hexadecimal" text="16진수 바이트"/>
+    <Item english="Input:" text="입력:"/>
+    <Item english="Result:" text="결과:"/>
+    <Item english="Text:" text="텍스트:"/>
+    <Item english="Bytes in hexadecimal:" text="16진수 바이트:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="입력이 16진수로 표기된 바이트가 아닙니다."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="입력이 유효한 $STR_REPLACE$ 형식이 아닙니다."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="디코딩된 바이트가 UTF-8 텍스트가 아니므로 16진수로만 표시합니다."/>
+    <Item english="Password Generator" text="비밀번호 생성기"/>
+    <Item english="Length:" text="길이:"/>
+    <Item english="Number of passwords:" text="비밀번호 개수:"/>
+    <Item english="Uppercase letters (A-Z)" text="대문자 (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="소문자 (a-z)"/>
+    <Item english="Digits (0-9)" text="숫자 (0-9)"/>
+    <Item english="Symbols:" text="기호:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="비슷하게 보이는 문자 제외 (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="각 종류의 문자를 하나 이상 포함"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="엔트로피: 약 $INT_REPLACE$비트"/>
+    <Item english="Choose at least one kind of character." text="문자 종류를 하나 이상 선택하세요."/>
+    <Item english="Insert into Document" text="문서에 삽입"/>
+    <Item english="Show the bare key in hexadecimal" text="키 자체를 16진수로 표시"/>
+    <Item english="Empty: a random salt each time" text="비어 있음: 매번 무작위 솔트"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt는 처음 72바이트만 읽습니다."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP 요청"/>
+    <Item english="Send" text="보내기"/>
+    <Item english="Parameters" text="매개변수"/>
+    <Item english="Headers" text="헤더"/>
+    <Item english="Body" text="본문"/>
+    <Item english="Options" text="옵션"/>
+    <Item english="Content type:" text="콘텐츠 유형:"/>
+    <Item english="User name:" text="사용자 이름:"/>
+    <Item english="Password:" text="비밀번호:"/>
+    <Item english="Timeout (seconds):" text="제한 시간 (초):"/>
+    <Item english="Follow redirects" text="리디렉션 따라가기"/>
+    <Item english="Allow invalid certificates" text="유효하지 않은 인증서 허용"/>
+    <Item english="Format JSON" text="JSON 서식 정리"/>
+    <Item english="Paste curl Command" text="curl 명령 붙여넣기"/>
+    <Item english="Copy as curl" text="curl로 복사"/>
+    <Item english="Open in New Document" text="새 문서에서 열기"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="한 줄에 하나씩: 이름=값. 인코딩되어 주소에 추가됩니다."/>
+    <Item english="One to a line: Name: value" text="한 줄에 하나씩: 이름: 값"/>
+    <Item english="Sent as it is written, in UTF-8." text="작성된 그대로 UTF-8로 전송됩니다."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="응답이 텍스트가 아닙니다: $INT_REPLACE$바이트."/>
+    <Item english="The address is not an http or https address." text="주소가 http 또는 https 주소가 아닙니다."/>
+    <Item english="This is not a curl command." text="curl 명령이 아닙니다."/>
+    <Item english="The command has no address." text="명령에 주소가 없습니다."/>
+    <Item english="The command reads its data from a file, which is not done here." text="명령이 파일에서 데이터를 읽는데, 여기서는 지원하지 않습니다."/>
+    <Item english="Forms and uploads of files are not read from a command." text="양식과 파일 업로드는 명령에서 읽어 오지 않습니다."/>
+    <Item english="The command's address is not an http or https address." text="명령의 주소가 http 또는 https 주소가 아닙니다."/>
+</NativeLangExtra>

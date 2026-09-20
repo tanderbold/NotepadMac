@@ -1,0 +1,33 @@
+G4C Stopwatch
+
+Window 200 200 180 90 "Stopwatch"
+
+xOnLoad
+     seconds = 0
+     running = 0
+     GuiOpen #this
+
+xText 10 10 160 24 "0 s"
+     attr id display
+     attr font "Arial" 14 bold
+
+xButton 10 50 75 24 "Start"
+     if $running = 0
+          running = 1
+          SetTimer #this 1000 Tick
+     else
+          running = 0
+          KillTimer #this Tick
+     endif
+
+xButton 95 50 75 24 "Reset"
+     seconds = 0
+     Update display "0 s"
+
+xOnTimer Tick
+     seconds = $($seconds + 1)
+     Update display "$seconds s"
+     if $seconds >= 3600
+          KillTimer #this Tick
+          MsgBox "An hour has passed" OK/INFO
+     endif

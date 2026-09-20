@@ -1,0 +1,18 @@
+* Non-inverting amplifier with a subcircuit op-amp
+.subckt opamp inp inn out
+Rin inp inn 1meg
+E1 mid 0 inp inn 100k
+Rout mid out 75
+.ends opamp
+
+Vs in 0 DC 0 AC 1 SIN(0 0.1 1k)
+X1 in fb out opamp
+Rf out fb 90k
+Rg fb 0 10k
+Rload out 0 2k
+
+.param gain={1+90k/10k}
+.step param Rf list 10k 40k 90k
+.meas tran vpp PP V(out)
+.tran 1u 3m
+.end

@@ -1,0 +1,20 @@
+; Writes a short inventory of the workstation
+$out = "\\fileserver\inventory$\" + @WKSTA + ".txt"
+IF Exist($out)
+    DEL $out
+ENDIF
+$rc = RedirectOutput($out)
+? "Computer:  " + @WKSTA
+? "User:      " + @USERID
+? "OS:        " + @PRODUCTTYPE + " build " + @BUILD
+? "CPU:       " + @CPU + " (" + @MHZ + " MHz)"
+? "Memory:    " + MemorySize() + " MB"
+? "IP:        " + Join(Split(@IPADDRESS0, " "), "")
+DO
+    $key = EnumKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", $index)
+    IF @ERROR = 0
+        ? "Installed: " + ReadValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + $key, "DisplayName")
+    ENDIF
+    $index = $index + 1
+UNTIL @ERROR <> 0
+$rc = RedirectOutput("")

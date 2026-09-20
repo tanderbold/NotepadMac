@@ -1,0 +1,23 @@
+/* A window with a bouncing text */
+@VERSION 6,0
+@DISPLAY {Title = "Hello", Width = 640, Height = 480, Color = #BLACK}
+
+Local x, y = 100, 100
+Local dx, dy = 3, 2
+
+Function p_Move()
+    x = x + dx
+    y = y + dy
+    If x < 0 Or x > 540 Then dx = -dx
+    If y < 0 Or y > 450 Then dy = -dy
+    Cls
+    SetFontColor(#YELLOW)
+    TextOut(x, y, "Hello, Hollywood!")
+EndFunction
+
+SetFont(#SANS, 24)
+SetInterval(1, p_Move, 1000 / 50)
+
+Repeat
+    WaitEvent
+Forever

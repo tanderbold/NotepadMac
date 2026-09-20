@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/thai.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="thai">
+    <Item english="About NotepadMac" text="เกี่ยวกับ NotepadMac"/>
+    <Item english="Hide NotepadMac" text="ซ่อน NotepadMac"/>
+    <Item english="Hide Others" text="ซ่อนแอปอื่น"/>
+    <Item english="Show All" text="แสดงทั้งหมด"/>
+    <Item english="Quit NotepadMac" text="ออกจาก NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="เปิดโฟลเดอร์ที่เก็บไฟล์ใน Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="เปิดโฟลเดอร์ที่เก็บไฟล์ใน Terminal"/>
+    <Item english="Toggle Insert/Overtype" text="สลับโหมดแทรก/พิมพ์ทับ"/>
+    <Item english="Show All Hidden Lines" text="แสดงบรรทัดที่ซ่อนทั้งหมด"/>
+    <Item english="Recent Window" text="หน้าต่างล่าสุด"/>
+    <Item english="Move to Trash" text="ย้ายไปถังขยะ"/>
+    <Item english="Save Current Command…" text="บันทึกคำสั่งปัจจุบัน…"/>
+    <Item english="Manage Saved Commands…" text="จัดการคำสั่งที่บันทึกไว้…"/>
+    <Item english="Show Console" text="แสดงคอนโซล"/>
+    <Item english="Validate shortcuts" text="ตรวจสอบคีย์ลัด"/>
+    <Item english="Open Plugins Folder…" text="เปิดโฟลเดอร์ปลั๊กอิน…"/>
+    <Item english="Format" text="จัดรูปแบบ"/>
+    <Item english="Sort Keys" text="เรียงลำดับคีย์"/>
+    <Item english="Validate" text="ตรวจสอบความถูกต้อง"/>
+    <Item english="Show JSON Tree" text="แสดงโครงสร้างต้นไม้ JSON"/>
+    <Item english="Set as First to Compare" text="ตั้งเป็นไฟล์แรกที่จะเปรียบเทียบ"/>
+    <Item english="Compare" text="เปรียบเทียบ"/>
+    <Item english="Compare with File…" text="เปรียบเทียบกับไฟล์…"/>
+    <Item english="Next Difference" text="จุดแตกต่างถัดไป"/>
+    <Item english="Previous Difference" text="จุดแตกต่างก่อนหน้า"/>
+    <Item english="First Difference" text="จุดแตกต่างแรก"/>
+    <Item english="Last Difference" text="จุดแตกต่างสุดท้าย"/>
+    <Item english="Compare Summary" text="สรุปผลการเปรียบเทียบ"/>
+    <Item english="Ignore Case" text="ไม่สนตัวอักษรเล็ก/ใหญ่"/>
+    <Item english="Ignore Spaces" text="ไม่สนช่องว่าง"/>
+    <Item english="Ignore Empty Lines" text="ไม่สนบรรทัดว่าง"/>
+    <Item english="Clear Active Compare" text="ล้างการเปรียบเทียบปัจจุบัน"/>
+    <Item english="Clear All Compares" text="ล้างการเปรียบเทียบทั้งหมด"/>
+    <Item english="Check XML Syntax Now" text="ตรวจสอบไวยากรณ์ XML เดี๋ยวนี้"/>
+    <Item english="Validate Against Schema…" text="ตรวจสอบความถูกต้องกับ Schema…"/>
+    <Item english="Validate Against DTD" text="ตรวจสอบความถูกต้องกับ DTD"/>
+    <Item english="Evaluate XPath Expression…" text="ประมวลผลนิพจน์ XPath…"/>
+    <Item english="Current XML Path" text="พาธ XML ปัจจุบัน"/>
+    <Item english="Apply XSL Transformation…" text="ใช้การแปลง XSL…"/>
+    <Item english="Connections…" text="การเชื่อมต่อ…"/>
+    <Item english="Connect…" text="เชื่อมต่อ…"/>
+    <Item english="Disconnect" text="ตัดการเชื่อมต่อ"/>
+    <Item english="Show Remote Files" text="แสดงไฟล์บนเซิร์ฟเวอร์"/>
+    <Item english="Upload Current File" text="อัปโหลดไฟล์ปัจจุบัน"/>
+    <Item english="Execute NppExec Script…" text="เรียกสคริปต์ NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="เรียกสคริปต์ NppExec ก่อนหน้า"/>
+    <Item english="Stop Running NppExec Script" text="หยุดสคริปต์ NppExec ที่กำลังทำงาน"/>
+    <Item english="Show NppExec Console" text="แสดงคอนโซล NppExec"/>
+    <Item english="Execute NppExec Script" text="เรียกสคริปต์ NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;สคริปต์ชั่วคราว&gt;"/>
+    <Item english="Script name" text="ชื่อสคริปต์"/>
+    <Item english="Remember which panels were open" text="จำพาเนลที่เปิดไว้"/>
+    <Item english="Show the toolbar" text="แสดงแถบเครื่องมือ"/>
+    <Item english="Toolbar buttons" text="ปุ่มบนแถบเครื่องมือ"/>
+    <Item english="Icons only" text="ไอคอนเท่านั้น"/>
+    <Item english="Icons and labels" text="ไอคอนและข้อความ"/>
+    <Item english="Labels only" text="ข้อความเท่านั้น"/>
+    <Item english="Toolbar size" text="ขนาดแถบเครื่องมือ"/>
+    <Item english="Regular" text="ปกติ"/>
+    <Item english="Small" text="เล็ก"/>
+    <Item english="Icons" text="ไอคอน"/>
+    <Item english="Hidden" text="ซ่อน"/>
+    <Item english="1 pixel" text="1 พิกเซล"/>
+    <Item english="2 pixels" text="2 พิกเซล"/>
+    <Item english="3 pixels" text="3 พิกเซล"/>
+    <Item english="Selected text can be dragged" text="ลากข้อความที่เลือกได้"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="เปิดใช้การแก้ไขหลายตำแหน่ง (Cmd+คลิก/เลือก)"/>
+    <Item english="Follow the system" text="ตามระบบ"/>
+    <Item english="Light theme" text="ธีมสว่าง"/>
+    <Item english="Dark theme" text="ธีมมืด"/>
+    <Item english="A line" text="เส้น"/>
+    <Item english="Columns (space separated)" text="คอลัมน์ (คั่นด้วยช่องว่าง)"/>
+    <Item english="3 parts" text="3 ส่วน"/>
+    <Item english="4 parts" text="4 ส่วน"/>
+    <Item english="5 parts" text="5 ส่วน"/>
+    <Item english="6 parts" text="6 ส่วน"/>
+    <Item english="7 parts" text="7 ส่วน"/>
+    <Item english="8 parts" text="8 ส่วน"/>
+    <Item english="9 parts" text="9 ส่วน"/>
+    <Item english="Work the language out from the contents when the name does not say" text="ตรวจหาภาษาจากเนื้อหาเมื่อชื่อไฟล์ไม่ได้บอก"/>
+    <Item english="Highlight matching braces" text="ไฮไลท์วงเล็บที่เข้าคู่กัน"/>
+    <Item english="Header font (blank for the editor's)" text="ฟอนท์หัวเอกสาร (เว้นว่างเพื่อใช้ฟอนท์ของตัวแก้ไข)"/>
+    <Item english="Header font size" text="ขนาดฟอนท์หัวเอกสาร"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="ระยะขอบ: ซ้าย, บน, ขวา, ล่าง (พอยต์)"/>
+    <Item english="A fixed folder" text="โฟลเดอร์ที่กำหนดไว้"/>
+    <Item english="Fixed folder" text="โฟลเดอร์ที่กำหนดไว้"/>
+    <Item english="Confirm Replace All" text="ยืนยันก่อนแทนที่ทั้งหมด"/>
+    <Item english="Compare: ignore case" text="เปรียบเทียบ: ไม่สนตัวอักษรเล็ก/ใหญ่"/>
+    <Item english="Compare: ignore spaces" text="เปรียบเทียบ: ไม่สนช่องว่าง"/>
+    <Item english="Compare: ignore empty lines" text="เปรียบเทียบ: ไม่สนบรรทัดว่าง"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="จำนวนอักขระสูงสุดที่จะเติมช่องค้นหาอัตโนมัติ"/>
+    <Item english="Notepad++ update" text="อัพเดท Notepad++"/>
+    <Item english="No update is available." text="ไม่มีอัพเดทใหม่"/>
+    <Item english="An update package is available, do you want to download it?" text="มีแพ็กเกจอัพเดทใหม่ คุณต้องการดาวน์โหลดหรือไม่?"/>
+    <Item english="Open the Releases Page" text="เปิดหน้ารุ่นที่เผยแพร่"/>
+    <Item english="Copy debug info to clipboard" text="คัดลอกข้อมูลดีบักไปยังคลิปบอร์ด"/>
+    <Item english="Fonts…" text="ฟอนท์…"/>
+    <Item english="This document is not valid JSON." text="เอกสารนี้ไม่ใช่ JSON ที่ถูกต้อง"/>
+    <Item english="Valid JSON." text="JSON ถูกต้อง"/>
+    <Item english="Invalid JSON." text="JSON ไม่ถูกต้อง"/>
+    <Item english="Set as the first file to compare." text="ตั้งเป็นไฟล์แรกที่จะเปรียบเทียบแล้ว"/>
+    <Item english="Nothing to compare with." text="ไม่มีอะไรให้เปรียบเทียบด้วย"/>
+    <Item english="The document is valid XML." text="เอกสารนี้เป็น XML ที่ถูกต้อง"/>
+    <Item english="FTP connections" text="การเชื่อมต่อ FTP"/>
+    <Item english="Cannot connect." text="ไม่สามารถเชื่อมต่อได้"/>
+    <Item english="That file is open in another tab." text="ไฟล์นั้นเปิดอยู่ในแท็บอื่น"/>
+    <Item english="Close it first, or choose another name." text="ปิดไฟล์นั้นก่อน หรือเลือกชื่ออื่น"/>
+    <Item english="Which language is this?" text="นี่คือภาษาอะไร?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="อักขระบางตัวไม่สามารถแสดงได้ในการเข้ารหัสนี้"/>
+    <Item english="Converting will replace them." text="การแปลงจะแทนที่อักขระเหล่านั้น"/>
+    <Item english="Press the keys." text="กดปุ่มที่ต้องการ"/>
+    <Item english="Nothing is marked" text="ไม่มีสิ่งที่มาร์คไว้"/>
+    <Item english="Marked text copied" text="คัดลอกข้อความที่มาร์คไว้แล้ว"/>
+    <Item english="Choose a folder first" text="เลือกโฟลเดอร์ก่อน"/>
+    <Item english="This document has no folder" text="เอกสารนี้ไม่มีโฟลเดอร์"/>
+    <Item english="The ticked project panels have no files" text="พาเนลโปรเจกต์ที่ติ๊กไว้ไม่มีไฟล์"/>
+    <Item english="Searching..." text="กำลังค้นหา..."/>
+    <Item english="Stopping..." text="กำลังหยุด..."/>
+    <Item english="Marks cleared" text="ล้างมาร์คแล้ว"/>
+    <Item english="Transparent" text="โปร่งแสง"/>
+    <Item english="View 1" text="มุมมอง 1"/>
+    <Item english="View 2" text="มุมมอง 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="แฮช"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="คีย์ HMAC (ไม่บังคับ):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (เลขฐานสิบหก):"/>
+    <Item english="Random" text="สุ่ม"/>
+    <Item english="Cost (4-31):" text="ค่า Cost (4-31):"/>
+    <Item english="Version:" text="เวอร์ชัน:"/>
+    <Item english="N, as a power of 2:" text="N ในรูปกำลังของ 2:"/>
+    <Item english="Block size (r):" text="ขนาดบล็อก (r):"/>
+    <Item english="Parallelism (p):" text="ระดับการทำงานขนาน (p):"/>
+    <Item english="Variant:" text="รูปแบบ:"/>
+    <Item english="Memory (KiB):" text="หน่วยความจำ (KiB):"/>
+    <Item english="Iterations:" text="จำนวนรอบ:"/>
+    <Item english="Parallelism:" text="ระดับการทำงานขนาน:"/>
+    <Item english="Digest:" text="ฟังก์ชันแฮช:"/>
+    <Item english="Hash length (bytes):" text="ความยาวแฮช (ไบต์):"/>
+    <Item english="Hash:" text="แฮช:"/>
+    <Item english="Verify" text="ตรวจสอบ"/>
+    <Item english="Hash to check the password against:" text="แฮชที่ใช้ตรวจสอบรหัสผ่าน:"/>
+    <Item english="The salt is not valid hexadecimal." text="Salt ไม่ใช่เลขฐานสิบหกที่ถูกต้อง"/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt ต้องใช้ Salt ขนาด 16 ไบต์พอดี"/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 ต้องใช้ Salt ขนาดอย่างน้อย 8 ไบต์"/>
+    <Item english="The hash could not be generated with these settings." text="ไม่สามารถสร้างแฮชด้วยการตั้งค่าเหล่านี้ได้"/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="นี่ไม่ใช่แฮชของ bcrypt, scrypt, Argon2 หรือ PBKDF2"/>
+    <Item english="The password matches the hash." text="รหัสผ่านตรงกับแฮช"/>
+    <Item english="The password does not match the hash." text="รหัสผ่านไม่ตรงกับแฮช"/>
+    <Item english="The cost must be between 4 and 31." text="ค่า Cost ต้องอยู่ระหว่าง 4 ถึง 31"/>
+    <Item english="The version must be 2a, 2b or 2y." text="เวอร์ชันต้องเป็น 2a, 2b หรือ 2y"/>
+    <Item english="N must be between 2^1 and 2^24." text="N ต้องอยู่ระหว่าง 2^1 ถึง 2^24"/>
+    <Item english="r and p must be between 1 and 64." text="r และ p ต้องอยู่ระหว่าง 1 ถึง 64"/>
+    <Item english="These settings need more than 2 GB of memory." text="การตั้งค่าเหล่านี้ต้องใช้หน่วยความจำมากกว่า 2 GB"/>
+    <Item english="The parallelism must be between 1 and 64." text="ระดับการทำงานขนานต้องอยู่ระหว่าง 1 ถึง 64"/>
+    <Item english="The iterations must be between 1 and 1000." text="จำนวนรอบต้องอยู่ระหว่าง 1 ถึง 1000"/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="หน่วยความจำต้องมีอย่างน้อย 8 KiB ต่อหนึ่งเธรด"/>
+    <Item english="These settings need more than 4 GB of memory." text="การตั้งค่าเหล่านี้ต้องใช้หน่วยความจำมากกว่า 4 GB"/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="ฟังก์ชันแฮชต้องเป็น SHA-1, SHA-256 หรือ SHA-512"/>
+    <Item english="The iterations must be between 1 and 100000000." text="จำนวนรอบต้องอยู่ระหว่าง 1 ถึง 100000000"/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="ความยาวแฮชต้องอยู่ระหว่าง 4 ถึง 1024 ไบต์"/>
+    <Item english="Base64 (URL-safe)" text="Base64 (ใช้ใน URL ได้)"/>
+    <Item english="Encode" text="เข้ารหัส"/>
+    <Item english="Decode" text="ถอดรหัส"/>
+    <Item english="The input is:" text="ข้อมูลเข้าเป็น:"/>
+    <Item english="Bytes in hexadecimal" text="ไบต์ในรูปเลขฐานสิบหก"/>
+    <Item english="Input:" text="ข้อมูลเข้า:"/>
+    <Item english="Result:" text="ผลลัพธ์:"/>
+    <Item english="Text:" text="ข้อความ:"/>
+    <Item english="Bytes in hexadecimal:" text="ไบต์ในรูปเลขฐานสิบหก:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="ข้อมูลเข้าไม่ใช่ไบต์ที่เขียนเป็นเลขฐานสิบหก"/>
+    <Item english="The input is not valid $STR_REPLACE$." text="ข้อมูลเข้าไม่ใช่ $STR_REPLACE$ ที่ถูกต้อง"/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="ไบต์ที่ถอดรหัสแล้วไม่ใช่ข้อความ UTF-8 จึงแสดงเป็นเลขฐานสิบหกเท่านั้น"/>
+    <Item english="Password Generator" text="ตัวสร้างรหัสผ่าน"/>
+    <Item english="Length:" text="ความยาว:"/>
+    <Item english="Number of passwords:" text="จำนวนรหัสผ่าน:"/>
+    <Item english="Uppercase letters (A-Z)" text="ตัวอักษรใหญ่ (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="ตัวอักษรเล็ก (a-z)"/>
+    <Item english="Digits (0-9)" text="ตัวเลข (0-9)"/>
+    <Item english="Symbols:" text="สัญลักษณ์:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="ไม่ใช้อักขระที่ดูคล้ายกัน (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="มีอักขระแต่ละชนิดอย่างน้อยหนึ่งตัว"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="เอนโทรปี: ประมาณ $INT_REPLACE$ บิต"/>
+    <Item english="Choose at least one kind of character." text="เลือกชนิดอักขระอย่างน้อยหนึ่งชนิด"/>
+    <Item english="Insert into Document" text="แทรกลงในเอกสาร"/>
+    <Item english="Show the bare key in hexadecimal" text="แสดงเฉพาะคีย์ในรูปเลขฐานสิบหก"/>
+    <Item english="Empty: a random salt each time" text="ว่าง: สุ่ม Salt ใหม่ทุกครั้ง"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt อ่านเฉพาะ 72 ไบต์แรกเท่านั้น"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="คำขอ HTTP"/>
+    <Item english="Send" text="ส่ง"/>
+    <Item english="Parameters" text="พารามิเตอร์"/>
+    <Item english="Headers" text="ส่วนหัว"/>
+    <Item english="Body" text="เนื้อความ"/>
+    <Item english="Options" text="ตัวเลือก"/>
+    <Item english="Content type:" text="ชนิดเนื้อหา:"/>
+    <Item english="User name:" text="ชื่อผู้ใช้:"/>
+    <Item english="Password:" text="รหัสผ่าน:"/>
+    <Item english="Timeout (seconds):" text="ระยะหมดเวลา (วินาที):"/>
+    <Item english="Follow redirects" text="ติดตามการเปลี่ยนเส้นทาง"/>
+    <Item english="Allow invalid certificates" text="อนุญาตใบรับรองที่ไม่ถูกต้อง"/>
+    <Item english="Format JSON" text="จัดรูปแบบ JSON"/>
+    <Item english="Paste curl Command" text="วางคำสั่ง curl"/>
+    <Item english="Copy as curl" text="คัดลอกเป็น curl"/>
+    <Item english="Open in New Document" text="เปิดในเอกสารใหม่"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="บรรทัดละหนึ่งรายการ: ชื่อ=ค่า โดยจะเข้ารหัสแล้วเพิ่มลงในที่อยู่"/>
+    <Item english="One to a line: Name: value" text="บรรทัดละหนึ่งรายการ: ชื่อ: ค่า"/>
+    <Item english="Sent as it is written, in UTF-8." text="ส่งตามที่เขียนไว้ ในรูปแบบ UTF-8"/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="ข้อมูลตอบกลับไม่ใช่ข้อความ: $INT_REPLACE$ ไบต์"/>
+    <Item english="The address is not an http or https address." text="ที่อยู่นี้ไม่ใช่ที่อยู่ http หรือ https"/>
+    <Item english="This is not a curl command." text="นี่ไม่ใช่คำสั่ง curl"/>
+    <Item english="The command has no address." text="คำสั่งนี้ไม่มีที่อยู่"/>
+    <Item english="The command reads its data from a file, which is not done here." text="คำสั่งนี้อ่านข้อมูลจากไฟล์ ซึ่งไม่รองรับที่นี่"/>
+    <Item english="Forms and uploads of files are not read from a command." text="ไม่อ่านฟอร์มและการอัปโหลดไฟล์จากคำสั่ง"/>
+    <Item english="The command's address is not an http or https address." text="ที่อยู่ในคำสั่งไม่ใช่ที่อยู่ http หรือ https"/>
+</NativeLangExtra>

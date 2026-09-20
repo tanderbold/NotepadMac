@@ -1,0 +1,25 @@
+; Shows every picture of a folder, one after the other
+@VERSION 5,2
+@BGPIC 1, "background.png"
+
+Const #DELAY = 3000
+
+Function p_ShowAll(dir$)
+    Local files, dirs = ScanDirectory(dir$)
+    For Local i = 0 To ListItems(files) - 1
+        Local f$ = FullPath(dir$, files[i])
+        If IsPicture(f$)
+            LoadBrush(1, f$, {Transparency = #NOTRANSPARENCY})
+            DisplayBrush(1, #CENTER, #CENTER)
+            Wait(#DELAY, #MILLISECONDS)
+            FreeBrush(1)
+        EndIf
+    Next
+EndFunction
+
+Function p_Quit(msg)
+    If msg.Key = "ESC" Then End
+EndFunction
+
+InstallEventHandler({OnKeyDown = p_Quit})
+p_ShowAll(FileRequest("Choose a folder", {Mode = #REQ_DIRMODE}))

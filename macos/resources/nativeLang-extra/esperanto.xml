@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/esperanto.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Esperanto">
+    <Item english="About NotepadMac" text="Pri NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Kaŝu NotepadMac"/>
+    <Item english="Hide Others" text="Kaŝu la aliajn"/>
+    <Item english="Show All" text="Montru ĉiujn"/>
+    <Item english="Quit NotepadMac" text="Eliro el NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Malfermu la dosierujon de la dosiero en Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Malfermu la dosierujon de la dosiero en Terminalo"/>
+    <Item english="Toggle Insert/Overtype" text="Baskuligu enmeton/superskribon"/>
+    <Item english="Toggle Fold" text="Faldu/malfaldu la blokon"/>
+    <Item english="Show All Hidden Lines" text="Montru ĉiujn kaŝitajn liniojn"/>
+    <Item english="Recent Window" text="Ĵus uzita fenestro"/>
+    <Item english="Move to Trash" text="Deloku en la rubujon"/>
+    <Item english="Save Current Command…" text="Konservu la aktualan komandon…"/>
+    <Item english="Manage Saved Commands…" text="Administru la konservitajn komandojn…"/>
+    <Item english="Show Console" text="Montru la konzolon"/>
+    <Item english="Validate shortcuts" text="Kontrolu la klavkombinojn"/>
+    <Item english="Open Plugins Folder…" text="Malfermu la dosierujon de kromaĵoj…"/>
+    <Item english="Format" text="Formatu"/>
+    <Item english="Compact" text="Kompaktigu"/>
+    <Item english="Sort Keys" text="Ordigu la ŝlosilojn"/>
+    <Item english="Validate" text="Kontrolu validecon"/>
+    <Item english="Show JSON Tree" text="Montru la JSON-arbon"/>
+    <Item english="Set as First to Compare" text="Difinu kiel unuan por komparo"/>
+    <Item english="Compare" text="Komparu"/>
+    <Item english="Compare with File…" text="Komparu kun dosiero…"/>
+    <Item english="Next Difference" text="Al la sekvanta diferenco"/>
+    <Item english="Previous Difference" text="Al la antaŭa diferenco"/>
+    <Item english="First Difference" text="Al la unua diferenco"/>
+    <Item english="Last Difference" text="Al la lasta diferenco"/>
+    <Item english="Compare Summary" text="Resumo de la komparo"/>
+    <Item english="Ignore Case" text="Ne zorgu usklecon"/>
+    <Item english="Ignore Spaces" text="Ne zorgu spacetojn"/>
+    <Item english="Ignore Empty Lines" text="Ne zorgu malplenajn liniojn"/>
+    <Item english="Clear Active Compare" text="Forigu la aktivan komparon"/>
+    <Item english="Clear All Compares" text="Forigu ĉiujn komparojn"/>
+    <Item english="Pretty Print" text="Bele formatu"/>
+    <Item english="Pretty Print — Indent Attributes" text="Bele formatu — kun krommarĝeno de atributoj"/>
+    <Item english="Linearize" text="Unuliniigu"/>
+    <Item english="Check XML Syntax Now" text="Kontrolu la XML-sintakson nun"/>
+    <Item english="Validate Against Schema…" text="Kontrolu validecon laŭ skemo…"/>
+    <Item english="Validate Against DTD" text="Kontrolu validecon laŭ DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Kalkulu XPath-esprimon…"/>
+    <Item english="Current XML Path" text="Aktuala XML-vojo"/>
+    <Item english="Current XML Path with Predicates" text="Aktuala XML-vojo kun predikatoj"/>
+    <Item english="Apply XSL Transformation…" text="Apliku XSL-transformon…"/>
+    <Item english="Connections…" text="Konektoj…"/>
+    <Item english="Connect…" text="Konektu…"/>
+    <Item english="Disconnect" text="Malkonektu"/>
+    <Item english="Show Remote Files" text="Montru la forajn dosierojn"/>
+    <Item english="Upload Current File" text="Alŝutu la aktualan dosieron"/>
+    <Item english="Execute NppExec Script…" text="Lanĉu NppExec-skripton…"/>
+    <Item english="Execute Previous NppExec Script" text="Lanĉu la antaŭan NppExec-skripton"/>
+    <Item english="Stop Running NppExec Script" text="Haltigu la rulatan NppExec-skripton"/>
+    <Item english="Show NppExec Console" text="Montru la NppExec-konzolon"/>
+    <Item english="Execute NppExec Script" text="Lanĉu NppExec-skripton"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;provizora skripto&gt;"/>
+    <Item english="Script name" text="Nomo de la skripto"/>
+    <Item english="Dock Left" text="Alfiksu maldekstre"/>
+    <Item english="Dock Right" text="Alfiksu dekstre"/>
+    <Item english="Dock Top" text="Alfiksu supre"/>
+    <Item english="Dock Bottom" text="Alfiksu malsupre"/>
+    <Item english="Float" text="Ŝvebigu"/>
+    <Item english="Remember which panels were open" text="Memoru, kiuj paneloj estis malfermitaj"/>
+    <Item english="Show the toolbar" text="Montru la ilobreton"/>
+    <Item english="Toolbar buttons" text="Butonoj de la ilobreto"/>
+    <Item english="Icons only" text="Nur bildsimboloj"/>
+    <Item english="Icons and labels" text="Bildsimboloj kaj etikedoj"/>
+    <Item english="Labels only" text="Nur etikedoj"/>
+    <Item english="Toolbar size" text="Grando de la ilobreto"/>
+    <Item english="Regular" text="Normala"/>
+    <Item english="Small" text="Malgranda"/>
+    <Item english="Icons" text="Bildsimboloj"/>
+    <Item english="Hidden" text="Kaŝita"/>
+    <Item english="1 pixel" text="1 bildero"/>
+    <Item english="2 pixels" text="2 bilderoj"/>
+    <Item english="3 pixels" text="3 bilderoj"/>
+    <Item english="Selected text can be dragged" text="Elektita teksto estas trenebla"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Ŝaltu plurredaktadon (Cmd+klako/elektado)"/>
+    <Item english="Follow the system" text="Sekvu la sistemon"/>
+    <Item english="Light theme" text="Hela etoso"/>
+    <Item english="Dark theme" text="Malhela etoso"/>
+    <Item english="Show the fold margin" text="Montru la faldomarĝenon"/>
+    <Item english="A line" text="Linio"/>
+    <Item english="Columns (space separated)" text="Kolumnoj (disigitaj per spacetoj)"/>
+    <Item english="3 parts" text="3 partoj"/>
+    <Item english="4 parts" text="4 partoj"/>
+    <Item english="5 parts" text="5 partoj"/>
+    <Item english="6 parts" text="6 partoj"/>
+    <Item english="7 parts" text="7 partoj"/>
+    <Item english="8 parts" text="8 partoj"/>
+    <Item english="9 parts" text="9 partoj"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Divenu la lingvaĵon laŭ la enhavo, kiam la nomo ne indikas ĝin"/>
+    <Item english="Highlight matching braces" text="Evidentigu kongruajn krampojn"/>
+    <Item english="Header font (blank for the editor's)" text="Tiparo de la paĝokapo (malplena: tiu de la redaktilo)"/>
+    <Item english="Header font size" text="Tipargrando de la paĝokapo"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Marĝenoj: maldekstra, supra, dekstra, malsupra (punktoj)"/>
+    <Item english="Characters before it opens" text="Signoj antaŭ ol ĝi malfermiĝas"/>
+    <Item english="Add characters to the word list" text="Aldonu signojn al la vortlisto"/>
+    <Item english="A fixed folder" text="Fiksa dosierujo"/>
+    <Item english="Fixed folder" text="Fiksa dosierujo"/>
+    <Item english="Confirm Replace All" text="Konfirmu anstataŭigon de ĉiuj"/>
+    <Item english="Compare: ignore case" text="Komparo: ne zorgu usklecon"/>
+    <Item english="Compare: ignore spaces" text="Komparo: ne zorgu spacetojn"/>
+    <Item english="Compare: ignore empty lines" text="Komparo: ne zorgu malplenajn liniojn"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maksimuma nombro de signoj por aŭtomate plenigi la serĉkampon"/>
+    <Item english="Releases repository" text="Deponejo de eldonoj"/>
+    <Item english="Notepad++ update" text="Ĝisdatigo de Notepad++"/>
+    <Item english="No update is available." text="Neniu ĝisdatigo disponeblas."/>
+    <Item english="An update package is available, do you want to download it?" text="Ĝisdatiga pakaĵo disponeblas, ĉu vi volas elŝuti ĝin?"/>
+    <Item english="Open the Releases Page" text="Malfermu la paĝon de eldonoj"/>
+    <Item english="Copy debug info to clipboard" text="Kopiu sencimigajn informojn en la tondejon"/>
+    <Item english="Fonts…" text="Tiparoj…"/>
+    <Item english="This document is not valid JSON." text="Tiu ĉi dokumento ne estas valida JSON."/>
+    <Item english="Valid JSON." text="Valida JSON."/>
+    <Item english="Invalid JSON." text="Nevalida JSON."/>
+    <Item english="Set as the first file to compare." text="Difinita kiel la unua dosiero por komparo."/>
+    <Item english="Nothing to compare with." text="Estas nenio por kompari."/>
+    <Item english="The document is valid XML." text="La dokumento estas valida XML."/>
+    <Item english="FTP connections" text="FTP-konektoj"/>
+    <Item english="Cannot connect." text="Ne eblas konekti."/>
+    <Item english="That file is open in another tab." text="Tiu dosiero estas malfermita en alia langeto."/>
+    <Item english="Close it first, or choose another name." text="Unue fermu ĝin, aŭ elektu alian nomon."/>
+    <Item english="Which language is this?" text="Kiu lingvaĵo estas tio ĉi?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Kelkaj signoj ne estas prezenteblaj en tiu ĉi signarkodo."/>
+    <Item english="Converting will replace them." text="La konverto anstataŭigos ilin."/>
+    <Item english="Press the keys." text="Premu la klavojn."/>
+    <Item english="Nothing is marked" text="Nenio estas markita"/>
+    <Item english="Marked text copied" text="Markita teksto kopiita"/>
+    <Item english="Choose a folder first" text="Unue elektu dosierujon"/>
+    <Item english="This document has no folder" text="Tiu ĉi dokumento ne havas dosierujon"/>
+    <Item english="The ticked project panels have no files" text="La elektitaj projektpaneloj ne enhavas dosierojn"/>
+    <Item english="Searching..." text="Serĉado..."/>
+    <Item english="Stopping..." text="Haltigado..."/>
+    <Item english="Marks cleared" text="Markoj forigitaj"/>
+    <Item english="Transparent" text="Travidebla"/>
+    <Item english="View 1" text="Vido 1"/>
+    <Item english="View 2" text="Vido 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Haketaĵoj"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-ŝlosilo (nedeviga):"/>
+    <Item english="Salt (hexadecimal):" text="Salo (deksesuma):"/>
+    <Item english="Random" text="Hazarda"/>
+    <Item english="Cost (4-31):" text="Kosto (4-31):"/>
+    <Item english="Version:" text="Versio:"/>
+    <Item english="N, as a power of 2:" text="N, kiel potenco de 2:"/>
+    <Item english="Block size (r):" text="Blokgrando (r):"/>
+    <Item english="Parallelism (p):" text="Paraleleco (p):"/>
+    <Item english="Variant:" text="Varianto:"/>
+    <Item english="Memory (KiB):" text="Memoro (KiB):"/>
+    <Item english="Iterations:" text="Iteracioj:"/>
+    <Item english="Parallelism:" text="Paraleleco:"/>
+    <Item english="Digest:" text="Haketfunkcio:"/>
+    <Item english="Hash length (bytes):" text="Longo de haketaĵo (bajtoj):"/>
+    <Item english="Hash:" text="Haketaĵo:"/>
+    <Item english="Verify" text="Kontrolu"/>
+    <Item english="Hash to check the password against:" text="Haketaĵo, kun kiu kompari la pasvorton:"/>
+    <Item english="The salt is not valid hexadecimal." text="La salo ne estas valida deksesuma skribo."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt bezonas salon de ekzakte 16 bajtoj."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 bezonas salon de almenaŭ 8 bajtoj."/>
+    <Item english="The hash could not be generated with these settings." text="Ne eblis krei la haketaĵon per tiuj ĉi agordoj."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Tio ĉi ne estas haketaĵo de bcrypt, scrypt, Argon2 aŭ PBKDF2."/>
+    <Item english="The password matches the hash." text="La pasvorto kongruas kun la haketaĵo."/>
+    <Item english="The password does not match the hash." text="La pasvorto ne kongruas kun la haketaĵo."/>
+    <Item english="The cost must be between 4 and 31." text="La kosto devas esti inter 4 kaj 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="La versio devas esti 2a, 2b aŭ 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N devas esti inter 2^1 kaj 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r kaj p devas esti inter 1 kaj 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Tiuj ĉi agordoj bezonas pli ol 2 GB da memoro."/>
+    <Item english="The parallelism must be between 1 and 64." text="La paraleleco devas esti inter 1 kaj 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="La nombro de iteracioj devas esti inter 1 kaj 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="La memoro devas esti almenaŭ 8 KiB por ĉiu fadeno."/>
+    <Item english="These settings need more than 4 GB of memory." text="Tiuj ĉi agordoj bezonas pli ol 4 GB da memoro."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="La haketfunkcio devas esti SHA-1, SHA-256 aŭ SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="La nombro de iteracioj devas esti inter 1 kaj 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="La longo de la haketaĵo devas esti inter 4 kaj 1024 bajtoj."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (por URL)"/>
+    <Item english="Encode" text="Kodu"/>
+    <Item english="Decode" text="Malkodu"/>
+    <Item english="The input is:" text="La enigo estas:"/>
+    <Item english="Bytes in hexadecimal" text="Bajtoj deksesume"/>
+    <Item english="Input:" text="Enigo:"/>
+    <Item english="Result:" text="Rezulto:"/>
+    <Item english="Text:" text="Teksto:"/>
+    <Item english="Bytes in hexadecimal:" text="Bajtoj deksesume:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="La enigo ne estas bajtoj skribitaj deksesume."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="La enigo ne estas valida $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="La malkoditaj bajtoj ne estas UTF-8-teksto; ili estas montrataj nur deksesume."/>
+    <Item english="Password Generator" text="Generilo de pasvortoj"/>
+    <Item english="Length:" text="Longo:"/>
+    <Item english="Number of passwords:" text="Nombro de pasvortoj:"/>
+    <Item english="Uppercase letters (A-Z)" text="Majuskloj (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Minuskloj (a-z)"/>
+    <Item english="Digits (0-9)" text="Ciferoj (0-9)"/>
+    <Item english="Symbols:" text="Simboloj:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Ellasu similaspektajn signojn (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Almenaŭ unu signo de ĉiu speco"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropio: ĉirkaŭ $INT_REPLACE$ bitoj"/>
+    <Item english="Choose at least one kind of character." text="Elektu almenaŭ unu specon de signoj."/>
+    <Item english="Insert into Document" text="Enmetu en la dokumenton"/>
+    <Item english="Show the bare key in hexadecimal" text="Montru la nudan ŝlosilon deksesume"/>
+    <Item english="Empty: a random salt each time" text="Malplena: hazarda salo ĉiufoje"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt legas nur la unuajn 72 bajtojn."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-peto"/>
+    <Item english="Send" text="Sendu"/>
+    <Item english="Parameters" text="Parametroj"/>
+    <Item english="Headers" text="Kaplinioj"/>
+    <Item english="Body" text="Korpo"/>
+    <Item english="Options" text="Agordoj"/>
+    <Item english="Content type:" text="Tipo de enhavo:"/>
+    <Item english="User name:" text="Uzantnomo:"/>
+    <Item english="Password:" text="Pasvorto:"/>
+    <Item english="Timeout (seconds):" text="Tempolimo (sekundoj):"/>
+    <Item english="Follow redirects" text="Sekvu alidirektojn"/>
+    <Item english="Allow invalid certificates" text="Permesu nevalidajn atestilojn"/>
+    <Item english="Format JSON" text="Formatu JSON"/>
+    <Item english="Paste curl Command" text="Algluu curl-komandon"/>
+    <Item english="Copy as curl" text="Kopiu kiel curl"/>
+    <Item english="Open in New Document" text="Malfermu en nova dokumento"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Po unu en linio: nomo=valoro. Ili estas aldonataj al la adreso, koditaj."/>
+    <Item english="One to a line: Name: value" text="Po unu en linio: Nomo: valoro"/>
+    <Item english="Sent as it is written, in UTF-8." text="Sendata tiel, kiel ĝi estas skribita, en UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="La respondo ne estas teksto: $INT_REPLACE$ bajtoj."/>
+    <Item english="The address is not an http or https address." text="La adreso ne estas http- aŭ https-adreso."/>
+    <Item english="This is not a curl command." text="Tio ĉi ne estas curl-komando."/>
+    <Item english="The command has no address." text="La komando ne havas adreson."/>
+    <Item english="The command reads its data from a file, which is not done here." text="La komando legas siajn datumojn el dosiero, kio ne estas farata ĉi tie."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formularoj kaj alŝutoj de dosieroj ne estas legataj el komando."/>
+    <Item english="The command's address is not an http or https address." text="La adreso de la komando ne estas http- aŭ https-adreso."/>
+</NativeLangExtra>

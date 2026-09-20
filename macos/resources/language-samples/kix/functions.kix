@@ -1,0 +1,31 @@
+Function LogLine($text)
+    Dim $handle
+    $handle = FreeFileHandle()
+    IF Open($handle, "%TEMP%\logon.log", 5) = 0
+        $rc = WriteLine($handle, @DATE + " " + @TIME + "  " + $text + @CRLF)
+        $rc = Close($handle)
+    ENDIF
+EndFunction
+
+Function IsLaptop()
+    $IsLaptop = 0
+    $battery = GetObject("winmgmts:").ExecQuery("SELECT * FROM Win32_Battery")
+    FOR EACH $b IN $battery
+        $IsLaptop = 1
+    NEXT
+EndFunction
+
+$i = 0
+WHILE $i < 3
+    LogLine("attempt " + $i)
+    $i = $i + 1
+LOOP
+
+IF IsLaptop()
+    GOSUB "Offline"
+ENDIF
+EXIT
+
+:Offline
+    $rc = WriteValue("HKEY_CURRENT_USER\Software\Company", "Offline", "1", "REG_SZ")
+RETURN

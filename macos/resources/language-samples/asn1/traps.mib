@@ -1,0 +1,31 @@
+UPS-DEMO-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    enterprises FROM RFC1155-SMI
+    OBJECT-TYPE FROM RFC-1212
+    TRAP-TYPE   FROM RFC-1215
+    DisplayString FROM RFC1213-MIB;
+
+upsDemo OBJECT IDENTIFIER ::= { enterprises 88888 }
+
+upsBatteryStatus OBJECT-TYPE
+    SYNTAX  INTEGER { unknown(1), batteryNormal(2), batteryLow(3) }
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION "The state of the battery."
+    ::= { upsDemo 1 }
+
+upsModel OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE (0..64))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION "The model name."
+    ::= { upsDemo 2 }
+
+upsOnBattery TRAP-TYPE
+    ENTERPRISE upsDemo
+    VARIABLES  { upsBatteryStatus }
+    DESCRIPTION "The UPS has switched to battery."
+    ::= 1
+
+END

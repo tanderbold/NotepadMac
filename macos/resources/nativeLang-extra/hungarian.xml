@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/hungarian.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Magyar">
+    <Item english="About NotepadMac" text="A NotepadMac névjegye"/>
+    <Item english="Hide NotepadMac" text="A NotepadMac elrejtése"/>
+    <Item english="Hide Others" text="A többi elrejtése"/>
+    <Item english="Show All" text="Az összes megjelenítése"/>
+    <Item english="Quit NotepadMac" text="Kilépés a NotepadMac alkalmazásból"/>
+    <Item english="Open Containing Folder in Finder" text="Tartalmazó mappa megnyitása a Finderben"/>
+    <Item english="Open Containing Folder in Terminal" text="Tartalmazó mappa megnyitása a Terminálban"/>
+    <Item english="Toggle Insert/Overtype" text="Váltás beszúrás és felülírás között"/>
+    <Item english="Toggle Fold" text="Blokk összecsukása vagy kibontása"/>
+    <Item english="Show All Hidden Lines" text="Minden rejtett sor megjelenítése"/>
+    <Item english="Recent Window" text="Előző ablak"/>
+    <Item english="Move to Trash" text="Áthelyezés a Kukába"/>
+    <Item english="Save Current Command…" text="Jelenlegi parancs mentése…"/>
+    <Item english="Manage Saved Commands…" text="Mentett parancsok kezelése…"/>
+    <Item english="Show Console" text="Konzol megjelenítése"/>
+    <Item english="Validate shortcuts" text="Billentyűparancsok érvényesítése"/>
+    <Item english="Open Plugins Folder…" text="A bővítmények mappája…"/>
+    <Item english="Format" text="Formázás"/>
+    <Item english="Compact" text="Tömörítés"/>
+    <Item english="Sort Keys" text="Kulcsok rendezése"/>
+    <Item english="Validate" text="Érvényesítés"/>
+    <Item english="Show JSON Tree" text="JSON-fa megjelenítése"/>
+    <Item english="Set as First to Compare" text="Beállítás elsőként az összehasonlításhoz"/>
+    <Item english="Compare" text="Összehasonlítás"/>
+    <Item english="Compare with File…" text="Összehasonlítás fájllal…"/>
+    <Item english="Next Difference" text="Következő eltérés"/>
+    <Item english="Previous Difference" text="Előző eltérés"/>
+    <Item english="First Difference" text="Első eltérés"/>
+    <Item english="Last Difference" text="Utolsó eltérés"/>
+    <Item english="Compare Summary" text="Összehasonlítás összegzése"/>
+    <Item english="Ignore Case" text="Kis- és nagybetűk figyelmen kívül hagyása"/>
+    <Item english="Ignore Spaces" text="Szóközök figyelmen kívül hagyása"/>
+    <Item english="Ignore Empty Lines" text="Üres sorok figyelmen kívül hagyása"/>
+    <Item english="Clear Active Compare" text="Aktív összehasonlítás törlése"/>
+    <Item english="Clear All Compares" text="Minden összehasonlítás törlése"/>
+    <Item english="Pretty Print" text="Olvasható formázás"/>
+    <Item english="Pretty Print — Indent Attributes" text="Olvasható formázás — attribútumok behúzásával"/>
+    <Item english="Linearize" text="Egy sorba rendezés"/>
+    <Item english="Check XML Syntax Now" text="XML-szintaxis ellenőrzése most"/>
+    <Item english="Validate Against Schema…" text="Érvényesítés séma alapján…"/>
+    <Item english="Validate Against DTD" text="Érvényesítés DTD alapján"/>
+    <Item english="Evaluate XPath Expression…" text="XPath-kifejezés kiértékelése…"/>
+    <Item english="Current XML Path" text="Jelenlegi XML-útvonal"/>
+    <Item english="Current XML Path with Predicates" text="Jelenlegi XML-útvonal predikátumokkal"/>
+    <Item english="Apply XSL Transformation…" text="XSL-átalakítás alkalmazása…"/>
+    <Item english="Escape Characters in Selection" text="Karakterek escape-elése a kijelölésben"/>
+    <Item english="Unescape Characters in Selection" text="Escape-elés visszaalakítása a kijelölésben"/>
+    <Item english="Connections…" text="Kapcsolatok…"/>
+    <Item english="Connect…" text="Csatlakozás…"/>
+    <Item english="Disconnect" text="Kapcsolat bontása"/>
+    <Item english="Show Remote Files" text="Távoli fájlok megjelenítése"/>
+    <Item english="Upload Current File" text="Jelenlegi fájl feltöltése"/>
+    <Item english="Execute NppExec Script…" text="NppExec-szkript futtatása…"/>
+    <Item english="Execute Previous NppExec Script" text="Előző NppExec-szkript futtatása"/>
+    <Item english="Stop Running NppExec Script" text="Futó NppExec-szkript leállítása"/>
+    <Item english="Show NppExec Console" text="NppExec-konzol megjelenítése"/>
+    <Item english="Execute NppExec Script" text="NppExec-szkript futtatása"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;ideiglenes szkript&gt;"/>
+    <Item english="Script name" text="Szkript neve"/>
+    <Item english="Dock Left" text="Dokkolás balra"/>
+    <Item english="Dock Right" text="Dokkolás jobbra"/>
+    <Item english="Dock Top" text="Dokkolás felülre"/>
+    <Item english="Dock Bottom" text="Dokkolás alulra"/>
+    <Item english="Float" text="Lebegő ablak"/>
+    <Item english="Remember which panels were open" text="A megnyitott panelek megjegyzése"/>
+    <Item english="Show the toolbar" text="Eszköztár megjelenítése"/>
+    <Item english="Toolbar buttons" text="Eszköztárgombok"/>
+    <Item english="Icons only" text="Csak ikonok"/>
+    <Item english="Icons and labels" text="Ikonok és feliratok"/>
+    <Item english="Labels only" text="Csak feliratok"/>
+    <Item english="Toolbar size" text="Eszköztár mérete"/>
+    <Item english="Regular" text="Normál"/>
+    <Item english="Small" text="Kicsi"/>
+    <Item english="Icons" text="Ikonok"/>
+    <Item english="Hidden" text="Rejtett"/>
+    <Item english="1 pixel" text="1 képpont"/>
+    <Item english="2 pixels" text="2 képpont"/>
+    <Item english="3 pixels" text="3 képpont"/>
+    <Item english="Selected text can be dragged" text="A kijelölt szöveg húzható"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Többszörös szerkesztés engedélyezése (Cmd + kattintás/kijelölés)"/>
+    <Item english="Follow the system" text="Automatikus (rendszerbeállítás)"/>
+    <Item english="Light theme" text="Világos téma"/>
+    <Item english="Dark theme" text="Sötét téma"/>
+    <Item english="Show the fold margin" text="Blokkösszecsukási margó megjelenítése"/>
+    <Item english="A line" text="Vonal"/>
+    <Item english="Columns (space separated)" text="Oszlopok (szóközzel elválasztva)"/>
+    <Item english="3 parts" text="3 rész"/>
+    <Item english="4 parts" text="4 rész"/>
+    <Item english="5 parts" text="5 rész"/>
+    <Item english="6 parts" text="6 rész"/>
+    <Item english="7 parts" text="7 rész"/>
+    <Item english="8 parts" text="8 rész"/>
+    <Item english="9 parts" text="9 rész"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Nyelv megállapítása a tartalomból, ha a név nem árulja el"/>
+    <Item english="Highlight matching braces" text="Az összetartozó zárójelek kiemelése"/>
+    <Item english="Header font (blank for the editor's)" text="Élőfej betűtípusa (üresen: a szerkesztőé)"/>
+    <Item english="Header font size" text="Élőfej betűmérete"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Margók: bal, felső, jobb, alsó (pontban)"/>
+    <Item english="Characters before it opens" text="Karakterek száma a megnyílás előtt"/>
+    <Item english="Add characters to the word list" text="Karakterek hozzáadása a szóegységek karakterlistájához"/>
+    <Item english="A fixed folder" text="Rögzített mappa"/>
+    <Item english="Fixed folder" text="Rögzített mappa"/>
+    <Item english="Confirm Replace All" text="Megerősítés kérése „Az összes cseréje” előtt"/>
+    <Item english="Compare: ignore case" text="Összehasonlítás: kis- és nagybetűk figyelmen kívül hagyása"/>
+    <Item english="Compare: ignore spaces" text="Összehasonlítás: szóközök figyelmen kívül hagyása"/>
+    <Item english="Compare: ignore empty lines" text="Összehasonlítás: üres sorok figyelmen kívül hagyása"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="A karakterek legnagyobb száma a „Keresendő” mező auto. kitöltéséhez"/>
+    <Item english="Releases repository" text="Kiadások tárolója"/>
+    <Item english="Notepad++ update" text="Notepad++ frissítés"/>
+    <Item english="No update is available." text="Nincs elérhető frissítés."/>
+    <Item english="An update package is available, do you want to download it?" text="Frissítőcsomag érhető el. Szeretné letölteni?"/>
+    <Item english="Open the Releases Page" text="A kiadások oldalának megnyitása"/>
+    <Item english="Copy debug info to clipboard" text="Hibakeresési adatok másolása a vágólapra"/>
+    <Item english="Fonts…" text="Betűtípusok…"/>
+    <Item english="This document is not valid JSON." text="Ez a dokumentum nem érvényes JSON."/>
+    <Item english="Valid JSON." text="Érvényes JSON."/>
+    <Item english="Invalid JSON." text="Érvénytelen JSON."/>
+    <Item english="Set as the first file to compare." text="Beállítva első fájlként az összehasonlításhoz."/>
+    <Item english="Nothing to compare with." text="Nincs mivel összehasonlítani."/>
+    <Item english="The document is valid XML." text="A dokumentum érvényes XML."/>
+    <Item english="FTP connections" text="FTP-kapcsolatok"/>
+    <Item english="Cannot connect." text="Nem sikerült csatlakozni."/>
+    <Item english="That file is open in another tab." text="Ez a fájl egy másik fülön meg van nyitva."/>
+    <Item english="Close it first, or choose another name." text="Előbb zárja be, vagy válasszon másik nevet."/>
+    <Item english="Which language is this?" text="Milyen nyelv ez?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Néhány karakter nem ábrázolható ebben a kódolásban."/>
+    <Item english="Converting will replace them." text="Az átalakítás lecseréli őket."/>
+    <Item english="Press the keys." text="Nyomja le a billentyűket."/>
+    <Item english="Nothing is marked" text="Nincs semmi kiemelve"/>
+    <Item english="Marked text copied" text="Kiemelt szöveg másolva"/>
+    <Item english="Choose a folder first" text="Előbb válasszon mappát"/>
+    <Item english="This document has no folder" text="Ennek a dokumentumnak nincs mappája"/>
+    <Item english="The ticked project panels have no files" text="A bejelölt projektpanelekben nincsenek fájlok"/>
+    <Item english="Searching..." text="Keresés..."/>
+    <Item english="Stopping..." text="Leállítás..."/>
+    <Item english="Marks cleared" text="Kiemelések eltávolítva"/>
+    <Item english="Transparent" text="Átlátszó"/>
+    <Item english="View 1" text="1. nézet"/>
+    <Item english="View 2" text="2. nézet"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Kivonatok"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-kulcs (nem kötelező):"/>
+    <Item english="Salt (hexadecimal):" text="Só (hexadecimális):"/>
+    <Item english="Random" text="Véletlenszerű"/>
+    <Item english="Cost (4-31):" text="Költség (4-31):"/>
+    <Item english="Version:" text="Verzió:"/>
+    <Item english="N, as a power of 2:" text="N, 2 hatványaként:"/>
+    <Item english="Block size (r):" text="Blokkméret (r):"/>
+    <Item english="Parallelism (p):" text="Párhuzamosság (p):"/>
+    <Item english="Variant:" text="Változat:"/>
+    <Item english="Memory (KiB):" text="Memória (KiB):"/>
+    <Item english="Iterations:" text="Iterációk:"/>
+    <Item english="Parallelism:" text="Párhuzamosság:"/>
+    <Item english="Digest:" text="Kivonatoló függvény:"/>
+    <Item english="Hash length (bytes):" text="Kivonat hossza (bájt):"/>
+    <Item english="Hash:" text="Kivonat:"/>
+    <Item english="Verify" text="Ellenőrzés"/>
+    <Item english="Hash to check the password against:" text="A kivonat, amellyel a jelszót össze kell vetni:"/>
+    <Item english="The salt is not valid hexadecimal." text="A só nem érvényes hexadecimális érték."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="A bcrypt pontosan 16 bájtos sót igényel."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Az Argon2 legalább 8 bájtos sót igényel."/>
+    <Item english="The hash could not be generated with these settings." text="A kivonat nem hozható létre ezekkel a beállításokkal."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Ez nem bcrypt-, scrypt-, Argon2- vagy PBKDF2-kivonat."/>
+    <Item english="The password matches the hash." text="A jelszó egyezik a kivonattal."/>
+    <Item english="The password does not match the hash." text="A jelszó nem egyezik a kivonattal."/>
+    <Item english="The cost must be between 4 and 31." text="A költségnek 4 és 31 között kell lennie."/>
+    <Item english="The version must be 2a, 2b or 2y." text="A verzió csak 2a, 2b vagy 2y lehet."/>
+    <Item english="N must be between 2^1 and 2^24." text="Az N értékének 2^1 és 2^24 között kell lennie."/>
+    <Item english="r and p must be between 1 and 64." text="Az r és a p értékének 1 és 64 között kell lennie."/>
+    <Item english="These settings need more than 2 GB of memory." text="Ezekhez a beállításokhoz több mint 2 GB memória szükséges."/>
+    <Item english="The parallelism must be between 1 and 64." text="A párhuzamosságnak 1 és 64 között kell lennie."/>
+    <Item english="The iterations must be between 1 and 1000." text="Az iterációk számának 1 és 1000 között kell lennie."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="A memóriának szálanként legalább 8 KiB-nak kell lennie."/>
+    <Item english="These settings need more than 4 GB of memory." text="Ezekhez a beállításokhoz több mint 4 GB memória szükséges."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="A kivonatoló függvény csak SHA-1, SHA-256 vagy SHA-512 lehet."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Az iterációk számának 1 és 100000000 között kell lennie."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="A kivonat hosszának 4 és 1024 bájt között kell lennie."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-biztos)"/>
+    <Item english="Encode" text="Kódolás"/>
+    <Item english="Decode" text="Dekódolás"/>
+    <Item english="The input is:" text="A bemenet:"/>
+    <Item english="Bytes in hexadecimal" text="Bájtok hexadecimálisan"/>
+    <Item english="Input:" text="Bemenet:"/>
+    <Item english="Result:" text="Eredmény:"/>
+    <Item english="Text:" text="Szöveg:"/>
+    <Item english="Bytes in hexadecimal:" text="Bájtok hexadecimálisan:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="A bemenet nem hexadecimálisan írt bájtsorozat."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="A bemenet nem érvényes $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="A dekódolt bájtok nem alkotnak UTF-8 szöveget; csak hexadecimálisan láthatók."/>
+    <Item english="Password Generator" text="Jelszógenerátor"/>
+    <Item english="Length:" text="Hossz:"/>
+    <Item english="Number of passwords:" text="Jelszavak száma:"/>
+    <Item english="Uppercase letters (A-Z)" text="Nagybetűk (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Kisbetűk (a-z)"/>
+    <Item english="Digits (0-9)" text="Számjegyek (0-9)"/>
+    <Item english="Symbols:" text="Szimbólumok:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Az egymásra hasonlító karakterek kihagyása (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Minden fajtából legalább egy karakter"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entrópia: kb. $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Válasszon legalább egy karakterfajtát."/>
+    <Item english="Insert into Document" text="Beillesztés a dokumentumba"/>
+    <Item english="Show the bare key in hexadecimal" text="A puszta kulcs megjelenítése hexadecimálisan"/>
+    <Item english="Empty: a random salt each time" text="Üres: mindig új véletlenszerű só"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="A bcrypt csak az első 72 bájtot olvassa be."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-kérés"/>
+    <Item english="Send" text="Küldés"/>
+    <Item english="Parameters" text="Paraméterek"/>
+    <Item english="Headers" text="Fejlécek"/>
+    <Item english="Body" text="Törzs"/>
+    <Item english="Options" text="Beállítások"/>
+    <Item english="Content type:" text="Tartalomtípus:"/>
+    <Item english="User name:" text="Felhasználónév:"/>
+    <Item english="Password:" text="Jelszó:"/>
+    <Item english="Timeout (seconds):" text="Időkorlát (másodperc):"/>
+    <Item english="Follow redirects" text="Átirányítások követése"/>
+    <Item english="Allow invalid certificates" text="Érvénytelen tanúsítványok engedélyezése"/>
+    <Item english="Format JSON" text="JSON formázása"/>
+    <Item english="Paste curl Command" text="curl-parancs beillesztése"/>
+    <Item english="Copy as curl" text="Másolás curl-parancsként"/>
+    <Item english="Open in New Document" text="Megnyitás új dokumentumban"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Soronként egy: név=érték. Kódolva adódnak hozzá a címhez."/>
+    <Item english="One to a line: Name: value" text="Soronként egy: Név: érték"/>
+    <Item english="Sent as it is written, in UTF-8." text="Úgy lesz elküldve, ahogy le van írva, UTF-8 kódolással."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="A válasz nem szöveg: $INT_REPLACE$ bájt."/>
+    <Item english="The address is not an http or https address." text="A cím nem http- vagy https-cím."/>
+    <Item english="This is not a curl command." text="Ez nem curl-parancs."/>
+    <Item english="The command has no address." text="A parancsban nincs cím."/>
+    <Item english="The command reads its data from a file, which is not done here." text="A parancs fájlból olvassa az adatait, ami itt nem támogatott."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Az űrlapok és fájlfeltöltések nem olvashatók be parancsból."/>
+    <Item english="The command's address is not an http or https address." text="A parancsban lévő cím nem http- vagy https-cím."/>
+</NativeLangExtra>

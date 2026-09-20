@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""Extracts the toolbar icons, and the button order, from the Notepad++ sources.
+
+Nothing here is hand-copied. The order of the buttons comes from the
+toolBarIcons[] array in Notepad_plus.cpp, the mapping from a resource id to an
+icon file comes from Notepad_plus.rc, and the images themselves are lifted out
+of the .ico files, which are containers holding one PNG per size.
+
+    python3 gen_toolbar_icons.py            # run from the macos directory
+
+It writes resources/toolbar/{light,dark}/*.png and resources/toolbar/order.txt,
+which lists one button per line as
+
+    IDM_FILE_NEW <tab> new_off <tab> new_off
+
+being the command, the normal icon and the icon to use when it is disabled. A
+separator is a line containing only "-".
+"""
+
+import os
+import re
+import struct
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SRC = os.path.normpath(os.path.join(HERE, "..", "PowerEditor", "src"))
+OUT = os.path.join(HERE, "resources", "toolbar")
+
+PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
+
+
+def resource_ids():
+    """Maps IDI_* to the icon file it names in the resource script."""
+    text = open(os.path.join(SRC, "Notepad_plus.rc"), encoding="utf-8", errors="replace").read()
+    found = {}
+    for name, path in re.findall(r'^(\w+)\s+ICON\s+"([^"]+)"', text, re.MULTILINE):
+        found[name] = path
+    return found
+
+
+def toolbar_rows():
+    """The buttons, in the order Notepad++ puts them on the bar."""
+    text = open(os.path.join(SRC, "Notepad_plus.cpp"), encoding="utf-8", errors="replace").read()
+    start = text.index("ToolBarButtonUnit toolBarIcons[]")
+    body = text[start:text.index("};", start)]
+
+    rows = []
+    for line in body.splitlines():
+        line = line.split("//")[0].strip()
+        if not line.startswith("{"):
+            continue
+        fields = [f.strip() for f in line.strip("{},").split(",")]
+        if len(fields) < 7:
+            continue
+        # cmdID, regular, gray, filled, filled gray, regular dark, gray dark,
+        # filled dark, filled gray dark
+        rows.append((fields[0], fields[1], fields[2], fields[5], fields[6],
+                     fields[3], fields[4], fields[7], fields[8]))
+    return rows
+
+
+def largest_png(ico_path):
+    """The biggest image in an .ico, which is stored as a complete PNG file."""
+    data = open(ico_path, "rb").read()
+    count = struct.unpack_from("<H", data, 4)[0]
+    best = None
+    for i in range(count):
+        w, h, _, _, _, _, size, off = struct.unpack_from("<BBBBHHII", data, 6 + 16 * i)
+        w = w or 256
+        h = h or 256
+        if data[off:off + 8] != PNG_MAGIC:
+            continue                      # a DIB entry, which these files do not use
+        if best is None or w * h > best[0]:
+            best = (w * h, data[off:off + size])
+    return best[1] if best else None
+
+
+def main():
+    ids = resource_ids()
+    rows = toolbar_rows()
+    if not rows:
+        sys.exit("no buttons found -- has toolBarIcons[] moved?")
+
+    for theme in ("light", "dark", "light-filled", "dark-filled"):
+        os.makedirs(os.path.join(OUT, theme), exist_ok=True)
+
+    written = set()
+
+    def emit(resource_id, theme):
+        """Writes the icon for one resource id, returning the name to refer to it by."""
+        path = ids.get(resource_id)
+        if not path:
+            return ""
+        name = os.path.splitext(os.path.basename(path))[0]
+        target = os.path.join(OUT, theme, name + ".png")
+        if target not in written:
+            png = largest_png(os.path.join(SRC, path))
+            if png is None:
+                return ""
+            open(target, "wb").write(png)
+            written.add(target)
+        return name
+
+    lines = []
+    for cmd, light, gray, dark, dark_gray, filled, filled_gray, filled_dark, filled_dark_gray in rows:
+        if cmd == "0":
+            lines.append("-")
+            continue
+        # The filled set (Preferences > Toolbar), under the same names.
+        emit(filled, "light-filled")
+        emit(filled_gray, "light-filled")
+        emit(filled_dark, "dark-filled")
+        emit(filled_dark_gray, "dark-filled")
+        light_name = emit(light, "light")
+        gray_name = emit(gray, "light")
+        dark_name = emit(dark, "dark")
+        dark_gray_name = emit(dark_gray, "dark")
+        if not (light_name and dark_name):
+            continue
+        # The dark icons carry the same names as the light ones, so one pair of
+        # names describes both sets; only the directory differs.
+        if light_name != dark_name:
+            sys.exit("light and dark icons disagree for %s: %s vs %s"
+                     % (cmd, light_name, dark_name))
+        if gray_name != dark_gray_name:
+            sys.exit("light and dark disabled icons disagree for %s" % cmd)
+        lines.append("%s\t%s\t%s" % (cmd, light_name, gray_name or light_name))
+
+    with open(os.path.join(OUT, "order.txt"), "w") as handle:
+        handle.write("# Generated by gen_toolbar_icons.py from the Notepad++ sources.\n")
+        handle.write("# command <tab> icon <tab> disabled icon; a lone - is a separator.\n")
+        handle.write("\n".join(lines) + "\n")
+
+    buttons = sum(1 for l in lines if l != "-")
+    print("%d buttons, %d images" % (buttons, len(written)))
+
+
+if __name__ == "__main__":
+    main()

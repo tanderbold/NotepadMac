@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/kannada.xml.
+     That file writes the English UI terms in Kannada script (ಓಪನ್, ಕ್ಲೋಸ್, ಶೋ …); these follow the same habit,
+     and the sentences it gives no precedent for are left out. -->
+<NativeLangExtra name="ಕನ್ನಡ">
+    <Item english="About NotepadMac" text="ಅಬೌಟ್ NotepadMac"/>
+    <Item english="Hide NotepadMac" text="ಹೈಡ್ NotepadMac"/>
+    <Item english="Hide Others" text="ಹೈಡ್ ಅದರ್ಸ್"/>
+    <Item english="Show All" text="ಶೋ ಆಲ್"/>
+    <Item english="Quit NotepadMac" text="ಕ್ವಿಟ್ NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="ಓಪನ್ ಕಂಟೇನಿಂಗ್ ಫೋಲ್ಡರ್ ಇನ್ Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="ಓಪನ್ ಕಂಟೇನಿಂಗ್ ಫೋಲ್ಡರ್ ಇನ್ ಟರ್ಮಿನಲ್"/>
+    <Item english="Toggle Insert/Overtype" text="ಟಾಗಲ್ ಇನ್‌ಸರ್ಟ್/ಓವರ್‌ಟೈಪ್"/>
+    <Item english="Toggle Fold" text="ಟಾಗಲ್ ಫೋಲ್ಡ್"/>
+    <Item english="Show All Hidden Lines" text="ಶೋ ಆಲ್ ಹಿಡನ್ ಲೈನ್ಸ್"/>
+    <Item english="Recent Window" text="ರೀಸೆಂಟ್ ವಿಂಡೊ"/>
+    <Item english="Move to Trash" text="ಮೂವ್ ತೋ ಟ್ರ್ಯಾಶ್"/>
+    <Item english="Save Current Command…" text="ಸಾವೆ ಕರೆಂಟ್ ಕಮ್ಯಾಂಡ್…"/>
+    <Item english="Manage Saved Commands…" text="ಮ್ಯಾನೇಜ್ ಸೇವ್ಡ್ ಕಮ್ಯಾಂಡ್ಸ್…"/>
+    <Item english="Show Console" text="ಶೋ ಕನ್ಸೋಲ್"/>
+    <Item english="Validate shortcuts" text="ವ್ಯಾಲಿಡೇಟ್ ಶಾರ್ಟ್‌ಕಟ್ಸ್"/>
+    <Item english="Open Plugins Folder…" text="ಓಪನ್ ಪ್ಲುಗೀನ್ಸ್ ಫೋಲ್ಡರ್…"/>
+    <Item english="Format" text="ಫಾರ್ಮ್ಯಾಟ್"/>
+    <Item english="Compact" text="ಕಾಂಪ್ಯಾಕ್ಟ್"/>
+    <Item english="Sort Keys" text="ಸಾರ್ಟ್ ಕೀಸ್"/>
+    <Item english="Validate" text="ವ್ಯಾಲಿಡೇಟ್"/>
+    <Item english="Show JSON Tree" text="ಶೋ JSON ಟ್ರೀ"/>
+    <Item english="Set as First to Compare" text="ಸೆಟ್ ಆಸ್ ಫಸ್ಟ್ ತೋ ಕಂಪೇರ್"/>
+    <Item english="Compare" text="ಕಂಪೇರ್"/>
+    <Item english="Compare with File…" text="ಕಂಪೇರ್ ವಿತ್ ಫೈಲ್…"/>
+    <Item english="Next Difference" text="ನೆಕ್ಸ್ಟ್ ಡಿಫರೆನ್ಸ್"/>
+    <Item english="Previous Difference" text="ಪ್ರೀವಿಯಸ್ ಡಿಫರೆನ್ಸ್"/>
+    <Item english="First Difference" text="ಫಸ್ಟ್ ಡಿಫರೆನ್ಸ್"/>
+    <Item english="Last Difference" text="ಲಾಸ್ಟ್ ಡಿಫರೆನ್ಸ್"/>
+    <Item english="Compare Summary" text="ಕಂಪೇರ್ ಸಮ್ಮರಿ"/>
+    <Item english="Ignore Case" text="ಇಗ್ನೋರ್ ಕೇಸ್"/>
+    <Item english="Ignore Spaces" text="ಇಗ್ನೋರ್ ಸ್ಪೇಸಸ್"/>
+    <Item english="Ignore Empty Lines" text="ಇಗ್ನೋರ್ ಎಂಪ್ಟೀ ಲೈನ್ಸ್"/>
+    <Item english="Clear Active Compare" text="ಕ್ಲಿಯರ್ ಆಕ್ಟಿವ್ ಕಂಪೇರ್"/>
+    <Item english="Clear All Compares" text="ಕ್ಲಿಯರ್ ಆಲ್ ಕಂಪೇರ್ಸ್"/>
+    <Item english="Pretty Print" text="ಪ್ರಿಟ್ಟಿ ಪ್ರಿಂಟ್"/>
+    <Item english="Pretty Print — Indent Attributes" text="ಪ್ರಿಟ್ಟಿ ಪ್ರಿಂಟ್ — ಇನ್‌ಡೆಂಟ್ ಅಟ್ರಿಬ್ಯೂಟ್ಸ್"/>
+    <Item english="Linearize" text="ಲೀನಿಯರೈಸ್"/>
+    <Item english="Check XML Syntax Now" text="ಚೆಕ್ XML ಸಿಂಟ್ಯಾಕ್ಸ್ ನೌ"/>
+    <Item english="Validate Against Schema…" text="ವ್ಯಾಲಿಡೇಟ್ ಅಗೇನ್ಸ್ಟ್ ಸ್ಕೀಮಾ…"/>
+    <Item english="Validate Against DTD" text="ವ್ಯಾಲಿಡೇಟ್ ಅಗೇನ್ಸ್ಟ್ DTD"/>
+    <Item english="Evaluate XPath Expression…" text="ಇವ್ಯಾಲ್ಯುಯೇಟ್ XPath ಎಕ್ಸ್‌ಪ್ರೆಶನ್…"/>
+    <Item english="Current XML Path" text="ಕರೆಂಟ್ XML ಪಾತ್"/>
+    <Item english="Current XML Path with Predicates" text="ಕರೆಂಟ್ XML ಪಾತ್ ವಿತ್ ಪ್ರೆಡಿಕೇಟ್ಸ್"/>
+    <Item english="Apply XSL Transformation…" text="ಅಪ್ಲೈ XSL ಟ್ರಾನ್ಸ್‌ಫಾರ್ಮೇಶನ್…"/>
+    <Item english="Escape Characters in Selection" text="ಎಸ್ಕೇಪ್ ಕ್ಯಾರಕ್ಟರ್ಸ್ ಇನ್ ಸೆಲೆಕ್ಷನ್"/>
+    <Item english="Unescape Characters in Selection" text="ಅನ್‌ಎಸ್ಕೇಪ್ ಕ್ಯಾರಕ್ಟರ್ಸ್ ಇನ್ ಸೆಲೆಕ್ಷನ್"/>
+    <Item english="Connections…" text="ಕನೆಕ್ಷನ್ಸ್…"/>
+    <Item english="Connect…" text="ಕನೆಕ್ಟ್…"/>
+    <Item english="Disconnect" text="ಡಿಸ್‌ಕನೆಕ್ಟ್"/>
+    <Item english="Show Remote Files" text="ಶೋ ರಿಮೋಟ್ ಫೈಲ್ಸ್"/>
+    <Item english="Upload Current File" text="ಅಪ್‌ಲೋಡ್ ಕರೆಂಟ್ ಫೈಲ್"/>
+    <Item english="Execute NppExec Script…" text="ಎಕ್ಸಿಕ್ಯೂಟ್ NppExec ಸ್ಕ್ರಿಪ್ಟ್…"/>
+    <Item english="Execute Previous NppExec Script" text="ಎಕ್ಸಿಕ್ಯೂಟ್ ಪ್ರೀವಿಯಸ್ NppExec ಸ್ಕ್ರಿಪ್ಟ್"/>
+    <Item english="Stop Running NppExec Script" text="ಸ್ಟಾಪ್ ರನ್ನಿಂಗ್ NppExec ಸ್ಕ್ರಿಪ್ಟ್"/>
+    <Item english="Show NppExec Console" text="ಶೋ NppExec ಕನ್ಸೋಲ್"/>
+    <Item english="Execute NppExec Script" text="ಎಕ್ಸಿಕ್ಯೂಟ್ NppExec ಸ್ಕ್ರಿಪ್ಟ್"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;ಟೆಂಪರರಿ ಸ್ಕ್ರಿಪ್ಟ್&gt;"/>
+    <Item english="Script name" text="ಸ್ಕ್ರಿಪ್ಟ್ ನೇಮ್"/>
+    <Item english="Dock Left" text="ಡಾಕ್ ಲೆಫ್ಟ್"/>
+    <Item english="Dock Right" text="ಡಾಕ್ ರೈಟ್"/>
+    <Item english="Dock Top" text="ಡಾಕ್ ಟಾಪ್"/>
+    <Item english="Dock Bottom" text="ಡಾಕ್ ಬಾಟಮ್"/>
+    <Item english="Float" text="ಫ್ಲೋಟ್"/>
+    <Item english="Show the toolbar" text="ಶೋ ಟೂಲ್‌ಬಾರ್"/>
+    <Item english="Toolbar buttons" text="ಟೂಲ್‌ಬಾರ್ ಬಟನ್ಸ್"/>
+    <Item english="Icons only" text="ಐಕಾನ್ಸ್ ಓನ್ಲೀ"/>
+    <Item english="Icons and labels" text="ಐಕಾನ್ಸ್ ಅಂಡ್ ಲೇಬಲ್ಸ್"/>
+    <Item english="Labels only" text="ಲೇಬಲ್ಸ್ ಓನ್ಲೀ"/>
+    <Item english="Toolbar size" text="ಟೂಲ್‌ಬಾರ್ ಸೈಸ್"/>
+    <Item english="Regular" text="ರೆಗ್ಯುಲರ್"/>
+    <Item english="Small" text="ಸ್ಮಾಲ್"/>
+    <Item english="Icons" text="ಐಕಾನ್ಸ್"/>
+    <Item english="Hidden" text="ಹಿಡನ್"/>
+    <Item english="1 pixel" text="1 ಪಿಕ್ಸೆಲ್"/>
+    <Item english="2 pixels" text="2 ಪಿಕ್ಸೆಲ್ಸ್"/>
+    <Item english="3 pixels" text="3 ಪಿಕ್ಸೆಲ್ಸ್"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="ಎನೇಬಲ್ ಮಲ್ಟಿ-ಎಡಿಟಿಂಗ್ (Cmd+ಕ್ಲಿಕ್/ಸೆಲೆಕ್ಷನ್)"/>
+    <Item english="Light theme" text="ಲೈಟ್ ಥೀಮ್"/>
+    <Item english="Dark theme" text="ಡಾರ್ಕ್ ಥೀಮ್"/>
+    <Item english="Show the fold margin" text="ಶೋ ಫೋಲ್ಡ್ ಮಾರ್ಜಿನ್"/>
+    <Item english="Columns (space separated)" text="ಕಾಲಮ್ಸ್ (ಸ್ಪೇಸ್ ಸೆಪರೇಟೆಡ್)"/>
+    <Item english="3 parts" text="3 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="4 parts" text="4 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="5 parts" text="5 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="6 parts" text="6 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="7 parts" text="7 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="8 parts" text="8 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="9 parts" text="9 ಪಾರ್ಟ್ಸ್"/>
+    <Item english="Highlight matching braces" text="ಹೈಲೈಟ್ ಮ್ಯಾಚಿಂಗ್ ಬ್ರೇಸಸ್"/>
+    <Item english="Header font size" text="ಹೆಡರ್ ಫಾಂಟ್ ಸೈಸ್"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="ಮಾರ್ಜಿನ್ಸ್: ಲೆಫ್ಟ್, ಟಾಪ್, ರೈಟ್, ಬಾಟಮ್ (ಪಾಯಿಂಟ್ಸ್)"/>
+    <Item english="Fixed folder" text="ಫಿಕ್ಸ್ಡ್ ಫೋಲ್ಡರ್"/>
+    <Item english="Confirm Replace All" text="ಕನ್‌ಫರ್ಮ್ ರೀಪ್ಲೇಸ್ ಆಲ್"/>
+    <Item english="Compare: ignore case" text="ಕಂಪೇರ್: ಇಗ್ನೋರ್ ಕೇಸ್"/>
+    <Item english="Compare: ignore spaces" text="ಕಂಪೇರ್: ಇಗ್ನೋರ್ ಸ್ಪೇಸಸ್"/>
+    <Item english="Compare: ignore empty lines" text="ಕಂಪೇರ್: ಇಗ್ನೋರ್ ಎಂಪ್ಟೀ ಲೈನ್ಸ್"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="ಮ್ಯಾಕ್ಸ್ ಕ್ಯಾರಕ್ಟರ್ಸ್ ತೋ ಆಟೋ-ಫಿಲ್ ಫೈಂಡ್ ಫೀಲ್ಡ್"/>
+    <Item english="Releases repository" text="ರಿಲೀಸಸ್ ರಿಪಾಸಿಟರಿ"/>
+    <Item english="Notepad++ update" text="Notepad++ ಅಪ್‌ಡೇಟ್"/>
+    <Item english="Open the Releases Page" text="ಓಪನ್ ರಿಲೀಸಸ್ ಪೇಜ್"/>
+    <Item english="Copy debug info to clipboard" text="ಕಾಪಿ ಡೀಬಗ್ ಇನ್ಫೊ ತೋ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್"/>
+    <Item english="Fonts…" text="ಫಾಂಟ್ಸ್…"/>
+    <Item english="Valid JSON." text="ವ್ಯಾಲಿಡ್ JSON."/>
+    <Item english="Invalid JSON." text="ಇನ್‌ವ್ಯಾಲಿಡ್ JSON."/>
+    <Item english="FTP connections" text="FTP ಕನೆಕ್ಷನ್ಸ್"/>
+    <Item english="Searching..." text="ಸರ್ಚಿಂಗ್..."/>
+    <Item english="Stopping..." text="ಸ್ಟಾಪಿಂಗ್..."/>
+    <Item english="Marks cleared" text="ಮಾರ್ಕ್ಸ್ ಕ್ಲಿಯರ್ಡ್"/>
+    <Item english="Transparent" text="ಟ್ರ್ಯಾನ್ಸ್ಪರೆಂಟ್"/>
+    <Item english="View 1" text="ವ್ಯೂ 1"/>
+    <Item english="View 2" text="ವ್ಯೂ 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="ಹ್ಯಾಶಸ್"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC ಕೀ (ಆಪ್ಷನಲ್):"/>
+    <Item english="Salt (hexadecimal):" text="ಸಾಲ್ಟ್ (ಹೆಕ್ಸಾಡೆಸಿಮಲ್):"/>
+    <Item english="Random" text="ರ್ಯಾಂಡಮ್"/>
+    <Item english="Cost (4-31):" text="ಕಾಸ್ಟ್ (4-31):"/>
+    <Item english="Version:" text="ವರ್ಷನ್:"/>
+    <Item english="Block size (r):" text="ಬ್ಲಾಕ್ ಸೈಸ್ (r):"/>
+    <Item english="Parallelism (p):" text="ಪ್ಯಾರಲಲಿಸಮ್ (p):"/>
+    <Item english="Variant:" text="ವೇರಿಯಂಟ್:"/>
+    <Item english="Memory (KiB):" text="ಮೆಮೊರಿ (KiB):"/>
+    <Item english="Iterations:" text="ಇಟರೇಶನ್ಸ್:"/>
+    <Item english="Parallelism:" text="ಪ್ಯಾರಲಲಿಸಮ್:"/>
+    <Item english="Digest:" text="ಡೈಜೆಸ್ಟ್:"/>
+    <Item english="Hash length (bytes):" text="ಹ್ಯಾಶ್ ಲೆಂಗ್ತ್ (ಬೈಟ್ಸ್):"/>
+    <Item english="Hash:" text="ಹ್ಯಾಶ್:"/>
+    <Item english="Verify" text="ವೆರಿಫೈ"/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-ಸೇಫ್)"/>
+    <Item english="Encode" text="ಎನ್‌ಕೋಡ್"/>
+    <Item english="Decode" text="ಡೀಕೋಡ್"/>
+    <Item english="Bytes in hexadecimal" text="ಬೈಟ್ಸ್ ಇನ್ ಹೆಕ್ಸಾಡೆಸಿಮಲ್"/>
+    <Item english="Input:" text="ಇನ್‌ಪುಟ್:"/>
+    <Item english="Result:" text="ರಿಸಲ್ಟ್:"/>
+    <Item english="Text:" text="ಟೆಕ್ಸ್ಟ್:"/>
+    <Item english="Bytes in hexadecimal:" text="ಬೈಟ್ಸ್ ಇನ್ ಹೆಕ್ಸಾಡೆಸಿಮಲ್:"/>
+    <Item english="Password Generator" text="ಪಾಸ್‌ವರ್ಡ್ ಜನರೇಟರ್"/>
+    <Item english="Length:" text="ಲೆಂಗ್ತ್:"/>
+    <Item english="Number of passwords:" text="ನಂಬರ್ ಆಫ್ ಪಾಸ್‌ವರ್ಡ್ಸ್:"/>
+    <Item english="Uppercase letters (A-Z)" text="ಅಪ್ಪರ್‌ಕೇಸ್ ಲೆಟರ್ಸ್ (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="ಲೋಯರ್‌ಕೇಸ್ ಲೆಟರ್ಸ್ (a-z)"/>
+    <Item english="Digits (0-9)" text="ಡಿಜಿಟ್ಸ್ (0-9)"/>
+    <Item english="Symbols:" text="ಸಿಂಬಲ್ಸ್:"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="ಎಂಟ್ರೊಪಿ: ಅಬೌಟ್ $INT_REPLACE$ ಬಿಟ್ಸ್"/>
+    <Item english="Insert into Document" text="ಇನ್‌ಸರ್ಟ್ ಇನ್ಟು ಡಾಕ್ಯುಮೆಂಟ್"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP ರಿಕ್ವೆಸ್ಟ್"/>
+    <Item english="Send" text="ಸೆಂಡ್"/>
+    <Item english="Parameters" text="ಪ್ಯಾರಮೀಟರ್ಸ್"/>
+    <Item english="Headers" text="ಹೆಡರ್ಸ್"/>
+    <Item english="Body" text="ಬಾಡಿ"/>
+    <Item english="Options" text="ಆಪ್ಶನ್ಸ್"/>
+    <Item english="Content type:" text="ಕಾಂಟೆಂಟ್ ಟೈಪ್:"/>
+    <Item english="User name:" text="ಯೂಸರ್ ನೇಮ್:"/>
+    <Item english="Password:" text="ಪಾಸ್‌ವರ್ಡ್:"/>
+    <Item english="Timeout (seconds):" text="ಟೈಮ್‌ಔಟ್ (ಸೆಕೆಂಡ್ಸ್):"/>
+    <Item english="Follow redirects" text="ಫಾಲೋ ರೀಡೈರೆಕ್ಟ್ಸ್"/>
+    <Item english="Allow invalid certificates" text="ಅಲೋ ಇನ್‌ವ್ಯಾಲಿಡ್ ಸರ್ಟಿಫಿಕೇಟ್ಸ್"/>
+    <Item english="Format JSON" text="ಫಾರ್ಮ್ಯಾಟ್ JSON"/>
+    <Item english="Paste curl Command" text="ಪೇಸ್ಟ್ curl ಕಮ್ಯಾಂಡ್"/>
+    <Item english="Copy as curl" text="ಕಾಪಿ ಆಸ್ curl"/>
+    <Item english="Open in New Document" text="ಓಪನ್ ಇನ್ ನ್ಯೂ ಡಾಕ್ಯುಮೆಂಟ್"/>
+</NativeLangExtra>

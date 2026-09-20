@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/danish.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Dansk">
+    <Item english="About NotepadMac" text="Om NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Skjul NotepadMac"/>
+    <Item english="Hide Others" text="Skjul andre"/>
+    <Item english="Show All" text="Vis alle"/>
+    <Item english="Quit NotepadMac" text="Afslut NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Åbn kildemappe i Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Åbn kildemappe i Terminal"/>
+    <Item english="Toggle Insert/Overtype" text="Skift mellem indsæt/overskriv"/>
+    <Item english="Toggle Fold" text="Sammenfold/udfold"/>
+    <Item english="Show All Hidden Lines" text="Vis alle skjulte linier"/>
+    <Item english="Recent Window" text="Seneste vindue"/>
+    <Item english="Move to Trash" text="Flyt til papirkurv"/>
+    <Item english="Save Current Command…" text="Gem aktuel kommando…"/>
+    <Item english="Manage Saved Commands…" text="Administrér gemte kommandoer…"/>
+    <Item english="Show Console" text="Vis konsol"/>
+    <Item english="Validate shortcuts" text="Kontrollér genveje"/>
+    <Item english="Open Plugins Folder…" text="Åbn pluginmappe…"/>
+    <Item english="Format" text="Formatér"/>
+    <Item english="Compact" text="Komprimér"/>
+    <Item english="Sort Keys" text="Sortér nøgler"/>
+    <Item english="Validate" text="Validér"/>
+    <Item english="Show JSON Tree" text="Vis JSON-træ"/>
+    <Item english="Set as First to Compare" text="Vælg som første til sammenligning"/>
+    <Item english="Compare" text="Sammenlign"/>
+    <Item english="Compare with File…" text="Sammenlign med fil…"/>
+    <Item english="Next Difference" text="Næste forskel"/>
+    <Item english="Previous Difference" text="Forrige forskel"/>
+    <Item english="First Difference" text="Første forskel"/>
+    <Item english="Last Difference" text="Sidste forskel"/>
+    <Item english="Compare Summary" text="Opsummering af sammenligning"/>
+    <Item english="Ignore Case" text="Ikke versalfølsom"/>
+    <Item english="Ignore Spaces" text="Ignorér mellemrum"/>
+    <Item english="Ignore Empty Lines" text="Ignorér tomme linier"/>
+    <Item english="Clear Active Compare" text="Ryd aktiv sammenligning"/>
+    <Item english="Clear All Compares" text="Ryd alle sammenligninger"/>
+    <Item english="Pretty Print" text="Pæn formatering"/>
+    <Item english="Pretty Print — Indent Attributes" text="Pæn formatering — indryk attributter"/>
+    <Item english="Linearize" text="Saml på én linie"/>
+    <Item english="Check XML Syntax Now" text="Kontrollér XML-syntaks nu"/>
+    <Item english="Validate Against Schema…" text="Validér mod skema…"/>
+    <Item english="Validate Against DTD" text="Validér mod DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Evaluér XPath-udtryk…"/>
+    <Item english="Current XML Path" text="Aktuel XML-sti"/>
+    <Item english="Current XML Path with Predicates" text="Aktuel XML-sti med prædikater"/>
+    <Item english="Apply XSL Transformation…" text="Anvend XSL-transformation…"/>
+    <Item english="Escape Characters in Selection" text="Escape tegn i markering"/>
+    <Item english="Unescape Characters in Selection" text="Fjern escape af tegn i markering"/>
+    <Item english="Connections…" text="Forbindelser…"/>
+    <Item english="Connect…" text="Forbind…"/>
+    <Item english="Disconnect" text="Afbryd forbindelse"/>
+    <Item english="Show Remote Files" text="Vis filer på serveren"/>
+    <Item english="Upload Current File" text="Upload aktuel fil"/>
+    <Item english="Execute NppExec Script…" text="Kør NppExec-script…"/>
+    <Item english="Execute Previous NppExec Script" text="Kør forrige NppExec-script"/>
+    <Item english="Stop Running NppExec Script" text="Stop kørende NppExec-script"/>
+    <Item english="Show NppExec Console" text="Vis NppExec-konsol"/>
+    <Item english="Execute NppExec Script" text="Kør NppExec-script"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;midlertidigt script&gt;"/>
+    <Item english="Script name" text="Scriptnavn"/>
+    <Item english="Dock Left" text="Fastgør til venstre"/>
+    <Item english="Dock Right" text="Fastgør til højre"/>
+    <Item english="Dock Top" text="Fastgør øverst"/>
+    <Item english="Dock Bottom" text="Fastgør nederst"/>
+    <Item english="Float" text="Flydende"/>
+    <Item english="Remember which panels were open" text="Husk hvilke paneler der var åbne"/>
+    <Item english="Show the toolbar" text="Vis værktøjslinien"/>
+    <Item english="Toolbar buttons" text="Knapper på værktøjslinien"/>
+    <Item english="Icons only" text="Kun ikoner"/>
+    <Item english="Icons and labels" text="Ikoner og tekst"/>
+    <Item english="Labels only" text="Kun tekst"/>
+    <Item english="Toolbar size" text="Størrelse på værktøjslinien"/>
+    <Item english="Regular" text="Normal"/>
+    <Item english="Small" text="Lille"/>
+    <Item english="Icons" text="Ikoner"/>
+    <Item english="Hidden" text="Skjult"/>
+    <Item english="1 pixel" text="1 pixel"/>
+    <Item english="2 pixels" text="2 pixels"/>
+    <Item english="3 pixels" text="3 pixels"/>
+    <Item english="Selected text can be dragged" text="Markeret tekst kan trækkes"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Aktivér multiredigering (Cmd+klik/markering)"/>
+    <Item english="Follow the system" text="Følg systemet"/>
+    <Item english="Light theme" text="Lyst tema"/>
+    <Item english="Dark theme" text="Mørkt tema"/>
+    <Item english="Show the fold margin" text="Vis sammenfoldningsmargen"/>
+    <Item english="A line" text="En linie"/>
+    <Item english="Columns (space separated)" text="Kolonner (adskilt af mellemrum)"/>
+    <Item english="3 parts" text="3 dele"/>
+    <Item english="4 parts" text="4 dele"/>
+    <Item english="5 parts" text="5 dele"/>
+    <Item english="6 parts" text="6 dele"/>
+    <Item english="7 parts" text="7 dele"/>
+    <Item english="8 parts" text="8 dele"/>
+    <Item english="9 parts" text="9 dele"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Bestem sproget ud fra indholdet, når navnet ikke afslører det"/>
+    <Item english="Highlight matching braces" text="Fremhæv tilhørende parenteser"/>
+    <Item english="Header font (blank for the editor's)" text="Skrifttype til sidehoved (tom: editorens)"/>
+    <Item english="Header font size" text="Skriftstørrelse til sidehoved"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Margener: venstre, top, højre, bund (punkter)"/>
+    <Item english="Characters before it opens" text="Antal tegn før listen åbnes"/>
+    <Item english="Add characters to the word list" text="Føj tegn til ordtegnslisten"/>
+    <Item english="A fixed folder" text="En fast mappe"/>
+    <Item english="Fixed folder" text="Fast mappe"/>
+    <Item english="Confirm Replace All" text="Bekræft erstat alle"/>
+    <Item english="Compare: ignore case" text="Sammenlign: ikke versalfølsom"/>
+    <Item english="Compare: ignore spaces" text="Sammenlign: ignorér mellemrum"/>
+    <Item english="Compare: ignore empty lines" text="Sammenlign: ignorér tomme linier"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maks. antal tegn til automatisk udfyldning af søgefeltet"/>
+    <Item english="Releases repository" text="Repository med udgivelser"/>
+    <Item english="Notepad++ update" text="Notepad++ opdatering"/>
+    <Item english="No update is available." text="Der er ingen tilgængelig opdatering."/>
+    <Item english="An update package is available, do you want to download it?" text="En opdateringspakke er tilgængelig. Vil du hente den?"/>
+    <Item english="Open the Releases Page" text="Åbn siden med udgivelser"/>
+    <Item english="Copy debug info to clipboard" text="Kopiér fejlfindingsinfo til udklipsholder"/>
+    <Item english="Fonts…" text="Skrifttyper…"/>
+    <Item english="This document is not valid JSON." text="Dette dokument er ikke gyldig JSON."/>
+    <Item english="Valid JSON." text="Gyldig JSON."/>
+    <Item english="Invalid JSON." text="Ugyldig JSON."/>
+    <Item english="Set as the first file to compare." text="Valgt som første fil til sammenligning."/>
+    <Item english="Nothing to compare with." text="Intet at sammenligne med."/>
+    <Item english="The document is valid XML." text="Dokumentet er gyldig XML."/>
+    <Item english="FTP connections" text="FTP-forbindelser"/>
+    <Item english="Cannot connect." text="Kan ikke oprette forbindelse."/>
+    <Item english="That file is open in another tab." text="Filen er åben i en anden fane."/>
+    <Item english="Close it first, or choose another name." text="Luk den først, eller vælg et andet navn."/>
+    <Item english="Which language is this?" text="Hvilket sprog er dette?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Nogle tegn kan ikke repræsenteres i denne kodning."/>
+    <Item english="Converting will replace them." text="De erstattes ved konvertering."/>
+    <Item english="Press the keys." text="Tryk på tasterne."/>
+    <Item english="Nothing is marked" text="Intet er mærket"/>
+    <Item english="Marked text copied" text="Mærket tekst kopieret"/>
+    <Item english="Choose a folder first" text="Vælg en mappe først"/>
+    <Item english="This document has no folder" text="Dette dokument har ingen mappe"/>
+    <Item english="The ticked project panels have no files" text="De afkrydsede projektpaneler indeholder ingen filer"/>
+    <Item english="Searching..." text="Søger..."/>
+    <Item english="Stopping..." text="Stopper..."/>
+    <Item english="Marks cleared" text="Mærker ryddet"/>
+    <Item english="Transparent" text="Transparent"/>
+    <Item english="View 1" text="Visning 1"/>
+    <Item english="View 2" text="Visning 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hashværdier"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-nøgle (valgfri):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (hexadecimalt):"/>
+    <Item english="Random" text="Tilfældigt"/>
+    <Item english="Cost (4-31):" text="Omkostning (4-31):"/>
+    <Item english="Version:" text="Version:"/>
+    <Item english="N, as a power of 2:" text="N, som en potens af 2:"/>
+    <Item english="Block size (r):" text="Blokstørrelse (r):"/>
+    <Item english="Parallelism (p):" text="Parallelisme (p):"/>
+    <Item english="Variant:" text="Variant:"/>
+    <Item english="Memory (KiB):" text="Hukommelse (KiB):"/>
+    <Item english="Iterations:" text="Iterationer:"/>
+    <Item english="Parallelism:" text="Parallelisme:"/>
+    <Item english="Digest:" text="Hashfunktion:"/>
+    <Item english="Hash length (bytes):" text="Hashlængde (bytes):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Kontrollér"/>
+    <Item english="Hash to check the password against:" text="Hash, som adgangskoden skal kontrolleres mod:"/>
+    <Item english="The salt is not valid hexadecimal." text="Saltet er ikke gyldigt hexadecimalt."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt kræver et salt på præcis 16 bytes."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 kræver et salt på mindst 8 bytes."/>
+    <Item english="The hash could not be generated with these settings." text="Hashen kunne ikke genereres med disse indstillinger."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Dette er ikke en bcrypt-, scrypt-, Argon2- eller PBKDF2-hash."/>
+    <Item english="The password matches the hash." text="Adgangskoden passer til hashen."/>
+    <Item english="The password does not match the hash." text="Adgangskoden passer ikke til hashen."/>
+    <Item english="The cost must be between 4 and 31." text="Omkostningen skal være mellem 4 og 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versionen skal være 2a, 2b eller 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N skal være mellem 2^1 og 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r og p skal være mellem 1 og 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Disse indstillinger kræver mere end 2 GB hukommelse."/>
+    <Item english="The parallelism must be between 1 and 64." text="Parallelismen skal være mellem 1 og 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Antallet af iterationer skal være mellem 1 og 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Hukommelsen skal være mindst 8 KiB for hver tråd."/>
+    <Item english="These settings need more than 4 GB of memory." text="Disse indstillinger kræver mere end 4 GB hukommelse."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Hashfunktionen skal være SHA-1, SHA-256 eller SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Antallet af iterationer skal være mellem 1 og 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Hashlængden skal være mellem 4 og 1024 bytes."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-sikker)"/>
+    <Item english="Encode" text="Indkod"/>
+    <Item english="Decode" text="Afkod"/>
+    <Item english="The input is:" text="Inputtet er:"/>
+    <Item english="Bytes in hexadecimal" text="Bytes i hexadecimal"/>
+    <Item english="Input:" text="Input:"/>
+    <Item english="Result:" text="Resultat:"/>
+    <Item english="Text:" text="Tekst:"/>
+    <Item english="Bytes in hexadecimal:" text="Bytes i hexadecimal:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Inputtet er ikke bytes skrevet i hexadecimal."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Inputtet er ikke gyldig $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="De afkodede bytes er ikke UTF-8-tekst; de vises kun i hexadecimal."/>
+    <Item english="Password Generator" text="Adgangskodegenerator"/>
+    <Item english="Length:" text="Længde:"/>
+    <Item english="Number of passwords:" text="Antal adgangskoder:"/>
+    <Item english="Uppercase letters (A-Z)" text="Store bogstaver (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Små bogstaver (a-z)"/>
+    <Item english="Digits (0-9)" text="Cifre (0-9)"/>
+    <Item english="Symbols:" text="Symboler:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Udelad tegn, der ligner hinanden (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Mindst ét tegn af hver slags"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropi: ca. $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Vælg mindst én slags tegn."/>
+    <Item english="Insert into Document" text="Indsæt i dokumentet"/>
+    <Item english="Show the bare key in hexadecimal" text="Vis den rå nøgle i hexadecimal"/>
+    <Item english="Empty: a random salt each time" text="Tomt: et tilfældigt salt hver gang"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt læser kun de første 72 bytes."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-forespørgsel"/>
+    <Item english="Send" text="Send"/>
+    <Item english="Parameters" text="Parametre"/>
+    <Item english="Headers" text="Headere"/>
+    <Item english="Body" text="Brødtekst"/>
+    <Item english="Options" text="Indstillinger"/>
+    <Item english="Content type:" text="Indholdstype:"/>
+    <Item english="User name:" text="Brugernavn:"/>
+    <Item english="Password:" text="Adgangskode:"/>
+    <Item english="Timeout (seconds):" text="Timeout (sekunder):"/>
+    <Item english="Follow redirects" text="Følg omdirigeringer"/>
+    <Item english="Allow invalid certificates" text="Tillad ugyldige certifikater"/>
+    <Item english="Format JSON" text="Formatér JSON"/>
+    <Item english="Paste curl Command" text="Indsæt curl-kommando"/>
+    <Item english="Copy as curl" text="Kopiér som curl"/>
+    <Item english="Open in New Document" text="Åbn i nyt dokument"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Én pr. linie: navn=værdi. De føjes til adressen i kodet form."/>
+    <Item english="One to a line: Name: value" text="Én pr. linie: Navn: værdi"/>
+    <Item english="Sent as it is written, in UTF-8." text="Sendes, som det er skrevet, i UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Svaret er ikke tekst: $INT_REPLACE$ bytes."/>
+    <Item english="The address is not an http or https address." text="Adressen er ikke en http- eller https-adresse."/>
+    <Item english="This is not a curl command." text="Dette er ikke en curl-kommando."/>
+    <Item english="The command has no address." text="Kommandoen har ingen adresse."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Kommandoen læser sine data fra en fil, hvilket ikke understøttes her."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formularer og upload af filer læses ikke fra en kommando."/>
+    <Item english="The command's address is not an http or https address." text="Kommandoens adresse er ikke en http- eller https-adresse."/>
+</NativeLangExtra>

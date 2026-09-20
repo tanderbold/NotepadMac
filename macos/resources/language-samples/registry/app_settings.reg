@@ -1,0 +1,16 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Contoso\Inventory]
+"InstallDir"="C:\\Program Files\\Contoso\\Inventory"
+"Version"="4.2.0"
+"Port"=dword:00001f90
+"Flags"=hex:01,00,00,00,ff,00
+"Servers"=hex(7):73,00,72,00,76,00,31,00,00,00,73,00,72,00,76,00,32,00,00,00,00,00
+"LogPath"=hex(2):25,00,54,00,45,00,4d,00,50,00,25,00,00,00
+"MaxSize"=qword:0000000040000000
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Contoso\Inventory\Legacy]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Contoso\Inventory\Plugins]
+"Barcode"=-
+@="enabled"

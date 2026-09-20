@@ -1,0 +1,30 @@
+Weekly Status
+Project Team
+March 2012
+
+%!target: html
+%!style: slides.css
+%!preproc: URL_BASE https://intranet.example.com
+%!options(html): --css-sugar --mask-email
+
+== Done ==[done]
+
+  - Migration of the **billing** database
+  - New //report// templates
+  - Contact: team@example.com
+
+== Blocked ==
+
+  : Server purchase
+  waiting for approval since week 9
+
+== Next ==
+
++ Rollout to the second site
++ Review with [the architects URL_BASE/arch]
+
+''
+<div class="footer">confidential</div>
+''
+
+[logo.png]

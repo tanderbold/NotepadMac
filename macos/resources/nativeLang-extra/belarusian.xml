@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/belarusian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Беларуская">
+    <Item english="About NotepadMac" text="Пра NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Схаваць NotepadMac"/>
+    <Item english="Hide Others" text="Схаваць астатнія"/>
+    <Item english="Show All" text="Паказаць усе"/>
+    <Item english="Quit NotepadMac" text="Выйсці з NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Адкрыць папку размяшчэння ў Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Адкрыць папку размяшчэння ў Тэрмінале"/>
+    <Item english="Toggle Insert/Overtype" text="Пераключыць устаўку/замену"/>
+    <Item english="Toggle Fold" text="Згарнуць/разгарнуць блок"/>
+    <Item english="Show All Hidden Lines" text="Паказаць усе схаваныя радкі"/>
+    <Item english="Recent Window" text="Папярэдняе акно"/>
+    <Item english="Move to Trash" text="Перамясціць у сметніцу"/>
+    <Item english="Save Current Command…" text="Захаваць бягучую каманду…"/>
+    <Item english="Manage Saved Commands…" text="Кіраванне захаванымі камандамі…"/>
+    <Item english="Show Console" text="Паказаць кансоль"/>
+    <Item english="Validate shortcuts" text="Праверыць спалучэнні клавіш"/>
+    <Item english="Open Plugins Folder…" text="Адкрыць папку з убудовамі…"/>
+    <Item english="Format" text="Фарматаваць"/>
+    <Item english="Compact" text="Сціснуць"/>
+    <Item english="Sort Keys" text="Сартаваць ключы"/>
+    <Item english="Validate" text="Праверыць"/>
+    <Item english="Show JSON Tree" text="Паказаць дрэва JSON"/>
+    <Item english="Set as First to Compare" text="Выбраць першым для параўнання"/>
+    <Item english="Compare" text="Параўнаць"/>
+    <Item english="Compare with File…" text="Параўнаць з файлам…"/>
+    <Item english="Next Difference" text="Наступнае адрозненне"/>
+    <Item english="Previous Difference" text="Папярэдняе адрозненне"/>
+    <Item english="First Difference" text="Першае адрозненне"/>
+    <Item english="Last Difference" text="Апошняе адрозненне"/>
+    <Item english="Compare Summary" text="Вынікі параўнання"/>
+    <Item english="Ignore Case" text="Ігнараваць рэгістр"/>
+    <Item english="Ignore Spaces" text="Ігнараваць прабелы"/>
+    <Item english="Ignore Empty Lines" text="Ігнараваць пустыя радкі"/>
+    <Item english="Clear Active Compare" text="Скінуць бягучае параўнанне"/>
+    <Item english="Clear All Compares" text="Скінуць усе параўнанні"/>
+    <Item english="Pretty Print" text="Адфарматаваць"/>
+    <Item english="Pretty Print — Indent Attributes" text="Адфарматаваць — з водступам атрыбутаў"/>
+    <Item english="Linearize" text="У адзін радок"/>
+    <Item english="Check XML Syntax Now" text="Праверыць сінтаксіс XML"/>
+    <Item english="Validate Against Schema…" text="Праверыць па схеме…"/>
+    <Item english="Validate Against DTD" text="Праверыць па DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Вылічыць выраз XPath…"/>
+    <Item english="Current XML Path" text="Бягучы шлях XML"/>
+    <Item english="Current XML Path with Predicates" text="Бягучы шлях XML з прэдыкатамі"/>
+    <Item english="Apply XSL Transformation…" text="Ужыць пераўтварэнне XSL…"/>
+    <Item english="Escape Characters in Selection" text="Экранаваць сімвалы ў выбраным"/>
+    <Item english="Unescape Characters in Selection" text="Зняць экранаванне ў выбраным"/>
+    <Item english="Connections…" text="Падключэнні…"/>
+    <Item english="Connect…" text="Падключыцца…"/>
+    <Item english="Disconnect" text="Адключыцца"/>
+    <Item english="Show Remote Files" text="Паказаць файлы на серверы"/>
+    <Item english="Upload Current File" text="Адправіць бягучы файл"/>
+    <Item english="Execute NppExec Script…" text="Выканаць скрыпт NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Выканаць папярэдні скрыпт NppExec"/>
+    <Item english="Stop Running NppExec Script" text="Спыніць запушчаны скрыпт NppExec"/>
+    <Item english="Show NppExec Console" text="Паказаць кансоль NppExec"/>
+    <Item english="Execute NppExec Script" text="Выканаць скрыпт NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;часовы скрыпт&gt;"/>
+    <Item english="Script name" text="Назва скрыпта"/>
+    <Item english="Dock Left" text="Прымацаваць злева"/>
+    <Item english="Dock Right" text="Прымацаваць справа"/>
+    <Item english="Dock Top" text="Прымацаваць уверсе"/>
+    <Item english="Dock Bottom" text="Прымацаваць знізу"/>
+    <Item english="Float" text="Адмацаваць"/>
+    <Item english="Remember which panels were open" text="Памятаць адкрытыя панэлі"/>
+    <Item english="Show the toolbar" text="Паказваць панэль інструментаў"/>
+    <Item english="Toolbar buttons" text="Кнопкі панэлі інструментаў"/>
+    <Item english="Icons only" text="Толькі значкі"/>
+    <Item english="Icons and labels" text="Значкі і подпісы"/>
+    <Item english="Labels only" text="Толькі подпісы"/>
+    <Item english="Toolbar size" text="Памер панэлі інструментаў"/>
+    <Item english="Regular" text="Звычайны"/>
+    <Item english="Small" text="Малы"/>
+    <Item english="Icons" text="Значкі"/>
+    <Item english="Hidden" text="Схаваная"/>
+    <Item english="1 pixel" text="1 піксель"/>
+    <Item english="2 pixels" text="2 пікселі"/>
+    <Item english="3 pixels" text="3 пікселі"/>
+    <Item english="Selected text can be dragged" text="Выбраны тэкст можна перацягваць"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Уключыць множнае рэдагаванне (Cmd+пстрычка/выбар)"/>
+    <Item english="Follow the system" text="Як у сістэме"/>
+    <Item english="Light theme" text="Светлая тэма"/>
+    <Item english="Dark theme" text="Цёмная тэма"/>
+    <Item english="Show the fold margin" text="Паказваць поле згортвання"/>
+    <Item english="A line" text="Лінія"/>
+    <Item english="Columns (space separated)" text="Слупкі (праз прабел)"/>
+    <Item english="3 parts" text="3 часткі"/>
+    <Item english="4 parts" text="4 часткі"/>
+    <Item english="5 parts" text="5 частак"/>
+    <Item english="6 parts" text="6 частак"/>
+    <Item english="7 parts" text="7 частак"/>
+    <Item english="8 parts" text="8 частак"/>
+    <Item english="9 parts" text="9 частак"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Вызначаць сінтаксіс па змесціве, калі назва файла яго не выдае"/>
+    <Item english="Highlight matching braces" text="Вылучаць парныя дужкі"/>
+    <Item english="Header font (blank for the editor's)" text="Шрыфт калонтытулаў (пуста — як у рэдактары)"/>
+    <Item english="Header font size" text="Памер шрыфту калонтытулаў"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Палі: злева, уверсе, справа, знізу (пункты)"/>
+    <Item english="Characters before it opens" text="Сімвалаў да з'яўлення спісу"/>
+    <Item english="Add characters to the word list" text="Дадаць сімвалы да спісу сімвалаў слова"/>
+    <Item english="A fixed folder" text="Зададзеная папка"/>
+    <Item english="Fixed folder" text="Зададзеная папка"/>
+    <Item english="Confirm Replace All" text="Пацвярджаць «Замяніць усе»"/>
+    <Item english="Compare: ignore case" text="Параўнанне: ігнараваць рэгістр"/>
+    <Item english="Compare: ignore spaces" text="Параўнанне: ігнараваць прабелы"/>
+    <Item english="Compare: ignore empty lines" text="Параўнанне: ігнараваць пустыя радкі"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Макс. сімвалаў для аўтазапаўнення поля пошуку"/>
+    <Item english="Releases repository" text="Рэпазіторый выпускаў"/>
+    <Item english="Notepad++ update" text="Абнаўленне Notepad++"/>
+    <Item english="No update is available." text="Абнаўленняў няма."/>
+    <Item english="An update package is available, do you want to download it?" text="Даступна абнаўленне. Спампаваць яго?"/>
+    <Item english="Open the Releases Page" text="Адкрыць старонку выпускаў"/>
+    <Item english="Copy debug info to clipboard" text="Капіяваць адладачную інфармацыю ў буфер абмену"/>
+    <Item english="Fonts…" text="Шрыфты…"/>
+    <Item english="This document is not valid JSON." text="Гэты дакумент не з'яўляецца карэктным JSON."/>
+    <Item english="Valid JSON." text="Карэктны JSON."/>
+    <Item english="Invalid JSON." text="Некарэктны JSON."/>
+    <Item english="Set as the first file to compare." text="Выбраны першым файлам для параўнання."/>
+    <Item english="Nothing to compare with." text="Няма з чым параўноўваць."/>
+    <Item english="The document is valid XML." text="Дакумент — карэктны XML."/>
+    <Item english="FTP connections" text="Падключэнні FTP"/>
+    <Item english="Cannot connect." text="Не ўдалося падключыцца."/>
+    <Item english="That file is open in another tab." text="Гэты файл адкрыты ў іншай укладцы."/>
+    <Item english="Close it first, or choose another name." text="Спачатку закрыйце яго або выберыце іншую назву."/>
+    <Item english="Which language is this?" text="Які гэта сінтаксіс?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Некаторыя сімвалы немагчыма прадставіць у гэтым кадаванні."/>
+    <Item english="Converting will replace them." text="Пры пераўтварэнні яны будуць заменены."/>
+    <Item english="Press the keys." text="Націсніце клавішы."/>
+    <Item english="Nothing is marked" text="Нічога не пазначана"/>
+    <Item english="Marked text copied" text="Пазначаны тэкст скапіяваны"/>
+    <Item english="Choose a folder first" text="Спачатку выберыце папку"/>
+    <Item english="This document has no folder" text="У гэтага дакумента няма папкі"/>
+    <Item english="The ticked project panels have no files" text="У адзначаных панэлях праектаў няма файлаў"/>
+    <Item english="Searching..." text="Пошук..."/>
+    <Item english="Stopping..." text="Спыненне..."/>
+    <Item english="Marks cleared" text="Пазнакі ачышчаны"/>
+    <Item english="Transparent" text="Празрысты"/>
+    <Item english="View 1" text="Выгляд 1"/>
+    <Item english="View 2" text="Выгляд 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Хэшы"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Ключ HMAC (неабавязкова):"/>
+    <Item english="Salt (hexadecimal):" text="Соль (шаснаццатковая):"/>
+    <Item english="Random" text="Выпадковая"/>
+    <Item english="Cost (4-31):" text="Кошт (4-31):"/>
+    <Item english="Version:" text="Версія:"/>
+    <Item english="N, as a power of 2:" text="N, як ступень двойкі:"/>
+    <Item english="Block size (r):" text="Памер блока (r):"/>
+    <Item english="Parallelism (p):" text="Паралелізм (p):"/>
+    <Item english="Variant:" text="Варыянт:"/>
+    <Item english="Memory (KiB):" text="Памяць (КіБ):"/>
+    <Item english="Iterations:" text="Ітэрацыі:"/>
+    <Item english="Parallelism:" text="Паралелізм:"/>
+    <Item english="Digest:" text="Хэш-функцыя:"/>
+    <Item english="Hash length (bytes):" text="Даўжыня хэша (байтаў):"/>
+    <Item english="Hash:" text="Хэш:"/>
+    <Item english="Verify" text="Праверыць"/>
+    <Item english="Hash to check the password against:" text="Хэш для праверкі пароля:"/>
+    <Item english="The salt is not valid hexadecimal." text="Соль не з'яўляецца шаснаццатковым запісам."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="Для bcrypt патрэбна соль роўна з 16 байтаў."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Для Argon2 патрэбна соль не карацейшая за 8 байтаў."/>
+    <Item english="The hash could not be generated with these settings." text="З гэтымі наладамі хэш стварыць не ўдалося."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Гэта не хэш bcrypt, scrypt, Argon2 або PBKDF2."/>
+    <Item english="The password matches the hash." text="Пароль адпавядае хэшу."/>
+    <Item english="The password does not match the hash." text="Пароль не адпавядае хэшу."/>
+    <Item english="The cost must be between 4 and 31." text="Кошт павінен быць ад 4 да 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Версія павінна быць 2a, 2b або 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N павінна быць ад 2^1 да 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r і p павінны быць ад 1 да 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Для гэтых налад патрэбна больш за 2 ГБ памяці."/>
+    <Item english="The parallelism must be between 1 and 64." text="Паралелізм павінен быць ад 1 да 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Колькасць ітэрацый павінна быць ад 1 да 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Памяці павінна быць не менш за 8 КіБ на кожны паток."/>
+    <Item english="These settings need more than 4 GB of memory." text="Для гэтых налад патрэбна больш за 4 ГБ памяці."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Хэш-функцыя павінна быць SHA-1, SHA-256 або SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Колькасць ітэрацый павінна быць ад 1 да 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Даўжыня хэша павінна быць ад 4 да 1024 байтаў."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (для URL)"/>
+    <Item english="Encode" text="Кадаваць"/>
+    <Item english="Decode" text="Дэкадаваць"/>
+    <Item english="The input is:" text="На ўваходзе:"/>
+    <Item english="Bytes in hexadecimal" text="Байты ў шаснаццатковым выглядзе"/>
+    <Item english="Input:" text="Уваходныя даныя:"/>
+    <Item english="Result:" text="Вынік:"/>
+    <Item english="Text:" text="Тэкст:"/>
+    <Item english="Bytes in hexadecimal:" text="Байты ў шаснаццатковым выглядзе:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Уваходныя даныя не з'яўляюцца шаснаццатковым запісам байтаў."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Уваходныя даныя не з'яўляюцца карэктным $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Дэкадаваныя байты не з'яўляюцца тэкстам UTF-8; яны паказаны толькі ў шаснаццатковым выглядзе."/>
+    <Item english="Password Generator" text="Генератар пароляў"/>
+    <Item english="Length:" text="Даўжыня:"/>
+    <Item english="Number of passwords:" text="Колькасць пароляў:"/>
+    <Item english="Uppercase letters (A-Z)" text="Вялікія літары (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Малыя літары (a-z)"/>
+    <Item english="Digits (0-9)" text="Лічбы (0-9)"/>
+    <Item english="Symbols:" text="Сімвалы:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Выключыць падобныя сімвалы (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Прынамсі адзін сімвал кожнага віду"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Энтрапія: каля $INT_REPLACE$ бітаў"/>
+    <Item english="Choose at least one kind of character." text="Выберыце прынамсі адзін від сімвалаў."/>
+    <Item english="Insert into Document" text="Уставіць у дакумент"/>
+    <Item english="Show the bare key in hexadecimal" text="Паказаць сам ключ у шаснаццатковым выглядзе"/>
+    <Item english="Empty: a random salt each time" text="Пуста: кожны раз выпадковая соль"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt чытае толькі першыя 72 байты."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-запыт"/>
+    <Item english="Send" text="Адправіць"/>
+    <Item english="Parameters" text="Параметры"/>
+    <Item english="Headers" text="Загалоўкі"/>
+    <Item english="Body" text="Цела"/>
+    <Item english="Options" text="Налады"/>
+    <Item english="Content type:" text="Тып змесціва:"/>
+    <Item english="User name:" text="Імя карыстальніка:"/>
+    <Item english="Password:" text="Пароль:"/>
+    <Item english="Timeout (seconds):" text="Тайм-аўт (секунды):"/>
+    <Item english="Follow redirects" text="Пераходзіць па перанакіраваннях"/>
+    <Item english="Allow invalid certificates" text="Дазволіць несапраўдныя сертыфікаты"/>
+    <Item english="Format JSON" text="Фарматаваць JSON"/>
+    <Item english="Paste curl Command" text="Уставіць каманду curl"/>
+    <Item english="Copy as curl" text="Капіяваць як curl"/>
+    <Item english="Open in New Document" text="Адкрыць у новым дакуменце"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Па адным у радку: імя=значэнне. Дадаюцца да адраса ў закадаваным выглядзе."/>
+    <Item english="One to a line: Name: value" text="Па адным у радку: Імя: значэнне"/>
+    <Item english="Sent as it is written, in UTF-8." text="Адпраўляецца як напісана, у UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Адказ не з'яўляецца тэкстам: $INT_REPLACE$ байт."/>
+    <Item english="The address is not an http or https address." text="Адрас не з'яўляецца адрасам http або https."/>
+    <Item english="This is not a curl command." text="Гэта не каманда curl."/>
+    <Item english="The command has no address." text="У камандзе няма адраса."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Каманда чытае даныя з файла, тут гэта не падтрымліваецца."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Формы і адпраўка файлаў з каманды не чытаюцца."/>
+    <Item english="The command's address is not an http or https address." text="Адрас у камандзе не з'яўляецца адрасам http або https."/>
+</NativeLangExtra>

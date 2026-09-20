@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/malay.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Bahasa Melayu">
+    <Item english="About NotepadMac" text="Tentang NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Sorok NotepadMac"/>
+    <Item english="Hide Others" text="Sorok Lain-lain"/>
+    <Item english="Show All" text="Tunjuk Semua"/>
+    <Item english="Quit NotepadMac" text="Keluar NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Buka Folder Fail dalam Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Buka Folder Fail dalam Terminal"/>
+    <Item english="Toggle Insert/Overtype" text="Togol Sisip/Taip Ganti"/>
+    <Item english="Toggle Fold" text="Togol Lipatan"/>
+    <Item english="Show All Hidden Lines" text="Tunjuk Semua Baris Tersorok"/>
+    <Item english="Recent Window" text="Tetingkap Terkini"/>
+    <Item english="Move to Trash" text="Alih ke Sampah"/>
+    <Item english="Save Current Command…" text="Simpan Arahan Semasa…"/>
+    <Item english="Manage Saved Commands…" text="Urus Arahan Tersimpan…"/>
+    <Item english="Show Console" text="Tunjuk Konsol"/>
+    <Item english="Validate shortcuts" text="Sahkan kekunci pintasan"/>
+    <Item english="Open Plugins Folder…" text="Buka Folder Plugin…"/>
+    <Item english="Format" text="Format"/>
+    <Item english="Sort Keys" text="Isih Kunci"/>
+    <Item english="Validate" text="Sahkan"/>
+    <Item english="Show JSON Tree" text="Tunjuk Pepohon JSON"/>
+    <Item english="Set as First to Compare" text="Tetapkan sebagai Fail Pertama untuk Dibandingkan"/>
+    <Item english="Compare" text="Banding"/>
+    <Item english="Compare with File…" text="Banding dengan Fail…"/>
+    <Item english="Next Difference" text="Perbezaan Berikutnya"/>
+    <Item english="Previous Difference" text="Perbezaan Sebelumnya"/>
+    <Item english="First Difference" text="Perbezaan Pertama"/>
+    <Item english="Last Difference" text="Perbezaan Terakhir"/>
+    <Item english="Compare Summary" text="Ringkasan Perbandingan"/>
+    <Item english="Ignore Case" text="Abaikan Atur Huruf"/>
+    <Item english="Ignore Spaces" text="Abaikan Ruang"/>
+    <Item english="Ignore Empty Lines" text="Abaikan Baris Kosong"/>
+    <Item english="Clear Active Compare" text="Kosongkan Perbandingan Aktif"/>
+    <Item english="Clear All Compares" text="Kosongkan Semua Perbandingan"/>
+    <Item english="Check XML Syntax Now" text="Semak Sintaks XML Sekarang"/>
+    <Item english="Validate Against Schema…" text="Sahkan dengan Skema…"/>
+    <Item english="Validate Against DTD" text="Sahkan dengan DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Nilai Ungkapan XPath…"/>
+    <Item english="Current XML Path" text="Laluan XML Semasa"/>
+    <Item english="Apply XSL Transformation…" text="Guna Transformasi XSL…"/>
+    <Item english="Connections…" text="Sambungan…"/>
+    <Item english="Connect…" text="Sambung…"/>
+    <Item english="Disconnect" text="Putuskan Sambungan"/>
+    <Item english="Show Remote Files" text="Tunjuk Fail Jauh"/>
+    <Item english="Upload Current File" text="Muat Naik Fail Semasa"/>
+    <Item english="Execute NppExec Script…" text="Jalankan Skrip NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Jalankan Skrip NppExec Sebelumnya"/>
+    <Item english="Stop Running NppExec Script" text="Hentikan Skrip NppExec yang Sedang Berjalan"/>
+    <Item english="Show NppExec Console" text="Tunjuk Konsol NppExec"/>
+    <Item english="Execute NppExec Script" text="Jalankan Skrip NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;skrip sementara&gt;"/>
+    <Item english="Script name" text="Nama skrip"/>
+    <Item english="Remember which panels were open" text="Ingat panel yang dibuka"/>
+    <Item english="Show the toolbar" text="Tunjuk bar alat"/>
+    <Item english="Toolbar buttons" text="Butang bar alat"/>
+    <Item english="Icons only" text="Arca sahaja"/>
+    <Item english="Icons and labels" text="Arca dan label"/>
+    <Item english="Labels only" text="Label sahaja"/>
+    <Item english="Toolbar size" text="Saiz bar alat"/>
+    <Item english="Regular" text="Biasa"/>
+    <Item english="Small" text="Kecil"/>
+    <Item english="Icons" text="Arca"/>
+    <Item english="Hidden" text="Tersorok"/>
+    <Item english="1 pixel" text="1 piksel"/>
+    <Item english="2 pixels" text="2 piksel"/>
+    <Item english="3 pixels" text="3 piksel"/>
+    <Item english="Selected text can be dragged" text="Teks yang dipilih boleh diseret"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Bolehkan Multi-Penyuntingan (Cmd+klik/pilihan)"/>
+    <Item english="Follow the system" text="Ikut sistem"/>
+    <Item english="Light theme" text="Tema cerah"/>
+    <Item english="Dark theme" text="Tema gelap"/>
+    <Item english="Show the fold margin" text="Tunjuk jidar pelipat"/>
+    <Item english="A line" text="Garisan"/>
+    <Item english="Columns (space separated)" text="Lajur (dipisahkan dengan ruang)"/>
+    <Item english="3 parts" text="3 bahagian"/>
+    <Item english="4 parts" text="4 bahagian"/>
+    <Item english="5 parts" text="5 bahagian"/>
+    <Item english="6 parts" text="6 bahagian"/>
+    <Item english="7 parts" text="7 bahagian"/>
+    <Item english="8 parts" text="8 bahagian"/>
+    <Item english="9 parts" text="9 bahagian"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Tentukan bahasa daripada kandungan apabila nama fail tidak menunjukkannya"/>
+    <Item english="Highlight matching braces" text="Serlahkan kurungan yang padan"/>
+    <Item english="Header font (blank for the editor's)" text="Fon pengatas (kosongkan untuk guna fon editor)"/>
+    <Item english="Header font size" text="Saiz fon pengatas"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Jidar: kiri, atas, kanan, bawah (mata)"/>
+    <Item english="Characters before it opens" text="Bilangan aksara sebelum ia dibuka"/>
+    <Item english="Add characters to the word list" text="Tambah aksara ke senarai aksara perkataan"/>
+    <Item english="A fixed folder" text="Folder tetap"/>
+    <Item english="Fixed folder" text="Folder tetap"/>
+    <Item english="Confirm Replace All" text="Sahkan Ganti Semua"/>
+    <Item english="Compare: ignore case" text="Banding: abaikan atur huruf"/>
+    <Item english="Compare: ignore spaces" text="Banding: abaikan ruang"/>
+    <Item english="Compare: ignore empty lines" text="Banding: abaikan baris kosong"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Maks Aksara untuk Auto-Isi Medan Cari"/>
+    <Item english="Releases repository" text="Repositori keluaran"/>
+    <Item english="Notepad++ update" text="Kemaskini Notepad++"/>
+    <Item english="No update is available." text="Tiada kemaskini tersedia."/>
+    <Item english="An update package is available, do you want to download it?" text="Pakej kemaskini tersedia, adakah anda mahu memuat turunnya?"/>
+    <Item english="Open the Releases Page" text="Buka Halaman Keluaran"/>
+    <Item english="Copy debug info to clipboard" text="Salin maklumat nyahpepijat ke papan keratan"/>
+    <Item english="Fonts…" text="Fon…"/>
+    <Item english="This document is not valid JSON." text="Dokumen ini bukan JSON yang sah."/>
+    <Item english="Valid JSON." text="JSON sah."/>
+    <Item english="Invalid JSON." text="JSON tidak sah."/>
+    <Item english="Set as the first file to compare." text="Ditetapkan sebagai fail pertama untuk dibandingkan."/>
+    <Item english="Nothing to compare with." text="Tiada apa-apa untuk dibandingkan."/>
+    <Item english="The document is valid XML." text="Dokumen ini ialah XML yang sah."/>
+    <Item english="FTP connections" text="Sambungan FTP"/>
+    <Item english="Cannot connect." text="Tidak dapat menyambung."/>
+    <Item english="That file is open in another tab." text="Fail itu dibuka dalam tab lain."/>
+    <Item english="Close it first, or choose another name." text="Tutup dahulu, atau pilih nama lain."/>
+    <Item english="Which language is this?" text="Bahasa apakah ini?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Sesetengah aksara tidak dapat diwakili dalam pengekodan ini."/>
+    <Item english="Converting will replace them." text="Penukaran akan menggantikannya."/>
+    <Item english="Press the keys." text="Tekan kekunci."/>
+    <Item english="Nothing is marked" text="Tiada apa-apa yang ditanda"/>
+    <Item english="Marked text copied" text="Teks bertanda disalin"/>
+    <Item english="Choose a folder first" text="Pilih folder dahulu"/>
+    <Item english="This document has no folder" text="Dokumen ini tiada folder"/>
+    <Item english="The ticked project panels have no files" text="Panel projek yang ditanda tiada fail"/>
+    <Item english="Searching..." text="Mencari..."/>
+    <Item english="Stopping..." text="Menghentikan..."/>
+    <Item english="Marks cleared" text="Tanda dibersihkan"/>
+    <Item english="Transparent" text="Lut sinar"/>
+    <Item english="View 1" text="Pandangan 1"/>
+    <Item english="View 2" text="Pandangan 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hash"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Kunci HMAC (pilihan):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (heksadesimal):"/>
+    <Item english="Random" text="Rawak"/>
+    <Item english="Cost (4-31):" text="Kos (4-31):"/>
+    <Item english="Version:" text="Versi:"/>
+    <Item english="N, as a power of 2:" text="N, sebagai kuasa 2:"/>
+    <Item english="Block size (r):" text="Saiz blok (r):"/>
+    <Item english="Parallelism (p):" text="Keselarian (p):"/>
+    <Item english="Variant:" text="Varian:"/>
+    <Item english="Memory (KiB):" text="Memori (KiB):"/>
+    <Item english="Iterations:" text="Lelaran:"/>
+    <Item english="Parallelism:" text="Keselarian:"/>
+    <Item english="Digest:" text="Fungsi hash:"/>
+    <Item english="Hash length (bytes):" text="Panjang hash (bait):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Sahkan"/>
+    <Item english="Hash to check the password against:" text="Hash untuk menyemak kata laluan:"/>
+    <Item english="The salt is not valid hexadecimal." text="Salt bukan heksadesimal yang sah."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt memerlukan salt tepat 16 bait."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 memerlukan salt sekurang-kurangnya 8 bait."/>
+    <Item english="The hash could not be generated with these settings." text="Hash tidak dapat dijana dengan ketetapan ini."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Ini bukan hash bcrypt, scrypt, Argon2 atau PBKDF2."/>
+    <Item english="The password matches the hash." text="Kata laluan sepadan dengan hash."/>
+    <Item english="The password does not match the hash." text="Kata laluan tidak sepadan dengan hash."/>
+    <Item english="The cost must be between 4 and 31." text="Kos mestilah antara 4 dan 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versi mestilah 2a, 2b atau 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N mestilah antara 2^1 dan 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r dan p mestilah antara 1 dan 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Ketetapan ini memerlukan lebih daripada 2 GB memori."/>
+    <Item english="The parallelism must be between 1 and 64." text="Keselarian mestilah antara 1 dan 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Lelaran mestilah antara 1 dan 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Memori mestilah sekurang-kurangnya 8 KiB bagi setiap lorong."/>
+    <Item english="These settings need more than 4 GB of memory." text="Ketetapan ini memerlukan lebih daripada 4 GB memori."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Fungsi hash mestilah SHA-1, SHA-256 atau SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Lelaran mestilah antara 1 dan 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Panjang hash mestilah antara 4 dan 1024 bait."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (selamat untuk URL)"/>
+    <Item english="Encode" text="Enkod"/>
+    <Item english="Decode" text="Nyahkod"/>
+    <Item english="The input is:" text="Input ialah:"/>
+    <Item english="Bytes in hexadecimal" text="Bait dalam heksadesimal"/>
+    <Item english="Input:" text="Input:"/>
+    <Item english="Result:" text="Hasil:"/>
+    <Item english="Text:" text="Teks:"/>
+    <Item english="Bytes in hexadecimal:" text="Bait dalam heksadesimal:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Input bukan bait yang ditulis dalam heksadesimal."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Input bukan $STR_REPLACE$ yang sah."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Bait yang dinyahkod bukan teks UTF-8; ia hanya ditunjukkan dalam heksadesimal."/>
+    <Item english="Password Generator" text="Penjana Kata Laluan"/>
+    <Item english="Length:" text="Panjang:"/>
+    <Item english="Number of passwords:" text="Bilangan kata laluan:"/>
+    <Item english="Uppercase letters (A-Z)" text="Huruf besar (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Huruf kecil (a-z)"/>
+    <Item english="Digits (0-9)" text="Digit (0-9)"/>
+    <Item english="Symbols:" text="Simbol:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Tinggalkan aksara yang kelihatan serupa (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Sekurang-kurangnya satu aksara bagi setiap jenis"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropi: kira-kira $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Pilih sekurang-kurangnya satu jenis aksara."/>
+    <Item english="Insert into Document" text="Sisip ke dalam Dokumen"/>
+    <Item english="Show the bare key in hexadecimal" text="Tunjuk kunci mentah dalam heksadesimal"/>
+    <Item english="Empty: a random salt each time" text="Kosong: salt rawak setiap kali"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt hanya membaca 72 bait pertama."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Permintaan HTTP"/>
+    <Item english="Send" text="Hantar"/>
+    <Item english="Parameters" text="Parameter"/>
+    <Item english="Headers" text="Pengepala"/>
+    <Item english="Body" text="Badan"/>
+    <Item english="Options" text="Pilihan"/>
+    <Item english="Content type:" text="Jenis kandungan:"/>
+    <Item english="User name:" text="Nama pengguna:"/>
+    <Item english="Password:" text="Kata laluan:"/>
+    <Item english="Timeout (seconds):" text="Had masa (saat):"/>
+    <Item english="Follow redirects" text="Ikut ubah hala"/>
+    <Item english="Allow invalid certificates" text="Benarkan sijil tidak sah"/>
+    <Item english="Format JSON" text="Format JSON"/>
+    <Item english="Paste curl Command" text="Tampal Perintah curl"/>
+    <Item english="Copy as curl" text="Salin sebagai curl"/>
+    <Item english="Open in New Document" text="Buka dalam Dokumen Baru"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Satu setiap baris: nama=nilai. Ia ditambah pada alamat, dalam bentuk terenkod."/>
+    <Item english="One to a line: Name: value" text="Satu setiap baris: Nama: nilai"/>
+    <Item english="Sent as it is written, in UTF-8." text="Dihantar seperti yang ditulis, dalam UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Jawapan bukan teks: $INT_REPLACE$ bait."/>
+    <Item english="The address is not an http or https address." text="Alamat itu bukan alamat http atau https."/>
+    <Item english="This is not a curl command." text="Ini bukan perintah curl."/>
+    <Item english="The command has no address." text="Perintah itu tiada alamat."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Perintah itu membaca datanya daripada fail, dan ini tidak dilakukan di sini."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Borang dan muat naik fail tidak dibaca daripada perintah."/>
+    <Item english="The command's address is not an http or https address." text="Alamat perintah itu bukan alamat http atau https."/>
+</NativeLangExtra>

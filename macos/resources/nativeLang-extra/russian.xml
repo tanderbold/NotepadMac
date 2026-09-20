@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/russian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Русский">
+    <Item english="About NotepadMac" text="О программе NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Скрыть NotepadMac"/>
+    <Item english="Hide Others" text="Скрыть остальные"/>
+    <Item english="Show All" text="Показать все"/>
+    <Item english="Quit NotepadMac" text="Завершить NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Открыть папку файла в Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Открыть папку файла в Терминале"/>
+    <Item english="Toggle Insert/Overtype" text="Переключить вставку/замену"/>
+    <Item english="Toggle Fold" text="Свернуть/развернуть блок"/>
+    <Item english="Show All Hidden Lines" text="Показать все скрытые строки"/>
+    <Item english="Recent Window" text="Предыдущее окно"/>
+    <Item english="Move to Trash" text="Переместить в Корзину"/>
+    <Item english="Save Current Command…" text="Сохранить текущую команду…"/>
+    <Item english="Manage Saved Commands…" text="Управление сохранёнными командами…"/>
+    <Item english="Show Console" text="Показать консоль"/>
+    <Item english="Validate shortcuts" text="Проверить сочетания клавиш"/>
+    <Item english="Open Plugins Folder…" text="Открыть папку плагинов…"/>
+    <Item english="Format" text="Форматировать"/>
+    <Item english="Compact" text="Сжать"/>
+    <Item english="Sort Keys" text="Сортировать ключи"/>
+    <Item english="Validate" text="Проверить"/>
+    <Item english="Show JSON Tree" text="Показать дерево JSON"/>
+    <Item english="Set as First to Compare" text="Выбрать первым для сравнения"/>
+    <Item english="Compare" text="Сравнить"/>
+    <Item english="Compare with File…" text="Сравнить с файлом…"/>
+    <Item english="Next Difference" text="Следующее отличие"/>
+    <Item english="Previous Difference" text="Предыдущее отличие"/>
+    <Item english="First Difference" text="Первое отличие"/>
+    <Item english="Last Difference" text="Последнее отличие"/>
+    <Item english="Compare Summary" text="Итоги сравнения"/>
+    <Item english="Ignore Case" text="Игнорировать регистр"/>
+    <Item english="Ignore Spaces" text="Игнорировать пробелы"/>
+    <Item english="Ignore Empty Lines" text="Игнорировать пустые строки"/>
+    <Item english="Clear Active Compare" text="Сбросить текущее сравнение"/>
+    <Item english="Clear All Compares" text="Сбросить все сравнения"/>
+    <Item english="Pretty Print" text="Отформатировать"/>
+    <Item english="Pretty Print — Indent Attributes" text="Отформатировать — с отступом атрибутов"/>
+    <Item english="Linearize" text="В одну строку"/>
+    <Item english="Check XML Syntax Now" text="Проверить синтаксис XML"/>
+    <Item english="Validate Against Schema…" text="Проверить по схеме…"/>
+    <Item english="Validate Against DTD" text="Проверить по DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Вычислить выражение XPath…"/>
+    <Item english="Current XML Path" text="Текущий путь XML"/>
+    <Item english="Current XML Path with Predicates" text="Текущий путь XML с предикатами"/>
+    <Item english="Apply XSL Transformation…" text="Применить преобразование XSL…"/>
+    <Item english="Escape Characters in Selection" text="Экранировать символы в выделенном"/>
+    <Item english="Unescape Characters in Selection" text="Снять экранирование в выделенном"/>
+    <Item english="Connections…" text="Подключения…"/>
+    <Item english="Connect…" text="Подключиться…"/>
+    <Item english="Disconnect" text="Отключиться"/>
+    <Item english="Show Remote Files" text="Показать файлы на сервере"/>
+    <Item english="Upload Current File" text="Отправить текущий файл"/>
+    <Item english="Execute NppExec Script…" text="Выполнить скрипт NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Выполнить предыдущий скрипт NppExec"/>
+    <Item english="Stop Running NppExec Script" text="Остановить выполняемый скрипт NppExec"/>
+    <Item english="Show NppExec Console" text="Показать консоль NppExec"/>
+    <Item english="Execute NppExec Script" text="Выполнить скрипт NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;временный скрипт&gt;"/>
+    <Item english="Script name" text="Имя скрипта"/>
+    <Item english="Dock Left" text="Закрепить слева"/>
+    <Item english="Dock Right" text="Закрепить справа"/>
+    <Item english="Dock Top" text="Закрепить сверху"/>
+    <Item english="Dock Bottom" text="Закрепить снизу"/>
+    <Item english="Float" text="Открепить"/>
+    <Item english="Remember which panels were open" text="Запоминать открытые панели"/>
+    <Item english="Show the toolbar" text="Показывать панель инструментов"/>
+    <Item english="Toolbar buttons" text="Кнопки панели"/>
+    <Item english="Icons only" text="Только значки"/>
+    <Item english="Icons and labels" text="Значки и подписи"/>
+    <Item english="Labels only" text="Только подписи"/>
+    <Item english="Toolbar size" text="Размер панели"/>
+    <Item english="Regular" text="Обычный"/>
+    <Item english="Small" text="Малый"/>
+    <Item english="Icons" text="Значки"/>
+    <Item english="Hidden" text="Скрыта"/>
+    <Item english="1 pixel" text="1 пиксель"/>
+    <Item english="2 pixels" text="2 пикселя"/>
+    <Item english="3 pixels" text="3 пикселя"/>
+    <Item english="Selected text can be dragged" text="Выделенный текст можно перетаскивать"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Включить множественное редактирование (Cmd+щелчок/выделение)"/>
+    <Item english="Follow the system" text="Как в системе"/>
+    <Item english="Light theme" text="Светлая тема"/>
+    <Item english="Dark theme" text="Тёмная тема"/>
+    <Item english="Show the fold margin" text="Показывать поле свёртки"/>
+    <Item english="A line" text="Линия"/>
+    <Item english="Columns (space separated)" text="Столбцы (через пробел)"/>
+    <Item english="3 parts" text="3 части"/>
+    <Item english="4 parts" text="4 части"/>
+    <Item english="5 parts" text="5 частей"/>
+    <Item english="6 parts" text="6 частей"/>
+    <Item english="7 parts" text="7 частей"/>
+    <Item english="8 parts" text="8 частей"/>
+    <Item english="9 parts" text="9 частей"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Определять язык по содержимому, если имя файла его не выдаёт"/>
+    <Item english="Highlight matching braces" text="Подсвечивать парные скобки"/>
+    <Item english="Header font (blank for the editor's)" text="Шрифт колонтитулов (пусто — как в редакторе)"/>
+    <Item english="Header font size" text="Размер шрифта колонтитулов"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Поля: слева, сверху, справа, снизу (пункты)"/>
+    <Item english="Characters before it opens" text="Символов до появления списка"/>
+    <Item english="Add characters to the word list" text="Добавить символы к списку символов слова"/>
+    <Item english="A fixed folder" text="Заданная папка"/>
+    <Item english="Fixed folder" text="Заданная папка:"/>
+    <Item english="Confirm Replace All" text="Подтверждать «Заменить все»"/>
+    <Item english="Compare: ignore case" text="Сравнение: игнорировать регистр"/>
+    <Item english="Compare: ignore spaces" text="Сравнение: игнорировать пробелы"/>
+    <Item english="Compare: ignore empty lines" text="Сравнение: игнорировать пустые строки"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Макс. символов для автозаполнения поля поиска"/>
+    <Item english="Releases repository" text="Репозиторий выпусков"/>
+    <Item english="Notepad++ update" text="Обновление Notepad++"/>
+    <Item english="No update is available." text="Обновлений нет."/>
+    <Item english="An update package is available, do you want to download it?" text="Доступно обновление. Загрузить его?"/>
+    <Item english="Open the Releases Page" text="Открыть страницу выпусков"/>
+    <Item english="Copy debug info to clipboard" text="Копировать отладочную информацию в буфер"/>
+    <Item english="Fonts…" text="Шрифты…"/>
+    <Item english="This document is not valid JSON." text="Этот документ не является корректным JSON."/>
+    <Item english="Valid JSON." text="Корректный JSON."/>
+    <Item english="Invalid JSON." text="Некорректный JSON."/>
+    <Item english="Set as the first file to compare." text="Выбран первым файлом для сравнения."/>
+    <Item english="Nothing to compare with." text="Не с чем сравнивать."/>
+    <Item english="The document is valid XML." text="Документ — корректный XML."/>
+    <Item english="FTP connections" text="Подключения FTP"/>
+    <Item english="Cannot connect." text="Не удалось подключиться."/>
+    <Item english="That file is open in another tab." text="Этот файл открыт в другой вкладке."/>
+    <Item english="Close it first, or choose another name." text="Сначала закройте его или выберите другое имя."/>
+    <Item english="Which language is this?" text="Какой это язык?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Некоторые символы нельзя представить в этой кодировке."/>
+    <Item english="Converting will replace them." text="При преобразовании они будут заменены."/>
+    <Item english="Press the keys." text="Нажмите клавиши."/>
+    <Item english="Nothing is marked" text="Ничего не помечено"/>
+    <Item english="Marked text copied" text="Помеченный текст скопирован"/>
+    <Item english="Choose a folder first" text="Сначала выберите папку"/>
+    <Item english="This document has no folder" text="У этого документа нет папки"/>
+    <Item english="The ticked project panels have no files" text="В отмеченных панелях проектов нет файлов"/>
+    <Item english="Searching..." text="Поиск..."/>
+    <Item english="Stopping..." text="Остановка..."/>
+    <Item english="Marks cleared" text="Пометки сняты"/>
+    <Item english="Transparent" text="Прозрачный"/>
+    <Item english="View 1" text="Вид 1"/>
+    <Item english="View 2" text="Вид 2"/>
+    <Item english="Where" text="Где"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Хеши"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Ключ HMAC (необязательно):"/>
+    <Item english="Salt (hexadecimal):" text="Соль (шестнадцатеричная):"/>
+    <Item english="Random" text="Случайная"/>
+    <Item english="Cost (4-31):" text="Стоимость (4-31):"/>
+    <Item english="Version:" text="Версия:"/>
+    <Item english="N, as a power of 2:" text="N, как степень двойки:"/>
+    <Item english="Block size (r):" text="Размер блока (r):"/>
+    <Item english="Parallelism (p):" text="Параллелизм (p):"/>
+    <Item english="Variant:" text="Вариант:"/>
+    <Item english="Memory (KiB):" text="Память (КиБ):"/>
+    <Item english="Iterations:" text="Итерации:"/>
+    <Item english="Parallelism:" text="Параллелизм:"/>
+    <Item english="Digest:" text="Хеш-функция:"/>
+    <Item english="Hash length (bytes):" text="Длина хеша (байт):"/>
+    <Item english="Hash:" text="Хеш:"/>
+    <Item english="Verify" text="Проверить"/>
+    <Item english="Hash to check the password against:" text="Хеш для проверки пароля:"/>
+    <Item english="The salt is not valid hexadecimal." text="Соль не является шестнадцатеричной записью."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="Для bcrypt нужна соль ровно из 16 байт."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Для Argon2 нужна соль не короче 8 байт."/>
+    <Item english="The hash could not be generated with these settings." text="С этими настройками хеш создать не удалось."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Это не хеш bcrypt, scrypt, Argon2 или PBKDF2."/>
+    <Item english="The password matches the hash." text="Пароль соответствует хешу."/>
+    <Item english="The password does not match the hash." text="Пароль не соответствует хешу."/>
+    <Item english="The cost must be between 4 and 31." text="Стоимость должна быть от 4 до 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Версия должна быть 2a, 2b или 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N должно быть от 2^1 до 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r и p должны быть от 1 до 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Для этих настроек нужно больше 2 ГБ памяти."/>
+    <Item english="The parallelism must be between 1 and 64." text="Параллелизм должен быть от 1 до 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Число итераций должно быть от 1 до 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Памяти должно быть не меньше 8 КиБ на каждый поток."/>
+    <Item english="These settings need more than 4 GB of memory." text="Для этих настроек нужно больше 4 ГБ памяти."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Хеш-функция должна быть SHA-1, SHA-256 или SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Число итераций должно быть от 1 до 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Длина хеша должна быть от 4 до 1024 байт."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (для URL)"/>
+    <Item english="Encode" text="Кодировать"/>
+    <Item english="Decode" text="Декодировать"/>
+    <Item english="The input is:" text="На входе:"/>
+    <Item english="Bytes in hexadecimal" text="Байты в шестнадцатеричном виде"/>
+    <Item english="Input:" text="Ввод:"/>
+    <Item english="Result:" text="Результат:"/>
+    <Item english="Text:" text="Текст:"/>
+    <Item english="Bytes in hexadecimal:" text="Байты в шестнадцатеричном виде:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Ввод не является шестнадцатеричной записью байтов."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Ввод не является корректным $STR_REPLACE$."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Декодированные байты не являются текстом UTF-8; они показаны только в шестнадцатеричном виде."/>
+    <Item english="Password Generator" text="Генератор паролей"/>
+    <Item english="Length:" text="Длина:"/>
+    <Item english="Number of passwords:" text="Количество паролей:"/>
+    <Item english="Uppercase letters (A-Z)" text="Заглавные буквы (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Строчные буквы (a-z)"/>
+    <Item english="Digits (0-9)" text="Цифры (0-9)"/>
+    <Item english="Symbols:" text="Символы:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Исключить похожие символы (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Хотя бы один символ каждого вида"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Энтропия: около $INT_REPLACE$ бит"/>
+    <Item english="Choose at least one kind of character." text="Выберите хотя бы один вид символов."/>
+    <Item english="Insert into Document" text="Вставить в документ"/>
+    <Item english="Show the bare key in hexadecimal" text="Показать сам ключ в шестнадцатеричном виде"/>
+    <Item english="Empty: a random salt each time" text="Пусто: каждый раз случайная соль"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt читает только первые 72 байта."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-запрос"/>
+    <Item english="Send" text="Отправить"/>
+    <Item english="Parameters" text="Параметры"/>
+    <Item english="Headers" text="Заголовки"/>
+    <Item english="Body" text="Тело"/>
+    <Item english="Options" text="Настройки"/>
+    <Item english="Content type:" text="Тип содержимого:"/>
+    <Item english="User name:" text="Имя пользователя:"/>
+    <Item english="Password:" text="Пароль:"/>
+    <Item english="Timeout (seconds):" text="Тайм-аут (секунды):"/>
+    <Item english="Follow redirects" text="Следовать перенаправлениям"/>
+    <Item english="Allow invalid certificates" text="Разрешить недействительные сертификаты"/>
+    <Item english="Format JSON" text="Форматировать JSON"/>
+    <Item english="Paste curl Command" text="Вставить команду curl"/>
+    <Item english="Copy as curl" text="Копировать как curl"/>
+    <Item english="Open in New Document" text="Открыть в новом документе"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="По одному в строке: имя=значение. Добавляются к адресу в закодированном виде."/>
+    <Item english="One to a line: Name: value" text="По одному в строке: Имя: значение"/>
+    <Item english="Sent as it is written, in UTF-8." text="Отправляется как написано, в UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Ответ не является текстом: $INT_REPLACE$ байт."/>
+    <Item english="The address is not an http or https address." text="Адрес не является адресом http или https."/>
+    <Item english="This is not a curl command." text="Это не команда curl."/>
+    <Item english="The command has no address." text="В команде нет адреса."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Команда читает данные из файла, здесь это не поддерживается."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Формы и отправка файлов из команды не читаются."/>
+    <Item english="The command's address is not an http or https address." text="Адрес в команде не является адресом http или https."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Неофициальный порт для macOS. Автор Notepad++ — Don HO."/>
+</NativeLangExtra>

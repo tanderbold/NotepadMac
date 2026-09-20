@@ -1,0 +1,24 @@
+use uo;
+use os;
+use datafile;
+
+program logon(who)
+    var df := OpenDataFile(":accounts:logins");
+    if (!df)
+        df := CreateDataFile(":accounts:logins", DF_KEYTYPE_STRING);
+    endif
+    var elem := df.FindElement(who.acctname) ?: df.CreateElement(who.acctname);
+    elem.SetProp("LastLogin", polcore().systime);
+    elem.SetProp("LastIP", who.ip);
+
+    if (who.cmdlevel >= 2)
+        SendSysMessage(who, "Staff account: commands are enabled.", 3, 88);
+    endif
+
+    foreach item in EnumerateItemsInContainer(who.backpack)
+        if (item.decayat && item.decayat < ReadGameClock())
+            DestroyItem(item);
+        endif
+    endforeach
+    return 1;
+endprogram

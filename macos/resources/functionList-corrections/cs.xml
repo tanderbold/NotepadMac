@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Replaces the upstream csharp_class parser.
+
+    What the original does: it has two patterns, and both read a return type as
+    a bare word with an optional generic list spelled [\w,\s&lt;&gt;]+. That
+    list has no room for a question mark, a square bracket or a parenthesis, so
+    a method returning Task&lt;string?&gt;, byte[]?, or a tuple such as
+    (X509Certificate2, string) is not found at all. The pattern used outside a
+    class is worse still: it is a C pattern, carrying \*, &amp; and ::, and it
+    reads the type as \w+ with no generic list whatsoever. A file written with
+    top level statements, where the helpers are not inside any class, therefore
+    shows only those few methods whose return type happens to be a single plain
+    word.
+
+    What this does: reads a return type as what C# actually allows — a
+    qualified name with nested generic arguments, a nullable mark, array
+    brackets, or a tuple — and uses the same reading inside a class and outside
+    one. Expression bodied members are accepted as well as braced ones.
+
+    The class ranges, and the way a name is narrowed down, are as upstream has
+    them.
+-->
+<NotepadPlus>
+    <functionList>
+        <parser
+            displayName="C#"
+            id         ="csharp_class"
+            commentExpr="(?s:/\*.*?\*/)|(?m-s://.*?$)"
+        >
+            <classRange
+                mainExpr    ="^[\t\x20]*((public|protected|private|internal)\s+)?(\w+\s*)?(class|struct|interface|record)[\t\x20]+[^\{]+\{"
+                openSymbole ="\{"
+                closeSymbole="\}"
+            >
+                <className>
+                    <nameExpr expr="(class|struct|interface|record)[\t\x20]+\w+" />
+                    <nameExpr expr="[\t\x20]+\w+" />
+                    <nameExpr expr="\w+" />
+                </className>
+                <function
+                    mainExpr="(?x)
+                        ^\h*
+                        (?:                                             # modifiers, any number
+                            (?: public | private | protected | internal | static | async
+                              | unsafe | extern | new | virtual | override | sealed
+                              | abstract | partial | readonly )
+                            \s+
+                        )*
+                        (?! (?: if | else | for | foreach | while | switch | catch
+                              | using | return | lock | fixed | do ) \b )
+                        (?:                                             # the return type
+                            \( [^()]* \)                                #   a tuple
+                          | [A-Za-z_]\w* (?: \. [A-Za-z_]\w* )*         #   a qualified name
+                            (?: &lt; [^&lt;&gt;]* (?: &lt; [^&lt;&gt;]* &gt; [^&lt;&gt;]* )* &gt; )?
+                        )
+                        \??                                             #   nullable
+                        (?: \[ [\s,]* \] \??)*                          #   arrays
+                        \s+
+                        \K
+                        [A-Za-z_]\w* (?: &lt; [^&lt;&gt;]* &gt; )?       # the name
+                        \s* \( [^()]* \)
+                        (?: \s* where [^{;]+ )?
+                        \s* (?: \{ | =&gt; )
+                    "
+                >
+                    <functionName>
+                        <funcNameExpr expr="\w+(&lt;[\w,\s&lt;&gt;]+&gt;)?\s?\(" />
+                        <funcNameExpr expr="\w+(&lt;[\w,\s&lt;&gt;]+&gt;)?" />
+                    </functionName>
+                </function>
+            </classRange>
+            <function
+                mainExpr="(?x)
+                    ^\h*
+                    (?:
+                        (?: public | private | protected | internal | static | async
+                          | unsafe | extern | new | virtual | override | sealed
+                          | abstract | partial | readonly )
+                        \s+
+                    )*
+                    (?! (?: if | else | for | foreach | while | switch | catch
+                          | using | return | lock | fixed | do ) \b )
+                    (?:
+                        \( [^()]* \)
+                      | [A-Za-z_]\w* (?: \. [A-Za-z_]\w* )*
+                        (?: &lt; [^&lt;&gt;]* (?: &lt; [^&lt;&gt;]* &gt; [^&lt;&gt;]* )* &gt; )?
+                    )
+                    \??
+                    (?: \[ [\s,]* \] \??)*
+                    \s+
+                    \K
+                    [A-Za-z_]\w* (?: &lt; [^&lt;&gt;]* &gt; )?
+                    \s* \( [^()]* \)
+                    (?: \s* where [^{;]+ )?
+                    \s* (?: \{ | =&gt; )
+                "
+            >
+                <functionName>
+                    <nameExpr expr="\w+(&lt;[\w,\s&lt;&gt;]+&gt;)?\s?\(" />
+                    <nameExpr expr="\w+(&lt;[\w,\s&lt;&gt;]+&gt;)?" />
+                </functionName>
+            </function>
+        </parser>
+    </functionList>
+</NotepadPlus>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/welsh.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Cymraeg">
+    <Item english="About NotepadMac" text="Ynghylch NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Cuddio NotepadMac"/>
+    <Item english="Hide Others" text="Cuddio'r Lleill"/>
+    <Item english="Show All" text="Dangos y Cyfan"/>
+    <Item english="Quit NotepadMac" text="Gadael NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Agor Ffolder Lleoliad yn Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Agor Ffolder Lleoliad yn y Derfynell"/>
+    <Item english="Toggle Insert/Overtype" text="Toglo Mewnosod/Trosysgrifo"/>
+    <Item english="Toggle Fold" text="Toglo Plygu"/>
+    <Item english="Show All Hidden Lines" text="Dangos Pob Llinell Gudd"/>
+    <Item english="Recent Window" text="Ffenestr Ddiweddar"/>
+    <Item english="Move to Trash" text="Symud i'r Sbwriel"/>
+    <Item english="Save Current Command…" text="Cadw'r Gorchymyn Presennol…"/>
+    <Item english="Manage Saved Commands…" text="Rheoli'r Gorchmynion a Gadwyd…"/>
+    <Item english="Show Console" text="Dangos y Consol"/>
+    <Item english="Validate shortcuts" text="Dilysu'r bysellau brys"/>
+    <Item english="Open Plugins Folder…" text="Agor Ffolder yr Ategolion…"/>
+    <Item english="Format" text="Fformatio"/>
+    <Item english="Compact" text="Cywasgu"/>
+    <Item english="Sort Keys" text="Trefnu'r Allweddi"/>
+    <Item english="Validate" text="Dilysu"/>
+    <Item english="Show JSON Tree" text="Dangos Coeden JSON"/>
+    <Item english="Set as First to Compare" text="Gosod fel y Cyntaf i'w Gymharu"/>
+    <Item english="Compare" text="Cymharu"/>
+    <Item english="Compare with File…" text="Cymharu â Ffeil…"/>
+    <Item english="Next Difference" text="Gwahaniaeth Nesaf"/>
+    <Item english="Previous Difference" text="Gwahaniaeth Blaenorol"/>
+    <Item english="First Difference" text="Gwahaniaeth Cyntaf"/>
+    <Item english="Last Difference" text="Gwahaniaeth Olaf"/>
+    <Item english="Compare Summary" text="Crynodeb y Cymharu"/>
+    <Item english="Ignore Case" text="Anwybyddu Prif/Is-lythrennau"/>
+    <Item english="Ignore Spaces" text="Anwybyddu Bylchau"/>
+    <Item english="Ignore Empty Lines" text="Anwybyddu Llinellau Gweigion"/>
+    <Item english="Clear Active Compare" text="Clirio'r Gymhariaeth Bresennol"/>
+    <Item english="Clear All Compares" text="Clirio Pob Cymhariaeth"/>
+    <Item english="Pretty Print" text="Fformatio Taclus"/>
+    <Item english="Pretty Print — Indent Attributes" text="Fformatio Taclus — Mewnoli Priodoleddau"/>
+    <Item english="Check XML Syntax Now" text="Gwirio Cystrawen XML Nawr"/>
+    <Item english="Validate Against Schema…" text="Dilysu yn Erbyn Sgema…"/>
+    <Item english="Validate Against DTD" text="Dilysu yn Erbyn DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Gwerthuso Mynegiad XPath…"/>
+    <Item english="Current XML Path" text="Llwybr XML Presennol"/>
+    <Item english="Apply XSL Transformation…" text="Cymhwyso Trawsnewidiad XSL…"/>
+    <Item english="Connections…" text="Cysylltiadau…"/>
+    <Item english="Connect…" text="Cysylltu…"/>
+    <Item english="Disconnect" text="Datgysylltu"/>
+    <Item english="Show Remote Files" text="Dangos Ffeiliau Pell"/>
+    <Item english="Upload Current File" text="Llwytho'r Ffeil Bresennol i Fyny"/>
+    <Item english="Execute NppExec Script…" text="Rhedeg Sgript NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Rhedeg Sgript NppExec Blaenorol"/>
+    <Item english="Stop Running NppExec Script" text="Atal Sgript NppExec"/>
+    <Item english="Show NppExec Console" text="Dangos Consol NppExec"/>
+    <Item english="Execute NppExec Script" text="Rhedeg Sgript NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;sgript dros dro&gt;"/>
+    <Item english="Script name" text="Enw'r sgript"/>
+    <Item english="Dock Left" text="Docio i'r Chwith"/>
+    <Item english="Dock Right" text="Docio i'r Dde"/>
+    <Item english="Dock Top" text="Docio i'r Brig"/>
+    <Item english="Dock Bottom" text="Docio i'r Gwaelod"/>
+    <Item english="Float" text="Arnofio"/>
+    <Item english="Remember which panels were open" text="Cofio pa baneli oedd ar agor"/>
+    <Item english="Show the toolbar" text="Dangos y bar offer"/>
+    <Item english="Toolbar buttons" text="Botymau'r bar offer"/>
+    <Item english="Icons only" text="Eiconau yn unig"/>
+    <Item english="Icons and labels" text="Eiconau a labeli"/>
+    <Item english="Labels only" text="Labeli yn unig"/>
+    <Item english="Toolbar size" text="Maint y bar offer"/>
+    <Item english="Regular" text="Arferol"/>
+    <Item english="Small" text="Bach"/>
+    <Item english="Icons" text="Eiconau"/>
+    <Item english="Hidden" text="Cuddiedig"/>
+    <Item english="1 pixel" text="1 picsel"/>
+    <Item english="2 pixels" text="2 bicsel"/>
+    <Item english="3 pixels" text="3 phicsel"/>
+    <Item english="Selected text can be dragged" text="Gellir llusgo'r testun a ddewiswyd"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Galluogi Aml-olygu (Cmd+clic/dewis)"/>
+    <Item english="Follow the system" text="Dilyn y system"/>
+    <Item english="Light theme" text="Thema olau"/>
+    <Item english="Dark theme" text="Thema dywyll"/>
+    <Item english="Show the fold margin" text="Dangos yr ymyl plygu"/>
+    <Item english="A line" text="Llinell"/>
+    <Item english="Columns (space separated)" text="Colofnau (wedi'u gwahanu gan fylchau)"/>
+    <Item english="3 parts" text="3 rhan"/>
+    <Item english="4 parts" text="4 rhan"/>
+    <Item english="5 parts" text="5 rhan"/>
+    <Item english="6 parts" text="6 rhan"/>
+    <Item english="7 parts" text="7 rhan"/>
+    <Item english="8 parts" text="8 rhan"/>
+    <Item english="9 parts" text="9 rhan"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Canfod yr iaith o'r cynnwys pan nad yw'r enw'n ei dweud"/>
+    <Item english="Highlight matching braces" text="Amlygu cyplyswyr sy'n cydweddu"/>
+    <Item english="Header font (blank for the editor's)" text="Ffont y pennawd (gwag ar gyfer un y golygydd)"/>
+    <Item english="Header font size" text="Maint ffont y pennawd"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Ymylon: chwith, brig, de, gwaelod (pwyntiau)"/>
+    <Item english="Characters before it opens" text="Nodau cyn iddo agor"/>
+    <Item english="Add characters to the word list" text="Ychwanegu nodau at y rhestr geiriau"/>
+    <Item english="A fixed folder" text="Ffolder sefydlog"/>
+    <Item english="Fixed folder" text="Ffolder sefydlog"/>
+    <Item english="Confirm Replace All" text="Cadarnhau Newid y Cwbl"/>
+    <Item english="Compare: ignore case" text="Cymharu: anwybyddu prif/is-lythrennau"/>
+    <Item english="Compare: ignore spaces" text="Cymharu: anwybyddu bylchau"/>
+    <Item english="Compare: ignore empty lines" text="Cymharu: anwybyddu llinellau gweigion"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Uchafswm Nodau i Awto-lenwi'r Maes Canfod"/>
+    <Item english="Releases repository" text="Storfa'r datganiadau"/>
+    <Item english="Notepad++ update" text="Diweddariad Notepad++"/>
+    <Item english="No update is available." text="Nid oes diweddariad ar gael."/>
+    <Item english="An update package is available, do you want to download it?" text="Mae pecyn diweddaru ar gael, ydych chi am ei lwytho i lawr?"/>
+    <Item english="Open the Releases Page" text="Agor y Dudalen Datganiadau"/>
+    <Item english="Copy debug info to clipboard" text="Copïo gwybodaeth dadfygio i'r clipfwrdd"/>
+    <Item english="Fonts…" text="Ffontiau…"/>
+    <Item english="This document is not valid JSON." text="Nid yw'r ddogfen hon yn JSON dilys."/>
+    <Item english="Valid JSON." text="JSON dilys."/>
+    <Item english="Invalid JSON." text="JSON annilys."/>
+    <Item english="Set as the first file to compare." text="Wedi'i gosod fel y ffeil gyntaf i'w chymharu."/>
+    <Item english="Nothing to compare with." text="Dim byd i'w gymharu ag ef."/>
+    <Item english="The document is valid XML." text="Mae'r ddogfen yn XML dilys."/>
+    <Item english="FTP connections" text="Cysylltiadau FTP"/>
+    <Item english="Cannot connect." text="Methu cysylltu."/>
+    <Item english="That file is open in another tab." text="Mae'r ffeil honno ar agor mewn tab arall."/>
+    <Item english="Close it first, or choose another name." text="Caewch hi yn gyntaf, neu dewiswch enw arall."/>
+    <Item english="Which language is this?" text="Pa iaith yw hon?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Ni ellir cynrychioli rhai nodau yn yr amgodiad hwn."/>
+    <Item english="Converting will replace them." text="Bydd trawsnewid yn eu disodli."/>
+    <Item english="Press the keys." text="Pwyswch y bysellau."/>
+    <Item english="Nothing is marked" text="Nid oes dim wedi'i nodi"/>
+    <Item english="Marked text copied" text="Copïwyd y testun a nodwyd"/>
+    <Item english="Choose a folder first" text="Dewiswch ffolder yn gyntaf"/>
+    <Item english="This document has no folder" text="Nid oes gan y ddogfen hon ffolder"/>
+    <Item english="The ticked project panels have no files" text="Nid oes ffeiliau yn y paneli prosiect a ticiwyd"/>
+    <Item english="Searching..." text="Chwilio..."/>
+    <Item english="Stopping..." text="Stopio..."/>
+    <Item english="Marks cleared" text="Cliriwyd y marciau"/>
+    <Item english="Transparent" text="Tryloyw"/>
+    <Item english="View 1" text="Golwg 1"/>
+    <Item english="View 2" text="Golwg 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hashiau"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Allwedd HMAC (dewisol):"/>
+    <Item english="Salt (hexadecimal):" text="Halen (hecsadegol):"/>
+    <Item english="Random" text="Ar hap"/>
+    <Item english="Cost (4-31):" text="Cost (4-31):"/>
+    <Item english="Version:" text="Fersiwn:"/>
+    <Item english="N, as a power of 2:" text="N, fel pŵer o 2:"/>
+    <Item english="Block size (r):" text="Maint bloc (r):"/>
+    <Item english="Variant:" text="Amrywiad:"/>
+    <Item english="Memory (KiB):" text="Cof (KiB):"/>
+    <Item english="Iterations:" text="Iteriadau:"/>
+    <Item english="Digest:" text="Ffwythiant hash:"/>
+    <Item english="Hash length (bytes):" text="Hyd yr hash (beitiau):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Gwirio"/>
+    <Item english="Hash to check the password against:" text="Hash i wirio'r cyfrinair yn ei erbyn:"/>
+    <Item english="The salt is not valid hexadecimal." text="Nid yw'r halen yn hecsadegol dilys."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="Mae bcrypt angen halen o 16 beit yn union."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Mae Argon2 angen halen o 8 beit o leiaf."/>
+    <Item english="The hash could not be generated with these settings." text="Nid oedd modd cynhyrchu'r hash gyda'r gosodiadau hyn."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Nid hash bcrypt, scrypt, Argon2 na PBKDF2 yw hwn."/>
+    <Item english="The password matches the hash." text="Mae'r cyfrinair yn cyfateb i'r hash."/>
+    <Item english="The password does not match the hash." text="Nid yw'r cyfrinair yn cyfateb i'r hash."/>
+    <Item english="The cost must be between 4 and 31." text="Rhaid i'r gost fod rhwng 4 a 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Rhaid i'r fersiwn fod yn 2a, 2b neu 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="Rhaid i N fod rhwng 2^1 a 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="Rhaid i r a p fod rhwng 1 a 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Mae'r gosodiadau hyn angen mwy na 2 GB o gof."/>
+    <Item english="The iterations must be between 1 and 1000." text="Rhaid i nifer yr iteriadau fod rhwng 1 a 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Rhaid i'r cof fod o leiaf 8 KiB ar gyfer pob lôn."/>
+    <Item english="These settings need more than 4 GB of memory." text="Mae'r gosodiadau hyn angen mwy na 4 GB o gof."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Rhaid i'r ffwythiant hash fod yn SHA-1, SHA-256 neu SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Rhaid i nifer yr iteriadau fod rhwng 1 a 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Rhaid i hyd yr hash fod rhwng 4 a 1024 beit."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (diogel ar gyfer URL)"/>
+    <Item english="Encode" text="Amgodio"/>
+    <Item english="Decode" text="Dadgodio"/>
+    <Item english="The input is:" text="Y mewnbwn yw:"/>
+    <Item english="Bytes in hexadecimal" text="Beitiau mewn hecsadegol"/>
+    <Item english="Input:" text="Mewnbwn:"/>
+    <Item english="Result:" text="Canlyniad:"/>
+    <Item english="Text:" text="Testun:"/>
+    <Item english="Bytes in hexadecimal:" text="Beitiau mewn hecsadegol:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Nid yw'r mewnbwn yn feitiau wedi'u hysgrifennu mewn hecsadegol."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Nid yw'r mewnbwn yn $STR_REPLACE$ dilys."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Nid yw'r beitiau a ddadgodiwyd yn destun UTF-8; fe'u dangosir mewn hecsadegol yn unig."/>
+    <Item english="Password Generator" text="Cynhyrchydd Cyfrineiriau"/>
+    <Item english="Length:" text="Hyd:"/>
+    <Item english="Number of passwords:" text="Nifer y cyfrineiriau:"/>
+    <Item english="Uppercase letters (A-Z)" text="Prif lythrennau (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Llythrennau bach (a-z)"/>
+    <Item english="Digits (0-9)" text="Digidau (0-9)"/>
+    <Item english="Symbols:" text="Symbolau:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Hepgor nodau sy'n edrych yn debyg (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="O leiaf un nod o bob math"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropi: tua $INT_REPLACE$ did"/>
+    <Item english="Choose at least one kind of character." text="Dewiswch o leiaf un math o nod."/>
+    <Item english="Insert into Document" text="Mewnosod yn y Ddogfen"/>
+    <Item english="Show the bare key in hexadecimal" text="Dangos yr allwedd noeth mewn hecsadegol"/>
+    <Item english="Empty: a random salt each time" text="Gwag: halen ar hap bob tro"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="Dim ond y 72 beit cyntaf y mae bcrypt yn eu darllen."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Cais HTTP"/>
+    <Item english="Send" text="Anfon"/>
+    <Item english="Parameters" text="Paramedrau"/>
+    <Item english="Headers" text="Penynnau"/>
+    <Item english="Body" text="Corff"/>
+    <Item english="Options" text="Opsiynau"/>
+    <Item english="Content type:" text="Math o gynnwys:"/>
+    <Item english="User name:" text="Enw defnyddiwr:"/>
+    <Item english="Password:" text="Cyfrinair:"/>
+    <Item english="Timeout (seconds):" text="Terfyn amser (eiliadau):"/>
+    <Item english="Follow redirects" text="Dilyn ailgyfeiriadau"/>
+    <Item english="Allow invalid certificates" text="Caniatáu tystysgrifau annilys"/>
+    <Item english="Format JSON" text="Fformatio JSON"/>
+    <Item english="Paste curl Command" text="Gludo Gorchymyn curl"/>
+    <Item english="Copy as curl" text="Copïo fel curl"/>
+    <Item english="Open in New Document" text="Agor mewn Dogfen Newydd"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Un i bob llinell: enw=gwerth. Cânt eu hychwanegu at y cyfeiriad, wedi'u hamgodio."/>
+    <Item english="One to a line: Name: value" text="Un i bob llinell: Enw: gwerth"/>
+    <Item english="Sent as it is written, in UTF-8." text="Anfonir fel y mae wedi'i ysgrifennu, mewn UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Nid testun yw'r ateb: $INT_REPLACE$ beit."/>
+    <Item english="The address is not an http or https address." text="Nid yw'r cyfeiriad yn gyfeiriad http na https."/>
+    <Item english="This is not a curl command." text="Nid gorchymyn curl yw hwn."/>
+    <Item english="The command has no address." text="Nid oes cyfeiriad yn y gorchymyn."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Mae'r gorchymyn yn darllen ei ddata o ffeil; ni wneir hynny yma."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Ni ddarllenir ffurflenni na llwytho ffeiliau i fyny o orchymyn."/>
+    <Item english="The command's address is not an http or https address." text="Nid yw cyfeiriad y gorchymyn yn gyfeiriad http na https."/>
+</NativeLangExtra>

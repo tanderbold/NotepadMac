@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/tajikCyrillic.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Тоҷикӣ">
+    <Item english="About NotepadMac" text="Дар бораи NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Махфӣ кардани NotepadMac"/>
+    <Item english="Hide Others" text="Махфӣ кардани дигарон"/>
+    <Item english="Show All" text="Намоиши ҳама"/>
+    <Item english="Quit NotepadMac" text="Хуруҷ аз NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Боз кардани пӯшаи файл дар Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Боз кардани пӯшаи файл дар Терминал"/>
+    <Item english="Toggle Insert/Overtype" text="Ивази ҳолати дарҷ/рӯйнависӣ"/>
+    <Item english="Toggle Fold" text="Бастан/боз кардани блок"/>
+    <Item english="Show All Hidden Lines" text="Намоиши ҳама сатрҳои пинҳон"/>
+    <Item english="Recent Window" text="Панҷараи қаблӣ"/>
+    <Item english="Move to Trash" text="Интиқол ба сабад"/>
+    <Item english="Save Current Command…" text="Захираи фармони феълӣ…"/>
+    <Item english="Manage Saved Commands…" text="Идораи фармонҳои захирашуда…"/>
+    <Item english="Show Console" text="Намоиши консол"/>
+    <Item english="Validate shortcuts" text="Санҷиши миёнбурҳо"/>
+    <Item english="Open Plugins Folder…" text="Боз кардани пӯшаи афзунаҳо…"/>
+    <Item english="Format" text="Шаклбандӣ"/>
+    <Item english="Compact" text="Фишурда кардан"/>
+    <Item english="Sort Keys" text="Мураттабсозии калидҳо"/>
+    <Item english="Validate" text="Санҷидан"/>
+    <Item english="Show JSON Tree" text="Намоиши дарахти JSON"/>
+    <Item english="Set as First to Compare" text="Ҳамчун файли аввал барои муқоиса таъин кардан"/>
+    <Item english="Compare" text="Муқоиса"/>
+    <Item english="Compare with File…" text="Муқоиса бо файл…"/>
+    <Item english="Next Difference" text="Фарқияти баъдӣ"/>
+    <Item english="Previous Difference" text="Фарқияти қаблӣ"/>
+    <Item english="First Difference" text="Фарқияти аввал"/>
+    <Item english="Last Difference" text="Фарқияти охирин"/>
+    <Item english="Compare Summary" text="Хулосаи муқоиса"/>
+    <Item english="Ignore Case" text="Сарфи назар аз регистр"/>
+    <Item english="Ignore Spaces" text="Сарфи назар аз фосилаҳо"/>
+    <Item english="Ignore Empty Lines" text="Сарфи назар аз сатрҳои холӣ"/>
+    <Item english="Clear Active Compare" text="Поксозии муқоисаи феълӣ"/>
+    <Item english="Clear All Compares" text="Поксозии ҳама муқоисаҳо"/>
+    <Item english="Pretty Print" text="Шаклбандӣ"/>
+    <Item english="Linearize" text="Ба як сатр табдил додан"/>
+    <Item english="Check XML Syntax Now" text="Ҳозир санҷидани синтаксиси XML"/>
+    <Item english="Validate Against Schema…" text="Санҷиш аз рӯи схема…"/>
+    <Item english="Validate Against DTD" text="Санҷиш аз рӯи DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Ҳисоби ифодаи XPath…"/>
+    <Item english="Current XML Path" text="Масири феълии XML"/>
+    <Item english="Current XML Path with Predicates" text="Масири феълии XML бо предикатҳо"/>
+    <Item english="Apply XSL Transformation…" text="Татбиқи табдили XSL…"/>
+    <Item english="Connections…" text="Пайвастҳо…"/>
+    <Item english="Connect…" text="Пайваст шудан…"/>
+    <Item english="Disconnect" text="Қатъи пайваст"/>
+    <Item english="Show Remote Files" text="Намоиши файлҳои дурдаст"/>
+    <Item english="Upload Current File" text="Боргузории файли феълӣ"/>
+    <Item english="Execute NppExec Script…" text="Иҷрои скрипти NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Иҷрои скрипти қаблии NppExec"/>
+    <Item english="Stop Running NppExec Script" text="Қатъи иҷрои скрипти NppExec"/>
+    <Item english="Show NppExec Console" text="Намоиши консоли NppExec"/>
+    <Item english="Execute NppExec Script" text="Иҷрои скрипти NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;скрипти муваққатӣ&gt;"/>
+    <Item english="Script name" text="Номи скрипт"/>
+    <Item english="Dock Left" text="Пайвастан ба чап"/>
+    <Item english="Dock Right" text="Пайвастан ба рост"/>
+    <Item english="Dock Top" text="Пайвастан ба боло"/>
+    <Item english="Dock Bottom" text="Пайвастан ба поён"/>
+    <Item english="Float" text="Шиновар"/>
+    <Item english="Remember which panels were open" text="Дар хотир доштани лавҳаҳои боз"/>
+    <Item english="Show the toolbar" text="Намоиши навори абзорҳо"/>
+    <Item english="Toolbar buttons" text="Тугмаҳои навори абзорҳо"/>
+    <Item english="Icons only" text="Танҳо нишонаҳо"/>
+    <Item english="Icons and labels" text="Нишонаҳо ва номҳо"/>
+    <Item english="Labels only" text="Танҳо номҳо"/>
+    <Item english="Toolbar size" text="Андозаи навори абзорҳо"/>
+    <Item english="Regular" text="Муқаррарӣ"/>
+    <Item english="Small" text="Хурд"/>
+    <Item english="Icons" text="Нишонаҳо"/>
+    <Item english="Hidden" text="Пинҳон"/>
+    <Item english="1 pixel" text="1 пиксел"/>
+    <Item english="2 pixels" text="2 пиксел"/>
+    <Item english="3 pixels" text="3 пиксел"/>
+    <Item english="Selected text can be dragged" text="Матни интихобшударо кашола кардан мумкин аст"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Фаъол кардани вироиши чандгона (Cmd+клик/интихоб)"/>
+    <Item english="Follow the system" text="Пайравӣ аз система"/>
+    <Item english="Light theme" text="Пӯстаи равшан"/>
+    <Item english="Dark theme" text="Пӯстаи торик"/>
+    <Item english="Show the fold margin" text="Намоиши ҳошияи бастан"/>
+    <Item english="A line" text="Хат"/>
+    <Item english="Columns (space separated)" text="Сутунҳо (бо фосила ҷудо)"/>
+    <Item english="3 parts" text="3 қисм"/>
+    <Item english="4 parts" text="4 қисм"/>
+    <Item english="5 parts" text="5 қисм"/>
+    <Item english="6 parts" text="6 қисм"/>
+    <Item english="7 parts" text="7 қисм"/>
+    <Item english="8 parts" text="8 қисм"/>
+    <Item english="9 parts" text="9 қисм"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Муайян кардани забон аз рӯи мӯҳтаво, агар ном нагӯяд"/>
+    <Item english="Highlight matching braces" text="Пурнур кардани қавсҳои ҷуфт"/>
+    <Item english="Header font (blank for the editor's)" text="Қалами сарсафҳа (холӣ — қалами муҳаррир)"/>
+    <Item english="Header font size" text="Андозаи қалами сарсафҳа"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Ҳошияҳо: чап, боло, рост, поён (пункт)"/>
+    <Item english="Characters before it opens" text="Шумораи аломатҳо пеш аз кушода шудан"/>
+    <Item english="Add characters to the word list" text="Афзудани аломатҳо ба рӯйхати вожаҳо"/>
+    <Item english="A fixed folder" text="Пӯшаи собит"/>
+    <Item english="Fixed folder" text="Пӯшаи собит"/>
+    <Item english="Confirm Replace All" text="Тасдиқи ҷойгузинии ҳама"/>
+    <Item english="Compare: ignore case" text="Муқоиса: сарфи назар аз регистр"/>
+    <Item english="Compare: ignore spaces" text="Муқоиса: сарфи назар аз фосилаҳо"/>
+    <Item english="Compare: ignore empty lines" text="Муқоиса: сарфи назар аз сатрҳои холӣ"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Ҳадди аксари аломатҳо барои пуркунии худкори майдони ҷустуҷӯ"/>
+    <Item english="Releases repository" text="Махзани нашрҳо"/>
+    <Item english="Notepad++ update" text="Барӯзсозии Notepad++"/>
+    <Item english="No update is available." text="Барӯзсозӣ мавҷуд нест."/>
+    <Item english="An update package is available, do you want to download it?" text="Бастаи барӯзсозӣ мавҷуд аст, онро боргирӣ мекунед?"/>
+    <Item english="Open the Releases Page" text="Боз кардани сафҳаи нашрҳо"/>
+    <Item english="Copy debug info to clipboard" text="Нусхаи иттилооти ислоҳи хатоҳо ба миёнгири табодул"/>
+    <Item english="Fonts…" text="Қаламҳо…"/>
+    <Item english="This document is not valid JSON." text="Ин санад JSON-и дуруст нест."/>
+    <Item english="Valid JSON." text="JSON дуруст аст."/>
+    <Item english="Invalid JSON." text="JSON нодуруст аст."/>
+    <Item english="Set as the first file to compare." text="Ҳамчун файли аввал барои муқоиса таъин шуд."/>
+    <Item english="Nothing to compare with." text="Чизе барои муқоиса нест."/>
+    <Item english="The document is valid XML." text="Санад XML-и дуруст аст."/>
+    <Item english="FTP connections" text="Пайвастҳои FTP"/>
+    <Item english="Cannot connect." text="Пайваст шуда наметавонад."/>
+    <Item english="That file is open in another tab." text="Ин файл дар гузоштаи дигар боз аст."/>
+    <Item english="Close it first, or choose another name." text="Аввал онро бандед ё номи дигар интихоб кунед."/>
+    <Item english="Which language is this?" text="Ин кадом забон аст?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Баъзе аломатҳо дар ин рамзгузорӣ ифода намешаванд."/>
+    <Item english="Converting will replace them." text="Табдил онҳоро иваз мекунад."/>
+    <Item english="Press the keys." text="Тугмаҳоро пахш кунед."/>
+    <Item english="Nothing is marked" text="Чизе аломатгузорӣ нашудааст"/>
+    <Item english="Marked text copied" text="Матни аломатгузоришуда нусхабардорӣ шуд"/>
+    <Item english="Choose a folder first" text="Аввал пӯшаеро интихоб кунед"/>
+    <Item english="This document has no folder" text="Ин санад пӯша надорад"/>
+    <Item english="The ticked project panels have no files" text="Лавҳаҳои интихобшудаи пружа файл надоранд"/>
+    <Item english="Searching..." text="Ҷустуҷӯ..."/>
+    <Item english="Stopping..." text="Қатъ шуда истодааст..."/>
+    <Item english="Marks cleared" text="Аломатҳо пок карда шуданд"/>
+    <Item english="Transparent" text="Шаффоф"/>
+    <Item english="View 1" text="Намои 1"/>
+    <Item english="View 2" text="Намои 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Хешҳо"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Калиди HMAC (ихтиёрӣ):"/>
+    <Item english="Salt (hexadecimal):" text="Намак (шонздаҳӣ):"/>
+    <Item english="Random" text="Тасодуфӣ"/>
+    <Item english="Version:" text="Нусха:"/>
+    <Item english="N, as a power of 2:" text="N, ҳамчун дараҷаи 2:"/>
+    <Item english="Block size (r):" text="Андозаи блок (r):"/>
+    <Item english="Parallelism (p):" text="Параллелизм (p):"/>
+    <Item english="Variant:" text="Вариант:"/>
+    <Item english="Memory (KiB):" text="Ҳофиза (KiB):"/>
+    <Item english="Iterations:" text="Такрорҳо:"/>
+    <Item english="Parallelism:" text="Параллелизм:"/>
+    <Item english="Digest:" text="Хеш-функсия:"/>
+    <Item english="Hash length (bytes):" text="Дарозии хеш (байт):"/>
+    <Item english="Hash:" text="Хеш:"/>
+    <Item english="Verify" text="Санҷидан"/>
+    <Item english="Hash to check the password against:" text="Хеш барои санҷидани парол:"/>
+    <Item english="The salt is not valid hexadecimal." text="Намак сабти шонздаҳии дуруст нест."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt намаки расо 16 байтро талаб мекунад."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 намаки на камтар аз 8 байтро талаб мекунад."/>
+    <Item english="The hash could not be generated with these settings." text="Бо ин танзимот хеш сохта нашуд."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Ин хеши bcrypt, scrypt, Argon2 ё PBKDF2 нест."/>
+    <Item english="The password matches the hash." text="Парол ба хеш мувофиқ аст."/>
+    <Item english="The password does not match the hash." text="Парол ба хеш мувофиқ нест."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Нусха бояд 2a, 2b ё 2y бошад."/>
+    <Item english="N must be between 2^1 and 2^24." text="N бояд аз 2^1 то 2^24 бошад."/>
+    <Item english="r and p must be between 1 and 64." text="r ва p бояд аз 1 то 64 бошанд."/>
+    <Item english="These settings need more than 2 GB of memory." text="Ин танзимот беш аз 2 GB ҳофиза талаб мекунад."/>
+    <Item english="The parallelism must be between 1 and 64." text="Параллелизм бояд аз 1 то 64 бошад."/>
+    <Item english="The iterations must be between 1 and 1000." text="Шумораи такрорҳо бояд аз 1 то 1000 бошад."/>
+    <Item english="These settings need more than 4 GB of memory." text="Ин танзимот беш аз 4 GB ҳофиза талаб мекунад."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Хеш-функсия бояд SHA-1, SHA-256 ё SHA-512 бошад."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Шумораи такрорҳо бояд аз 1 то 100000000 бошад."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Дарозии хеш бояд аз 4 то 1024 байт бошад."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (барои URL)"/>
+    <Item english="Encode" text="Рамзгузорӣ"/>
+    <Item english="Decode" text="Рамзкушоӣ"/>
+    <Item english="The input is:" text="Навъи вуруд:"/>
+    <Item english="Bytes in hexadecimal" text="Байтҳо дар шакли шонздаҳӣ"/>
+    <Item english="Input:" text="Вуруд:"/>
+    <Item english="Result:" text="Натиҷа:"/>
+    <Item english="Text:" text="Матн:"/>
+    <Item english="Bytes in hexadecimal:" text="Байтҳо дар шакли шонздаҳӣ:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Вуруд байтҳои дар шакли шонздаҳӣ навишташуда нест."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Вуруд $STR_REPLACE$-и дуруст нест."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Байтҳои рамзкушошуда матни UTF-8 нестанд; онҳо танҳо дар шакли шонздаҳӣ нишон дода шудаанд."/>
+    <Item english="Password Generator" text="Генератори парол"/>
+    <Item english="Length:" text="Дарозӣ:"/>
+    <Item english="Number of passwords:" text="Шумораи паролҳо:"/>
+    <Item english="Uppercase letters (A-Z)" text="Ҳуруфи бузург (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Ҳуруфи кучак (a-z)"/>
+    <Item english="Digits (0-9)" text="Рақамҳо (0-9)"/>
+    <Item english="Symbols:" text="Аломатҳо:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Хориҷ кардани аломатҳои ба ҳам монанд (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Ҳадди ақал як аломат аз ҳар навъ"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Энтропия: тақрибан $INT_REPLACE$ бит"/>
+    <Item english="Choose at least one kind of character." text="Ҳадди ақал як навъи аломатро интихоб кунед."/>
+    <Item english="Insert into Document" text="Дарҷ ба санад"/>
+    <Item english="Show the bare key in hexadecimal" text="Намоиши худи калид дар шакли шонздаҳӣ"/>
+    <Item english="Empty: a random salt each time" text="Холӣ: ҳар дафъа намаки тасодуфӣ"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt танҳо 72 байти аввалро мехонад."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Дархости HTTP"/>
+    <Item english="Send" text="Фиристодан"/>
+    <Item english="Parameters" text="Параметрҳо"/>
+    <Item english="Headers" text="Сарлавҳаҳо"/>
+    <Item english="Options" text="Танзимот"/>
+    <Item english="Content type:" text="Навъи мӯҳтаво:"/>
+    <Item english="User name:" text="Номи корбар:"/>
+    <Item english="Password:" text="Парол:"/>
+    <Item english="Timeout (seconds):" text="Вақти интизорӣ (сония):"/>
+    <Item english="Format JSON" text="Шаклбандии JSON"/>
+    <Item english="Paste curl Command" text="Часбондани фармони curl"/>
+    <Item english="Copy as curl" text="Нусхагирӣ чун curl"/>
+    <Item english="Open in New Document" text="Боз кардан дар санади ҷадид"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Дар ҳар сатр яктоӣ: ном=арзиш. Онҳо дар шакли рамзгузоришуда ба суроға илова мешаванд."/>
+    <Item english="One to a line: Name: value" text="Дар ҳар сатр яктоӣ: Ном: арзиш"/>
+    <Item english="Sent as it is written, in UTF-8." text="Чунон ки навишта шудааст, дар UTF-8 фиристода мешавад."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Ҷавоб матн нест: $INT_REPLACE$ байт."/>
+    <Item english="The address is not an http or https address." text="Суроға суроғаи http ё https нест."/>
+    <Item english="This is not a curl command." text="Ин фармони curl нест."/>
+    <Item english="The command has no address." text="Дар фармон суроға нест."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Фармон маълумоти худро аз файл мехонад, ки ин ҷо иҷро намешавад."/>
+    <Item english="The command's address is not an http or https address." text="Суроғаи фармон суроғаи http ё https нест."/>
+</NativeLangExtra>

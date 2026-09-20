@@ -1,0 +1,41 @@
+PRINTER-DEMO-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE, Integer32, Counter32, enterprises
+        FROM SNMPv2-SMI
+    DisplayString, TEXTUAL-CONVENTION
+        FROM SNMPv2-TC
+    MODULE-COMPLIANCE, OBJECT-GROUP
+        FROM SNMPv2-CONF;
+
+printerDemo MODULE-IDENTITY
+    LAST-UPDATED "201003150000Z"
+    ORGANIZATION "Example Printers Inc."
+    CONTACT-INFO "support@example.com"
+    DESCRIPTION  "Objects for the management of demo printers."
+    REVISION     "201003150000Z"
+    DESCRIPTION  "First version."
+    ::= { enterprises 99999 }
+
+prtStatus OBJECT-TYPE
+    SYNTAX      INTEGER { idle(1), printing(2), jammed(3), offline(4) }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "What the printer is doing."
+    ::= { printerDemo 1 }
+
+prtPageCount OBJECT-TYPE
+    SYNTAX      Counter32
+    UNITS       "pages"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Pages printed since the counter was reset."
+    ::= { printerDemo 2 }
+
+prtJammed NOTIFICATION-TYPE
+    OBJECTS     { prtStatus }
+    STATUS      current
+    DESCRIPTION "Sent when paper jams."
+    ::= { printerDemo 10 }
+
+END

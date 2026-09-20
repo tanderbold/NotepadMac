@@ -1,0 +1,29 @@
+Frequently Asked Questions
+%%date
+
+%!target: xhtml
+%!includeconf: common.conf
+
+= General =
+
+=== Is it free? ===
+
+Yes, **GPL** licensed. See ``COPYING``.
+
+=== Which formats are supported? ===
+
+HTML, XHTML, SGML, LaTeX, Lout, Man, MoinMoin, MagicPoint and plain text.
+
+= Troubleshooting =
+
+=== The table is broken ===
+
+Every row must start with a ``|``, and a title row with ``||``:
+
+```
+|| Name  | Age |
+|  Alice |  30 |
+|  Bob   |  25 |
+```
+
+%!include: ``footer.txt``

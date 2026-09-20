@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/zulu.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="zulu">
+    <Item english="About NotepadMac" text="Mayelana ne-NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Fihla i-NotepadMac"/>
+    <Item english="Hide Others" text="Fihla okunye"/>
+    <Item english="Show All" text="Bonisa konke"/>
+    <Item english="Quit NotepadMac" text="Phuma ku-NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Vula ifolda equkethe ifayela ku-Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Vula ifolda equkethe ifayela ku-Terminal"/>
+    <Item english="Show All Hidden Lines" text="Bonisa yonke imigqa efihliwe"/>
+    <Item english="Recent Window" text="Iwindi lakamuva"/>
+    <Item english="Save Current Command…" text="Londoloza umyalo wamanje…"/>
+    <Item english="Manage Saved Commands…" text="Phatha imiyalo elondoloziwe…"/>
+    <Item english="Show Console" text="Bonisa ikhonsoli"/>
+    <Item english="Open Plugins Folder…" text="Vula ifolda yama-plugin…"/>
+    <Item english="Sort Keys" text="Hlunga okhiye"/>
+    <Item english="Validate" text="Qinisekisa"/>
+    <Item english="Compare" text="Qhathanisa"/>
+    <Item english="Compare with File…" text="Qhathanisa nefayela…"/>
+    <Item english="Next Difference" text="Umehluko olandelayo"/>
+    <Item english="Previous Difference" text="Umehluko owedlule"/>
+    <Item english="First Difference" text="Umehluko wokuqala"/>
+    <Item english="Last Difference" text="Umehluko wokugcina"/>
+    <Item english="Compare Summary" text="Isifinyezo sokuqhathanisa"/>
+    <Item english="Ignore Spaces" text="Ziba izikhala"/>
+    <Item english="Ignore Empty Lines" text="Ziba imigqa engenalutho"/>
+    <Item english="Clear All Compares" text="Sula konke ukuqhathanisa"/>
+    <Item english="Check XML Syntax Now" text="Hlola i-syntax ye-XML manje"/>
+    <Item english="Validate Against DTD" text="Qinisekisa nge-DTD"/>
+    <Item english="Connections…" text="Ukuxhumeka…"/>
+    <Item english="Connect…" text="Xhuma…"/>
+    <Item english="Disconnect" text="Nqamula"/>
+    <Item english="Show Remote Files" text="Bonisa amafayela akude"/>
+    <Item english="Upload Current File" text="Layisha ifayela lamanje"/>
+    <Item english="Execute NppExec Script…" text="Qalisa iskripthi se-NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Qalisa iskripthi se-NppExec sangaphambilini"/>
+    <Item english="Stop Running NppExec Script" text="Misa iskripthi se-NppExec esisebenzayo"/>
+    <Item english="Show NppExec Console" text="Bonisa ikhonsoli ye-NppExec"/>
+    <Item english="Execute NppExec Script" text="Qalisa iskripthi se-NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;iskripthi sesikhashana&gt;"/>
+    <Item english="Script name" text="Igama leskripthi"/>
+    <Item english="Remember which panels were open" text="Khumbula ukuthi yimaphi amaphaneli abevuliwe"/>
+    <Item english="Show the toolbar" text="Bonisa ibha yamathuluzi"/>
+    <Item english="Toolbar buttons" text="Izinkinobho zebha yamathuluzi"/>
+    <Item english="Icons only" text="Izithonjana kuphela"/>
+    <Item english="Icons and labels" text="Izithonjana namalebula"/>
+    <Item english="Labels only" text="Amalebula kuphela"/>
+    <Item english="Toolbar size" text="Usayizi webha yamathuluzi"/>
+    <Item english="Regular" text="Okujwayelekile"/>
+    <Item english="Small" text="Okuncane"/>
+    <Item english="Icons" text="Izithonjana"/>
+    <Item english="Hidden" text="Kufihliwe"/>
+    <Item english="1 pixel" text="Iphikseli elingu-1"/>
+    <Item english="2 pixels" text="Amaphikseli angu-2"/>
+    <Item english="3 pixels" text="Amaphikseli angu-3"/>
+    <Item english="Selected text can be dragged" text="Umbhalo okhethiwe ungahudulwa"/>
+    <Item english="Follow the system" text="Landela isistimu"/>
+    <Item english="Light theme" text="Itimu ekhanyayo"/>
+    <Item english="Dark theme" text="Itimu emnyama"/>
+    <Item english="A line" text="Umugqa"/>
+    <Item english="Columns (space separated)" text="Amakholomu (ahlukaniswe ngezikhala)"/>
+    <Item english="3 parts" text="Izingxenye ezi-3"/>
+    <Item english="4 parts" text="Izingxenye ezi-4"/>
+    <Item english="5 parts" text="Izingxenye ezi-5"/>
+    <Item english="6 parts" text="Izingxenye ezi-6"/>
+    <Item english="7 parts" text="Izingxenye ezi-7"/>
+    <Item english="8 parts" text="Izingxenye ezi-8"/>
+    <Item english="9 parts" text="Izingxenye ezi-9"/>
+    <Item english="Highlight matching braces" text="Gqamisa abakaki abafanayo"/>
+    <Item english="Header font size" text="Usayizi wefonti yesihloko"/>
+    <Item english="A fixed folder" text="Ifolda engaguquki"/>
+    <Item english="Fixed folder" text="Ifolda engaguquki"/>
+    <Item english="Compare: ignore spaces" text="Qhathanisa: ziba izikhala"/>
+    <Item english="Compare: ignore empty lines" text="Qhathanisa: ziba imigqa engenalutho"/>
+    <Item english="Notepad++ update" text="Isibuyekezo se-Notepad++"/>
+    <Item english="No update is available." text="Asikho isibuyekezo esitholakalayo."/>
+    <Item english="An update package is available, do you want to download it?" text="Kunephakheji yesibuyekezo etholakalayo, ingabe ufuna ukuyilanda?"/>
+    <Item english="Fonts…" text="Amafonti…"/>
+    <Item english="This document is not valid JSON." text="Le dokhumenti ayiyona i-JSON evumelekile."/>
+    <Item english="Valid JSON." text="I-JSON evumelekile."/>
+    <Item english="Invalid JSON." text="I-JSON engavumelekile."/>
+    <Item english="Nothing to compare with." text="Akukho okokuqhathanisa nakho."/>
+    <Item english="The document is valid XML." text="Idokhumenti iyi-XML evumelekile."/>
+    <Item english="FTP connections" text="Ukuxhumeka kwe-FTP"/>
+    <Item english="Cannot connect." text="Ayikwazi ukuxhuma."/>
+    <Item english="That file is open in another tab." text="Lelo fayela livulwe kwenye ithebhu."/>
+    <Item english="Close it first, or choose another name." text="Livale kuqala, noma ukhethe elinye igama."/>
+    <Item english="Which language is this?" text="Yiluphi ulimi lolu?"/>
+    <Item english="Press the keys." text="Cindezela okhiye."/>
+    <Item english="Nothing is marked" text="Akukho okumakiwe"/>
+    <Item english="Marked text copied" text="Umbhalo omakiwe ukopishiwe"/>
+    <Item english="Choose a folder first" text="Khetha ifolda kuqala"/>
+    <Item english="This document has no folder" text="Le dokhumenti ayinayo ifolda"/>
+    <Item english="Searching..." text="Iyasesha..."/>
+    <Item english="Stopping..." text="Iyama..."/>
+    <Item english="Marks cleared" text="Amamaki asuliwe"/>
+    <Item english="View 1" text="Ukubuka 1"/>
+    <Item english="View 2" text="Ukubuka 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="Version:" text="Inguqulo:"/>
+    <Item english="Memory (KiB):" text="Inkumbulo (KiB):"/>
+    <Item english="Verify" text="Qinisekisa"/>
+    <Item english="Encode" text="Faka ikhodi"/>
+    <Item english="Input:" text="Okokufaka:"/>
+    <Item english="Result:" text="Umphumela:"/>
+    <Item english="Text:" text="Umbhalo:"/>
+    <Item english="Length:" text="Ubude:"/>
+    <Item english="Number of passwords:" text="Inani lamaphasiwedi:"/>
+    <Item english="Uppercase letters (A-Z)" text="Osonhlamvukazi (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Izinhlamvu ezincane (a-z)"/>
+    <Item english="Digits (0-9)" text="Izinombolo (0-9)"/>
+    <Item english="Symbols:" text="Izimpawu:"/>
+    <Item english="At least one character of each kind" text="Okungenani uhlamvu olulodwa lohlobo ngalunye"/>
+    <Item english="Choose at least one kind of character." text="Khetha okungenani uhlobo olulodwa lwezinhlamvu."/>
+    <Item english="Insert into Document" text="Faka kudokhumenti"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Isicelo se-HTTP"/>
+    <Item english="Send" text="Thumela"/>
+    <Item english="Options" text="Izinketho"/>
+    <Item english="Content type:" text="Uhlobo lokuqukethwe:"/>
+    <Item english="User name:" text="Igama lomsebenzisi:"/>
+    <Item english="Password:" text="Iphasiwedi:"/>
+    <Item english="Paste curl Command" text="Namathisela umyalo we-curl"/>
+    <Item english="Copy as curl" text="Kopisha njenge-curl"/>
+    <Item english="Open in New Document" text="Vula kudokhumenti entsha"/>
+    <Item english="This is not a curl command." text="Lokhu akuwona umyalo we-curl."/>
+    <Item english="The command has no address." text="Umyalo awunalo ikheli."/>
+</NativeLangExtra>

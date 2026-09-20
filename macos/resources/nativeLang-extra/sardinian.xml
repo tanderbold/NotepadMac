@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/sardinian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Sardu">
+    <Item english="About NotepadMac" text="Informatziones a pitzu de NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Cua NotepadMac"/>
+    <Item english="Hide Others" text="Cua is àteros"/>
+    <Item english="Show All" text="Ammustra totu"/>
+    <Item english="Quit NotepadMac" text="Essi dae NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Aberi sa cartella in Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Aberi sa cartella in Terminal"/>
+    <Item english="Toggle Fold" text="Cuntrae/Islarga"/>
+    <Item english="Show All Hidden Lines" text="Ammustra totus is rigas cuadas"/>
+    <Item english="Recent Window" text="Ventana reghente"/>
+    <Item english="Save Current Command…" text="Sarba su cumandu currente…"/>
+    <Item english="Open Plugins Folder…" text="Aberi sa cartella de is plugin…"/>
+    <Item english="Format" text="Formadu"/>
+    <Item english="Compare" text="Cunfronta"/>
+    <Item english="Compare with File…" text="Cunfronta cun unu file…"/>
+    <Item english="Next Difference" text="Diferèntzia chi sighit"/>
+    <Item english="Previous Difference" text="Diferèntzia de in antis"/>
+    <Item english="First Difference" text="Prima diferèntzia"/>
+    <Item english="Last Difference" text="Ùrtima diferèntzia"/>
+    <Item english="Ignore Case" text="Inniora majùs/minùs"/>
+    <Item english="Ignore Spaces" text="Inniora is ispàtzios"/>
+    <Item english="Ignore Empty Lines" text="Inniora is rigas bòidas"/>
+    <Item english="Clear Active Compare" text="Lìmpia custu cunfrontu"/>
+    <Item english="Clear All Compares" text="Lìmpia totus is cunfrontos"/>
+    <Item english="Current XML Path" text="Àndala XML currente"/>
+    <Item english="Apply XSL Transformation…" text="Àplica sa trasformatzione XSL…"/>
+    <Item english="Connections…" text="Connessiones…"/>
+    <Item english="Execute NppExec Script…" text="Esecuta unu script NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Esecuta su script NppExec de in antis"/>
+    <Item english="Stop Running NppExec Script" text="Firma su script NppExec"/>
+    <Item english="Execute NppExec Script" text="Esecuta su script NppExec"/>
+    <Item english="Script name" text="Nùmene de su script"/>
+    <Item english="Remember which panels were open" text="Ammenta is pannellos abertos"/>
+    <Item english="Show the toolbar" text="Ammustra sa barra de is ainas"/>
+    <Item english="Toolbar buttons" text="Tastos de sa barra de is ainas"/>
+    <Item english="Icons only" text="Iconas isceti"/>
+    <Item english="Toolbar size" text="Dimensione de sa barra de is ainas"/>
+    <Item english="Regular" text="Normale"/>
+    <Item english="Small" text="Pitica"/>
+    <Item english="Icons" text="Iconas"/>
+    <Item english="Hidden" text="Cuada"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Abìlita su sèberu mùltiplu (Cmd+click/sèberu)"/>
+    <Item english="Light theme" text="Tema craru"/>
+    <Item english="Dark theme" text="Tema iscuru"/>
+    <Item english="A line" text="Una lìnia"/>
+    <Item english="Columns (space separated)" text="Culunnas (separadas dae ispàtzios)"/>
+    <Item english="Highlight matching braces" text="Evidèntzia is parèntesis chi currispondent"/>
+    <Item english="Header font size" text="Dimensione de su caràtere de s'intestatzione"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Làcanas: manca, susu, dereta, giosso (puntos)"/>
+    <Item english="Add characters to the word list" text="Agiunghe caràteres a sa lista de is paràulas"/>
+    <Item english="A fixed folder" text="Una cartella fissa"/>
+    <Item english="Fixed folder" text="Cartella fissa"/>
+    <Item english="Confirm Replace All" text="Cunfirma Càmbia totus"/>
+    <Item english="Compare: ignore case" text="Cunfrontu: inniora majùs/minùs"/>
+    <Item english="Compare: ignore spaces" text="Cunfrontu: inniora is ispàtzios"/>
+    <Item english="Compare: ignore empty lines" text="Cunfrontu: inniora is rigas bòidas"/>
+    <Item english="Notepad++ update" text="Annoamentu de Notepad++"/>
+    <Item english="Open the Releases Page" text="Aberi sa pàgina de is versiones"/>
+    <Item english="Copy debug info to clipboard" text="Còpia is informatziones de debug in is notas"/>
+    <Item english="Fonts…" text="Caràteres…"/>
+    <Item english="Valid JSON." text="JSON vàlidu."/>
+    <Item english="Invalid JSON." text="JSON non vàlidu."/>
+    <Item english="FTP connections" text="Connessiones FTP"/>
+    <Item english="Transparent" text="Trasparente"/>
+    <Item english="View 1" text="Bista 1"/>
+    <Item english="View 2" text="Bista 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hash"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Crae HMAC (optzionale):"/>
+    <Item english="Salt (hexadecimal):" text="Sale (esadetzimale):"/>
+    <Item english="Random" text="Casuale"/>
+    <Item english="Cost (4-31):" text="Costu (4-31):"/>
+    <Item english="Version:" text="Versione:"/>
+    <Item english="N, as a power of 2:" text="N, comente potèntzia de 2:"/>
+    <Item english="Block size (r):" text="Mannària de su blocu (r):"/>
+    <Item english="Parallelism (p):" text="Parallelismu (p):"/>
+    <Item english="Variant:" text="Variante:"/>
+    <Item english="Memory (KiB):" text="Memòria (KiB):"/>
+    <Item english="Iterations:" text="Iteratziones:"/>
+    <Item english="Parallelism:" text="Parallelismu:"/>
+    <Item english="Digest:" text="Funtzione de hash:"/>
+    <Item english="Hash length (bytes):" text="Longària de su hash (byte):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Verìfica"/>
+    <Item english="Hash to check the password against:" text="Hash pro verificare sa password:"/>
+    <Item english="The salt is not valid hexadecimal." text="Su sale no est unu esadetzimale vàlidu."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 bolet unu sale de a su mancu 8 byte."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Custu no est unu hash bcrypt, scrypt, Argon2 o PBKDF2."/>
+    <Item english="The password matches the hash." text="Sa password currispondet a su hash."/>
+    <Item english="The password does not match the hash." text="Sa password non currispondet a su hash."/>
+    <Item english="The cost must be between 4 and 31." text="Su costu depet èssere intre 4 e 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Sa versione depet èssere 2a, 2b o 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N depet èssere intre 2^1 e 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r e p depent èssere intre 1 e 64."/>
+    <Item english="The parallelism must be between 1 and 64." text="Su parallelismu depet èssere intre 1 e 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Is iteratziones depent èssere intre 1 e 1000."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Sa funtzione de hash depet èssere SHA-1, SHA-256 o SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Is iteratziones depent èssere intre 1 e 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Sa longària de su hash depet èssere intre 4 e 1024 byte."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (pro URL)"/>
+    <Item english="Encode" text="Codìfica"/>
+    <Item english="Decode" text="Decodìfica"/>
+    <Item english="The input is:" text="S'intrada est:"/>
+    <Item english="Bytes in hexadecimal" text="Byte in esadetzimale"/>
+    <Item english="Input:" text="Intrada:"/>
+    <Item english="Result:" text="Resurtadu:"/>
+    <Item english="Text:" text="Testu:"/>
+    <Item english="Bytes in hexadecimal:" text="Byte in esadetzimale:"/>
+    <Item english="The input is not valid $STR_REPLACE$." text="S'intrada no est $STR_REPLACE$ vàlidu."/>
+    <Item english="Password Generator" text="Generadore de password"/>
+    <Item english="Length:" text="Longària:"/>
+    <Item english="Number of passwords:" text="Nùmeru de password:"/>
+    <Item english="Uppercase letters (A-Z)" text="Lìteras majùscolas (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Lìteras minùscolas (a-z)"/>
+    <Item english="Digits (0-9)" text="Tzifras (0-9)"/>
+    <Item english="Symbols:" text="Sìmbolos:"/>
+    <Item english="At least one character of each kind" text="A su mancu unu caràtere de onni casta"/>
+    <Item english="Choose at least one kind of character." text="Sèbera a su mancu una casta de caràtere."/>
+    <Item english="Insert into Document" text="Pone in su documentu"/>
+    <Item english="Show the bare key in hexadecimal" text="Ammustra sa crae nuda in esadetzimale"/>
+    <Item english="Empty: a random salt each time" text="Bòidu: unu sale casuale onni borta"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Rechesta HTTP"/>
+    <Item english="Send" text="Imbia"/>
+    <Item english="Parameters" text="Paràmetros"/>
+    <Item english="Headers" text="Intestatziones"/>
+    <Item english="Body" text="Corpus"/>
+    <Item english="Options" text="Optziones"/>
+    <Item english="Content type:" text="Tipu de cuntenutu:"/>
+    <Item english="User name:" text="Nùmene de utente:"/>
+    <Item english="Password:" text="Password:"/>
+    <Item english="Format JSON" text="Formata JSON"/>
+    <Item english="Paste curl Command" text="Apìtziga cumandu curl"/>
+    <Item english="Copy as curl" text="Còpia comente curl"/>
+    <Item english="Open in New Document" text="Aberi in unu documentu nou"/>
+    <Item english="One to a line: Name: value" text="Unu pro riga: Nùmene: valore"/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Sa risposta no est testu: $INT_REPLACE$ byte."/>
+    <Item english="The address is not an http or https address." text="S'indiritzu no est unu indiritzu http o https."/>
+    <Item english="This is not a curl command." text="Custu no est unu cumandu curl."/>
+    <Item english="The command has no address." text="Su cumandu non tenet indiritzu."/>
+    <Item english="The command's address is not an http or https address." text="S'indiritzu de su cumandu no est unu indiritzu http o https."/>
+</NativeLangExtra>

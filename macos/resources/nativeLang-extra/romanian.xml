@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/romanian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Romanian">
+    <Item english="About NotepadMac" text="Despre NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Ascunde NotepadMac"/>
+    <Item english="Hide Others" text="Ascunde restul"/>
+    <Item english="Show All" text="Afișează tot"/>
+    <Item english="Quit NotepadMac" text="Ieși din NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Deschide folderul gazdă în Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Deschide folderul gazdă în Terminal"/>
+    <Item english="Toggle Insert/Overtype" text="Comută inserarea/suprascrierea"/>
+    <Item english="Toggle Fold" text="Pliază/desfășoară blocul"/>
+    <Item english="Show All Hidden Lines" text="Afișează toate liniile ascunse"/>
+    <Item english="Recent Window" text="Fereastra recentă"/>
+    <Item english="Move to Trash" text="Mută în Coșul de gunoi"/>
+    <Item english="Save Current Command…" text="Salvează comanda curentă…"/>
+    <Item english="Manage Saved Commands…" text="Administrează comenzile salvate…"/>
+    <Item english="Show Console" text="Afișează consola"/>
+    <Item english="Validate shortcuts" text="Verifică comenzile rapide"/>
+    <Item english="Open Plugins Folder…" text="Deschide folderul pentru module (plugin-uri)…"/>
+    <Item english="Format" text="Formatează"/>
+    <Item english="Compact" text="Compactează"/>
+    <Item english="Sort Keys" text="Sortează cheile"/>
+    <Item english="Validate" text="Validează"/>
+    <Item english="Show JSON Tree" text="Afișează arborele JSON"/>
+    <Item english="Set as First to Compare" text="Stabilește ca primul de comparat"/>
+    <Item english="Compare" text="Compară"/>
+    <Item english="Compare with File…" text="Compară cu fișierul…"/>
+    <Item english="Next Difference" text="Diferența următoare"/>
+    <Item english="Previous Difference" text="Diferența anterioară"/>
+    <Item english="First Difference" text="Prima diferență"/>
+    <Item english="Last Difference" text="Ultima diferență"/>
+    <Item english="Compare Summary" text="Rezumatul comparației"/>
+    <Item english="Ignore Case" text="Ignoră majusculele"/>
+    <Item english="Ignore Spaces" text="Ignoră spațiile"/>
+    <Item english="Ignore Empty Lines" text="Ignoră liniile goale"/>
+    <Item english="Clear Active Compare" text="Anulează comparația activă"/>
+    <Item english="Clear All Compares" text="Anulează toate comparațiile"/>
+    <Item english="Pretty Print" text="Formatează lizibil"/>
+    <Item english="Pretty Print — Indent Attributes" text="Formatează lizibil — indentează atributele"/>
+    <Item english="Linearize" text="Liniarizează"/>
+    <Item english="Check XML Syntax Now" text="Verifică acum sintaxa XML"/>
+    <Item english="Validate Against Schema…" text="Validează după schemă…"/>
+    <Item english="Validate Against DTD" text="Validează după DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Evaluează o expresie XPath…"/>
+    <Item english="Current XML Path" text="Calea XML curentă"/>
+    <Item english="Current XML Path with Predicates" text="Calea XML curentă cu predicate"/>
+    <Item english="Apply XSL Transformation…" text="Aplică o transformare XSL…"/>
+    <Item english="Escape Characters in Selection" text="Escapează caracterele din selecție"/>
+    <Item english="Unescape Characters in Selection" text="Anulează escaparea caracterelor din selecție"/>
+    <Item english="Connections…" text="Conexiuni…"/>
+    <Item english="Connect…" text="Conectare…"/>
+    <Item english="Disconnect" text="Deconectare"/>
+    <Item english="Show Remote Files" text="Afișează fișierele la distanță"/>
+    <Item english="Upload Current File" text="Încarcă fișierul curent"/>
+    <Item english="Execute NppExec Script…" text="Execută un script NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Execută scriptul NppExec anterior"/>
+    <Item english="Stop Running NppExec Script" text="Oprește scriptul NppExec în execuție"/>
+    <Item english="Show NppExec Console" text="Afișează consola NppExec"/>
+    <Item english="Execute NppExec Script" text="Execută scriptul NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;script temporar&gt;"/>
+    <Item english="Script name" text="Numele scriptului"/>
+    <Item english="Dock Left" text="Andochează la stânga"/>
+    <Item english="Dock Right" text="Andochează la dreapta"/>
+    <Item english="Dock Top" text="Andochează sus"/>
+    <Item english="Dock Bottom" text="Andochează jos"/>
+    <Item english="Float" text="Flotant"/>
+    <Item english="Remember which panels were open" text="Reține ce panouri au fost deschise"/>
+    <Item english="Show the toolbar" text="Afișează bara de unelte"/>
+    <Item english="Toolbar buttons" text="Butoanele barei de unelte"/>
+    <Item english="Icons only" text="Doar pictograme"/>
+    <Item english="Icons and labels" text="Pictograme și etichete"/>
+    <Item english="Labels only" text="Doar etichete"/>
+    <Item english="Toolbar size" text="Dimensiunea barei de unelte"/>
+    <Item english="Regular" text="Normală"/>
+    <Item english="Small" text="Mică"/>
+    <Item english="Icons" text="Pictograme"/>
+    <Item english="Hidden" text="Ascunsă"/>
+    <Item english="1 pixel" text="1 pixel"/>
+    <Item english="2 pixels" text="2 pixeli"/>
+    <Item english="3 pixels" text="3 pixeli"/>
+    <Item english="Selected text can be dragged" text="Textul selectat poate fi tras cu mouse-ul"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Activează editarea multiplă (Cmd+clic/selecție)"/>
+    <Item english="Follow the system" text="Urmează sistemul"/>
+    <Item english="Light theme" text="Temă luminoasă"/>
+    <Item english="Dark theme" text="Temă întunecată"/>
+    <Item english="Show the fold margin" text="Afișează marginea de pliere"/>
+    <Item english="A line" text="O linie"/>
+    <Item english="Columns (space separated)" text="Coloane (separate prin spațiu)"/>
+    <Item english="3 parts" text="3 părți"/>
+    <Item english="4 parts" text="4 părți"/>
+    <Item english="5 parts" text="5 părți"/>
+    <Item english="6 parts" text="6 părți"/>
+    <Item english="7 parts" text="7 părți"/>
+    <Item english="8 parts" text="8 părți"/>
+    <Item english="9 parts" text="9 părți"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Deduce limbajul din conținut când numele nu îl indică"/>
+    <Item english="Highlight matching braces" text="Evidențiază acoladele pereche"/>
+    <Item english="Header font (blank for the editor's)" text="Fontul antetului (gol pentru cel al editorului)"/>
+    <Item english="Header font size" text="Mărimea fontului antetului"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Margini: stânga, sus, dreapta, jos (puncte)"/>
+    <Item english="Characters before it opens" text="Caractere tastate înainte de deschidere"/>
+    <Item english="Add characters to the word list" text="Adaugă caractere în lista de cuvinte"/>
+    <Item english="A fixed folder" text="Un folder fix"/>
+    <Item english="Fixed folder" text="Folder fix"/>
+    <Item english="Confirm Replace All" text="Confirmă înlocuirea totală"/>
+    <Item english="Compare: ignore case" text="Comparare: ignoră majusculele"/>
+    <Item english="Compare: ignore spaces" text="Comparare: ignoră spațiile"/>
+    <Item english="Compare: ignore empty lines" text="Comparare: ignoră liniile goale"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Număr maxim de caractere completate automat în câmpul de căutare"/>
+    <Item english="Releases repository" text="Depozitul cu versiuni"/>
+    <Item english="Notepad++ update" text="Actualizare Notepad++"/>
+    <Item english="No update is available." text="Nu există nicio actualizare."/>
+    <Item english="An update package is available, do you want to download it?" text="Există un pachet de actualizare, dorești să-l descarci?"/>
+    <Item english="Open the Releases Page" text="Deschide pagina versiunilor"/>
+    <Item english="Copy debug info to clipboard" text="Copiază informațiile de depanare în clipboard"/>
+    <Item english="Fonts…" text="Fonturi…"/>
+    <Item english="This document is not valid JSON." text="Acest document nu este JSON valid."/>
+    <Item english="Valid JSON." text="JSON valid."/>
+    <Item english="Invalid JSON." text="JSON nevalid."/>
+    <Item english="Set as the first file to compare." text="A fost stabilit ca primul fișier de comparat."/>
+    <Item english="Nothing to compare with." text="Nu există cu ce compara."/>
+    <Item english="The document is valid XML." text="Documentul este XML valid."/>
+    <Item english="FTP connections" text="Conexiuni FTP"/>
+    <Item english="Cannot connect." text="Conectarea nu este posibilă."/>
+    <Item english="That file is open in another tab." text="Acel fișier este deschis în altă filă."/>
+    <Item english="Close it first, or choose another name." text="Închide-l mai întâi sau alege alt nume."/>
+    <Item english="Which language is this?" text="Ce limbaj este acesta?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Unele caractere nu pot fi reprezentate în această codificare."/>
+    <Item english="Converting will replace them." text="Convertirea le va înlocui."/>
+    <Item english="Press the keys." text="Apasă tastele."/>
+    <Item english="Nothing is marked" text="Nu este marcat nimic"/>
+    <Item english="Marked text copied" text="Textul marcat a fost copiat"/>
+    <Item english="Choose a folder first" text="Alege mai întâi un folder"/>
+    <Item english="This document has no folder" text="Acest document nu are folder"/>
+    <Item english="The ticked project panels have no files" text="Panourile de proiecte bifate nu au fișiere"/>
+    <Item english="Searching..." text="Se caută..."/>
+    <Item english="Stopping..." text="Se oprește..."/>
+    <Item english="Marks cleared" text="Marcajele au fost anulate"/>
+    <Item english="Transparent" text="Transparent"/>
+    <Item english="View 1" text="Vederea 1"/>
+    <Item english="View 2" text="Vederea 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hash-uri"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Cheie HMAC (opțională):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (hexazecimal):"/>
+    <Item english="Random" text="Aleatoriu"/>
+    <Item english="Cost (4-31):" text="Cost (4-31):"/>
+    <Item english="Version:" text="Versiune:"/>
+    <Item english="N, as a power of 2:" text="N, ca putere a lui 2:"/>
+    <Item english="Block size (r):" text="Dimensiunea blocului (r):"/>
+    <Item english="Parallelism (p):" text="Paralelism (p):"/>
+    <Item english="Variant:" text="Variantă:"/>
+    <Item english="Memory (KiB):" text="Memorie (KiB):"/>
+    <Item english="Iterations:" text="Iterații:"/>
+    <Item english="Parallelism:" text="Paralelism:"/>
+    <Item english="Digest:" text="Funcție hash:"/>
+    <Item english="Hash length (bytes):" text="Lungimea hash-ului (octeți):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Verifică"/>
+    <Item english="Hash to check the password against:" text="Hash-ul cu care se verifică parola:"/>
+    <Item english="The salt is not valid hexadecimal." text="Salt-ul nu este hexazecimal valid."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt necesită un salt de exact 16 octeți."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 necesită un salt de cel puțin 8 octeți."/>
+    <Item english="The hash could not be generated with these settings." text="Hash-ul nu a putut fi generat cu aceste setări."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Acesta nu este un hash bcrypt, scrypt, Argon2 sau PBKDF2."/>
+    <Item english="The password matches the hash." text="Parola corespunde hash-ului."/>
+    <Item english="The password does not match the hash." text="Parola nu corespunde hash-ului."/>
+    <Item english="The cost must be between 4 and 31." text="Costul trebuie să fie între 4 și 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versiunea trebuie să fie 2a, 2b sau 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N trebuie să fie între 2^1 și 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r și p trebuie să fie între 1 și 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Aceste setări necesită mai mult de 2 GB de memorie."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralelismul trebuie să fie între 1 și 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Numărul de iterații trebuie să fie între 1 și 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Memoria trebuie să fie de cel puțin 8 KiB pentru fiecare fir."/>
+    <Item english="These settings need more than 4 GB of memory." text="Aceste setări necesită mai mult de 4 GB de memorie."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Funcția hash trebuie să fie SHA-1, SHA-256 sau SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Numărul de iterații trebuie să fie între 1 și 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Lungimea hash-ului trebuie să fie între 4 și 1024 de octeți."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (sigur pentru URL)"/>
+    <Item english="Encode" text="Codifică"/>
+    <Item english="Decode" text="Decodifică"/>
+    <Item english="The input is:" text="Intrarea este:"/>
+    <Item english="Bytes in hexadecimal" text="Octeți în hexazecimal"/>
+    <Item english="Input:" text="Intrare:"/>
+    <Item english="Result:" text="Rezultat:"/>
+    <Item english="Text:" text="Text:"/>
+    <Item english="Bytes in hexadecimal:" text="Octeți în hexazecimal:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Intrarea nu reprezintă octeți scriși în hexazecimal."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Intrarea nu este $STR_REPLACE$ valid."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Octeții decodificați nu sunt text UTF-8; sunt afișați doar în hexazecimal."/>
+    <Item english="Password Generator" text="Generator de parole"/>
+    <Item english="Length:" text="Lungime:"/>
+    <Item english="Number of passwords:" text="Număr de parole:"/>
+    <Item english="Uppercase letters (A-Z)" text="Majuscule (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Minuscule (a-z)"/>
+    <Item english="Digits (0-9)" text="Cifre (0-9)"/>
+    <Item english="Symbols:" text="Simboluri:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Omite caracterele care seamănă între ele (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Cel puțin un caracter de fiecare fel"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropie (biți): aproximativ $INT_REPLACE$"/>
+    <Item english="Choose at least one kind of character." text="Alege cel puțin un fel de caractere."/>
+    <Item english="Insert into Document" text="Inserează în document"/>
+    <Item english="Show the bare key in hexadecimal" text="Afișează cheia brută în hexazecimal"/>
+    <Item english="Empty: a random salt each time" text="Gol: salt aleatoriu de fiecare dată"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt citește doar primii 72 de octeți."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Cerere HTTP"/>
+    <Item english="Send" text="Trimite"/>
+    <Item english="Parameters" text="Parametri"/>
+    <Item english="Headers" text="Antete"/>
+    <Item english="Body" text="Corp"/>
+    <Item english="Options" text="Opțiuni"/>
+    <Item english="Content type:" text="Tip de conținut:"/>
+    <Item english="User name:" text="Nume de utilizator:"/>
+    <Item english="Password:" text="Parolă:"/>
+    <Item english="Timeout (seconds):" text="Timp de expirare (secunde):"/>
+    <Item english="Follow redirects" text="Urmează redirecționările"/>
+    <Item english="Allow invalid certificates" text="Permite certificate nevalide"/>
+    <Item english="Format JSON" text="Formatează JSON"/>
+    <Item english="Paste curl Command" text="Lipește comanda curl"/>
+    <Item english="Copy as curl" text="Copiază ca curl"/>
+    <Item english="Open in New Document" text="Deschide într-un document nou"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Câte unul pe linie: nume=valoare. Sunt adăugați la adresă, codificați."/>
+    <Item english="One to a line: Name: value" text="Câte unul pe linie: Nume: valoare"/>
+    <Item english="Sent as it is written, in UTF-8." text="Se trimite așa cum este scris, în UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Răspunsul nu este text (octeți: $INT_REPLACE$)."/>
+    <Item english="The address is not an http or https address." text="Adresa nu este o adresă http sau https."/>
+    <Item english="This is not a curl command." text="Aceasta nu este o comandă curl."/>
+    <Item english="The command has no address." text="Comanda nu are nicio adresă."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Comanda își citește datele dintr-un fișier, ceea ce nu se face aici."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formularele și încărcările de fișiere nu sunt citite dintr-o comandă."/>
+    <Item english="The command's address is not an http or https address." text="Adresa din comandă nu este o adresă http sau https."/>
+</NativeLangExtra>

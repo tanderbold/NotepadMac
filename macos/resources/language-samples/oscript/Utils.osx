@@ -1,0 +1,43 @@
+package MYMODULE
+
+public object Utils inherits MYMODULE::Root
+
+	public function List ChildrenOf( Object prgCtx, DAPINODE parent )
+		List		names = {}
+		RecArray	rows
+		Record		row
+		String		stmt = "select DataID, Name from DTree where ParentID = :A1 order by Name"
+
+		rows = CAPI.Exec( prgCtx.fDBConnect.fConnection, stmt, parent.pID )
+		if IsError( rows )
+			echo( "query failed: ", rows )
+			return names
+		end
+
+		for row in rows
+			names = { @names, row.Name }
+		end
+		return names
+	end
+
+	public function String Pad( String s, Integer width )
+		Integer	i
+		for i = Length( s ) + 1 to width
+			s += ' '
+		end
+		return s
+	end
+
+	public function Integer CountWords( String text )
+		List	words = Str.Elements( text, ' ' )
+		Integer	n = 0
+		String	w
+		for w in words
+			if Length( Str.Trim( w ) ) > 0
+				n += 1
+			end
+		end
+		return n
+	end
+
+end

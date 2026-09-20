@@ -1,0 +1,16 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell\Open with Notepad++]
+@="Edit with &Notepad++"
+"Icon"="\"C:\\Program Files\\Notepad++\\notepad++.exe\",0"
+
+[HKEY_CLASSES_ROOT\*\shell\Open with Notepad++\command]
+@="\"C:\\Program Files\\Notepad++\\notepad++.exe\" \"%1\""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\cmdhere]
+@="Open command window here"
+"Extended"=""
+"NoWorkingDirectory"=""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\cmdhere\command]
+@="cmd.exe /s /k pushd \"%V\""

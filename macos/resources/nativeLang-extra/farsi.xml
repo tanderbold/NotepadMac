@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/farsi.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Farsi">
+    <Item english="About NotepadMac" text="درباره NotepadMac"/>
+    <Item english="Hide NotepadMac" text="مخفی کردن NotepadMac"/>
+    <Item english="Hide Others" text="مخفی کردن بقیه"/>
+    <Item english="Show All" text="نمایش همه"/>
+    <Item english="Quit NotepadMac" text="خروج از NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="بازکردن پوشه شامل در Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="بازکردن پوشه شامل در ترمینال"/>
+    <Item english="Toggle Insert/Overtype" text="تغییر حالت درج/بازنویسی"/>
+    <Item english="Toggle Fold" text="بستن/بازکردن بلوک"/>
+    <Item english="Show All Hidden Lines" text="نمایش همه خطوط مخفی"/>
+    <Item english="Recent Window" text="پنجره اخیر"/>
+    <Item english="Move to Trash" text="انتقال به سطل زباله"/>
+    <Item english="Save Current Command…" text="ذخیره فرمان فعلی…"/>
+    <Item english="Manage Saved Commands…" text="مدیریت فرمان های ذخیره شده…"/>
+    <Item english="Show Console" text="نمایش کنسول"/>
+    <Item english="Validate shortcuts" text="بررسی میانبر ها"/>
+    <Item english="Open Plugins Folder…" text="بازکردن پوشه افزونه ها…"/>
+    <Item english="Format" text="قالب بندی"/>
+    <Item english="Compact" text="فشرده سازی"/>
+    <Item english="Sort Keys" text="مرتب سازی کلید ها"/>
+    <Item english="Validate" text="اعتبارسنجی"/>
+    <Item english="Show JSON Tree" text="نمایش درخت JSON"/>
+    <Item english="Set as First to Compare" text="انتخاب بعنوان اولین فایل مقایسه"/>
+    <Item english="Compare" text="مقایسه"/>
+    <Item english="Compare with File…" text="مقایسه با فایل…"/>
+    <Item english="Next Difference" text="تفاوت بعدی"/>
+    <Item english="Previous Difference" text="تفاوت قبلی"/>
+    <Item english="First Difference" text="اولین تفاوت"/>
+    <Item english="Last Difference" text="آخرین تفاوت"/>
+    <Item english="Compare Summary" text="خلاصه مقایسه"/>
+    <Item english="Ignore Case" text="نادیده گرفتن حروف بزرگ و کوچک"/>
+    <Item english="Ignore Spaces" text="نادیده گرفتن فاصله ها"/>
+    <Item english="Ignore Empty Lines" text="نادیده گرفتن خطوط خالی"/>
+    <Item english="Clear Active Compare" text="پاکسازی مقایسه فعال"/>
+    <Item english="Clear All Compares" text="پاکسازی همه مقایسه ها"/>
+    <Item english="Pretty Print" text="قالب بندی خوانا"/>
+    <Item english="Pretty Print — Indent Attributes" text="قالب بندی خوانا — با تورفتگی ویژگی ها"/>
+    <Item english="Linearize" text="تک خطی کردن"/>
+    <Item english="Check XML Syntax Now" text="بررسی نحو XML"/>
+    <Item english="Validate Against Schema…" text="اعتبارسنجی با طرحواره…"/>
+    <Item english="Validate Against DTD" text="اعتبارسنجی با DTD"/>
+    <Item english="Evaluate XPath Expression…" text="ارزیابی عبارت XPath…"/>
+    <Item english="Current XML Path" text="مسیر XML فعلی"/>
+    <Item english="Current XML Path with Predicates" text="مسیر XML فعلی با گزاره ها"/>
+    <Item english="Apply XSL Transformation…" text="اعمال تبدیل XSL…"/>
+    <Item english="Escape Characters in Selection" text="گریز دادن کاراکترها در انتخاب"/>
+    <Item english="Unescape Characters in Selection" text="لغو گریز کاراکترها در انتخاب"/>
+    <Item english="Connections…" text="اتصال ها…"/>
+    <Item english="Connect…" text="اتصال…"/>
+    <Item english="Disconnect" text="قطع اتصال"/>
+    <Item english="Show Remote Files" text="نمایش فایل های راه دور"/>
+    <Item english="Upload Current File" text="آپلود فایل فعلی"/>
+    <Item english="Execute NppExec Script…" text="اجرای اسکریپت NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="اجرای اسکریپت قبلی NppExec"/>
+    <Item english="Stop Running NppExec Script" text="توقف اسکریپت در حال اجرای NppExec"/>
+    <Item english="Show NppExec Console" text="نمایش کنسول NppExec"/>
+    <Item english="Execute NppExec Script" text="اجرای اسکریپت NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;اسکریپت موقت&gt;"/>
+    <Item english="Script name" text="نام اسکریپت"/>
+    <Item english="Dock Left" text="چسباندن به چپ"/>
+    <Item english="Dock Right" text="چسباندن به راست"/>
+    <Item english="Dock Top" text="چسباندن به بالا"/>
+    <Item english="Dock Bottom" text="چسباندن به پایین"/>
+    <Item english="Float" text="شناور"/>
+    <Item english="Remember which panels were open" text="به خاطر سپردن پنل های باز"/>
+    <Item english="Show the toolbar" text="نمایش نوار ابزار"/>
+    <Item english="Toolbar buttons" text="دکمه های نوار ابزار"/>
+    <Item english="Icons only" text="فقط آیکون"/>
+    <Item english="Icons and labels" text="آیکون و برچسب"/>
+    <Item english="Labels only" text="فقط برچسب"/>
+    <Item english="Toolbar size" text="اندازه نوار ابزار"/>
+    <Item english="Regular" text="معمولی"/>
+    <Item english="Small" text="کوچک"/>
+    <Item english="Icons" text="آیکون ها"/>
+    <Item english="Hidden" text="مخفی"/>
+    <Item english="1 pixel" text="1 پیکسل"/>
+    <Item english="2 pixels" text="2 پیکسل"/>
+    <Item english="3 pixels" text="3 پیکسل"/>
+    <Item english="Selected text can be dragged" text="متن انتخاب شده قابل کشیدن است"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="فعالسازی چند-ویرایشی (Cmd+کلیک/انتخاب)"/>
+    <Item english="Follow the system" text="پیروی از سیستم"/>
+    <Item english="Light theme" text="پوسته روشن"/>
+    <Item english="Dark theme" text="پوسته تیره"/>
+    <Item english="Show the fold margin" text="نمایش حاشیه تاکننده"/>
+    <Item english="A line" text="یک خط"/>
+    <Item english="Columns (space separated)" text="ستون ها (جداشده با فاصله)"/>
+    <Item english="3 parts" text="3 بخش"/>
+    <Item english="4 parts" text="4 بخش"/>
+    <Item english="5 parts" text="5 بخش"/>
+    <Item english="6 parts" text="6 بخش"/>
+    <Item english="7 parts" text="7 بخش"/>
+    <Item english="8 parts" text="8 بخش"/>
+    <Item english="9 parts" text="9 بخش"/>
+    <Item english="Work the language out from the contents when the name does not say" text="تشخیص زبان از روی محتوا وقتی نام فایل آن را مشخص نمی کند"/>
+    <Item english="Highlight matching braces" text="برجسته سازی آکولاد های مطابق"/>
+    <Item english="Header font (blank for the editor's)" text="فونت سرصفحه (خالی برای فونت ویرایشگر)"/>
+    <Item english="Header font size" text="اندازه فونت سرصفحه"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="حاشیه ها: چپ، بالا، راست، پایین (پوینت)"/>
+    <Item english="Characters before it opens" text="تعداد کاراکترها پیش از بازشدن"/>
+    <Item english="Add characters to the word list" text="افزودن کاراکتر به لیست کاراکترهای کلمه"/>
+    <Item english="A fixed folder" text="یک پوشه ثابت"/>
+    <Item english="Fixed folder" text="پوشه ثابت"/>
+    <Item english="Confirm Replace All" text="تأیید جایگزینی همه"/>
+    <Item english="Compare: ignore case" text="مقایسه: نادیده گرفتن حروف بزرگ و کوچک"/>
+    <Item english="Compare: ignore spaces" text="مقایسه: نادیده گرفتن فاصله ها"/>
+    <Item english="Compare: ignore empty lines" text="مقایسه: نادیده گرفتن خطوط خالی"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="حداکثر کاراکتر برای پرکردن خودکار کادر یافتن"/>
+    <Item english="Releases repository" text="مخزن نسخه ها"/>
+    <Item english="Notepad++ update" text="بروزرسانی Notepad++"/>
+    <Item english="No update is available." text="بروزرسانی جدیدی موجود نیست."/>
+    <Item english="An update package is available, do you want to download it?" text="یک بسته بروزرسانی موجود است، آیا می خواهید آن را دانلود کنید؟"/>
+    <Item english="Open the Releases Page" text="بازکردن صفحه نسخه ها"/>
+    <Item english="Copy debug info to clipboard" text="کپی اطلاعات عیب یابی به کلیپ برد"/>
+    <Item english="Fonts…" text="فونت ها…"/>
+    <Item english="This document is not valid JSON." text="این سند JSON معتبر نیست."/>
+    <Item english="Valid JSON." text="JSON معتبر."/>
+    <Item english="Invalid JSON." text="JSON نامعتبر."/>
+    <Item english="Set as the first file to compare." text="بعنوان اولین فایل برای مقایسه تنظیم شد."/>
+    <Item english="Nothing to compare with." text="چیزی برای مقایسه وجود ندارد."/>
+    <Item english="The document is valid XML." text="این سند XML معتبر است."/>
+    <Item english="FTP connections" text="اتصال های FTP"/>
+    <Item english="Cannot connect." text="اتصال ممکن نیست."/>
+    <Item english="That file is open in another tab." text="آن فایل در تب دیگری باز است."/>
+    <Item english="Close it first, or choose another name." text="ابتدا آن را ببندید، یا نام دیگری انتخاب کنید."/>
+    <Item english="Which language is this?" text="این چه زبانی است؟"/>
+    <Item english="Some characters cannot be represented in this encoding." text="برخی کاراکترها در این رمزگذاری قابل نمایش نیستند."/>
+    <Item english="Converting will replace them." text="تبدیل، آنها را جایگزین خواهد کرد."/>
+    <Item english="Press the keys." text="کلیدها را فشار دهید."/>
+    <Item english="Nothing is marked" text="چیزی علامت گذاری نشده است"/>
+    <Item english="Marked text copied" text="متن علامت گذاری شده کپی شد"/>
+    <Item english="Choose a folder first" text="ابتدا یک پوشه انتخاب کنید"/>
+    <Item english="This document has no folder" text="این سند پوشه ای ندارد"/>
+    <Item english="The ticked project panels have no files" text="پنل های پروژه تیک خورده هیچ فایلی ندارند"/>
+    <Item english="Searching..." text="در حال جستجو..."/>
+    <Item english="Stopping..." text="در حال توقف..."/>
+    <Item english="Marks cleared" text="علامت ها پاک شدند"/>
+    <Item english="Transparent" text="پشت نما"/>
+    <Item english="View 1" text="نمای 1"/>
+    <Item english="View 2" text="نمای 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="هش ها"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="کلید HMAC (اختیاری):"/>
+    <Item english="Salt (hexadecimal):" text="نمک (هگزادسیمال):"/>
+    <Item english="Random" text="تصادفی"/>
+    <Item english="Cost (4-31):" text="هزینه (4-31):"/>
+    <Item english="Version:" text="نسخه:"/>
+    <Item english="N, as a power of 2:" text="N، به صورت توانی از 2:"/>
+    <Item english="Block size (r):" text="اندازه بلوک (r):"/>
+    <Item english="Parallelism (p):" text="موازی سازی (p):"/>
+    <Item english="Variant:" text="گونه:"/>
+    <Item english="Memory (KiB):" text="حافظه (KiB):"/>
+    <Item english="Iterations:" text="تکرارها:"/>
+    <Item english="Parallelism:" text="موازی سازی:"/>
+    <Item english="Digest:" text="تابع هش:"/>
+    <Item english="Hash length (bytes):" text="طول هش (بایت):"/>
+    <Item english="Hash:" text="هش:"/>
+    <Item english="Verify" text="بررسی"/>
+    <Item english="Hash to check the password against:" text="هشی که رمز عبور با آن بررسی می شود:"/>
+    <Item english="The salt is not valid hexadecimal." text="نمک هگزادسیمال معتبر نیست."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt به نمکی دقیقا 16 بایتی نیاز دارد."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 به نمکی با حداقل 8 بایت نیاز دارد."/>
+    <Item english="The hash could not be generated with these settings." text="با این تنظیمات نمی توان هش را تولید کرد."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="این یک هش bcrypt، scrypt، Argon2 یا PBKDF2 نیست."/>
+    <Item english="The password matches the hash." text="رمز عبور با هش مطابقت دارد."/>
+    <Item english="The password does not match the hash." text="رمز عبور با هش مطابقت ندارد."/>
+    <Item english="The cost must be between 4 and 31." text="هزینه باید بین 4 و 31 باشد."/>
+    <Item english="The version must be 2a, 2b or 2y." text="نسخه باید 2a، 2b یا 2y باشد."/>
+    <Item english="N must be between 2^1 and 2^24." text="N باید بین 2^1 و 2^24 باشد."/>
+    <Item english="r and p must be between 1 and 64." text="r و p باید بین 1 و 64 باشند."/>
+    <Item english="These settings need more than 2 GB of memory." text="این تنظیمات به بیش از 2 GB حافظه نیاز دارد."/>
+    <Item english="The parallelism must be between 1 and 64." text="موازی سازی باید بین 1 و 64 باشد."/>
+    <Item english="The iterations must be between 1 and 1000." text="تعداد تکرارها باید بین 1 و 1000 باشد."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="حافظه باید برای هر رشته حداقل 8 KiB باشد."/>
+    <Item english="These settings need more than 4 GB of memory." text="این تنظیمات به بیش از 4 GB حافظه نیاز دارد."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="تابع هش باید SHA-1، SHA-256 یا SHA-512 باشد."/>
+    <Item english="The iterations must be between 1 and 100000000." text="تعداد تکرارها باید بین 1 و 100000000 باشد."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="طول هش باید بین 4 و 1024 بایت باشد."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (ایمن برای URL)"/>
+    <Item english="Encode" text="رمزگذاری"/>
+    <Item english="Decode" text="رمزگشایی"/>
+    <Item english="The input is:" text="نوع ورودی:"/>
+    <Item english="Bytes in hexadecimal" text="بایت ها به صورت هگزادسیمال"/>
+    <Item english="Input:" text="ورودی:"/>
+    <Item english="Result:" text="نتیجه:"/>
+    <Item english="Text:" text="متن:"/>
+    <Item english="Bytes in hexadecimal:" text="بایت ها به صورت هگزادسیمال:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="ورودی بایت های نوشته شده به صورت هگزادسیمال نیست."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="ورودی $STR_REPLACE$ معتبر نیست."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="بایت های رمزگشایی شده متن UTF-8 نیستند؛ فقط به صورت هگزادسیمال نمایش داده می شوند."/>
+    <Item english="Password Generator" text="تولیدکننده رمز عبور"/>
+    <Item english="Length:" text="طول:"/>
+    <Item english="Number of passwords:" text="تعداد رمزهای عبور:"/>
+    <Item english="Uppercase letters (A-Z)" text="حروف بزرگ (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="حروف کوچک (a-z)"/>
+    <Item english="Digits (0-9)" text="ارقام (0-9)"/>
+    <Item english="Symbols:" text="نمادها:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="حذف کاراکترهای مشابه (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="حداقل یک کاراکتر از هر نوع"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="آنتروپی: حدود $INT_REPLACE$ بیت"/>
+    <Item english="Choose at least one kind of character." text="حداقل یک نوع کاراکتر را انتخاب کنید."/>
+    <Item english="Insert into Document" text="درج در سند"/>
+    <Item english="Show the bare key in hexadecimal" text="نمایش خود کلید به صورت هگزادسیمال"/>
+    <Item english="Empty: a random salt each time" text="خالی: هر بار یک نمک تصادفی"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt فقط 72 بایت اول را می خواند."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="درخواست HTTP"/>
+    <Item english="Send" text="ارسال"/>
+    <Item english="Parameters" text="پارامترها"/>
+    <Item english="Headers" text="هدرها"/>
+    <Item english="Body" text="بدنه"/>
+    <Item english="Options" text="گزینه ها"/>
+    <Item english="Content type:" text="نوع محتوا:"/>
+    <Item english="User name:" text="نام کاربری:"/>
+    <Item english="Password:" text="رمز عبور:"/>
+    <Item english="Timeout (seconds):" text="مهلت زمانی (ثانیه):"/>
+    <Item english="Follow redirects" text="دنبال کردن تغییر مسیرها"/>
+    <Item english="Allow invalid certificates" text="پذیرش گواهی های نامعتبر"/>
+    <Item english="Format JSON" text="قالب بندی JSON"/>
+    <Item english="Paste curl Command" text="چسباندن فرمان curl"/>
+    <Item english="Copy as curl" text="کپی به صورت curl"/>
+    <Item english="Open in New Document" text="بازکردن در سند جدید"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="هر خط یکی: نام=مقدار. به صورت کدگذاری شده به آدرس افزوده می شوند."/>
+    <Item english="One to a line: Name: value" text="هر خط یکی: نام: مقدار"/>
+    <Item english="Sent as it is written, in UTF-8." text="همان طور که نوشته شده، با UTF-8 ارسال می شود."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="پاسخ متن نیست: $INT_REPLACE$ بایت."/>
+    <Item english="The address is not an http or https address." text="این آدرس یک آدرس http یا https نیست."/>
+    <Item english="This is not a curl command." text="این یک فرمان curl نیست."/>
+    <Item english="The command has no address." text="فرمان آدرسی ندارد."/>
+    <Item english="The command reads its data from a file, which is not done here." text="فرمان داده هایش را از یک فایل می خواند که اینجا انجام نمی شود."/>
+    <Item english="Forms and uploads of files are not read from a command." text="فرم ها و آپلود فایل ها از فرمان خوانده نمی شوند."/>
+    <Item english="The command's address is not an http or https address." text="آدرس فرمان یک آدرس http یا https نیست."/>
+</NativeLangExtra>

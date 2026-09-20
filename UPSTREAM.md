@@ -13,8 +13,9 @@ data files (languages, styles, themes, function lists, translations) and is writ
 `PowerEditor/src` as its specification. Upstream's own README, Windows build instructions, CI
 configuration and release key are left out: they describe and sign the Windows version.
 
-Changed from upstream: `lexilla/lexers/LexUser.cxx` (two portability fixes, described in
-`macos/PORTING.md`).
+Changed from upstream: `lexilla/lexers/LexUser.cxx`, the one file that kept Lexilla from building
+on macOS - `#include <windows.h>` is now inside `#ifdef _WIN32` (nothing in the file needs it), and
+the MSVC-only `_itoa()` is replaced by `snprintf()` at its ten call sites, byte for byte the same result.
 
 To move to a newer Notepad++: replace these folders with the new release's, re-apply the
 `LexUser.cxx` fixes if upstream has not taken them, rerun the generators (`macos/gen_*`), run the

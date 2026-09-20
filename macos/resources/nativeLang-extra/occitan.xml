@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/occitan.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Occitan">
+    <Item english="About NotepadMac" text="A prepaus de NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Amagar NotepadMac"/>
+    <Item english="Hide Others" text="Amagar los autres"/>
+    <Item english="Show All" text="Mostrar tot"/>
+    <Item english="Quit NotepadMac" text="Quitar NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Dobrir lo dorsièr parent dins lo Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Dobrir lo dorsièr parent dins lo Terminal"/>
+    <Item english="Toggle Fold" text="Plegar/desplegar"/>
+    <Item english="Show All Hidden Lines" text="Mostrar totas las linhas amagadas"/>
+    <Item english="Recent Window" text="Fenèstra recenta"/>
+    <Item english="Move to Trash" text="Metre a l'escobilhièr"/>
+    <Item english="Save Current Command…" text="Salvar la comanda actuala…"/>
+    <Item english="Manage Saved Commands…" text="Gerir las comandas salvadas…"/>
+    <Item english="Show Console" text="Mostrar la consòla"/>
+    <Item english="Validate shortcuts" text="Validar los acorchis"/>
+    <Item english="Open Plugins Folder…" text="Dobrir lo dorsièr dels ajustons…"/>
+    <Item english="Format" text="Formatar"/>
+    <Item english="Compact" text="Compactar"/>
+    <Item english="Sort Keys" text="Ordenar las claus"/>
+    <Item english="Validate" text="Validar"/>
+    <Item english="Show JSON Tree" text="Mostrar l'arbre JSON"/>
+    <Item english="Set as First to Compare" text="Definir coma primièr fichièr de comparar"/>
+    <Item english="Compare" text="Comparar"/>
+    <Item english="Compare with File…" text="Comparar amb un fichièr…"/>
+    <Item english="Next Difference" text="Diferéncia seguenta"/>
+    <Item english="Previous Difference" text="Diferéncia precedenta"/>
+    <Item english="First Difference" text="Primièra diferéncia"/>
+    <Item english="Last Difference" text="Darrièra diferéncia"/>
+    <Item english="Compare Summary" text="Resumit de la comparason"/>
+    <Item english="Ignore Case" text="Ignorar majusculas e minusculas"/>
+    <Item english="Ignore Spaces" text="Ignorar los espacis"/>
+    <Item english="Ignore Empty Lines" text="Ignorar las linhas voidas"/>
+    <Item english="Clear Active Compare" text="Escafar la comparason activa"/>
+    <Item english="Clear All Compares" text="Escafar totas las comparasons"/>
+    <Item english="Check XML Syntax Now" text="Verificar ara la sintaxi XML"/>
+    <Item english="Validate Against Schema…" text="Validar amb un esquèma…"/>
+    <Item english="Validate Against DTD" text="Validar amb la DTD"/>
+    <Item english="Current XML Path" text="Camin XML actual"/>
+    <Item english="Current XML Path with Predicates" text="Camin XML actual amb predicats"/>
+    <Item english="Apply XSL Transformation…" text="Aplicar una transformacion XSL…"/>
+    <Item english="Connections…" text="Connexions…"/>
+    <Item english="Connect…" text="Se connectar…"/>
+    <Item english="Disconnect" text="Se desconnectar"/>
+    <Item english="Show Remote Files" text="Mostrar los fichièrs distants"/>
+    <Item english="Upload Current File" text="Mandar lo fichièr actual"/>
+    <Item english="Execute NppExec Script…" text="Executar un script NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Executar lo script NppExec precedent"/>
+    <Item english="Stop Running NppExec Script" text="Arrestar lo script NppExec en cors"/>
+    <Item english="Show NppExec Console" text="Mostrar la consòla NppExec"/>
+    <Item english="Execute NppExec Script" text="Executar lo script NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;script temporari&gt;"/>
+    <Item english="Script name" text="Nom del script"/>
+    <Item english="Remember which panels were open" text="Memorizar los panèls dobèrts"/>
+    <Item english="Show the toolbar" text="Mostrar la barra d'aisinas"/>
+    <Item english="Toolbar buttons" text="Botons de la barra d'aisinas"/>
+    <Item english="Icons only" text="Sonque las icònas"/>
+    <Item english="Icons and labels" text="Icònas e etiquetas"/>
+    <Item english="Labels only" text="Sonque las etiquetas"/>
+    <Item english="Toolbar size" text="Talha de la barra d'aisinas"/>
+    <Item english="Regular" text="Normala"/>
+    <Item english="Small" text="Pichona"/>
+    <Item english="Icons" text="Icònas"/>
+    <Item english="Hidden" text="Amagada"/>
+    <Item english="1 pixel" text="1 pixèl"/>
+    <Item english="2 pixels" text="2 pixèls"/>
+    <Item english="3 pixels" text="3 pixèls"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Activar la multi-edicion (Cmd+clic/seleccion)"/>
+    <Item english="Follow the system" text="Seguir lo sistèma"/>
+    <Item english="Light theme" text="Tèma clar"/>
+    <Item english="Dark theme" text="Tèma escur"/>
+    <Item english="A line" text="Una linha"/>
+    <Item english="Columns (space separated)" text="Colomnas (separadas per d'espacis)"/>
+    <Item english="Add characters to the word list" text="Ajustar de caractèrs a la lista dels mots"/>
+    <Item english="A fixed folder" text="Un dorsièr fixe"/>
+    <Item english="Fixed folder" text="Dorsièr fixe"/>
+    <Item english="Confirm Replace All" text="Confirmar Remplaçar tot"/>
+    <Item english="Compare: ignore case" text="Comparason : ignorar majusculas e minusculas"/>
+    <Item english="Compare: ignore spaces" text="Comparason : ignorar los espacis"/>
+    <Item english="Compare: ignore empty lines" text="Comparason : ignorar las linhas voidas"/>
+    <Item english="Notepad++ update" text="Mesa a jorn de Notepad++"/>
+    <Item english="No update is available." text="I a pas cap de mesa a jorn disponibla."/>
+    <Item english="An update package is available, do you want to download it?" text="Un paquet de mesa a jorn es disponible, lo volètz telecargar ?"/>
+    <Item english="Open the Releases Page" text="Dobrir la pagina de las versions"/>
+    <Item english="Fonts…" text="Poliças…"/>
+    <Item english="This document is not valid JSON." text="Aqueste document es pas de JSON valid."/>
+    <Item english="Valid JSON." text="JSON valid."/>
+    <Item english="Invalid JSON." text="JSON invalid."/>
+    <Item english="Set as the first file to compare." text="Definit coma primièr fichièr de comparar."/>
+    <Item english="Nothing to compare with." text="I a pas res per comparar."/>
+    <Item english="The document is valid XML." text="Lo document es de XML valid."/>
+    <Item english="FTP connections" text="Connexions FTP"/>
+    <Item english="Cannot connect." text="Connexion impossibla."/>
+    <Item english="That file is open in another tab." text="Aqueste fichièr es dobèrt dins un autre onglet."/>
+    <Item english="Close it first, or choose another name." text="Tampatz-lo d'abòrd, o causissètz un autre nom."/>
+    <Item english="Which language is this?" text="Quin lengatge es aquò ?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Unes caractèrs pòdon pas èsser representats dins aqueste encodatge."/>
+    <Item english="Converting will replace them." text="La conversion los remplaçarà."/>
+    <Item english="Press the keys." text="Quichatz sus las teclas."/>
+    <Item english="Nothing is marked" text="Res es pas marcat"/>
+    <Item english="Marked text copied" text="Tèxte marcat copiat"/>
+    <Item english="Choose a folder first" text="Causissètz d'abòrd un dorsièr"/>
+    <Item english="This document has no folder" text="Aqueste document a pas cap de dorsièr"/>
+    <Item english="Searching..." text="Recèrca en cors..."/>
+    <Item english="Stopping..." text="Arrèst en cors..."/>
+    <Item english="Marks cleared" text="Marcas escafadas"/>
+    <Item english="Transparent" text="Transparent"/>
+    <Item english="View 1" text="Visualizacion 1"/>
+    <Item english="View 2" text="Visualizacion 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hashes"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Clau HMAC (opcionala) :"/>
+    <Item english="Salt (hexadecimal):" text="Sal (exadecimala) :"/>
+    <Item english="Random" text="Aleatòria"/>
+    <Item english="Cost (4-31):" text="Còst (4-31) :"/>
+    <Item english="Version:" text="Version :"/>
+    <Item english="N, as a power of 2:" text="N, coma poténcia de 2 :"/>
+    <Item english="Block size (r):" text="Talha de blòc (r) :"/>
+    <Item english="Parallelism (p):" text="Parallelisme (p) :"/>
+    <Item english="Variant:" text="Varianta :"/>
+    <Item english="Memory (KiB):" text="Memòria (KiB) :"/>
+    <Item english="Iterations:" text="Iteracions :"/>
+    <Item english="Parallelism:" text="Parallelisme :"/>
+    <Item english="Digest:" text="Foncion de hash :"/>
+    <Item english="Hash length (bytes):" text="Longor del hash (octets) :"/>
+    <Item english="Hash:" text="Hash :"/>
+    <Item english="Verify" text="Verificar"/>
+    <Item english="Hash to check the password against:" text="Hash per verificar lo senhal :"/>
+    <Item english="The salt is not valid hexadecimal." text="La sal es pas d'exadecimal valid."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt demanda una sal d'exactament 16 octets."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 demanda una sal d'almens 8 octets."/>
+    <Item english="The hash could not be generated with these settings." text="Lo hash a pas pogut èsser generat amb aquestes paramètres."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Aquò es pas un hash bcrypt, scrypt, Argon2 o PBKDF2."/>
+    <Item english="The password matches the hash." text="Lo senhal correspond al hash."/>
+    <Item english="The password does not match the hash." text="Lo senhal correspond pas al hash."/>
+    <Item english="The cost must be between 4 and 31." text="Lo còst deu èsser entre 4 e 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="La version deu èsser 2a, 2b o 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N deu èsser entre 2^1 e 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r e p devon èsser entre 1 e 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Aquestes paramètres demandan mai de 2 GB de memòria."/>
+    <Item english="The parallelism must be between 1 and 64." text="Lo parallelisme deu èsser entre 1 e 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Las iteracions devon èsser entre 1 e 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="La memòria deu èsser d'almens 8 KiB per cada fial."/>
+    <Item english="These settings need more than 4 GB of memory." text="Aquestes paramètres demandan mai de 4 GB de memòria."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="La foncion de hash deu èsser SHA-1, SHA-256 o SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Las iteracions devon èsser entre 1 e 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="La longor del hash deu èsser entre 4 e 1024 octets."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (per URL)"/>
+    <Item english="Encode" text="Codar"/>
+    <Item english="Decode" text="Descodar"/>
+    <Item english="The input is:" text="L'entrada es :"/>
+    <Item english="Bytes in hexadecimal" text="Octets en exadecimal"/>
+    <Item english="Input:" text="Entrada :"/>
+    <Item english="Result:" text="Resultat :"/>
+    <Item english="Text:" text="Tèxt :"/>
+    <Item english="Bytes in hexadecimal:" text="Octets en exadecimal :"/>
+    <Item english="The input is not bytes written in hexadecimal." text="L'entrada es pas d'octets escriches en exadecimal."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="L'entrada es pas de $STR_REPLACE$ valid."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Los octets descodats son pas de tèxt UTF-8 ; son mostrats sonque en exadecimal."/>
+    <Item english="Password Generator" text="Generador de senhals"/>
+    <Item english="Length:" text="Longor :"/>
+    <Item english="Number of passwords:" text="Nombre de senhals :"/>
+    <Item english="Uppercase letters (A-Z)" text="Letras majusculas (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Letras minusculas (a-z)"/>
+    <Item english="Digits (0-9)" text="Chifras (0-9)"/>
+    <Item english="Symbols:" text="Simbòls :"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Exclure los caractèrs que se semblan (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Almens un caractèr de cada tipe"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropia : environ $INT_REPLACE$ bits"/>
+    <Item english="Choose at least one kind of character." text="Causissètz almens un tipe de caractèr."/>
+    <Item english="Insert into Document" text="Inserir dins lo document"/>
+    <Item english="Show the bare key in hexadecimal" text="Mostrar la clau nuda en exadecimal"/>
+    <Item english="Empty: a random salt each time" text="Void : una sal aleatòria cada còp"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt legís sonque los 72 primièrs octets."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Requèsta HTTP"/>
+    <Item english="Send" text="Mandar"/>
+    <Item english="Parameters" text="Paramètres"/>
+    <Item english="Headers" text="Entèstas"/>
+    <Item english="Body" text="Còs"/>
+    <Item english="Options" text="Opcions"/>
+    <Item english="Content type:" text="Tipe de contengut :"/>
+    <Item english="User name:" text="Nom d'utilizaire :"/>
+    <Item english="Password:" text="Senhal :"/>
+    <Item english="Timeout (seconds):" text="Temps d'espèra (segondas) :"/>
+    <Item english="Follow redirects" text="Seguir las redireccions"/>
+    <Item english="Allow invalid certificates" text="Autorizar los certificats invalids"/>
+    <Item english="Format JSON" text="Formatar JSON"/>
+    <Item english="Paste curl Command" text="Pegar una comanda curl"/>
+    <Item english="Copy as curl" text="Copiar coma curl"/>
+    <Item english="Open in New Document" text="Dobrir dins un document novèl"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Un per linha : nom=valor. Son aponduts a l'adreça, codificats."/>
+    <Item english="One to a line: Name: value" text="Un per linha : Nom: valor"/>
+    <Item english="Sent as it is written, in UTF-8." text="Mandat tal coma es escrich, en UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="La responsa es pas de tèxt : $INT_REPLACE$ octets."/>
+    <Item english="The address is not an http or https address." text="L'adreça es pas una adreça http o https."/>
+    <Item english="This is not a curl command." text="Aquò es pas una comanda curl."/>
+    <Item english="The command has no address." text="La comanda a pas cap d'adreça."/>
+    <Item english="The command reads its data from a file, which is not done here." text="La comanda legís sas donadas dins un fichièr, çò que se fa pas aicí."/>
+    <Item english="The command's address is not an http or https address." text="L'adreça de la comanda es pas una adreça http o https."/>
+</NativeLangExtra>

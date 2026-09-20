@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/italian.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Italiano">
+    <Item english="About NotepadMac" text="Informazioni su NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Nascondi NotepadMac"/>
+    <Item english="Hide Others" text="Nascondi altre"/>
+    <Item english="Show All" text="Mostra tutte"/>
+    <Item english="Quit NotepadMac" text="Esci da NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Apri la cartella nel Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Apri la cartella nel Terminale"/>
+    <Item english="Toggle Insert/Overtype" text="Alterna Inserimento/Sovrascrittura"/>
+    <Item english="Toggle Fold" text="Comprimi/Espandi il blocco"/>
+    <Item english="Show All Hidden Lines" text="Mostra tutte le righe nascoste"/>
+    <Item english="Recent Window" text="Finestra recente"/>
+    <Item english="Move to Trash" text="Sposta nel cestino"/>
+    <Item english="Save Current Command…" text="Salva il comando corrente…"/>
+    <Item english="Manage Saved Commands…" text="Gestisci i comandi salvati…"/>
+    <Item english="Show Console" text="Mostra la console"/>
+    <Item english="Validate shortcuts" text="Convalida le scelte rapide"/>
+    <Item english="Open Plugins Folder…" text="Apri la cartella dei plugin…"/>
+    <Item english="Format" text="Formatta"/>
+    <Item english="Compact" text="Compatta"/>
+    <Item english="Sort Keys" text="Ordina le chiavi"/>
+    <Item english="Validate" text="Convalida"/>
+    <Item english="Show JSON Tree" text="Mostra l'albero JSON"/>
+    <Item english="Set as First to Compare" text="Imposta come primo da confrontare"/>
+    <Item english="Compare" text="Confronta"/>
+    <Item english="Compare with File…" text="Confronta con un file…"/>
+    <Item english="Next Difference" text="Differenza successiva"/>
+    <Item english="Previous Difference" text="Differenza precedente"/>
+    <Item english="First Difference" text="Prima differenza"/>
+    <Item english="Last Difference" text="Ultima differenza"/>
+    <Item english="Compare Summary" text="Riepilogo del confronto"/>
+    <Item english="Ignore Case" text="Ignora maiuscole/minuscole"/>
+    <Item english="Ignore Spaces" text="Ignora gli spazi"/>
+    <Item english="Ignore Empty Lines" text="Ignora le righe vuote"/>
+    <Item english="Clear Active Compare" text="Cancella il confronto attivo"/>
+    <Item english="Clear All Compares" text="Cancella tutti i confronti"/>
+    <Item english="Pretty Print" text="Formatta con rientri"/>
+    <Item english="Pretty Print — Indent Attributes" text="Formatta con rientri — rientra gli attributi"/>
+    <Item english="Linearize" text="Linearizza"/>
+    <Item english="Check XML Syntax Now" text="Controlla ora la sintassi XML"/>
+    <Item english="Validate Against Schema…" text="Convalida con uno schema…"/>
+    <Item english="Validate Against DTD" text="Convalida con la DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Valuta un'espressione XPath…"/>
+    <Item english="Current XML Path" text="Percorso XML corrente"/>
+    <Item english="Current XML Path with Predicates" text="Percorso XML corrente con predicati"/>
+    <Item english="Apply XSL Transformation…" text="Applica una trasformazione XSL…"/>
+    <Item english="Escape Characters in Selection" text="Applica l'escape ai caratteri nella selezione"/>
+    <Item english="Unescape Characters in Selection" text="Rimuovi l'escape dai caratteri nella selezione"/>
+    <Item english="Connections…" text="Connessioni…"/>
+    <Item english="Connect…" text="Connetti…"/>
+    <Item english="Disconnect" text="Disconnetti"/>
+    <Item english="Show Remote Files" text="Mostra i file remoti"/>
+    <Item english="Upload Current File" text="Carica il file corrente"/>
+    <Item english="Execute NppExec Script…" text="Esegui script NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Esegui lo script NppExec precedente"/>
+    <Item english="Stop Running NppExec Script" text="Interrompi lo script NppExec in esecuzione"/>
+    <Item english="Show NppExec Console" text="Mostra la console NppExec"/>
+    <Item english="Execute NppExec Script" text="Esegui script NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;script temporaneo&gt;"/>
+    <Item english="Script name" text="Nome dello script"/>
+    <Item english="Dock Left" text="Ancora a sinistra"/>
+    <Item english="Dock Right" text="Ancora a destra"/>
+    <Item english="Dock Top" text="Ancora in alto"/>
+    <Item english="Dock Bottom" text="Ancora in basso"/>
+    <Item english="Float" text="Disancora"/>
+    <Item english="Remember which panels were open" text="Ricorda quali pannelli erano aperti"/>
+    <Item english="Show the toolbar" text="Mostra la barra degli strumenti"/>
+    <Item english="Toolbar buttons" text="Pulsanti della barra degli strumenti"/>
+    <Item english="Icons only" text="Solo icone"/>
+    <Item english="Icons and labels" text="Icone e testo"/>
+    <Item english="Labels only" text="Solo testo"/>
+    <Item english="Toolbar size" text="Dimensione della barra degli strumenti"/>
+    <Item english="Regular" text="Normale"/>
+    <Item english="Small" text="Piccola"/>
+    <Item english="Icons" text="Icone"/>
+    <Item english="Hidden" text="Nascosto"/>
+    <Item english="1 pixel" text="1 pixel"/>
+    <Item english="2 pixels" text="2 pixel"/>
+    <Item english="3 pixels" text="3 pixel"/>
+    <Item english="Selected text can be dragged" text="Il testo selezionato può essere trascinato"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Abilita la Multi-Modifica (Cmd+Clic/selezione)"/>
+    <Item english="Follow the system" text="Usa l'impostazione di sistema"/>
+    <Item english="Light theme" text="Tema chiaro"/>
+    <Item english="Dark theme" text="Tema scuro"/>
+    <Item english="Show the fold margin" text="Mostra il margine dei raggruppamenti"/>
+    <Item english="A line" text="Una linea"/>
+    <Item english="Columns (space separated)" text="Colonne (separate da spazi)"/>
+    <Item english="3 parts" text="3 parti"/>
+    <Item english="4 parts" text="4 parti"/>
+    <Item english="5 parts" text="5 parti"/>
+    <Item english="6 parts" text="6 parti"/>
+    <Item english="7 parts" text="7 parti"/>
+    <Item english="8 parts" text="8 parti"/>
+    <Item english="9 parts" text="9 parti"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Deduci il linguaggio dal contenuto quando il nome non lo indica"/>
+    <Item english="Highlight matching braces" text="Evidenzia le parentesi corrispondenti"/>
+    <Item english="Header font (blank for the editor's)" text="Carattere dell'intestazione (vuoto: quello dell'editor)"/>
+    <Item english="Header font size" text="Dimensione del carattere dell'intestazione"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Margini: sinistro, superiore, destro, inferiore (punti)"/>
+    <Item english="Characters before it opens" text="Caratteri prima dell'apertura"/>
+    <Item english="Add characters to the word list" text="Aggiungi caratteri ai delimitatori di parola"/>
+    <Item english="A fixed folder" text="Una cartella fissa"/>
+    <Item english="Fixed folder" text="Cartella fissa"/>
+    <Item english="Confirm Replace All" text="Chiedi conferma prima di sostituire tutto"/>
+    <Item english="Compare: ignore case" text="Confronto: ignora maiuscole/minuscole"/>
+    <Item english="Compare: ignore spaces" text="Confronto: ignora gli spazi"/>
+    <Item english="Compare: ignore empty lines" text="Confronto: ignora le righe vuote"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="N. max di caratteri per compilare automaticamente il campo Trova"/>
+    <Item english="Releases repository" text="Repository delle versioni"/>
+    <Item english="Notepad++ update" text="Aggiornamento di Notepad++"/>
+    <Item english="No update is available." text="Nessun aggiornamento disponibile."/>
+    <Item english="An update package is available, do you want to download it?" text="È disponibile un pacchetto di aggiornamento, vuoi scaricarlo?"/>
+    <Item english="Open the Releases Page" text="Apri la pagina delle versioni"/>
+    <Item english="Copy debug info to clipboard" text="Copia info di debug negli appunti"/>
+    <Item english="Fonts…" text="Caratteri…"/>
+    <Item english="This document is not valid JSON." text="Questo documento non è JSON valido."/>
+    <Item english="Valid JSON." text="JSON valido."/>
+    <Item english="Invalid JSON." text="JSON non valido."/>
+    <Item english="Set as the first file to compare." text="Impostato come primo file da confrontare."/>
+    <Item english="Nothing to compare with." text="Niente con cui confrontare."/>
+    <Item english="The document is valid XML." text="Il documento è XML valido."/>
+    <Item english="FTP connections" text="Connessioni FTP"/>
+    <Item english="Cannot connect." text="Impossibile connettersi."/>
+    <Item english="That file is open in another tab." text="Quel file è aperto in un'altra scheda."/>
+    <Item english="Close it first, or choose another name." text="Chiudilo prima, oppure scegli un altro nome."/>
+    <Item english="Which language is this?" text="Che linguaggio è questo?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Alcuni caratteri non possono essere rappresentati in questa codifica."/>
+    <Item english="Converting will replace them." text="La conversione li sostituirà."/>
+    <Item english="Press the keys." text="Premi i tasti."/>
+    <Item english="Nothing is marked" text="Niente è evidenziato"/>
+    <Item english="Marked text copied" text="Testo evidenziato copiato"/>
+    <Item english="Choose a folder first" text="Scegli prima una cartella"/>
+    <Item english="This document has no folder" text="Questo documento non ha una cartella"/>
+    <Item english="The ticked project panels have no files" text="I pannelli di progetto selezionati non contengono file"/>
+    <Item english="Searching..." text="Ricerca in corso..."/>
+    <Item english="Stopping..." text="Interruzione in corso..."/>
+    <Item english="Marks cleared" text="Evidenziazioni pulite"/>
+    <Item english="Transparent" text="Trasparente"/>
+    <Item english="View 1" text="Vista 1"/>
+    <Item english="View 2" text="Vista 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Hash"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Chiave HMAC (facoltativa):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (esadecimale):"/>
+    <Item english="Random" text="Casuale"/>
+    <Item english="Cost (4-31):" text="Costo (4-31):"/>
+    <Item english="Version:" text="Versione:"/>
+    <Item english="N, as a power of 2:" text="N, come potenza di 2:"/>
+    <Item english="Block size (r):" text="Dimensione del blocco (r):"/>
+    <Item english="Parallelism (p):" text="Parallelismo (p):"/>
+    <Item english="Variant:" text="Variante:"/>
+    <Item english="Memory (KiB):" text="Memoria (KiB):"/>
+    <Item english="Iterations:" text="Iterazioni:"/>
+    <Item english="Parallelism:" text="Parallelismo:"/>
+    <Item english="Digest:" text="Funzione hash:"/>
+    <Item english="Hash length (bytes):" text="Lunghezza dell'hash (byte):"/>
+    <Item english="Hash:" text="Hash:"/>
+    <Item english="Verify" text="Verifica"/>
+    <Item english="Hash to check the password against:" text="Hash con cui confrontare la password:"/>
+    <Item english="The salt is not valid hexadecimal." text="Il salt non è un valore esadecimale valido."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt richiede un salt di esattamente 16 byte."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 richiede un salt di almeno 8 byte."/>
+    <Item english="The hash could not be generated with these settings." text="Impossibile generare l'hash con queste impostazioni."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Questo non è un hash bcrypt, scrypt, Argon2 o PBKDF2."/>
+    <Item english="The password matches the hash." text="La password corrisponde all'hash."/>
+    <Item english="The password does not match the hash." text="La password non corrisponde all'hash."/>
+    <Item english="The cost must be between 4 and 31." text="Il costo deve essere compreso tra 4 e 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="La versione deve essere 2a, 2b o 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N deve essere compreso tra 2^1 e 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r e p devono essere compresi tra 1 e 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Queste impostazioni richiedono più di 2 GB di memoria."/>
+    <Item english="The parallelism must be between 1 and 64." text="Il parallelismo deve essere compreso tra 1 e 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Le iterazioni devono essere comprese tra 1 e 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="La memoria deve essere di almeno 8 KiB per ogni thread."/>
+    <Item english="These settings need more than 4 GB of memory." text="Queste impostazioni richiedono più di 4 GB di memoria."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="La funzione hash deve essere SHA-1, SHA-256 o SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Le iterazioni devono essere comprese tra 1 e 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="La lunghezza dell'hash deve essere compresa tra 4 e 1024 byte."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (per URL)"/>
+    <Item english="Encode" text="Codifica"/>
+    <Item english="Decode" text="Decodifica"/>
+    <Item english="The input is:" text="L'input è:"/>
+    <Item english="Bytes in hexadecimal" text="Byte in esadecimale"/>
+    <Item english="Input:" text="Input:"/>
+    <Item english="Result:" text="Risultato:"/>
+    <Item english="Text:" text="Testo:"/>
+    <Item english="Bytes in hexadecimal:" text="Byte in esadecimale:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="L'input non è composto da byte scritti in esadecimale."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="L'input non è $STR_REPLACE$ valido."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="I byte decodificati non sono testo UTF-8; vengono mostrati solo in esadecimale."/>
+    <Item english="Password Generator" text="Generatore di password"/>
+    <Item english="Length:" text="Lunghezza:"/>
+    <Item english="Number of passwords:" text="Numero di password:"/>
+    <Item english="Uppercase letters (A-Z)" text="Lettere maiuscole (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Lettere minuscole (a-z)"/>
+    <Item english="Digits (0-9)" text="Cifre (0-9)"/>
+    <Item english="Symbols:" text="Simboli:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Escludi i caratteri che si somigliano (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Almeno un carattere di ogni tipo"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropia: circa $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Scegli almeno un tipo di carattere."/>
+    <Item english="Insert into Document" text="Inserisci nel documento"/>
+    <Item english="Show the bare key in hexadecimal" text="Mostra la sola chiave in esadecimale"/>
+    <Item english="Empty: a random salt each time" text="Vuoto: un salt casuale ogni volta"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt legge solo i primi 72 byte."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Richiesta HTTP"/>
+    <Item english="Send" text="Invia"/>
+    <Item english="Parameters" text="Parametri"/>
+    <Item english="Headers" text="Intestazioni"/>
+    <Item english="Body" text="Corpo"/>
+    <Item english="Options" text="Opzioni"/>
+    <Item english="Content type:" text="Tipo di contenuto:"/>
+    <Item english="User name:" text="Nome utente:"/>
+    <Item english="Password:" text="Password:"/>
+    <Item english="Timeout (seconds):" text="Timeout (secondi):"/>
+    <Item english="Follow redirects" text="Segui i reindirizzamenti"/>
+    <Item english="Allow invalid certificates" text="Consenti certificati non validi"/>
+    <Item english="Format JSON" text="Formatta JSON"/>
+    <Item english="Paste curl Command" text="Incolla comando curl"/>
+    <Item english="Copy as curl" text="Copia come curl"/>
+    <Item english="Open in New Document" text="Apri in un nuovo documento"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Uno per riga: nome=valore. Vengono aggiunti all'indirizzo, codificati."/>
+    <Item english="One to a line: Name: value" text="Uno per riga: Nome: valore"/>
+    <Item english="Sent as it is written, in UTF-8." text="Inviato così com'è scritto, in UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="La risposta non è testo: $INT_REPLACE$ byte."/>
+    <Item english="The address is not an http or https address." text="L'indirizzo non è un indirizzo http o https."/>
+    <Item english="This is not a curl command." text="Questo non è un comando curl."/>
+    <Item english="The command has no address." text="Il comando non contiene un indirizzo."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Il comando legge i dati da un file, cosa che qui non è supportata."/>
+    <Item english="Forms and uploads of files are not read from a command." text="I moduli e i caricamenti di file non vengono letti da un comando."/>
+    <Item english="The command's address is not an http or https address." text="L'indirizzo del comando non è un indirizzo http o https."/>
+</NativeLangExtra>

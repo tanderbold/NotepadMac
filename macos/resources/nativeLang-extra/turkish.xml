@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/turkish.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Turkish">
+    <Item english="About NotepadMac" text="NotepadMac Hakkında"/>
+    <Item english="Hide NotepadMac" text="NotepadMac'i Gizle"/>
+    <Item english="Hide Others" text="Diğerlerini Gizle"/>
+    <Item english="Show All" text="Tümünü Göster"/>
+    <Item english="Quit NotepadMac" text="NotepadMac'ten Çık"/>
+    <Item english="Open Containing Folder in Finder" text="Bulunduğu Klasörü Finder'da Aç"/>
+    <Item english="Open Containing Folder in Terminal" text="Bulunduğu Klasörü Terminal'de Aç"/>
+    <Item english="Toggle Insert/Overtype" text="Araya Ekleme/Üzerine Yazma Arasında Geçiş Yap"/>
+    <Item english="Toggle Fold" text="Bloku Katla/Aç"/>
+    <Item english="Show All Hidden Lines" text="Tüm Gizli Satırları Göster"/>
+    <Item english="Recent Window" text="Önceki Pencere"/>
+    <Item english="Move to Trash" text="Çöp Sepetine Taşı"/>
+    <Item english="Save Current Command…" text="Geçerli Komutu Kaydet…"/>
+    <Item english="Manage Saved Commands…" text="Kayıtlı Komutları Yönet…"/>
+    <Item english="Show Console" text="Konsolu Göster"/>
+    <Item english="Validate shortcuts" text="Kısayolları Doğrula"/>
+    <Item english="Open Plugins Folder…" text="Eklentiler Klasörünü Aç…"/>
+    <Item english="Format" text="Biçimlendir"/>
+    <Item english="Compact" text="Sıkıştır"/>
+    <Item english="Sort Keys" text="Anahtarları Sırala"/>
+    <Item english="Validate" text="Doğrula"/>
+    <Item english="Show JSON Tree" text="JSON Ağacını Göster"/>
+    <Item english="Set as First to Compare" text="Karşılaştırılacak İlk Dosya Olarak Ayarla"/>
+    <Item english="Compare" text="Karşılaştır"/>
+    <Item english="Compare with File…" text="Dosya ile Karşılaştır…"/>
+    <Item english="Next Difference" text="Sonraki Fark"/>
+    <Item english="Previous Difference" text="Önceki Fark"/>
+    <Item english="First Difference" text="İlk Fark"/>
+    <Item english="Last Difference" text="Son Fark"/>
+    <Item english="Compare Summary" text="Karşılaştırma Özeti"/>
+    <Item english="Ignore Case" text="Büyük/Küçük Harfi Yoksay"/>
+    <Item english="Ignore Spaces" text="Boşlukları Yoksay"/>
+    <Item english="Ignore Empty Lines" text="Boş Satırları Yoksay"/>
+    <Item english="Clear Active Compare" text="Etkin Karşılaştırmayı Temizle"/>
+    <Item english="Clear All Compares" text="Tüm Karşılaştırmaları Temizle"/>
+    <Item english="Pretty Print" text="Güzel Biçimlendir"/>
+    <Item english="Pretty Print — Indent Attributes" text="Güzel Biçimlendir — Öznitelikleri Girintile"/>
+    <Item english="Linearize" text="Tek Satıra İndir"/>
+    <Item english="Check XML Syntax Now" text="XML Sözdizimini Şimdi Denetle"/>
+    <Item english="Validate Against Schema…" text="Şemaya Göre Doğrula…"/>
+    <Item english="Validate Against DTD" text="DTD'ye Göre Doğrula"/>
+    <Item english="Evaluate XPath Expression…" text="XPath İfadesini Değerlendir…"/>
+    <Item english="Current XML Path" text="Geçerli XML Yolu"/>
+    <Item english="Current XML Path with Predicates" text="Koşullarıyla Birlikte Geçerli XML Yolu"/>
+    <Item english="Apply XSL Transformation…" text="XSL Dönüşümü Uygula…"/>
+    <Item english="Escape Characters in Selection" text="Seçimdeki Karakterleri Kaçışla"/>
+    <Item english="Unescape Characters in Selection" text="Seçimdeki Kaçışları Geri Al"/>
+    <Item english="Connections…" text="Bağlantılar…"/>
+    <Item english="Connect…" text="Bağlan…"/>
+    <Item english="Disconnect" text="Bağlantıyı Kes"/>
+    <Item english="Show Remote Files" text="Uzak Dosyaları Göster"/>
+    <Item english="Upload Current File" text="Geçerli Dosyayı Karşıya Yükle"/>
+    <Item english="Execute NppExec Script…" text="NppExec Betiği Çalıştır…"/>
+    <Item english="Execute Previous NppExec Script" text="Önceki NppExec Betiğini Çalıştır"/>
+    <Item english="Stop Running NppExec Script" text="Çalışan NppExec Betiğini Durdur"/>
+    <Item english="Show NppExec Console" text="NppExec Konsolunu Göster"/>
+    <Item english="Execute NppExec Script" text="NppExec Betiği Çalıştır"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;geçici betik&gt;"/>
+    <Item english="Script name" text="Betik adı"/>
+    <Item english="Dock Left" text="Sola Yerleştir"/>
+    <Item english="Dock Right" text="Sağa Yerleştir"/>
+    <Item english="Dock Top" text="Üste Yerleştir"/>
+    <Item english="Dock Bottom" text="Alta Yerleştir"/>
+    <Item english="Float" text="Serbest Bırak"/>
+    <Item english="Remember which panels were open" text="Hangi panellerin açık olduğunu hatırla"/>
+    <Item english="Show the toolbar" text="Araç çubuğunu göster"/>
+    <Item english="Toolbar buttons" text="Araç çubuğu düğmeleri"/>
+    <Item english="Icons only" text="Yalnızca simgeler"/>
+    <Item english="Icons and labels" text="Simgeler ve etiketler"/>
+    <Item english="Labels only" text="Yalnızca etiketler"/>
+    <Item english="Toolbar size" text="Araç çubuğu boyutu"/>
+    <Item english="Regular" text="Normal"/>
+    <Item english="Small" text="Küçük"/>
+    <Item english="Icons" text="Simgeler"/>
+    <Item english="Hidden" text="Gizli"/>
+    <Item english="1 pixel" text="1 piksel"/>
+    <Item english="2 pixels" text="2 piksel"/>
+    <Item english="3 pixels" text="3 piksel"/>
+    <Item english="Selected text can be dragged" text="Seçili yazı sürüklenebilir"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Çoklu-Düzenlemeyi Etkinleştir (Cmd+tıklama/seçim)"/>
+    <Item english="Follow the system" text="Sistemi Takip Et"/>
+    <Item english="Light theme" text="Açık tema"/>
+    <Item english="Dark theme" text="Koyu tema"/>
+    <Item english="Show the fold margin" text="Katlama kenar boşluğunu göster"/>
+    <Item english="A line" text="Çizgi"/>
+    <Item english="Columns (space separated)" text="Sütunlar (boşlukla ayrılmış)"/>
+    <Item english="3 parts" text="3 parça"/>
+    <Item english="4 parts" text="4 parça"/>
+    <Item english="5 parts" text="5 parça"/>
+    <Item english="6 parts" text="6 parça"/>
+    <Item english="7 parts" text="7 parça"/>
+    <Item english="8 parts" text="8 parça"/>
+    <Item english="9 parts" text="9 parça"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Ad belli etmediğinde dili içerikten belirle"/>
+    <Item english="Highlight matching braces" text="Eşleşen ayraçları vurgula"/>
+    <Item english="Header font (blank for the editor's)" text="Üst bilgi yazı tipi (düzenleyicininki için boş bırakın)"/>
+    <Item english="Header font size" text="Üst bilgi yazı boyutu"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Kenar boşlukları: sol, üst, sağ, alt (punto)"/>
+    <Item english="Characters before it opens" text="Açılmadan önceki karakter sayısı"/>
+    <Item english="Add characters to the word list" text="Sözcük karakter listesine karakter ekle"/>
+    <Item english="A fixed folder" text="Sabit bir klasör"/>
+    <Item english="Fixed folder" text="Sabit klasör"/>
+    <Item english="Confirm Replace All" text="Tümünü Değiştirmeyi Onayla"/>
+    <Item english="Compare: ignore case" text="Karşılaştırma: büyük/küçük harfi yoksay"/>
+    <Item english="Compare: ignore spaces" text="Karşılaştırma: boşlukları yoksay"/>
+    <Item english="Compare: ignore empty lines" text="Karşılaştırma: boş satırları yoksay"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Bul Alanını Oto-Doldurma İçin En Fazla Karakter"/>
+    <Item english="Releases repository" text="Sürümler deposu"/>
+    <Item english="Notepad++ update" text="Notepad++ güncellemesi"/>
+    <Item english="No update is available." text="Kullanılabilir güncelleme yok."/>
+    <Item english="An update package is available, do you want to download it?" text="Bir güncelleme paketi mevcut, indirmek ister misiniz?"/>
+    <Item english="Open the Releases Page" text="Sürümler Sayfasını Aç"/>
+    <Item english="Copy debug info to clipboard" text="Hata ayıklama bilgisini panoya kopyala"/>
+    <Item english="Fonts…" text="Yazı Tipleri…"/>
+    <Item english="This document is not valid JSON." text="Bu belge geçerli bir JSON değil."/>
+    <Item english="Valid JSON." text="Geçerli JSON."/>
+    <Item english="Invalid JSON." text="Geçersiz JSON."/>
+    <Item english="Set as the first file to compare." text="Karşılaştırılacak ilk dosya olarak ayarlandı."/>
+    <Item english="Nothing to compare with." text="Karşılaştırılacak bir şey yok."/>
+    <Item english="The document is valid XML." text="Belge geçerli bir XML."/>
+    <Item english="FTP connections" text="FTP bağlantıları"/>
+    <Item english="Cannot connect." text="Bağlanılamıyor."/>
+    <Item english="That file is open in another tab." text="Bu dosya başka bir sekmede açık."/>
+    <Item english="Close it first, or choose another name." text="Önce onu kapatın veya başka bir ad seçin."/>
+    <Item english="Which language is this?" text="Bu hangi dil?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Bazı karakterler bu kodlamada gösterilemiyor."/>
+    <Item english="Converting will replace them." text="Dönüştürme bunları değiştirecek."/>
+    <Item english="Press the keys." text="Tuşlara basın."/>
+    <Item english="Nothing is marked" text="Hiçbir şey işaretli değil"/>
+    <Item english="Marked text copied" text="İşaretli yazı kopyalandı"/>
+    <Item english="Choose a folder first" text="Önce bir klasör seçin"/>
+    <Item english="This document has no folder" text="Bu belgenin klasörü yok"/>
+    <Item english="The ticked project panels have no files" text="İşaretli proje panellerinde dosya yok"/>
+    <Item english="Searching..." text="Aranıyor..."/>
+    <Item english="Stopping..." text="Durduruluyor..."/>
+    <Item english="Marks cleared" text="İşaretler temizlendi"/>
+    <Item english="Transparent" text="Saydam"/>
+    <Item english="View 1" text="Görünüm 1"/>
+    <Item english="View 2" text="Görünüm 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Karmalar"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC anahtarı (isteğe bağlı):"/>
+    <Item english="Salt (hexadecimal):" text="Tuz (onaltılık):"/>
+    <Item english="Random" text="Rastgele"/>
+    <Item english="Cost (4-31):" text="Maliyet (4-31):"/>
+    <Item english="Version:" text="Versiyon:"/>
+    <Item english="N, as a power of 2:" text="N, 2'nin kuvveti olarak:"/>
+    <Item english="Block size (r):" text="Blok boyutu (r):"/>
+    <Item english="Parallelism (p):" text="Paralellik (p):"/>
+    <Item english="Variant:" text="Varyant:"/>
+    <Item english="Memory (KiB):" text="Bellek (KiB):"/>
+    <Item english="Iterations:" text="Yinelemeler:"/>
+    <Item english="Parallelism:" text="Paralellik:"/>
+    <Item english="Digest:" text="Karma işlevi:"/>
+    <Item english="Hash length (bytes):" text="Karma uzunluğu (bayt):"/>
+    <Item english="Hash:" text="Karma:"/>
+    <Item english="Verify" text="Doğrula"/>
+    <Item english="Hash to check the password against:" text="Parolanın karşılaştırılacağı karma:"/>
+    <Item english="The salt is not valid hexadecimal." text="Tuz geçerli bir onaltılık değer değil."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt tam olarak 16 baytlık bir tuz gerektirir."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 en az 8 baytlık bir tuz gerektirir."/>
+    <Item english="The hash could not be generated with these settings." text="Karma bu ayarlarla üretilemedi."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Bu bir bcrypt, scrypt, Argon2 veya PBKDF2 karması değil."/>
+    <Item english="The password matches the hash." text="Parola karmayla eşleşiyor."/>
+    <Item english="The password does not match the hash." text="Parola karmayla eşleşmiyor."/>
+    <Item english="The cost must be between 4 and 31." text="Maliyet 4 ile 31 arasında olmalıdır."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Versiyon 2a, 2b veya 2y olmalıdır."/>
+    <Item english="N must be between 2^1 and 2^24." text="N, 2^1 ile 2^24 arasında olmalıdır."/>
+    <Item english="r and p must be between 1 and 64." text="r ve p 1 ile 64 arasında olmalıdır."/>
+    <Item english="These settings need more than 2 GB of memory." text="Bu ayarlar 2 GB'tan fazla bellek gerektirir."/>
+    <Item english="The parallelism must be between 1 and 64." text="Paralellik 1 ile 64 arasında olmalıdır."/>
+    <Item english="The iterations must be between 1 and 1000." text="Yineleme sayısı 1 ile 1000 arasında olmalıdır."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Bellek her iş parçacığı için en az 8 KiB olmalıdır."/>
+    <Item english="These settings need more than 4 GB of memory." text="Bu ayarlar 4 GB'tan fazla bellek gerektirir."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Karma işlevi SHA-1, SHA-256 veya SHA-512 olmalıdır."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Yineleme sayısı 1 ile 100000000 arasında olmalıdır."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Karma uzunluğu 4 ile 1024 bayt arasında olmalıdır."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL için güvenli)"/>
+    <Item english="Encode" text="Kodla"/>
+    <Item english="Decode" text="Kodu Çöz"/>
+    <Item english="The input is:" text="Girdi türü:"/>
+    <Item english="Bytes in hexadecimal" text="Onaltılık baytlar"/>
+    <Item english="Input:" text="Girdi:"/>
+    <Item english="Result:" text="Sonuç:"/>
+    <Item english="Text:" text="Metin:"/>
+    <Item english="Bytes in hexadecimal:" text="Onaltılık baytlar:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Girdi, onaltılık olarak yazılmış baytlar değil."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Girdi geçerli bir $STR_REPLACE$ değil."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Çözülen baytlar UTF-8 metni değil; yalnızca onaltılık olarak gösteriliyor."/>
+    <Item english="Password Generator" text="Parola Üretici"/>
+    <Item english="Length:" text="Uzunluk:"/>
+    <Item english="Number of passwords:" text="Parola sayısı:"/>
+    <Item english="Uppercase letters (A-Z)" text="Büyük harfler (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Küçük harfler (a-z)"/>
+    <Item english="Digits (0-9)" text="Rakamlar (0-9)"/>
+    <Item english="Symbols:" text="Semboller:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Birbirine benzeyen karakterleri çıkar (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Her türden en az bir karakter"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropi: yaklaşık $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="En az bir karakter türü seçin."/>
+    <Item english="Insert into Document" text="Belgeye Ekle"/>
+    <Item english="Show the bare key in hexadecimal" text="Yalın anahtarı onaltılık olarak göster"/>
+    <Item english="Empty: a random salt each time" text="Boş: her seferinde rastgele tuz"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt yalnızca ilk 72 baytı okur."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP İsteği"/>
+    <Item english="Send" text="Gönder"/>
+    <Item english="Parameters" text="Parametreler"/>
+    <Item english="Headers" text="Başlıklar"/>
+    <Item english="Body" text="Gövde"/>
+    <Item english="Options" text="Seçenekler"/>
+    <Item english="Content type:" text="İçerik türü:"/>
+    <Item english="User name:" text="Kullanıcı adı:"/>
+    <Item english="Password:" text="Parola:"/>
+    <Item english="Timeout (seconds):" text="Zaman aşımı (saniye):"/>
+    <Item english="Follow redirects" text="Yönlendirmeleri izle"/>
+    <Item english="Allow invalid certificates" text="Geçersiz sertifikalara izin ver"/>
+    <Item english="Format JSON" text="JSON'u biçimlendir"/>
+    <Item english="Paste curl Command" text="curl Komutunu Yapıştır"/>
+    <Item english="Copy as curl" text="curl Olarak Kopyala"/>
+    <Item english="Open in New Document" text="Yeni Belgede Aç"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Her satıra bir tane: ad=değer. Kodlanarak adrese eklenir."/>
+    <Item english="One to a line: Name: value" text="Her satıra bir tane: Ad: değer"/>
+    <Item english="Sent as it is written, in UTF-8." text="Yazıldığı gibi, UTF-8 olarak gönderilir."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Yanıt metin değil: $INT_REPLACE$ bayt."/>
+    <Item english="The address is not an http or https address." text="Adres bir http veya https adresi değil."/>
+    <Item english="This is not a curl command." text="Bu bir curl komutu değil."/>
+    <Item english="The command has no address." text="Komutta adres yok."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Komut verilerini bir dosyadan okuyor; bu burada desteklenmiyor."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Formlar ve dosya yüklemeleri komuttan okunmaz."/>
+    <Item english="The command's address is not an http or https address." text="Komuttaki adres bir http veya https adresi değil."/>
+</NativeLangExtra>

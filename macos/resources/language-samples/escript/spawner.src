@@ -1,0 +1,44 @@
+use uo;
+use os;
+use cfgfile;
+
+include "include/spawnnet";
+
+var spawns := dictionary;
+
+program spawner(rune)
+    var cfg := ReadConfigFile(":spawnnet:spawngroups");
+    if (!cfg)
+        syslog("Unable to open spawngroups.cfg: " + cfg.errortext);
+        return 0;
+    endif
+
+    while (rune)
+        var group := GetObjProperty(rune, "Group");
+        var elem := FindConfigElem(cfg, group);
+        var creatures := GetConfigStringArray(elem, "npc");
+        var max := CInt(GetObjProperty(rune, "Amount"));
+
+        foreach serial in (GetObjProperty(rune, "Children") ?: array{})
+            if (!SystemFindObjectBySerial(serial))
+                RemoveChild(rune, serial);
+            endif
+            sleepms(2);
+        endforeach
+
+        if (CountChildren(rune) < max)
+            var template := creatures[RandomInt(creatures.size()) + 1];
+            SpawnAt(rune, template);
+        endif
+        sleep(CInt(GetObjProperty(rune, "Delay")) * 60);
+    endwhile
+endprogram
+
+function SpawnAt(rune, template)
+    var x := rune.x + RandomInt(10) - 5;
+    var y := rune.y + RandomInt(10) - 5;
+    var npc := CreateNpcFromTemplate(template, x, y, GetMapInfo(x, y).z, 0, rune.realm);
+    if (npc)
+        AddChild(rune, npc.serial);
+    endif
+endfunction

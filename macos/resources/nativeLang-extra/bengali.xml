@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/bengali.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="বাঙালি">
+    <Item english="About NotepadMac" text="NotepadMac সম্পর্কে"/>
+    <Item english="Hide NotepadMac" text="NotepadMac লুকান"/>
+    <Item english="Hide Others" text="অন্যগুলো লুকান"/>
+    <Item english="Show All" text="সব দেখান"/>
+    <Item english="Quit NotepadMac" text="NotepadMac থেকে প্রস্থান করুন"/>
+    <Item english="Open Containing Folder in Finder" text="ধারণকারী ফোল্ডার Finder-এ খুলুন"/>
+    <Item english="Open Containing Folder in Terminal" text="ধারণকারী ফোল্ডার টার্মিনালে খুলুন"/>
+    <Item english="Toggle Insert/Overtype" text="ইনসার্ট/ওভারটাইপ টগল করুন"/>
+    <Item english="Toggle Fold" text="ভাঁজ টগল করুন"/>
+    <Item english="Show All Hidden Lines" text="সব লুকানো লাইন দেখান"/>
+    <Item english="Recent Window" text="সাম্প্রতিক জানালা"/>
+    <Item english="Move to Trash" text="ট্র্যাশে সরান"/>
+    <Item english="Save Current Command…" text="বর্তমান কমান্ড সংরক্ষণ করুন…"/>
+    <Item english="Manage Saved Commands…" text="সংরক্ষিত কমান্ড পরিচালনা করুন…"/>
+    <Item english="Show Console" text="কনসোল দেখান"/>
+    <Item english="Validate shortcuts" text="শর্টকাট যাচাই করুন"/>
+    <Item english="Open Plugins Folder…" text="প্লাগইন ফোল্ডার খুলুন…"/>
+    <Item english="Format" text="ফরম্যাট করুন"/>
+    <Item english="Compact" text="সংক্ষিপ্ত করুন"/>
+    <Item english="Sort Keys" text="কীগুলো সাজান"/>
+    <Item english="Validate" text="যাচাই করুন"/>
+    <Item english="Show JSON Tree" text="JSON ট্রি দেখান"/>
+    <Item english="Set as First to Compare" text="তুলনার জন্য প্রথম হিসেবে সেট করুন"/>
+    <Item english="Compare" text="তুলনা করুন"/>
+    <Item english="Compare with File…" text="ফাইলের সাথে তুলনা করুন…"/>
+    <Item english="Next Difference" text="পরবর্তী পার্থক্য"/>
+    <Item english="Previous Difference" text="পূর্ববর্তী পার্থক্য"/>
+    <Item english="First Difference" text="প্রথম পার্থক্য"/>
+    <Item english="Last Difference" text="শেষ পার্থক্য"/>
+    <Item english="Compare Summary" text="তুলনার সারাংশ"/>
+    <Item english="Ignore Case" text="কেস উপেক্ষা করুন"/>
+    <Item english="Ignore Spaces" text="স্পেস উপেক্ষা করুন"/>
+    <Item english="Ignore Empty Lines" text="খালি লাইন উপেক্ষা করুন"/>
+    <Item english="Clear Active Compare" text="সক্রিয় তুলনা মুছুন"/>
+    <Item english="Clear All Compares" text="সব তুলনা মুছুন"/>
+    <Item english="Pretty Print" text="প্রিটি প্রিন্ট"/>
+    <Item english="Pretty Print — Indent Attributes" text="প্রিটি প্রিন্ট — অ্যাট্রিবিউট ইনডেন্ট করুন"/>
+    <Item english="Linearize" text="এক লাইনে আনুন"/>
+    <Item english="Check XML Syntax Now" text="এখনই XML সিনট্যাক্স পরীক্ষা করুন"/>
+    <Item english="Validate Against Schema…" text="স্কিমা দিয়ে যাচাই করুন…"/>
+    <Item english="Validate Against DTD" text="DTD দিয়ে যাচাই করুন"/>
+    <Item english="Evaluate XPath Expression…" text="XPath এক্সপ্রেশন মূল্যায়ন করুন…"/>
+    <Item english="Current XML Path" text="বর্তমান XML পাথ"/>
+    <Item english="Current XML Path with Predicates" text="প্রেডিকেটসহ বর্তমান XML পাথ"/>
+    <Item english="Apply XSL Transformation…" text="XSL রূপান্তর প্রয়োগ করুন…"/>
+    <Item english="Escape Characters in Selection" text="নির্বাচনের অক্ষর এস্কেপ করুন"/>
+    <Item english="Unescape Characters in Selection" text="নির্বাচনের অক্ষর আনএস্কেপ করুন"/>
+    <Item english="Connections…" text="সংযোগ…"/>
+    <Item english="Connect…" text="সংযোগ করুন…"/>
+    <Item english="Disconnect" text="সংযোগ বিচ্ছিন্ন করুন"/>
+    <Item english="Show Remote Files" text="রিমোট ফাইল দেখান"/>
+    <Item english="Upload Current File" text="বর্তমান ফাইল আপলোড করুন"/>
+    <Item english="Execute NppExec Script…" text="NppExec স্ক্রিপ্ট চালান…"/>
+    <Item english="Execute Previous NppExec Script" text="আগের NppExec স্ক্রিপ্ট চালান"/>
+    <Item english="Stop Running NppExec Script" text="চলমান NppExec স্ক্রিপ্ট থামান"/>
+    <Item english="Show NppExec Console" text="NppExec কনসোল দেখান"/>
+    <Item english="Execute NppExec Script" text="NppExec স্ক্রিপ্ট চালান"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;অস্থায়ী স্ক্রিপ্ট&gt;"/>
+    <Item english="Script name" text="স্ক্রিপ্টের নাম"/>
+    <Item english="Dock Left" text="বামে ডক করুন"/>
+    <Item english="Dock Right" text="ডানে ডক করুন"/>
+    <Item english="Dock Top" text="উপরে ডক করুন"/>
+    <Item english="Dock Bottom" text="নিচে ডক করুন"/>
+    <Item english="Float" text="ভাসমান করুন"/>
+    <Item english="Remember which panels were open" text="কোন প্যানেলগুলো খোলা ছিল মনে রাখুন"/>
+    <Item english="Show the toolbar" text="টুলবার দেখান"/>
+    <Item english="Toolbar buttons" text="টুলবার বোতাম"/>
+    <Item english="Icons only" text="শুধু আইকন"/>
+    <Item english="Icons and labels" text="আইকন ও লেবেল"/>
+    <Item english="Labels only" text="শুধু লেবেল"/>
+    <Item english="Toolbar size" text="টুলবারের আকার"/>
+    <Item english="Regular" text="সাধারণ"/>
+    <Item english="Small" text="ছোট"/>
+    <Item english="Icons" text="আইকন"/>
+    <Item english="Hidden" text="লুকানো"/>
+    <Item english="1 pixel" text="1 পিক্সেল"/>
+    <Item english="2 pixels" text="2 পিক্সেল"/>
+    <Item english="3 pixels" text="3 পিক্সেল"/>
+    <Item english="Selected text can be dragged" text="নির্বাচিত টেক্সট টেনে সরানো যাবে"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="মাল্টি-এডিটিং সক্রিয় করুন (Cmd+ক্লিক/নির্বাচন)"/>
+    <Item english="Follow the system" text="সিস্টেম অনুযায়ী"/>
+    <Item english="Light theme" text="লাইট থিম"/>
+    <Item english="Dark theme" text="ডার্ক থিম"/>
+    <Item english="Show the fold margin" text="ভাঁজ মার্জিন দেখান"/>
+    <Item english="A line" text="একটি রেখা"/>
+    <Item english="Columns (space separated)" text="কলাম (স্পেস দিয়ে আলাদা)"/>
+    <Item english="3 parts" text="3 ভাগ"/>
+    <Item english="4 parts" text="4 ভাগ"/>
+    <Item english="5 parts" text="5 ভাগ"/>
+    <Item english="6 parts" text="6 ভাগ"/>
+    <Item english="7 parts" text="7 ভাগ"/>
+    <Item english="8 parts" text="8 ভাগ"/>
+    <Item english="9 parts" text="9 ভাগ"/>
+    <Item english="Work the language out from the contents when the name does not say" text="নাম থেকে বোঝা না গেলে বিষয়বস্তু থেকে ভাষা নির্ণয় করুন"/>
+    <Item english="Highlight matching braces" text="মিলে যাওয়া ব্র্যাকেট হাইলাইট করুন"/>
+    <Item english="Header font (blank for the editor's)" text="শিরোলেখ ফন্ট (এডিটরের ফন্টের জন্য ফাঁকা রাখুন)"/>
+    <Item english="Header font size" text="শিরোলেখ ফন্টের আকার"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="মার্জিন: বাম, উপর, ডান, নিচ (পয়েন্ট)"/>
+    <Item english="Characters before it opens" text="খোলার আগে অক্ষরের সংখ্যা"/>
+    <Item english="Add characters to the word list" text="শব্দ তালিকায় অক্ষর যোগ করুন"/>
+    <Item english="A fixed folder" text="একটি নির্দিষ্ট ফোল্ডার"/>
+    <Item english="Fixed folder" text="নির্দিষ্ট ফোল্ডার"/>
+    <Item english="Confirm Replace All" text="&quot;সমস্ত পরিবর্তন&quot; নিশ্চিত করুন"/>
+    <Item english="Compare: ignore case" text="তুলনা: কেস উপেক্ষা করুন"/>
+    <Item english="Compare: ignore spaces" text="তুলনা: স্পেস উপেক্ষা করুন"/>
+    <Item english="Compare: ignore empty lines" text="তুলনা: খালি লাইন উপেক্ষা করুন"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="অনুসন্ধান ঘর স্বয়ংক্রিয়ভাবে পূরণের সর্বোচ্চ অক্ষর"/>
+    <Item english="Releases repository" text="রিলিজ রিপোজিটরি"/>
+    <Item english="Notepad++ update" text="Notepad++ আপডেট"/>
+    <Item english="No update is available." text="কোনো আপডেট নেই।"/>
+    <Item english="An update package is available, do you want to download it?" text="একটি আপডেট প্যাকেজ পাওয়া গেছে, আপনি কি এটি ডাউনলোড করতে চান?"/>
+    <Item english="Open the Releases Page" text="রিলিজ পৃষ্ঠা খুলুন"/>
+    <Item english="Copy debug info to clipboard" text="ডিবাগ তথ্য ক্লিপবোর্ডে কপি করুন"/>
+    <Item english="Fonts…" text="ফন্ট…"/>
+    <Item english="This document is not valid JSON." text="এই নথিটি বৈধ JSON নয়।"/>
+    <Item english="Valid JSON." text="বৈধ JSON।"/>
+    <Item english="Invalid JSON." text="অবৈধ JSON।"/>
+    <Item english="Set as the first file to compare." text="তুলনার জন্য প্রথম ফাইল হিসেবে সেট করা হয়েছে।"/>
+    <Item english="Nothing to compare with." text="তুলনা করার মতো কিছু নেই।"/>
+    <Item english="The document is valid XML." text="নথিটি বৈধ XML।"/>
+    <Item english="FTP connections" text="FTP সংযোগ"/>
+    <Item english="Cannot connect." text="সংযোগ করা যাচ্ছে না।"/>
+    <Item english="That file is open in another tab." text="ফাইলটি অন্য ট্যাবে খোলা আছে।"/>
+    <Item english="Close it first, or choose another name." text="আগে সেটি বন্ধ করুন, অথবা অন্য নাম বেছে নিন।"/>
+    <Item english="Which language is this?" text="এটি কোন ভাষা?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="কিছু অক্ষর এই এনকোডিংয়ে প্রকাশ করা যায় না।"/>
+    <Item english="Converting will replace them." text="রূপান্তর করলে সেগুলো প্রতিস্থাপিত হবে।"/>
+    <Item english="Press the keys." text="কীগুলো চাপুন।"/>
+    <Item english="Nothing is marked" text="কিছুই চিহ্নিত নেই"/>
+    <Item english="Marked text copied" text="চিহ্নিত টেক্সট কপি হয়েছে"/>
+    <Item english="Choose a folder first" text="আগে একটি ফোল্ডার বেছে নিন"/>
+    <Item english="This document has no folder" text="এই নথির কোনো ফোল্ডার নেই"/>
+    <Item english="The ticked project panels have no files" text="টিক দেওয়া প্রকল্প প্যানেলগুলোতে কোনো ফাইল নেই"/>
+    <Item english="Searching..." text="অনুসন্ধান চলছে..."/>
+    <Item english="Stopping..." text="থামানো হচ্ছে..."/>
+    <Item english="Marks cleared" text="চিহ্ন মুছে ফেলা হয়েছে"/>
+    <Item english="Transparent" text="স্বচ্ছ"/>
+    <Item english="View 1" text="দৃশ্য 1"/>
+    <Item english="View 2" text="দৃশ্য 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="হ্যাশ"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC কী (ঐচ্ছিক):"/>
+    <Item english="Salt (hexadecimal):" text="সল্ট (হেক্সাডেসিমেল):"/>
+    <Item english="Random" text="এলোমেলো"/>
+    <Item english="Cost (4-31):" text="কস্ট (4-31):"/>
+    <Item english="Version:" text="সংস্করণ:"/>
+    <Item english="N, as a power of 2:" text="N, 2-এর ঘাত হিসেবে:"/>
+    <Item english="Block size (r):" text="ব্লকের আকার (r):"/>
+    <Item english="Parallelism (p):" text="সমান্তরালতা (p):"/>
+    <Item english="Variant:" text="ভ্যারিয়েন্ট:"/>
+    <Item english="Memory (KiB):" text="মেমরি (KiB):"/>
+    <Item english="Iterations:" text="পুনরাবৃত্তি:"/>
+    <Item english="Parallelism:" text="সমান্তরালতা:"/>
+    <Item english="Digest:" text="হ্যাশ ফাংশন:"/>
+    <Item english="Hash length (bytes):" text="হ্যাশের দৈর্ঘ্য (বাইট):"/>
+    <Item english="Hash:" text="হ্যাশ:"/>
+    <Item english="Verify" text="যাচাই করুন"/>
+    <Item english="Hash to check the password against:" text="যে হ্যাশের সাথে পাসওয়ার্ড যাচাই করা হবে:"/>
+    <Item english="The salt is not valid hexadecimal." text="সল্টটি বৈধ হেক্সাডেসিমেল নয়।"/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt-এর জন্য ঠিক 16 বাইটের সল্ট প্রয়োজন।"/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2-এর জন্য কমপক্ষে 8 বাইটের সল্ট প্রয়োজন।"/>
+    <Item english="The hash could not be generated with these settings." text="এই সেটিংস দিয়ে হ্যাশ তৈরি করা যায়নি।"/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="এটি bcrypt, scrypt, Argon2 বা PBKDF2 হ্যাশ নয়।"/>
+    <Item english="The password matches the hash." text="পাসওয়ার্ডটি হ্যাশের সাথে মিলেছে।"/>
+    <Item english="The password does not match the hash." text="পাসওয়ার্ডটি হ্যাশের সাথে মেলেনি।"/>
+    <Item english="The cost must be between 4 and 31." text="কস্ট 4 থেকে 31-এর মধ্যে হতে হবে।"/>
+    <Item english="The version must be 2a, 2b or 2y." text="সংস্করণ 2a, 2b বা 2y হতে হবে।"/>
+    <Item english="N must be between 2^1 and 2^24." text="N 2^1 থেকে 2^24-এর মধ্যে হতে হবে।"/>
+    <Item english="r and p must be between 1 and 64." text="r এবং p 1 থেকে 64-এর মধ্যে হতে হবে।"/>
+    <Item english="These settings need more than 2 GB of memory." text="এই সেটিংসের জন্য 2 GB-র বেশি মেমরি প্রয়োজন।"/>
+    <Item english="The parallelism must be between 1 and 64." text="সমান্তরালতা 1 থেকে 64-এর মধ্যে হতে হবে।"/>
+    <Item english="The iterations must be between 1 and 1000." text="পুনরাবৃত্তি 1 থেকে 1000-এর মধ্যে হতে হবে।"/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="প্রতিটি থ্রেডের জন্য মেমরি কমপক্ষে 8 KiB হতে হবে।"/>
+    <Item english="These settings need more than 4 GB of memory." text="এই সেটিংসের জন্য 4 GB-র বেশি মেমরি প্রয়োজন।"/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="হ্যাশ ফাংশন SHA-1, SHA-256 বা SHA-512 হতে হবে।"/>
+    <Item english="The iterations must be between 1 and 100000000." text="পুনরাবৃত্তি 1 থেকে 100000000-এর মধ্যে হতে হবে।"/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="হ্যাশের দৈর্ঘ্য 4 থেকে 1024 বাইটের মধ্যে হতে হবে।"/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-নিরাপদ)"/>
+    <Item english="Encode" text="এনকোড করুন"/>
+    <Item english="Decode" text="ডিকোড করুন"/>
+    <Item english="The input is:" text="ইনপুট হলো:"/>
+    <Item english="Bytes in hexadecimal" text="হেক্সাডেসিমেলে বাইট"/>
+    <Item english="Input:" text="ইনপুট:"/>
+    <Item english="Result:" text="ফলাফল:"/>
+    <Item english="Text:" text="টেক্সট:"/>
+    <Item english="Bytes in hexadecimal:" text="হেক্সাডেসিমেলে বাইট:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="ইনপুটটি হেক্সাডেসিমেলে লেখা বাইট নয়।"/>
+    <Item english="The input is not valid $STR_REPLACE$." text="ইনপুটটি বৈধ $STR_REPLACE$ নয়।"/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="ডিকোড করা বাইটগুলি UTF-8 টেক্সট নয়; সেগুলি শুধু হেক্সাডেসিমেলে দেখানো হয়েছে।"/>
+    <Item english="Password Generator" text="পাসওয়ার্ড জেনারেটর"/>
+    <Item english="Length:" text="দৈর্ঘ্য:"/>
+    <Item english="Number of passwords:" text="পাসওয়ার্ডের সংখ্যা:"/>
+    <Item english="Uppercase letters (A-Z)" text="বড় হাতের অক্ষর (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="ছোট হাতের অক্ষর (a-z)"/>
+    <Item english="Digits (0-9)" text="অঙ্ক (0-9)"/>
+    <Item english="Symbols:" text="প্রতীক:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="দেখতে একই রকম অক্ষর বাদ দিন (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="প্রতিটি ধরনের অন্তত একটি অক্ষর"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="এনট্রপি: প্রায় $INT_REPLACE$ বিট"/>
+    <Item english="Choose at least one kind of character." text="অন্তত এক ধরনের অক্ষর বেছে নিন।"/>
+    <Item english="Insert into Document" text="নথিতে সন্নিবেশ করুন"/>
+    <Item english="Show the bare key in hexadecimal" text="শুধু কী-টি হেক্সাডেসিমেলে দেখান"/>
+    <Item english="Empty: a random salt each time" text="ফাঁকা: প্রতিবার এলোমেলো সল্ট"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt শুধু প্রথম 72 বাইট পড়ে।"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP অনুরোধ"/>
+    <Item english="Send" text="পাঠান"/>
+    <Item english="Parameters" text="প্যারামিটার"/>
+    <Item english="Headers" text="হেডার"/>
+    <Item english="Body" text="বডি"/>
+    <Item english="Options" text="বিকল্প"/>
+    <Item english="Content type:" text="কনটেন্টের ধরন:"/>
+    <Item english="User name:" text="ব্যবহারকারীর নাম:"/>
+    <Item english="Password:" text="পাসওয়ার্ড:"/>
+    <Item english="Timeout (seconds):" text="টাইমআউট (সেকেন্ড):"/>
+    <Item english="Follow redirects" text="রিডাইরেক্ট অনুসরণ করুন"/>
+    <Item english="Allow invalid certificates" text="অবৈধ সার্টিফিকেট অনুমোদন করুন"/>
+    <Item english="Format JSON" text="JSON ফরম্যাট করুন"/>
+    <Item english="Paste curl Command" text="curl কমান্ড পেস্ট করুন"/>
+    <Item english="Copy as curl" text="curl হিসেবে কপি করুন"/>
+    <Item english="Open in New Document" text="নতুন নথিতে খুলুন"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="প্রতি লাইনে একটি: নাম=মান। এগুলি এনকোড করে ঠিকানার সঙ্গে যোগ করা হয়।"/>
+    <Item english="One to a line: Name: value" text="প্রতি লাইনে একটি: নাম: মান"/>
+    <Item english="Sent as it is written, in UTF-8." text="যেমন লেখা আছে তেমনই পাঠানো হয়, UTF-8-এ।"/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="উত্তরটি টেক্সট নয়: $INT_REPLACE$ বাইট।"/>
+    <Item english="The address is not an http or https address." text="ঠিকানাটি http বা https ঠিকানা নয়।"/>
+    <Item english="This is not a curl command." text="এটি curl কমান্ড নয়।"/>
+    <Item english="The command has no address." text="কমান্ডে কোনো ঠিকানা নেই।"/>
+    <Item english="The command reads its data from a file, which is not done here." text="কমান্ডটি একটি ফাইল থেকে ডেটা পড়ে, যা এখানে করা হয় না।"/>
+    <Item english="Forms and uploads of files are not read from a command." text="ফর্ম ও ফাইল আপলোড কমান্ড থেকে পড়া হয় না।"/>
+    <Item english="The command's address is not an http or https address." text="কমান্ডের ঠিকানাটি http বা https ঠিকানা নয়।"/>
+</NativeLangExtra>

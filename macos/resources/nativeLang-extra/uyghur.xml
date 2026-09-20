@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/uyghur.xml.
+     english is the text as the port has it; text is what is shown. -->
+<NativeLangExtra name="Uyghurche">
+    <Item english="About NotepadMac" text="NotepadMac ھەققىدە"/>
+    <Item english="Hide NotepadMac" text="NotepadMac نى يوشۇرۇش"/>
+    <Item english="Hide Others" text="باشقىلىرىنى يوشۇرۇش"/>
+    <Item english="Show All" text="ھەممىنى كۆرسىتىش"/>
+    <Item english="Quit NotepadMac" text="NotepadMac نى ئاخىرلاشتۇرۇش"/>
+    <Item english="Open Containing Folder in Finder" text="ھۆججەت قىسقۇچىنى Finder دا ئېچىش"/>
+    <Item english="Open Containing Folder in Terminal" text="ھۆججەت قىسقۇچىنى تېرمىنالدا ئېچىش"/>
+    <Item english="Toggle Insert/Overtype" text="قىستۇرۇش/ئۈستىدىن يېزىش ھالىتىنى ئالماشتۇرۇش"/>
+    <Item english="Toggle Fold" text="قاتلامنى يىغىش/يېيىش"/>
+    <Item english="Show All Hidden Lines" text="يوشۇرۇن قۇرلارنىڭ ھەممىسىنى كۆرسىتىش"/>
+    <Item english="Recent Window" text="ئالدىنقى كۆزنەك"/>
+    <Item english="Move to Trash" text="ئەخلەتخانىغا يۆتكەش"/>
+    <Item english="Save Current Command…" text="ھازىرقى بۇيرۇقنى ساقلاش…"/>
+    <Item english="Manage Saved Commands…" text="ساقلانغان بۇيرۇقلارنى باشقۇرۇش…"/>
+    <Item english="Show Console" text="كونسولنى كۆرسىتىش"/>
+    <Item english="Validate shortcuts" text="تېزكۆرگۈچلەرنى تەكشۈرۈش"/>
+    <Item english="Open Plugins Folder…" text="قېتىلما قىسقۇچىنى ئېچىش…"/>
+    <Item english="Format" text="فورماتلاش"/>
+    <Item english="Compact" text="ئىخچاملاش"/>
+    <Item english="Sort Keys" text="ئاچقۇچلارنى تەرتىپلەش"/>
+    <Item english="Validate" text="تەكشۈرۈش"/>
+    <Item english="Show JSON Tree" text="JSON دەرىخىنى كۆرسىتىش"/>
+    <Item english="Set as First to Compare" text="سېلىشتۇرۇشتىكى بىرىنجى ھۆججەت قىلىپ بەلگىلەش"/>
+    <Item english="Compare" text="سېلىشتۇرۇش"/>
+    <Item english="Compare with File…" text="ھۆججەت بىلەن سېلىشتۇرۇش…"/>
+    <Item english="Next Difference" text="كېيىنكى پەرق"/>
+    <Item english="Previous Difference" text="ئالدىنقى پەرق"/>
+    <Item english="First Difference" text="بىرىنجى پەرق"/>
+    <Item english="Last Difference" text="ئاخىرقى پەرق"/>
+    <Item english="Compare Summary" text="سېلىشتۇرۇش خۇلاسىسى"/>
+    <Item english="Ignore Case" text="چوڭ-كىچىك ھەرپ پەرقسىز"/>
+    <Item english="Ignore Spaces" text="بوشلۇقلارغا پەرۋا قىلماسلىق"/>
+    <Item english="Ignore Empty Lines" text="قۇرۇق قۇرلارغا پەرۋا قىلماسلىق"/>
+    <Item english="Clear Active Compare" text="ھازىرقى سېلىشتۇرۇشنى تازىلاش"/>
+    <Item english="Clear All Compares" text="ھەممە سېلىشتۇرۇشنى تازىلاش"/>
+    <Item english="Pretty Print" text="چىرايلىق فورماتلاش"/>
+    <Item english="Linearize" text="بىر قۇرغا يىغىش"/>
+    <Item english="Check XML Syntax Now" text="XML گرامماتىكىسىنى ھازىر تەكشۈرۈش"/>
+    <Item english="Validate Against DTD" text="DTD بويىچە تەكشۈرۈش"/>
+    <Item english="Evaluate XPath Expression…" text="XPath ئىپادىسىنى ھېسابلاش…"/>
+    <Item english="Current XML Path" text="ھازىرقى XML يولى"/>
+    <Item english="Apply XSL Transformation…" text="XSL ئۆزگەرتىشىنى قوللىنىش…"/>
+    <Item english="Connections…" text="ئۇلىنىشلار…"/>
+    <Item english="Connect…" text="ئۇلىنىش…"/>
+    <Item english="Disconnect" text="ئۇلىنىشنى ئۈزۈش"/>
+    <Item english="Show Remote Files" text="يىراقتىكى ھۆججەتلەرنى كۆرسىتىش"/>
+    <Item english="Upload Current File" text="ھازىرقى ھۆججەتنى يۈكلەش"/>
+    <Item english="Execute NppExec Script…" text="NppExec سكرىپتىنى ئىجرا قىلىش…"/>
+    <Item english="Execute Previous NppExec Script" text="ئالدىنقى NppExec سكرىپتىنى ئىجرا قىلىش"/>
+    <Item english="Stop Running NppExec Script" text="ئىجرا بولۇۋاتقان NppExec سكرىپتىنى توختىتىش"/>
+    <Item english="Show NppExec Console" text="NppExec كونسولىنى كۆرسىتىش"/>
+    <Item english="Execute NppExec Script" text="NppExec سكرىپتىنى ئىجرا قىلىش"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;ۋاقىتلىق سكرىپت&gt;"/>
+    <Item english="Script name" text="سكرىپت ئىسمى"/>
+    <Item english="Dock Left" text="سولغا ئورۇنلاشتۇرۇش"/>
+    <Item english="Dock Right" text="ئوڭغا ئورۇنلاشتۇرۇش"/>
+    <Item english="Dock Top" text="ئۈستىگە ئورۇنلاشتۇرۇش"/>
+    <Item english="Dock Bottom" text="ئاستىغا ئورۇنلاشتۇرۇش"/>
+    <Item english="Float" text="لەيلىمە"/>
+    <Item english="Remember which panels were open" text="قايسى تاختىلارنىڭ ئېچىلغانلىقىنى ئەستە تۇتۇش"/>
+    <Item english="Show the toolbar" text="قورال بالدىقىنى كۆرسىتىش"/>
+    <Item english="Toolbar buttons" text="قورال بالدىقى توپچىلىرى"/>
+    <Item english="Icons only" text="پەقەت سىنبەلگىلەر"/>
+    <Item english="Icons and labels" text="سىنبەلگە ۋە خەتلەر"/>
+    <Item english="Labels only" text="پەقەت خەتلەر"/>
+    <Item english="Toolbar size" text="قورال بالدىقىنىڭ چوڭلۇقى"/>
+    <Item english="Regular" text="ئادەتتىكى"/>
+    <Item english="Small" text="كىچىك"/>
+    <Item english="Icons" text="سىنبەلگىلەر"/>
+    <Item english="Hidden" text="يوشۇرۇن"/>
+    <Item english="1 pixel" text="1 پىكسېل"/>
+    <Item english="2 pixels" text="2 پىكسېل"/>
+    <Item english="3 pixels" text="3 پىكسېل"/>
+    <Item english="Selected text can be dragged" text="تاللانغان تېكىستنى سۆرەپ يۆتكىگىلى بولىدۇ"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="كۆپ نۇقتىدا تەھرىرلەشنى قوزغىتىش (Cmd+چېكىش/تاللاش)"/>
+    <Item english="Follow the system" text="سىستېمىغا ئەگىشىش"/>
+    <Item english="Light theme" text="يورۇق تېما"/>
+    <Item english="Dark theme" text="قاراڭغۇ تېما"/>
+    <Item english="Show the fold margin" text="يىغىش بەتيېنىنى كۆرسىتىش"/>
+    <Item english="A line" text="سىزىق"/>
+    <Item english="Columns (space separated)" text="ئىستونلار (بوشلۇق بىلەن ئايرىلغان)"/>
+    <Item english="3 parts" text="3 بۆلەك"/>
+    <Item english="4 parts" text="4 بۆلەك"/>
+    <Item english="5 parts" text="5 بۆلەك"/>
+    <Item english="6 parts" text="6 بۆلەك"/>
+    <Item english="7 parts" text="7 بۆلەك"/>
+    <Item english="8 parts" text="8 بۆلەك"/>
+    <Item english="9 parts" text="9 بۆلەك"/>
+    <Item english="Work the language out from the contents when the name does not say" text="ئىسمىدىن بىلىنمىگەندە مەزمۇنىدىن تىلنى بەلگىلەش"/>
+    <Item english="Highlight matching braces" text="ماس كېلىدىغان تىرناقلارنى يورۇتۇش"/>
+    <Item english="Header font (blank for the editor's)" text="بەت بېشى فونتى (بوش بولسا تەھرىرلىگۈچنىڭكى)"/>
+    <Item english="Header font size" text="بەت بېشى فونتىنىڭ چوڭلۇقى"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="بەتيېنى: سول، ئۈستى، ئوڭ، ئاستى (پۇنكت)"/>
+    <Item english="Characters before it opens" text="ئېچىلىشتىن بۇرۇنقى ھەرپ سانى"/>
+    <Item english="Add characters to the word list" text="سۆز تىزىملىكىگە ھەرپ قوشۇش"/>
+    <Item english="A fixed folder" text="مۇقىم قىسقۇچ"/>
+    <Item english="Fixed folder" text="مۇقىم قىسقۇچ"/>
+    <Item english="Confirm Replace All" text="ھەممىنى ئالماشتۇرۇشنى جەزىملەش"/>
+    <Item english="Compare: ignore case" text="سېلىشتۇرۇش: چوڭ-كىچىك ھەرپ پەرقسىز"/>
+    <Item english="Compare: ignore spaces" text="سېلىشتۇرۇش: بوشلۇقلارغا پەرۋا قىلماسلىق"/>
+    <Item english="Compare: ignore empty lines" text="سېلىشتۇرۇش: قۇرۇق قۇرلارغا پەرۋا قىلماسلىق"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="ئىزدەش رامكىسىنى ئاپتوماتىك تولدۇرىدىغان ئەڭ كۆپ ھەرپ سانى"/>
+    <Item english="Notepad++ update" text="Notepad++ يېڭىلىنىشى"/>
+    <Item english="No update is available." text="يېڭىلاش يوق."/>
+    <Item english="An update package is available, do you want to download it?" text="يېڭىلاش بولىقى بار، چۈشۈرەمسىز؟"/>
+    <Item english="Open the Releases Page" text="نەشر بېتىنى ئېچىش"/>
+    <Item english="Copy debug info to clipboard" text="سازلاش ئۇچۇرىنى ئىشتاختىغا كۆچۈرۈش"/>
+    <Item english="Fonts…" text="فونتلار…"/>
+    <Item english="This document is not valid JSON." text="بۇ ھۆججەت ئىناۋەتلىك JSON ئەمەس."/>
+    <Item english="Valid JSON." text="JSON ئىناۋەتلىك."/>
+    <Item english="Invalid JSON." text="JSON ئىناۋەتسىز."/>
+    <Item english="Set as the first file to compare." text="سېلىشتۇرۇشتىكى بىرىنجى ھۆججەت قىلىپ بەلگىلەندى."/>
+    <Item english="Nothing to compare with." text="سېلىشتۇرىدىغان نەرسە يوق."/>
+    <Item english="The document is valid XML." text="بۇ ھۆججەت ئىناۋەتلىك XML."/>
+    <Item english="FTP connections" text="FTP ئۇلىنىشلىرى"/>
+    <Item english="Cannot connect." text="ئۇلىنالمىدى."/>
+    <Item english="That file is open in another tab." text="بۇ ھۆججەت باشقا بەتكۈچتە ئوچۇق."/>
+    <Item english="Close it first, or choose another name." text="ئاۋۋال ئۇنى يېپىڭ ياكى باشقا ئىسىم تاللاڭ."/>
+    <Item english="Which language is this?" text="بۇ قايسى تىل؟"/>
+    <Item english="Some characters cannot be represented in this encoding." text="بەزى ھەرپلەرنى بۇ كودلاشتا ئىپادىلىگىلى بولمايدۇ."/>
+    <Item english="Converting will replace them." text="ئايلاندۇرۇش ئۇلارنى ئالماشتۇرىدۇ."/>
+    <Item english="Press the keys." text="كۇنۇپكىلارنى بېسىڭ."/>
+    <Item english="Nothing is marked" text="ھېچنېمە بەلگىلەنمىگەن"/>
+    <Item english="Marked text copied" text="بەلگە قويۇلغان تېكىست كۆچۈرۈلدى"/>
+    <Item english="Choose a folder first" text="ئاۋۋال قىسقۇچ تاللاڭ"/>
+    <Item english="This document has no folder" text="بۇ ھۆججەتنىڭ قىسقۇچى يوق"/>
+    <Item english="The ticked project panels have no files" text="تاللانغان ئىشتۈرى تاختىلىرىدا ھۆججەت يوق"/>
+    <Item english="Searching..." text="ئىزدەۋاتىدۇ..."/>
+    <Item english="Stopping..." text="توختىتىۋاتىدۇ..."/>
+    <Item english="Marks cleared" text="بەلگىلەر تازىلاندى"/>
+    <Item english="Transparent" text="سۈزۈك"/>
+    <Item english="View 1" text="1-كۆرۈنۈش"/>
+    <Item english="View 2" text="2-كۆرۈنۈش"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC ئاچقۇچى (ئىختىيارى):"/>
+    <Item english="Random" text="تاسادىپىي"/>
+    <Item english="Version:" text="نەشرى:"/>
+    <Item english="Block size (r):" text="بۆلەك چوڭلۇقى (r):"/>
+    <Item english="Memory (KiB):" text="ئەسلەك (KiB):"/>
+    <Item english="Verify" text="تەكشۈرۈش"/>
+    <Item english="The version must be 2a, 2b or 2y." text="نەشرى چوقۇم 2a، 2b ياكى 2y بولۇشى كېرەك."/>
+    <Item english="N must be between 2^1 and 2^24." text="N چوقۇم 2^1 بىلەن 2^24 ئارىسىدا بولۇشى كېرەك."/>
+    <Item english="r and p must be between 1 and 64." text="r ۋە p چوقۇم 1 بىلەن 64 ئارىسىدا بولۇشى كېرەك."/>
+    <Item english="These settings need more than 2 GB of memory." text="بۇ تەڭشەكلەر 2 GB دىن ئارتۇق ئەسلەك تەلەپ قىلىدۇ."/>
+    <Item english="These settings need more than 4 GB of memory." text="بۇ تەڭشەكلەر 4 GB دىن ئارتۇق ئەسلەك تەلەپ قىلىدۇ."/>
+    <Item english="Encode" text="كودلاش"/>
+    <Item english="Decode" text="كود يېشىش"/>
+    <Item english="The input is:" text="كىرگۈزۈش تىپى:"/>
+    <Item english="Bytes in hexadecimal" text="ئون ئالتىلىك سىستېمىدىكى بايتلار"/>
+    <Item english="Input:" text="كىرگۈزۈش:"/>
+    <Item english="Result:" text="نەتىجە:"/>
+    <Item english="Text:" text="تېكىست:"/>
+    <Item english="Bytes in hexadecimal:" text="ئون ئالتىلىك سىستېمىدىكى بايتلار:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="كىرگۈزۈلگىنى ئون ئالتىلىك سىستېمىدا يېزىلغان بايت ئەمەس."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="كىرگۈزۈلگىنى ئىناۋەتلىك $STR_REPLACE$ ئەمەس."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="يېشىلگەن بايتلار UTF-8 تېكىست ئەمەس؛ پەقەت ئون ئالتىلىك سىستېمىدا كۆرسىتىلدى."/>
+    <Item english="Password Generator" text="پارول ھاسىللىغۇچ"/>
+    <Item english="Length:" text="ئۇزۇنلۇقى:"/>
+    <Item english="Number of passwords:" text="پارول سانى:"/>
+    <Item english="Uppercase letters (A-Z)" text="چوڭ ھەرپلەر (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="كىچىك ھەرپلەر (a-z)"/>
+    <Item english="Digits (0-9)" text="رەقەملەر (0-9)"/>
+    <Item english="Symbols:" text="بەلگىلەر:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="ئوخشاپ كېتىدىغان ھەرپلەرنى چىقىرىۋېتىش (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="ھەر بىر خىلدىن كەم دېگەندە بىر ھەرپ"/>
+    <Item english="Choose at least one kind of character." text="كەم دېگەندە بىر خىل ھەرپنى تاللاڭ."/>
+    <Item english="Insert into Document" text="ھۆججەتكە قىستۇرۇش"/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP ئىلتىماسى"/>
+    <Item english="Send" text="يوللاش"/>
+    <Item english="Parameters" text="پارامېتېرلار"/>
+    <Item english="Options" text="تاللانمىلار"/>
+    <Item english="Content type:" text="مەزمۇن تىپى:"/>
+    <Item english="User name:" text="ئىشلەتكۈچى ئىسمى:"/>
+    <Item english="Password:" text="پارول:"/>
+    <Item english="Allow invalid certificates" text="ئىناۋەتسىز گۇۋاھنامىلەرگە يول قويۇش"/>
+    <Item english="Format JSON" text="JSON نى فورماتلاش"/>
+    <Item english="Paste curl Command" text="curl بۇيرۇقىنى چاپلاش"/>
+    <Item english="Copy as curl" text="curl سۈپىتىدە كۆچۈرۈش"/>
+    <Item english="Open in New Document" text="يېڭى ھۆججەتتە ئېچىش"/>
+    <Item english="One to a line: Name: value" text="ھەر قۇرغا بىردىن: ئىسىم: قىممەت"/>
+    <Item english="Sent as it is written, in UTF-8." text="يېزىلغان پېتى UTF-8 دا يوللىنىدۇ."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="جاۋاب تېكىست ئەمەس: $INT_REPLACE$ بايت."/>
+    <Item english="The address is not an http or https address." text="ئادرېس http ياكى https ئادرېسى ئەمەس."/>
+    <Item english="This is not a curl command." text="بۇ curl بۇيرۇقى ئەمەس."/>
+    <Item english="The command has no address." text="بۇيرۇقتا ئادرېس يوق."/>
+    <Item english="The command's address is not an http or https address." text="بۇيرۇقتىكى ئادرېس http ياكى https ئادرېسى ئەمەس."/>
+</NativeLangExtra>

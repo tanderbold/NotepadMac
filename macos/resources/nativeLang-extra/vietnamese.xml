@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/vietnamese.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Tiếng Việt">
+    <Item english="About NotepadMac" text="Giới thiệu về NotepadMac"/>
+    <Item english="Hide NotepadMac" text="Ẩn NotepadMac"/>
+    <Item english="Hide Others" text="Ẩn các ứng dụng khác"/>
+    <Item english="Show All" text="Hiện tất cả"/>
+    <Item english="Quit NotepadMac" text="Thoát NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Mở thư mục chứa trong Finder"/>
+    <Item english="Open Containing Folder in Terminal" text="Mở thư mục chứa trong Terminal"/>
+    <Item english="Toggle Insert/Overtype" text="Bật/tắt chế độ chèn/ghi đè"/>
+    <Item english="Toggle Fold" text="Gập/mở khối"/>
+    <Item english="Show All Hidden Lines" text="Hiện tất cả các dòng bị ẩn"/>
+    <Item english="Recent Window" text="Cửa sổ gần đây"/>
+    <Item english="Move to Trash" text="Chuyển vào thùng rác"/>
+    <Item english="Save Current Command…" text="Lưu lệnh hiện tại…"/>
+    <Item english="Manage Saved Commands…" text="Quản lí các lệnh đã lưu…"/>
+    <Item english="Show Console" text="Hiện bảng điều khiển"/>
+    <Item english="Validate shortcuts" text="Kiểm tra phím tắt"/>
+    <Item english="Open Plugins Folder…" text="Mở thư mục trình cắm…"/>
+    <Item english="Format" text="Định dạng"/>
+    <Item english="Compact" text="Thu gọn"/>
+    <Item english="Sort Keys" text="Sắp xếp khoá"/>
+    <Item english="Validate" text="Kiểm tra hợp lệ"/>
+    <Item english="Show JSON Tree" text="Hiện cây JSON"/>
+    <Item english="Set as First to Compare" text="Đặt làm tệp thứ nhất để so sánh"/>
+    <Item english="Compare" text="So sánh"/>
+    <Item english="Compare with File…" text="So sánh với tệp…"/>
+    <Item english="Next Difference" text="Khác biệt kế tiếp"/>
+    <Item english="Previous Difference" text="Khác biệt trước đó"/>
+    <Item english="First Difference" text="Khác biệt đầu tiên"/>
+    <Item english="Last Difference" text="Khác biệt cuối cùng"/>
+    <Item english="Compare Summary" text="Tóm tắt so sánh"/>
+    <Item english="Ignore Case" text="Bỏ qua hoa thường"/>
+    <Item english="Ignore Spaces" text="Bỏ qua khoảng trắng"/>
+    <Item english="Ignore Empty Lines" text="Bỏ qua dòng trống"/>
+    <Item english="Clear Active Compare" text="Xoá phép so sánh hiện tại"/>
+    <Item english="Clear All Compares" text="Xoá tất cả phép so sánh"/>
+    <Item english="Pretty Print" text="Trình bày đẹp"/>
+    <Item english="Pretty Print — Indent Attributes" text="Trình bày đẹp — thụt lề thuộc tính"/>
+    <Item english="Linearize" text="Dồn thành một dòng"/>
+    <Item english="Check XML Syntax Now" text="Kiểm tra cú pháp XML ngay"/>
+    <Item english="Validate Against Schema…" text="Kiểm tra hợp lệ theo lược đồ…"/>
+    <Item english="Validate Against DTD" text="Kiểm tra hợp lệ theo DTD"/>
+    <Item english="Evaluate XPath Expression…" text="Tính biểu thức XPath…"/>
+    <Item english="Current XML Path" text="Đường dẫn XML hiện tại"/>
+    <Item english="Current XML Path with Predicates" text="Đường dẫn XML hiện tại kèm vị từ"/>
+    <Item english="Apply XSL Transformation…" text="Áp dụng phép biến đổi XSL…"/>
+    <Item english="Escape Characters in Selection" text="Thoát kí tự trong phần được chọn"/>
+    <Item english="Unescape Characters in Selection" text="Bỏ thoát kí tự trong phần được chọn"/>
+    <Item english="Connections…" text="Các kết nối…"/>
+    <Item english="Connect…" text="Kết nối…"/>
+    <Item english="Disconnect" text="Ngắt kết nối"/>
+    <Item english="Show Remote Files" text="Hiện các tệp từ xa"/>
+    <Item english="Upload Current File" text="Tải tệp hiện tại lên"/>
+    <Item english="Execute NppExec Script…" text="Chạy tập lệnh NppExec…"/>
+    <Item english="Execute Previous NppExec Script" text="Chạy tập lệnh NppExec trước đó"/>
+    <Item english="Stop Running NppExec Script" text="Dừng tập lệnh NppExec đang chạy"/>
+    <Item english="Show NppExec Console" text="Hiện bảng điều khiển NppExec"/>
+    <Item english="Execute NppExec Script" text="Chạy tập lệnh NppExec"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;tập lệnh tạm thời&gt;"/>
+    <Item english="Script name" text="Tên tập lệnh"/>
+    <Item english="Dock Left" text="Gắn bên trái"/>
+    <Item english="Dock Right" text="Gắn bên phải"/>
+    <Item english="Dock Top" text="Gắn phía trên"/>
+    <Item english="Dock Bottom" text="Gắn phía dưới"/>
+    <Item english="Float" text="Thả nổi"/>
+    <Item english="Remember which panels were open" text="Nhớ những bảng đã mở"/>
+    <Item english="Show the toolbar" text="Hiện thanh công cụ"/>
+    <Item english="Toolbar buttons" text="Nút trên thanh công cụ"/>
+    <Item english="Icons only" text="Chỉ biểu tượng"/>
+    <Item english="Icons and labels" text="Biểu tượng và nhãn"/>
+    <Item english="Labels only" text="Chỉ nhãn"/>
+    <Item english="Toolbar size" text="Cỡ thanh công cụ"/>
+    <Item english="Regular" text="Thường"/>
+    <Item english="Small" text="Nhỏ"/>
+    <Item english="Icons" text="Biểu tượng"/>
+    <Item english="Hidden" text="Ẩn"/>
+    <Item english="1 pixel" text="1 điểm ảnh"/>
+    <Item english="2 pixels" text="2 điểm ảnh"/>
+    <Item english="3 pixels" text="3 điểm ảnh"/>
+    <Item english="Selected text can be dragged" text="Có thể kéo văn bản được chọn"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Kích hoạt Chỉnh sửa nhiều chỗ (Cmd+Nháy chuột để chọn)"/>
+    <Item english="Follow the system" text="Theo hệ thống"/>
+    <Item english="Light theme" text="Chủ đề sáng"/>
+    <Item english="Dark theme" text="Chủ đề tối"/>
+    <Item english="Show the fold margin" text="Hiện lề gập"/>
+    <Item english="A line" text="Một đường kẻ"/>
+    <Item english="Columns (space separated)" text="Các cột (cách nhau bằng dấu cách)"/>
+    <Item english="3 parts" text="3 phần"/>
+    <Item english="4 parts" text="4 phần"/>
+    <Item english="5 parts" text="5 phần"/>
+    <Item english="6 parts" text="6 phần"/>
+    <Item english="7 parts" text="7 phần"/>
+    <Item english="8 parts" text="8 phần"/>
+    <Item english="9 parts" text="9 phần"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Đoán ngôn ngữ từ nội dung khi tên tệp không cho biết"/>
+    <Item english="Highlight matching braces" text="Tô sáng các dấu ngoặc tương ứng"/>
+    <Item english="Header font (blank for the editor's)" text="Phông đầu trang (để trống để dùng phông của trình soạn thảo)"/>
+    <Item english="Header font size" text="Cỡ phông đầu trang"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Lề: trái, trên, phải, dưới (điểm)"/>
+    <Item english="Characters before it opens" text="Số kí tự trước khi danh sách mở ra"/>
+    <Item english="Add characters to the word list" text="Thêm kí tự vào danh sách kí tự từ"/>
+    <Item english="A fixed folder" text="Một thư mục cố định"/>
+    <Item english="Fixed folder" text="Thư mục cố định"/>
+    <Item english="Confirm Replace All" text="Xác nhận khi Thay thế tất cả"/>
+    <Item english="Compare: ignore case" text="So sánh: bỏ qua hoa thường"/>
+    <Item english="Compare: ignore spaces" text="So sánh: bỏ qua khoảng trắng"/>
+    <Item english="Compare: ignore empty lines" text="So sánh: bỏ qua dòng trống"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Số kí tự tối đa để tự điền vào ô Tìm"/>
+    <Item english="Releases repository" text="Kho chứa các bản phát hành"/>
+    <Item english="Notepad++ update" text="Cập nhật Notepad++"/>
+    <Item english="No update is available." text="Không có bản cập nhật nào."/>
+    <Item english="An update package is available, do you want to download it?" text="Đã có gói cập nhật, bạn có muốn tải về không?"/>
+    <Item english="Open the Releases Page" text="Mở trang các bản phát hành"/>
+    <Item english="Copy debug info to clipboard" text="Chép thông tin gỡ lỗi vào bảng tạm"/>
+    <Item english="Fonts…" text="Phông chữ…"/>
+    <Item english="This document is not valid JSON." text="Tài liệu này không phải là JSON hợp lệ."/>
+    <Item english="Valid JSON." text="JSON hợp lệ."/>
+    <Item english="Invalid JSON." text="JSON không hợp lệ."/>
+    <Item english="Set as the first file to compare." text="Đã đặt làm tệp thứ nhất để so sánh."/>
+    <Item english="Nothing to compare with." text="Không có gì để so sánh."/>
+    <Item english="The document is valid XML." text="Tài liệu là XML hợp lệ."/>
+    <Item english="FTP connections" text="Các kết nối FTP"/>
+    <Item english="Cannot connect." text="Không thể kết nối."/>
+    <Item english="That file is open in another tab." text="Tệp đó đang mở trong một thẻ khác."/>
+    <Item english="Close it first, or choose another name." text="Hãy đóng nó trước, hoặc chọn tên khác."/>
+    <Item english="Which language is this?" text="Đây là ngôn ngữ nào?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Một số kí tự không thể biểu diễn được trong biên mã này."/>
+    <Item english="Converting will replace them." text="Việc chuyển đổi sẽ thay thế chúng."/>
+    <Item english="Press the keys." text="Hãy nhấn các phím."/>
+    <Item english="Nothing is marked" text="Không có gì được đánh dấu"/>
+    <Item english="Marked text copied" text="Đã sao chép văn bản được đánh dấu"/>
+    <Item english="Choose a folder first" text="Hãy chọn một thư mục trước"/>
+    <Item english="This document has no folder" text="Tài liệu này không có thư mục"/>
+    <Item english="The ticked project panels have no files" text="Các bảng dự án được chọn không có tệp nào"/>
+    <Item english="Searching..." text="Đang tìm..."/>
+    <Item english="Stopping..." text="Đang dừng..."/>
+    <Item english="Marks cleared" text="Đã xoá các đánh dấu"/>
+    <Item english="Transparent" text="Trong suốt"/>
+    <Item english="View 1" text="Khung nhìn 1"/>
+    <Item english="View 2" text="Khung nhìn 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Mã băm"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="Khoá HMAC (tuỳ chọn):"/>
+    <Item english="Salt (hexadecimal):" text="Salt (thập lục phân):"/>
+    <Item english="Random" text="Ngẫu nhiên"/>
+    <Item english="Cost (4-31):" text="Chi phí (4-31):"/>
+    <Item english="Version:" text="Phiên bản:"/>
+    <Item english="N, as a power of 2:" text="N, theo luỹ thừa của 2:"/>
+    <Item english="Block size (r):" text="Kích thước khối (r):"/>
+    <Item english="Parallelism (p):" text="Độ song song (p):"/>
+    <Item english="Variant:" text="Biến thể:"/>
+    <Item english="Memory (KiB):" text="Bộ nhớ (KiB):"/>
+    <Item english="Iterations:" text="Số vòng lặp:"/>
+    <Item english="Parallelism:" text="Độ song song:"/>
+    <Item english="Digest:" text="Hàm băm:"/>
+    <Item english="Hash length (bytes):" text="Độ dài mã băm (byte):"/>
+    <Item english="Hash:" text="Mã băm:"/>
+    <Item english="Verify" text="Xác minh"/>
+    <Item english="Hash to check the password against:" text="Mã băm để đối chiếu mật khẩu:"/>
+    <Item english="The salt is not valid hexadecimal." text="Salt không phải là thập lục phân hợp lệ."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt cần salt dài đúng 16 byte."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 cần salt dài ít nhất 8 byte."/>
+    <Item english="The hash could not be generated with these settings." text="Không thể sinh mã băm với các thiết đặt này."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Đây không phải là mã băm bcrypt, scrypt, Argon2 hay PBKDF2."/>
+    <Item english="The password matches the hash." text="Mật khẩu khớp với mã băm."/>
+    <Item english="The password does not match the hash." text="Mật khẩu không khớp với mã băm."/>
+    <Item english="The cost must be between 4 and 31." text="Chi phí phải nằm trong khoảng từ 4 đến 31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Phiên bản phải là 2a, 2b hoặc 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N phải nằm trong khoảng từ 2^1 đến 2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r và p phải nằm trong khoảng từ 1 đến 64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Các thiết đặt này cần hơn 2 GB bộ nhớ."/>
+    <Item english="The parallelism must be between 1 and 64." text="Độ song song phải nằm trong khoảng từ 1 đến 64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Số vòng lặp phải nằm trong khoảng từ 1 đến 1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Bộ nhớ phải có ít nhất 8 KiB cho mỗi luồng."/>
+    <Item english="These settings need more than 4 GB of memory." text="Các thiết đặt này cần hơn 4 GB bộ nhớ."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Hàm băm phải là SHA-1, SHA-256 hoặc SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Số vòng lặp phải nằm trong khoảng từ 1 đến 100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Độ dài mã băm phải nằm trong khoảng từ 4 đến 1024 byte."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (an toàn cho URL)"/>
+    <Item english="Encode" text="Biên mã"/>
+    <Item english="Decode" text="Giải mã"/>
+    <Item english="The input is:" text="Đầu vào là:"/>
+    <Item english="Bytes in hexadecimal" text="Byte ở dạng thập lục phân"/>
+    <Item english="Input:" text="Đầu vào:"/>
+    <Item english="Result:" text="Kết quả:"/>
+    <Item english="Text:" text="Văn bản:"/>
+    <Item english="Bytes in hexadecimal:" text="Byte ở dạng thập lục phân:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Đầu vào không phải là các byte viết ở dạng thập lục phân."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Đầu vào không phải là $STR_REPLACE$ hợp lệ."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Các byte đã giải mã không phải là văn bản UTF-8; chúng chỉ được hiển thị ở dạng thập lục phân."/>
+    <Item english="Password Generator" text="Trình tạo mật khẩu"/>
+    <Item english="Length:" text="Độ dài:"/>
+    <Item english="Number of passwords:" text="Số lượng mật khẩu:"/>
+    <Item english="Uppercase letters (A-Z)" text="Chữ hoa (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Chữ thường (a-z)"/>
+    <Item english="Digits (0-9)" text="Chữ số (0-9)"/>
+    <Item english="Symbols:" text="Ký hiệu:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Bỏ các ký tự trông giống nhau (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Ít nhất một ký tự thuộc mỗi loại"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropy: khoảng $INT_REPLACE$ bit"/>
+    <Item english="Choose at least one kind of character." text="Hãy chọn ít nhất một loại ký tự."/>
+    <Item english="Insert into Document" text="Chèn vào tài liệu"/>
+    <Item english="Show the bare key in hexadecimal" text="Hiện khoá thô ở dạng thập lục phân"/>
+    <Item english="Empty: a random salt each time" text="Trống: salt ngẫu nhiên mỗi lần"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt chỉ đọc 72 byte đầu tiên."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="Yêu cầu HTTP"/>
+    <Item english="Send" text="Gửi"/>
+    <Item english="Parameters" text="Tham số"/>
+    <Item english="Headers" text="Tiêu đề"/>
+    <Item english="Body" text="Phần thân"/>
+    <Item english="Options" text="Tuỳ chọn"/>
+    <Item english="Content type:" text="Loại nội dung:"/>
+    <Item english="User name:" text="Tên người dùng:"/>
+    <Item english="Password:" text="Mật khẩu:"/>
+    <Item english="Timeout (seconds):" text="Thời gian chờ (giây):"/>
+    <Item english="Follow redirects" text="Đi theo chuyển hướng"/>
+    <Item english="Allow invalid certificates" text="Cho phép chứng chỉ không hợp lệ"/>
+    <Item english="Format JSON" text="Định dạng JSON"/>
+    <Item english="Paste curl Command" text="Dán lệnh curl"/>
+    <Item english="Copy as curl" text="Sao chép dưới dạng curl"/>
+    <Item english="Open in New Document" text="Mở trong tài liệu mới"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Mỗi dòng một mục: tên=giá trị. Chúng được mã hoá rồi thêm vào địa chỉ."/>
+    <Item english="One to a line: Name: value" text="Mỗi dòng một mục: Tên: giá trị"/>
+    <Item english="Sent as it is written, in UTF-8." text="Được gửi đúng như đã viết, ở dạng UTF-8."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Phản hồi không phải là văn bản: $INT_REPLACE$ byte."/>
+    <Item english="The address is not an http or https address." text="Địa chỉ không phải là địa chỉ http hay https."/>
+    <Item english="This is not a curl command." text="Đây không phải là lệnh curl."/>
+    <Item english="The command has no address." text="Lệnh không có địa chỉ."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Lệnh đọc dữ liệu từ một tệp, điều này không được hỗ trợ ở đây."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Biểu mẫu và việc tải tệp lên không được đọc từ lệnh."/>
+    <Item english="The command's address is not an http or https address." text="Địa chỉ của lệnh không phải là địa chỉ http hay https."/>
+</NativeLangExtra>

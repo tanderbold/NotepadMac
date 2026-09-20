@@ -1,0 +1,31 @@
+G4C Calculator
+
+Window 100 100 220 140 "Calculator"
+     WinAttr style sizable/close
+
+xOnLoad
+     total = 0
+     GuiOpen #this
+
+xOnClose
+     GuiQuit #this
+
+xTextIn 10 10 200 22 "" entry ""
+     attr id entrybox
+
+xButton 10 40 95 24 "Add"
+     attr frame raised
+     if $entry = ""
+          MsgBox "Enter a number first" OK/WARN
+          stop
+     endif
+     total = $($total + $entry)
+     Update entrybox ""
+     SetWinTitle #this "Total: $total"
+
+xButton 115 40 95 24 "Clear"
+     total = 0
+     SetWinTitle #this "Calculator"
+
+xRoutine ShowTotal
+     MsgBox "The total is $total" OK/INFO

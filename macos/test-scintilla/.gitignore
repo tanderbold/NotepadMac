@@ -1,0 +1,4 @@
+macos/test-scintilla/libscintillahost.dylib
+macos/test-scintilla/simpleTests.py
+macos/test-scintilla/performanceTests.py
+macos/test-scintilla/__pycache__/

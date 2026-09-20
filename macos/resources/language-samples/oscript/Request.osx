@@ -1,0 +1,28 @@
+package MYMODULE
+
+/**
+ * Handles the ?func=mymodule.report request.
+ */
+public object Report inherits MYMODULE::RequestHandler
+
+	override	Boolean	fEnabled = TRUE
+	override	String	fFuncPrefix = 'mymodule'
+	override	List	fPrototype = { { "nodeID", IntegerType, "Node", FALSE }, { "format", StringType, "Format", TRUE, "html" } }
+
+	override function Dynamic Execute( Dynamic ctxIn, Dynamic ctxOut, Record r )
+		Object		prgCtx = .PrgSession()
+		DAPINODE	node = DAPI.GetNodeByID( prgCtx.DSession().fSession, DAPI.BY_DATAID, r.nodeID )
+		Assoc		result = Assoc.CreateAssoc()
+
+		if IsError( node )
+			.fError = Str.Format( [MYMODULE_ERRMSG.CouldNotAccessNode1], r.nodeID )
+			return undefined
+		end
+
+		result.name = node.pName
+		result.children = $MyModule.Utils.ChildrenOf( prgCtx, node )
+		.fData = result
+		return undefined
+	end
+
+end

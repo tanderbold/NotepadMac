@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- What the macOS port says and Windows does not: read beside PowerEditor/installer/nativeLang/finnish.xml.
+     english is the text as the port has it; text is what is shown. An Item left out stays English. -->
+<NativeLangExtra name="Finnish">
+    <Item english="About NotepadMac" text="Tietoja NotepadMacista"/>
+    <Item english="Hide NotepadMac" text="Kätke NotepadMac"/>
+    <Item english="Hide Others" text="Kätke muut"/>
+    <Item english="Show All" text="Näytä kaikki"/>
+    <Item english="Quit NotepadMac" text="Lopeta NotepadMac"/>
+    <Item english="Open Containing Folder in Finder" text="Avaa kyseinen kansio Finderissa"/>
+    <Item english="Open Containing Folder in Terminal" text="Avaa kyseinen kansio Päätteessä"/>
+    <Item english="Toggle Insert/Overtype" text="Lisäys/korvaus päälle/pois"/>
+    <Item english="Toggle Fold" text="Taitos päälle/pois"/>
+    <Item english="Show All Hidden Lines" text="Näytä kaikki piilotetut rivit"/>
+    <Item english="Recent Window" text="Edellinen ikkuna"/>
+    <Item english="Move to Trash" text="Siirrä roskakoriin"/>
+    <Item english="Save Current Command…" text="Tallenna nykyinen komento…"/>
+    <Item english="Manage Saved Commands…" text="Hallitse tallennettuja komentoja…"/>
+    <Item english="Show Console" text="Näytä konsoli"/>
+    <Item english="Validate shortcuts" text="Tarkista pikanäppäimet"/>
+    <Item english="Open Plugins Folder…" text="Avaa liitännäisten kansio…"/>
+    <Item english="Format" text="Muotoile"/>
+    <Item english="Compact" text="Tiivistä"/>
+    <Item english="Sort Keys" text="Lajittele avaimet"/>
+    <Item english="Validate" text="Tarkista"/>
+    <Item english="Show JSON Tree" text="Näytä JSON-puu"/>
+    <Item english="Set as First to Compare" text="Aseta ensimmäiseksi verrattavaksi"/>
+    <Item english="Compare" text="Vertaa"/>
+    <Item english="Compare with File…" text="Vertaa tiedostoon…"/>
+    <Item english="Next Difference" text="Seuraava ero"/>
+    <Item english="Previous Difference" text="Edellinen ero"/>
+    <Item english="First Difference" text="Ensimmäinen ero"/>
+    <Item english="Last Difference" text="Viimeinen ero"/>
+    <Item english="Compare Summary" text="Vertailun yhteenveto"/>
+    <Item english="Ignore Case" text="Ohita kirjainkoot"/>
+    <Item english="Ignore Spaces" text="Ohita välilyönnit"/>
+    <Item english="Ignore Empty Lines" text="Ohita tyhjät rivit"/>
+    <Item english="Clear Active Compare" text="Poista aktiivinen vertailu"/>
+    <Item english="Clear All Compares" text="Poista kaikki vertailut"/>
+    <Item english="Pretty Print" text="Muotoile siististi"/>
+    <Item english="Pretty Print — Indent Attributes" text="Muotoile siististi — sisennä attribuutit"/>
+    <Item english="Linearize" text="Yhdelle riville"/>
+    <Item english="Check XML Syntax Now" text="Tarkista XML-syntaksi nyt"/>
+    <Item english="Validate Against Schema…" text="Tarkista skeemaa vasten…"/>
+    <Item english="Validate Against DTD" text="Tarkista DTD:tä vasten"/>
+    <Item english="Evaluate XPath Expression…" text="Laske XPath-lauseke…"/>
+    <Item english="Current XML Path" text="Nykyinen XML-polku"/>
+    <Item english="Current XML Path with Predicates" text="Nykyinen XML-polku predikaatteineen"/>
+    <Item english="Apply XSL Transformation…" text="Käytä XSL-muunnosta…"/>
+    <Item english="Connections…" text="Yhteydet…"/>
+    <Item english="Connect…" text="Yhdistä…"/>
+    <Item english="Disconnect" text="Katkaise yhteys"/>
+    <Item english="Show Remote Files" text="Näytä etätiedostot"/>
+    <Item english="Upload Current File" text="Lähetä nykyinen tiedosto palvelimelle"/>
+    <Item english="Execute NppExec Script…" text="Suorita NppExec-skripti…"/>
+    <Item english="Execute Previous NppExec Script" text="Suorita edellinen NppExec-skripti"/>
+    <Item english="Stop Running NppExec Script" text="Pysäytä käynnissä oleva NppExec-skripti"/>
+    <Item english="Show NppExec Console" text="Näytä NppExec-konsoli"/>
+    <Item english="Execute NppExec Script" text="Suorita NppExec-skripti"/>
+    <Item english="&lt;temporary script&gt;" text="&lt;väliaikainen skripti&gt;"/>
+    <Item english="Script name" text="Skriptin nimi"/>
+    <Item english="Dock Left" text="Telakoi vasemmalle"/>
+    <Item english="Dock Right" text="Telakoi oikealle"/>
+    <Item english="Dock Top" text="Telakoi ylös"/>
+    <Item english="Dock Bottom" text="Telakoi alas"/>
+    <Item english="Float" text="Irrota"/>
+    <Item english="Remember which panels were open" text="Muista, mitkä paneelit olivat auki"/>
+    <Item english="Show the toolbar" text="Näytä työkalurivi"/>
+    <Item english="Toolbar buttons" text="Työkalurivin painikkeet"/>
+    <Item english="Icons only" text="Vain kuvakkeet"/>
+    <Item english="Icons and labels" text="Kuvakkeet ja tekstit"/>
+    <Item english="Labels only" text="Vain tekstit"/>
+    <Item english="Toolbar size" text="Työkalurivin koko"/>
+    <Item english="Regular" text="Normaali"/>
+    <Item english="Small" text="Pieni"/>
+    <Item english="Icons" text="Kuvakkeet"/>
+    <Item english="Hidden" text="Piilotettu"/>
+    <Item english="1 pixel" text="1 pikseli"/>
+    <Item english="2 pixels" text="2 pikseliä"/>
+    <Item english="3 pixels" text="3 pikseliä"/>
+    <Item english="Selected text can be dragged" text="Valittua tekstiä voi raahata"/>
+    <Item english="Enable Multi-Editing (Cmd+click/selection)" text="Ota monimuokkaus käyttöön (Cmd+napsautus/valinta)"/>
+    <Item english="Follow the system" text="Järjestelmän mukainen"/>
+    <Item english="Light theme" text="Vaalea teema"/>
+    <Item english="Dark theme" text="Tumma teema"/>
+    <Item english="Show the fold margin" text="Näytä taitosmarginaali"/>
+    <Item english="A line" text="Viiva"/>
+    <Item english="Columns (space separated)" text="Sarakkeet (välilyönnein eroteltuina)"/>
+    <Item english="3 parts" text="3 osaa"/>
+    <Item english="4 parts" text="4 osaa"/>
+    <Item english="5 parts" text="5 osaa"/>
+    <Item english="6 parts" text="6 osaa"/>
+    <Item english="7 parts" text="7 osaa"/>
+    <Item english="8 parts" text="8 osaa"/>
+    <Item english="9 parts" text="9 osaa"/>
+    <Item english="Work the language out from the contents when the name does not say" text="Päättele kieli sisällöstä, kun nimi ei sitä kerro"/>
+    <Item english="Highlight matching braces" text="Korosta vastaavat sulkeet"/>
+    <Item english="Header font (blank for the editor's)" text="Ylätunnisteen fontti (tyhjä = editorin fontti)"/>
+    <Item english="Header font size" text="Ylätunnisteen fonttikoko"/>
+    <Item english="Margins: left, top, right, bottom (points)" text="Marginaalit: vasen, ylä, oikea, ala (pistettä)"/>
+    <Item english="Characters before it opens" text="Merkkejä ennen avautumista"/>
+    <Item english="Add characters to the word list" text="Lisää merkkejä sanan merkkiluetteloon"/>
+    <Item english="A fixed folder" text="Kiinteä kansio"/>
+    <Item english="Fixed folder" text="Kiinteä kansio"/>
+    <Item english="Confirm Replace All" text="Vahvista Korvaa kaikki"/>
+    <Item english="Compare: ignore case" text="Vertailu: ohita kirjainkoot"/>
+    <Item english="Compare: ignore spaces" text="Vertailu: ohita välilyönnit"/>
+    <Item english="Compare: ignore empty lines" text="Vertailu: ohita tyhjät rivit"/>
+    <Item english="Max Characters to Auto-Fill Find Field" text="Hakukentän automaattisen täytön enimmäismerkkimäärä"/>
+    <Item english="Releases repository" text="Julkaisujen tietovarasto"/>
+    <Item english="Notepad++ update" text="Notepad++ päivitys"/>
+    <Item english="No update is available." text="Päivitystä ei ole saatavilla."/>
+    <Item english="An update package is available, do you want to download it?" text="Päivityspaketti on saatavilla. Haluatko ladata sen?"/>
+    <Item english="Open the Releases Page" text="Avaa julkaisusivu"/>
+    <Item english="Copy debug info to clipboard" text="Kopioi virheenkorjauksen tiedot leikepöydälle"/>
+    <Item english="Fonts…" text="Fontit…"/>
+    <Item english="This document is not valid JSON." text="Tämä asiakirja ei ole kelvollista JSONia."/>
+    <Item english="Valid JSON." text="Kelvollinen JSON."/>
+    <Item english="Invalid JSON." text="Virheellinen JSON."/>
+    <Item english="Set as the first file to compare." text="Asetettu ensimmäiseksi verrattavaksi tiedostoksi."/>
+    <Item english="Nothing to compare with." text="Ei mitään, mihin verrata."/>
+    <Item english="The document is valid XML." text="Asiakirja on kelvollista XML:ää."/>
+    <Item english="FTP connections" text="FTP-yhteydet"/>
+    <Item english="Cannot connect." text="Yhdistäminen ei onnistu."/>
+    <Item english="That file is open in another tab." text="Tiedosto on avoinna toisessa välilehdessä."/>
+    <Item english="Close it first, or choose another name." text="Sulje se ensin tai valitse toinen nimi."/>
+    <Item english="Which language is this?" text="Mikä kieli tämä on?"/>
+    <Item english="Some characters cannot be represented in this encoding." text="Joitakin merkkejä ei voi esittää tällä koodauksella."/>
+    <Item english="Converting will replace them." text="Muunnos korvaa ne."/>
+    <Item english="Press the keys." text="Paina näppäimiä."/>
+    <Item english="Nothing is marked" text="Mitään ei ole merkitty"/>
+    <Item english="Marked text copied" text="Merkitty teksti kopioitu"/>
+    <Item english="Choose a folder first" text="Valitse ensin kansio"/>
+    <Item english="This document has no folder" text="Tällä asiakirjalla ei ole kansiota"/>
+    <Item english="The ticked project panels have no files" text="Valituissa projektipaneeleissa ei ole tiedostoja"/>
+    <Item english="Searching..." text="Etsitään..."/>
+    <Item english="Stopping..." text="Pysäytetään..."/>
+    <Item english="Marks cleared" text="Merkit poistettu"/>
+    <Item english="Transparent" text="Läpinäkyvä"/>
+    <Item english="View 1" text="Näkymä 1"/>
+    <Item english="View 2" text="Näkymä 2"/>
+    <!-- Tools: Hashes, Base, Password -->
+    <Item english="Hashes" text="Tiivisteet"/>
+    <Item english="Base" text="Base"/>
+    <Item english="Base64…" text="Base64…"/>
+    <Item english="Base58…" text="Base58…"/>
+    <Item english="Base32…" text="Base32…"/>
+    <Item english="HMAC key (optional):" text="HMAC-avain (valinnainen):"/>
+    <Item english="Salt (hexadecimal):" text="Suola (heksadesimaali):"/>
+    <Item english="Random" text="Satunnainen"/>
+    <Item english="Cost (4-31):" text="Kustannus (4-31):"/>
+    <Item english="Version:" text="Versio:"/>
+    <Item english="N, as a power of 2:" text="N, kakkosen potenssina:"/>
+    <Item english="Block size (r):" text="Lohkon koko (r):"/>
+    <Item english="Parallelism (p):" text="Rinnakkaisuus (p):"/>
+    <Item english="Variant:" text="Variantti:"/>
+    <Item english="Memory (KiB):" text="Muisti (KiB):"/>
+    <Item english="Iterations:" text="Iteraatiot:"/>
+    <Item english="Parallelism:" text="Rinnakkaisuus:"/>
+    <Item english="Digest:" text="Tiivistefunktio:"/>
+    <Item english="Hash length (bytes):" text="Tiivisteen pituus (tavua):"/>
+    <Item english="Hash:" text="Tiiviste:"/>
+    <Item english="Verify" text="Tarkista"/>
+    <Item english="Hash to check the password against:" text="Tiiviste, johon salasanaa verrataan:"/>
+    <Item english="The salt is not valid hexadecimal." text="Suola ei ole kelvollista heksadesimaalia."/>
+    <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt vaatii täsmälleen 16 tavun suolan."/>
+    <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 vaatii vähintään 8 tavun suolan."/>
+    <Item english="The hash could not be generated with these settings." text="Tiivistettä ei voitu luoda näillä asetuksilla."/>
+    <Item english="This is not a bcrypt, scrypt, Argon2 or PBKDF2 hash." text="Tämä ei ole bcrypt-, scrypt-, Argon2- tai PBKDF2-tiiviste."/>
+    <Item english="The password matches the hash." text="Salasana vastaa tiivistettä."/>
+    <Item english="The password does not match the hash." text="Salasana ei vastaa tiivistettä."/>
+    <Item english="The cost must be between 4 and 31." text="Kustannuksen on oltava välillä 4–31."/>
+    <Item english="The version must be 2a, 2b or 2y." text="Version on oltava 2a, 2b tai 2y."/>
+    <Item english="N must be between 2^1 and 2^24." text="N:n on oltava välillä 2^1–2^24."/>
+    <Item english="r and p must be between 1 and 64." text="r:n ja p:n on oltava välillä 1–64."/>
+    <Item english="These settings need more than 2 GB of memory." text="Nämä asetukset vaativat yli 2 GB muistia."/>
+    <Item english="The parallelism must be between 1 and 64." text="Rinnakkaisuuden on oltava välillä 1–64."/>
+    <Item english="The iterations must be between 1 and 1000." text="Iteraatioiden määrän on oltava välillä 1–1000."/>
+    <Item english="The memory must be at least 8 KiB for each lane." text="Muistia on oltava vähintään 8 KiB kutakin säiettä kohden."/>
+    <Item english="These settings need more than 4 GB of memory." text="Nämä asetukset vaativat yli 4 GB muistia."/>
+    <Item english="The digest must be SHA-1, SHA-256 or SHA-512." text="Tiivistefunktion on oltava SHA-1, SHA-256 tai SHA-512."/>
+    <Item english="The iterations must be between 1 and 100000000." text="Iteraatioiden määrän on oltava välillä 1–100000000."/>
+    <Item english="The hash length must be between 4 and 1024 bytes." text="Tiivisteen pituuden on oltava välillä 4–1024 tavua."/>
+    <Item english="Base64 (URL-safe)" text="Base64 (URL-turvallinen)"/>
+    <Item english="Encode" text="Koodaa"/>
+    <Item english="Decode" text="Dekoodaa"/>
+    <Item english="The input is:" text="Syöte on:"/>
+    <Item english="Bytes in hexadecimal" text="Tavut heksadesimaalina"/>
+    <Item english="Input:" text="Syöte:"/>
+    <Item english="Result:" text="Tulos:"/>
+    <Item english="Text:" text="Teksti:"/>
+    <Item english="Bytes in hexadecimal:" text="Tavut heksadesimaalina:"/>
+    <Item english="The input is not bytes written in hexadecimal." text="Syöte ei ole heksadesimaalina kirjoitettuja tavuja."/>
+    <Item english="The input is not valid $STR_REPLACE$." text="Syöte ei ole kelvollista $STR_REPLACE$-koodausta."/>
+    <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="Dekoodatut tavut eivät ole UTF-8-tekstiä; ne näytetään vain heksadesimaalina."/>
+    <Item english="Password Generator" text="Salasanageneraattori"/>
+    <Item english="Length:" text="Pituus:"/>
+    <Item english="Number of passwords:" text="Salasanojen määrä:"/>
+    <Item english="Uppercase letters (A-Z)" text="Isot kirjaimet (A-Z)"/>
+    <Item english="Lowercase letters (a-z)" text="Pienet kirjaimet (a-z)"/>
+    <Item english="Digits (0-9)" text="Numerot (0-9)"/>
+    <Item english="Symbols:" text="Erikoismerkit:"/>
+    <Item english="Leave out characters that look alike (O 0 o I l 1)" text="Jätä pois toisiaan muistuttavat merkit (O 0 o I l 1)"/>
+    <Item english="At least one character of each kind" text="Vähintään yksi merkki kutakin lajia"/>
+    <Item english="Entropy: about $INT_REPLACE$ bits" text="Entropia: noin $INT_REPLACE$ bittiä"/>
+    <Item english="Choose at least one kind of character." text="Valitse vähintään yksi merkkilaji."/>
+    <Item english="Insert into Document" text="Lisää asiakirjaan"/>
+    <Item english="Show the bare key in hexadecimal" text="Näytä pelkkä avain heksadesimaalina"/>
+    <Item english="Empty: a random salt each time" text="Tyhjä: joka kerta satunnainen suola"/>
+    <Item english="bcrypt reads only the first 72 bytes." text="bcrypt lukee vain ensimmäiset 72 tavua."/>
+    <!-- Tools: HTTP Request -->
+    <Item english="HTTP Request" text="HTTP-pyyntö"/>
+    <Item english="Send" text="Lähetä"/>
+    <Item english="Parameters" text="Parametrit"/>
+    <Item english="Headers" text="Otsakkeet"/>
+    <Item english="Body" text="Runko"/>
+    <Item english="Options" text="Asetukset"/>
+    <Item english="Content type:" text="Sisältötyyppi:"/>
+    <Item english="User name:" text="Käyttäjätunnus:"/>
+    <Item english="Password:" text="Salasana:"/>
+    <Item english="Timeout (seconds):" text="Aikakatkaisu (sekuntia):"/>
+    <Item english="Follow redirects" text="Seuraa uudelleenohjauksia"/>
+    <Item english="Allow invalid certificates" text="Salli virheelliset varmenteet"/>
+    <Item english="Format JSON" text="Muotoile JSON"/>
+    <Item english="Paste curl Command" text="Liitä curl-komento"/>
+    <Item english="Copy as curl" text="Kopioi curl-komentona"/>
+    <Item english="Open in New Document" text="Avaa uudessa asiakirjassa"/>
+    <Item english="One to a line: name=value. They are added to the address, encoded." text="Yksi riville: nimi=arvo. Ne lisätään osoitteeseen koodattuina."/>
+    <Item english="One to a line: Name: value" text="Yksi riville: Nimi: arvo"/>
+    <Item english="Sent as it is written, in UTF-8." text="Lähetetään sellaisenaan, UTF-8-muodossa."/>
+    <Item english="The answer is not text: $INT_REPLACE$ bytes." text="Vastaus ei ole tekstiä: $INT_REPLACE$ tavua."/>
+    <Item english="The address is not an http or https address." text="Osoite ei ole http- tai https-osoite."/>
+    <Item english="This is not a curl command." text="Tämä ei ole curl-komento."/>
+    <Item english="The command has no address." text="Komennossa ei ole osoitetta."/>
+    <Item english="The command reads its data from a file, which is not done here." text="Komento lukee tietonsa tiedostosta, mitä ei tehdä tässä."/>
+    <Item english="Forms and uploads of files are not read from a command." text="Lomakkeita ja tiedostojen lähetyksiä ei lueta komennosta."/>
+    <Item english="The command's address is not an http or https address." text="Komennon osoite ei ole http- tai https-osoite."/>
+</NativeLangExtra>

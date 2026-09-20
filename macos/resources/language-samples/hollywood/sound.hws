@@ -1,0 +1,22 @@
+; Plays a sample when a button is clicked
+@VERSION 7,0
+@SAMPLE 1, "click.wav"
+@BRUSH 1, "button.png", {LoadAlpha = True}
+
+Function p_Clicked(msg)
+    Switch msg.Action
+    Case "OnMouseDown":
+        PlaySample(1)
+        SetVolume(1, 48)
+    Case "OnMouseUp":
+        StopSample(1)
+    EndSwitch
+EndFunction
+
+DisplayBrush(1, 100, 100)
+MakeButton(1, #SIMPLEBUTTON, 100, 100, GetAttribute(#BRUSH, 1, #ATTRWIDTH), GetAttribute(#BRUSH, 1, #ATTRHEIGHT),
+    {OnMouseDown = p_Clicked, OnMouseUp = p_Clicked})
+
+Repeat
+    WaitEvent
+Forever

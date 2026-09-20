@@ -1,0 +1,10 @@
+RC low-pass filter
+* A first-order filter driven by a pulse
+V1 in 0 PULSE(0 5 0 1n 1n 5m 10m) AC 1
+R1 in out 1k
+C1 out 0 1u
+.tran 10u 30m
+.ac dec 20 1 100k
+.print tran V(in) V(out)
+.plot ac VDB(out)
+.end
