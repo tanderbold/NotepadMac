@@ -71,7 +71,13 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 
 ## Install
 
-Download the `.dmg` from this repository's **Releases** page (or, for the very latest
+With [Homebrew](https://brew.sh):
+
+```
+brew install --cask tanderbold/tap/notepadmac
+```
+
+Or download the `.dmg` from this repository's **Releases** page (or, for the very latest
 build, from the newest successful run of the *macOS* workflow: Actions tab → run →
 Artifacts), open it and drag **NotepadMac** to Applications.
 Requires macOS 11 or later; one build runs on Apple silicon and Intel.
