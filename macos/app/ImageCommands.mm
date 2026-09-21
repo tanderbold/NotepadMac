@@ -1,0 +1,111 @@
+// OCR by Vision, QR both ways by Vision and Core Image - the system engines,
+// no bundled models. Everything works on the clipboard or the selection and
+// puts its answer at the caret with one undo step, like the MIME conversions.
+#import "ImageCommands.h"
+#import "MimeCommands.h"
+#import "ScintillaView.h"
+#import <Vision/Vision.h>
+#import <CoreImage/CoreImage.h>
+
+@implementation EditorController (ImageCommands)
+
++ (NSImage *)clipboardImage {
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSArray *read = [pb readObjectsForClasses:@[[NSImage class]] options:nil];
+    if ([read.firstObject isKindOfClass:[NSImage class]]) return read.firstObject;
+    // A file copied in Finder arrives as its URL, not its pixels.
+    NSArray<NSURL *> *urls = [pb readObjectsForClasses:@[[NSURL class]]
+                                               options:@{NSPasteboardURLReadingFileURLsOnlyKey: @YES}];
+    for (NSURL *url in urls) {
+        NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
+        if (image) return image;
+    }
+    return nil;
+}
+
++ (NSString *)textRecognizedInImage:(NSImage *)image {
+    CGImageRef cg = [image CGImageForProposedRect:NULL context:nil hints:nil];
+    if (!cg) return nil;
+    VNRecognizeTextRequest *request = [[VNRecognizeTextRequest alloc] init];
+    request.recognitionLevel = VNRequestTextRecognitionLevelAccurate;
+    request.usesLanguageCorrection = YES;
+    if (@available(macOS 13.0, *)) request.automaticallyDetectsLanguage = YES;
+    VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithCGImage:cg options:@{}];
+    if (![handler performRequests:@[request] error:NULL]) return nil;
+
+    // Vision's boxes have their origin at the bottom left; reading order is
+    // top to bottom, then left to right.
+    NSArray<VNRecognizedTextObservation *> *found =
+        [request.results sortedArrayUsingComparator:^NSComparisonResult(VNRecognizedTextObservation *a,
+                                                                        VNRecognizedTextObservation *b) {
+            if (fabs(a.boundingBox.origin.y - b.boundingBox.origin.y) > 0.01)
+                return a.boundingBox.origin.y > b.boundingBox.origin.y ? NSOrderedAscending : NSOrderedDescending;
+            return a.boundingBox.origin.x < b.boundingBox.origin.x ? NSOrderedAscending : NSOrderedDescending;
+        }];
+    NSMutableArray<NSString *> *lines = [NSMutableArray array];
+    for (VNRecognizedTextObservation *observation in found) {
+        NSString *best = [observation topCandidates:1].firstObject.string;
+        if (best.length) [lines addObject:best];
+    }
+    return lines.count ? [lines componentsJoinedByString:@"\n"] : nil;
+}
+
++ (NSImage *)qrImageFromText:(NSString *)text side:(CGFloat)side {
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setValue:[text dataUsingEncoding:NSUTF8StringEncoding] forKey:@"inputMessage"];
+    [filter setValue:@"M" forKey:@"inputCorrectionLevel"];
+    CIImage *raw = filter.outputImage;
+    if (!raw) return nil;   // the text does not fit the format
+    CGFloat scale = MAX(1, floor(side / raw.extent.size.width));
+    CIImage *scaled = [raw imageByApplyingTransform:CGAffineTransformMakeScale(scale, scale)];
+    CGImageRef cg = [[CIContext context] createCGImage:scaled fromRect:scaled.extent];
+    if (!cg) return nil;
+    NSImage *image = [[NSImage alloc] initWithCGImage:cg size:scaled.extent.size];
+    CGImageRelease(cg);
+    return image;
+}
+
++ (NSString *)textFromQRCodesInImage:(NSImage *)image {
+    CGImageRef cg = [image CGImageForProposedRect:NULL context:nil hints:nil];
+    if (!cg) return nil;
+    VNDetectBarcodesRequest *request = [[VNDetectBarcodesRequest alloc] init];
+    request.symbologies = @[VNBarcodeSymbologyQR];
+    VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithCGImage:cg options:@{}];
+    if (![handler performRequests:@[request] error:NULL]) return nil;
+    NSArray<VNBarcodeObservation *> *found =
+        [request.results sortedArrayUsingComparator:^NSComparisonResult(VNBarcodeObservation *a,
+                                                                        VNBarcodeObservation *b) {
+            return a.boundingBox.origin.y > b.boundingBox.origin.y ? NSOrderedAscending : NSOrderedDescending;
+        }];
+    NSMutableArray<NSString *> *texts = [NSMutableArray array];
+    for (VNBarcodeObservation *observation in found) {
+        if (observation.payloadStringValue.length) [texts addObject:observation.payloadStringValue];
+    }
+    return texts.count ? [texts componentsJoinedByString:@"\n"] : nil;
+}
+
+- (BOOL)pasteImageAsText {
+    NSImage *image = [EditorController clipboardImage];
+    if (!image) return NO;
+    NSString *text = [EditorController textRecognizedInImage:image];
+    if (!text.length) return NO;
+    [self.sci message:SCI_BEGINUNDOACTION];
+    [self.sci setStringProperty:SCI_REPLACESEL parameter:0 value:text];
+    [self.sci message:SCI_ENDUNDOACTION];
+    [self refreshChrome];
+    return YES;
+}
+
+- (BOOL)insertTextFromClipboardQR {
+    NSImage *image = [EditorController clipboardImage];
+    if (!image) return NO;
+    NSString *text = [EditorController textFromQRCodesInImage:image];
+    if (!text.length) return NO;
+    [self.sci message:SCI_BEGINUNDOACTION];
+    [self.sci setStringProperty:SCI_REPLACESEL parameter:0 value:text];
+    [self.sci message:SCI_ENDUNDOACTION];
+    [self refreshChrome];
+    return YES;
+}
+
+@end

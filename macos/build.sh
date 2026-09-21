@@ -125,7 +125,7 @@ if [ ${#STALE[@]} -gt 0 ]; then
 fi
 clang++ -std=c++17 -fobjc-arc -O2 ${ARCHS[@]+"${ARCHS[@]}"} "$APPOBJ"/*.o "$UCOBJ"/*.o "$A2OBJ"/*.o "$CMOBJ"/*.o \
     "$OUT/libscintilla-cocoa.a" "$LEX/bin/liblexilla.a" \
-    -framework Cocoa -framework QuartzCore -framework Security -framework WebKit -lcurl -lxml2 -lz \
+    -framework Cocoa -framework QuartzCore -framework Security -framework WebKit -framework Vision -framework CoreImage -lcurl -lxml2 -lz \
     -o "$OUT/NotepadMac"
 
 echo "==> NotepadMac.app"
@@ -195,7 +195,13 @@ cp -R "$ROOT"/macos/resources/functionList-corpus/* "$APP/Contents/Resources/fun
 
 mkdir -p "$APP/Contents/Resources/functionListCorrections"
 cp "$ROOT"/macos/resources/functionList-corrections/*.xml "$APP/Contents/Resources/functionListCorrections/"
-codesign --force --sign - "$APP" 2>/dev/null   # one code object in the bundle; --deep is deprecated and not needed
+# The command-line tool, into Contents/Helpers as editors keep theirs.
+mkdir -p "$APP/Contents/Helpers"
+clang -fobjc-arc -O2 ${ARCHS[@]+"${ARCHS[@]}"} -framework Cocoa \
+    "$ROOT/macos/cli/nppmac.m" -o "$APP/Contents/Helpers/nppmac"
+# Nested code first, then the bundle: inside out, without the deprecated --deep.
+codesign --force --sign - "$APP/Contents/Helpers/nppmac" 2>/dev/null
+codesign --force --sign - "$APP" 2>/dev/null
 
 echo
 echo "Built: $APP"

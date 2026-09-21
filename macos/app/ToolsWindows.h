@@ -138,4 +138,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)syncFrom:(NSTextField *)field;
 @end
 
+/// The selection as a QR code: the picture, Copy Image and Save.
+@interface NppQrWindow : NSObject
++ (instancetype)shared;
+@property (nonatomic, readonly) NSPanel *panel;
+@property (nonatomic, readonly) NSImageView *imageView;
+- (void)showForText:(NSString *)text;
+@end
+
 NS_ASSUME_NONNULL_END

@@ -30,6 +30,7 @@
 #import "ExportCommands.h"
 #import "SpellCheck.h"
 #import "MarkdownPanel.h"
+#import "ImageCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -485,6 +486,11 @@ static NSString *Ordinal(NSUInteger n) {
     [self.window makeFirstResponder:self.editor.sci];
     [NSApp activateIgnoringOtherApps:YES];
 
+    // The nppmac command line tool speaks over this.
+    [[NSDistributedNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(cliRequest:)
+               name:@"org.notepad-plus-plus.mac.cli" object:nil];
+
     // Third-party plugins, once everything they may call is up.
     NppPluginHost *host = [NppPluginHost shared];
     host.editor = self.editor;
@@ -845,6 +851,8 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Cut Binary Content" action:@selector(cutBinary:) key:@"" flags:0 menu:pasteMenu];
     [self item:@"Paste Binary Content" action:@selector(pasteBinaryContent:) key:@"" flags:0 menu:pasteMenu];
     [editMenu addItemWithTitle:@"Paste Special" action:nil keyEquivalent:@""].submenu = pasteMenu;
+    // A Mac reads pictures: the clipboard's image OCR'd at the caret.
+    [self item:@"Paste Image as Text" action:@selector(pasteImageAsText:) key:@"" flags:0 menu:editMenu];
 
     NSMenu *selMenu = [[NSMenu alloc] initWithTitle:@"On Selection"];
     [self item:@"Open File" action:@selector(openSelectedFile:) key:@"" flags:0 menu:selMenu];
@@ -1232,6 +1240,11 @@ static NSString *Ordinal(NSUInteger n) {
     [toolsMenu addItemWithTitle:@"Base" action:nil keyEquivalent:@""].submenu = baseMenu;
     [self item:@"Password Generator" action:@selector(showPasswordGenerator:) key:@"" flags:0 menu:toolsMenu];
     [self item:@"HTTP Request" action:@selector(showHttpRequest:) key:@"" flags:0 menu:toolsMenu];
+    [toolsMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"QR Code from Selection" action:@selector(qrFromSelection:) key:@"" flags:0 menu:toolsMenu];
+    [self item:@"Read QR Code from Clipboard" action:@selector(readQRFromClipboard:) key:@"" flags:0 menu:toolsMenu];
+    [toolsMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Install Command Line Tool" action:@selector(installCommandLineTool:) key:@"" flags:0 menu:toolsMenu];
     toolsItem.submenu = toolsMenu;
 
     // ---- Macro
@@ -1510,6 +1523,70 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)jsonFormat:(id)sender  { if (![self.editor formatJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonCompact:(id)sender { if (![self.editor compactJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonSort:(id)sender    { if (![self.editor sortJSONDocument]) [self reportJSONProblem]; }
+
+#pragma mark Mac extras: OCR, QR, the command line
+
+- (void)pasteImageAsText:(id)sender {
+    if (![self.editor pasteImageAsText]) [self reportMimeProblem:@"No text was found in the clipboard's image."];
+}
+
+- (void)qrFromSelection:(id)sender {
+    NSString *text = [self.editor.sci selectedString];
+    if (!text.length) { NppBeep(); return; }
+    if (![EditorController qrImageFromText:text side:520]) {
+        [self reportMimeProblem:@"The selection is too long for a QR code."];
+        return;
+    }
+    [[NppQrWindow shared] showForText:text];
+}
+
+- (void)readQRFromClipboard:(id)sender {
+    if (![self.editor insertTextFromClipboardQR])
+        [self reportMimeProblem:@"No QR code was found in the clipboard's image."];
+}
+
+- (void)installCommandLineTool:(id)sender {
+    NSString *helper = [[NSBundle mainBundle].bundlePath
+                        stringByAppendingPathComponent:@"Contents/Helpers/nppmac"];
+    NSString *link = @"/usr/local/bin/nppmac";
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *error = nil;
+    [fm removeItemAtPath:link error:NULL];
+    BOOL made = [fm createSymbolicLinkAtPath:link withDestinationPath:helper error:&error];
+    NSAlert *alert = [[NSAlert alloc] init];
+    if (made) {
+        alert.messageText = @"The nppmac command is installed.";
+        alert.informativeText = @"nppmac file.txt — opens a file\n"
+                                @"nppmac +42 file.txt — opens it at line 42\n"
+                                @"something | nppmac - — reads standard input";
+    } else {
+        alert.messageText = @"Could not write to /usr/local/bin.";
+        alert.informativeText = [NSString stringWithFormat:
+            @"Run this in Terminal:\n\nsudo ln -sf \"%@\" %@", helper, link];
+    }
+    [alert runModal];
+}
+
+/// What the nppmac tool asks for: files (folders open as workspaces), each
+/// with a line to land on.
+- (void)cliRequest:(NSNotification *)note {
+    NSArray *files = note.userInfo[@"files"];
+    if (![files isKindOfClass:[NSArray class]]) return;
+    for (id entry in files) {
+        NSString *path = [entry isKindOfClass:[NSDictionary class]] ? entry[@"path"] : nil;
+        if (![path isKindOfClass:[NSString class]] || !path.length) continue;
+        BOOL isDirectory = NO;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory]) continue;
+        if (isDirectory) { [self.editor openFolderAsWorkspace:path]; continue; }
+        if (![self.editor openFileAtPath:path error:NULL]) continue;
+        long line = [entry[@"line"] respondsToSelector:@selector(longValue)] ? [entry[@"line"] longValue] : 0;
+        if (line > 0) {
+            [self.editor.sci message:SCI_GOTOLINE wParam:(uptr_t)(line - 1) lParam:0];
+            [self.editor.sci message:SCI_VERTICALCENTRECARET wParam:0 lParam:0];
+        }
+    }
+    [NSApp activateIgnoringOtherApps:YES];
+}
 
 #pragma mark Plugins > Spell Check
 

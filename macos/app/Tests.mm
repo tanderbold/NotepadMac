@@ -28,6 +28,7 @@
 #import "ExportCommands.h"
 #import "SpellCheck.h"
 #import "MarkdownPanel.h"
+#import "ImageCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -5874,7 +5875,11 @@ int NppMacRunTests(AppDelegate *app) {
                                            @"BLAKE2b", @"CRC-32", @"-", @"bcrypt", @"scrypt", @"Argon2", @"PBKDF2"]] && threeEach && threeAlike &&
               [baseTitles isEqualToArray:@[@"Base64…", @"Base58…", @"Base32…"]] &&
               [NppEnglishTitle(tools.itemArray[2]) isEqualToString:@"Password Generator"] &&
-              [NppEnglishTitle(tools.itemArray[3]) isEqualToString:@"HTTP Request"] && tools.numberOfItems == 4);
+              [NppEnglishTitle(tools.itemArray[3]) isEqualToString:@"HTTP Request"] &&
+              [NppEnglishTitle(tools.itemArray[5]) isEqualToString:@"QR Code from Selection"] &&
+              [NppEnglishTitle(tools.itemArray[6]) isEqualToString:@"Read QR Code from Clipboard"] &&
+              [NppEnglishTitle(tools.itemArray[8]) isEqualToString:@"Install Command Line Tool"] &&
+              tools.numberOfItems == 9);
 
         // Notepad++'s ids still find its own digests one level further down, and the
         // port's digests are not taken for them because they too say "Generate…".
@@ -10122,6 +10127,69 @@ int NppMacRunTests(AppDelegate *app) {
               [panel.lastHTML containsString:@"<li>one</li>"]);
         [app toggleMarkdownPreview:nil];
         Check(@"Markdown preview toggles away", @"the second toggle hides the panel", !panel.visible);
+    }
+
+    printf("\n== Mac extras: OCR, QR, the command line ==\n");
+    {
+        // OCR over a picture drawn right here: big black words on white.
+        NSImage *picture = [[NSImage alloc] initWithSize:NSMakeSize(640, 140)];
+        [picture lockFocus];
+        [[NSColor whiteColor] setFill];
+        NSRectFill(NSMakeRect(0, 0, 640, 140));
+        [@"HELLO OCR 42" drawAtPoint:NSMakePoint(24, 36) withAttributes:
+            @{NSFontAttributeName: [NSFont boldSystemFontOfSize:56],
+              NSForegroundColorAttributeName: [NSColor blackColor]}];
+        [picture unlockFocus];
+        NSString *seen = [EditorController textRecognizedInImage:picture];
+        Check(@"OCR reads a picture", @"the system engine returns the words drawn into the image",
+              [seen containsString:@"HELLO"] && [seen containsString:@"42"]);
+
+        // Paste Image as Text: through the clipboard, into the document.
+        NSPasteboard *pb = [NSPasteboard generalPasteboard];
+        [pb clearContents];
+        [pb writeObjects:@[picture]];
+        [ed newDocument];
+        SetDoc(ed, @"");
+        BOOL pasted = [ed pasteImageAsText];
+        Check(@"Paste Image as Text", @"the clipboard's image lands as its words",
+              pasted && [DocText(ed) containsString:@"HELLO"]);
+
+        // QR both ways: the selection becomes a code, the code reads back.
+        NSString *payload = @"https://github.com/tanderbold/NotepadMac?ref=qr&n=42";
+        NSImage *qr = [EditorController qrImageFromText:payload side:300];
+        Check(@"QR round trip", @"the code made from a text answers that very text",
+              qr && [[EditorController textFromQRCodesInImage:qr] isEqualToString:payload]);
+        NSMutableString *tooLong = [NSMutableString string];
+        for (int i = 0; i < 4000; ++i) [tooLong appendString:@"x"];
+        Check(@"QR refuses what cannot fit", @"a text past the format's end answers nil",
+              [EditorController qrImageFromText:tooLong side:300] == nil);
+
+        [pb clearContents];
+        [pb writeObjects:@[qr]];
+        SetDoc(ed, @"");
+        BOOL read = [ed insertTextFromClipboardQR];
+        Check(@"Read QR Code from Clipboard", @"the clipboard's code lands as its text",
+              read && [DocText(ed) isEqualToString:payload]);
+
+        // The command line tool: shipped, and its ask is honoured with a line.
+        NSString *helper = [[NSBundle mainBundle].bundlePath
+                            stringByAppendingPathComponent:@"Contents/Helpers/nppmac"];
+        NSTask *help = [[NSTask alloc] init];
+        help.executableURL = [NSURL fileURLWithPath:helper];
+        help.arguments = @[@"--help"];
+        help.standardError = [NSPipe pipe];
+        BOOL ran = [help launchAndReturnError:NULL];
+        [help waitUntilExit];
+        NSString *cliFile = TempFile(@"t_cli.txt", @"one\ntwo\nthree\nfour\nfive\n");
+        [app cliRequest:[NSNotification notificationWithName:@"org.notepad-plus-plus.mac.cli" object:nil
+            userInfo:@{@"files": @[@{@"path": cliFile, @"line": @4}]}]];
+        long cliLine = [ed.sci message:SCI_LINEFROMPOSITION
+                                wParam:(uptr_t)[ed.sci message:SCI_GETCURRENTPOS wParam:0 lParam:0] lParam:0];
+        Check(@"nppmac asks, the app answers", @"the helper ships and its request opens the file at the line",
+              ran && help.terminationStatus == 0 &&
+              [ed.currentDocument.path isEqualToString:cliFile] && cliLine == 3);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
+                  discardChanges:YES];
     }
 
     printf("\n== Plugin host ==\n");

@@ -1,5 +1,6 @@
 #import "ToolsWindows.h"
 #import "ConverterCommands.h"
+#import "ImageCommands.h"
 #import "Localization.h"
 #import "JsonCommands.h"
 
@@ -1346,6 +1347,72 @@ static NSSegmentedControl *Segments(NSArray<NSString *> *labels, id target, SEL 
 - (void)insertRow:(NSButton *)sender {
     NSString *text = [self fieldAt:sender.tag].stringValue;
     if (text.length && self.insert) self.insert(text);
+}
+
+- (void)close:(id)sender { [self.panel orderOut:nil]; }
+
+@end
+
+
+#pragma mark - QR code
+
+@interface NppQrWindow ()
+@property (nonatomic) NSPanel *panel;
+@property (nonatomic) NSImageView *imageView;
+@property (nonatomic) NSTextField *caption;
+@property (nonatomic, copy) NSString *text;
+@end
+
+@implementation NppQrWindow
+
++ (instancetype)shared {
+    static NppQrWindow *one;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{ one = [[NppQrWindow alloc] init]; });
+    return one;
+}
+
+- (NSPanel *)panel {
+    if (_panel) return _panel;
+    _imageView = [[NSImageView alloc] init];
+    _imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    _imageView.imageScaling = NSImageScaleProportionallyUpOrDown;
+    [_imageView.widthAnchor constraintGreaterThanOrEqualToConstant:260].active = YES;
+    [_imageView.heightAnchor constraintGreaterThanOrEqualToConstant:260].active = YES;
+    _caption = Note();
+    _caption.maximumNumberOfLines = 3;
+    NSButton *close = Button(@"Close", self, @selector(close:));
+    close.keyEquivalent = @"\033";
+    _panel = PanelHolding(@[_imageView, _caption,
+                            Row(@[Button(@"Copy Image", self, @selector(copyImage:)),
+                                  Button(@"Save…", self, @selector(saveImage:)), Spring(), close])],
+                          @"QR Code", @"NppQrWindow");
+    return _panel;
+}
+
+- (void)showForText:(NSString *)text {
+    NSPanel *panel = self.panel;
+    self.text = text;
+    self.imageView.image = [EditorController qrImageFromText:text side:520];
+    self.caption.stringValue = text.length > 200 ? [[text substringToIndex:200] stringByAppendingString:@"…"] : text;
+    Present(panel);
+}
+
+- (void)copyImage:(id)sender {
+    if (!self.imageView.image) return;
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb writeObjects:@[self.imageView.image]];
+}
+
+- (void)saveImage:(id)sender {
+    if (!self.imageView.image) return;
+    NSSavePanel *save = [NSSavePanel savePanel];
+    save.nameFieldStringValue = @"qr-code.png";
+    if ([save runModal] != NSModalResponseOK || !save.URL) return;
+    CGImageRef cg = [self.imageView.image CGImageForProposedRect:NULL context:nil hints:nil];
+    NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithCGImage:cg];
+    [[rep representationUsingType:NSBitmapImageFileTypePNG properties:@{}] writeToURL:save.URL atomically:YES];
 }
 
 - (void)close:(id)sender { [self.panel orderOut:nil]; }
