@@ -50,6 +50,17 @@
     return lines.count ? [lines componentsJoinedByString:@"\n"] : nil;
 }
 
+/// Core Image on the processor: the default context wants a GPU, which a
+/// headless runner (and so CI) does not have.
+static CIContext *SoftwareCIContext(void) {
+    static CIContext *context;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer: @YES}];
+    });
+    return context;
+}
+
 + (NSImage *)qrImageFromText:(NSString *)text side:(CGFloat)side {
     CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
     [filter setValue:[text dataUsingEncoding:NSUTF8StringEncoding] forKey:@"inputMessage"];
@@ -58,7 +69,7 @@
     if (!raw) return nil;   // the text does not fit the format
     CGFloat scale = MAX(1, floor(side / raw.extent.size.width));
     CIImage *scaled = [raw imageByApplyingTransform:CGAffineTransformMakeScale(scale, scale)];
-    CGImageRef cg = [[CIContext context] createCGImage:scaled fromRect:scaled.extent];
+    CGImageRef cg = [SoftwareCIContext() createCGImage:scaled fromRect:scaled.extent];
     if (!cg) return nil;
     NSImage *image = [[NSImage alloc] initWithCGImage:cg size:scaled.extent.size];
     CGImageRelease(cg);
@@ -80,6 +91,19 @@
     NSMutableArray<NSString *> *texts = [NSMutableArray array];
     for (VNBarcodeObservation *observation in found) {
         if (observation.payloadStringValue.length) [texts addObject:observation.payloadStringValue];
+    }
+    if (!texts.count) {
+        // Vision leans on hardware a runner may not have; the Core Image
+        // detector reads the same codes on the processor.
+        CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode
+                                                  context:SoftwareCIContext()
+                                                  options:@{CIDetectorAccuracy: CIDetectorAccuracyHigh}];
+        NSArray<CIFeature *> *features =
+            [detector featuresInImage:[CIImage imageWithCGImage:cg]];
+        for (CIQRCodeFeature *feature in features) {
+            if ([feature isKindOfClass:[CIQRCodeFeature class]] && feature.messageString.length)
+                [texts addObject:feature.messageString];
+        }
     }
     return texts.count ? [texts componentsJoinedByString:@"\n"] : nil;
 }

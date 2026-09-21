@@ -10157,6 +10157,8 @@ int NppMacRunTests(AppDelegate *app) {
         // QR both ways: the selection becomes a code, the code reads back.
         NSString *payload = @"https://github.com/tanderbold/NotepadMac?ref=qr&n=42";
         NSImage *qr = [EditorController qrImageFromText:payload side:300];
+        Check(@"QR generation", @"the selection becomes a rendered code (software Core Image, so headless too)",
+              qr != nil && qr.size.width >= 250);   // 300 asked, whole-module scaling lands just under
         Check(@"QR round trip", @"the code made from a text answers that very text",
               qr && [[EditorController textFromQRCodesInImage:qr] isEqualToString:payload]);
         NSMutableString *tooLong = [NSMutableString string];
