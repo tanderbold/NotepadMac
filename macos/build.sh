@@ -183,7 +183,7 @@ cp -R "$ROOT"/macos/resources/functionList-corpus/* "$APP/Contents/Resources/fun
 
 mkdir -p "$APP/Contents/Resources/functionListCorrections"
 cp "$ROOT"/macos/resources/functionList-corrections/*.xml "$APP/Contents/Resources/functionListCorrections/"
-codesign --force --deep --sign - "$APP" 2>/dev/null
+codesign --force --sign - "$APP" 2>/dev/null   # one code object in the bundle; --deep is deprecated and not needed
 
 echo
 echo "Built: $APP"

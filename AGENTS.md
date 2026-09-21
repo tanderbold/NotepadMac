@@ -50,6 +50,28 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   `defaults delete org.notepad-plus-plus.mac`, run the suite, then `defaults import` the backup. Never
   leave the user's preferences changed, and do not do this while the user has the app open.
 
+### Release packaging (signing and notarization)
+
+`macos/package.sh` ships a copy of the app without the `test-*.py` servers, signed
+inside out (a single `codesign` call: the bundle has exactly one code object) with
+the hardened runtime and no entitlements - `libpcre2` is dlopen'ed from `/usr/lib`,
+which the hardened runtime allows for system libraries, and the child processes
+(Run, NppExec) are ordinary fork/exec. The app is notarized first, as a zip, so its
+own stapled ticket lets a copy dragged out of the image open on an offline Mac;
+the image is then signed, notarized and stapled itself. Set-up, once per machine:
+
+- a "Developer ID Application" certificate (Xcode → Settings → Accounts →
+  Manage Certificates → "+");
+- `xcrun notarytool store-credentials <profile> --apple-id … --team-id …`;
+- let codesign use the signing key without a per-signature dialog, or a signing
+  run started from tooling hangs forever on a keychain prompt it cannot show
+  (and a dismissed prompt fails with `errSecInternalComponent`):
+  `security set-key-partition-list -S apple-tool:,apple:,codesign: -s ~/Library/Keychains/login.keychain-db`
+
+Both that `security` call and `store-credentials` ask for passwords; type them in
+a real terminal window - hidden input relayed through other tooling arrives
+mangled and fails with 401 / "passphrase is not correct".
+
 ## How work is done here
 
 1. **Windows Notepad++ is the specification.** Before implementing or fixing anything, read how
