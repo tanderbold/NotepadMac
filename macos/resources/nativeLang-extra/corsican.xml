@@ -100,6 +100,26 @@
     <Item english="Copy debug info to clipboard" text="Cupià l’infurmazioni di spannatura in u preme’papei"/>
     <Item english="Fonts…" text="Grafie…"/>
     <Item english="This document is not valid JSON." text="Stu ducumentu ùn hè micca un JSON accettevule."/>
+    <Item english="MIME Tools" text="Attrezzi MIME"/>
+    <Item english="Base64 Encode" text="Cudificà in Base64"/>
+    <Item english="Base64 Encode with Unix EOL" text="Cudificà in Base64 cù fine di linea Unix"/>
+    <Item english="Base64 Encode by line" text="Cudificà in Base64 linea per linea"/>
+    <Item english="Base64 Decode" text="Scudificà u Base64"/>
+    <Item english="Base64 Decode strict" text="Scudificà u Base64 (strettu)"/>
+    <Item english="Base64 Decode by line" text="Scudificà u Base64 linea per linea"/>
+    <Item english="Quoted-printable Encode" text="Cudificà in Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Scudificà u Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Cudificà l’URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Cudificà l’URL (RFC1738) linea per linea"/>
+    <Item english="URL Encode (Extended)" text="Cudificà l’URL (aumintatu)"/>
+    <Item english="URL Encode (Extended) by line" text="Cudificà l’URL (aumintatu) linea per linea"/>
+    <Item english="URL Encode (Full)" text="Cudificà l’URL (cumpletu)"/>
+    <Item english="URL Encode (Full) by line" text="Cudificà l’URL (cumpletu) linea per linea"/>
+    <Item english="URL Decode" text="Scudificà l’URL"/>
+    <Item english="SAML Decode" text="Scudificà u SAML"/>
+    <Item english="The selection is not valid Base64." text="A selezzione ùn hè micca un Base64 accettevule."/>
+    <Item english="The selection is not valid Quoted-printable." text="A selezzione ùn hè micca un Quoted-printable accettevule."/>
+    <Item english="The selection is not a SAML message." text="A selezzione ùn hè micca un messaghju SAML."/>
     <Item english="Valid JSON." text="JSON accettevule."/>
     <Item english="Invalid JSON." text="JSON inaccettevule."/>
     <Item english="Set as the first file to compare." text="Definitu cum’è primu schedariu à paragunà."/>

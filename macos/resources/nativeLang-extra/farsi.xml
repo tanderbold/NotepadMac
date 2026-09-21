@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="کپی اطلاعات عیب یابی به کلیپ برد"/>
     <Item english="Fonts…" text="فونت ها…"/>
     <Item english="This document is not valid JSON." text="این سند JSON معتبر نیست."/>
+    <Item english="MIME Tools" text="ابزارهای MIME"/>
+    <Item english="Base64 Encode" text="رمزگذاری Base64"/>
+    <Item english="Base64 Encode with padding" text="رمزگذاری Base64 با لایه گذاری"/>
+    <Item english="Base64 Encode with Unix EOL" text="رمزگذاری Base64 با پایان خط یونیکس"/>
+    <Item english="Base64 Encode by line" text="رمزگذاری Base64 خط به خط"/>
+    <Item english="Base64 Decode" text="رمزگشایی Base64"/>
+    <Item english="Base64 Decode strict" text="رمزگشایی سختگیرانه Base64"/>
+    <Item english="Base64 Decode by line" text="رمزگشایی Base64 خط به خط"/>
+    <Item english="Quoted-printable Encode" text="رمزگذاری Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="رمزگشایی Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="رمزگذاری URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="رمزگذاری URL (RFC1738) خط به خط"/>
+    <Item english="URL Encode (Extended)" text="رمزگذاری URL (گسترده)"/>
+    <Item english="URL Encode (Extended) by line" text="رمزگذاری URL (گسترده) خط به خط"/>
+    <Item english="URL Encode (Full)" text="رمزگذاری URL (کامل)"/>
+    <Item english="URL Encode (Full) by line" text="رمزگذاری URL (کامل) خط به خط"/>
+    <Item english="URL Decode" text="رمزگشایی URL"/>
+    <Item english="SAML Decode" text="رمزگشایی SAML"/>
+    <Item english="The selection is not valid Base64." text="بخش انتخاب شده Base64 معتبر نیست."/>
+    <Item english="The selection is not valid Quoted-printable." text="بخش انتخاب شده Quoted-printable معتبر نیست."/>
+    <Item english="The selection is not a SAML message." text="بخش انتخاب شده یک پیام SAML نیست."/>
     <Item english="Valid JSON." text="JSON معتبر."/>
     <Item english="Invalid JSON." text="JSON نامعتبر."/>
     <Item english="Set as the first file to compare." text="بعنوان اولین فایل برای مقایسه تنظیم شد."/>

@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Kopiuj dane debugowania do schowka"/>
     <Item english="Fonts…" text="Czcionki…"/>
     <Item english="This document is not valid JSON." text="Ten dokument nie jest poprawnym JSON."/>
+    <Item english="MIME Tools" text="Narzędzia MIME"/>
+    <Item english="Base64 Encode" text="Koduj Base64"/>
+    <Item english="Base64 Encode with padding" text="Koduj Base64 z dopełnieniem"/>
+    <Item english="Base64 Encode with Unix EOL" text="Koduj Base64 z Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Koduj Base64 linia po linii"/>
+    <Item english="Base64 Decode" text="Dekoduj Base64"/>
+    <Item english="Base64 Decode strict" text="Dekoduj Base64 (ściśle)"/>
+    <Item english="Base64 Decode by line" text="Dekoduj Base64 linia po linii"/>
+    <Item english="Quoted-printable Encode" text="Koduj Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Dekoduj Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Koduj URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Koduj URL (RFC1738) linia po linii"/>
+    <Item english="URL Encode (Extended)" text="Koduj URL (rozszerzone)"/>
+    <Item english="URL Encode (Extended) by line" text="Koduj URL (rozszerzone) linia po linii"/>
+    <Item english="URL Encode (Full)" text="Koduj URL (pełne)"/>
+    <Item english="URL Encode (Full) by line" text="Koduj URL (pełne) linia po linii"/>
+    <Item english="URL Decode" text="Dekoduj URL"/>
+    <Item english="SAML Decode" text="Dekoduj SAML"/>
+    <Item english="The selection is not valid Base64." text="Zaznaczenie nie jest poprawnym Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Zaznaczenie nie jest poprawnym Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Zaznaczenie nie jest komunikatem SAML."/>
     <Item english="Valid JSON." text="Poprawny JSON."/>
     <Item english="Invalid JSON." text="Niepoprawny JSON."/>
     <Item english="Set as the first file to compare." text="Ustawiono jako pierwszy plik do porównania."/>

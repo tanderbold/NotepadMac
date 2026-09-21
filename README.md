@@ -54,6 +54,11 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - XML tools: pretty print, linearize, validate (DTD/XSD), XPath, XSLT.
 - FTP/FTPS client panel.
 - NppExec-compatible scripting: a console, scripts, variables, its commands.
+- MIME Tools: Base64 (all seven variants of the plugin), Quoted-printable, URL encoding, SAML decode.
+
+**Plugins of your own**: native plugins load from the plugins folder the way they do
+on Windows — a small C interface, Scintilla messages and all. See
+[macos/plugin-sdk](macos/plugin-sdk/README.md).
 
 **Interface**
 - The interface in any of Notepad++'s ~90 translations, chosen in Preferences; what only the Mac version says is translated too.
@@ -63,7 +68,9 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 ## Differences from the Windows version
 
 - **Windows plugins (`.dll`) do not run** and cannot: they are Windows binaries. The most used
-  ones are built in instead (JSON, Compare, XML tools, FTP, NppExec scripting); Plugins Admin is absent.
+  ones are built in instead (JSON, Compare, XML tools, FTP, NppExec scripting, MIME Tools), and
+  native Mac plugins can be written against [macos/plugin-sdk](macos/plugin-sdk/README.md);
+  Plugins Admin is absent.
 - Mac conventions replace Windows ones: Finder and Terminal instead of Explorer and cmd, the Trash
   instead of the Recycle Bin, the system menu bar and dark appearance, ⌘ shortcuts.
 - Settings that only make sense on Windows are left out (tray icon, DirectWrite modes, hiding the

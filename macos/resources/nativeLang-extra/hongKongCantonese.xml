@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="抄除錯資訊去剪貼簿"/>
     <Item english="Fonts…" text="字型…"/>
     <Item english="This document is not valid JSON." text="呢份文件唔係有效嘅 JSON。"/>
+    <Item english="MIME Tools" text="MIME 架撐"/>
+    <Item english="Base64 Encode" text="Base64 編碼"/>
+    <Item english="Base64 Encode with padding" text="Base64 編碼（有填充）"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 編碼（用 Unix EOL）"/>
+    <Item english="Base64 Encode by line" text="Base64 逐行編碼"/>
+    <Item english="Base64 Decode" text="Base64 解碼"/>
+    <Item english="Base64 Decode strict" text="Base64 嚴格解碼"/>
+    <Item english="Base64 Decode by line" text="Base64 逐行解碼"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable 編碼"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable 解碼"/>
+    <Item english="URL Encode (RFC1738)" text="URL 編碼 (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL 逐行編碼 (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="URL 編碼（擴充）"/>
+    <Item english="URL Encode (Extended) by line" text="URL 逐行編碼（擴充）"/>
+    <Item english="URL Encode (Full)" text="URL 編碼（完全）"/>
+    <Item english="URL Encode (Full) by line" text="URL 逐行編碼（完全）"/>
+    <Item english="URL Decode" text="URL 解碼"/>
+    <Item english="SAML Decode" text="SAML 解碼"/>
+    <Item english="The selection is not valid Base64." text="揀咗嘅內容唔係有效嘅 Base64。"/>
+    <Item english="The selection is not valid Quoted-printable." text="揀咗嘅內容唔係有效嘅 Quoted-printable。"/>
+    <Item english="The selection is not a SAML message." text="揀咗嘅內容唔係 SAML 訊息。"/>
     <Item english="Valid JSON." text="有效嘅 JSON。"/>
     <Item english="Invalid JSON." text="無效嘅 JSON。"/>
     <Item english="Set as the first file to compare." text="已經設定做第一個用嚟比較嘅檔案。"/>

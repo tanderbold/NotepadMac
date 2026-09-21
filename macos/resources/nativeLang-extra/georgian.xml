@@ -111,6 +111,27 @@
     <Item english="Copy debug info to clipboard" text="გამართვის ინფორმაციის კოპირება ბუფერში"/>
     <Item english="Fonts…" text="შრიფტები…"/>
     <Item english="This document is not valid JSON." text="ეს დოკუმენტი არ არის სწორი JSON."/>
+    <Item english="MIME Tools" text="MIME ხელსაწყოები"/>
+    <Item english="Base64 Encode" text="Base64 კოდირება"/>
+    <Item english="Base64 Encode with padding" text="Base64 კოდირება შევსებით"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 კოდირება Unix EOL-ით"/>
+    <Item english="Base64 Encode by line" text="Base64 კოდირება ხაზების მიხედვით"/>
+    <Item english="Base64 Decode" text="Base64 დეკოდირება"/>
+    <Item english="Base64 Decode strict" text="Base64 დეკოდირება (მკაცრი)"/>
+    <Item english="Base64 Decode by line" text="Base64 დეკოდირება ხაზების მიხედვით"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable კოდირება"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable დეკოდირება"/>
+    <Item english="URL Encode (RFC1738)" text="URL კოდირება (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL კოდირება (RFC1738) ხაზების მიხედვით"/>
+    <Item english="URL Encode (Extended)" text="URL კოდირება (გაფართოებული)"/>
+    <Item english="URL Encode (Extended) by line" text="URL კოდირება (გაფართოებული) ხაზების მიხედვით"/>
+    <Item english="URL Encode (Full)" text="URL კოდირება (სრული)"/>
+    <Item english="URL Encode (Full) by line" text="URL კოდირება (სრული) ხაზების მიხედვით"/>
+    <Item english="URL Decode" text="URL დეკოდირება"/>
+    <Item english="SAML Decode" text="SAML დეკოდირება"/>
+    <Item english="The selection is not valid Base64." text="მონიშნული ტექსტი არ არის სწორი Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="მონიშნული ტექსტი არ არის სწორი Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="მონიშნული ტექსტი არ არის SAML შეტყობინება."/>
     <Item english="Valid JSON." text="სწორი JSON."/>
     <Item english="Invalid JSON." text="არასწორი JSON."/>
     <Item english="Set as the first file to compare." text="მონიშნულია პირველ შესადარებელ ფაილად."/>

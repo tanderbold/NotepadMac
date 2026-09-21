@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Копировать отладочную информацию в буфер"/>
     <Item english="Fonts…" text="Шрифты…"/>
     <Item english="This document is not valid JSON." text="Этот документ не является корректным JSON."/>
+    <Item english="MIME Tools" text="Инструменты MIME"/>
+    <Item english="Base64 Encode" text="Кодировать в Base64"/>
+    <Item english="Base64 Encode with padding" text="Кодировать в Base64 с дополнением"/>
+    <Item english="Base64 Encode with Unix EOL" text="Кодировать в Base64 с Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Кодировать в Base64 построчно"/>
+    <Item english="Base64 Decode" text="Декодировать Base64"/>
+    <Item english="Base64 Decode strict" text="Декодировать Base64 (строго)"/>
+    <Item english="Base64 Decode by line" text="Декодировать Base64 построчно"/>
+    <Item english="Quoted-printable Encode" text="Кодировать в Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Декодировать Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Кодировать URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Кодировать URL (RFC1738) построчно"/>
+    <Item english="URL Encode (Extended)" text="Кодировать URL (расширенно)"/>
+    <Item english="URL Encode (Extended) by line" text="Кодировать URL (расширенно) построчно"/>
+    <Item english="URL Encode (Full)" text="Кодировать URL (полностью)"/>
+    <Item english="URL Encode (Full) by line" text="Кодировать URL (полностью) построчно"/>
+    <Item english="URL Decode" text="Декодировать URL"/>
+    <Item english="SAML Decode" text="Декодировать SAML"/>
+    <Item english="The selection is not valid Base64." text="Выделение не является корректным Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Выделение не является корректным Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Выделение не является сообщением SAML."/>
     <Item english="Valid JSON." text="Корректный JSON."/>
     <Item english="Invalid JSON." text="Некорректный JSON."/>
     <Item english="Set as the first file to compare." text="Выбран первым файлом для сравнения."/>

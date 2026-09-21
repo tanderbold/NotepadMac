@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="디버그 정보를 클립보드에 복사"/>
     <Item english="Fonts…" text="글꼴…"/>
     <Item english="This document is not valid JSON." text="이 문서는 유효한 JSON이 아닙니다."/>
+    <Item english="MIME Tools" text="MIME 도구"/>
+    <Item english="Base64 Encode" text="Base64 인코딩"/>
+    <Item english="Base64 Encode with padding" text="Base64 인코딩 (패딩 포함)"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 인코딩 (Unix 줄 끝 문자)"/>
+    <Item english="Base64 Encode by line" text="Base64 인코딩 (줄 단위)"/>
+    <Item english="Base64 Decode" text="Base64 디코딩"/>
+    <Item english="Base64 Decode strict" text="Base64 디코딩 (엄격)"/>
+    <Item english="Base64 Decode by line" text="Base64 디코딩 (줄 단위)"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable 인코딩"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable 디코딩"/>
+    <Item english="URL Encode (RFC1738)" text="URL 인코딩 (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL 인코딩 (RFC1738, 줄 단위)"/>
+    <Item english="URL Encode (Extended)" text="URL 인코딩 (확장)"/>
+    <Item english="URL Encode (Extended) by line" text="URL 인코딩 (확장, 줄 단위)"/>
+    <Item english="URL Encode (Full)" text="URL 인코딩 (전체)"/>
+    <Item english="URL Encode (Full) by line" text="URL 인코딩 (전체, 줄 단위)"/>
+    <Item english="URL Decode" text="URL 디코딩"/>
+    <Item english="SAML Decode" text="SAML 디코딩"/>
+    <Item english="The selection is not valid Base64." text="선택 영역이 유효한 Base64가 아닙니다."/>
+    <Item english="The selection is not valid Quoted-printable." text="선택 영역이 유효한 Quoted-printable이 아닙니다."/>
+    <Item english="The selection is not a SAML message." text="선택 영역이 SAML 메시지가 아닙니다."/>
     <Item english="Valid JSON." text="유효한 JSON입니다."/>
     <Item english="Invalid JSON." text="유효하지 않은 JSON입니다."/>
     <Item english="Set as the first file to compare." text="비교할 첫 번째 파일로 지정했습니다."/>

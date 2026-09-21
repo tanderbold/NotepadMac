@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Copier les informations de débogage dans le presse-papier"/>
     <Item english="Fonts…" text="Polices…"/>
     <Item english="This document is not valid JSON." text="Ce document n’est pas du JSON valide."/>
+    <Item english="MIME Tools" text="Outils MIME"/>
+    <Item english="Base64 Encode" text="Encoder en Base64"/>
+    <Item english="Base64 Encode with padding" text="Encoder en Base64 avec remplissage"/>
+    <Item english="Base64 Encode with Unix EOL" text="Encoder en Base64 avec sauts de ligne Unix"/>
+    <Item english="Base64 Encode by line" text="Encoder en Base64 ligne par ligne"/>
+    <Item english="Base64 Decode" text="Décoder le Base64"/>
+    <Item english="Base64 Decode strict" text="Décoder le Base64 (strict)"/>
+    <Item english="Base64 Decode by line" text="Décoder le Base64 ligne par ligne"/>
+    <Item english="Quoted-printable Encode" text="Encoder en Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Décoder le Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Encoder l’URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Encoder l’URL (RFC1738) ligne par ligne"/>
+    <Item english="URL Encode (Extended)" text="Encoder l’URL (étendu)"/>
+    <Item english="URL Encode (Extended) by line" text="Encoder l’URL (étendu) ligne par ligne"/>
+    <Item english="URL Encode (Full)" text="Encoder l’URL (complet)"/>
+    <Item english="URL Encode (Full) by line" text="Encoder l’URL (complet) ligne par ligne"/>
+    <Item english="URL Decode" text="Décoder l’URL"/>
+    <Item english="SAML Decode" text="Décoder le SAML"/>
+    <Item english="The selection is not valid Base64." text="La sélection n’est pas du Base64 valide."/>
+    <Item english="The selection is not valid Quoted-printable." text="La sélection n’est pas du Quoted-printable valide."/>
+    <Item english="The selection is not a SAML message." text="La sélection n’est pas un message SAML."/>
     <Item english="Valid JSON." text="JSON valide."/>
     <Item english="Invalid JSON." text="JSON non valide."/>
     <Item english="Set as the first file to compare." text="Défini comme premier fichier à comparer."/>

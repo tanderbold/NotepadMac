@@ -107,6 +107,27 @@
     <Item english="Copy debug info to clipboard" text="Kopiatu arazte-informazioa arbelera"/>
     <Item english="Fonts…" text="Letra-motak…"/>
     <Item english="This document is not valid JSON." text="Dokumentu hau ez da baliozko JSON."/>
+    <Item english="MIME Tools" text="MIME tresnak"/>
+    <Item english="Base64 Encode" text="Kodifikatu Base64"/>
+    <Item english="Base64 Encode with padding" text="Kodifikatu Base64 (betegarriarekin)"/>
+    <Item english="Base64 Encode with Unix EOL" text="Kodifikatu Base64 (Unix EOL)"/>
+    <Item english="Base64 Encode by line" text="Kodifikatu Base64 (lerroz lerro)"/>
+    <Item english="Base64 Decode" text="Deskodifikatu Base64"/>
+    <Item english="Base64 Decode strict" text="Deskodifikatu Base64 (zorrotza)"/>
+    <Item english="Base64 Decode by line" text="Deskodifikatu Base64 (lerroz lerro)"/>
+    <Item english="Quoted-printable Encode" text="Kodifikatu Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Deskodifikatu Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Kodifikatu URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Kodifikatu URL (RFC1738, lerroz lerro)"/>
+    <Item english="URL Encode (Extended)" text="Kodifikatu URL (hedatua)"/>
+    <Item english="URL Encode (Extended) by line" text="Kodifikatu URL (hedatua, lerroz lerro)"/>
+    <Item english="URL Encode (Full)" text="Kodifikatu URL (osoa)"/>
+    <Item english="URL Encode (Full) by line" text="Kodifikatu URL (osoa, lerroz lerro)"/>
+    <Item english="URL Decode" text="Deskodifikatu URL"/>
+    <Item english="SAML Decode" text="Deskodifikatu SAML"/>
+    <Item english="The selection is not valid Base64." text="Hautapena ez da baliozko Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Hautapena ez da baliozko Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Hautapena ez da SAML mezu bat."/>
     <Item english="Valid JSON." text="Baliozko JSON."/>
     <Item english="Invalid JSON." text="JSON baliogabea."/>
     <Item english="Set as the first file to compare." text="Konparatzeko lehen fitxategi gisa ezarrita."/>

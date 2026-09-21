@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Tuzatish haqida ma’lumotni buferga nusxalamoq"/>
     <Item english="Fonts…" text="Shriftlar…"/>
     <Item english="This document is not valid JSON." text="Bu fayl yaroqli JSON emas."/>
+    <Item english="MIME Tools" text="MIME vositalari"/>
+    <Item english="Base64 Encode" text="Base64 kodlamoq"/>
+    <Item english="Base64 Encode with padding" text="Base64 kodlamoq (toʻldirish bilan)"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 kodlamoq (Unix EOL bilan)"/>
+    <Item english="Base64 Encode by line" text="Base64 kodlamoq (satrma-satr)"/>
+    <Item english="Base64 Decode" text="Base64 dekodlamoq"/>
+    <Item english="Base64 Decode strict" text="Base64 dekodlamoq (qatʼiy)"/>
+    <Item english="Base64 Decode by line" text="Base64 dekodlamoq (satrma-satr)"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable kodlamoq"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable dekodlamoq"/>
+    <Item english="URL Encode (RFC1738)" text="URL kodlamoq (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL kodlamoq (RFC1738, satrma-satr)"/>
+    <Item english="URL Encode (Extended)" text="URL kodlamoq (kengaytirilgan)"/>
+    <Item english="URL Encode (Extended) by line" text="URL kodlamoq (kengaytirilgan, satrma-satr)"/>
+    <Item english="URL Encode (Full)" text="URL kodlamoq (toʻliq)"/>
+    <Item english="URL Encode (Full) by line" text="URL kodlamoq (toʻliq, satrma-satr)"/>
+    <Item english="URL Decode" text="URL dekodlamoq"/>
+    <Item english="SAML Decode" text="SAML dekodlamoq"/>
+    <Item english="The selection is not valid Base64." text="Belgilangan qism yaroqli Base64 emas."/>
+    <Item english="The selection is not valid Quoted-printable." text="Belgilangan qism yaroqli Quoted-printable emas."/>
+    <Item english="The selection is not a SAML message." text="Belgilangan qism SAML xabari emas."/>
     <Item english="Valid JSON." text="Yaroqli JSON."/>
     <Item english="Invalid JSON." text="Yaroqsiz JSON."/>
     <Item english="Set as the first file to compare." text="Taqqoslash uchun birinchi fayl deb belgilandi."/>

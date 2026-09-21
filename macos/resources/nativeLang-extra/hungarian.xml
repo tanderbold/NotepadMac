@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Hibakeresési adatok másolása a vágólapra"/>
     <Item english="Fonts…" text="Betűtípusok…"/>
     <Item english="This document is not valid JSON." text="Ez a dokumentum nem érvényes JSON."/>
+    <Item english="MIME Tools" text="MIME-eszközök"/>
+    <Item english="Base64 Encode" text="Base64-kódolás"/>
+    <Item english="Base64 Encode with padding" text="Base64-kódolás kitöltéssel"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64-kódolás Unix-sorvégződéssel"/>
+    <Item english="Base64 Encode by line" text="Base64-kódolás soronként"/>
+    <Item english="Base64 Decode" text="Base64-dekódolás"/>
+    <Item english="Base64 Decode strict" text="Szigorú Base64-dekódolás"/>
+    <Item english="Base64 Decode by line" text="Base64-dekódolás soronként"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable kódolás"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable dekódolás"/>
+    <Item english="URL Encode (RFC1738)" text="URL-kódolás (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL-kódolás (RFC1738) soronként"/>
+    <Item english="URL Encode (Extended)" text="URL-kódolás (kiterjesztett)"/>
+    <Item english="URL Encode (Extended) by line" text="URL-kódolás (kiterjesztett) soronként"/>
+    <Item english="URL Encode (Full)" text="URL-kódolás (teljes)"/>
+    <Item english="URL Encode (Full) by line" text="URL-kódolás (teljes) soronként"/>
+    <Item english="URL Decode" text="URL-dekódolás"/>
+    <Item english="SAML Decode" text="SAML-dekódolás"/>
+    <Item english="The selection is not valid Base64." text="A kijelölés nem érvényes Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="A kijelölés nem érvényes Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="A kijelölés nem SAML-üzenet."/>
     <Item english="Valid JSON." text="Érvényes JSON."/>
     <Item english="Invalid JSON." text="Érvénytelen JSON."/>
     <Item english="Set as the first file to compare." text="Beállítva első fájlként az összehasonlításhoz."/>

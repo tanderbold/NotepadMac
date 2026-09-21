@@ -112,6 +112,27 @@
     <Item english="Copy debug info to clipboard" text="දෝෂ තොරතුරු ඇමුණුම් පුවරුවට පිටපත් කරන්න"/>
     <Item english="Fonts…" text="අකුරු…"/>
     <Item english="This document is not valid JSON." text="මෙම ලේඛනය වලංගු JSON නොවේ."/>
+    <Item english="MIME Tools" text="MIME මෙවලම්"/>
+    <Item english="Base64 Encode" text="Base64 කේතනය කරන්න"/>
+    <Item english="Base64 Encode with padding" text="පිරවුම සමඟ Base64 කේතනය කරන්න"/>
+    <Item english="Base64 Encode with Unix EOL" text="Unix EOL සමඟ Base64 කේතනය කරන්න"/>
+    <Item english="Base64 Encode by line" text="පේලිය අනුව Base64 කේතනය කරන්න"/>
+    <Item english="Base64 Decode" text="Base64 විකේතනය කරන්න"/>
+    <Item english="Base64 Decode strict" text="Base64 විකේතනය කරන්න (දැඩි)"/>
+    <Item english="Base64 Decode by line" text="පේලිය අනුව Base64 විකේතනය කරන්න"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable කේතනය කරන්න"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable විකේතනය කරන්න"/>
+    <Item english="URL Encode (RFC1738)" text="URL කේතනය කරන්න (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="පේලිය අනුව URL කේතනය කරන්න (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="URL කේතනය කරන්න (විස්තෘත)"/>
+    <Item english="URL Encode (Extended) by line" text="පේලිය අනුව URL කේතනය කරන්න (විස්තෘත)"/>
+    <Item english="URL Encode (Full)" text="URL කේතනය කරන්න (සම්පූර්ණ)"/>
+    <Item english="URL Encode (Full) by line" text="පේලිය අනුව URL කේතනය කරන්න (සම්පූර්ණ)"/>
+    <Item english="URL Decode" text="URL විකේතනය කරන්න"/>
+    <Item english="SAML Decode" text="SAML විකේතනය කරන්න"/>
+    <Item english="The selection is not valid Base64." text="තේරීම වලංගු Base64 නොවේ."/>
+    <Item english="The selection is not valid Quoted-printable." text="තේරීම වලංගු Quoted-printable නොවේ."/>
+    <Item english="The selection is not a SAML message." text="තේරීම SAML පණිවිඩයක් නොවේ."/>
     <Item english="Valid JSON." text="වලංගු JSON."/>
     <Item english="Invalid JSON." text="අවලංගු JSON."/>
     <Item english="Set as the first file to compare." text="සැසඳීමට පළමු ගොනුව ලෙස තබන ලදී."/>

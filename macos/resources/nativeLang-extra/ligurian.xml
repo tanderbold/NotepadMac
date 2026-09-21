@@ -64,6 +64,13 @@
     <Item english="Open the Releases Page" text="Arvi a pagina de verscioin"/>
     <Item english="Copy debug info to clipboard" text="Còpia e informaçioin de debug inti aponti"/>
     <Item english="Fonts…" text="Carateri…"/>
+    <Item english="Base64 Encode" text="Codifica Base64"/>
+    <Item english="Base64 Decode" text="Decodifica Base64"/>
+    <Item english="Quoted-printable Encode" text="Codifica Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Decodifica Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Codifica URL (RFC1738)"/>
+    <Item english="URL Decode" text="Decodifica URL"/>
+    <Item english="SAML Decode" text="Decodifica SAML"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON no valido."/>
     <Item english="FTP connections" text="Conescioin FTP"/>

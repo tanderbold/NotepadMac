@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="డీబగ్ సమాచారాన్ని క్లిప్‌బోర్డ్‌కు కాపీ చేయి"/>
     <Item english="Fonts…" text="ఫాంట్‌లు…"/>
     <Item english="This document is not valid JSON." text="ఈ డాక్యుమెంట్ చెల్లుబాటు అయ్యే JSON కాదు."/>
+    <Item english="MIME Tools" text="MIME టూల్స్"/>
+    <Item english="Base64 Encode" text="Base64 ఎన్‌కోడ్ చేయి"/>
+    <Item english="Base64 Encode with padding" text="ప్యాడింగ్‌తో Base64 ఎన్‌కోడ్ చేయి"/>
+    <Item english="Base64 Encode with Unix EOL" text="Unix EOLతో Base64 ఎన్‌కోడ్ చేయి"/>
+    <Item english="Base64 Encode by line" text="లైన్ వారీగా Base64 ఎన్‌కోడ్ చేయి"/>
+    <Item english="Base64 Decode" text="Base64 డీకోడ్ చేయి"/>
+    <Item english="Base64 Decode strict" text="Base64 డీకోడ్ చేయి (స్ట్రిక్ట్)"/>
+    <Item english="Base64 Decode by line" text="లైన్ వారీగా Base64 డీకోడ్ చేయి"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable ఎన్‌కోడ్ చేయి"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable డీకోడ్ చేయి"/>
+    <Item english="URL Encode (RFC1738)" text="URL ఎన్‌కోడ్ చేయి (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="లైన్ వారీగా URL ఎన్‌కోడ్ చేయి (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="URL ఎన్‌కోడ్ చేయి (ఎక్స్‌టెండెడ్)"/>
+    <Item english="URL Encode (Extended) by line" text="లైన్ వారీగా URL ఎన్‌కోడ్ చేయి (ఎక్స్‌టెండెడ్)"/>
+    <Item english="URL Encode (Full)" text="URL ఎన్‌కోడ్ చేయి (ఫుల్)"/>
+    <Item english="URL Encode (Full) by line" text="లైన్ వారీగా URL ఎన్‌కోడ్ చేయి (ఫుల్)"/>
+    <Item english="URL Decode" text="URL డీకోడ్ చేయి"/>
+    <Item english="SAML Decode" text="SAML డీకోడ్ చేయి"/>
+    <Item english="The selection is not valid Base64." text="ఎంపిక చెల్లుబాటు అయ్యే Base64 కాదు."/>
+    <Item english="The selection is not valid Quoted-printable." text="ఎంపిక చెల్లుబాటు అయ్యే Quoted-printable కాదు."/>
+    <Item english="The selection is not a SAML message." text="ఎంపిక SAML సందేశం కాదు."/>
     <Item english="Valid JSON." text="చెల్లుబాటు అయ్యే JSON."/>
     <Item english="Invalid JSON." text="చెల్లని JSON."/>
     <Item english="Set as the first file to compare." text="పోల్చడానికి మొదటి ఫైల్‌గా సెట్ చేయబడింది."/>

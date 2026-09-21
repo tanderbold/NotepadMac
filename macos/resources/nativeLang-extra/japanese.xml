@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="デバッグ情報をクリップボードにコピー"/>
     <Item english="Fonts…" text="フォント…"/>
     <Item english="This document is not valid JSON." text="この文書は有効な JSON ではありません。"/>
+    <Item english="MIME Tools" text="MIME ツール"/>
+    <Item english="Base64 Encode" text="Base64 エンコード"/>
+    <Item english="Base64 Encode with padding" text="Base64 エンコード (パディングあり)"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 エンコード (Unix 改行コード)"/>
+    <Item english="Base64 Encode by line" text="行ごとに Base64 エンコード"/>
+    <Item english="Base64 Decode" text="Base64 デコード"/>
+    <Item english="Base64 Decode strict" text="Base64 デコード (厳密)"/>
+    <Item english="Base64 Decode by line" text="行ごとに Base64 デコード"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable エンコード"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable デコード"/>
+    <Item english="URL Encode (RFC1738)" text="URL エンコード (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="行ごとに URL エンコード (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="URL エンコード (拡張)"/>
+    <Item english="URL Encode (Extended) by line" text="行ごとに URL エンコード (拡張)"/>
+    <Item english="URL Encode (Full)" text="URL エンコード (完全)"/>
+    <Item english="URL Encode (Full) by line" text="行ごとに URL エンコード (完全)"/>
+    <Item english="URL Decode" text="URL デコード"/>
+    <Item english="SAML Decode" text="SAML デコード"/>
+    <Item english="The selection is not valid Base64." text="選択範囲が有効な Base64 ではありません。"/>
+    <Item english="The selection is not valid Quoted-printable." text="選択範囲が有効な Quoted-printable ではありません。"/>
+    <Item english="The selection is not a SAML message." text="選択範囲は SAML メッセージではありません。"/>
     <Item english="Valid JSON." text="有効な JSON です。"/>
     <Item english="Invalid JSON." text="無効な JSON です。"/>
     <Item english="Set as the first file to compare." text="比較の1番目のファイルに設定しました。"/>

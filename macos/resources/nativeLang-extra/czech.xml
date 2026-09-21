@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Kopírovat informace k ladění do Schránky"/>
     <Item english="Fonts…" text="Písma…"/>
     <Item english="This document is not valid JSON." text="Tento dokument není platný JSON."/>
+    <Item english="MIME Tools" text="Nástroje MIME"/>
+    <Item english="Base64 Encode" text="Zakódovat do Base64"/>
+    <Item english="Base64 Encode with padding" text="Zakódovat do Base64 s výplní"/>
+    <Item english="Base64 Encode with Unix EOL" text="Zakódovat do Base64 s unixovými konci řádků"/>
+    <Item english="Base64 Encode by line" text="Zakódovat do Base64 po řádcích"/>
+    <Item english="Base64 Decode" text="Dekódovat Base64"/>
+    <Item english="Base64 Decode strict" text="Dekódovat Base64 (striktně)"/>
+    <Item english="Base64 Decode by line" text="Dekódovat Base64 po řádcích"/>
+    <Item english="Quoted-printable Encode" text="Zakódovat do Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Dekódovat Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Zakódovat URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Zakódovat URL (RFC1738) po řádcích"/>
+    <Item english="URL Encode (Extended)" text="Zakódovat URL (rozšířené)"/>
+    <Item english="URL Encode (Extended) by line" text="Zakódovat URL (rozšířené) po řádcích"/>
+    <Item english="URL Encode (Full)" text="Zakódovat URL (úplné)"/>
+    <Item english="URL Encode (Full) by line" text="Zakódovat URL (úplné) po řádcích"/>
+    <Item english="URL Decode" text="Dekódovat URL"/>
+    <Item english="SAML Decode" text="Dekódovat SAML"/>
+    <Item english="The selection is not valid Base64." text="Výběr není platný Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Výběr není platný Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Výběr není zpráva SAML."/>
     <Item english="Valid JSON." text="Platný JSON."/>
     <Item english="Invalid JSON." text="Neplatný JSON."/>
     <Item english="Set as the first file to compare." text="Nastaven jako první soubor k porovnání."/>

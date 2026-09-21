@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Kopier debug info til utklippstavle"/>
     <Item english="Fonts…" text="Skrifttyper…"/>
     <Item english="This document is not valid JSON." text="Dette dokumentet er ikke gyldig JSON."/>
+    <Item english="MIME Tools" text="MIME-verktøy"/>
+    <Item english="Base64 Encode" text="Kod Base64"/>
+    <Item english="Base64 Encode with padding" text="Kod Base64 med utfylling"/>
+    <Item english="Base64 Encode with Unix EOL" text="Kod Base64 med Unix-linjeskift"/>
+    <Item english="Base64 Encode by line" text="Kod Base64 linje for linje"/>
+    <Item english="Base64 Decode" text="Dekod Base64"/>
+    <Item english="Base64 Decode strict" text="Dekod Base64 strengt"/>
+    <Item english="Base64 Decode by line" text="Dekod Base64 linje for linje"/>
+    <Item english="Quoted-printable Encode" text="Kod Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Dekod Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Kod URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Kod URL (RFC1738) linje for linje"/>
+    <Item english="URL Encode (Extended)" text="Kod URL (utvidet)"/>
+    <Item english="URL Encode (Extended) by line" text="Kod URL (utvidet) linje for linje"/>
+    <Item english="URL Encode (Full)" text="Kod URL (fullstendig)"/>
+    <Item english="URL Encode (Full) by line" text="Kod URL (fullstendig) linje for linje"/>
+    <Item english="URL Decode" text="Dekod URL"/>
+    <Item english="SAML Decode" text="Dekod SAML"/>
+    <Item english="The selection is not valid Base64." text="Markeringen er ikke gyldig Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Markeringen er ikke gyldig Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Markeringen er ikke en SAML-melding."/>
     <Item english="Valid JSON." text="Gyldig JSON."/>
     <Item english="Invalid JSON." text="Ugyldig JSON."/>
     <Item english="Set as the first file to compare." text="Valgt som første fil til sammenligning."/>

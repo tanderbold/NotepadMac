@@ -111,7 +111,8 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Panels and docking | `DockingManager.mm`, `NppPanel.mm`, `DocumentListPanel.mm`, `FunctionListPanel.mm`, `FunctionListCatalog.mm`, `ProjectPanel.mm`, `WorkspacePanel.mm`, `AuxPanels.mm` |
 | Preferences, shortcuts, context menu | `SettingsCommands.mm` (NPP_PREF_* macros, defaults), `SettingsPanels.mm`, `ShortcutMapper.mm`, `ContextMenuFile.mm` |
 | Localisation | `Localization.mm` (upstream `nativeLang/*.xml` by command id and by English text; the port's own texts from `resources/nativeLang-extra/`) |
-| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm` |
+| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools) |
+| Third-party plugins | `PluginHost.mm` (dlopen, the send() bridge, NPPM/NPPN subset); the public C interface and sample live in `macos/plugin-sdk/`. Release signing needs `macos/entitlements.plist` (library validation off) or the hardened runtime refuses the dylibs |
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
 | Help | `InfoWindows.mm`, `UpdateChecker.mm` |
 

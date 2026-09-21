@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Копиране на информацията за отстраняване на грешки в системния буфер"/>
     <Item english="Fonts…" text="Шрифтове…"/>
     <Item english="This document is not valid JSON." text="Този документ не е валиден JSON."/>
+    <Item english="MIME Tools" text="MIME инструменти"/>
+    <Item english="Base64 Encode" text="Кодиране в Base64"/>
+    <Item english="Base64 Encode with padding" text="Кодиране в Base64 с допълване"/>
+    <Item english="Base64 Encode with Unix EOL" text="Кодиране в Base64 с Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Кодиране в Base64 ред по ред"/>
+    <Item english="Base64 Decode" text="Декодиране на Base64"/>
+    <Item english="Base64 Decode strict" text="Декодиране на Base64 (строго)"/>
+    <Item english="Base64 Decode by line" text="Декодиране на Base64 ред по ред"/>
+    <Item english="Quoted-printable Encode" text="Кодиране в Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Декодиране на Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Кодиране на URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Кодиране на URL (RFC1738) ред по ред"/>
+    <Item english="URL Encode (Extended)" text="Кодиране на URL (разширено)"/>
+    <Item english="URL Encode (Extended) by line" text="Кодиране на URL (разширено) ред по ред"/>
+    <Item english="URL Encode (Full)" text="Кодиране на URL (пълно)"/>
+    <Item english="URL Encode (Full) by line" text="Кодиране на URL (пълно) ред по ред"/>
+    <Item english="URL Decode" text="Декодиране на URL"/>
+    <Item english="SAML Decode" text="Декодиране на SAML"/>
+    <Item english="The selection is not valid Base64." text="Избраното не е валиден Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Избраното не е валиден Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Избраното не е SAML съобщение."/>
     <Item english="Valid JSON." text="Валиден JSON."/>
     <Item english="Invalid JSON." text="Невалиден JSON."/>
     <Item english="Set as the first file to compare." text="Зададен като първи файл за сравняване."/>

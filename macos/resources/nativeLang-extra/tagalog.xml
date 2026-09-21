@@ -83,6 +83,26 @@
     <Item english="Copy debug info to clipboard" text="Isipi ang debug info sa klipbord"/>
     <Item english="Fonts…" text="Mga Font…"/>
     <Item english="This document is not valid JSON." text="Ang kasulatang ito ay hindi valid na JSON."/>
+    <Item english="Base64 Encode" text="I-Encode sa Base64"/>
+    <Item english="Base64 Encode with padding" text="I-Encode sa Base64 na may padding"/>
+    <Item english="Base64 Encode with Unix EOL" text="I-Encode sa Base64 na may Unix EOL"/>
+    <Item english="Base64 Encode by line" text="I-Encode sa Base64 bawat linya"/>
+    <Item english="Base64 Decode" text="I-Decode ang Base64"/>
+    <Item english="Base64 Decode strict" text="I-Decode ang Base64 (mahigpit)"/>
+    <Item english="Base64 Decode by line" text="I-Decode ang Base64 bawat linya"/>
+    <Item english="Quoted-printable Encode" text="I-Encode sa Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="I-Decode ang Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="I-Encode ang URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="I-Encode ang URL (RFC1738) bawat linya"/>
+    <Item english="URL Encode (Extended)" text="I-Encode ang URL (Pinalawak)"/>
+    <Item english="URL Encode (Extended) by line" text="I-Encode ang URL (Pinalawak) bawat linya"/>
+    <Item english="URL Encode (Full)" text="I-Encode ang URL (Buo)"/>
+    <Item english="URL Encode (Full) by line" text="I-Encode ang URL (Buo) bawat linya"/>
+    <Item english="URL Decode" text="I-Decode ang URL"/>
+    <Item english="SAML Decode" text="I-Decode ang SAML"/>
+    <Item english="The selection is not valid Base64." text="Ang napili ay hindi valid na Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Ang napili ay hindi valid na Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Ang napili ay hindi isang mensaheng SAML."/>
     <Item english="Valid JSON." text="Valid na JSON."/>
     <Item english="Invalid JSON." text="Hindi valid na JSON."/>
     <Item english="Set as the first file to compare." text="Itinakda bilang unang pila sa paghahambing."/>

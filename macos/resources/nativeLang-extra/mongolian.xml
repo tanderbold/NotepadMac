@@ -111,6 +111,27 @@
     <Item english="Copy debug info to clipboard" text="Алдаа засварлах мэдээллийг түр санах ойд хуулах"/>
     <Item english="Fonts…" text="Фонтууд…"/>
     <Item english="This document is not valid JSON." text="Энэ баримт зөв JSON биш байна."/>
+    <Item english="MIME Tools" text="MIME хэрэгслүүд"/>
+    <Item english="Base64 Encode" text="Base64 кодлох"/>
+    <Item english="Base64 Encode with padding" text="Base64 дүүргэлттэй кодлох"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 Unix EOL-тэй кодлох"/>
+    <Item english="Base64 Encode by line" text="Base64 мөр бүрээр кодлох"/>
+    <Item english="Base64 Decode" text="Base64 код тайлах"/>
+    <Item english="Base64 Decode strict" text="Base64 код тайлах (хатуу)"/>
+    <Item english="Base64 Decode by line" text="Base64 мөр бүрээр код тайлах"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable кодлох"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable код тайлах"/>
+    <Item english="URL Encode (RFC1738)" text="URL кодлох (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL мөр бүрээр кодлох (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="URL кодлох (өргөтгөсөн)"/>
+    <Item english="URL Encode (Extended) by line" text="URL мөр бүрээр кодлох (өргөтгөсөн)"/>
+    <Item english="URL Encode (Full)" text="URL кодлох (бүрэн)"/>
+    <Item english="URL Encode (Full) by line" text="URL мөр бүрээр кодлох (бүрэн)"/>
+    <Item english="URL Decode" text="URL код тайлах"/>
+    <Item english="SAML Decode" text="SAML код тайлах"/>
+    <Item english="The selection is not valid Base64." text="Сонголт нь зөв Base64 биш байна."/>
+    <Item english="The selection is not valid Quoted-printable." text="Сонголт нь зөв Quoted-printable биш байна."/>
+    <Item english="The selection is not a SAML message." text="Сонголт нь SAML зурвас биш байна."/>
     <Item english="Valid JSON." text="Зөв JSON."/>
     <Item english="Invalid JSON." text="Буруу JSON."/>
     <Item english="Set as the first file to compare." text="Харьцуулах эхний файл болголоо."/>

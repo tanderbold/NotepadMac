@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Debug məlumatını mübadilə buferinə köçür"/>
     <Item english="Fonts…" text="Şriftlər…"/>
     <Item english="This document is not valid JSON." text="Bu sənəd düzgün JSON deyil."/>
+    <Item english="MIME Tools" text="MIME Alətləri"/>
+    <Item english="Base64 Encode" text="Base64 Kodlaşdır"/>
+    <Item english="Base64 Encode with padding" text="Base64 Kodlaşdır (doldurma ilə)"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 Kodlaşdır (Unix EOL ilə)"/>
+    <Item english="Base64 Encode by line" text="Base64 Kodlaşdır (sətir-sətir)"/>
+    <Item english="Base64 Decode" text="Base64 Dekodlaşdır"/>
+    <Item english="Base64 Decode strict" text="Base64 Dekodlaşdır (ciddi)"/>
+    <Item english="Base64 Decode by line" text="Base64 Dekodlaşdır (sətir-sətir)"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable Kodlaşdır"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable Dekodlaşdır"/>
+    <Item english="URL Encode (RFC1738)" text="URL Kodlaşdır (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL Kodlaşdır (RFC1738, sətir-sətir)"/>
+    <Item english="URL Encode (Extended)" text="URL Kodlaşdır (Genişləndirilmiş)"/>
+    <Item english="URL Encode (Extended) by line" text="URL Kodlaşdır (Genişləndirilmiş, sətir-sətir)"/>
+    <Item english="URL Encode (Full)" text="URL Kodlaşdır (Tam)"/>
+    <Item english="URL Encode (Full) by line" text="URL Kodlaşdır (Tam, sətir-sətir)"/>
+    <Item english="URL Decode" text="URL Dekodlaşdır"/>
+    <Item english="SAML Decode" text="SAML Dekodlaşdır"/>
+    <Item english="The selection is not valid Base64." text="Seçim düzgün Base64 deyil."/>
+    <Item english="The selection is not valid Quoted-printable." text="Seçim düzgün Quoted-printable deyil."/>
+    <Item english="The selection is not a SAML message." text="Seçim SAML mesajı deyil."/>
     <Item english="Valid JSON." text="Düzgün JSON."/>
     <Item english="Invalid JSON." text="Yanlış JSON."/>
     <Item english="Set as the first file to compare." text="Müqayisə üçün birinci fayl kimi təyin edildi."/>

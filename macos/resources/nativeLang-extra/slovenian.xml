@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Kopiraj info o razhroščevanju v odložišče"/>
     <Item english="Fonts…" text="Pisave…"/>
     <Item english="This document is not valid JSON." text="Ta dokument ni veljaven JSON."/>
+    <Item english="MIME Tools" text="Orodja MIME"/>
+    <Item english="Base64 Encode" text="Kodiraj v Base64"/>
+    <Item english="Base64 Encode with padding" text="Kodiraj v Base64 z dopolnilom"/>
+    <Item english="Base64 Encode with Unix EOL" text="Kodiraj v Base64 z Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Kodiraj v Base64 po vrsticah"/>
+    <Item english="Base64 Decode" text="Dekodiraj Base64"/>
+    <Item english="Base64 Decode strict" text="Dekodiraj Base64 (strogo)"/>
+    <Item english="Base64 Decode by line" text="Dekodiraj Base64 po vrsticah"/>
+    <Item english="Quoted-printable Encode" text="Kodiraj v Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Dekodiraj Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Kodiraj URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Kodiraj URL (RFC1738) po vrsticah"/>
+    <Item english="URL Encode (Extended)" text="Kodiraj URL (razširjeno)"/>
+    <Item english="URL Encode (Extended) by line" text="Kodiraj URL (razširjeno) po vrsticah"/>
+    <Item english="URL Encode (Full)" text="Kodiraj URL (polno)"/>
+    <Item english="URL Encode (Full) by line" text="Kodiraj URL (polno) po vrsticah"/>
+    <Item english="URL Decode" text="Dekodiraj URL"/>
+    <Item english="SAML Decode" text="Dekodiraj SAML"/>
+    <Item english="The selection is not valid Base64." text="Izbira ni veljaven Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Izbira ni veljaven Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Izbira ni sporočilo SAML."/>
     <Item english="Valid JSON." text="Veljaven JSON."/>
     <Item english="Invalid JSON." text="Neveljaven JSON."/>
     <Item english="Set as the first file to compare." text="Nastavljeno kot prva datoteka za primerjavo."/>

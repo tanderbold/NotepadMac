@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="डिबग जानकारी क्लिपबोर्डमा प्रतिलिपि गर्नुहोस्"/>
     <Item english="Fonts…" text="फन्टहरू…"/>
     <Item english="This document is not valid JSON." text="यो कागजात मान्य JSON होइन।"/>
+    <Item english="MIME Tools" text="MIME उपकरणहरू"/>
+    <Item english="Base64 Encode" text="Base64 इन्कोड गर्नुहोस्"/>
+    <Item english="Base64 Encode with padding" text="प्याडिङसहित Base64 इन्कोड गर्नुहोस्"/>
+    <Item english="Base64 Encode with Unix EOL" text="Unix EOL सहित Base64 इन्कोड गर्नुहोस्"/>
+    <Item english="Base64 Encode by line" text="लाइनअनुसार Base64 इन्कोड गर्नुहोस्"/>
+    <Item english="Base64 Decode" text="Base64 डिकोड गर्नुहोस्"/>
+    <Item english="Base64 Decode strict" text="Base64 कडा रूपमा डिकोड गर्नुहोस्"/>
+    <Item english="Base64 Decode by line" text="लाइनअनुसार Base64 डिकोड गर्नुहोस्"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable इन्कोड गर्नुहोस्"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable डिकोड गर्नुहोस्"/>
+    <Item english="URL Encode (RFC1738)" text="URL (RFC1738) इन्कोड गर्नुहोस्"/>
+    <Item english="URL Encode (RFC1738) by line" text="लाइनअनुसार URL (RFC1738) इन्कोड गर्नुहोस्"/>
+    <Item english="URL Encode (Extended)" text="URL (विस्तारित) इन्कोड गर्नुहोस्"/>
+    <Item english="URL Encode (Extended) by line" text="लाइनअनुसार URL (विस्तारित) इन्कोड गर्नुहोस्"/>
+    <Item english="URL Encode (Full)" text="URL (पूर्ण) इन्कोड गर्नुहोस्"/>
+    <Item english="URL Encode (Full) by line" text="लाइनअनुसार URL (पूर्ण) इन्कोड गर्नुहोस्"/>
+    <Item english="URL Decode" text="URL डिकोड गर्नुहोस्"/>
+    <Item english="SAML Decode" text="SAML डिकोड गर्नुहोस्"/>
+    <Item english="The selection is not valid Base64." text="चयन मान्य Base64 होइन।"/>
+    <Item english="The selection is not valid Quoted-printable." text="चयन मान्य Quoted-printable होइन।"/>
+    <Item english="The selection is not a SAML message." text="चयन SAML सन्देश होइन।"/>
     <Item english="Valid JSON." text="मान्य JSON।"/>
     <Item english="Invalid JSON." text="अमान्य JSON।"/>
     <Item english="Set as the first file to compare." text="तुलनाको लागि पहिलो फाईलको रूपमा सेट गरियो।"/>

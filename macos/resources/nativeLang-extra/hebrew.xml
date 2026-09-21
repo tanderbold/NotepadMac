@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="העתק מידע ניפוי שגיאות לזיכרון"/>
     <Item english="Fonts…" text="פונטים…"/>
     <Item english="This document is not valid JSON." text="מסמך זה אינו JSON תקין."/>
+    <Item english="MIME Tools" text="כלי MIME"/>
+    <Item english="Base64 Encode" text="קודד Base64"/>
+    <Item english="Base64 Encode with padding" text="קודד Base64 עם ריפוד"/>
+    <Item english="Base64 Encode with Unix EOL" text="קודד Base64 עם Unix EOL"/>
+    <Item english="Base64 Encode by line" text="קודד Base64 לפי שורה"/>
+    <Item english="Base64 Decode" text="פענח Base64"/>
+    <Item english="Base64 Decode strict" text="פענח Base64 באופן קפדני"/>
+    <Item english="Base64 Decode by line" text="פענח Base64 לפי שורה"/>
+    <Item english="Quoted-printable Encode" text="קודד Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="פענח Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="קודד URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="קודד URL (RFC1738) לפי שורה"/>
+    <Item english="URL Encode (Extended)" text="קודד URL (מורחב)"/>
+    <Item english="URL Encode (Extended) by line" text="קודד URL (מורחב) לפי שורה"/>
+    <Item english="URL Encode (Full)" text="קודד URL (מלא)"/>
+    <Item english="URL Encode (Full) by line" text="קודד URL (מלא) לפי שורה"/>
+    <Item english="URL Decode" text="פענח URL"/>
+    <Item english="SAML Decode" text="פענח SAML"/>
+    <Item english="The selection is not valid Base64." text="הבחירה אינה Base64 תקין."/>
+    <Item english="The selection is not valid Quoted-printable." text="הבחירה אינה Quoted-printable תקין."/>
+    <Item english="The selection is not a SAML message." text="הבחירה אינה הודעת SAML."/>
     <Item english="Valid JSON." text="JSON תקין."/>
     <Item english="Invalid JSON." text="JSON לא תקין."/>
     <Item english="Set as the first file to compare." text="נקבע כקובץ הראשון להשוואה."/>

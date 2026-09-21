@@ -100,6 +100,27 @@
     <Item english="Copy debug info to clipboard" text="คัดลอกข้อมูลดีบักไปยังคลิปบอร์ด"/>
     <Item english="Fonts…" text="ฟอนท์…"/>
     <Item english="This document is not valid JSON." text="เอกสารนี้ไม่ใช่ JSON ที่ถูกต้อง"/>
+    <Item english="MIME Tools" text="เครื่องมือ MIME"/>
+    <Item english="Base64 Encode" text="เข้ารหัส Base64"/>
+    <Item english="Base64 Encode with padding" text="เข้ารหัส Base64 แบบมี padding"/>
+    <Item english="Base64 Encode with Unix EOL" text="เข้ารหัส Base64 แบบ Unix EOL"/>
+    <Item english="Base64 Encode by line" text="เข้ารหัส Base64 ทีละบรรทัด"/>
+    <Item english="Base64 Decode" text="ถอดรหัส Base64"/>
+    <Item english="Base64 Decode strict" text="ถอดรหัส Base64 แบบเข้มงวด"/>
+    <Item english="Base64 Decode by line" text="ถอดรหัส Base64 ทีละบรรทัด"/>
+    <Item english="Quoted-printable Encode" text="เข้ารหัส Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="ถอดรหัส Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="เข้ารหัส URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="เข้ารหัส URL (RFC1738) ทีละบรรทัด"/>
+    <Item english="URL Encode (Extended)" text="เข้ารหัส URL (แบบขยาย)"/>
+    <Item english="URL Encode (Extended) by line" text="เข้ารหัส URL (แบบขยาย) ทีละบรรทัด"/>
+    <Item english="URL Encode (Full)" text="เข้ารหัส URL (แบบเต็ม)"/>
+    <Item english="URL Encode (Full) by line" text="เข้ารหัส URL (แบบเต็ม) ทีละบรรทัด"/>
+    <Item english="URL Decode" text="ถอดรหัส URL"/>
+    <Item english="SAML Decode" text="ถอดรหัส SAML"/>
+    <Item english="The selection is not valid Base64." text="ส่วนที่เลือกไม่ใช่ Base64 ที่ถูกต้อง"/>
+    <Item english="The selection is not valid Quoted-printable." text="ส่วนที่เลือกไม่ใช่ Quoted-printable ที่ถูกต้อง"/>
+    <Item english="The selection is not a SAML message." text="ส่วนที่เลือกไม่ใช่ข้อความ SAML"/>
     <Item english="Valid JSON." text="JSON ถูกต้อง"/>
     <Item english="Invalid JSON." text="JSON ไม่ถูกต้อง"/>
     <Item english="Set as the first file to compare." text="ตั้งเป็นไฟล์แรกที่จะเปรียบเทียบแล้ว"/>

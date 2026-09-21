@@ -33,6 +33,8 @@
     <Item english="Fixed folder" text="Direhtoriu fihu"/>
     <Item english="Notepad++ update" text="Ahtualizazión de Notepad++"/>
     <Item english="Fonts…" text="Tipografías…"/>
+    <Item english="Base64 Encode" text="Coifical en Base64"/>
+    <Item english="Quoted-printable Encode" text="Coifical en Quoted-printable"/>
     <Item english="Valid JSON." text="JSON váliu."/>
     <Item english="View 1" text="Vista 1"/>
     <Item english="View 2" text="Vista 2"/>

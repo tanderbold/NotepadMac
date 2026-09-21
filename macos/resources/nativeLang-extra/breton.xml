@@ -56,6 +56,16 @@
     <Item english="Compare: ignore empty lines" text="Keñveriañ: na ober van ouzh al linennoù goullo"/>
     <Item english="Notepad++ update" text="Hizivadur Notepad++"/>
     <Item english="Fonts…" text="Skrituroù…"/>
+    <Item english="MIME Tools" text="Ostilhoù MIME"/>
+    <Item english="Base64 Encode" text="Enkodañ Base64"/>
+    <Item english="Base64 Decode" text="Dienkodañ Base64"/>
+    <Item english="Quoted-printable Encode" text="Enkodañ Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Dienkodañ Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Enkodañ URL (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="Enkodañ URL (astennet)"/>
+    <Item english="URL Encode (Full)" text="Enkodañ URL (klok)"/>
+    <Item english="URL Decode" text="Dienkodañ URL"/>
+    <Item english="SAML Decode" text="Dienkodañ SAML"/>
     <Item english="FTP connections" text="Kevreadennoù FTP"/>
     <Item english="Searching..." text="O klask..."/>
     <Item english="Transparent" text="Treuzwelus"/>

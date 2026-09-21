@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="نسخ معلومات تصحيح الأخطاء إلى الذاكرة"/>
     <Item english="Fonts…" text="الخطوط…"/>
     <Item english="This document is not valid JSON." text="هذا المستند ليس JSON صالحاً."/>
+    <Item english="MIME Tools" text="أدوات MIME"/>
+    <Item english="Base64 Encode" text="ترميز Base64"/>
+    <Item english="Base64 Encode with padding" text="ترميز Base64 مع الحشو"/>
+    <Item english="Base64 Encode with Unix EOL" text="ترميز Base64 مع نهايات أسطر Unix"/>
+    <Item english="Base64 Encode by line" text="ترميز Base64 سطراً بسطر"/>
+    <Item english="Base64 Decode" text="فك ترميز Base64"/>
+    <Item english="Base64 Decode strict" text="فك ترميز Base64 (صارم)"/>
+    <Item english="Base64 Decode by line" text="فك ترميز Base64 سطراً بسطر"/>
+    <Item english="Quoted-printable Encode" text="ترميز Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="فك ترميز Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="ترميز URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="ترميز URL (RFC1738) سطراً بسطر"/>
+    <Item english="URL Encode (Extended)" text="ترميز URL (موسع)"/>
+    <Item english="URL Encode (Extended) by line" text="ترميز URL (موسع) سطراً بسطر"/>
+    <Item english="URL Encode (Full)" text="ترميز URL (كامل)"/>
+    <Item english="URL Encode (Full) by line" text="ترميز URL (كامل) سطراً بسطر"/>
+    <Item english="URL Decode" text="فك ترميز URL"/>
+    <Item english="SAML Decode" text="فك ترميز SAML"/>
+    <Item english="The selection is not valid Base64." text="التحديد ليس Base64 صالحاً."/>
+    <Item english="The selection is not valid Quoted-printable." text="التحديد ليس Quoted-printable صالحاً."/>
+    <Item english="The selection is not a SAML message." text="التحديد ليس رسالة SAML."/>
     <Item english="Valid JSON." text="JSON صالح."/>
     <Item english="Invalid JSON." text="JSON غير صالح."/>
     <Item english="Set as the first file to compare." text="تم تعيينه كأول ملف للمقارنة."/>

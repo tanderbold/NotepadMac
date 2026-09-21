@@ -87,6 +87,27 @@
     <Item english="Open the Releases Page" text="Dobrir la pagina de las versions"/>
     <Item english="Fonts…" text="Poliças…"/>
     <Item english="This document is not valid JSON." text="Aqueste document es pas de JSON valid."/>
+    <Item english="MIME Tools" text="Aisinas MIME"/>
+    <Item english="Base64 Encode" text="Codar Base64"/>
+    <Item english="Base64 Encode with padding" text="Codar Base64 amb emplenatge"/>
+    <Item english="Base64 Encode with Unix EOL" text="Codar Base64 amb Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Codar Base64 linha per linha"/>
+    <Item english="Base64 Decode" text="Descodar Base64"/>
+    <Item english="Base64 Decode strict" text="Descodar Base64 (estricte)"/>
+    <Item english="Base64 Decode by line" text="Descodar Base64 linha per linha"/>
+    <Item english="Quoted-printable Encode" text="Codar Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Descodar Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Codar URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Codar URL (RFC1738) linha per linha"/>
+    <Item english="URL Encode (Extended)" text="Codar URL (estendut)"/>
+    <Item english="URL Encode (Extended) by line" text="Codar URL (estendut) linha per linha"/>
+    <Item english="URL Encode (Full)" text="Codar URL (complet)"/>
+    <Item english="URL Encode (Full) by line" text="Codar URL (complet) linha per linha"/>
+    <Item english="URL Decode" text="Descodar URL"/>
+    <Item english="SAML Decode" text="Descodar SAML"/>
+    <Item english="The selection is not valid Base64." text="La seleccion es pas de Base64 valid."/>
+    <Item english="The selection is not valid Quoted-printable." text="La seleccion es pas de Quoted-printable valid."/>
+    <Item english="The selection is not a SAML message." text="La seleccion es pas un messatge SAML."/>
     <Item english="Valid JSON." text="JSON valid."/>
     <Item english="Invalid JSON." text="JSON invalid."/>
     <Item english="Set as the first file to compare." text="Definit coma primièr fichièr de comparar."/>

@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Копирај информације за дебаговање у clipboard"/>
     <Item english="Fonts…" text="Фонтови…"/>
     <Item english="This document is not valid JSON." text="Овај документ није исправан JSON."/>
+    <Item english="MIME Tools" text="MIME алати"/>
+    <Item english="Base64 Encode" text="Кодирај у Base64"/>
+    <Item english="Base64 Encode with padding" text="Кодирај у Base64 са попуном"/>
+    <Item english="Base64 Encode with Unix EOL" text="Кодирај у Base64 са Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Кодирај у Base64 линију по линију"/>
+    <Item english="Base64 Decode" text="Декодирај Base64"/>
+    <Item english="Base64 Decode strict" text="Декодирај Base64 (строго)"/>
+    <Item english="Base64 Decode by line" text="Декодирај Base64 линију по линију"/>
+    <Item english="Quoted-printable Encode" text="Кодирај у Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Декодирај Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Кодирај URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Кодирај URL (RFC1738) линију по линију"/>
+    <Item english="URL Encode (Extended)" text="Кодирај URL (проширено)"/>
+    <Item english="URL Encode (Extended) by line" text="Кодирај URL (проширено) линију по линију"/>
+    <Item english="URL Encode (Full)" text="Кодирај URL (потпуно)"/>
+    <Item english="URL Encode (Full) by line" text="Кодирај URL (потпуно) линију по линију"/>
+    <Item english="URL Decode" text="Декодирај URL"/>
+    <Item english="SAML Decode" text="Декодирај SAML"/>
+    <Item english="The selection is not valid Base64." text="Одабир није исправан Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Одабир није исправан Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Одабир није SAML порука."/>
     <Item english="Valid JSON." text="Исправан JSON."/>
     <Item english="Invalid JSON." text="Неисправан JSON."/>
     <Item english="Set as the first file to compare." text="Постављено као прва датотека за поређење."/>

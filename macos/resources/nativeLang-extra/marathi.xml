@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="डीबग माहिती क्लिपबोर्डवर कॉपी करा"/>
     <Item english="Fonts…" text="फॉन्ट…"/>
     <Item english="This document is not valid JSON." text="हे डॉक्युमेंट वैध JSON नाही."/>
+    <Item english="MIME Tools" text="MIME टूल्स"/>
+    <Item english="Base64 Encode" text="Base64 एन्कोड करा"/>
+    <Item english="Base64 Encode with padding" text="पॅडिंगसह Base64 एन्कोड करा"/>
+    <Item english="Base64 Encode with Unix EOL" text="Unix EOL सह Base64 एन्कोड करा"/>
+    <Item english="Base64 Encode by line" text="लाईननुसार Base64 एन्कोड करा"/>
+    <Item english="Base64 Decode" text="Base64 डिकोड करा"/>
+    <Item english="Base64 Decode strict" text="Base64 काटेकोरपणे डिकोड करा"/>
+    <Item english="Base64 Decode by line" text="लाईननुसार Base64 डिकोड करा"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable एन्कोड करा"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable डिकोड करा"/>
+    <Item english="URL Encode (RFC1738)" text="URL (RFC1738) एन्कोड करा"/>
+    <Item english="URL Encode (RFC1738) by line" text="लाईननुसार URL (RFC1738) एन्कोड करा"/>
+    <Item english="URL Encode (Extended)" text="URL (विस्तारित) एन्कोड करा"/>
+    <Item english="URL Encode (Extended) by line" text="लाईननुसार URL (विस्तारित) एन्कोड करा"/>
+    <Item english="URL Encode (Full)" text="URL (पूर्ण) एन्कोड करा"/>
+    <Item english="URL Encode (Full) by line" text="लाईननुसार URL (पूर्ण) एन्कोड करा"/>
+    <Item english="URL Decode" text="URL डिकोड करा"/>
+    <Item english="SAML Decode" text="SAML डिकोड करा"/>
+    <Item english="The selection is not valid Base64." text="निवड वैध Base64 नाही."/>
+    <Item english="The selection is not valid Quoted-printable." text="निवड वैध Quoted-printable नाही."/>
+    <Item english="The selection is not a SAML message." text="निवड SAML संदेश नाही."/>
     <Item english="Valid JSON." text="वैध JSON."/>
     <Item english="Invalid JSON." text="अवैध JSON."/>
     <Item english="Set as the first file to compare." text="तुलनेसाठी पहिली फाईल म्हणून सेट केली."/>

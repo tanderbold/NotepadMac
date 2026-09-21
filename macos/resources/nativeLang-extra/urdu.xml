@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="ڈیبگ معلومات کلپ بورڈ پر نقل کریں"/>
     <Item english="Fonts…" text="فونٹس…"/>
     <Item english="This document is not valid JSON." text="یہ ڈاکیومنٹ درست JSON نہیں ہے۔"/>
+    <Item english="MIME Tools" text="MIME ٹولز"/>
+    <Item english="Base64 Encode" text="Base64 اینکوڈ کریں"/>
+    <Item english="Base64 Encode with padding" text="پیڈنگ کے ساتھ Base64 اینکوڈ کریں"/>
+    <Item english="Base64 Encode with Unix EOL" text="Unix EOL کے ساتھ Base64 اینکوڈ کریں"/>
+    <Item english="Base64 Encode by line" text="لائن بہ لائن Base64 اینکوڈ کریں"/>
+    <Item english="Base64 Decode" text="Base64 ڈیکوڈ کریں"/>
+    <Item english="Base64 Decode strict" text="Base64 ڈیکوڈ کریں (سخت)"/>
+    <Item english="Base64 Decode by line" text="لائن بہ لائن Base64 ڈیکوڈ کریں"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable اینکوڈ کریں"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable ڈیکوڈ کریں"/>
+    <Item english="URL Encode (RFC1738)" text="URL اینکوڈ کریں (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="لائن بہ لائن URL اینکوڈ کریں (RFC1738)"/>
+    <Item english="URL Encode (Extended)" text="URL اینکوڈ کریں (توسیعی)"/>
+    <Item english="URL Encode (Extended) by line" text="لائن بہ لائن URL اینکوڈ کریں (توسیعی)"/>
+    <Item english="URL Encode (Full)" text="URL اینکوڈ کریں (مکمل)"/>
+    <Item english="URL Encode (Full) by line" text="لائن بہ لائن URL اینکوڈ کریں (مکمل)"/>
+    <Item english="URL Decode" text="URL ڈیکوڈ کریں"/>
+    <Item english="SAML Decode" text="SAML ڈیکوڈ کریں"/>
+    <Item english="The selection is not valid Base64." text="انتخاب درست Base64 نہیں ہے۔"/>
+    <Item english="The selection is not valid Quoted-printable." text="انتخاب درست Quoted-printable نہیں ہے۔"/>
+    <Item english="The selection is not a SAML message." text="انتخاب SAML پیغام نہیں ہے۔"/>
     <Item english="Valid JSON." text="درست JSON۔"/>
     <Item english="Invalid JSON." text="غیر درست JSON۔"/>
     <Item english="Set as the first file to compare." text="موازنے کے لیے پہلی فائل مقرر ہو گئی۔"/>

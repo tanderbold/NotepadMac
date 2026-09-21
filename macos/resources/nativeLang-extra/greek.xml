@@ -115,6 +115,27 @@
     <Item english="Copy debug info to clipboard" text="Αντιγραφή πληροφοριών εντοπισμού σφαλμάτων στο πρόχειρο"/>
     <Item english="Fonts…" text="Γραμματοσειρές…"/>
     <Item english="This document is not valid JSON." text="Αυτό το έγγραφο δεν είναι έγκυρο JSON."/>
+    <Item english="MIME Tools" text="Εργαλεία MIME"/>
+    <Item english="Base64 Encode" text="Κωδικοποίηση Base64"/>
+    <Item english="Base64 Encode with padding" text="Κωδικοποίηση Base64 με συμπλήρωση"/>
+    <Item english="Base64 Encode with Unix EOL" text="Κωδικοποίηση Base64 με Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Κωδικοποίηση Base64 ανά γραμμή"/>
+    <Item english="Base64 Decode" text="Αποκωδικοποίηση Base64"/>
+    <Item english="Base64 Decode strict" text="Αυστηρή αποκωδικοποίηση Base64"/>
+    <Item english="Base64 Decode by line" text="Αποκωδικοποίηση Base64 ανά γραμμή"/>
+    <Item english="Quoted-printable Encode" text="Κωδικοποίηση Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Αποκωδικοποίηση Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Κωδικοποίηση URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Κωδικοποίηση URL (RFC1738) ανά γραμμή"/>
+    <Item english="URL Encode (Extended)" text="Κωδικοποίηση URL (εκτεταμένη)"/>
+    <Item english="URL Encode (Extended) by line" text="Κωδικοποίηση URL (εκτεταμένη) ανά γραμμή"/>
+    <Item english="URL Encode (Full)" text="Κωδικοποίηση URL (πλήρης)"/>
+    <Item english="URL Encode (Full) by line" text="Κωδικοποίηση URL (πλήρης) ανά γραμμή"/>
+    <Item english="URL Decode" text="Αποκωδικοποίηση URL"/>
+    <Item english="SAML Decode" text="Αποκωδικοποίηση SAML"/>
+    <Item english="The selection is not valid Base64." text="Η επιλογή δεν είναι έγκυρο Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="Η επιλογή δεν είναι έγκυρο Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="Η επιλογή δεν είναι μήνυμα SAML."/>
     <Item english="Valid JSON." text="Έγκυρο JSON."/>
     <Item english="Invalid JSON." text="Μη έγκυρο JSON."/>
     <Item english="Set as the first file to compare." text="Ορίστηκε ως το πρώτο αρχείο για σύγκριση."/>

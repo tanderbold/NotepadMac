@@ -119,6 +119,27 @@
     <Item english="Copy debug info to clipboard" text="Copy debug info to clipboard"/>
     <Item english="Fonts…" text="Fonts…"/>
     <Item english="This document is not valid JSON." text="This document is not valid JSON."/>
+    <Item english="MIME Tools" text="MIME Tools"/>
+    <Item english="Base64 Encode" text="Base64 Encode"/>
+    <Item english="Base64 Encode with padding" text="Base64 Encode with padding"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 Encode with Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Base64 Encode by line"/>
+    <Item english="Base64 Decode" text="Base64 Decode"/>
+    <Item english="Base64 Decode strict" text="Base64 Decode strict"/>
+    <Item english="Base64 Decode by line" text="Base64 Decode by line"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable Encode"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable Decode"/>
+    <Item english="URL Encode (RFC1738)" text="URL Encode (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL Encode (RFC1738) by line"/>
+    <Item english="URL Encode (Extended)" text="URL Encode (Extended)"/>
+    <Item english="URL Encode (Extended) by line" text="URL Encode (Extended) by line"/>
+    <Item english="URL Encode (Full)" text="URL Encode (Full)"/>
+    <Item english="URL Encode (Full) by line" text="URL Encode (Full) by line"/>
+    <Item english="URL Decode" text="URL Decode"/>
+    <Item english="SAML Decode" text="SAML Decode"/>
+    <Item english="The selection is not valid Base64." text="The selection is not valid Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="The selection is not valid Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="The selection is not a SAML message."/>
     <Item english="Valid JSON." text="Valid JSON."/>
     <Item english="Invalid JSON." text="Invalid JSON."/>
     <Item english="Set as the first file to compare." text="Set as the first file to compare."/>

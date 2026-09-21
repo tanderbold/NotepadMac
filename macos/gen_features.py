@@ -102,6 +102,13 @@ arguments):
 - XML tools
 - FTP client (profiles, remote browsing)
 - NppExec-style script console and Run commands
+- MIME Tools (Base64 in the plugin's seven flavours, Quoted-printable,
+  URL encoding, SAML decode)
+
+**Third-party plugins** load the way they do on Windows: a dynamic library in
+the plugins folder with the C interface of
+[macos/plugin-sdk](../macos/plugin-sdk/README.md) - Notepad++'s
+PluginInterface.h translated to macOS, Scintilla messages and all.
 
 **And besides the menus:**
 

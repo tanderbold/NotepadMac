@@ -106,6 +106,24 @@
     <Item english="Open the Releases Page" text="ಓಪನ್ ರಿಲೀಸಸ್ ಪೇಜ್"/>
     <Item english="Copy debug info to clipboard" text="ಕಾಪಿ ಡೀಬಗ್ ಇನ್ಫೊ ತೋ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್"/>
     <Item english="Fonts…" text="ಫಾಂಟ್ಸ್…"/>
+    <Item english="MIME Tools" text="MIME ಟೂಲ್ಸ್"/>
+    <Item english="Base64 Encode" text="Base64 ಎನ್‌ಕೋಡ್"/>
+    <Item english="Base64 Encode with padding" text="Base64 ಎನ್‌ಕೋಡ್ ವಿತ್ ಪ್ಯಾಡಿಂಗ್"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 ಎನ್‌ಕೋಡ್ ವಿತ್ Unix EOL"/>
+    <Item english="Base64 Encode by line" text="Base64 ಎನ್‌ಕೋಡ್ ಬೈ ಲೈನ್"/>
+    <Item english="Base64 Decode" text="Base64 ಡೀಕೋಡ್"/>
+    <Item english="Base64 Decode strict" text="Base64 ಡೀಕೋಡ್ ಸ್ಟ್ರಿಕ್ಟ್"/>
+    <Item english="Base64 Decode by line" text="Base64 ಡೀಕೋಡ್ ಬೈ ಲೈನ್"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable ಎನ್‌ಕೋಡ್"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable ಡೀಕೋಡ್"/>
+    <Item english="URL Encode (RFC1738)" text="URL ಎನ್‌ಕೋಡ್ (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL ಎನ್‌ಕೋಡ್ (RFC1738) ಬೈ ಲೈನ್"/>
+    <Item english="URL Encode (Extended)" text="URL ಎನ್‌ಕೋಡ್ (ಎಕ್ಸ್‌ಟೆಂಡೆಡ್)"/>
+    <Item english="URL Encode (Extended) by line" text="URL ಎನ್‌ಕೋಡ್ (ಎಕ್ಸ್‌ಟೆಂಡೆಡ್) ಬೈ ಲೈನ್"/>
+    <Item english="URL Encode (Full)" text="URL ಎನ್‌ಕೋಡ್ (ಫುಲ್)"/>
+    <Item english="URL Encode (Full) by line" text="URL ಎನ್‌ಕೋಡ್ (ಫುಲ್) ಬೈ ಲೈನ್"/>
+    <Item english="URL Decode" text="URL ಡೀಕೋಡ್"/>
+    <Item english="SAML Decode" text="SAML ಡೀಕೋಡ್"/>
     <Item english="Valid JSON." text="ವ್ಯಾಲಿಡ್ JSON."/>
     <Item english="Invalid JSON." text="ಇನ್‌ವ್ಯಾಲಿಡ್ JSON."/>
     <Item english="FTP connections" text="FTP ಕನೆಕ್ಷನ್ಸ್"/>

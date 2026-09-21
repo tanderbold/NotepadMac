@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Copiază informațiile de depanare în clipboard"/>
     <Item english="Fonts…" text="Fonturi…"/>
     <Item english="This document is not valid JSON." text="Acest document nu este JSON valid."/>
+    <Item english="MIME Tools" text="Unelte MIME"/>
+    <Item english="Base64 Encode" text="Codifică în Base64"/>
+    <Item english="Base64 Encode with padding" text="Codifică în Base64 cu umplere"/>
+    <Item english="Base64 Encode with Unix EOL" text="Codifică în Base64 cu EOL Unix"/>
+    <Item english="Base64 Encode by line" text="Codifică în Base64 linie cu linie"/>
+    <Item english="Base64 Decode" text="Decodifică Base64"/>
+    <Item english="Base64 Decode strict" text="Decodifică Base64 (strict)"/>
+    <Item english="Base64 Decode by line" text="Decodifică Base64 linie cu linie"/>
+    <Item english="Quoted-printable Encode" text="Codifică în Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Decodifică Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Codifică URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Codifică URL (RFC1738) linie cu linie"/>
+    <Item english="URL Encode (Extended)" text="Codifică URL (extins)"/>
+    <Item english="URL Encode (Extended) by line" text="Codifică URL (extins) linie cu linie"/>
+    <Item english="URL Encode (Full)" text="Codifică URL (complet)"/>
+    <Item english="URL Encode (Full) by line" text="Codifică URL (complet) linie cu linie"/>
+    <Item english="URL Decode" text="Decodifică URL"/>
+    <Item english="SAML Decode" text="Decodifică SAML"/>
+    <Item english="The selection is not valid Base64." text="Selecția nu este Base64 valid."/>
+    <Item english="The selection is not valid Quoted-printable." text="Selecția nu este Quoted-printable valid."/>
+    <Item english="The selection is not a SAML message." text="Selecția nu este un mesaj SAML."/>
     <Item english="Valid JSON." text="JSON valid."/>
     <Item english="Invalid JSON." text="JSON nevalid."/>
     <Item english="Set as the first file to compare." text="A fost stabilit ca primul fișier de comparat."/>

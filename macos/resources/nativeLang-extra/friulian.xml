@@ -83,6 +83,24 @@
     <Item english="Copy debug info to clipboard" text="Copie lis informazions di debug tai Aponts"/>
     <Item english="Fonts…" text="Caratars…"/>
     <Item english="This document is not valid JSON." text="Chest document nol è JSON valit."/>
+    <Item english="MIME Tools" text="Imprescj MIME"/>
+    <Item english="Base64 Encode" text="Codifiche in Base64"/>
+    <Item english="Base64 Encode by line" text="Codifiche in Base64 rie par rie"/>
+    <Item english="Base64 Decode" text="Decodifiche Base64"/>
+    <Item english="Base64 Decode by line" text="Decodifiche Base64 rie par rie"/>
+    <Item english="Quoted-printable Encode" text="Codifiche in Quoted-printable"/>
+    <Item english="Quoted-printable Decode" text="Decodifiche Quoted-printable"/>
+    <Item english="URL Encode (RFC1738)" text="Codifiche URL (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="Codifiche URL (RFC1738) rie par rie"/>
+    <Item english="URL Encode (Extended)" text="Codifiche URL (estindût)"/>
+    <Item english="URL Encode (Extended) by line" text="Codifiche URL (estindût) rie par rie"/>
+    <Item english="URL Encode (Full)" text="Codifiche URL (complet)"/>
+    <Item english="URL Encode (Full) by line" text="Codifiche URL (complet) rie par rie"/>
+    <Item english="URL Decode" text="Decodifiche URL"/>
+    <Item english="SAML Decode" text="Decodifiche SAML"/>
+    <Item english="The selection is not valid Base64." text="La selezion no je un Base64 valit."/>
+    <Item english="The selection is not valid Quoted-printable." text="La selezion no je un Quoted-printable valit."/>
+    <Item english="The selection is not a SAML message." text="La selezion no je un messaç SAML."/>
     <Item english="Valid JSON." text="JSON valit."/>
     <Item english="Invalid JSON." text="JSON no valit."/>
     <Item english="The document is valid XML." text="Il document al è XML valit."/>

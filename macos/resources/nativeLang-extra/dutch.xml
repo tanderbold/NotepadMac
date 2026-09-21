@@ -117,6 +117,27 @@
     <Item english="Copy debug info to clipboard" text="Debug-info naar klembord kopiëren"/>
     <Item english="Fonts…" text="Lettertypen…"/>
     <Item english="This document is not valid JSON." text="Dit document is geen geldige JSON."/>
+    <Item english="MIME Tools" text="MIME-tools"/>
+    <Item english="Base64 Encode" text="Base64 coderen"/>
+    <Item english="Base64 Encode with padding" text="Base64 coderen met opvulling"/>
+    <Item english="Base64 Encode with Unix EOL" text="Base64 coderen met Unix-regeleinden"/>
+    <Item english="Base64 Encode by line" text="Base64 coderen per regel"/>
+    <Item english="Base64 Decode" text="Base64 decoderen"/>
+    <Item english="Base64 Decode strict" text="Base64 decoderen (strikt)"/>
+    <Item english="Base64 Decode by line" text="Base64 decoderen per regel"/>
+    <Item english="Quoted-printable Encode" text="Quoted-printable coderen"/>
+    <Item english="Quoted-printable Decode" text="Quoted-printable decoderen"/>
+    <Item english="URL Encode (RFC1738)" text="URL coderen (RFC1738)"/>
+    <Item english="URL Encode (RFC1738) by line" text="URL coderen (RFC1738) per regel"/>
+    <Item english="URL Encode (Extended)" text="URL coderen (uitgebreid)"/>
+    <Item english="URL Encode (Extended) by line" text="URL coderen (uitgebreid) per regel"/>
+    <Item english="URL Encode (Full)" text="URL coderen (volledig)"/>
+    <Item english="URL Encode (Full) by line" text="URL coderen (volledig) per regel"/>
+    <Item english="URL Decode" text="URL decoderen"/>
+    <Item english="SAML Decode" text="SAML decoderen"/>
+    <Item english="The selection is not valid Base64." text="De selectie is geen geldige Base64."/>
+    <Item english="The selection is not valid Quoted-printable." text="De selectie is geen geldige Quoted-printable."/>
+    <Item english="The selection is not a SAML message." text="De selectie is geen SAML-bericht."/>
     <Item english="Valid JSON." text="Geldige JSON."/>
     <Item english="Invalid JSON." text="Ongeldige JSON."/>
     <Item english="Set as the first file to compare." text="Ingesteld als eerste bestand om te vergelijken."/>
