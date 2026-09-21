@@ -15,6 +15,7 @@
 - (void)buildFindPanel;
 - (void)openFindPanelOnTab:(NSInteger)tab;
 - (void)showConversionPanel:(id)sender;
+- (void)toggleMarkdownPreview:(id)sender;
 - (void)findPanelFindInFiles:(id)sender;
 - (void)findPanelFindAll:(id)sender;
 - (id)currentFindSpec;

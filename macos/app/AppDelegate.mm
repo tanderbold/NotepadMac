@@ -29,6 +29,7 @@
 #import "ConverterCommands.h"
 #import "ExportCommands.h"
 #import "SpellCheck.h"
+#import "MarkdownPanel.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -61,6 +62,7 @@
 @property (nonatomic, strong) NSWindow *window;
 @property (nonatomic, strong) EditorController *editor;
 @property (nonatomic, strong) NSMenu *pluginsMenu;   // third-party plugins are appended here
+@property (nonatomic, strong) MarkdownPanel *markdownPanel;
 @property (nonatomic, copy) NSString *lastSearchTerm;
 @property (nonatomic, strong) DocumentListPanel *docList;
 @property (nonatomic, strong) FunctionListPanel *funcList;
@@ -1385,6 +1387,9 @@ static NSString *Ordinal(NSUInteger n) {
     spellLangMenu.identifier = @"NppSpellLanguages";
     [spellMenu addItemWithTitle:@"Language" action:nil keyEquivalent:@""].submenu = spellLangMenu;
     [pluginsMenu addItemWithTitle:@"Spell Check" action:nil keyEquivalent:@""].submenu = spellMenu;
+
+    // MarkdownViewer++'s job, one command: the preview panel.
+    [self item:@"Markdown Preview" action:@selector(toggleMarkdownPreview:) key:@"" flags:0 menu:pluginsMenu];
 
     // NppExec's scripts; its saved scripts follow, rebuilt as they change.
     NSMenu *execMenu = [[NSMenu alloc] initWithTitle:@"NppExec"];
@@ -3321,6 +3326,11 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 
 - (void)toggleDocumentMap:(id)sender {
     [self.editor setDocumentMapVisible:![self.editor documentMapVisible]];
+}
+
+- (void)toggleMarkdownPreview:(id)sender {
+    if (!self.markdownPanel) self.markdownPanel = [[MarkdownPanel alloc] initWithEditor:self.editor];
+    [self.markdownPanel toggle];
 }
 
 - (void)toggleFunctionList:(id)sender {

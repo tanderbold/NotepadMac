@@ -27,6 +27,7 @@
 #import "ConverterCommands.h"
 #import "ExportCommands.h"
 #import "SpellCheck.h"
+#import "MarkdownPanel.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -10088,6 +10089,39 @@ int NppMacRunTests(AppDelegate *app) {
             prefs.spellCheckLanguage = wasLang;
             [ed spellCheckNow];
         }
+    }
+
+    printf("\n== Markdown preview ==\n");
+    {
+        // The table pre-pass: GFM alignment, escaped pipes, fences left alone.
+        NSString *table = @"| Name | N |\n|:-----|--:|\n| a\\|b | **1** |\n";
+        NSString *asHTML = [MarkdownPanel tablesToHTML:table];
+        Check(@"Markdown tables", @"the GFM table becomes HTML with alignment, escaped pipes and inline Markdown in cells",
+              [asHTML containsString:@"<th style=\"text-align:left\">Name</th>"] &&
+              [asHTML containsString:@"<td style=\"text-align:right\"><strong>1</strong></td>"] &&
+              [asHTML containsString:@"a|b"]);
+        NSString *fenced = @"```\n| not | a table |\n|---|---|\n```\n";
+        Check(@"Markdown tables in fences", @"a table inside a code fence stays text",
+              ![[MarkdownPanel tablesToHTML:fenced] containsString:@"<table>"]);
+
+        // cmark proper, through the same door the panel uses.
+        NSString *page = [MarkdownPanel htmlFromMarkdown:
+            @"# Title\n\nSome **bold** and `code`.\n\n| A | B |\n|---|---|\n| 1 | 2 |\n"];
+        Check(@"Markdown to HTML", @"headings, emphasis, code and the table all render",
+              [page containsString:@"<h1>Title</h1>"] && [page containsString:@"<strong>bold</strong>"] &&
+              [page containsString:@"<code>code</code>"] && [page containsString:@"<td>1</td>"]);
+
+        // The panel itself: toggling shows it, a refresh renders the document.
+        [ed newDocument];
+        SetDoc(ed, @"# Hello\n\n- one\n- two\n");
+        [app toggleMarkdownPreview:nil];
+        MarkdownPanel *panel = [app valueForKey:@"markdownPanel"];
+        [panel refresh];
+        Check(@"Markdown preview panel", @"the panel shows and carries the rendered document",
+              panel.visible && [panel.lastHTML containsString:@"<h1>Hello</h1>"] &&
+              [panel.lastHTML containsString:@"<li>one</li>"]);
+        [app toggleMarkdownPreview:nil];
+        Check(@"Markdown preview toggles away", @"the second toggle hides the panel", !panel.visible);
     }
 
     printf("\n== Plugin host ==\n");
