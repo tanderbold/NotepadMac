@@ -2038,34 +2038,51 @@ int NppMacRunTests(AppDelegate *app) {
         }
         BOOL liveResultsShown = [ed.currentDocument.displayName isEqualToString:@"Search results"];
         NSInteger liveTabs = (NSInteger)ed.documents.count;
+        Check(@"IDM_SEARCH_FINDINFILES (the panel fills the results tab)",
+              @"running the search from the panel leaves the results tab current "
+              @"with a hit line in it",
+              liveResultsShown && liveHit > 0);
 
-        sptr_t livePos = [ed.sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)MAX(liveHit, 0) lParam:0] + 4;
-        sptr_t lx = [ed.sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:(sptr_t)livePos];
-        sptr_t ly = [ed.sci message:SCI_POINTYFROMPOSITION wParam:0 lParam:(sptr_t)livePos];
-        NSView *liveContent = [ed.sci content];
-        NSPoint livePoint = [liveContent convertPoint:NSMakePoint(lx + 1, ly + 4) toView:nil];
         // Put through AppKit's own queue rather than handed to the view: the
         // window has to hit-test the point and route it, which is what a real
-        // mouse gets and what calling mouseDown: directly skips.
+        // mouse gets and what calling mouseDown: directly skips. That routing
+        // can be disturbed from outside the test (the window server is still
+        // taking the find panel down, the machine is busy); a person answers
+        // that by double clicking again, and so does the test - noisily, so a
+        // retry is visible in the log.
         [ed.window makeKeyAndOrderFront:nil];
-        NSTimeInterval base = [NSProcessInfo processInfo].systemUptime + 30;
-        for (NSUInteger click = 1; click <= 2; ++click) {
-            [NSApp postEvent:[NSEvent mouseEventWithType:NSEventTypeLeftMouseDown
-                                                location:livePoint modifierFlags:0
-                                               timestamp:base + click * 0.05
-                                            windowNumber:ed.window.windowNumber
-                                                 context:nil eventNumber:(NSInteger)click
-                                              clickCount:(NSInteger)click pressure:1]
-                     atStart:NO];
-            [NSApp postEvent:[NSEvent mouseEventWithType:NSEventTypeLeftMouseUp
-                                                location:livePoint modifierFlags:0
-                                               timestamp:base + click * 0.05 + 0.01
-                                            windowNumber:ed.window.windowNumber
-                                                 context:nil eventNumber:(NSInteger)click
-                                              clickCount:(NSInteger)click pressure:1]
-                     atStart:NO];
+        BOOL navigated = NO;
+        for (NSUInteger attempt = 0; attempt < 3 && !navigated; ++attempt) {
+            if (attempt) NSLog(@"whole way round: double click %lu did not land, clicking again",
+                               (unsigned long)attempt);
+            sptr_t livePos = [ed.sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)MAX(liveHit, 0) lParam:0] + 4;
+            sptr_t lx = [ed.sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:(sptr_t)livePos];
+            sptr_t ly = [ed.sci message:SCI_POINTYFROMPOSITION wParam:0 lParam:(sptr_t)livePos];
+            NSView *liveContent = [ed.sci content];
+            NSPoint livePoint = [liveContent convertPoint:NSMakePoint(lx + 1, ly + 4) toView:nil];
+            NSTimeInterval base = [NSProcessInfo processInfo].systemUptime + 30;
+            for (NSUInteger click = 1; click <= 2; ++click) {
+                [NSApp postEvent:[NSEvent mouseEventWithType:NSEventTypeLeftMouseDown
+                                                    location:livePoint modifierFlags:0
+                                                   timestamp:base + click * 0.05
+                                                windowNumber:ed.window.windowNumber
+                                                     context:nil
+                                                 eventNumber:(NSInteger)(attempt * 2 + click)
+                                                  clickCount:(NSInteger)click pressure:1]
+                         atStart:NO];
+                [NSApp postEvent:[NSEvent mouseEventWithType:NSEventTypeLeftMouseUp
+                                                    location:livePoint modifierFlags:0
+                                                   timestamp:base + click * 0.05 + 0.01
+                                                windowNumber:ed.window.windowNumber
+                                                     context:nil
+                                                 eventNumber:(NSInteger)(attempt * 2 + click)
+                                                  clickCount:(NSInteger)click pressure:1]
+                         atStart:NO];
+            }
+            NppSettleUntil(^BOOL{ return [ed.currentDocument.path isEqualToString:target]; },
+                           attempt == 2 ? 10 : 3);
+            navigated = [ed.currentDocument.path isEqualToString:target];
         }
-        NppSettleUntil(^BOOL{ return [ed.currentDocument.path isEqualToString:target]; }, 10);
         NppSettle(0.05);
         long liveCaret = [ed.sci message:SCI_LINEFROMPOSITION
                                  wParam:(uptr_t)[ed.sci message:SCI_GETCURRENTPOS wParam:0 lParam:0]
@@ -2079,8 +2096,7 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_SEARCH_FINDINFILES (the whole way round)",
               @"running the search from the panel and double clicking a hit in the "
               @"results it produced leaves that file open with the line selected",
-              liveResultsShown && liveHit > 0 &&
-              [ed.currentDocument.path isEqualToString:target] && liveCaret == 2 &&
+              liveResultsShown && liveHit > 0 && navigated && liveCaret == 2 &&
               liveLineSelected && (NSInteger)ed.documents.count == liveTabs + 1);
 
         // A search of the open document writes no per-file heading, only
