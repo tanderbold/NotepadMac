@@ -27,6 +27,7 @@
 #import "MimeCommands.h"
 #import "PluginHost.h"
 #import "ConverterCommands.h"
+#import "ExportCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -1365,6 +1366,16 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Conversion Panel" action:@selector(showConversionPanel:) key:@"" flags:0 menu:converterMenu];
     [pluginsMenu addItemWithTitle:@"Converter" action:nil keyEquivalent:@""].submenu = converterMenu;
 
+    // NppExport's commands, under the plainer name Export.
+    NSMenu *exportMenu = [[NSMenu alloc] initWithTitle:@"Export"];
+    [self item:@"Export to RTF" action:@selector(exportToRTF:) key:@"" flags:0 menu:exportMenu];
+    [self item:@"Export to HTML" action:@selector(exportToHTML:) key:@"" flags:0 menu:exportMenu];
+    [exportMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Copy RTF to clipboard" action:@selector(copyRTFToClipboard:) key:@"" flags:0 menu:exportMenu];
+    [self item:@"Copy HTML to clipboard" action:@selector(copyHTMLToClipboard:) key:@"" flags:0 menu:exportMenu];
+    [self item:@"Copy all formats to clipboard" action:@selector(copyAllFormatsToClipboard:) key:@"" flags:0 menu:exportMenu];
+    [pluginsMenu addItemWithTitle:@"Export" action:nil keyEquivalent:@""].submenu = exportMenu;
+
     // NppExec's scripts; its saved scripts follow, rebuilt as they change.
     NSMenu *execMenu = [[NSMenu alloc] initWithTitle:@"NppExec"];
     NSMenuItem *execute = [self item:@"Execute NppExec Script…" action:@selector(executeScriptDialog:) key:@"" flags:0 menu:execMenu];
@@ -1484,6 +1495,28 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)jsonFormat:(id)sender  { if (![self.editor formatJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonCompact:(id)sender { if (![self.editor compactJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonSort:(id)sender    { if (![self.editor sortJSONDocument]) [self reportJSONProblem]; }
+
+#pragma mark Plugins > Export
+
+- (void)exportStyledAsRTF:(BOOL)rtf {
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    NSString *stem = self.editor.currentDocument.displayName.stringByDeletingPathExtension ?: @"Untitled";
+    panel.nameFieldStringValue = [stem stringByAppendingPathExtension:rtf ? @"rtf" : @"html"];
+    if ([panel runModal] != NSModalResponseOK || !panel.URL) return;
+    NSRange range = [self.editor exportRange];
+    NSData *data = rtf ? [self.editor exportRTFInRange:range]
+                       : [[self.editor exportHTMLInRange:range] dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err = nil;
+    if (![data writeToURL:panel.URL options:NSDataWritingAtomic error:&err]) {
+        [[NSAlert alertWithError:err] runModal];
+    }
+}
+
+- (void)exportToRTF:(id)sender  { [self exportStyledAsRTF:YES]; }
+- (void)exportToHTML:(id)sender { [self exportStyledAsRTF:NO]; }
+- (void)copyRTFToClipboard:(id)sender  { [self.editor exportToClipboardRTF:YES HTML:NO]; }
+- (void)copyHTMLToClipboard:(id)sender { [self.editor exportToClipboardRTF:NO HTML:YES]; }
+- (void)copyAllFormatsToClipboard:(id)sender { [self.editor exportToClipboardRTF:YES HTML:YES]; }
 
 #pragma mark Plugins > Converter
 

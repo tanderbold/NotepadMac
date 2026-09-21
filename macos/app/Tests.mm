@@ -25,6 +25,7 @@
 #import "MimeCommands.h"
 #import "PluginHost.h"
 #import "ConverterCommands.h"
+#import "ExportCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -9968,6 +9969,50 @@ int NppMacRunTests(AppDelegate *app) {
               [cw.dec.stringValue isEqualToString:@"255"] && [cw.bin.stringValue isEqualToString:@"11111111"] &&
               [DocText(ed) isEqualToString:@"255"]);
         [cw.panel orderOut:nil];
+    }
+
+    printf("\n== Export ==\n");
+    {
+        NSError *err = nil;
+        [ed openFileAtPath:TempFile(@"t_export.py", @"# comment <>&\nx = 1 # Я\n") error:&err];
+        [ed.sci message:SCI_SETSEL wParam:0 lParam:0];
+
+        NSRange whole = [ed exportRange];
+        [ed.sci message:SCI_SETSEL wParam:0 lParam:9];
+        NSRange part = [ed exportRange];
+        [ed.sci message:SCI_SETSEL wParam:0 lParam:0];
+        Check(@"Export range", @"the selection when there is one, the whole document otherwise",
+              whole.location == 0 && whole.length == (NSUInteger)[ed.sci message:SCI_GETLENGTH] &&
+              part.location == 0 && part.length == 9);
+
+        NSString *html = [ed exportHTMLInRange:whole];
+        NSUInteger colourCount = [html componentsSeparatedByString:@"color:#"].count;
+        Check(@"Export to HTML", @"a pre in the editor's colours, spans per style, markup escaped",
+              [html containsString:@"<pre style="] &&
+              [html containsString:@"&lt;&gt;&amp;"] &&
+              [html containsString:@"</span>"] && colourCount > 2);
+
+        NSData *rtfData = [ed exportRTFInRange:whole];
+        NSString *rtf = [[NSString alloc] initWithData:rtfData encoding:NSASCIIStringEncoding];
+        Check(@"Export to RTF", @"a colour table, style runs, par lines and \\u for non-ASCII",
+              [rtf hasPrefix:@"{\\rtf1"] && [rtf containsString:@"\\colortbl"] &&
+              [rtf containsString:@"\\cf"] && [rtf containsString:@"\\par"] &&
+              [rtf containsString:@"\\u1071?"]);
+        NSAttributedString *readBack = [[NSAttributedString alloc] initWithRTF:rtfData
+                                                            documentAttributes:nil];
+        Check(@"Export RTF reads back", @"the system RTF reader returns the very text",
+              [readBack.string containsString:@"# comment <>&"] &&
+              [readBack.string containsString:@"x = 1 # Я"]);
+
+        [ed exportToClipboardRTF:YES HTML:YES];
+        NSPasteboard *pb = [NSPasteboard generalPasteboard];
+        Check(@"Export to the clipboard", @"RTF, HTML and the plain text ride together",
+              [pb dataForType:NSPasteboardTypeRTF].length > 0 &&
+              [[pb stringForType:NSPasteboardTypeHTML] containsString:@"<pre"] &&
+              [[pb stringForType:NSPasteboardTypeString] containsString:@"x = 1"]);
+
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
+                  discardChanges:YES];
     }
 
     printf("\n== Plugin host ==\n");
