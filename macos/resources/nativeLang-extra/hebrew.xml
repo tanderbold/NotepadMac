@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="למד איות"/>
     <Item english="No Guesses Found" text="לא נמצאו הצעות"/>
     <Item english="Markdown Preview" text="תצוגה מקדימה של Markdown"/>
+    <Item english="Paste Image as Text" text="הדבק תמונה כטקסט"/>
+    <Item english="QR Code from Selection" text="קוד QR מהבחירה"/>
+    <Item english="Read QR Code from Clipboard" text="קרא קוד QR מהזיכרון"/>
+    <Item english="Install Command Line Tool" text="התקן כלי שורת פקודה"/>
+    <Item english="QR Code" text="קוד QR"/>
+    <Item english="Copy Image" text="העתק תמונה"/>
+    <Item english="Save…" text="שמור…"/>
+    <Item english="No text was found in the clipboard's image." text="לא נמצא טקסט בתמונה שבזיכרון."/>
+    <Item english="The selection is too long for a QR code." text="הבחירה ארוכה מדי עבור קוד QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="לא נמצא קוד QR בתמונה שבזיכרון."/>
+    <Item english="The nppmac command is installed." text="הפקודה nppmac מותקנת."/>
+    <Item english="Could not write to /usr/local/bin." text="לא ניתן לכתוב אל /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON תקין."/>
     <Item english="Invalid JSON." text="JSON לא תקין."/>
     <Item english="Set as the first file to compare." text="נקבע כקובץ הראשון להשוואה."/>

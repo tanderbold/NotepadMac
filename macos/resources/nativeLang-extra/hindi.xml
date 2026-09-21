@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="वर्तनी सीखें"/>
     <Item english="No Guesses Found" text="कोई सुझाव नहीं मिला"/>
     <Item english="Markdown Preview" text="Markdown पूर्वावलोकन"/>
+    <Item english="Paste Image as Text" text="इमेज को टेक्स्ट के रूप में पेस्ट करें"/>
+    <Item english="QR Code from Selection" text="चयन से QR कोड"/>
+    <Item english="Read QR Code from Clipboard" text="क्लिपबोर्ड से QR कोड पढ़ें"/>
+    <Item english="Install Command Line Tool" text="कमांड लाइन टूल इंस्टॉल करें"/>
+    <Item english="QR Code" text="QR कोड"/>
+    <Item english="Copy Image" text="इमेज कॉपी करें"/>
+    <Item english="Save…" text="सेव करें…"/>
+    <Item english="No text was found in the clipboard's image." text="क्लिपबोर्ड की इमेज में कोई टेक्स्ट नहीं मिला।"/>
+    <Item english="The selection is too long for a QR code." text="चयन QR कोड के लिए बहुत लंबा है।"/>
+    <Item english="No QR code was found in the clipboard's image." text="क्लिपबोर्ड की इमेज में कोई QR कोड नहीं मिला।"/>
+    <Item english="The nppmac command is installed." text="nppmac कमांड इंस्टॉल हो गई है।"/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin में लिखा नहीं जा सका।"/>
     <Item english="Valid JSON." text="मान्य JSON।"/>
     <Item english="Invalid JSON." text="अमान्य JSON।"/>
     <Item english="Set as the first file to compare." text="तुलना के लिए पहली फाइल के रूप में सेट किया गया।"/>

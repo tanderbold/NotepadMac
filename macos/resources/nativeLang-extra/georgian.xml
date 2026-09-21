@@ -156,6 +156,18 @@
     <Item english="Learn Spelling" text="მართლწერის დამახსოვრება"/>
     <Item english="No Guesses Found" text="შემოთავაზებები ვერ მოიძებნა"/>
     <Item english="Markdown Preview" text="Markdown-ის გადახედვა"/>
+    <Item english="Paste Image as Text" text="სურათის ჩასმა ტექსტის სახით"/>
+    <Item english="QR Code from Selection" text="QR კოდი მონიშნულიდან"/>
+    <Item english="Read QR Code from Clipboard" text="QR კოდის წაკითხვა ბუფერიდან"/>
+    <Item english="Install Command Line Tool" text="ბრძანების სტრიქონის ხელსაწყოს დაყენება"/>
+    <Item english="QR Code" text="QR კოდი"/>
+    <Item english="Copy Image" text="სურათის კოპირება"/>
+    <Item english="Save…" text="შენახვა…"/>
+    <Item english="No text was found in the clipboard's image." text="ბუფერის სურათში ტექსტი ვერ მოიძებნა."/>
+    <Item english="The selection is too long for a QR code." text="მონიშნული ტექსტი ძალიან გრძელია QR კოდისთვის."/>
+    <Item english="No QR code was found in the clipboard's image." text="ბუფერის სურათში QR კოდი ვერ მოიძებნა."/>
+    <Item english="The nppmac command is installed." text="ბრძანება nppmac დაყენებულია."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin-ში ჩაწერა ვერ მოხერხდა."/>
     <Item english="Valid JSON." text="სწორი JSON."/>
     <Item english="Invalid JSON." text="არასწორი JSON."/>
     <Item english="Set as the first file to compare." text="მონიშნულია პირველ შესადარებელ ფაილად."/>

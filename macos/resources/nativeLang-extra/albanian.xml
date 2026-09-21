@@ -147,6 +147,18 @@
     <Item english="Learn Spelling" text="Mëso drejtshkrimin"/>
     <Item english="No Guesses Found" text="Nuk u gjetën sugjerime"/>
     <Item english="Markdown Preview" text="Pamje paraprake e Markdown-ut"/>
+    <Item english="Paste Image as Text" text="Ngjit imazhin si tekst"/>
+    <Item english="QR Code from Selection" text="Kod QR nga zgjedhja"/>
+    <Item english="Read QR Code from Clipboard" text="Lexo kodin QR nga clipboard-i"/>
+    <Item english="Install Command Line Tool" text="Instalo mjetin e linjës së komandës"/>
+    <Item english="QR Code" text="Kodi QR"/>
+    <Item english="Copy Image" text="Kopjo imazhin"/>
+    <Item english="Save…" text="Ruaj…"/>
+    <Item english="No text was found in the clipboard's image." text="Nuk u gjet tekst në imazhin e clipboard-it."/>
+    <Item english="The selection is too long for a QR code." text="Zgjedhja është shumë e gjatë për një kod QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Nuk u gjet kod QR në imazhin e clipboard-it."/>
+    <Item english="The nppmac command is installed." text="Komanda nppmac është e instaluar."/>
+    <Item english="Could not write to /usr/local/bin." text="Nuk mund të shkruhej në /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON i vlefshëm."/>
     <Item english="Invalid JSON." text="JSON i pavlefshëm."/>
     <Item english="Set as the first file to compare." text="U caktua si file i parë për krahasim."/>

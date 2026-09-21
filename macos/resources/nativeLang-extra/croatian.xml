@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Nauči pravopis"/>
     <Item english="No Guesses Found" text="Nema prijedloga"/>
     <Item english="Markdown Preview" text="Pretpregled Markdowna"/>
+    <Item english="Paste Image as Text" text="Zalijepi sliku kao tekst"/>
+    <Item english="QR Code from Selection" text="QR kod iz odabira"/>
+    <Item english="Read QR Code from Clipboard" text="Očitaj QR kod iz međuspremnika"/>
+    <Item english="Install Command Line Tool" text="Instaliraj alat naredbenog retka"/>
+    <Item english="QR Code" text="QR kod"/>
+    <Item english="Copy Image" text="Kopiraj sliku"/>
+    <Item english="Save…" text="Spremi…"/>
+    <Item english="No text was found in the clipboard's image." text="U slici u međuspremniku nije pronađen tekst."/>
+    <Item english="The selection is too long for a QR code." text="Odabir je predugačak za QR kod."/>
+    <Item english="No QR code was found in the clipboard's image." text="U slici u međuspremniku nije pronađen QR kod."/>
+    <Item english="The nppmac command is installed." text="Naredba nppmac je instalirana."/>
+    <Item english="Could not write to /usr/local/bin." text="Zapisivanje u /usr/local/bin nije uspjelo."/>
     <Item english="Valid JSON." text="Ispravan JSON."/>
     <Item english="Invalid JSON." text="Neispravan JSON."/>
     <Item english="Set as the first file to compare." text="Postavljeno kao prva datoteka za usporedbu."/>

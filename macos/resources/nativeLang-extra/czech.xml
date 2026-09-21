@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Naučit pravopis"/>
     <Item english="No Guesses Found" text="Nenalezeny žádné návrhy"/>
     <Item english="Markdown Preview" text="Náhled Markdownu"/>
+    <Item english="Paste Image as Text" text="Vložit obrázek jako text"/>
+    <Item english="QR Code from Selection" text="QR kód z výběru"/>
+    <Item english="Read QR Code from Clipboard" text="Přečíst QR kód ze Schránky"/>
+    <Item english="Install Command Line Tool" text="Nainstalovat nástroj příkazového řádku"/>
+    <Item english="QR Code" text="QR kód"/>
+    <Item english="Copy Image" text="Kopírovat obrázek"/>
+    <Item english="Save…" text="Uložit…"/>
+    <Item english="No text was found in the clipboard's image." text="V obrázku ve Schránce nebyl nalezen žádný text."/>
+    <Item english="The selection is too long for a QR code." text="Výběr je pro QR kód příliš dlouhý."/>
+    <Item english="No QR code was found in the clipboard's image." text="V obrázku ve Schránce nebyl nalezen žádný QR kód."/>
+    <Item english="The nppmac command is installed." text="Příkaz nppmac je nainstalován."/>
+    <Item english="Could not write to /usr/local/bin." text="Do /usr/local/bin se nepodařilo zapsat."/>
     <Item english="Valid JSON." text="Platný JSON."/>
     <Item english="Invalid JSON." text="Neplatný JSON."/>
     <Item english="Set as the first file to compare." text="Nastaven jako první soubor k porovnání."/>

@@ -145,6 +145,18 @@
     <Item english="Learn Spelling" text="เรียนรู้การสะกด"/>
     <Item english="No Guesses Found" text="ไม่พบคำแนะนำ"/>
     <Item english="Markdown Preview" text="แสดงตัวอย่าง Markdown"/>
+    <Item english="Paste Image as Text" text="วางรูปภาพเป็นข้อความ"/>
+    <Item english="QR Code from Selection" text="QR โค้ดจากข้อความที่เลือก"/>
+    <Item english="Read QR Code from Clipboard" text="อ่าน QR โค้ดจากคลิปบอร์ด"/>
+    <Item english="Install Command Line Tool" text="ติดตั้งเครื่องมือบรรทัดคำสั่ง"/>
+    <Item english="QR Code" text="QR โค้ด"/>
+    <Item english="Copy Image" text="คัดลอกรูปภาพ"/>
+    <Item english="Save…" text="บันทึก…"/>
+    <Item english="No text was found in the clipboard's image." text="ไม่พบข้อความในรูปภาพจากคลิปบอร์ด"/>
+    <Item english="The selection is too long for a QR code." text="ข้อความที่เลือกยาวเกินไปสำหรับ QR โค้ด"/>
+    <Item english="No QR code was found in the clipboard's image." text="ไม่พบ QR โค้ดในรูปภาพจากคลิปบอร์ด"/>
+    <Item english="The nppmac command is installed." text="ติดตั้งคำสั่ง nppmac แล้ว"/>
+    <Item english="Could not write to /usr/local/bin." text="ไม่สามารถเขียนลง /usr/local/bin ได้"/>
     <Item english="Valid JSON." text="JSON ถูกต้อง"/>
     <Item english="Invalid JSON." text="JSON ไม่ถูกต้อง"/>
     <Item english="Set as the first file to compare." text="ตั้งเป็นไฟล์แรกที่จะเปรียบเทียบแล้ว"/>

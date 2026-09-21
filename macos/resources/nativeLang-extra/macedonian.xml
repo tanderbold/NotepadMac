@@ -150,6 +150,18 @@
     <Item english="Learn Spelling" text="Научи правопис"/>
     <Item english="No Guesses Found" text="Не се најдени предлози"/>
     <Item english="Markdown Preview" text="Преглед на Markdown"/>
+    <Item english="Paste Image as Text" text="Додади слика како текст"/>
+    <Item english="QR Code from Selection" text="QR-код од одбраниот текст"/>
+    <Item english="Read QR Code from Clipboard" text="Прочитај QR-код од клипбордот"/>
+    <Item english="Install Command Line Tool" text="Инсталирај алатка за командна линија"/>
+    <Item english="QR Code" text="QR-код"/>
+    <Item english="Copy Image" text="Копирај слика"/>
+    <Item english="Save…" text="Зачувај…"/>
+    <Item english="No text was found in the clipboard's image." text="Во сликата од клипбордот не е најден текст."/>
+    <Item english="The selection is too long for a QR code." text="Одбраниот текст е предолг за QR-код."/>
+    <Item english="No QR code was found in the clipboard's image." text="Во сликата од клипбордот не е најден QR-код."/>
+    <Item english="The nppmac command is installed." text="Командата nppmac е инсталирана."/>
+    <Item english="Could not write to /usr/local/bin." text="Не може да се запише во /usr/local/bin."/>
     <Item english="Valid JSON." text="Валиден JSON."/>
     <Item english="Invalid JSON." text="Невалиден JSON."/>
     <Item english="Set as the first file to compare." text="Поставен како прв фајл за споредба."/>

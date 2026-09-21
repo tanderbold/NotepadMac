@@ -160,6 +160,18 @@
     <Item english="Learn Spelling" text="Εκμάθηση ορθογραφίας"/>
     <Item english="No Guesses Found" text="Δεν βρέθηκαν προτάσεις"/>
     <Item english="Markdown Preview" text="Προεπισκόπηση Markdown"/>
+    <Item english="Paste Image as Text" text="Επικόλληση εικόνας ως κείμενο"/>
+    <Item english="QR Code from Selection" text="Κωδικός QR από την επιλογή"/>
+    <Item english="Read QR Code from Clipboard" text="Ανάγνωση κωδικού QR από το πρόχειρο"/>
+    <Item english="Install Command Line Tool" text="Εγκατάσταση εργαλείου γραμμής εντολών"/>
+    <Item english="QR Code" text="Κωδικός QR"/>
+    <Item english="Copy Image" text="Αντιγραφή εικόνας"/>
+    <Item english="Save…" text="Αποθήκευση…"/>
+    <Item english="No text was found in the clipboard's image." text="Δεν βρέθηκε κείμενο στην εικόνα του προχείρου."/>
+    <Item english="The selection is too long for a QR code." text="Η επιλογή είναι πολύ μεγάλη για κωδικό QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Δεν βρέθηκε κωδικός QR στην εικόνα του προχείρου."/>
+    <Item english="The nppmac command is installed." text="Η εντολή nppmac είναι εγκατεστημένη."/>
+    <Item english="Could not write to /usr/local/bin." text="Δεν ήταν δυνατή η εγγραφή στο /usr/local/bin."/>
     <Item english="Valid JSON." text="Έγκυρο JSON."/>
     <Item english="Invalid JSON." text="Μη έγκυρο JSON."/>
     <Item english="Set as the first file to compare." text="Ορίστηκε ως το πρώτο αρχείο για σύγκριση."/>

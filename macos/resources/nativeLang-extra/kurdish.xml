@@ -69,6 +69,13 @@
     <Item english="Learn Spelling" text="فێربوونی ڕێنووس"/>
     <Item english="No Guesses Found" text="هیچ پێشنیارێك نەدۆزرایەوە"/>
     <Item english="Markdown Preview" text="پێشبینینی Markdown"/>
+    <Item english="Paste Image as Text" text="لكاندنی وێنە وەك دەق"/>
+    <Item english="Install Command Line Tool" text="دامەزراندنی ئامرازی هێڵی فەرمان"/>
+    <Item english="QR Code" text="كۆدی QR"/>
+    <Item english="Copy Image" text="لەبەرگرتنەوەی وێنە"/>
+    <Item english="Save…" text="پاشەكەوتكردن…"/>
+    <Item english="The nppmac command is installed." text="فەرمانی nppmac دامەزرێنرا."/>
+    <Item english="Could not write to /usr/local/bin." text="ناتوانرێت لە /usr/local/bin بنووسرێت."/>
     <Item english="FTP connections" text="پەیوەندییەكانی FTP"/>
     <Item english="Cannot connect." text="ناتوانرێت پەیوەندی بكرێت."/>
     <Item english="Which language is this?" text="ئەمە چ زمانێكە؟"/>

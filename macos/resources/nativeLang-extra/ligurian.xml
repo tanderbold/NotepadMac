@@ -82,6 +82,9 @@
     <Item english="Copy HTML to clipboard" text="Còpia HTML inti aponti"/>
     <Item english="Language" text="Lengoaggio"/>
     <Item english="Markdown Preview" text="Anteprimma Markdown"/>
+    <Item english="QR Code from Selection" text="Còdice QR da-a seleçion"/>
+    <Item english="QR Code" text="Còdice QR"/>
+    <Item english="Save…" text="Sarva…"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON no valido."/>
     <Item english="FTP connections" text="Conescioin FTP"/>

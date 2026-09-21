@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Имлони ўрганиш"/>
     <Item english="No Guesses Found" text="Таклифлар топилмади"/>
     <Item english="Markdown Preview" text="Markdown ни олдиндан кўриш"/>
+    <Item english="Paste Image as Text" text="Расмни матн сифатида жойлаштириш"/>
+    <Item english="QR Code from Selection" text="Белгиланган матндан QR код"/>
+    <Item english="Read QR Code from Clipboard" text="Буфердан QR кодни ўқиш"/>
+    <Item english="Install Command Line Tool" text="Буйруқлар сатри воситасини ўрнатиш"/>
+    <Item english="QR Code" text="QR код"/>
+    <Item english="Copy Image" text="Расмдан нусха олиш"/>
+    <Item english="Save…" text="Сақлаш…"/>
+    <Item english="No text was found in the clipboard's image." text="Буфердаги расмда матн топилмади."/>
+    <Item english="The selection is too long for a QR code." text="Белгиланган матн QR код учун жуда узун."/>
+    <Item english="No QR code was found in the clipboard's image." text="Буфердаги расмда QR код топилмади."/>
+    <Item english="The nppmac command is installed." text="nppmac буйруғи ўрнатилган."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin га ёзиб бўлмади."/>
     <Item english="Valid JSON." text="Яроқли JSON."/>
     <Item english="Invalid JSON." text="Яроқсиз JSON."/>
     <Item english="Set as the first file to compare." text="Таққослаш учун биринчи файл деб белгиланди."/>

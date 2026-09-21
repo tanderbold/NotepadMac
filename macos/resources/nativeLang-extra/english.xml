@@ -164,6 +164,18 @@
     <Item english="Learn Spelling" text="Learn Spelling"/>
     <Item english="No Guesses Found" text="No Guesses Found"/>
     <Item english="Markdown Preview" text="Markdown Preview"/>
+    <Item english="Paste Image as Text" text="Paste Image as Text"/>
+    <Item english="QR Code from Selection" text="QR Code from Selection"/>
+    <Item english="Read QR Code from Clipboard" text="Read QR Code from Clipboard"/>
+    <Item english="Install Command Line Tool" text="Install Command Line Tool"/>
+    <Item english="QR Code" text="QR Code"/>
+    <Item english="Copy Image" text="Copy Image"/>
+    <Item english="Save…" text="Save…"/>
+    <Item english="No text was found in the clipboard's image." text="No text was found in the clipboard's image."/>
+    <Item english="The selection is too long for a QR code." text="The selection is too long for a QR code."/>
+    <Item english="No QR code was found in the clipboard's image." text="No QR code was found in the clipboard's image."/>
+    <Item english="The nppmac command is installed." text="The nppmac command is installed."/>
+    <Item english="Could not write to /usr/local/bin." text="Could not write to /usr/local/bin."/>
     <Item english="Valid JSON." text="Valid JSON."/>
     <Item english="Invalid JSON." text="Invalid JSON."/>
     <Item english="Set as the first file to compare." text="Set as the first file to compare."/>

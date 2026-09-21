@@ -139,6 +139,18 @@
     <Item english="Language" text="Lingua"/>
     <Item english="Automatic" text="Autumaticu"/>
     <Item english="Markdown Preview" text="Fighjulata Markdown"/>
+    <Item english="Paste Image as Text" text="Incullà a fiura cum’è testu"/>
+    <Item english="QR Code from Selection" text="Codice QR da a selezzione"/>
+    <Item english="Read QR Code from Clipboard" text="Leghje u codice QR da u preme’papei"/>
+    <Item english="Install Command Line Tool" text="Installà l’attrezzu di linea di cumanda"/>
+    <Item english="QR Code" text="Codice QR"/>
+    <Item english="Copy Image" text="Cupià a fiura"/>
+    <Item english="Save…" text="Arregistrà…"/>
+    <Item english="No text was found in the clipboard's image." text="Ùn s’hè trovu micca testu in a fiura di u preme’papei."/>
+    <Item english="The selection is too long for a QR code." text="A selezzione hè troppu longa per un codice QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Ùn s’hè trovu micca codice QR in a fiura di u preme’papei."/>
+    <Item english="The nppmac command is installed." text="A cumanda nppmac hè installata."/>
+    <Item english="Could not write to /usr/local/bin." text="Ùn hè micca pussibule scrive in /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON accettevule."/>
     <Item english="Invalid JSON." text="JSON inaccettevule."/>
     <Item english="Set as the first file to compare." text="Definitu cum’è primu schedariu à paragunà."/>

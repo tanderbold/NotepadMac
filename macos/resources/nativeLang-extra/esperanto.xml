@@ -160,6 +160,18 @@
     <Item english="Learn Spelling" text="Lernu literumadon"/>
     <Item english="No Guesses Found" text="Neniu propono trovita"/>
     <Item english="Markdown Preview" text="Markdown-antaŭrigardo"/>
+    <Item english="Paste Image as Text" text="Algluu bildon kiel tekston"/>
+    <Item english="QR Code from Selection" text="QR-kodo el la elektaĵo"/>
+    <Item english="Read QR Code from Clipboard" text="Legu QR-kodon el la tondejo"/>
+    <Item english="Install Command Line Tool" text="Instalu komandlinian ilon"/>
+    <Item english="QR Code" text="QR-kodo"/>
+    <Item english="Copy Image" text="Kopiu bildon"/>
+    <Item english="Save…" text="Konservu…"/>
+    <Item english="No text was found in the clipboard's image." text="Neniu teksto estis trovita en la bildo de la tondejo."/>
+    <Item english="The selection is too long for a QR code." text="La elektaĵo estas tro longa por QR-kodo."/>
+    <Item english="No QR code was found in the clipboard's image." text="Neniu QR-kodo estis trovita en la bildo de la tondejo."/>
+    <Item english="The nppmac command is installed." text="La komando nppmac estas instalita."/>
+    <Item english="Could not write to /usr/local/bin." text="Ne eblis skribi en /usr/local/bin."/>
     <Item english="Valid JSON." text="Valida JSON."/>
     <Item english="Invalid JSON." text="Nevalida JSON."/>
     <Item english="Set as the first file to compare." text="Difinita kiel la unua dosiero por komparo."/>

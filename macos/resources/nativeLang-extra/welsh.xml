@@ -158,6 +158,18 @@
     <Item english="Learn Spelling" text="Dysgu Sillafiad"/>
     <Item english="No Guesses Found" text="Ni Chanfuwyd Awgrymiadau"/>
     <Item english="Markdown Preview" text="Rhagolwg Markdown"/>
+    <Item english="Paste Image as Text" text="Gludo Delwedd fel Testun"/>
+    <Item english="QR Code from Selection" text="Cod QR o'r Testun a Ddewiswyd"/>
+    <Item english="Read QR Code from Clipboard" text="Darllen Cod QR o'r Clipfwrdd"/>
+    <Item english="Install Command Line Tool" text="Gosod Offeryn Llinell Gorchymyn"/>
+    <Item english="QR Code" text="Cod QR"/>
+    <Item english="Copy Image" text="Copïo Delwedd"/>
+    <Item english="Save…" text="Cadw…"/>
+    <Item english="No text was found in the clipboard's image." text="Ni chanfuwyd testun yn nelwedd y clipfwrdd."/>
+    <Item english="The selection is too long for a QR code." text="Mae'r testun a ddewiswyd yn rhy hir ar gyfer cod QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Ni chanfuwyd cod QR yn nelwedd y clipfwrdd."/>
+    <Item english="The nppmac command is installed." text="Mae'r gorchymyn nppmac wedi'i osod."/>
+    <Item english="Could not write to /usr/local/bin." text="Nid oedd modd ysgrifennu i /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON dilys."/>
     <Item english="Invalid JSON." text="JSON annilys."/>
     <Item english="Set as the first file to compare." text="Wedi'i gosod fel y ffeil gyntaf i'w chymharu."/>

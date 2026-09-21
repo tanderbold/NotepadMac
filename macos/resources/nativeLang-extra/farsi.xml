@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="یادگیری املا"/>
     <Item english="No Guesses Found" text="پیشنهادی یافت نشد"/>
     <Item english="Markdown Preview" text="پیش‌نمایش Markdown"/>
+    <Item english="Paste Image as Text" text="چسباندن تصویر به صورت متن"/>
+    <Item english="QR Code from Selection" text="کد QR از بخش انتخاب شده"/>
+    <Item english="Read QR Code from Clipboard" text="خواندن کد QR از کلیپ برد"/>
+    <Item english="Install Command Line Tool" text="نصب ابزار خط فرمان"/>
+    <Item english="QR Code" text="کد QR"/>
+    <Item english="Copy Image" text="کپی تصویر"/>
+    <Item english="Save…" text="ذخیره…"/>
+    <Item english="No text was found in the clipboard's image." text="متنی در تصویر کلیپ برد یافت نشد."/>
+    <Item english="The selection is too long for a QR code." text="بخش انتخاب شده برای کد QR بیش از حد طولانی است."/>
+    <Item english="No QR code was found in the clipboard's image." text="کد QR در تصویر کلیپ برد یافت نشد."/>
+    <Item english="The nppmac command is installed." text="فرمان nppmac نصب شده است."/>
+    <Item english="Could not write to /usr/local/bin." text="نوشتن در /usr/local/bin ممکن نشد."/>
     <Item english="Valid JSON." text="JSON معتبر."/>
     <Item english="Invalid JSON." text="JSON نامعتبر."/>
     <Item english="Set as the first file to compare." text="بعنوان اولین فایل برای مقایسه تنظیم شد."/>

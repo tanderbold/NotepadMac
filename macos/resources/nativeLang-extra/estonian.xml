@@ -160,6 +160,18 @@
     <Item english="Learn Spelling" text="Õpi õigekirja"/>
     <Item english="No Guesses Found" text="Soovitusi ei leitud"/>
     <Item english="Markdown Preview" text="Markdowni eelvaade"/>
+    <Item english="Paste Image as Text" text="Kleebi pilt tekstina"/>
+    <Item english="QR Code from Selection" text="QR-kood valikust"/>
+    <Item english="Read QR Code from Clipboard" text="Loe QR-kood lõikepuhvrist"/>
+    <Item english="Install Command Line Tool" text="Paigalda käsurea tööriist"/>
+    <Item english="QR Code" text="QR-kood"/>
+    <Item english="Copy Image" text="Kopeeri pilt"/>
+    <Item english="Save…" text="Salvesta…"/>
+    <Item english="No text was found in the clipboard's image." text="Lõikepuhvri pildist ei leitud teksti."/>
+    <Item english="The selection is too long for a QR code." text="Valik on QR-koodi jaoks liiga pikk."/>
+    <Item english="No QR code was found in the clipboard's image." text="Lõikepuhvri pildist ei leitud QR-koodi."/>
+    <Item english="The nppmac command is installed." text="Käsk nppmac on paigaldatud."/>
+    <Item english="Could not write to /usr/local/bin." text="Kausta /usr/local/bin ei õnnestunud kirjutada."/>
     <Item english="Valid JSON." text="Kehtiv JSON."/>
     <Item english="Invalid JSON." text="Vigane JSON."/>
     <Item english="Set as the first file to compare." text="Määratud esimeseks võrreldavaks failiks."/>

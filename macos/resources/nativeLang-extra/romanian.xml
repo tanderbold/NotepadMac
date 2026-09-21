@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Memorează ortografia"/>
     <Item english="No Guesses Found" text="Nu s-au găsit sugestii"/>
     <Item english="Markdown Preview" text="Previzualizare Markdown"/>
+    <Item english="Paste Image as Text" text="Lipește imaginea ca text"/>
+    <Item english="QR Code from Selection" text="Cod QR din selecție"/>
+    <Item english="Read QR Code from Clipboard" text="Citește codul QR din clipboard"/>
+    <Item english="Install Command Line Tool" text="Instalează instrumentul pentru linia de comandă"/>
+    <Item english="QR Code" text="Cod QR"/>
+    <Item english="Copy Image" text="Copiază imaginea"/>
+    <Item english="Save…" text="Salvare…"/>
+    <Item english="No text was found in the clipboard's image." text="Nu s-a găsit text în imaginea din clipboard."/>
+    <Item english="The selection is too long for a QR code." text="Selecția este prea lungă pentru un cod QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Nu s-a găsit niciun cod QR în imaginea din clipboard."/>
+    <Item english="The nppmac command is installed." text="Comanda nppmac este instalată."/>
+    <Item english="Could not write to /usr/local/bin." text="Nu s-a putut scrie în /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON valid."/>
     <Item english="Invalid JSON." text="JSON nevalid."/>
     <Item english="Set as the first file to compare." text="A fost stabilit ca primul fișier de comparat."/>

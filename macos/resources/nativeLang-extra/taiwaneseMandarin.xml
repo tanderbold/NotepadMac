@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="學習拼字"/>
     <Item english="No Guesses Found" text="找不到建議"/>
     <Item english="Markdown Preview" text="Markdown 預覽"/>
+    <Item english="Paste Image as Text" text="將圖片貼上為文字"/>
+    <Item english="QR Code from Selection" text="從選取區產生 QR 碼"/>
+    <Item english="Read QR Code from Clipboard" text="從剪貼簿讀取 QR 碼"/>
+    <Item english="Install Command Line Tool" text="安裝命令列工具"/>
+    <Item english="QR Code" text="QR 碼"/>
+    <Item english="Copy Image" text="複製圖片"/>
+    <Item english="Save…" text="儲存…"/>
+    <Item english="No text was found in the clipboard's image." text="剪貼簿的圖片中找不到文字。"/>
+    <Item english="The selection is too long for a QR code." text="選取的文字太長，無法產生 QR 碼。"/>
+    <Item english="No QR code was found in the clipboard's image." text="剪貼簿的圖片中找不到 QR 碼。"/>
+    <Item english="The nppmac command is installed." text="nppmac 指令已安裝。"/>
+    <Item english="Could not write to /usr/local/bin." text="無法寫入 /usr/local/bin。"/>
     <Item english="Valid JSON." text="有效的 JSON。"/>
     <Item english="Invalid JSON." text="無效的 JSON。"/>
     <Item english="Set as the first file to compare." text="已設為第一個比較檔案。"/>

@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="맞춤법 학습"/>
     <Item english="No Guesses Found" text="추천 단어 없음"/>
     <Item english="Markdown Preview" text="Markdown 미리 보기"/>
+    <Item english="Paste Image as Text" text="이미지를 텍스트로 붙여넣기"/>
+    <Item english="QR Code from Selection" text="선택 영역에서 QR 코드 만들기"/>
+    <Item english="Read QR Code from Clipboard" text="클립보드에서 QR 코드 읽기"/>
+    <Item english="Install Command Line Tool" text="명령줄 도구 설치"/>
+    <Item english="QR Code" text="QR 코드"/>
+    <Item english="Copy Image" text="이미지 복사"/>
+    <Item english="Save…" text="저장…"/>
+    <Item english="No text was found in the clipboard's image." text="클립보드 이미지에서 텍스트를 찾을 수 없습니다."/>
+    <Item english="The selection is too long for a QR code." text="선택 영역이 QR 코드로 만들기에는 너무 깁니다."/>
+    <Item english="No QR code was found in the clipboard's image." text="클립보드 이미지에서 QR 코드를 찾을 수 없습니다."/>
+    <Item english="The nppmac command is installed." text="nppmac 명령이 설치되었습니다."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin에 쓸 수 없습니다."/>
     <Item english="Valid JSON." text="유효한 JSON입니다."/>
     <Item english="Invalid JSON." text="유효하지 않은 JSON입니다."/>
     <Item english="Set as the first file to compare." text="비교할 첫 번째 파일로 지정했습니다."/>

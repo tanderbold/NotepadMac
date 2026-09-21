@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Earnlay Ellingspay"/>
     <Item english="No Guesses Found" text="Onay Uessesgay Oundfay"/>
     <Item english="Markdown Preview" text="Markdown Eviewpray"/>
+    <Item english="Paste Image as Text" text="Astepay Imageyay asyay Exttay"/>
+    <Item english="QR Code from Selection" text="QR Odecay omfray Electionsay"/>
+    <Item english="Read QR Code from Clipboard" text="Eadray QR Odecay omfray Ipboardclay"/>
+    <Item english="Install Command Line Tool" text="Installyay Ommandcay Inelay Ooltay"/>
+    <Item english="QR Code" text="QR Odecay"/>
+    <Item english="Copy Image" text="Opycay Imageyay"/>
+    <Item english="Save…" text="Avesay…"/>
+    <Item english="No text was found in the clipboard's image." text="Onay exttay asway oundfay inyay ethay ipboard'sclay imageyay."/>
+    <Item english="The selection is too long for a QR code." text="Ethay electionsay isyay ootay onglay orfay ayay QR odecay."/>
+    <Item english="No QR code was found in the clipboard's image." text="Onay QR odecay asway oundfay inyay ethay ipboard'sclay imageyay."/>
+    <Item english="The nppmac command is installed." text="Ethay nppmac ommandcay isyay installedyay."/>
+    <Item english="Could not write to /usr/local/bin." text="Ouldcay otnay itewray otay /usr/local/bin."/>
     <Item english="Valid JSON." text="Alidvay JSON."/>
     <Item english="Invalid JSON." text="Invalidyay JSON."/>
     <Item english="Set as the first file to compare." text="Etsay asyay ethay irstfay ilefay otay omparecay."/>

@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="スペルを学習"/>
     <Item english="No Guesses Found" text="候補が見つかりません"/>
     <Item english="Markdown Preview" text="Markdown プレビュー"/>
+    <Item english="Paste Image as Text" text="画像をテキストとして貼り付け"/>
+    <Item english="QR Code from Selection" text="選択範囲から QR コードを作成"/>
+    <Item english="Read QR Code from Clipboard" text="クリップボードから QR コードを読み取り"/>
+    <Item english="Install Command Line Tool" text="コマンドラインツールをインストール"/>
+    <Item english="QR Code" text="QR コード"/>
+    <Item english="Copy Image" text="画像をコピー"/>
+    <Item english="Save…" text="保存…"/>
+    <Item english="No text was found in the clipboard's image." text="クリップボードの画像にテキストが見つかりませんでした。"/>
+    <Item english="The selection is too long for a QR code." text="選択範囲が長すぎて QR コードにできません。"/>
+    <Item english="No QR code was found in the clipboard's image." text="クリップボードの画像に QR コードが見つかりませんでした。"/>
+    <Item english="The nppmac command is installed." text="nppmac コマンドはインストール済みです。"/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin に書き込めませんでした。"/>
     <Item english="Valid JSON." text="有効な JSON です。"/>
     <Item english="Invalid JSON." text="無効な JSON です。"/>
     <Item english="Set as the first file to compare." text="比較の1番目のファイルに設定しました。"/>

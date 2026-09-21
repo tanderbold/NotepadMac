@@ -156,6 +156,18 @@
     <Item english="Learn Spelling" text="Зөв бичгийг сурах"/>
     <Item english="No Guesses Found" text="Ямар ч санал олдсонгүй"/>
     <Item english="Markdown Preview" text="Markdown-ийг урьдчилан харах"/>
+    <Item english="Paste Image as Text" text="Зургийг текст болгон наах"/>
+    <Item english="QR Code from Selection" text="Сонгосон хэсгээс QR код"/>
+    <Item english="Read QR Code from Clipboard" text="Түр санах ойгоос QR код унших"/>
+    <Item english="Install Command Line Tool" text="Тушаалын мөрний хэрэгсэл суулгах"/>
+    <Item english="QR Code" text="QR код"/>
+    <Item english="Copy Image" text="Зураг хуулах"/>
+    <Item english="Save…" text="Хадгалах…"/>
+    <Item english="No text was found in the clipboard's image." text="Түр санах ойн зурагт текст олдсонгүй."/>
+    <Item english="The selection is too long for a QR code." text="Сонгосон хэсэг QR кодод хэт урт байна."/>
+    <Item english="No QR code was found in the clipboard's image." text="Түр санах ойн зурагт QR код олдсонгүй."/>
+    <Item english="The nppmac command is installed." text="nppmac тушаалыг суулгалаа."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin руу бичиж чадсангүй."/>
     <Item english="Valid JSON." text="Зөв JSON."/>
     <Item english="Invalid JSON." text="Буруу JSON."/>
     <Item english="Set as the first file to compare." text="Харьцуулах эхний файл болголоо."/>

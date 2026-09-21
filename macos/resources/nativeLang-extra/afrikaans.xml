@@ -144,6 +144,18 @@
     <Item english="Learn Spelling" text="Leer spelling"/>
     <Item english="No Guesses Found" text="Geen voorstelle gevind nie"/>
     <Item english="Markdown Preview" text="Markdown-voorskou"/>
+    <Item english="Paste Image as Text" text="Plak beeld as teks"/>
+    <Item english="QR Code from Selection" text="QR-kode van seleksie"/>
+    <Item english="Read QR Code from Clipboard" text="Lees QR-kode van klipbord"/>
+    <Item english="Install Command Line Tool" text="Installeer opdraglyn-nutsprogram"/>
+    <Item english="QR Code" text="QR-kode"/>
+    <Item english="Copy Image" text="Kopieer beeld"/>
+    <Item english="Save…" text="Berg…"/>
+    <Item english="No text was found in the clipboard's image." text="Geen teks is in die klipbord se beeld gevind nie."/>
+    <Item english="The selection is too long for a QR code." text="Die seleksie is te lank vir 'n QR-kode."/>
+    <Item english="No QR code was found in the clipboard's image." text="Geen QR-kode is in die klipbord se beeld gevind nie."/>
+    <Item english="The nppmac command is installed." text="Die opdrag nppmac is geïnstalleer."/>
+    <Item english="Could not write to /usr/local/bin." text="Kon nie na /usr/local/bin skryf nie."/>
     <Item english="Valid JSON." text="Geldige JSON."/>
     <Item english="Invalid JSON." text="Ongeldige JSON."/>
     <Item english="Set as the first file to compare." text="Gestel as die eerste leêr om te vergelyk."/>

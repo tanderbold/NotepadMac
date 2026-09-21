@@ -160,6 +160,18 @@
     <Item english="Learn Spelling" text="Opi oikeinkirjoitus"/>
     <Item english="No Guesses Found" text="Ehdotuksia ei löytynyt"/>
     <Item english="Markdown Preview" text="Markdown-esikatselu"/>
+    <Item english="Paste Image as Text" text="Liitä kuva tekstinä"/>
+    <Item english="QR Code from Selection" text="QR-koodi valinnasta"/>
+    <Item english="Read QR Code from Clipboard" text="Lue QR-koodi leikepöydältä"/>
+    <Item english="Install Command Line Tool" text="Asenna komentorivityökalu"/>
+    <Item english="QR Code" text="QR-koodi"/>
+    <Item english="Copy Image" text="Kopioi kuva"/>
+    <Item english="Save…" text="Tallenna…"/>
+    <Item english="No text was found in the clipboard's image." text="Leikepöydän kuvasta ei löytynyt tekstiä."/>
+    <Item english="The selection is too long for a QR code." text="Valinta on liian pitkä QR-koodia varten."/>
+    <Item english="No QR code was found in the clipboard's image." text="Leikepöydän kuvasta ei löytynyt QR-koodia."/>
+    <Item english="The nppmac command is installed." text="nppmac-komento on asennettu."/>
+    <Item english="Could not write to /usr/local/bin." text="Hakemistoon /usr/local/bin ei voitu kirjoittaa."/>
     <Item english="Valid JSON." text="Kelvollinen JSON."/>
     <Item english="Invalid JSON." text="Virheellinen JSON."/>
     <Item english="Set as the first file to compare." text="Asetettu ensimmäiseksi verrattavaksi tiedostoksi."/>

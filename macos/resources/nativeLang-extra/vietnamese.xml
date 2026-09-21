@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Học chính tả"/>
     <Item english="No Guesses Found" text="Không tìm thấy gợi ý"/>
     <Item english="Markdown Preview" text="Xem trước Markdown"/>
+    <Item english="Paste Image as Text" text="Dán hình ảnh dưới dạng văn bản"/>
+    <Item english="QR Code from Selection" text="Mã QR từ phần được chọn"/>
+    <Item english="Read QR Code from Clipboard" text="Đọc mã QR từ bảng tạm"/>
+    <Item english="Install Command Line Tool" text="Cài đặt công cụ dòng lệnh"/>
+    <Item english="QR Code" text="Mã QR"/>
+    <Item english="Copy Image" text="Sao chép hình ảnh"/>
+    <Item english="Save…" text="Lưu…"/>
+    <Item english="No text was found in the clipboard's image." text="Không tìm thấy văn bản trong hình ảnh của bảng tạm."/>
+    <Item english="The selection is too long for a QR code." text="Phần được chọn quá dài cho mã QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Không tìm thấy mã QR trong hình ảnh của bảng tạm."/>
+    <Item english="The nppmac command is installed." text="Lệnh nppmac đã được cài đặt."/>
+    <Item english="Could not write to /usr/local/bin." text="Không thể ghi vào /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON hợp lệ."/>
     <Item english="Invalid JSON." text="JSON không hợp lệ."/>
     <Item english="Set as the first file to compare." text="Đã đặt làm tệp thứ nhất để so sánh."/>

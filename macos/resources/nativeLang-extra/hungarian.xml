@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Helyesírás megtanulása"/>
     <Item english="No Guesses Found" text="Nincs javaslat"/>
     <Item english="Markdown Preview" text="Markdown-előnézet"/>
+    <Item english="Paste Image as Text" text="Kép beillesztése szövegként"/>
+    <Item english="QR Code from Selection" text="QR-kód a kijelölésből"/>
+    <Item english="Read QR Code from Clipboard" text="QR-kód beolvasása a vágólapról"/>
+    <Item english="Install Command Line Tool" text="Parancssori eszköz telepítése"/>
+    <Item english="QR Code" text="QR-kód"/>
+    <Item english="Copy Image" text="Kép másolása"/>
+    <Item english="Save…" text="Mentés…"/>
+    <Item english="No text was found in the clipboard's image." text="A vágólapon lévő képben nem található szöveg."/>
+    <Item english="The selection is too long for a QR code." text="A kijelölés túl hosszú egy QR-kódhoz."/>
+    <Item english="No QR code was found in the clipboard's image." text="A vágólapon lévő képben nem található QR-kód."/>
+    <Item english="The nppmac command is installed." text="Az nppmac parancs telepítve van."/>
+    <Item english="Could not write to /usr/local/bin." text="Nem sikerült írni a /usr/local/bin mappába."/>
     <Item english="Valid JSON." text="Érvényes JSON."/>
     <Item english="Invalid JSON." text="Érvénytelen JSON."/>
     <Item english="Set as the first file to compare." text="Beállítva első fájlként az összehasonlításhoz."/>

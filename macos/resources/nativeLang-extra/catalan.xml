@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Aprèn l'ortografia"/>
     <Item english="No Guesses Found" text="No s'han trobat suggeriments"/>
     <Item english="Markdown Preview" text="Previsualització de Markdown"/>
+    <Item english="Paste Image as Text" text="Enganxa la imatge com a text"/>
+    <Item english="QR Code from Selection" text="Codi QR de la selecció"/>
+    <Item english="Read QR Code from Clipboard" text="Llegeix el codi QR del porta-retalls"/>
+    <Item english="Install Command Line Tool" text="Instal·la l'eina de línia d'ordres"/>
+    <Item english="QR Code" text="Codi QR"/>
+    <Item english="Copy Image" text="Copia la imatge"/>
+    <Item english="Save…" text="Desa…"/>
+    <Item english="No text was found in the clipboard's image." text="No s'ha trobat cap text a la imatge del porta-retalls."/>
+    <Item english="The selection is too long for a QR code." text="La selecció és massa llarga per a un codi QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="No s'ha trobat cap codi QR a la imatge del porta-retalls."/>
+    <Item english="The nppmac command is installed." text="L'ordre nppmac està instal·lada."/>
+    <Item english="Could not write to /usr/local/bin." text="No s'ha pogut escriure a /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON vàlid."/>
     <Item english="Invalid JSON." text="JSON no vàlid."/>
     <Item english="Set as the first file to compare." text="Establert com a primer fitxer per comparar."/>

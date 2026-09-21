@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Запомнить орфографию"/>
     <Item english="No Guesses Found" text="Вариантов не найдено"/>
     <Item english="Markdown Preview" text="Предпросмотр Markdown"/>
+    <Item english="Paste Image as Text" text="Вставить изображение как текст"/>
+    <Item english="QR Code from Selection" text="QR-код из выделенного"/>
+    <Item english="Read QR Code from Clipboard" text="Считать QR-код из буфера"/>
+    <Item english="Install Command Line Tool" text="Установить инструмент командной строки"/>
+    <Item english="QR Code" text="QR-код"/>
+    <Item english="Copy Image" text="Копировать изображение"/>
+    <Item english="Save…" text="Сохранить…"/>
+    <Item english="No text was found in the clipboard's image." text="В изображении из буфера не найдено текста."/>
+    <Item english="The selection is too long for a QR code." text="Выделенный текст слишком длинный для QR-кода."/>
+    <Item english="No QR code was found in the clipboard's image." text="В изображении из буфера не найден QR-код."/>
+    <Item english="The nppmac command is installed." text="Команда nppmac установлена."/>
+    <Item english="Could not write to /usr/local/bin." text="Не удалось записать в /usr/local/bin."/>
     <Item english="Valid JSON." text="Корректный JSON."/>
     <Item english="Invalid JSON." text="Некорректный JSON."/>
     <Item english="Set as the first file to compare." text="Выбран первым файлом для сравнения."/>

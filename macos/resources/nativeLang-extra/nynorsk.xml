@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Lær stavemåte"/>
     <Item english="No Guesses Found" text="Fann ingen forslag"/>
     <Item english="Markdown Preview" text="Markdown-førehandsvising"/>
+    <Item english="Paste Image as Text" text="Lim inn bilete som tekst"/>
+    <Item english="QR Code from Selection" text="QR-kode frå merkt tekst"/>
+    <Item english="Read QR Code from Clipboard" text="Les QR-kode frå utklippstavla"/>
+    <Item english="Install Command Line Tool" text="Installer kommandolinjeverktøy"/>
+    <Item english="QR Code" text="QR-kode"/>
+    <Item english="Copy Image" text="Kopier bilete"/>
+    <Item english="Save…" text="Lagre…"/>
+    <Item english="No text was found in the clipboard's image." text="Fann ingen tekst i biletet på utklippstavla."/>
+    <Item english="The selection is too long for a QR code." text="Den merkte teksten er for lang for ein QR-kode."/>
+    <Item english="No QR code was found in the clipboard's image." text="Fann ingen QR-kode i biletet på utklippstavla."/>
+    <Item english="The nppmac command is installed." text="Kommandoen nppmac er installert."/>
+    <Item english="Could not write to /usr/local/bin." text="Kunne ikkje skrive til /usr/local/bin."/>
     <Item english="Valid JSON." text="Gyldig JSON."/>
     <Item english="Invalid JSON." text="Ugyldig JSON."/>
     <Item english="Set as the first file to compare." text="Vald som første fil til samanlikning."/>

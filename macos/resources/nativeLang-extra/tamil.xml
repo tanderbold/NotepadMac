@@ -161,6 +161,18 @@
     <Item english="Learn Spelling" text="எழுத்துக்கூட்டலைக் கற்றுக்கொள்"/>
     <Item english="No Guesses Found" text="பரிந்துரைகள் எதுவும் கிடைக்கவில்லை"/>
     <Item english="Markdown Preview" text="Markdown முன்னோட்டம்"/>
+    <Item english="Paste Image as Text" text="படத்தை உரையாக ஒட்டு"/>
+    <Item english="QR Code from Selection" text="தேர்விலிருந்து QR குறியீடு"/>
+    <Item english="Read QR Code from Clipboard" text="ஒட்டுப்பலகையிலிருந்து QR குறியீட்டைப் படி"/>
+    <Item english="Install Command Line Tool" text="கட்டளை வரி கருவியை நிறுவு"/>
+    <Item english="QR Code" text="QR குறியீடு"/>
+    <Item english="Copy Image" text="படத்தை நகலெடு"/>
+    <Item english="Save…" text="சேமி…"/>
+    <Item english="No text was found in the clipboard's image." text="ஒட்டுப்பலகைப் படத்தில் உரை எதுவும் காணப்படவில்லை."/>
+    <Item english="The selection is too long for a QR code." text="தேர்வு QR குறியீட்டுக்கு மிக நீளமானது."/>
+    <Item english="No QR code was found in the clipboard's image." text="ஒட்டுப்பலகைப் படத்தில் QR குறியீடு எதுவும் காணப்படவில்லை."/>
+    <Item english="The nppmac command is installed." text="nppmac கட்டளை நிறுவப்பட்டுள்ளது."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin இல் எழுத முடியவில்லை."/>
     <Item english="Valid JSON." text="சரியான JSON."/>
     <Item english="Invalid JSON." text="தவறான JSON."/>
     <Item english="Set as the first file to compare." text="ஒப்பிட முதல் கோப்பாக அமைக்கப்பட்டது."/>

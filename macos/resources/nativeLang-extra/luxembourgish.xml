@@ -143,6 +143,18 @@
     <Item english="Learn Spelling" text="Rechtschreiwung léieren"/>
     <Item english="No Guesses Found" text="Keng Virschléi fonnt"/>
     <Item english="Markdown Preview" text="Markdown-Virschau"/>
+    <Item english="Paste Image as Text" text="Bild als Text afügen"/>
+    <Item english="QR Code from Selection" text="QR-Code aus dem markéierten Text"/>
+    <Item english="Read QR Code from Clipboard" text="QR-Code aus der Tëschentablag liesen"/>
+    <Item english="Install Command Line Tool" text="Kommandozeilen-Tool installéieren"/>
+    <Item english="QR Code" text="QR-Code"/>
+    <Item english="Copy Image" text="Bild kopéieren"/>
+    <Item english="Save…" text="Späicheren …"/>
+    <Item english="No text was found in the clipboard's image." text="Keen Text am Bild aus der Tëschentablag fonnt."/>
+    <Item english="The selection is too long for a QR code." text="De markéierten Text ass ze laang fir e QR-Code."/>
+    <Item english="No QR code was found in the clipboard's image." text="Kee QR-Code am Bild aus der Tëschentablag fonnt."/>
+    <Item english="The nppmac command is installed." text="De Befeel nppmac ass installéiert."/>
+    <Item english="Could not write to /usr/local/bin." text="Konnt net op /usr/local/bin schreiwen."/>
     <Item english="Valid JSON." text="Gültegen JSON."/>
     <Item english="Invalid JSON." text="Ongültegen JSON."/>
     <Item english="Set as the first file to compare." text="Als éischt Datei fir de Verglach festgeluecht."/>

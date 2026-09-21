@@ -152,6 +152,18 @@
     <Item english="Learn Spelling" text="Ikasi ortografia"/>
     <Item english="No Guesses Found" text="Ez da iradokizunik aurkitu"/>
     <Item english="Markdown Preview" text="Markdown aurrebista"/>
+    <Item english="Paste Image as Text" text="Itsatsi Irudia Testu gisa"/>
+    <Item english="QR Code from Selection" text="QR Kodea Hautapenetik"/>
+    <Item english="Read QR Code from Clipboard" text="Irakurri QR Kodea Arbeletik"/>
+    <Item english="Install Command Line Tool" text="Instalatu Komando-lerroko Tresna"/>
+    <Item english="QR Code" text="QR Kodea"/>
+    <Item english="Copy Image" text="Kopiatu Irudia"/>
+    <Item english="Save…" text="Gorde…"/>
+    <Item english="No text was found in the clipboard's image." text="Ez da testurik aurkitu arbeleko irudian."/>
+    <Item english="The selection is too long for a QR code." text="Hautapena luzeegia da QR kode baterako."/>
+    <Item english="No QR code was found in the clipboard's image." text="Ez da QR koderik aurkitu arbeleko irudian."/>
+    <Item english="The nppmac command is installed." text="nppmac komandoa instalatuta dago."/>
+    <Item english="Could not write to /usr/local/bin." text="Ezin izan da /usr/local/bin-en idatzi."/>
     <Item english="Valid JSON." text="Baliozko JSON."/>
     <Item english="Invalid JSON." text="JSON baliogabea."/>
     <Item english="Set as the first file to compare." text="Konparatzeko lehen fitxategi gisa ezarrita."/>

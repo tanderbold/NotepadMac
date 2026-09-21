@@ -157,6 +157,18 @@
     <Item english="Learn Spelling" text="අක්ෂර වින්‍යාසය ඉගෙන ගන්න"/>
     <Item english="No Guesses Found" text="යෝජනා හමු නොවීය"/>
     <Item english="Markdown Preview" text="Markdown පෙරදසුන"/>
+    <Item english="Paste Image as Text" text="රූපය පාඨය ලෙස අලවන්න"/>
+    <Item english="QR Code from Selection" text="තේරීමෙන් QR කේතය"/>
+    <Item english="Read QR Code from Clipboard" text="ඇමුණුම් පුවරුවෙන් QR කේතය කියවන්න"/>
+    <Item english="Install Command Line Tool" text="විධාන රේඛා මෙවලම ස්ථාපනය කරන්න"/>
+    <Item english="QR Code" text="QR කේතය"/>
+    <Item english="Copy Image" text="රූපය පිටපත් කරන්න"/>
+    <Item english="Save…" text="සුරකින්න…"/>
+    <Item english="No text was found in the clipboard's image." text="ඇමුණුම් පුවරුවේ රූපයේ පාඨයක් හමු නොවීය."/>
+    <Item english="The selection is too long for a QR code." text="තේරීම QR කේතයක් සඳහා දිග වැඩිය."/>
+    <Item english="No QR code was found in the clipboard's image." text="ඇමුණුම් පුවරුවේ රූපයේ QR කේතයක් හමු නොවීය."/>
+    <Item english="The nppmac command is installed." text="nppmac විධානය ස්ථාපනය කර ඇත."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin වෙත ලිවිය නොහැක."/>
     <Item english="Valid JSON." text="වලංගු JSON."/>
     <Item english="Invalid JSON." text="අවලංගු JSON."/>
     <Item english="Set as the first file to compare." text="සැසඳීමට පළමු ගොනුව ලෙස තබන ලදී."/>

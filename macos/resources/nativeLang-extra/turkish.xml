@@ -162,6 +162,18 @@
     <Item english="Learn Spelling" text="Yazımı Öğren"/>
     <Item english="No Guesses Found" text="Tahmin Bulunamadı"/>
     <Item english="Markdown Preview" text="Markdown Önizlemesi"/>
+    <Item english="Paste Image as Text" text="Görseli Metin Olarak Yapıştır"/>
+    <Item english="QR Code from Selection" text="Seçimden QR Kodu"/>
+    <Item english="Read QR Code from Clipboard" text="Panodan QR Kodu Oku"/>
+    <Item english="Install Command Line Tool" text="Komut Satırı Aracını Yükle"/>
+    <Item english="QR Code" text="QR Kodu"/>
+    <Item english="Copy Image" text="Görseli Kopyala"/>
+    <Item english="Save…" text="Kaydet…"/>
+    <Item english="No text was found in the clipboard's image." text="Panodaki görselde metin bulunamadı."/>
+    <Item english="The selection is too long for a QR code." text="Seçim, QR kodu için çok uzun."/>
+    <Item english="No QR code was found in the clipboard's image." text="Panodaki görselde QR kodu bulunamadı."/>
+    <Item english="The nppmac command is installed." text="nppmac komutu yüklendi."/>
+    <Item english="Could not write to /usr/local/bin." text="/usr/local/bin dizinine yazılamadı."/>
     <Item english="Valid JSON." text="Geçerli JSON."/>
     <Item english="Invalid JSON." text="Geçersiz JSON."/>
     <Item english="Set as the first file to compare." text="Karşılaştırılacak ilk dosya olarak ayarlandı."/>

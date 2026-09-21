@@ -128,4 +128,15 @@
     <Item english="Open in New Document" text="Digeriñ en un teuliad nevez"/>
     <Item english="This is not a curl command." text="N'eo ket un urzhiad curl."/>
     <Item english="Markdown Preview" text="Rakwel Markdown"/>
+    <Item english="Paste Image as Text" text="Pegañ ar skeudenn evel testenn"/>
+    <Item english="QR Code from Selection" text="Kod QR diwar an diuzad"/>
+    <Item english="Read QR Code from Clipboard" text="Lenn ar c'hod QR eus ar golver"/>
+    <Item english="QR Code" text="Kod QR"/>
+    <Item english="Copy Image" text="Eilañ ar skeudenn"/>
+    <Item english="Save…" text="Enrollañ…"/>
+    <Item english="No text was found in the clipboard's image." text="N'eus bet kavet testenn ebet e skeudenn ar golver."/>
+    <Item english="The selection is too long for a QR code." text="Re hir eo an diuzad evit ur c'hod QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="N'eus bet kavet kod QR ebet e skeudenn ar golver."/>
+    <Item english="The nppmac command is installed." text="Staliet eo an urzhiad nppmac."/>
+    <Item english="Could not write to /usr/local/bin." text="N'haller ket skrivañ e /usr/local/bin."/>
 </NativeLangExtra>

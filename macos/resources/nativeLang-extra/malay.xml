@@ -150,6 +150,18 @@
     <Item english="Learn Spelling" text="Pelajari Ejaan"/>
     <Item english="No Guesses Found" text="Tiada Cadangan Ditemui"/>
     <Item english="Markdown Preview" text="Pratonton Markdown"/>
+    <Item english="Paste Image as Text" text="Tampal Imej sebagai Teks"/>
+    <Item english="QR Code from Selection" text="Kod QR daripada Pilihan"/>
+    <Item english="Read QR Code from Clipboard" text="Baca Kod QR daripada Papan Keratan"/>
+    <Item english="Install Command Line Tool" text="Pasang Alat Baris Perintah"/>
+    <Item english="QR Code" text="Kod QR"/>
+    <Item english="Copy Image" text="Salin Imej"/>
+    <Item english="Save…" text="Simpan…"/>
+    <Item english="No text was found in the clipboard's image." text="Tiada teks ditemui dalam imej papan keratan."/>
+    <Item english="The selection is too long for a QR code." text="Pilihan terlalu panjang untuk kod QR."/>
+    <Item english="No QR code was found in the clipboard's image." text="Tiada kod QR ditemui dalam imej papan keratan."/>
+    <Item english="The nppmac command is installed." text="Perintah nppmac telah dipasang."/>
+    <Item english="Could not write to /usr/local/bin." text="Tidak dapat menulis ke /usr/local/bin."/>
     <Item english="Valid JSON." text="JSON sah."/>
     <Item english="Invalid JSON." text="JSON tidak sah."/>
     <Item english="Set as the first file to compare." text="Ditetapkan sebagai fail pertama untuk dibandingkan."/>
