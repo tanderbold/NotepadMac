@@ -47,6 +47,12 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - **Base**: Base64 (and URL-safe), Base58 (and Base58Check), Base32 - from text or bytes in hexadecimal, and back to both.
 - **Password Generator**: length, character sets, look-alikes excluded, entropy shown, drawn from the system's secure random generator without bias; optionally the hash of each password.
 - **HTTP Request**: method, address, parameters, headers, body, Basic authentication, redirects, timeout; the answer's status, headers and body (JSON laid out), opened as a document if wanted; **Paste curl Command** and **Copy as curl**.
+- **QR codes, both ways**: the selection as a QR code (copy or save the picture), and the clipboard's QR code back as text.
+
+**Only a Mac could**
+- **`nppmac` command line**: `nppmac file.txt`, `nppmac +42 file.txt`, `echo hi | nppmac -`, a folder opens as a workspace; Tools > Install Command Line Tool links it into /usr/local/bin.
+- **Paste Image as Text**: the clipboard's image read by the system's text recognizer, straight to the caret.
+- **Spell checking** on the system engine and **Markdown Preview** (listed with the plugins below) are system-native too.
 
 **Built in instead of plugins** (Windows plugins are Windows binaries and cannot load)
 - JSON: format, compact, sort keys, validate, tree.

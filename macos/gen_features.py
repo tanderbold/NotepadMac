@@ -118,6 +118,16 @@ the plugins folder with the C interface of
 [macos/plugin-sdk](../macos/plugin-sdk/README.md) - Notepad++'s
 PluginInterface.h translated to macOS, Scintilla messages and all.
 
+**Only a Mac could** - where Windows plugins leaned on Windows, this port
+leans the other way:
+
+- The `nppmac` command line tool: files (at a line), folders as workspaces,
+  standard input; installed into /usr/local/bin from the Tools menu.
+- Paste Image as Text: the clipboard's image through the system's text
+  recognizer (Vision), at the caret.
+- QR codes both ways: the selection as a code, the clipboard's code as text.
+- Spell checking by the system engine, with every installed dictionary.
+
 **And besides the menus:**
 
 - When a file's name says nothing, a trained model recognises the language of
