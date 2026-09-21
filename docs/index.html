@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NotepadMac — Notepad++ for macOS</title>
+<meta name="description" content="A native macOS port of Notepad++: the same Scintilla engine, syntax highlighting for ~90 languages, all 579 Windows menu commands. No Wine, no emulation. Free and open source (GPL).">
+<meta property="og:title" content="NotepadMac — Notepad++ for macOS">
+<meta property="og:description" content="A native macOS port of Notepad++. Same engine, same files, no Wine. Free, open source, notarized.">
+<meta property="og:image" content="https://tanderbold.github.io/NotepadMac/screenshot-editor.png">
+<meta property="og:url" content="https://tanderbold.github.io/NotepadMac/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://tanderbold.github.io/NotepadMac/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "NotepadMac",
+  "operatingSystem": "macOS 11+",
+  "applicationCategory": "DeveloperApplication",
+  "description": "A native macOS port of the Notepad++ text editor.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "downloadUrl": "https://github.com/tanderbold/NotepadMac/releases",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html"
+}
+</script>
+<style>
+  :root {
+    --bg: #fafafa; --fg: #1c1c1e; --muted: #6e6e73; --card: #ffffff;
+    --accent: #2f7d4f; --border: #e2e2e6; --code-bg: #eef0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131315; --fg: #ececf0; --muted: #98989f; --card: #1d1d20;
+      --accent: #58b380; --border: #2c2c30; --code-bg: #232326;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: 0 16px;
+  }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 0 64px; }
+  h1 { font-size: 2.4rem; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .tagline { font-size: 1.2rem; color: var(--muted); margin: 0 0 24px; }
+  .badges { margin: 0 0 28px; color: var(--muted); font-size: 0.95rem; }
+  .badges span { margin-right: 14px; white-space: nowrap; }
+  .install {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px; margin: 0 0 28px;
+  }
+  .install h2 { margin: 0 0 10px; font-size: 1.05rem; }
+  pre {
+    background: var(--code-bg); border-radius: 8px; padding: 12px 16px;
+    overflow-x: auto; margin: 8px 0;
+  }
+  code { font: 0.92em ui-monospace, "SF Mono", Menlo, monospace; }
+  .alt { color: var(--muted); font-size: 0.95rem; margin: 10px 0 0; }
+  .shot { margin: 32px 0; }
+  .shot img {
+    max-width: 100%; border-radius: 12px; border: 1px solid var(--border);
+    display: block;
+  }
+  .features {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; margin: 32px 0; padding: 0; list-style: none;
+  }
+  .features li {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .features b { display: block; margin-bottom: 4px; }
+  .features span { color: var(--muted); font-size: 0.95rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .links { margin: 32px 0 0; }
+  .links a { margin-right: 18px; }
+  footer {
+    max-width: 880px; margin: 0 auto; padding: 0 0 48px;
+    color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Notepad++ for macOS</h1>
+  <p class="tagline">A native Mac port of the Notepad++ text editor. Same engine, same files — no Wine, no emulation, no Windows code.</p>
+  <p class="badges">
+    <span>◆ Free &amp; open source (GPL)</span>
+    <span>◆ Apple silicon + Intel</span>
+    <span>◆ macOS 11+</span>
+    <span>◆ Signed &amp; notarized</span>
+  </p>
+
+  <div class="install">
+    <h2>Install with Homebrew</h2>
+    <pre><code>brew install --cask tanderbold/tap/notepadmac</code></pre>
+    <p class="alt">…or download the <a href="https://github.com/tanderbold/NotepadMac/releases">notarized .dmg from Releases</a> and drag NotepadMac to Applications.</p>
+  </div>
+
+  <div class="shot">
+    <img src="screenshot-editor.png" alt="NotepadMac editing an Objective-C++ source file with syntax highlighting, line numbers and code folding, dark theme" width="2000" height="1380">
+  </div>
+
+  <ul class="features">
+    <li><b>All 579 Windows menu commands</b><span>Implemented against Notepad++'s own sources, behaving the way they do on Windows.</span></li>
+    <li><b>Same engine and files</b><span>Scintilla and Lexilla, with Notepad++'s language, style, theme, function-list, shortcut and translation files.</span></li>
+    <li><b>~90 languages highlighted</b><span>Syntax colouring, folding, function list, auto-completion — plus User Defined Languages.</span></li>
+    <li><b>Search like Notepad++'s</b><span>Boost-syntax regular expressions, Find in Files, Mark, incremental search, search results window.</span></li>
+    <li><b>Plugins, built in</b><span>JSON viewer, Compare, XML tools, FTP client and NppExec-style scripting ship inside the app.</span></li>
+    <li><b>Extra tools</b><span>Hashes (bcrypt, scrypt, Argon2, PBKDF2…), Base64/58/32, a password generator, HTTP Request.</span></li>
+    <li><b>Knows your language</b><span>A trained model recognises the language of pasted or extension-less text — no rules, just data.</span></li>
+    <li><b>Speaks ~90 languages</b><span>The interface follows Notepad++'s own localisations, including the port's additions.</span></li>
+  </ul>
+
+  <p class="links">
+    <a href="https://github.com/tanderbold/NotepadMac">Source on GitHub</a>
+    <a href="https://github.com/tanderbold/NotepadMac/releases">Releases</a>
+    <a href="https://github.com/tanderbold/NotepadMac/blob/main/macos/FEATURES.md">Feature list</a>
+    <a href="https://github.com/tanderbold/NotepadMac/issues">Issues</a>
+    <a href="https://github.com/tanderbold/NotepadMac/discussions">Discussions</a>
+  </p>
+</main>
+<footer>
+  An independent, unofficial port; not made, released or supported by the Notepad++ project.
+  Notepad++ is by Don Ho. NotepadMac is licensed under the GPL, the same licence as Notepad++.
+  Questions and bug reports about the Mac version belong in this repository's Issues and Discussions.
+</footer>
+</body>
+</html>

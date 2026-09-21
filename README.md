@@ -6,6 +6,8 @@ language, colour, theme, function-list and translation files as the Windows
 version - in a Cocoa application that runs on Apple silicon and Intel Macs.
 No Wine, no emulation, no Windows code.
 
+![NotepadMac editing an Objective-C++ source file: syntax highlighting, line numbers and code folding, dark theme](docs/screenshot-editor.png)
+
 > An independent, unofficial port. It is not made, released or supported by the
 > Notepad++ project: **questions, bug reports and requests about the Mac version
 > belong in the Issues and Discussions of this repository**, not upstream's
