@@ -153,6 +153,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The Language menu in letter submenus, as upstream does by default.
 @property (nonatomic) BOOL languageMenuCompact;
 @property (nonatomic) BOOL sqlBackslashEscape;
+// The Converter plugin's ascii2Hex settings (its converter.ini).
+@property (nonatomic) BOOL converterInsertSpace;
+@property (nonatomic) BOOL converterUppercase;
+@property (nonatomic) NSInteger converterHexPerLine;
 // Indentation
 /// Per language: {"size": n, "spaces": BOOL}; absent means the default.
 @property (nonatomic, copy) NSDictionary<NSString *, NSDictionary *> *languageIndent;

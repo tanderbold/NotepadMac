@@ -24,6 +24,7 @@
 #import "JsonCommands.h"
 #import "MimeCommands.h"
 #import "PluginHost.h"
+#import "ConverterCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -9914,6 +9915,59 @@ int NppMacRunTests(AppDelegate *app) {
         [sci message:SCI_UNDO wParam:0 lParam:0];
         Check(@"MIME Tools on the selection", @"the selection is replaced in place and one undo returns it",
               did && [encoded isEqualToString:@"Zm9vYmFy"] && [DocText(ed) isEqualToString:@"foobar"]);
+    }
+
+    printf("\n== Converter ==\n");
+    {
+        // ascii2hex, with the plugin's three settings.
+        Check(@"Converter ASCII -> HEX", @"bytes become pairs; space and case options hold",
+              [[EditorController converterHexFromText:@"AB" insertSpace:NO uppercase:NO charactersPerLine:0 eol:@"\n"]
+               isEqualToString:@"4142"] &&
+              [[EditorController converterHexFromText:@"AB" insertSpace:YES uppercase:NO charactersPerLine:0 eol:@"\n"]
+               isEqualToString:@"41 42 "] &&   // the plugin leaves the trailing space too
+              [[EditorController converterHexFromText:@"j" insertSpace:NO uppercase:YES charactersPerLine:0 eol:@"\n"]
+               isEqualToString:@"6A"]);
+        Check(@"Converter ASCII -> HEX per line", @"a break lands after every N-th source byte",
+              [[EditorController converterHexFromText:@"ABCD" insertSpace:YES uppercase:NO charactersPerLine:2 eol:@"\n"]
+               isEqualToString:@"41 42\n43 44\n"]);
+
+        // hex2Ascii: the format is read off the third character and must hold.
+        Check(@"Converter HEX -> ASCII", @"plain and spaced input decode; UTF-8 comes back as text",
+              [[EditorController converterTextFromHex:@"4142"] isEqualToString:@"AB"] &&
+              [[EditorController converterTextFromHex:@"41 42"] isEqualToString:@"AB"] &&
+              [[EditorController converterTextFromHex:@"41\n42"] isEqualToString:@"AB"] &&
+              [[EditorController converterTextFromHex:@"D0AF"] isEqualToString:@"Я"]);
+        Check(@"Converter HEX -> ASCII refusals", @"odd digits, stray characters and a broken format are refused",
+              [EditorController converterTextFromHex:@"414"] == nil &&
+              [EditorController converterTextFromHex:@"41 4243"] == nil &&
+              [EditorController converterTextFromHex:@"4Z"] == nil &&
+              [EditorController converterTextFromHex:@"4"] == nil);
+
+        // The Conversion Panel's model.
+        NSDictionary *fromHex = [EditorController converterValues:@"ff" fromField:@"hex"];
+        NSDictionary *fromAscii = [EditorController converterValues:@"A" fromField:@"ascii"];
+        Check(@"Conversion Panel values", @"one value fills every base and the character",
+              [fromHex[@"dec"] isEqualToString:@"255"] && [fromHex[@"bin"] isEqualToString:@"11111111"] &&
+              [fromHex[@"oct"] isEqualToString:@"377"] && [fromHex[@"ascii"] isEqualToString:@"ÿ"] &&
+              [fromAscii[@"dec"] isEqualToString:@"65"] &&
+              [[EditorController converterValues:@"1010" fromField:@"bin"][@"dec"] isEqualToString:@"10"] &&
+              [EditorController converterValues:@"12a" fromField:@"dec"] == nil &&
+              [[EditorController converterValues:@"" fromField:@"dec"][@"hex"] isEqualToString:@""]);
+
+        // The panel itself: typing syncs the rows, Insert writes to the document.
+        [app showConversionPanel:nil];
+        NppConverterWindow *cw = [NppConverterWindow shared];
+        [ed newDocument];
+        SetDoc(ed, @"");
+        cw.hex.stringValue = @"ff";
+        [cw syncFrom:cw.hex];
+        NSButton *fake = [[NSButton alloc] init];
+        fake.tag = 1;   // the Decimal row
+        [NSApp sendAction:@selector(insertRow:) to:cw from:fake];
+        Check(@"Conversion Panel window", @"typing hex ff shows 255, and Insert writes it at the caret",
+              [cw.dec.stringValue isEqualToString:@"255"] && [cw.bin.stringValue isEqualToString:@"11111111"] &&
+              [DocText(ed) isEqualToString:@"255"]);
+        [cw.panel orderOut:nil];
     }
 
     printf("\n== Plugin host ==\n");

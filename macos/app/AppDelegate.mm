@@ -26,6 +26,7 @@
 #import "JsonCommands.h"
 #import "MimeCommands.h"
 #import "PluginHost.h"
+#import "ConverterCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -1355,6 +1356,15 @@ static NSString *Ordinal(NSUInteger n) {
     }
     [pluginsMenu addItemWithTitle:@"MIME Tools" action:nil keyEquivalent:@""].submenu = mimeMenu;
 
+    // Converter, with the plugin's items (its Edit Configuration File became
+    // the converterInsertSpace/Uppercase/HexPerLine defaults).
+    NSMenu *converterMenu = [[NSMenu alloc] initWithTitle:@"Converter"];
+    [self item:@"ASCII -> HEX" action:@selector(converterAsciiToHex:) key:@"" flags:0 menu:converterMenu];
+    [self item:@"HEX -> ASCII" action:@selector(converterHexToAscii:) key:@"" flags:0 menu:converterMenu];
+    [converterMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Conversion Panel" action:@selector(showConversionPanel:) key:@"" flags:0 menu:converterMenu];
+    [pluginsMenu addItemWithTitle:@"Converter" action:nil keyEquivalent:@""].submenu = converterMenu;
+
     // NppExec's scripts; its saved scripts follow, rebuilt as they change.
     NSMenu *execMenu = [[NSMenu alloc] initWithTitle:@"NppExec"];
     NSMenuItem *execute = [self item:@"Execute NppExec Script…" action:@selector(executeScriptDialog:) key:@"" flags:0 menu:execMenu];
@@ -1474,6 +1484,36 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)jsonFormat:(id)sender  { if (![self.editor formatJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonCompact:(id)sender { if (![self.editor compactJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonSort:(id)sender    { if (![self.editor sortJSONDocument]) [self reportJSONProblem]; }
+
+#pragma mark Plugins > Converter
+
+- (void)converterAsciiToHex:(id)sender {
+    NppPreferences *prefs = [NppPreferences shared];
+    int eolMode = (int)[self.editor.sci message:SCI_GETEOLMODE wParam:0 lParam:0];
+    NSString *eol = eolMode == SC_EOL_CRLF ? @"\r\n" : eolMode == SC_EOL_CR ? @"\r" : @"\n";
+    [self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController converterHexFromText:text
+                                          insertSpace:prefs.converterInsertSpace
+                                            uppercase:prefs.converterUppercase
+                                    charactersPerLine:(NSUInteger)MAX(prefs.converterHexPerLine, 0)
+                                                  eol:eol];
+    }];
+}
+
+- (void)converterHexToAscii:(id)sender {
+    if (![self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController converterTextFromHex:text];
+    }]) [self reportMimeProblem:@"Hex format is not conformed"];
+}
+
+- (void)showConversionPanel:(id)sender {
+    NppConverterWindow *window = [NppConverterWindow shared];
+    __weak __typeof__(self) weakSelf = self;
+    window.insert = ^(NSString *text) {
+        [weakSelf.editor.sci setStringProperty:SCI_REPLACESEL parameter:0 value:text];
+    };
+    [window show];
+}
 
 #pragma mark Plugins > MIME Tools
 
@@ -4509,7 +4549,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
         [self showDebugInfo:nil];
         view = [NppDebugInfoWindow shared].panel.contentView;
     } else if (panel && !strncmp(panel, "tools:", 6)) {
-        // tools:digest, tools:files, tools:bcrypt, tools:scrypt, tools:argon2, tools:pbkdf2, tools:base, tools:unbase, tools:password
+        // tools:digest, tools:files, tools:bcrypt, tools:scrypt, tools:argon2, tools:pbkdf2, tools:base, tools:unbase, tools:password, tools:converter
         NSString *which = @(panel + 6);
         NSUInteger kind = [@[@"bcrypt", @"scrypt", @"argon2", @"pbkdf2"] indexOfObject:which];
         if ([which isEqualToString:@"digest"] || [which isEqualToString:@"files"]) {
@@ -4538,6 +4578,12 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
             [self showHttpRequest:nil];
             NppHttpWindow *w = [NppHttpWindow shared];
             if (which.length > 5) { w.address.stringValue = [which substringFromIndex:5]; [w sendAndWait]; }
+            view = w.panel.contentView;
+        } else if ([which isEqualToString:@"converter"]) {
+            [self showConversionPanel:nil];
+            NppConverterWindow *w = [NppConverterWindow shared];
+            w.hex.stringValue = @"ff";
+            [w syncFrom:w.hex];
             view = w.panel.contentView;
         } else {
             [self showPasswordGenerator:nil];

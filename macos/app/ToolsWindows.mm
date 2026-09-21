@@ -1,4 +1,5 @@
 #import "ToolsWindows.h"
+#import "ConverterCommands.h"
 #import "Localization.h"
 #import "JsonCommands.h"
 
@@ -1248,6 +1249,103 @@ static NSSegmentedControl *Segments(NSArray<NSString *> *labels, id target, SEL 
     NSString *text = [self.response text] ? (self.answerSection.selectedSegment == 0 ? self.answer.string : [self.response text]) : nil;
     if (!text.length || !self.openInNewDocument) { NSBeep(); return; }
     self.openInNewDocument(text, [self.response valueOfHeader:@"Content-Type"] ?: @"");
+}
+
+- (void)close:(id)sender { [self.panel orderOut:nil]; }
+
+@end
+
+
+#pragma mark - The Conversion Panel
+
+// The Converter plugin's panel (conversionPanel.cpp): five rows for one
+// value. The model - which texts a typed value spreads into the others -
+// is EditorController (ConverterCommands), so it is tested apart from the
+// controls.
+@interface NppConverterWindow () <NSTextFieldDelegate>
+@property (nonatomic) NSPanel *panel;
+@property (nonatomic) NSTextField *ascii, *dec, *hex, *bin, *oct;
+@property (nonatomic) BOOL filling;   // the sync writes fields; their delegate must not re-enter
+@end
+
+@implementation NppConverterWindow
+
++ (instancetype)shared {
+    static NppConverterWindow *one;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{ one = [[NppConverterWindow alloc] init]; });
+    return one;
+}
+
+- (NSPanel *)panel {
+    if (_panel) return _panel;
+    NSMutableArray<NSView *> *rows = [NSMutableArray array];
+    struct { NSString *label; NSString *key; } lines[] = {
+        {@"Character:", @"ascii"}, {@"Decimal:", @"dec"}, {@"Hexadecimal:", @"hex"},
+        {@"Binary:", @"bin"}, {@"Octal:", @"oct"},
+    };
+    for (size_t i = 0; i < sizeof(lines)/sizeof(lines[0]); ++i) {
+        NSTextField *field = Field(@"", 220, self);
+        [field setContentCompressionResistancePriority:1 forOrientation:NSLayoutConstraintOrientationHorizontal];
+        field.identifier = lines[i].key;
+        NSTextField *label = Label(lines[i].label);
+        [label.widthAnchor constraintGreaterThanOrEqualToConstant:96].active = YES;
+        NSButton *copy = Button(@"Copy", self, @selector(copyRow:));
+        NSButton *put = Button(@"Insert", self, @selector(insertRow:));
+        copy.tag = put.tag = (NSInteger)i;
+        [rows addObject:Row(@[label, field, copy, put])];
+        switch (i) {
+            case 0: _ascii = field; break;
+            case 1: _dec = field; break;
+            case 2: _hex = field; break;
+            case 3: _bin = field; break;
+            case 4: _oct = field; break;
+        }
+    }
+    NSButton *close = Button(@"Close", self, @selector(close:));
+    close.keyEquivalent = @"\033";
+    [rows addObject:Row(@[Spring(), close])];
+    _panel = PanelHolding(rows, @"Conversion Panel", @"NppConverterWindow");
+    return _panel;
+}
+
+- (void)show {
+    NSPanel *panel = self.panel;
+    Present(panel);
+    [panel makeFirstResponder:self.dec];
+}
+
+- (NSTextField *)fieldAt:(NSInteger)index {
+    NSTextField *fields[] = {self.ascii, self.dec, self.hex, self.bin, self.oct};
+    return index >= 0 && index < 5 ? fields[index] : nil;
+}
+
+- (void)controlTextDidChange:(NSNotification *)note {
+    if (self.filling) return;
+    [self syncFrom:note.object];
+}
+
+- (void)syncFrom:(NSTextField *)field {
+    NSDictionary *values = [EditorController converterValues:field.stringValue
+                                                   fromField:field.identifier];
+    self.filling = YES;
+    // The plugin paints a value it cannot read red; a readable one fills the rest.
+    field.backgroundColor = values ? [NSColor textBackgroundColor]
+                                   : [[NSColor systemRedColor] colorWithAlphaComponent:0.3];
+    if (values) {
+        for (NSTextField *other in @[self.ascii, self.dec, self.hex, self.bin, self.oct]) {
+            other.backgroundColor = [NSColor textBackgroundColor];
+            if (other != field) other.stringValue = values[other.identifier] ?: @"";
+        }
+    }
+    self.filling = NO;
+}
+
+- (void)copyRow:(NSButton *)sender { CopyText([self fieldAt:sender.tag].stringValue); }
+
+- (void)insertRow:(NSButton *)sender {
+    NSString *text = [self fieldAt:sender.tag].stringValue;
+    if (text.length && self.insert) self.insert(text);
 }
 
 - (void)close:(id)sender { [self.panel orderOut:nil]; }

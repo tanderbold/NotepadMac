@@ -123,4 +123,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)openAnswer:(nullable id)sender;
 @end
 
+/// The Converter plugin's Conversion Panel: one value as a character and in
+/// decimal, hexadecimal, binary and octal, each row typed into or copied or
+/// inserted; typing in any row fills the others.
+@interface NppConverterWindow : NSObject
++ (instancetype)shared;
+@property (nonatomic, readonly) NSPanel *panel;
+@property (nonatomic, readonly) NSTextField *ascii, *dec, *hex, *bin, *oct;
+/// Inserts a row's text at the caret. Set by the application.
+@property (nonatomic, copy, nullable) void (^insert)(NSString *);
+- (void)show;
+/// What typing into a row does: the row's value spread over the other rows,
+/// or the row marked wrong. The tests call it as the delegate does.
+- (void)syncFrom:(NSTextField *)field;
+@end
+
 NS_ASSUME_NONNULL_END
