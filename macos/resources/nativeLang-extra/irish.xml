@@ -118,6 +118,29 @@
     <Item english="The selection is not valid Base64." text="Ní Base64 bailí é an roghnúchán."/>
     <Item english="The selection is not valid Quoted-printable." text="Ní Quoted-printable bailí é an roghnúchán."/>
     <Item english="The selection is not a SAML message." text="Ní teachtaireacht SAML é an roghnúchán."/>
+    <Item english="Converter" text="Tiontaire"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Painéal tiontaithe"/>
+    <Item english="Character:" text="Carachtar:"/>
+    <Item english="Decimal:" text="Deachúlach:"/>
+    <Item english="Hexadecimal:" text="Heicsidheachúlach:"/>
+    <Item english="Binary:" text="Dénártha:"/>
+    <Item english="Octal:" text="Ochtnártha:"/>
+    <Item english="Hex format is not conformed" text="Níl an fhormáid heicsidheachúlach bailí"/>
+    <Item english="Export" text="Easpórtáil"/>
+    <Item english="Export to RTF" text="Easpórtáil go RTF"/>
+    <Item english="Export to HTML" text="Easpórtáil go HTML"/>
+    <Item english="Copy RTF to clipboard" text="Cóipeáil RTF chuig an ngearrthaisce"/>
+    <Item english="Copy HTML to clipboard" text="Cóipeáil HTML chuig an ngearrthaisce"/>
+    <Item english="Copy all formats to clipboard" text="Cóipeáil gach formáid chuig an ngearrthaisce"/>
+    <Item english="Spell Check" text="Seiceáil litrithe"/>
+    <Item english="Spell Check Document Automatically" text="Seiceáil litriú na cáipéise go huathoibríoch"/>
+    <Item english="Language" text="Teanga"/>
+    <Item english="Automatic" text="Uathoibríoch"/>
+    <Item english="Ignore Spelling" text="Déan neamhaird den litriú"/>
+    <Item english="Learn Spelling" text="Foghlaim an litriú"/>
+    <Item english="No Guesses Found" text="Níor aimsíodh aon mholadh"/>
     <Item english="Valid JSON." text="JSON bailí."/>
     <Item english="Invalid JSON." text="JSON neamhbhailí."/>
     <Item english="Set as the first file to compare." text="Socraithe mar an chéad chomhad le comparáid."/>

@@ -133,6 +133,29 @@
     <Item english="The selection is not valid Base64." text="තේරීම වලංගු Base64 නොවේ."/>
     <Item english="The selection is not valid Quoted-printable." text="තේරීම වලංගු Quoted-printable නොවේ."/>
     <Item english="The selection is not a SAML message." text="තේරීම SAML පණිවිඩයක් නොවේ."/>
+    <Item english="Converter" text="පරිවර්තකය"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="පරිවර්තන පුවරුව"/>
+    <Item english="Character:" text="අක්ෂරය:"/>
+    <Item english="Decimal:" text="දශමය:"/>
+    <Item english="Hexadecimal:" text="ෂඩ්දශමය:"/>
+    <Item english="Binary:" text="ද්විමය:"/>
+    <Item english="Octal:" text="අෂ්ටමය:"/>
+    <Item english="Hex format is not conformed" text="Hex ආකෘතිය වලංගු නොවේ"/>
+    <Item english="Export" text="නිර්යාත කරන්න"/>
+    <Item english="Export to RTF" text="RTF ලෙස නිර්යාත කරන්න"/>
+    <Item english="Export to HTML" text="HTML ලෙස නිර්යාත කරන්න"/>
+    <Item english="Copy RTF to clipboard" text="RTF ඇමුණුම් පුවරුවට පිටපත් කරන්න"/>
+    <Item english="Copy HTML to clipboard" text="HTML ඇමුණුම් පුවරුවට පිටපත් කරන්න"/>
+    <Item english="Copy all formats to clipboard" text="සියලු ආකෘති ඇමුණුම් පුවරුවට පිටපත් කරන්න"/>
+    <Item english="Spell Check" text="අක්ෂර වින්‍යාස පරීක්ෂාව"/>
+    <Item english="Spell Check Document Automatically" text="ලේඛනයේ අක්ෂර වින්‍යාසය ස්වයංක්‍රීයව පරීක්ෂා කරන්න"/>
+    <Item english="Language" text="භාෂාව"/>
+    <Item english="Automatic" text="ස්වයංක්‍රීය"/>
+    <Item english="Ignore Spelling" text="අක්ෂර වින්‍යාසය නොසලකා හරින්න"/>
+    <Item english="Learn Spelling" text="අක්ෂර වින්‍යාසය ඉගෙන ගන්න"/>
+    <Item english="No Guesses Found" text="යෝජනා හමු නොවීය"/>
     <Item english="Valid JSON." text="වලංගු JSON."/>
     <Item english="Invalid JSON." text="අවලංගු JSON."/>
     <Item english="Set as the first file to compare." text="සැසඳීමට පළමු ගොනුව ලෙස තබන ලදී."/>

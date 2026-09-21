@@ -714,6 +714,12 @@ arguments):
 - NppExec-style script console and Run commands
 - MIME Tools (Base64 in the plugin's seven flavours, Quoted-printable,
   URL encoding, SAML decode)
+- Converter (ASCII/HEX both ways, the Conversion Panel for one value in
+  every base)
+- NppExport (the styled text as RTF and HTML, to a file or the clipboard)
+- Spell checking as DSpellCheck arranges it, on the system engine: squiggles
+  as you type - in code only comments and strings - suggestions in the
+  context menu, Ignore and Learn, every installed dictionary
 
 **Third-party plugins** load the way they do on Windows: a dynamic library in
 the plugins folder with the C interface of

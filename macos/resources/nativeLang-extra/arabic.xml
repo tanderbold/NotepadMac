@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="التحديد ليس Base64 صالحاً."/>
     <Item english="The selection is not valid Quoted-printable." text="التحديد ليس Quoted-printable صالحاً."/>
     <Item english="The selection is not a SAML message." text="التحديد ليس رسالة SAML."/>
+    <Item english="Converter" text="المحوّل"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="لوحة التحويل"/>
+    <Item english="Character:" text="الحرف:"/>
+    <Item english="Decimal:" text="عشري:"/>
+    <Item english="Hexadecimal:" text="سداسي عشري:"/>
+    <Item english="Binary:" text="ثنائي:"/>
+    <Item english="Octal:" text="ثماني:"/>
+    <Item english="Hex format is not conformed" text="صيغة HEX غير صالحة"/>
+    <Item english="Export" text="تصدير"/>
+    <Item english="Export to RTF" text="تصدير إلى RTF"/>
+    <Item english="Export to HTML" text="تصدير إلى HTML"/>
+    <Item english="Copy RTF to clipboard" text="نسخ RTF إلى الحافظة"/>
+    <Item english="Copy HTML to clipboard" text="نسخ HTML إلى الحافظة"/>
+    <Item english="Copy all formats to clipboard" text="نسخ جميع التنسيقات إلى الحافظة"/>
+    <Item english="Spell Check" text="التدقيق الإملائي"/>
+    <Item english="Spell Check Document Automatically" text="تدقيق إملاء المستند تلقائيًا"/>
+    <Item english="Language" text="اللغة"/>
+    <Item english="Automatic" text="تلقائي"/>
+    <Item english="Ignore Spelling" text="تجاهل الإملاء"/>
+    <Item english="Learn Spelling" text="تعلم الإملاء"/>
+    <Item english="No Guesses Found" text="لم يتم العثور على اقتراحات"/>
     <Item english="Valid JSON." text="JSON صالح."/>
     <Item english="Invalid JSON." text="JSON غير صالح."/>
     <Item english="Set as the first file to compare." text="تم تعيينه كأول ملف للمقارنة."/>

@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="選択範囲が有効な Base64 ではありません。"/>
     <Item english="The selection is not valid Quoted-printable." text="選択範囲が有効な Quoted-printable ではありません。"/>
     <Item english="The selection is not a SAML message." text="選択範囲は SAML メッセージではありません。"/>
+    <Item english="Converter" text="コンバーター"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="変換パネル"/>
+    <Item english="Character:" text="文字:"/>
+    <Item english="Decimal:" text="10進数:"/>
+    <Item english="Hexadecimal:" text="16進数:"/>
+    <Item english="Binary:" text="2進数:"/>
+    <Item english="Octal:" text="8進数:"/>
+    <Item english="Hex format is not conformed" text="16進数の形式が正しくありません"/>
+    <Item english="Export" text="エクスポート"/>
+    <Item english="Export to RTF" text="RTF にエクスポート"/>
+    <Item english="Export to HTML" text="HTML にエクスポート"/>
+    <Item english="Copy RTF to clipboard" text="RTF をクリップボードにコピー"/>
+    <Item english="Copy HTML to clipboard" text="HTML をクリップボードにコピー"/>
+    <Item english="Copy all formats to clipboard" text="すべての形式をクリップボードにコピー"/>
+    <Item english="Spell Check" text="スペルチェック"/>
+    <Item english="Spell Check Document Automatically" text="文書のスペルを自動的にチェック"/>
+    <Item english="Language" text="言語"/>
+    <Item english="Automatic" text="自動"/>
+    <Item english="Ignore Spelling" text="スペルを無視"/>
+    <Item english="Learn Spelling" text="スペルを学習"/>
+    <Item english="No Guesses Found" text="候補が見つかりません"/>
     <Item english="Valid JSON." text="有効な JSON です。"/>
     <Item english="Invalid JSON." text="無効な JSON です。"/>
     <Item english="Set as the first file to compare." text="比較の1番目のファイルに設定しました。"/>

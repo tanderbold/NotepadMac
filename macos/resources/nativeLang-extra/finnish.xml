@@ -136,6 +136,29 @@
     <Item english="The selection is not valid Base64." text="Valinta ei ole kelvollista Base64-dataa."/>
     <Item english="The selection is not valid Quoted-printable." text="Valinta ei ole kelvollista Quoted-printable-dataa."/>
     <Item english="The selection is not a SAML message." text="Valinta ei ole SAML-sanoma."/>
+    <Item english="Converter" text="Muunnin"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Muunnospaneeli"/>
+    <Item english="Character:" text="Merkki:"/>
+    <Item english="Decimal:" text="Desimaali:"/>
+    <Item english="Hexadecimal:" text="Heksadesimaali:"/>
+    <Item english="Binary:" text="Binääri:"/>
+    <Item english="Octal:" text="Oktaali:"/>
+    <Item english="Hex format is not conformed" text="Heksadesimaalimuoto ei ole kelvollinen"/>
+    <Item english="Export" text="Vie"/>
+    <Item english="Export to RTF" text="Vie RTF-muotoon"/>
+    <Item english="Export to HTML" text="Vie HTML-muotoon"/>
+    <Item english="Copy RTF to clipboard" text="Kopioi RTF leikepöydälle"/>
+    <Item english="Copy HTML to clipboard" text="Kopioi HTML leikepöydälle"/>
+    <Item english="Copy all formats to clipboard" text="Kopioi kaikki muodot leikepöydälle"/>
+    <Item english="Spell Check" text="Oikoluku"/>
+    <Item english="Spell Check Document Automatically" text="Oikolue asiakirja automaattisesti"/>
+    <Item english="Language" text="Kieli"/>
+    <Item english="Automatic" text="Automaattinen"/>
+    <Item english="Ignore Spelling" text="Ohita oikeinkirjoitus"/>
+    <Item english="Learn Spelling" text="Opi oikeinkirjoitus"/>
+    <Item english="No Guesses Found" text="Ehdotuksia ei löytynyt"/>
     <Item english="Valid JSON." text="Kelvollinen JSON."/>
     <Item english="Invalid JSON." text="Virheellinen JSON."/>
     <Item english="Set as the first file to compare." text="Asetettu ensimmäiseksi verrattavaksi tiedostoksi."/>

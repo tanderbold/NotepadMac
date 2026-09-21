@@ -136,6 +136,29 @@
     <Item english="The selection is not valid Base64." text="Valik ei ole kehtiv Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Valik ei ole kehtiv Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Valik ei ole SAML-sõnum."/>
+    <Item english="Converter" text="Teisendaja"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Teisenduspaneel"/>
+    <Item english="Character:" text="Märk:"/>
+    <Item english="Decimal:" text="Detsimaalne:"/>
+    <Item english="Hexadecimal:" text="Heksadetsimaalne:"/>
+    <Item english="Binary:" text="Binaarne:"/>
+    <Item english="Octal:" text="Oktaalne:"/>
+    <Item english="Hex format is not conformed" text="Heksadetsimaalne vorming on vigane"/>
+    <Item english="Export" text="Ekspordi"/>
+    <Item english="Export to RTF" text="Ekspordi RTF-ina"/>
+    <Item english="Export to HTML" text="Ekspordi HTML-ina"/>
+    <Item english="Copy RTF to clipboard" text="Kopeeri RTF lõikepuhvrisse"/>
+    <Item english="Copy HTML to clipboard" text="Kopeeri HTML lõikepuhvrisse"/>
+    <Item english="Copy all formats to clipboard" text="Kopeeri kõik vormingud lõikepuhvrisse"/>
+    <Item english="Spell Check" text="Õigekirjakontroll"/>
+    <Item english="Spell Check Document Automatically" text="Kontrolli dokumendi õigekirja automaatselt"/>
+    <Item english="Language" text="Keel"/>
+    <Item english="Automatic" text="Automaatne"/>
+    <Item english="Ignore Spelling" text="Eira õigekirja"/>
+    <Item english="Learn Spelling" text="Õpi õigekirja"/>
+    <Item english="No Guesses Found" text="Soovitusi ei leitud"/>
     <Item english="Valid JSON." text="Kehtiv JSON."/>
     <Item english="Invalid JSON." text="Vigane JSON."/>
     <Item english="Set as the first file to compare." text="Määratud esimeseks võrreldavaks failiks."/>

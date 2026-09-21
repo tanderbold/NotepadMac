@@ -123,6 +123,29 @@
     <Item english="The selection is not valid Base64." text="Zgjedhja nuk është Base64 i vlefshëm."/>
     <Item english="The selection is not valid Quoted-printable." text="Zgjedhja nuk është Quoted-printable i vlefshëm."/>
     <Item english="The selection is not a SAML message." text="Zgjedhja nuk është një mesazh SAML."/>
+    <Item english="Converter" text="Konvertues"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Paneli i konvertimit"/>
+    <Item english="Character:" text="Karakteri:"/>
+    <Item english="Decimal:" text="Dhjetor:"/>
+    <Item english="Hexadecimal:" text="Heksadecimal:"/>
+    <Item english="Binary:" text="Binar:"/>
+    <Item english="Octal:" text="Oktal:"/>
+    <Item english="Hex format is not conformed" text="Formati heksadecimal nuk është i vlefshëm"/>
+    <Item english="Export" text="Eksporto"/>
+    <Item english="Export to RTF" text="Eksporto në RTF"/>
+    <Item english="Export to HTML" text="Eksporto në HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopjo RTF në clipboard"/>
+    <Item english="Copy HTML to clipboard" text="Kopjo HTML në clipboard"/>
+    <Item english="Copy all formats to clipboard" text="Kopjo të gjitha formatet në clipboard"/>
+    <Item english="Spell Check" text="Kontrolli i drejtshkrimit"/>
+    <Item english="Spell Check Document Automatically" text="Kontrollo drejtshkrimin e dokumentit automatikisht"/>
+    <Item english="Language" text="Gjuha"/>
+    <Item english="Automatic" text="Automatike"/>
+    <Item english="Ignore Spelling" text="Injoro drejtshkrimin"/>
+    <Item english="Learn Spelling" text="Mëso drejtshkrimin"/>
+    <Item english="No Guesses Found" text="Nuk u gjetën sugjerime"/>
     <Item english="Valid JSON." text="JSON i vlefshëm."/>
     <Item english="Invalid JSON." text="JSON i pavlefshëm."/>
     <Item english="Set as the first file to compare." text="U caktua si file i parë për krahasim."/>

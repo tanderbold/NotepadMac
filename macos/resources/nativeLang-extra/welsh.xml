@@ -134,6 +134,29 @@
     <Item english="The selection is not valid Base64." text="Nid yw'r detholiad yn Base64 dilys."/>
     <Item english="The selection is not valid Quoted-printable." text="Nid yw'r detholiad yn Quoted-printable dilys."/>
     <Item english="The selection is not a SAML message." text="Nid yw'r detholiad yn neges SAML."/>
+    <Item english="Converter" text="Trawsnewidydd"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panel Trawsnewid"/>
+    <Item english="Character:" text="Nod:"/>
+    <Item english="Decimal:" text="Degol:"/>
+    <Item english="Hexadecimal:" text="Hecsadegol:"/>
+    <Item english="Binary:" text="Deuaidd:"/>
+    <Item english="Octal:" text="Wythol:"/>
+    <Item english="Hex format is not conformed" text="Nid yw fformat HEX yn ddilys"/>
+    <Item english="Export" text="Allforio"/>
+    <Item english="Export to RTF" text="Allforio i RTF"/>
+    <Item english="Export to HTML" text="Allforio i HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copïo RTF i'r clipfwrdd"/>
+    <Item english="Copy HTML to clipboard" text="Copïo HTML i'r clipfwrdd"/>
+    <Item english="Copy all formats to clipboard" text="Copïo pob fformat i'r clipfwrdd"/>
+    <Item english="Spell Check" text="Gwirio Sillafu"/>
+    <Item english="Spell Check Document Automatically" text="Gwirio Sillafu'r Ddogfen yn Awtomatig"/>
+    <Item english="Language" text="Iaith"/>
+    <Item english="Automatic" text="Awtomatig"/>
+    <Item english="Ignore Spelling" text="Anwybyddu Sillafiad"/>
+    <Item english="Learn Spelling" text="Dysgu Sillafiad"/>
+    <Item english="No Guesses Found" text="Ni Chanfuwyd Awgrymiadau"/>
     <Item english="Valid JSON." text="JSON dilys."/>
     <Item english="Invalid JSON." text="JSON annilys."/>
     <Item english="Set as the first file to compare." text="Wedi'i gosod fel y ffeil gyntaf i'w chymharu."/>

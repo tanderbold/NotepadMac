@@ -40,7 +40,7 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   application with `NPPMAC_TEST=1`. A check is `Check(@"IDM_… or Area (what)", @"what must hold", condition)`.
   `macos/implemented.txt` lists upstream command ids the suite must cover (a meta-test reads it).
 - Screenshots without a display server: `NPPMAC_SNAPSHOT=/path/out.png` plus optionally
-  `NPPMAC_SNAPSHOT_PANEL=find:<tab>|prefs:<page>|style|mapper|about|debug|tools:<digest|files|bcrypt|scrypt|argon2|pbkdf2|base|unbase|password|http[:<address>]>`.
+  `NPPMAC_SNAPSHOT_PANEL=find:<tab>|prefs:<page>|style|mapper|about|debug|tools:<digest|files|bcrypt|scrypt|argon2|pbkdf2|base|unbase|password|converter|http[:<address>]>`.
   A setting can be overridden for one run without touching the user's defaults:
   `… NotepadMac -NppMac.localizationFile russian.xml`. Look at the PNG: it is how layout and
   cut-off text are verified.
@@ -111,7 +111,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Panels and docking | `DockingManager.mm`, `NppPanel.mm`, `DocumentListPanel.mm`, `FunctionListPanel.mm`, `FunctionListCatalog.mm`, `ProjectPanel.mm`, `WorkspacePanel.mm`, `AuxPanels.mm` |
 | Preferences, shortcuts, context menu | `SettingsCommands.mm` (NPP_PREF_* macros, defaults), `SettingsPanels.mm`, `ShortcutMapper.mm`, `ContextMenuFile.mm` |
 | Localisation | `Localization.mm` (upstream `nativeLang/*.xml` by command id and by English text; the port's own texts from `resources/nativeLang-extra/`) |
-| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools) |
+| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker) |
 | Third-party plugins | `PluginHost.mm` (dlopen, the send() bridge, NPPM/NPPN subset); the public C interface and sample live in `macos/plugin-sdk/`. Release signing needs `macos/entitlements.plist` (library validation off) or the hardened runtime refuses the dylibs |
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
 | Help | `InfoWindows.mm`, `UpdateChecker.mm` |

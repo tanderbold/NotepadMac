@@ -140,6 +140,29 @@
     <Item english="The selection is not valid Base64." text="The selection is not valid Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="The selection is not valid Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="The selection is not a SAML message."/>
+    <Item english="Converter" text="Converter"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Conversion Panel"/>
+    <Item english="Character:" text="Character:"/>
+    <Item english="Decimal:" text="Decimal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimal:"/>
+    <Item english="Binary:" text="Binary:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="Hex format is not conformed"/>
+    <Item english="Export" text="Export"/>
+    <Item english="Export to RTF" text="Export to RTF"/>
+    <Item english="Export to HTML" text="Export to HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copy RTF to clipboard"/>
+    <Item english="Copy HTML to clipboard" text="Copy HTML to clipboard"/>
+    <Item english="Copy all formats to clipboard" text="Copy all formats to clipboard"/>
+    <Item english="Spell Check" text="Spell Check"/>
+    <Item english="Spell Check Document Automatically" text="Spell Check Document Automatically"/>
+    <Item english="Language" text="Language"/>
+    <Item english="Automatic" text="Automatic"/>
+    <Item english="Ignore Spelling" text="Ignore Spelling"/>
+    <Item english="Learn Spelling" text="Learn Spelling"/>
+    <Item english="No Guesses Found" text="No Guesses Found"/>
     <Item english="Valid JSON." text="Valid JSON."/>
     <Item english="Invalid JSON." text="Invalid JSON."/>
     <Item english="Set as the first file to compare." text="Set as the first file to compare."/>

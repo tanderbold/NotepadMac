@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Бөлектелген мәтін жарамды Base64 емес."/>
     <Item english="The selection is not valid Quoted-printable." text="Бөлектелген мәтін жарамды Quoted-printable емес."/>
     <Item english="The selection is not a SAML message." text="Бөлектелген мәтін SAML хабарламасы емес."/>
+    <Item english="Converter" text="Түрлендіргіш"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Түрлендіру панелі"/>
+    <Item english="Character:" text="Таңба:"/>
+    <Item english="Decimal:" text="Ондық:"/>
+    <Item english="Hexadecimal:" text="Он алтылық:"/>
+    <Item english="Binary:" text="Екілік:"/>
+    <Item english="Octal:" text="Сегіздік:"/>
+    <Item english="Hex format is not conformed" text="Он алтылық пішім жарамды емес"/>
+    <Item english="Export" text="Экспорттау"/>
+    <Item english="Export to RTF" text="RTF-ке экспорттау"/>
+    <Item english="Export to HTML" text="HTML-ге экспорттау"/>
+    <Item english="Copy RTF to clipboard" text="RTF-ті аралық сақтағышқа көшіру"/>
+    <Item english="Copy HTML to clipboard" text="HTML-ді аралық сақтағышқа көшіру"/>
+    <Item english="Copy all formats to clipboard" text="Барлық пішімдерді аралық сақтағышқа көшіру"/>
+    <Item english="Spell Check" text="Емле тексеру"/>
+    <Item english="Spell Check Document Automatically" text="Құжат емлесін автоматты түрде тексеру"/>
+    <Item english="Language" text="Тіл"/>
+    <Item english="Automatic" text="Автоматты"/>
+    <Item english="Ignore Spelling" text="Емлені елемеу"/>
+    <Item english="Learn Spelling" text="Емлені үйрену"/>
+    <Item english="No Guesses Found" text="Ұсыныстар табылмады"/>
     <Item english="Valid JSON." text="Жарамды JSON."/>
     <Item english="Invalid JSON." text="Жарамсыз JSON."/>
     <Item english="Set as the first file to compare." text="Салыстыру үшін бірінші файл ретінде таңдалды."/>

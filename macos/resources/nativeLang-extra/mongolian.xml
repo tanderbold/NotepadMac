@@ -132,6 +132,29 @@
     <Item english="The selection is not valid Base64." text="Сонголт нь зөв Base64 биш байна."/>
     <Item english="The selection is not valid Quoted-printable." text="Сонголт нь зөв Quoted-printable биш байна."/>
     <Item english="The selection is not a SAML message." text="Сонголт нь SAML зурвас биш байна."/>
+    <Item english="Converter" text="Хөрвүүлэгч"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Хөрвүүлэх хавтан"/>
+    <Item english="Character:" text="Тэмдэгт:"/>
+    <Item english="Decimal:" text="10-т:"/>
+    <Item english="Hexadecimal:" text="16-т:"/>
+    <Item english="Binary:" text="2-т:"/>
+    <Item english="Octal:" text="8-т:"/>
+    <Item english="Hex format is not conformed" text="16-тын формат зөв биш байна"/>
+    <Item english="Export" text="Экспорт"/>
+    <Item english="Export to RTF" text="RTF-руу экспортлох"/>
+    <Item english="Export to HTML" text="HTML-руу экспортлох"/>
+    <Item english="Copy RTF to clipboard" text="RTF-ийг түр санах ойд хуулах"/>
+    <Item english="Copy HTML to clipboard" text="HTML-ийг түр санах ойд хуулах"/>
+    <Item english="Copy all formats to clipboard" text="Бүх форматыг түр санах ойд хуулах"/>
+    <Item english="Spell Check" text="Зөв бичиг шалгах"/>
+    <Item english="Spell Check Document Automatically" text="Баримтын зөв бичгийг автоматаар шалгах"/>
+    <Item english="Language" text="Хэл"/>
+    <Item english="Automatic" text="Автомат"/>
+    <Item english="Ignore Spelling" text="Зөв бичгийг үл харгалзах"/>
+    <Item english="Learn Spelling" text="Зөв бичгийг сурах"/>
+    <Item english="No Guesses Found" text="Ямар ч санал олдсонгүй"/>
     <Item english="Valid JSON." text="Зөв JSON."/>
     <Item english="Invalid JSON." text="Буруу JSON."/>
     <Item english="Set as the first file to compare." text="Харьцуулах эхний файл болголоо."/>

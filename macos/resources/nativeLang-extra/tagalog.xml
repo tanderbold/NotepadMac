@@ -103,6 +103,23 @@
     <Item english="The selection is not valid Base64." text="Ang napili ay hindi valid na Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Ang napili ay hindi valid na Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Ang napili ay hindi isang mensaheng SAML."/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Character:" text="Karakter:"/>
+    <Item english="Decimal:" text="Desimal:"/>
+    <Item english="Export" text="I-export"/>
+    <Item english="Export to RTF" text="I-export sa RTF"/>
+    <Item english="Export to HTML" text="I-export sa HTML"/>
+    <Item english="Copy RTF to clipboard" text="Sipiin ang RTF sa Clipboard"/>
+    <Item english="Copy HTML to clipboard" text="Sipiin ang HTML sa Clipboard"/>
+    <Item english="Copy all formats to clipboard" text="Sipiin ang lahat ng format sa Clipboard"/>
+    <Item english="Spell Check" text="Pagsusuri ng Baybay"/>
+    <Item english="Spell Check Document Automatically" text="Awtomatikong Suriin ang Baybay ng Dokumento"/>
+    <Item english="Language" text="Wika"/>
+    <Item english="Automatic" text="Awtomatiko"/>
+    <Item english="Ignore Spelling" text="Baliwalain ang Baybay"/>
+    <Item english="Learn Spelling" text="Matutunan ang Baybay"/>
+    <Item english="No Guesses Found" text="Walang Nahanap na Mungkahi"/>
     <Item english="Valid JSON." text="Valid na JSON."/>
     <Item english="Invalid JSON." text="Hindi valid na JSON."/>
     <Item english="Set as the first file to compare." text="Itinakda bilang unang pila sa paghahambing."/>

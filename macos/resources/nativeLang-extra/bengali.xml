@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="নির্বাচনটি বৈধ Base64 নয়।"/>
     <Item english="The selection is not valid Quoted-printable." text="নির্বাচনটি বৈধ Quoted-printable নয়।"/>
     <Item english="The selection is not a SAML message." text="নির্বাচনটি একটি SAML বার্তা নয়।"/>
+    <Item english="Converter" text="কনভার্টার"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="রূপান্তর প্যানেল"/>
+    <Item english="Character:" text="অক্ষর:"/>
+    <Item english="Decimal:" text="দশমিক:"/>
+    <Item english="Hexadecimal:" text="হেক্সাডেসিমাল:"/>
+    <Item english="Binary:" text="বাইনারি:"/>
+    <Item english="Octal:" text="অক্টাল:"/>
+    <Item english="Hex format is not conformed" text="হেক্স ফরম্যাট সঠিক নয়"/>
+    <Item english="Export" text="রপ্তানি"/>
+    <Item english="Export to RTF" text="RTF-এ রপ্তানি করুন"/>
+    <Item english="Export to HTML" text="HTML-এ রপ্তানি করুন"/>
+    <Item english="Copy RTF to clipboard" text="RTF ক্লিপবোর্ডে কপি করুন"/>
+    <Item english="Copy HTML to clipboard" text="HTML ক্লিপবোর্ডে কপি করুন"/>
+    <Item english="Copy all formats to clipboard" text="সব ফরম্যাট ক্লিপবোর্ডে কপি করুন"/>
+    <Item english="Spell Check" text="বানান পরীক্ষা"/>
+    <Item english="Spell Check Document Automatically" text="স্বয়ংক্রিয়ভাবে নথির বানান পরীক্ষা করুন"/>
+    <Item english="Language" text="ভাষা"/>
+    <Item english="Automatic" text="স্বয়ংক্রিয়"/>
+    <Item english="Ignore Spelling" text="বানান উপেক্ষা করুন"/>
+    <Item english="Learn Spelling" text="বানান শিখুন"/>
+    <Item english="No Guesses Found" text="কোনো প্রস্তাব পাওয়া যায়নি"/>
     <Item english="Valid JSON." text="বৈধ JSON।"/>
     <Item english="Invalid JSON." text="অবৈধ JSON।"/>
     <Item english="Set as the first file to compare." text="তুলনার জন্য প্রথম ফাইল হিসেবে সেট করা হয়েছে।"/>

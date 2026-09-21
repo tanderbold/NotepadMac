@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Belgilangan qism yaroqli Base64 emas."/>
     <Item english="The selection is not valid Quoted-printable." text="Belgilangan qism yaroqli Quoted-printable emas."/>
     <Item english="The selection is not a SAML message." text="Belgilangan qism SAML xabari emas."/>
+    <Item english="Converter" text="Konvertor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Oʻtkazish paneli"/>
+    <Item english="Character:" text="Belgi:"/>
+    <Item english="Decimal:" text="Oʻnlik:"/>
+    <Item english="Hexadecimal:" text="Oʻn oltilik:"/>
+    <Item english="Binary:" text="Ikkilik:"/>
+    <Item english="Octal:" text="Sakkizlik:"/>
+    <Item english="Hex format is not conformed" text="HEX formati notoʻgʻri"/>
+    <Item english="Export" text="Eksport"/>
+    <Item english="Export to RTF" text="RTF’ga eksport qilmoq"/>
+    <Item english="Export to HTML" text="HTML’ga eksport qilmoq"/>
+    <Item english="Copy RTF to clipboard" text="RTF’ni buferga nusxalamoq"/>
+    <Item english="Copy HTML to clipboard" text="HTML’ni buferga nusxalamoq"/>
+    <Item english="Copy all formats to clipboard" text="Barcha formatlarni buferga nusxalamoq"/>
+    <Item english="Spell Check" text="Imlo tekshiruvi"/>
+    <Item english="Spell Check Document Automatically" text="Hujjat imlosini avtomatik tekshirmoq"/>
+    <Item english="Language" text="Til"/>
+    <Item english="Automatic" text="Avtomatik"/>
+    <Item english="Ignore Spelling" text="Imloni e’tiborsiz qoldirmoq"/>
+    <Item english="Learn Spelling" text="Imloni oʻrganmoq"/>
+    <Item english="No Guesses Found" text="Takliflar topilmadi"/>
     <Item english="Valid JSON." text="Yaroqli JSON."/>
     <Item english="Invalid JSON." text="Yaroqsiz JSON."/>
     <Item english="Set as the first file to compare." text="Taqqoslash uchun birinchi fayl deb belgilandi."/>

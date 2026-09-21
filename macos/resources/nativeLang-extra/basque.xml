@@ -128,6 +128,29 @@
     <Item english="The selection is not valid Base64." text="Hautapena ez da baliozko Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Hautapena ez da baliozko Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Hautapena ez da SAML mezu bat."/>
+    <Item english="Converter" text="Bihurtzailea"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Bihurketa-panela"/>
+    <Item english="Character:" text="Karakterea:"/>
+    <Item english="Decimal:" text="Hamartarra:"/>
+    <Item english="Hexadecimal:" text="Hamaseitarra:"/>
+    <Item english="Binary:" text="Bitarra:"/>
+    <Item english="Octal:" text="Zortzitarra:"/>
+    <Item english="Hex format is not conformed" text="HEX formatua ez da baliozkoa"/>
+    <Item english="Export" text="Esportatu"/>
+    <Item english="Export to RTF" text="Esportatu RTF formatura"/>
+    <Item english="Export to HTML" text="Esportatu HTML formatura"/>
+    <Item english="Copy RTF to clipboard" text="Kopiatu RTF arbelera"/>
+    <Item english="Copy HTML to clipboard" text="Kopiatu HTML arbelera"/>
+    <Item english="Copy all formats to clipboard" text="Kopiatu formatu guztiak arbelera"/>
+    <Item english="Spell Check" text="Ortografia-egiaztapena"/>
+    <Item english="Spell Check Document Automatically" text="Egiaztatu dokumentuaren ortografia automatikoki"/>
+    <Item english="Language" text="Hizkuntza"/>
+    <Item english="Automatic" text="Automatikoa"/>
+    <Item english="Ignore Spelling" text="Ezikusi ortografia"/>
+    <Item english="Learn Spelling" text="Ikasi ortografia"/>
+    <Item english="No Guesses Found" text="Ez da iradokizunik aurkitu"/>
     <Item english="Valid JSON." text="Baliozko JSON."/>
     <Item english="Invalid JSON." text="JSON baliogabea."/>
     <Item english="Set as the first file to compare." text="Konparatzeko lehen fitxategi gisa ezarrita."/>

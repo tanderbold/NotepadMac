@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="ਚੋਣ ਵੈਧ Base64 ਨਹੀਂ ਹੈ।"/>
     <Item english="The selection is not valid Quoted-printable." text="ਚੋਣ ਵੈਧ Quoted-printable ਨਹੀਂ ਹੈ।"/>
     <Item english="The selection is not a SAML message." text="ਚੋਣ SAML ਸੁਨੇਹਾ ਨਹੀਂ ਹੈ।"/>
+    <Item english="Converter" text="ਕਨਵਰਟਰ"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="ਪਰਿਵਰਤਨ ਪੈਨਲ"/>
+    <Item english="Character:" text="ਅੱਖਰ:"/>
+    <Item english="Decimal:" text="ਦਸ਼ਮਲਵ:"/>
+    <Item english="Hexadecimal:" text="ਹੈਕਸਾਡੈਸੀਮਲ:"/>
+    <Item english="Binary:" text="ਬਾਈਨਰੀ:"/>
+    <Item english="Octal:" text="ਔਕਟਲ:"/>
+    <Item english="Hex format is not conformed" text="Hex ਫਾਰਮੈਟ ਵੈਧ ਨਹੀਂ ਹੈ"/>
+    <Item english="Export" text="ਐਕਸਪੋਰਟ ਕਰੋ"/>
+    <Item english="Export to RTF" text="RTF ਵਿੱਚ ਐਕਸਪੋਰਟ ਕਰੋ"/>
+    <Item english="Export to HTML" text="HTML ਵਿੱਚ ਐਕਸਪੋਰਟ ਕਰੋ"/>
+    <Item english="Copy RTF to clipboard" text="RTF ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਕਰੋ"/>
+    <Item english="Copy HTML to clipboard" text="HTML ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਕਰੋ"/>
+    <Item english="Copy all formats to clipboard" text="ਸਾਰੇ ਫਾਰਮੈਟ ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਕਰੋ"/>
+    <Item english="Spell Check" text="ਸ਼ਬਦ-ਜੋੜ ਜਾਂਚ"/>
+    <Item english="Spell Check Document Automatically" text="ਦਸਤਾਵੇਜ਼ ਦੇ ਸ਼ਬਦ-ਜੋੜ ਆਪਣੇ ਆਪ ਜਾਂਚੋ"/>
+    <Item english="Language" text="ਭਾਸ਼ਾ"/>
+    <Item english="Automatic" text="ਆਟੋਮੈਟਿਕ"/>
+    <Item english="Ignore Spelling" text="ਸ਼ਬਦ-ਜੋੜ ਅਣਡਿੱਠ ਕਰੋ"/>
+    <Item english="Learn Spelling" text="ਸ਼ਬਦ-ਜੋੜ ਸਿੱਖੋ"/>
+    <Item english="No Guesses Found" text="ਕੋਈ ਸੁਝਾਅ ਨਹੀਂ ਮਿਲਿਆ"/>
     <Item english="Valid JSON." text="ਵੈਧ JSON।"/>
     <Item english="Invalid JSON." text="ਅਵੈਧ JSON।"/>
     <Item english="Set as the first file to compare." text="ਤੁਲਨਾ ਲਈ ਪਹਿਲੀ ਫਾਇਲ ਸੈੱਟ ਕੀਤੀ ਗਈ।"/>

@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="انتخاب درست Base64 نہیں ہے۔"/>
     <Item english="The selection is not valid Quoted-printable." text="انتخاب درست Quoted-printable نہیں ہے۔"/>
     <Item english="The selection is not a SAML message." text="انتخاب SAML پیغام نہیں ہے۔"/>
+    <Item english="Converter" text="کنورٹر"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="تبادلے کا پینل"/>
+    <Item english="Character:" text="حرف:"/>
+    <Item english="Decimal:" text="ڈیسیمل:"/>
+    <Item english="Hexadecimal:" text="ہیکسا ڈیسیمل:"/>
+    <Item english="Binary:" text="بائنری:"/>
+    <Item english="Octal:" text="آکٹل:"/>
+    <Item english="Hex format is not conformed" text="HEX فارمیٹ درست نہیں ہے"/>
+    <Item english="Export" text="برآمد کریں"/>
+    <Item english="Export to RTF" text="RTF میں برآمد کریں"/>
+    <Item english="Export to HTML" text="HTML میں برآمد کریں"/>
+    <Item english="Copy RTF to clipboard" text="RTF کلپ بورڈ پر نقل کریں"/>
+    <Item english="Copy HTML to clipboard" text="HTML کلپ بورڈ پر نقل کریں"/>
+    <Item english="Copy all formats to clipboard" text="تمام فارمیٹس کلپ بورڈ پر نقل کریں"/>
+    <Item english="Spell Check" text="ہجے کی جانچ"/>
+    <Item english="Spell Check Document Automatically" text="دستاویز کے ہجے خود بخود جانچیں"/>
+    <Item english="Language" text="زبان"/>
+    <Item english="Automatic" text="خودکار"/>
+    <Item english="Ignore Spelling" text="ہجے نظر انداز کریں"/>
+    <Item english="Learn Spelling" text="ہجے سیکھیں"/>
+    <Item english="No Guesses Found" text="کوئی تجویز نہیں ملی"/>
     <Item english="Valid JSON." text="درست JSON۔"/>
     <Item english="Invalid JSON." text="غیر درست JSON۔"/>
     <Item english="Set as the first file to compare." text="موازنے کے لیے پہلی فائل مقرر ہو گئی۔"/>

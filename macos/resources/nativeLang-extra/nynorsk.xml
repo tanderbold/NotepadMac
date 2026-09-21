@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Utvalet er ikkje gyldig Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Utvalet er ikkje gyldig Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Utvalet er ikkje ei SAML-melding."/>
+    <Item english="Converter" text="Konvertering"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Konverteringspanel"/>
+    <Item english="Character:" text="Teikn:"/>
+    <Item english="Decimal:" text="Desimal:"/>
+    <Item english="Hexadecimal:" text="Heksadesimal:"/>
+    <Item english="Binary:" text="Binær:"/>
+    <Item english="Octal:" text="Oktal:"/>
+    <Item english="Hex format is not conformed" text="Heksadesimalformatet er ikkje gyldig"/>
+    <Item english="Export" text="Eksporter"/>
+    <Item english="Export to RTF" text="Eksporter til RTF"/>
+    <Item english="Export to HTML" text="Eksporter til HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopier RTF til utklippstavla"/>
+    <Item english="Copy HTML to clipboard" text="Kopier HTML til utklippstavla"/>
+    <Item english="Copy all formats to clipboard" text="Kopier alle format til utklippstavla"/>
+    <Item english="Spell Check" text="Stavekontroll"/>
+    <Item english="Spell Check Document Automatically" text="Kontroller stavinga i dokumentet automatisk"/>
+    <Item english="Language" text="Språk"/>
+    <Item english="Automatic" text="Automatisk"/>
+    <Item english="Ignore Spelling" text="Ignorer stavemåte"/>
+    <Item english="Learn Spelling" text="Lær stavemåte"/>
+    <Item english="No Guesses Found" text="Fann ingen forslag"/>
     <Item english="Valid JSON." text="Gyldig JSON."/>
     <Item english="Invalid JSON." text="Ugyldig JSON."/>
     <Item english="Set as the first file to compare." text="Vald som første fil til samanlikning."/>

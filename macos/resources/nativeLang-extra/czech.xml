@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Výběr není platný Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Výběr není platný Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Výběr není zpráva SAML."/>
+    <Item english="Converter" text="Převodník"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panel převodníku"/>
+    <Item english="Character:" text="Znak:"/>
+    <Item english="Decimal:" text="Desítkově:"/>
+    <Item english="Hexadecimal:" text="Šestnáctkově:"/>
+    <Item english="Binary:" text="Dvojkově:"/>
+    <Item english="Octal:" text="Osmičkově:"/>
+    <Item english="Hex format is not conformed" text="Neplatný hexadecimální formát"/>
+    <Item english="Export" text="Export"/>
+    <Item english="Export to RTF" text="Exportovat do RTF"/>
+    <Item english="Export to HTML" text="Exportovat do HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopírovat RTF do Schránky"/>
+    <Item english="Copy HTML to clipboard" text="Kopírovat HTML do Schránky"/>
+    <Item english="Copy all formats to clipboard" text="Kopírovat všechny formáty do Schránky"/>
+    <Item english="Spell Check" text="Kontrola pravopisu"/>
+    <Item english="Spell Check Document Automatically" text="Automaticky kontrolovat pravopis dokumentu"/>
+    <Item english="Language" text="Jazyk"/>
+    <Item english="Automatic" text="Automaticky"/>
+    <Item english="Ignore Spelling" text="Ignorovat pravopis"/>
+    <Item english="Learn Spelling" text="Naučit pravopis"/>
+    <Item english="No Guesses Found" text="Nenalezeny žádné návrhy"/>
     <Item english="Valid JSON." text="Platný JSON."/>
     <Item english="Invalid JSON." text="Neplatný JSON."/>
     <Item english="Set as the first file to compare." text="Nastaven jako první soubor k porovnání."/>

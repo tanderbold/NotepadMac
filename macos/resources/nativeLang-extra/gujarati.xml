@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="પસંદગી માન્ય Base64 નથી."/>
     <Item english="The selection is not valid Quoted-printable." text="પસંદગી માન્ય Quoted-printable નથી."/>
     <Item english="The selection is not a SAML message." text="પસંદગી SAML મેસેજ નથી."/>
+    <Item english="Converter" text="કન્વર્ટર"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="કન્વર્ઝન પેનલ"/>
+    <Item english="Character:" text="કેરેક્ટર:"/>
+    <Item english="Decimal:" text="ડેસિમલ:"/>
+    <Item english="Hexadecimal:" text="હેક્સાડેસિમલ:"/>
+    <Item english="Binary:" text="બાઈનરી:"/>
+    <Item english="Octal:" text="ઓક્ટલ:"/>
+    <Item english="Hex format is not conformed" text="હેક્સ ફોર્મેટ માન્ય નથી"/>
+    <Item english="Export" text="એક્સપોર્ટ"/>
+    <Item english="Export to RTF" text="RTF માં એક્સપોર્ટ કરો"/>
+    <Item english="Export to HTML" text="HTML માં એક્સપોર્ટ કરો"/>
+    <Item english="Copy RTF to clipboard" text="RTF ક્લિપબોર્ડ પર કૉપિ કરો"/>
+    <Item english="Copy HTML to clipboard" text="HTML ક્લિપબોર્ડ પર કૉપિ કરો"/>
+    <Item english="Copy all formats to clipboard" text="બધા ફોર્મેટ ક્લિપબોર્ડ પર કૉપિ કરો"/>
+    <Item english="Spell Check" text="જોડણી તપાસ"/>
+    <Item english="Spell Check Document Automatically" text="ડોક્યુમેન્ટની જોડણી આપમેળે તપાસો"/>
+    <Item english="Language" text="ભાષા"/>
+    <Item english="Automatic" text="આપમેળે"/>
+    <Item english="Ignore Spelling" text="જોડણી અવગણો"/>
+    <Item english="Learn Spelling" text="જોડણી શીખો"/>
+    <Item english="No Guesses Found" text="કોઈ સૂચન મળ્યું નથી"/>
     <Item english="Valid JSON." text="માન્ય JSON."/>
     <Item english="Invalid JSON." text="અમાન્ય JSON."/>
     <Item english="Set as the first file to compare." text="સરખામણી માટે પ્રથમ ફાઈલ તરીકે સેટ કરી."/>

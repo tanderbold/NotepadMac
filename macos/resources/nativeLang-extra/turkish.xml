@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Seçim geçerli bir Base64 değil."/>
     <Item english="The selection is not valid Quoted-printable." text="Seçim geçerli bir Quoted-printable değil."/>
     <Item english="The selection is not a SAML message." text="Seçim bir SAML mesajı değil."/>
+    <Item english="Converter" text="Dönüştürücü"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Dönüştürme Paneli"/>
+    <Item english="Character:" text="Karakter:"/>
+    <Item english="Decimal:" text="Ondalık:"/>
+    <Item english="Hexadecimal:" text="Onaltılık:"/>
+    <Item english="Binary:" text="İkilik:"/>
+    <Item english="Octal:" text="Sekizlik:"/>
+    <Item english="Hex format is not conformed" text="Onaltılık biçim uygun değil"/>
+    <Item english="Export" text="Dışa Aktar"/>
+    <Item english="Export to RTF" text="RTF Olarak Dışa Aktar"/>
+    <Item english="Export to HTML" text="HTML Olarak Dışa Aktar"/>
+    <Item english="Copy RTF to clipboard" text="RTF'yi Panoya Kopyala"/>
+    <Item english="Copy HTML to clipboard" text="HTML'yi Panoya Kopyala"/>
+    <Item english="Copy all formats to clipboard" text="Tüm Biçimleri Panoya Kopyala"/>
+    <Item english="Spell Check" text="Yazım Denetimi"/>
+    <Item english="Spell Check Document Automatically" text="Belge Yazımını Otomatik Olarak Denetle"/>
+    <Item english="Language" text="Dil"/>
+    <Item english="Automatic" text="Otomatik"/>
+    <Item english="Ignore Spelling" text="Yazımı Yoksay"/>
+    <Item english="Learn Spelling" text="Yazımı Öğren"/>
+    <Item english="No Guesses Found" text="Tahmin Bulunamadı"/>
     <Item english="Valid JSON." text="Geçerli JSON."/>
     <Item english="Invalid JSON." text="Geçersiz JSON."/>
     <Item english="Set as the first file to compare." text="Karşılaştırılacak ilk dosya olarak ayarlandı."/>

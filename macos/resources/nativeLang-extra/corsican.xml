@@ -120,6 +120,24 @@
     <Item english="The selection is not valid Base64." text="A selezzione ùn hè micca un Base64 accettevule."/>
     <Item english="The selection is not valid Quoted-printable." text="A selezzione ùn hè micca un Quoted-printable accettevule."/>
     <Item english="The selection is not a SAML message." text="A selezzione ùn hè micca un messaghju SAML."/>
+    <Item english="Converter" text="Cunversione"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Pannellu di cunversione"/>
+    <Item english="Character:" text="Caratteru :"/>
+    <Item english="Decimal:" text="Decimale :"/>
+    <Item english="Hexadecimal:" text="Esadecimale :"/>
+    <Item english="Binary:" text="Binariu :"/>
+    <Item english="Octal:" text="Ottale :"/>
+    <Item english="Hex format is not conformed" text="U furmatu esadecimale ùn hè micca currettu"/>
+    <Item english="Export" text="Espurtà"/>
+    <Item english="Export to RTF" text="Espurtà in RTF"/>
+    <Item english="Export to HTML" text="Espurtà in HTML"/>
+    <Item english="Copy RTF to clipboard" text="Cupià RTF in u preme’papei"/>
+    <Item english="Copy HTML to clipboard" text="Cupià HTML in u preme’papei"/>
+    <Item english="Copy all formats to clipboard" text="Cupià tutti i furmati in u preme’papei"/>
+    <Item english="Language" text="Lingua"/>
+    <Item english="Automatic" text="Autumaticu"/>
     <Item english="Valid JSON." text="JSON accettevule."/>
     <Item english="Invalid JSON." text="JSON inaccettevule."/>
     <Item english="Set as the first file to compare." text="Definitu cum’è primu schedariu à paragunà."/>

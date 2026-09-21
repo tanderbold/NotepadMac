@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="بخش انتخاب شده Base64 معتبر نیست."/>
     <Item english="The selection is not valid Quoted-printable." text="بخش انتخاب شده Quoted-printable معتبر نیست."/>
     <Item english="The selection is not a SAML message." text="بخش انتخاب شده یک پیام SAML نیست."/>
+    <Item english="Converter" text="مبدل"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="پنل تبدیل"/>
+    <Item english="Character:" text="کاراکتر:"/>
+    <Item english="Decimal:" text="دسیمال:"/>
+    <Item english="Hexadecimal:" text="هگزادسیمال:"/>
+    <Item english="Binary:" text="باینری:"/>
+    <Item english="Octal:" text="اُکتال:"/>
+    <Item english="Hex format is not conformed" text="فرمت هگزادسیمال معتبر نیست"/>
+    <Item english="Export" text="برون‌بری"/>
+    <Item english="Export to RTF" text="برون‌بری به RTF"/>
+    <Item english="Export to HTML" text="برون‌بری به HTML"/>
+    <Item english="Copy RTF to clipboard" text="کپی RTF به کلیپ برد"/>
+    <Item english="Copy HTML to clipboard" text="کپی HTML به کلیپ برد"/>
+    <Item english="Copy all formats to clipboard" text="کپی همه فرمت‌ها به کلیپ برد"/>
+    <Item english="Spell Check" text="بررسی املا"/>
+    <Item english="Spell Check Document Automatically" text="بررسی خودکار املای سند"/>
+    <Item english="Language" text="زبان"/>
+    <Item english="Automatic" text="خودکار"/>
+    <Item english="Ignore Spelling" text="نادیده گرفتن املا"/>
+    <Item english="Learn Spelling" text="یادگیری املا"/>
+    <Item english="No Guesses Found" text="پیشنهادی یافت نشد"/>
     <Item english="Valid JSON." text="JSON معتبر."/>
     <Item english="Invalid JSON." text="JSON نامعتبر."/>
     <Item english="Set as the first file to compare." text="بعنوان اولین فایل برای مقایسه تنظیم شد."/>

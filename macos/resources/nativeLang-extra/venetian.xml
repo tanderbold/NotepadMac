@@ -68,6 +68,15 @@
     <Item english="Copy debug info to clipboard" text="Còpia ƚe informasion de debug inte i Scarabòci"/>
     <Item english="Fonts…" text="Caràtari…"/>
     <Item english="This document is not valid JSON." text="Sto documento no'l xe mìa JSON vaƚido."/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Paneƚo de conversion"/>
+    <Item english="Character:" text="Caràtare:"/>
+    <Item english="Export" text="Esporta"/>
+    <Item english="Export to RTF" text="Esporta en RTF"/>
+    <Item english="Export to HTML" text="Esporta en HTML"/>
+    <Item english="Language" text="Ƚengua"/>
+    <Item english="Automatic" text="Automatego"/>
     <Item english="Valid JSON." text="JSON vaƚido."/>
     <Item english="The document is valid XML." text="El documento el xe XML vaƚido."/>
     <Item english="FTP connections" text="Conesion FTP"/>

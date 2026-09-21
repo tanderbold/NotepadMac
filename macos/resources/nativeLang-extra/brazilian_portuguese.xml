@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="A seleção não é um Base64 válido."/>
     <Item english="The selection is not valid Quoted-printable." text="A seleção não é um Quoted-printable válido."/>
     <Item english="The selection is not a SAML message." text="A seleção não é uma mensagem SAML."/>
+    <Item english="Converter" text="Conversor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Painel de Conversão"/>
+    <Item english="Character:" text="Caractere:"/>
+    <Item english="Decimal:" text="Decimal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimal:"/>
+    <Item english="Binary:" text="Binário:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="O formato hexadecimal não é válido"/>
+    <Item english="Export" text="Exportar"/>
+    <Item english="Export to RTF" text="Exportar para RTF"/>
+    <Item english="Export to HTML" text="Exportar para HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copiar RTF para a área de transferência"/>
+    <Item english="Copy HTML to clipboard" text="Copiar HTML para a área de transferência"/>
+    <Item english="Copy all formats to clipboard" text="Copiar todos os formatos para a área de transferência"/>
+    <Item english="Spell Check" text="Verificação Ortográfica"/>
+    <Item english="Spell Check Document Automatically" text="Verificar ortografia do documento automaticamente"/>
+    <Item english="Language" text="Idioma"/>
+    <Item english="Automatic" text="Automático"/>
+    <Item english="Ignore Spelling" text="Ignorar Ortografia"/>
+    <Item english="Learn Spelling" text="Memorizar Ortografia"/>
+    <Item english="No Guesses Found" text="Nenhuma sugestão encontrada"/>
     <Item english="Valid JSON." text="JSON válido."/>
     <Item english="Invalid JSON." text="JSON inválido."/>
     <Item english="Set as the first file to compare." text="Definido como primeiro arquivo a comparar."/>

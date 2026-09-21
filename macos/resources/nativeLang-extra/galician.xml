@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="A selección non é Base64 válido."/>
     <Item english="The selection is not valid Quoted-printable." text="A selección non é Quoted-printable válido."/>
     <Item english="The selection is not a SAML message." text="A selección non é unha mensaxe SAML."/>
+    <Item english="Converter" text="Conversor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panel de conversión"/>
+    <Item english="Character:" text="Carácter:"/>
+    <Item english="Decimal:" text="Decimal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimal:"/>
+    <Item english="Binary:" text="Binario:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="O formato hexadecimal non é válido"/>
+    <Item english="Export" text="Exportar"/>
+    <Item english="Export to RTF" text="Exportar a RTF"/>
+    <Item english="Export to HTML" text="Exportar a HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copiar RTF ao portapapeis"/>
+    <Item english="Copy HTML to clipboard" text="Copiar HTML ao portapapeis"/>
+    <Item english="Copy all formats to clipboard" text="Copiar todos os formatos ao portapapeis"/>
+    <Item english="Spell Check" text="Corrección ortográfica"/>
+    <Item english="Spell Check Document Automatically" text="Comprobar automaticamente a ortografía do documento"/>
+    <Item english="Language" text="Lingua"/>
+    <Item english="Automatic" text="Automático"/>
+    <Item english="Ignore Spelling" text="Ignorar a ortografía"/>
+    <Item english="Learn Spelling" text="Aprender a ortografía"/>
+    <Item english="No Guesses Found" text="Non se atoparon suxestións"/>
     <Item english="Valid JSON." text="JSON válido."/>
     <Item english="Invalid JSON." text="JSON non válido."/>
     <Item english="Set as the first file to compare." text="Establecido como primeiro arquivo para comparar."/>

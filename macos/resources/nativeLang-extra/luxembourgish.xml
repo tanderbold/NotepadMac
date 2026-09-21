@@ -120,6 +120,28 @@
     <Item english="The selection is not valid Base64." text="De markéierten Text ass kee gültege Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="De markéierten Text ass kee gültege Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="De markéierten Text ass kee SAML-Message."/>
+    <Item english="Converter" text="Konverter"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Character:" text="Zeechen:"/>
+    <Item english="Decimal:" text="Dezimal:"/>
+    <Item english="Hexadecimal:" text="Hexadezimal:"/>
+    <Item english="Binary:" text="Binär:"/>
+    <Item english="Octal:" text="Oktal:"/>
+    <Item english="Hex format is not conformed" text="D'Hexformat ass net gülteg"/>
+    <Item english="Export" text="Exportéieren"/>
+    <Item english="Export to RTF" text="Als RTF exportéieren"/>
+    <Item english="Export to HTML" text="Als HTML exportéieren"/>
+    <Item english="Copy RTF to clipboard" text="RTF an d'Tëschentablag kopéieren"/>
+    <Item english="Copy HTML to clipboard" text="HTML an d'Tëschentablag kopéieren"/>
+    <Item english="Copy all formats to clipboard" text="All Formater an d'Tëschentablag kopéieren"/>
+    <Item english="Spell Check" text="Rechtschreifpréifung"/>
+    <Item english="Spell Check Document Automatically" text="D'Rechtschreiwung vum Dokument automatesch préiwen"/>
+    <Item english="Language" text="Sprooch"/>
+    <Item english="Automatic" text="Automatesch"/>
+    <Item english="Ignore Spelling" text="Rechtschreiwung ignoréieren"/>
+    <Item english="Learn Spelling" text="Rechtschreiwung léieren"/>
+    <Item english="No Guesses Found" text="Keng Virschléi fonnt"/>
     <Item english="Valid JSON." text="Gültegen JSON."/>
     <Item english="Invalid JSON." text="Ongültegen JSON."/>
     <Item english="Set as the first file to compare." text="Als éischt Datei fir de Verglach festgeluecht."/>

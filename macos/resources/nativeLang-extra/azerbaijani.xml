@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Seçim düzgün Base64 deyil."/>
     <Item english="The selection is not valid Quoted-printable." text="Seçim düzgün Quoted-printable deyil."/>
     <Item english="The selection is not a SAML message." text="Seçim SAML mesajı deyil."/>
+    <Item english="Converter" text="Çevirici"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Çevirmə Paneli"/>
+    <Item english="Character:" text="Simvol:"/>
+    <Item english="Decimal:" text="Onluq:"/>
+    <Item english="Hexadecimal:" text="Onaltılıq:"/>
+    <Item english="Binary:" text="İkilik:"/>
+    <Item english="Octal:" text="Səkkizlik:"/>
+    <Item english="Hex format is not conformed" text="HEX formatı düzgün deyil"/>
+    <Item english="Export" text="İxrac"/>
+    <Item english="Export to RTF" text="RTF-ə ixrac et"/>
+    <Item english="Export to HTML" text="HTML-ə ixrac et"/>
+    <Item english="Copy RTF to clipboard" text="RTF-i mübadilə buferinə köçür"/>
+    <Item english="Copy HTML to clipboard" text="HTML-i mübadilə buferinə köçür"/>
+    <Item english="Copy all formats to clipboard" text="Bütün formatları mübadilə buferinə köçür"/>
+    <Item english="Spell Check" text="Orfoqrafiya yoxlaması"/>
+    <Item english="Spell Check Document Automatically" text="Sənədin orfoqrafiyasını avtomatik yoxla"/>
+    <Item english="Language" text="Dil"/>
+    <Item english="Automatic" text="Avtomatik"/>
+    <Item english="Ignore Spelling" text="Orfoqrafiyanı nəzərə alma"/>
+    <Item english="Learn Spelling" text="Orfoqrafiyanı öyrən"/>
+    <Item english="No Guesses Found" text="Heç bir təklif tapılmadı"/>
     <Item english="Valid JSON." text="Düzgün JSON."/>
     <Item english="Invalid JSON." text="Yanlış JSON."/>
     <Item english="Set as the first file to compare." text="Müqayisə üçün birinci fayl kimi təyin edildi."/>

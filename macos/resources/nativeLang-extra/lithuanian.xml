@@ -136,6 +136,29 @@
     <Item english="The selection is not valid Base64." text="Pažymėtas tekstas nėra teisingas Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Pažymėtas tekstas nėra teisingas Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Pažymėtas tekstas nėra SAML pranešimas."/>
+    <Item english="Converter" text="Konverteris"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Konvertavimo skydelis"/>
+    <Item english="Character:" text="Ženklas:"/>
+    <Item english="Decimal:" text="Dešimtainis:"/>
+    <Item english="Hexadecimal:" text="Šešioliktainis:"/>
+    <Item english="Binary:" text="Dvejetainis:"/>
+    <Item english="Octal:" text="Aštuntainis:"/>
+    <Item english="Hex format is not conformed" text="Šešioliktainis formatas neteisingas"/>
+    <Item english="Export" text="Eksportuoti"/>
+    <Item english="Export to RTF" text="Eksportuoti į RTF"/>
+    <Item english="Export to HTML" text="Eksportuoti į HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopijuoti RTF į mainų sritį"/>
+    <Item english="Copy HTML to clipboard" text="Kopijuoti HTML į mainų sritį"/>
+    <Item english="Copy all formats to clipboard" text="Kopijuoti visus formatus į mainų sritį"/>
+    <Item english="Spell Check" text="Rašybos tikrinimas"/>
+    <Item english="Spell Check Document Automatically" text="Automatiškai tikrinti dokumento rašybą"/>
+    <Item english="Language" text="Kalba"/>
+    <Item english="Automatic" text="Automatiškai"/>
+    <Item english="Ignore Spelling" text="Nepaisyti rašybos"/>
+    <Item english="Learn Spelling" text="Įsiminti rašybą"/>
+    <Item english="No Guesses Found" text="Spėjimų nerasta"/>
     <Item english="Valid JSON." text="Teisingas JSON."/>
     <Item english="Invalid JSON." text="Neteisingas JSON."/>
     <Item english="Set as the first file to compare." text="Nustatytas pirmuoju failu palyginimui."/>

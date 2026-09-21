@@ -121,6 +121,29 @@
     <Item english="The selection is not valid Base64." text="ส่วนที่เลือกไม่ใช่ Base64 ที่ถูกต้อง"/>
     <Item english="The selection is not valid Quoted-printable." text="ส่วนที่เลือกไม่ใช่ Quoted-printable ที่ถูกต้อง"/>
     <Item english="The selection is not a SAML message." text="ส่วนที่เลือกไม่ใช่ข้อความ SAML"/>
+    <Item english="Converter" text="ตัวแปลง"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="แผงการแปลง"/>
+    <Item english="Character:" text="อักขระ:"/>
+    <Item english="Decimal:" text="ฐานสิบ:"/>
+    <Item english="Hexadecimal:" text="ฐานสิบหก:"/>
+    <Item english="Binary:" text="ฐานสอง:"/>
+    <Item english="Octal:" text="ฐานแปด:"/>
+    <Item english="Hex format is not conformed" text="รูปแบบฐานสิบหกไม่ถูกต้อง"/>
+    <Item english="Export" text="ส่งออก"/>
+    <Item english="Export to RTF" text="ส่งออกเป็น RTF"/>
+    <Item english="Export to HTML" text="ส่งออกเป็น HTML"/>
+    <Item english="Copy RTF to clipboard" text="คัดลอก RTF ไปยังคลิปบอร์ด"/>
+    <Item english="Copy HTML to clipboard" text="คัดลอก HTML ไปยังคลิปบอร์ด"/>
+    <Item english="Copy all formats to clipboard" text="คัดลอกทุกรูปแบบไปยังคลิปบอร์ด"/>
+    <Item english="Spell Check" text="ตรวจสอบตัวสะกด"/>
+    <Item english="Spell Check Document Automatically" text="ตรวจสอบตัวสะกดของเอกสารโดยอัตโนมัติ"/>
+    <Item english="Language" text="ภาษา"/>
+    <Item english="Automatic" text="อัตโนมัติ"/>
+    <Item english="Ignore Spelling" text="ละเว้นการสะกด"/>
+    <Item english="Learn Spelling" text="เรียนรู้การสะกด"/>
+    <Item english="No Guesses Found" text="ไม่พบคำแนะนำ"/>
     <Item english="Valid JSON." text="JSON ถูกต้อง"/>
     <Item english="Invalid JSON." text="JSON ไม่ถูกต้อง"/>
     <Item english="Set as the first file to compare." text="ตั้งเป็นไฟล์แรกที่จะเปรียบเทียบแล้ว"/>

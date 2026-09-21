@@ -134,6 +134,29 @@
     <Item english="The selection is not valid Base64." text="Сайланган өлеш дөрес Base64 түгел."/>
     <Item english="The selection is not valid Quoted-printable." text="Сайланган өлеш дөрес Quoted-printable түгел."/>
     <Item english="The selection is not a SAML message." text="Сайланган өлеш SAML хәбәре түгел."/>
+    <Item english="Converter" text="Конвертер"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Үзгәртү панеле"/>
+    <Item english="Character:" text="Символ:"/>
+    <Item english="Decimal:" text="Унарлы:"/>
+    <Item english="Hexadecimal:" text="Уналтылы:"/>
+    <Item english="Binary:" text="Икеле:"/>
+    <Item english="Octal:" text="Сигезле:"/>
+    <Item english="Hex format is not conformed" text="HEX форматы дөрес түгел"/>
+    <Item english="Export" text="Экспортларга"/>
+    <Item english="Export to RTF" text="RTF форматына экспортларга"/>
+    <Item english="Export to HTML" text="HTML форматына экспортларга"/>
+    <Item english="Copy RTF to clipboard" text="RTF'ны алмашыну буферына күчерергә"/>
+    <Item english="Copy HTML to clipboard" text="HTML'ны алмашыну буферына күчерергә"/>
+    <Item english="Copy all formats to clipboard" text="Барлык форматларны алмашыну буферына күчерергә"/>
+    <Item english="Spell Check" text="Язылышны тикшерү"/>
+    <Item english="Spell Check Document Automatically" text="Документның язылышын автоматик тикшерергә"/>
+    <Item english="Language" text="Тел"/>
+    <Item english="Automatic" text="Автоматик"/>
+    <Item english="Ignore Spelling" text="Язылышны исәпкә алмаска"/>
+    <Item english="Learn Spelling" text="Язылышны өйрәнергә"/>
+    <Item english="No Guesses Found" text="Тәкъдимнәр табылмады"/>
     <Item english="Valid JSON." text="JSON дөрес."/>
     <Item english="Invalid JSON." text="JSON хаталы."/>
     <Item english="Set as the first file to compare." text="Чагыштыру өчен беренче файл итеп билгеләнде."/>

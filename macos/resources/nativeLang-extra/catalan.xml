@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="La selecció no és Base64 vàlid."/>
     <Item english="The selection is not valid Quoted-printable." text="La selecció no és Quoted-printable vàlid."/>
     <Item english="The selection is not a SAML message." text="La selecció no és un missatge SAML."/>
+    <Item english="Converter" text="Convertidor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panell de conversió"/>
+    <Item english="Character:" text="Caràcter:"/>
+    <Item english="Decimal:" text="Decimal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimal:"/>
+    <Item english="Binary:" text="Binari:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="El format hexadecimal no és vàlid"/>
+    <Item english="Export" text="Exporta"/>
+    <Item english="Export to RTF" text="Exporta a RTF"/>
+    <Item english="Export to HTML" text="Exporta a HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copia RTF al porta-retalls"/>
+    <Item english="Copy HTML to clipboard" text="Copia HTML al porta-retalls"/>
+    <Item english="Copy all formats to clipboard" text="Copia tots els formats al porta-retalls"/>
+    <Item english="Spell Check" text="Verificació ortogràfica"/>
+    <Item english="Spell Check Document Automatically" text="Verifica l'ortografia del document automàticament"/>
+    <Item english="Language" text="Idioma"/>
+    <Item english="Automatic" text="Automàtic"/>
+    <Item english="Ignore Spelling" text="Ignora l'ortografia"/>
+    <Item english="Learn Spelling" text="Aprèn l'ortografia"/>
+    <Item english="No Guesses Found" text="No s'han trobat suggeriments"/>
     <Item english="Valid JSON." text="JSON vàlid."/>
     <Item english="Invalid JSON." text="JSON no vàlid."/>
     <Item english="Set as the first file to compare." text="Establert com a primer fitxer per comparar."/>

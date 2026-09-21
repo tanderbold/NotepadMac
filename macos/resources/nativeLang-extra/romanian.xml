@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Selecția nu este Base64 valid."/>
     <Item english="The selection is not valid Quoted-printable." text="Selecția nu este Quoted-printable valid."/>
     <Item english="The selection is not a SAML message." text="Selecția nu este un mesaj SAML."/>
+    <Item english="Converter" text="Convertor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panou de conversie"/>
+    <Item english="Character:" text="Caracter:"/>
+    <Item english="Decimal:" text="Zecimal:"/>
+    <Item english="Hexadecimal:" text="Hexazecimal:"/>
+    <Item english="Binary:" text="Binar:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="Format hexazecimal nevalid"/>
+    <Item english="Export" text="Export"/>
+    <Item english="Export to RTF" text="Exportă în RTF"/>
+    <Item english="Export to HTML" text="Exportă în HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copiază RTF în clipboard"/>
+    <Item english="Copy HTML to clipboard" text="Copiază HTML în clipboard"/>
+    <Item english="Copy all formats to clipboard" text="Copiază toate formatele în clipboard"/>
+    <Item english="Spell Check" text="Verificare ortografică"/>
+    <Item english="Spell Check Document Automatically" text="Verifică automat ortografia documentului"/>
+    <Item english="Language" text="Limbă"/>
+    <Item english="Automatic" text="Automată"/>
+    <Item english="Ignore Spelling" text="Ignoră ortografia"/>
+    <Item english="Learn Spelling" text="Memorează ortografia"/>
+    <Item english="No Guesses Found" text="Nu s-au găsit sugestii"/>
     <Item english="Valid JSON." text="JSON valid."/>
     <Item english="Invalid JSON." text="JSON nevalid."/>
     <Item english="Set as the first file to compare." text="A fost stabilit ca primul fișier de comparat."/>

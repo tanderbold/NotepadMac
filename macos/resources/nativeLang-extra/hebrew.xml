@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="הבחירה אינה Base64 תקין."/>
     <Item english="The selection is not valid Quoted-printable." text="הבחירה אינה Quoted-printable תקין."/>
     <Item english="The selection is not a SAML message." text="הבחירה אינה הודעת SAML."/>
+    <Item english="Converter" text="ממיר"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="חלונית המרה"/>
+    <Item english="Character:" text="תו:"/>
+    <Item english="Decimal:" text="עשרוני:"/>
+    <Item english="Hexadecimal:" text="הקסדצימלי:"/>
+    <Item english="Binary:" text="בינארי:"/>
+    <Item english="Octal:" text="אוקטלי:"/>
+    <Item english="Hex format is not conformed" text="המבנה ההקסדצימלי אינו תקין"/>
+    <Item english="Export" text="ייצוא"/>
+    <Item english="Export to RTF" text="ייצא ל-RTF"/>
+    <Item english="Export to HTML" text="ייצא ל-HTML"/>
+    <Item english="Copy RTF to clipboard" text="העתק RTF לזיכרון"/>
+    <Item english="Copy HTML to clipboard" text="העתק HTML לזיכרון"/>
+    <Item english="Copy all formats to clipboard" text="העתק את כל הפורמטים לזיכרון"/>
+    <Item english="Spell Check" text="בדיקת איות"/>
+    <Item english="Spell Check Document Automatically" text="בדוק איות במסמך אוטומטית"/>
+    <Item english="Language" text="שפה"/>
+    <Item english="Automatic" text="אוטומטית"/>
+    <Item english="Ignore Spelling" text="התעלם מאיות"/>
+    <Item english="Learn Spelling" text="למד איות"/>
+    <Item english="No Guesses Found" text="לא נמצאו הצעות"/>
     <Item english="Valid JSON." text="JSON תקין."/>
     <Item english="Invalid JSON." text="JSON לא תקין."/>
     <Item english="Set as the first file to compare." text="נקבע כקובץ הראשון להשוואה."/>

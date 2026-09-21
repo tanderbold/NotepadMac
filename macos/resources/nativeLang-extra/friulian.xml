@@ -101,6 +101,18 @@
     <Item english="The selection is not valid Base64." text="La selezion no je un Base64 valit."/>
     <Item english="The selection is not valid Quoted-printable." text="La selezion no je un Quoted-printable valit."/>
     <Item english="The selection is not a SAML message." text="La selezion no je un messaç SAML."/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Character:" text="Caratar:"/>
+    <Item english="Hex format is not conformed" text="Il formât HEX nol è valit"/>
+    <Item english="Export" text="Espuarte"/>
+    <Item english="Export to RTF" text="Espuarte in RTF"/>
+    <Item english="Export to HTML" text="Espuarte in HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copie RTF tai Aponts"/>
+    <Item english="Copy HTML to clipboard" text="Copie HTML tai Aponts"/>
+    <Item english="Copy all formats to clipboard" text="Copie ducj i formâts tai Aponts"/>
+    <Item english="Language" text="Lenghe"/>
+    <Item english="Automatic" text="Automatic"/>
     <Item english="Valid JSON." text="JSON valit."/>
     <Item english="Invalid JSON." text="JSON no valit."/>
     <Item english="The document is valid XML." text="Il document al è XML valit."/>

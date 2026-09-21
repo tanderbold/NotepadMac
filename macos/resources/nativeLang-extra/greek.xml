@@ -136,6 +136,29 @@
     <Item english="The selection is not valid Base64." text="Η επιλογή δεν είναι έγκυρο Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Η επιλογή δεν είναι έγκυρο Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Η επιλογή δεν είναι μήνυμα SAML."/>
+    <Item english="Converter" text="Μετατροπέας"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Πίνακας μετατροπής"/>
+    <Item english="Character:" text="Χαρακτήρας:"/>
+    <Item english="Decimal:" text="Δεκαδικό:"/>
+    <Item english="Hexadecimal:" text="Δεκαεξαδικό:"/>
+    <Item english="Binary:" text="Δυαδικό:"/>
+    <Item english="Octal:" text="Οκταδικό:"/>
+    <Item english="Hex format is not conformed" text="Μη έγκυρη δεκαεξαδική μορφή"/>
+    <Item english="Export" text="Εξαγωγή"/>
+    <Item english="Export to RTF" text="Εξαγωγή σε RTF"/>
+    <Item english="Export to HTML" text="Εξαγωγή σε HTML"/>
+    <Item english="Copy RTF to clipboard" text="Αντιγραφή RTF στο πρόχειρο"/>
+    <Item english="Copy HTML to clipboard" text="Αντιγραφή HTML στο πρόχειρο"/>
+    <Item english="Copy all formats to clipboard" text="Αντιγραφή όλων των μορφών στο πρόχειρο"/>
+    <Item english="Spell Check" text="Ορθογραφικός έλεγχος"/>
+    <Item english="Spell Check Document Automatically" text="Αυτόματος ορθογραφικός έλεγχος του εγγράφου"/>
+    <Item english="Language" text="Γλώσσα"/>
+    <Item english="Automatic" text="Αυτόματη"/>
+    <Item english="Ignore Spelling" text="Παράβλεψη ορθογραφίας"/>
+    <Item english="Learn Spelling" text="Εκμάθηση ορθογραφίας"/>
+    <Item english="No Guesses Found" text="Δεν βρέθηκαν προτάσεις"/>
     <Item english="Valid JSON." text="Έγκυρο JSON."/>
     <Item english="Invalid JSON." text="Μη έγκυρο JSON."/>
     <Item english="Set as the first file to compare." text="Ορίστηκε ως το πρώτο αρχείο για σύγκριση."/>

@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Phần được chọn không phải là Base64 hợp lệ."/>
     <Item english="The selection is not valid Quoted-printable." text="Phần được chọn không phải là Quoted-printable hợp lệ."/>
     <Item english="The selection is not a SAML message." text="Phần được chọn không phải là thông điệp SAML."/>
+    <Item english="Converter" text="Bộ chuyển đổi"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Bảng chuyển đổi"/>
+    <Item english="Character:" text="Ký tự:"/>
+    <Item english="Decimal:" text="Thập phân:"/>
+    <Item english="Hexadecimal:" text="Thập lục phân:"/>
+    <Item english="Binary:" text="Nhị phân:"/>
+    <Item english="Octal:" text="Bát phân:"/>
+    <Item english="Hex format is not conformed" text="Định dạng thập lục phân không hợp lệ"/>
+    <Item english="Export" text="Xuất"/>
+    <Item english="Export to RTF" text="Xuất sang RTF"/>
+    <Item english="Export to HTML" text="Xuất sang HTML"/>
+    <Item english="Copy RTF to clipboard" text="Sao chép RTF vào bảng tạm"/>
+    <Item english="Copy HTML to clipboard" text="Sao chép HTML vào bảng tạm"/>
+    <Item english="Copy all formats to clipboard" text="Sao chép tất cả định dạng vào bảng tạm"/>
+    <Item english="Spell Check" text="Kiểm tra chính tả"/>
+    <Item english="Spell Check Document Automatically" text="Tự động kiểm tra chính tả tài liệu"/>
+    <Item english="Language" text="Ngôn ngữ"/>
+    <Item english="Automatic" text="Tự động"/>
+    <Item english="Ignore Spelling" text="Bỏ qua chính tả"/>
+    <Item english="Learn Spelling" text="Học chính tả"/>
+    <Item english="No Guesses Found" text="Không tìm thấy gợi ý"/>
     <Item english="Valid JSON." text="JSON hợp lệ."/>
     <Item english="Invalid JSON." text="JSON không hợp lệ."/>
     <Item english="Set as the first file to compare." text="Đã đặt làm tệp thứ nhất để so sánh."/>

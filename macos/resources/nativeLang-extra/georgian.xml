@@ -132,6 +132,29 @@
     <Item english="The selection is not valid Base64." text="მონიშნული ტექსტი არ არის სწორი Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="მონიშნული ტექსტი არ არის სწორი Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="მონიშნული ტექსტი არ არის SAML შეტყობინება."/>
+    <Item english="Converter" text="კონვერტერი"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="კონვერტაციის პანელი"/>
+    <Item english="Character:" text="სიმბოლო:"/>
+    <Item english="Decimal:" text="ათობითი:"/>
+    <Item english="Hexadecimal:" text="თექვსმეტობითი:"/>
+    <Item english="Binary:" text="ორობითი:"/>
+    <Item english="Octal:" text="რვაობითი:"/>
+    <Item english="Hex format is not conformed" text="თექვსმეტობითი ფორმატი არასწორია"/>
+    <Item english="Export" text="ექსპორტი"/>
+    <Item english="Export to RTF" text="ექსპორტი RTF-ში"/>
+    <Item english="Export to HTML" text="ექსპორტი HTML-ში"/>
+    <Item english="Copy RTF to clipboard" text="RTF-ის კოპირება ბუფერში"/>
+    <Item english="Copy HTML to clipboard" text="HTML-ის კოპირება ბუფერში"/>
+    <Item english="Copy all formats to clipboard" text="ყველა ფორმატის კოპირება ბუფერში"/>
+    <Item english="Spell Check" text="მართლწერის შემოწმება"/>
+    <Item english="Spell Check Document Automatically" text="დოკუმენტის მართლწერის ავტომატური შემოწმება"/>
+    <Item english="Language" text="ენა"/>
+    <Item english="Automatic" text="ავტომატური"/>
+    <Item english="Ignore Spelling" text="მართლწერის იგნორირება"/>
+    <Item english="Learn Spelling" text="მართლწერის დამახსოვრება"/>
+    <Item english="No Guesses Found" text="შემოთავაზებები ვერ მოიძებნა"/>
     <Item english="Valid JSON." text="სწორი JSON."/>
     <Item english="Invalid JSON." text="არასწორი JSON."/>
     <Item english="Set as the first file to compare." text="მონიშნულია პირველ შესადარებელ ფაილად."/>

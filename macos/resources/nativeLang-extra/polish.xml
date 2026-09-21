@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Zaznaczenie nie jest poprawnym Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Zaznaczenie nie jest poprawnym Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Zaznaczenie nie jest komunikatem SAML."/>
+    <Item english="Converter" text="Konwerter"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panel konwersji"/>
+    <Item english="Character:" text="Znak:"/>
+    <Item english="Decimal:" text="Dziesiętnie:"/>
+    <Item english="Hexadecimal:" text="Szesnastkowo:"/>
+    <Item english="Binary:" text="Dwójkowo:"/>
+    <Item english="Octal:" text="Ósemkowo:"/>
+    <Item english="Hex format is not conformed" text="Niepoprawny format szesnastkowy"/>
+    <Item english="Export" text="Eksportuj"/>
+    <Item english="Export to RTF" text="Eksportuj do RTF"/>
+    <Item english="Export to HTML" text="Eksportuj do HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopiuj RTF do schowka"/>
+    <Item english="Copy HTML to clipboard" text="Kopiuj HTML do schowka"/>
+    <Item english="Copy all formats to clipboard" text="Kopiuj wszystkie formaty do schowka"/>
+    <Item english="Spell Check" text="Sprawdzanie pisowni"/>
+    <Item english="Spell Check Document Automatically" text="Automatycznie sprawdzaj pisownię dokumentu"/>
+    <Item english="Language" text="Język"/>
+    <Item english="Automatic" text="Automatycznie"/>
+    <Item english="Ignore Spelling" text="Ignoruj pisownię"/>
+    <Item english="Learn Spelling" text="Zapamiętaj pisownię"/>
+    <Item english="No Guesses Found" text="Brak propozycji"/>
     <Item english="Valid JSON." text="Poprawny JSON."/>
     <Item english="Invalid JSON." text="Niepoprawny JSON."/>
     <Item english="Set as the first file to compare." text="Ustawiono jako pierwszy plik do porównania."/>

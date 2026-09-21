@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Die Auswahl ist kein gültiges Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Die Auswahl ist kein gültiges Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Die Auswahl ist keine SAML-Nachricht."/>
+    <Item english="Converter" text="Konverter"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Umrechnungs-Bedienfeld"/>
+    <Item english="Character:" text="Zeichen:"/>
+    <Item english="Decimal:" text="Dezimal:"/>
+    <Item english="Hexadecimal:" text="Hexadezimal:"/>
+    <Item english="Binary:" text="Binär:"/>
+    <Item english="Octal:" text="Oktal:"/>
+    <Item english="Hex format is not conformed" text="Die Eingabe entspricht nicht dem Hex-Format"/>
+    <Item english="Export" text="Exportieren"/>
+    <Item english="Export to RTF" text="Als RTF exportieren"/>
+    <Item english="Export to HTML" text="Als HTML exportieren"/>
+    <Item english="Copy RTF to clipboard" text="RTF in Zwischenablage kopieren"/>
+    <Item english="Copy HTML to clipboard" text="HTML in Zwischenablage kopieren"/>
+    <Item english="Copy all formats to clipboard" text="Alle Formate in Zwischenablage kopieren"/>
+    <Item english="Spell Check" text="Rechtschreibprüfung"/>
+    <Item english="Spell Check Document Automatically" text="Dokument automatisch auf Rechtschreibung prüfen"/>
+    <Item english="Language" text="Sprache"/>
+    <Item english="Automatic" text="Automatisch"/>
+    <Item english="Ignore Spelling" text="Rechtschreibung ignorieren"/>
+    <Item english="Learn Spelling" text="Rechtschreibung lernen"/>
+    <Item english="No Guesses Found" text="Keine Vorschläge gefunden"/>
     <Item english="Valid JSON." text="Gültiges JSON."/>
     <Item english="Invalid JSON." text="Ungültiges JSON."/>
     <Item english="Set as the first file to compare." text="Als erste Datei für den Vergleich festgelegt."/>

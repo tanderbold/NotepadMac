@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Выбранае не з'яўляецца карэктным Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Выбранае не з'яўляецца карэктным Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Выбранае не з'яўляецца паведамленнем SAML."/>
+    <Item english="Converter" text="Канвертар"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Панэль пераўтварэння"/>
+    <Item english="Character:" text="Сімвал:"/>
+    <Item english="Decimal:" text="Дзесятковы:"/>
+    <Item english="Hexadecimal:" text="Шаснаццатковы:"/>
+    <Item english="Binary:" text="Двайковы:"/>
+    <Item english="Octal:" text="Васьмярковы:"/>
+    <Item english="Hex format is not conformed" text="Няправільны фармат HEX"/>
+    <Item english="Export" text="Экспарт"/>
+    <Item english="Export to RTF" text="Экспарт у RTF"/>
+    <Item english="Export to HTML" text="Экспарт у HTML"/>
+    <Item english="Copy RTF to clipboard" text="Капіяваць RTF у буфер абмену"/>
+    <Item english="Copy HTML to clipboard" text="Капіяваць HTML у буфер абмену"/>
+    <Item english="Copy all formats to clipboard" text="Капіяваць усе фарматы ў буфер абмену"/>
+    <Item english="Spell Check" text="Праверка правапісу"/>
+    <Item english="Spell Check Document Automatically" text="Аўтаматычна правяраць правапіс дакумента"/>
+    <Item english="Language" text="Мова"/>
+    <Item english="Automatic" text="Аўтаматычна"/>
+    <Item english="Ignore Spelling" text="Ігнараваць правапіс"/>
+    <Item english="Learn Spelling" text="Запомніць правапіс"/>
+    <Item english="No Guesses Found" text="Прапаноў не знойдзена"/>
     <Item english="Valid JSON." text="Карэктны JSON."/>
     <Item english="Invalid JSON." text="Некарэктны JSON."/>
     <Item english="Set as the first file to compare." text="Выбраны першым файлам для параўнання."/>

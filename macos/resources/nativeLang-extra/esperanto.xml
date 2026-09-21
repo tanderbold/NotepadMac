@@ -136,6 +136,29 @@
     <Item english="The selection is not valid Base64." text="La elektaĵo ne estas valida Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="La elektaĵo ne estas valida Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="La elektaĵo ne estas SAML-mesaĝo."/>
+    <Item english="Converter" text="Konvertilo"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Konverta panelo"/>
+    <Item english="Character:" text="Signo:"/>
+    <Item english="Decimal:" text="Dekuma:"/>
+    <Item english="Hexadecimal:" text="Deksesuma:"/>
+    <Item english="Binary:" text="Duuma:"/>
+    <Item english="Octal:" text="Okuma:"/>
+    <Item english="Hex format is not conformed" text="La deksesuma formato ne estas valida"/>
+    <Item english="Export" text="Eksportu"/>
+    <Item english="Export to RTF" text="Eksportu al RTF"/>
+    <Item english="Export to HTML" text="Eksportu al HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopiu RTF en la tondejon"/>
+    <Item english="Copy HTML to clipboard" text="Kopiu HTML en la tondejon"/>
+    <Item english="Copy all formats to clipboard" text="Kopiu ĉiujn formatojn en la tondejon"/>
+    <Item english="Spell Check" text="Literumkontrolo"/>
+    <Item english="Spell Check Document Automatically" text="Aŭtomate kontroli la literumadon de la dokumento"/>
+    <Item english="Language" text="Lingvo"/>
+    <Item english="Automatic" text="Aŭtomata"/>
+    <Item english="Ignore Spelling" text="Ignoru literumadon"/>
+    <Item english="Learn Spelling" text="Lernu literumadon"/>
+    <Item english="No Guesses Found" text="Neniu propono trovita"/>
     <Item english="Valid JSON." text="Valida JSON."/>
     <Item english="Invalid JSON." text="Nevalida JSON."/>
     <Item english="Set as the first file to compare." text="Difinita kiel la unua dosiero por komparo."/>

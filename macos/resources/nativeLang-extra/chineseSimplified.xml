@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="选中内容不是有效的 Base64。"/>
     <Item english="The selection is not valid Quoted-printable." text="选中内容不是有效的 Quoted-printable。"/>
     <Item english="The selection is not a SAML message." text="选中内容不是 SAML 消息。"/>
+    <Item english="Converter" text="转换器"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="转换面板"/>
+    <Item english="Character:" text="字符："/>
+    <Item english="Decimal:" text="十进制："/>
+    <Item english="Hexadecimal:" text="十六进制："/>
+    <Item english="Binary:" text="二进制："/>
+    <Item english="Octal:" text="八进制："/>
+    <Item english="Hex format is not conformed" text="十六进制格式不正确"/>
+    <Item english="Export" text="导出"/>
+    <Item english="Export to RTF" text="导出为 RTF"/>
+    <Item english="Export to HTML" text="导出为 HTML"/>
+    <Item english="Copy RTF to clipboard" text="复制 RTF 到剪贴板"/>
+    <Item english="Copy HTML to clipboard" text="复制 HTML 到剪贴板"/>
+    <Item english="Copy all formats to clipboard" text="复制所有格式到剪贴板"/>
+    <Item english="Spell Check" text="拼写检查"/>
+    <Item english="Spell Check Document Automatically" text="自动检查文档拼写"/>
+    <Item english="Language" text="语言"/>
+    <Item english="Automatic" text="自动"/>
+    <Item english="Ignore Spelling" text="忽略拼写"/>
+    <Item english="Learn Spelling" text="学习拼写"/>
+    <Item english="No Guesses Found" text="没有拼写建议"/>
     <Item english="Valid JSON." text="有效的 JSON。"/>
     <Item english="Invalid JSON." text="无效的 JSON。"/>
     <Item english="Set as the first file to compare." text="已设为比较的第一个文件。"/>

@@ -66,6 +66,25 @@
     <Item english="URL Encode (Full)" text="Enkodañ URL (klok)"/>
     <Item english="URL Decode" text="Dienkodañ URL"/>
     <Item english="SAML Decode" text="Dienkodañ SAML"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Character:" text="Arouezenn:"/>
+    <Item english="Decimal:" text="Dekel:"/>
+    <Item english="Hexadecimal:" text="Egza:"/>
+    <Item english="Binary:" text="Daouel:"/>
+    <Item english="Octal:" text="Okto:"/>
+    <Item english="Hex format is not conformed" text="N'eo ket reizh ar stumm HEX"/>
+    <Item english="Export" text="Ezporzhiañ"/>
+    <Item english="Export to RTF" text="Ezporzhiañ e stumm RTF"/>
+    <Item english="Export to HTML" text="Ezporzhiañ e stumm HTML"/>
+    <Item english="Copy RTF to clipboard" text="Eilañ RTF er golver"/>
+    <Item english="Copy HTML to clipboard" text="Eilañ HTML er golver"/>
+    <Item english="Copy all formats to clipboard" text="Eilañ an holl stummoù er golver"/>
+    <Item english="Spell Check" text="Gwiriañ ar reizhskrivadur"/>
+    <Item english="Spell Check Document Automatically" text="Gwiriañ reizhskrivadur an teul ent emgefreek"/>
+    <Item english="Language" text="Yezh"/>
+    <Item english="Automatic" text="Emgefreek"/>
+    <Item english="Learn Spelling" text="Deskiñ ar reizhskrivadur"/>
     <Item english="FTP connections" text="Kevreadennoù FTP"/>
     <Item english="Searching..." text="O klask..."/>
     <Item english="Transparent" text="Treuzwelus"/>

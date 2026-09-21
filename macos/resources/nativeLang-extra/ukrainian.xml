@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Вибране не є коректним Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Вибране не є коректним Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Вибране не є повідомленням SAML."/>
+    <Item english="Converter" text="Конвертер"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Панель конвертації"/>
+    <Item english="Character:" text="Символ:"/>
+    <Item english="Decimal:" text="Десяткове:"/>
+    <Item english="Hexadecimal:" text="Шістнадцяткове:"/>
+    <Item english="Binary:" text="Двійкове:"/>
+    <Item english="Octal:" text="Вісімкове:"/>
+    <Item english="Hex format is not conformed" text="Шістнадцятковий формат неправильний"/>
+    <Item english="Export" text="Експорт"/>
+    <Item english="Export to RTF" text="Експортувати в RTF"/>
+    <Item english="Export to HTML" text="Експортувати в HTML"/>
+    <Item english="Copy RTF to clipboard" text="Копіювати RTF до буфера обміну"/>
+    <Item english="Copy HTML to clipboard" text="Копіювати HTML до буфера обміну"/>
+    <Item english="Copy all formats to clipboard" text="Копіювати всі формати до буфера обміну"/>
+    <Item english="Spell Check" text="Перевірка правопису"/>
+    <Item english="Spell Check Document Automatically" text="Автоматично перевіряти правопис документа"/>
+    <Item english="Language" text="Мова"/>
+    <Item english="Automatic" text="Автоматично"/>
+    <Item english="Ignore Spelling" text="Ігнорувати правопис"/>
+    <Item english="Learn Spelling" text="Вивчити правопис"/>
+    <Item english="No Guesses Found" text="Пропозицій не знайдено"/>
     <Item english="Valid JSON." text="Коректний JSON."/>
     <Item english="Invalid JSON." text="Некоректний JSON."/>
     <Item english="Set as the first file to compare." text="Вибрано першим файлом для порівняння."/>

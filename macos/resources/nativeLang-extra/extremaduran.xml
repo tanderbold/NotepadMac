@@ -35,6 +35,12 @@
     <Item english="Fonts…" text="Tipografías…"/>
     <Item english="Base64 Encode" text="Coifical en Base64"/>
     <Item english="Quoted-printable Encode" text="Coifical en Quoted-printable"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Copy RTF to clipboard" text="Copial RTF al portapapelis"/>
+    <Item english="Copy HTML to clipboard" text="Copial HTML al portapapelis"/>
+    <Item english="Language" text="Luenga"/>
+    <Item english="Automatic" text="Automáticu"/>
     <Item english="Valid JSON." text="JSON váliu."/>
     <Item english="View 1" text="Vista 1"/>
     <Item english="View 2" text="Vista 2"/>

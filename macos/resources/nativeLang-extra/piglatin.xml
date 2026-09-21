@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Ethay electionsay isyay otnay alidvay Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Ethay electionsay isyay otnay alidvay Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Ethay electionsay isyay otnay ayay SAML essagemay."/>
+    <Item english="Converter" text="Onvertercay"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Onversioncay Anelpay"/>
+    <Item english="Character:" text="Aracterchay:"/>
+    <Item english="Decimal:" text="Ecimalday:"/>
+    <Item english="Hexadecimal:" text="Exadecimalhay:"/>
+    <Item english="Binary:" text="Inarybay:"/>
+    <Item english="Octal:" text="Octalyay:"/>
+    <Item english="Hex format is not conformed" text="Exhay ormatfay isyay otnay onformedcay"/>
+    <Item english="Export" text="Exportyay"/>
+    <Item english="Export to RTF" text="Exportyay otay RTF"/>
+    <Item english="Export to HTML" text="Exportyay otay HTML"/>
+    <Item english="Copy RTF to clipboard" text="Opycay RTF otay ipboardclay"/>
+    <Item english="Copy HTML to clipboard" text="Opycay HTML otay ipboardclay"/>
+    <Item english="Copy all formats to clipboard" text="Opycay allyay ormatsfay otay ipboardclay"/>
+    <Item english="Spell Check" text="Ellspay Eckchay"/>
+    <Item english="Spell Check Document Automatically" text="Ellspay Eckchay Ocumentday Automaticallyyay"/>
+    <Item english="Language" text="Anguagelay"/>
+    <Item english="Automatic" text="Automaticyay"/>
+    <Item english="Ignore Spelling" text="Ignoreyay Ellingspay"/>
+    <Item english="Learn Spelling" text="Earnlay Ellingspay"/>
+    <Item english="No Guesses Found" text="Onay Uessesgay Oundfay"/>
     <Item english="Valid JSON." text="Alidvay JSON."/>
     <Item english="Invalid JSON." text="Invalidyay JSON."/>
     <Item english="Set as the first file to compare." text="Etsay asyay ethay irstfay ilefay otay omparecay."/>

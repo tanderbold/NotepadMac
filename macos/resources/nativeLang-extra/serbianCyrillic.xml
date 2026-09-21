@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Одабир није исправан Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Одабир није исправан Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Одабир није SAML порука."/>
+    <Item english="Converter" text="Конвертор"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Панел за конверзију"/>
+    <Item english="Character:" text="Карактер:"/>
+    <Item english="Decimal:" text="Децимално:"/>
+    <Item english="Hexadecimal:" text="Хексадецимално:"/>
+    <Item english="Binary:" text="Бинарно:"/>
+    <Item english="Octal:" text="Октално:"/>
+    <Item english="Hex format is not conformed" text="Хексадецимални формат није исправан"/>
+    <Item english="Export" text="Извези"/>
+    <Item english="Export to RTF" text="Извези у RTF"/>
+    <Item english="Export to HTML" text="Извези у HTML"/>
+    <Item english="Copy RTF to clipboard" text="Копирај RTF у clipboard"/>
+    <Item english="Copy HTML to clipboard" text="Копирај HTML у clipboard"/>
+    <Item english="Copy all formats to clipboard" text="Копирај све формате у clipboard"/>
+    <Item english="Spell Check" text="Провера правописа"/>
+    <Item english="Spell Check Document Automatically" text="Аутоматски проверавај правопис документа"/>
+    <Item english="Language" text="Језик"/>
+    <Item english="Automatic" text="Аутоматски"/>
+    <Item english="Ignore Spelling" text="Игнориши правопис"/>
+    <Item english="Learn Spelling" text="Научи правопис"/>
+    <Item english="No Guesses Found" text="Нема предлога"/>
     <Item english="Valid JSON." text="Исправан JSON."/>
     <Item english="Invalid JSON." text="Неисправан JSON."/>
     <Item english="Set as the first file to compare." text="Постављено као прва датотека за поређење."/>

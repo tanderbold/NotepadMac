@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="ఎంపిక చెల్లుబాటు అయ్యే Base64 కాదు."/>
     <Item english="The selection is not valid Quoted-printable." text="ఎంపిక చెల్లుబాటు అయ్యే Quoted-printable కాదు."/>
     <Item english="The selection is not a SAML message." text="ఎంపిక SAML సందేశం కాదు."/>
+    <Item english="Converter" text="కన్వర్టర్"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="కన్వర్షన్ ప్యానెల్"/>
+    <Item english="Character:" text="అక్షరం:"/>
+    <Item english="Decimal:" text="దశాంశం:"/>
+    <Item english="Hexadecimal:" text="హెక్సాడెసిమల్:"/>
+    <Item english="Binary:" text="బైనరీ:"/>
+    <Item english="Octal:" text="ఆక్టల్:"/>
+    <Item english="Hex format is not conformed" text="HEX ఫార్మాట్ సరిగ్గా లేదు"/>
+    <Item english="Export" text="ఎగుమతి"/>
+    <Item english="Export to RTF" text="RTF కి ఎగుమతి చేయి"/>
+    <Item english="Export to HTML" text="HTML కి ఎగుమతి చేయి"/>
+    <Item english="Copy RTF to clipboard" text="RTF ని క్లిప్‌బోర్డ్‌కు కాపీ చేయి"/>
+    <Item english="Copy HTML to clipboard" text="HTML ని క్లిప్‌బోర్డ్‌కు కాపీ చేయి"/>
+    <Item english="Copy all formats to clipboard" text="అన్ని ఫార్మాట్లను క్లిప్‌బోర్డ్‌కు కాపీ చేయి"/>
+    <Item english="Spell Check" text="స్పెల్లింగ్ తనిఖీ"/>
+    <Item english="Spell Check Document Automatically" text="డాక్యుమెంట్ స్పెల్లింగ్‌ను ఆటోమేటిక్‌గా తనిఖీ చేయి"/>
+    <Item english="Language" text="భాష"/>
+    <Item english="Automatic" text="ఆటోమేటిక్"/>
+    <Item english="Ignore Spelling" text="స్పెల్లింగ్‌ను విస్మరించు"/>
+    <Item english="Learn Spelling" text="స్పెల్లింగ్‌ను నేర్చుకో"/>
+    <Item english="No Guesses Found" text="సూచనలు కనబడలేదు"/>
     <Item english="Valid JSON." text="చెల్లుబాటు అయ్యే JSON."/>
     <Item english="Invalid JSON." text="చెల్లని JSON."/>
     <Item english="Set as the first file to compare." text="పోల్చడానికి మొదటి ఫైల్‌గా సెట్ చేయబడింది."/>

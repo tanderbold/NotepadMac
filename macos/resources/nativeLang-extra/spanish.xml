@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="La selección no es Base64 válido."/>
     <Item english="The selection is not valid Quoted-printable." text="La selección no es Quoted-printable válido."/>
     <Item english="The selection is not a SAML message." text="La selección no es un mensaje SAML."/>
+    <Item english="Converter" text="Conversor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panel de conversión"/>
+    <Item english="Character:" text="Carácter:"/>
+    <Item english="Decimal:" text="Decimal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimal:"/>
+    <Item english="Binary:" text="Binario:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="El formato hexadecimal no es válido"/>
+    <Item english="Export" text="Exportar"/>
+    <Item english="Export to RTF" text="Exportar a RTF"/>
+    <Item english="Export to HTML" text="Exportar a HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copiar RTF al portapapeles"/>
+    <Item english="Copy HTML to clipboard" text="Copiar HTML al portapapeles"/>
+    <Item english="Copy all formats to clipboard" text="Copiar todos los formatos al portapapeles"/>
+    <Item english="Spell Check" text="Revisión ortográfica"/>
+    <Item english="Spell Check Document Automatically" text="Revisar la ortografía del documento automáticamente"/>
+    <Item english="Language" text="Idioma"/>
+    <Item english="Automatic" text="Automático"/>
+    <Item english="Ignore Spelling" text="Ignorar ortografía"/>
+    <Item english="Learn Spelling" text="Aprender ortografía"/>
+    <Item english="No Guesses Found" text="No se han encontrado sugerencias"/>
     <Item english="Valid JSON." text="JSON válido."/>
     <Item english="Invalid JSON." text="JSON no válido."/>
     <Item english="Set as the first file to compare." text="Establecido como primer archivo para comparar."/>

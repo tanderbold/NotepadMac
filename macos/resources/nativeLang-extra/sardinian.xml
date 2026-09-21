@@ -69,6 +69,22 @@
     <Item english="URL Encode (RFC1738)" text="Codìfica URL (RFC1738)"/>
     <Item english="URL Decode" text="Decodìfica URL"/>
     <Item english="SAML Decode" text="Decodìfica SAML"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Character:" text="Caràtere:"/>
+    <Item english="Decimal:" text="Detzimale:"/>
+    <Item english="Hexadecimal:" text="Esadetzimale:"/>
+    <Item english="Binary:" text="Binàriu:"/>
+    <Item english="Octal:" text="Otale:"/>
+    <Item english="Hex format is not conformed" text="Su formadu esadetzimale no est vàlidu"/>
+    <Item english="Export" text="Esporta"/>
+    <Item english="Export to RTF" text="Esporta in RTF"/>
+    <Item english="Export to HTML" text="Esporta in HTML"/>
+    <Item english="Copy RTF to clipboard" text="Còpia RTF in is notas"/>
+    <Item english="Copy HTML to clipboard" text="Còpia HTML in is notas"/>
+    <Item english="Copy all formats to clipboard" text="Còpia totus is formados in is notas"/>
+    <Item english="Language" text="Limba"/>
+    <Item english="Automatic" text="Automàtica"/>
     <Item english="Valid JSON." text="JSON vàlidu."/>
     <Item english="Invalid JSON." text="JSON non vàlidu."/>
     <Item english="FTP connections" text="Connessiones FTP"/>

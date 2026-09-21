@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="A kijelölés nem érvényes Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="A kijelölés nem érvényes Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="A kijelölés nem SAML-üzenet."/>
+    <Item english="Converter" text="Átalakító"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Átalakítási panel"/>
+    <Item english="Character:" text="Karakter:"/>
+    <Item english="Decimal:" text="Decimális:"/>
+    <Item english="Hexadecimal:" text="Hexadecimális:"/>
+    <Item english="Binary:" text="Bináris:"/>
+    <Item english="Octal:" text="Oktális:"/>
+    <Item english="Hex format is not conformed" text="Érvénytelen hexadecimális formátum"/>
+    <Item english="Export" text="Exportálás"/>
+    <Item english="Export to RTF" text="Exportálás RTF-be"/>
+    <Item english="Export to HTML" text="Exportálás HTML-be"/>
+    <Item english="Copy RTF to clipboard" text="RTF másolása a vágólapra"/>
+    <Item english="Copy HTML to clipboard" text="HTML másolása a vágólapra"/>
+    <Item english="Copy all formats to clipboard" text="Minden formátum másolása a vágólapra"/>
+    <Item english="Spell Check" text="Helyesírás-ellenőrzés"/>
+    <Item english="Spell Check Document Automatically" text="A dokumentum automatikus helyesírás-ellenőrzése"/>
+    <Item english="Language" text="Nyelv"/>
+    <Item english="Automatic" text="Automatikus"/>
+    <Item english="Ignore Spelling" text="Helyesírás mellőzése"/>
+    <Item english="Learn Spelling" text="Helyesírás megtanulása"/>
+    <Item english="No Guesses Found" text="Nincs javaslat"/>
     <Item english="Valid JSON." text="Érvényes JSON."/>
     <Item english="Invalid JSON." text="Érvénytelen JSON."/>
     <Item english="Set as the first file to compare." text="Beállítva első fájlként az összehasonlításhoz."/>

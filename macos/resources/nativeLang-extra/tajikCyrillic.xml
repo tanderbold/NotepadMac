@@ -135,6 +135,29 @@
     <Item english="The selection is not valid Base64." text="Қисми интихобшуда Base64-и дуруст нест."/>
     <Item english="The selection is not valid Quoted-printable." text="Қисми интихобшуда Quoted-printable-и дуруст нест."/>
     <Item english="The selection is not a SAML message." text="Қисми интихобшуда паёми SAML нест."/>
+    <Item english="Converter" text="Табдилгар"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Лавҳаи табдил"/>
+    <Item english="Character:" text="Аломат:"/>
+    <Item english="Decimal:" text="Даҳӣ:"/>
+    <Item english="Hexadecimal:" text="Шонздаҳӣ:"/>
+    <Item english="Binary:" text="Дуӣ:"/>
+    <Item english="Octal:" text="Ҳаштӣ:"/>
+    <Item english="Hex format is not conformed" text="Формати HEX нодуруст аст"/>
+    <Item english="Export" text="Содирот"/>
+    <Item english="Export to RTF" text="Содирот ба RTF"/>
+    <Item english="Export to HTML" text="Содирот ба HTML"/>
+    <Item english="Copy RTF to clipboard" text="Нусхагирии RTF ба миёнгири табодул"/>
+    <Item english="Copy HTML to clipboard" text="Нусхагирии HTML ба миёнгири табодул"/>
+    <Item english="Copy all formats to clipboard" text="Нусхагирии ҳамаи форматҳо ба миёнгири табодул"/>
+    <Item english="Spell Check" text="Санҷиши имло"/>
+    <Item english="Spell Check Document Automatically" text="Санҷиши худкори имлои ҳуҷҷат"/>
+    <Item english="Language" text="Забон"/>
+    <Item english="Automatic" text="Худкор"/>
+    <Item english="Ignore Spelling" text="Сарфи назар аз имло"/>
+    <Item english="Learn Spelling" text="Омӯхтани имло"/>
+    <Item english="No Guesses Found" text="Пешниҳод ёфт нашуд"/>
     <Item english="Valid JSON." text="JSON дуруст аст."/>
     <Item english="Invalid JSON." text="JSON нодуруст аст."/>
     <Item english="Set as the first file to compare." text="Ҳамчун файли аввал барои муқоиса таъин шуд."/>

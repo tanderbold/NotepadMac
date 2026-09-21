@@ -124,6 +124,28 @@
     <Item english="URL Encode (Full) by line" text="URL ಎನ್‌ಕೋಡ್ (ಫುಲ್) ಬೈ ಲೈನ್"/>
     <Item english="URL Decode" text="URL ಡೀಕೋಡ್"/>
     <Item english="SAML Decode" text="SAML ಡೀಕೋಡ್"/>
+    <Item english="Converter" text="ಕನ್ವರ್ಟರ್"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="ಕನ್ವರ್ಷನ್ ಪ್ಯಾನೆಲ್"/>
+    <Item english="Character:" text="ಕ್ಯಾರಕ್ಟರ್:"/>
+    <Item english="Decimal:" text="ಡೆಸಿಮಲ್:"/>
+    <Item english="Hexadecimal:" text="ಹೆಕ್ಸಾಡೆಸಿಮಲ್:"/>
+    <Item english="Binary:" text="ಬೈನರೀ:"/>
+    <Item english="Octal:" text="ಆಕ್ಟಲ್:"/>
+    <Item english="Export" text="ಎಕ್ಸ್‌ಪೋರ್ಟ್"/>
+    <Item english="Export to RTF" text="ಎಕ್ಸ್‌ಪೋರ್ಟ್ ತೋ RTF"/>
+    <Item english="Export to HTML" text="ಎಕ್ಸ್‌ಪೋರ್ಟ್ ತೋ HTML"/>
+    <Item english="Copy RTF to clipboard" text="ಕಾಪಿ RTF ತೋ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್"/>
+    <Item english="Copy HTML to clipboard" text="ಕಾಪಿ HTML ತೋ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್"/>
+    <Item english="Copy all formats to clipboard" text="ಕಾಪಿ ಆಲ್ ಫಾರ್ಮ್ಯಾಟ್ಸ್ ತೋ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್"/>
+    <Item english="Spell Check" text="ಸ್ಪೆಲ್ ಚೆಕ್"/>
+    <Item english="Spell Check Document Automatically" text="ಸ್ಪೆಲ್ ಚೆಕ್ ಡಾಕ್ಯುಮೆಂಟ್ ಆಟೋಮ್ಯಾಟಿಕಲಿ"/>
+    <Item english="Language" text="ಲ್ಯಾಂಗ್ವೇಜ್"/>
+    <Item english="Automatic" text="ಆಟೋಮ್ಯಾಟಿಕ್"/>
+    <Item english="Ignore Spelling" text="ಇಗ್ನೋರ್ ಸ್ಪೆಲ್ಲಿಂಗ್"/>
+    <Item english="Learn Spelling" text="ಲರ್ನ್ ಸ್ಪೆಲ್ಲಿಂಗ್"/>
+    <Item english="No Guesses Found" text="ನೋ ಗೆಸಸ್ ಫೌಂಡ್"/>
     <Item english="Valid JSON." text="ವ್ಯಾಲಿಡ್ JSON."/>
     <Item english="Invalid JSON." text="ಇನ್‌ವ್ಯಾಲಿಡ್ JSON."/>
     <Item english="FTP connections" text="FTP ಕನೆಕ್ಷನ್ಸ್"/>

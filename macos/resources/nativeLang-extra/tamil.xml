@@ -137,6 +137,29 @@
     <Item english="The selection is not valid Base64." text="தேர்வு சரியான Base64 அல்ல."/>
     <Item english="The selection is not valid Quoted-printable." text="தேர்வு சரியான Quoted-printable அல்ல."/>
     <Item english="The selection is not a SAML message." text="தேர்வு ஒரு SAML செய்தி அல்ல."/>
+    <Item english="Converter" text="மாற்றி"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="மாற்றுப் பலகம்"/>
+    <Item english="Character:" text="எழுத்து:"/>
+    <Item english="Decimal:" text="பதின்மம்:"/>
+    <Item english="Hexadecimal:" text="பதினறுமம்:"/>
+    <Item english="Binary:" text="இருமம்:"/>
+    <Item english="Octal:" text="எண்மம்:"/>
+    <Item english="Hex format is not conformed" text="HEX வடிவம் சரியாக இல்லை"/>
+    <Item english="Export" text="ஏற்றுமதி"/>
+    <Item english="Export to RTF" text="RTF ஆக ஏற்றுமதி செய்"/>
+    <Item english="Export to HTML" text="HTML ஆக ஏற்றுமதி செய்"/>
+    <Item english="Copy RTF to clipboard" text="RTF ஐ ஒட்டுப்பலகைக்கு நகலெடு"/>
+    <Item english="Copy HTML to clipboard" text="HTML ஐ ஒட்டுப்பலகைக்கு நகலெடு"/>
+    <Item english="Copy all formats to clipboard" text="எல்லா வடிவங்களையும் ஒட்டுப்பலகைக்கு நகலெடு"/>
+    <Item english="Spell Check" text="சொற்பிழை சரிபார்ப்பு"/>
+    <Item english="Spell Check Document Automatically" text="ஆவணத்தின் சொற்பிழையைத் தானாகச் சரிபார்"/>
+    <Item english="Language" text="மொழி"/>
+    <Item english="Automatic" text="தானியங்கு"/>
+    <Item english="Ignore Spelling" text="எழுத்துக்கூட்டலைப் புறக்கணி"/>
+    <Item english="Learn Spelling" text="எழுத்துக்கூட்டலைக் கற்றுக்கொள்"/>
+    <Item english="No Guesses Found" text="பரிந்துரைகள் எதுவும் கிடைக்கவில்லை"/>
     <Item english="Valid JSON." text="சரியான JSON."/>
     <Item english="Invalid JSON." text="தவறான JSON."/>
     <Item english="Set as the first file to compare." text="ஒப்பிட முதல் கோப்பாக அமைக்கப்பட்டது."/>

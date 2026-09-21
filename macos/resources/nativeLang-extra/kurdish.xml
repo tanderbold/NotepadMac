@@ -56,6 +56,18 @@
     <Item english="No update is available." text="هیچ نوێكردنەوەیەك بەردەست نییە."/>
     <Item english="An update package is available, do you want to download it?" text="پاكێجێكی نوێكردنەوە بەردەستە، دەتەوێت دایبەزێنیت؟"/>
     <Item english="Fonts…" text="فۆنتەكان…"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Export" text="هەناردەكردن"/>
+    <Item english="Export to RTF" text="هەناردەكردن بۆ RTF"/>
+    <Item english="Export to HTML" text="هەناردەكردن بۆ HTML"/>
+    <Item english="Spell Check" text="پشكنینی ڕێنووس"/>
+    <Item english="Spell Check Document Automatically" text="پشكنینی ڕێنووسی بەڵگەنامە بە شێوەیەكی خۆكار"/>
+    <Item english="Language" text="زمان"/>
+    <Item english="Automatic" text="خۆكار"/>
+    <Item english="Ignore Spelling" text="پشتگوێخستنی ڕێنووس"/>
+    <Item english="Learn Spelling" text="فێربوونی ڕێنووس"/>
+    <Item english="No Guesses Found" text="هیچ پێشنیارێك نەدۆزرایەوە"/>
     <Item english="FTP connections" text="پەیوەندییەكانی FTP"/>
     <Item english="Cannot connect." text="ناتوانرێت پەیوەندی بكرێت."/>
     <Item english="Which language is this?" text="ئەمە چ زمانێكە؟"/>

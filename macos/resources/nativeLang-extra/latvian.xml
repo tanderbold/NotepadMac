@@ -136,6 +136,29 @@
     <Item english="The selection is not valid Base64." text="Iezīmētais teksts nav derīgs Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Iezīmētais teksts nav derīgs Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Iezīmētais teksts nav SAML ziņojums."/>
+    <Item english="Converter" text="Pārveidotājs"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Pārveidošanas panelis"/>
+    <Item english="Character:" text="Rakstzīme:"/>
+    <Item english="Decimal:" text="Decimālais:"/>
+    <Item english="Hexadecimal:" text="Heksadecimālais:"/>
+    <Item english="Binary:" text="Binārais:"/>
+    <Item english="Octal:" text="Oktālais:"/>
+    <Item english="Hex format is not conformed" text="Heksadecimālais formāts nav derīgs"/>
+    <Item english="Export" text="Eksportēt"/>
+    <Item english="Export to RTF" text="Eksportēt RTF formātā"/>
+    <Item english="Export to HTML" text="Eksportēt HTML formātā"/>
+    <Item english="Copy RTF to clipboard" text="Kopēt RTF starpliktuvē"/>
+    <Item english="Copy HTML to clipboard" text="Kopēt HTML starpliktuvē"/>
+    <Item english="Copy all formats to clipboard" text="Kopēt visus formātus starpliktuvē"/>
+    <Item english="Spell Check" text="Pareizrakstības pārbaude"/>
+    <Item english="Spell Check Document Automatically" text="Automātiski pārbaudīt dokumenta pareizrakstību"/>
+    <Item english="Language" text="Valoda"/>
+    <Item english="Automatic" text="Automātiski"/>
+    <Item english="Ignore Spelling" text="Ignorēt pareizrakstību"/>
+    <Item english="Learn Spelling" text="Iemācīties pareizrakstību"/>
+    <Item english="No Guesses Found" text="Nav atrasts neviens minējums"/>
     <Item english="Valid JSON." text="Derīgs JSON."/>
     <Item english="Invalid JSON." text="Nederīgs JSON."/>
     <Item english="Set as the first file to compare." text="Iestatīts kā pirmais fails salīdzināšanai."/>

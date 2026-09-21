@@ -108,6 +108,29 @@
     <Item english="The selection is not valid Base64." text="La seleccion es pas de Base64 valid."/>
     <Item english="The selection is not valid Quoted-printable." text="La seleccion es pas de Quoted-printable valid."/>
     <Item english="The selection is not a SAML message." text="La seleccion es pas un messatge SAML."/>
+    <Item english="Converter" text="Convertidor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panèl de conversion"/>
+    <Item english="Character:" text="Caractèr :"/>
+    <Item english="Decimal:" text="Decimal :"/>
+    <Item english="Hexadecimal:" text="Exadecimal :"/>
+    <Item english="Binary:" text="Binari :"/>
+    <Item english="Octal:" text="Octal :"/>
+    <Item english="Hex format is not conformed" text="Lo format exadecimal es pas valid"/>
+    <Item english="Export" text="Exportar"/>
+    <Item english="Export to RTF" text="Exportar en RTF"/>
+    <Item english="Export to HTML" text="Exportar en HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copiar RTF dins lo quichapapièrs"/>
+    <Item english="Copy HTML to clipboard" text="Copiar HTML dins lo quichapapièrs"/>
+    <Item english="Copy all formats to clipboard" text="Copiar totes los formats dins lo quichapapièrs"/>
+    <Item english="Spell Check" text="Verificacion de l'ortografia"/>
+    <Item english="Spell Check Document Automatically" text="Verificar automaticament l'ortografia del document"/>
+    <Item english="Language" text="Lengatge"/>
+    <Item english="Automatic" text="Automatic"/>
+    <Item english="Ignore Spelling" text="Ignorar l'ortografia"/>
+    <Item english="Learn Spelling" text="Aprene l'ortografia"/>
+    <Item english="No Guesses Found" text="Cap de suggestion trobada"/>
     <Item english="Valid JSON." text="JSON valid."/>
     <Item english="Invalid JSON." text="JSON invalid."/>
     <Item english="Set as the first file to compare." text="Definit coma primièr fichièr de comparar."/>

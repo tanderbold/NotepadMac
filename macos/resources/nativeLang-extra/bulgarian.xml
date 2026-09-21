@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Избраното не е валиден Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Избраното не е валиден Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Избраното не е SAML съобщение."/>
+    <Item english="Converter" text="Конвертор"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Панел за преобразуване"/>
+    <Item english="Character:" text="Знак:"/>
+    <Item english="Decimal:" text="Десетичен:"/>
+    <Item english="Hexadecimal:" text="Шестнадесетичен:"/>
+    <Item english="Binary:" text="Двоичен:"/>
+    <Item english="Octal:" text="Осмичен:"/>
+    <Item english="Hex format is not conformed" text="HEX форматът не е валиден"/>
+    <Item english="Export" text="Изнасяне"/>
+    <Item english="Export to RTF" text="Изнасяне в RTF"/>
+    <Item english="Export to HTML" text="Изнасяне в HTML"/>
+    <Item english="Copy RTF to clipboard" text="Копиране на RTF в системния буфер"/>
+    <Item english="Copy HTML to clipboard" text="Копиране на HTML в системния буфер"/>
+    <Item english="Copy all formats to clipboard" text="Копиране на всички формати в системния буфер"/>
+    <Item english="Spell Check" text="Проверка на правописа"/>
+    <Item english="Spell Check Document Automatically" text="Автоматична проверка на правописа на документа"/>
+    <Item english="Language" text="Език"/>
+    <Item english="Automatic" text="Автоматично"/>
+    <Item english="Ignore Spelling" text="Игнориране на правописа"/>
+    <Item english="Learn Spelling" text="Запомняне на правописа"/>
+    <Item english="No Guesses Found" text="Няма намерени предложения"/>
     <Item english="Valid JSON." text="Валиден JSON."/>
     <Item english="Invalid JSON." text="Невалиден JSON."/>
     <Item english="Set as the first file to compare." text="Зададен като първи файл за сравняване."/>

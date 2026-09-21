@@ -79,6 +79,23 @@
     <Item english="An update package is available, do you want to download it?" text="Kunephakheji yesibuyekezo etholakalayo, ingabe ufuna ukuyilanda?"/>
     <Item english="Fonts…" text="Amafonti…"/>
     <Item english="This document is not valid JSON." text="Le dokhumenti ayiyona i-JSON evumelekile."/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Iphaneli Yokuguqula"/>
+    <Item english="Character:" text="Uhlamvu:"/>
+    <Item english="Export" text="Thumela"/>
+    <Item english="Export to RTF" text="Thumela ku-RTF"/>
+    <Item english="Export to HTML" text="Thumela ku-HTML"/>
+    <Item english="Copy RTF to clipboard" text="Kopisha i-RTF ku-Clipboard"/>
+    <Item english="Copy HTML to clipboard" text="Kopisha i-HTML ku-Clipboard"/>
+    <Item english="Copy all formats to clipboard" text="Kopisha onke amafomethi ku-Clipboard"/>
+    <Item english="Spell Check" text="Ukuhlola Ukupela"/>
+    <Item english="Spell Check Document Automatically" text="Hlola Ukupela Kwedokhumenti Ngokuzenzakalela"/>
+    <Item english="Language" text="Ulimi"/>
+    <Item english="Automatic" text="Okuzenzakalelayo"/>
+    <Item english="Ignore Spelling" text="Ziba Ukupela"/>
+    <Item english="Learn Spelling" text="Funda Ukupela"/>
+    <Item english="No Guesses Found" text="Azikho iziphakamiso ezitholakele"/>
     <Item english="Valid JSON." text="I-JSON evumelekile."/>
     <Item english="Invalid JSON." text="I-JSON engavumelekile."/>
     <Item english="Nothing to compare with." text="Akukho okokuqhathanisa nakho."/>

@@ -114,6 +114,26 @@
     <Item english="The selection is not valid Base64." text="A selección no ye un Base64 valido."/>
     <Item english="The selection is not valid Quoted-printable." text="A selección no ye un Quoted-printable valido."/>
     <Item english="The selection is not a SAML message." text="A selección no ye un mensache SAML."/>
+    <Item english="Converter" text="Convertidor"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Quadro de conversión"/>
+    <Item english="Character:" text="Caracter:"/>
+    <Item english="Decimal:" text="Decimal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimal:"/>
+    <Item english="Binary:" text="Binario:"/>
+    <Item english="Octal:" text="Octal:"/>
+    <Item english="Hex format is not conformed" text="O formato hexadecimal no ye valido"/>
+    <Item english="Export" text="Exportar"/>
+    <Item english="Export to RTF" text="Exportar ta RTF"/>
+    <Item english="Export to HTML" text="Exportar ta HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copiar RTF t'o portafuellas"/>
+    <Item english="Copy HTML to clipboard" text="Copiar HTML t'o portafuellas"/>
+    <Item english="Copy all formats to clipboard" text="Copiar totz os formatos t'o portafuellas"/>
+    <Item english="Language" text="Luenga"/>
+    <Item english="Automatic" text="Automatico"/>
+    <Item english="Ignore Spelling" text="Ignorar a ortografía"/>
+    <Item english="Learn Spelling" text="Aprender a ortografía"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON no valido."/>
     <Item english="Set as the first file to compare." text="Definiu como primer fichero ta comparar."/>

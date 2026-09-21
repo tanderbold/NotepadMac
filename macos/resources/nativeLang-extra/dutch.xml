@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="De selectie is geen geldige Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="De selectie is geen geldige Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="De selectie is geen SAML-bericht."/>
+    <Item english="Converter" text="Conversie"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Conversiepaneel"/>
+    <Item english="Character:" text="Teken:"/>
+    <Item english="Decimal:" text="Decimaal:"/>
+    <Item english="Hexadecimal:" text="Hexadecimaal:"/>
+    <Item english="Binary:" text="Binair:"/>
+    <Item english="Octal:" text="Octaal:"/>
+    <Item english="Hex format is not conformed" text="Het hex-formaat is ongeldig"/>
+    <Item english="Export" text="Exporteren"/>
+    <Item english="Export to RTF" text="Naar RTF exporteren"/>
+    <Item english="Export to HTML" text="Naar HTML exporteren"/>
+    <Item english="Copy RTF to clipboard" text="RTF naar klembord kopiëren"/>
+    <Item english="Copy HTML to clipboard" text="HTML naar klembord kopiëren"/>
+    <Item english="Copy all formats to clipboard" text="Alle formaten naar klembord kopiëren"/>
+    <Item english="Spell Check" text="Spellingcontrole"/>
+    <Item english="Spell Check Document Automatically" text="Spelling van document automatisch controleren"/>
+    <Item english="Language" text="Taal"/>
+    <Item english="Automatic" text="Automatisch"/>
+    <Item english="Ignore Spelling" text="Spelling negeren"/>
+    <Item english="Learn Spelling" text="Spelling leren"/>
+    <Item english="No Guesses Found" text="Geen suggesties gevonden"/>
     <Item english="Valid JSON." text="Geldige JSON."/>
     <Item english="Invalid JSON." text="Ongeldige JSON."/>
     <Item english="Set as the first file to compare." text="Ingesteld als eerste bestand om te vergelijken."/>

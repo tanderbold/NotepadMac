@@ -126,6 +126,29 @@
     <Item english="The selection is not valid Base64." text="Pilihan ini bukan Base64 yang sah."/>
     <Item english="The selection is not valid Quoted-printable." text="Pilihan ini bukan Quoted-printable yang sah."/>
     <Item english="The selection is not a SAML message." text="Pilihan ini bukan mesej SAML."/>
+    <Item english="Converter" text="Penukar"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panel Penukaran"/>
+    <Item english="Character:" text="Aksara:"/>
+    <Item english="Decimal:" text="Perpuluhan:"/>
+    <Item english="Hexadecimal:" text="Heksadesimal:"/>
+    <Item english="Binary:" text="Binari:"/>
+    <Item english="Octal:" text="Oktal:"/>
+    <Item english="Hex format is not conformed" text="Format heksadesimal tidak sah"/>
+    <Item english="Export" text="Eksport"/>
+    <Item english="Export to RTF" text="Eksport ke RTF"/>
+    <Item english="Export to HTML" text="Eksport ke HTML"/>
+    <Item english="Copy RTF to clipboard" text="Salin RTF ke papan keratan"/>
+    <Item english="Copy HTML to clipboard" text="Salin HTML ke papan keratan"/>
+    <Item english="Copy all formats to clipboard" text="Salin semua format ke papan keratan"/>
+    <Item english="Spell Check" text="Semakan Ejaan"/>
+    <Item english="Spell Check Document Automatically" text="Semak Ejaan Dokumen Secara Automatik"/>
+    <Item english="Language" text="Bahasa"/>
+    <Item english="Automatic" text="Automatik"/>
+    <Item english="Ignore Spelling" text="Abaikan Ejaan"/>
+    <Item english="Learn Spelling" text="Pelajari Ejaan"/>
+    <Item english="No Guesses Found" text="Tiada Cadangan Ditemui"/>
     <Item english="Valid JSON." text="JSON sah."/>
     <Item english="Invalid JSON." text="JSON tidak sah."/>
     <Item english="Set as the first file to compare." text="Ditetapkan sebagai fail pertama untuk dibandingkan."/>

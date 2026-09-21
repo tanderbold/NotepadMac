@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="La selezione non è Base64 valido."/>
     <Item english="The selection is not valid Quoted-printable." text="La selezione non è Quoted-printable valido."/>
     <Item english="The selection is not a SAML message." text="La selezione non è un messaggio SAML."/>
+    <Item english="Converter" text="Convertitore"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Pannello di conversione"/>
+    <Item english="Character:" text="Carattere:"/>
+    <Item english="Decimal:" text="Decimale:"/>
+    <Item english="Hexadecimal:" text="Esadecimale:"/>
+    <Item english="Binary:" text="Binario:"/>
+    <Item english="Octal:" text="Ottale:"/>
+    <Item english="Hex format is not conformed" text="Il formato esadecimale non è valido"/>
+    <Item english="Export" text="Esporta"/>
+    <Item english="Export to RTF" text="Esporta in RTF"/>
+    <Item english="Export to HTML" text="Esporta in HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copia RTF negli appunti"/>
+    <Item english="Copy HTML to clipboard" text="Copia HTML negli appunti"/>
+    <Item english="Copy all formats to clipboard" text="Copia tutti i formati negli appunti"/>
+    <Item english="Spell Check" text="Controllo ortografico"/>
+    <Item english="Spell Check Document Automatically" text="Controlla automaticamente l'ortografia del documento"/>
+    <Item english="Language" text="Lingua"/>
+    <Item english="Automatic" text="Automatica"/>
+    <Item english="Ignore Spelling" text="Ignora ortografia"/>
+    <Item english="Learn Spelling" text="Memorizza ortografia"/>
+    <Item english="No Guesses Found" text="Nessun suggerimento trovato"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON non valido."/>
     <Item english="Set as the first file to compare." text="Impostato come primo file da confrontare."/>

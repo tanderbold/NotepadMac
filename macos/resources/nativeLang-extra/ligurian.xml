@@ -71,6 +71,16 @@
     <Item english="URL Encode (RFC1738)" text="Codifica URL (RFC1738)"/>
     <Item english="URL Decode" text="Decodifica URL"/>
     <Item english="SAML Decode" text="Decodifica SAML"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Character:" text="Caratere:"/>
+    <Item english="Hexadecimal:" text="Ezadeximale:"/>
+    <Item english="Export" text="Espòrta"/>
+    <Item english="Export to RTF" text="Espòrta in RTF"/>
+    <Item english="Export to HTML" text="Espòrta in HTML"/>
+    <Item english="Copy RTF to clipboard" text="Còpia RTF inti aponti"/>
+    <Item english="Copy HTML to clipboard" text="Còpia HTML inti aponti"/>
+    <Item english="Language" text="Lengoaggio"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON no valido."/>
     <Item english="FTP connections" text="Conescioin FTP"/>

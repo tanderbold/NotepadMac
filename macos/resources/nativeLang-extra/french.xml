@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="La sélection n’est pas du Base64 valide."/>
     <Item english="The selection is not valid Quoted-printable." text="La sélection n’est pas du Quoted-printable valide."/>
     <Item english="The selection is not a SAML message." text="La sélection n’est pas un message SAML."/>
+    <Item english="Converter" text="Convertisseur"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Panneau de conversion"/>
+    <Item english="Character:" text="Caractère :"/>
+    <Item english="Decimal:" text="Décimal :"/>
+    <Item english="Hexadecimal:" text="Hexadécimal :"/>
+    <Item english="Binary:" text="Binaire :"/>
+    <Item english="Octal:" text="Octal :"/>
+    <Item english="Hex format is not conformed" text="Le format hexadécimal n’est pas conforme"/>
+    <Item english="Export" text="Exporter"/>
+    <Item english="Export to RTF" text="Exporter en RTF"/>
+    <Item english="Export to HTML" text="Exporter en HTML"/>
+    <Item english="Copy RTF to clipboard" text="Copier le RTF dans le presse-papier"/>
+    <Item english="Copy HTML to clipboard" text="Copier le HTML dans le presse-papier"/>
+    <Item english="Copy all formats to clipboard" text="Copier tous les formats dans le presse-papier"/>
+    <Item english="Spell Check" text="Vérification orthographique"/>
+    <Item english="Spell Check Document Automatically" text="Vérifier automatiquement l’orthographe du document"/>
+    <Item english="Language" text="Langue"/>
+    <Item english="Automatic" text="Automatique"/>
+    <Item english="Ignore Spelling" text="Ignorer l’orthographe"/>
+    <Item english="Learn Spelling" text="Mémoriser l’orthographe"/>
+    <Item english="No Guesses Found" text="Aucune suggestion trouvée"/>
     <Item english="Valid JSON." text="JSON valide."/>
     <Item english="Invalid JSON." text="JSON non valide."/>
     <Item english="Set as the first file to compare." text="Défini comme premier fichier à comparer."/>

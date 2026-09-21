@@ -138,6 +138,29 @@
     <Item english="The selection is not valid Base64." text="Выделение не является корректным Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Выделение не является корректным Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Выделение не является сообщением SAML."/>
+    <Item english="Converter" text="Конвертер"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="Панель преобразования"/>
+    <Item english="Character:" text="Символ:"/>
+    <Item english="Decimal:" text="Десятичное:"/>
+    <Item english="Hexadecimal:" text="Шестнадцатеричное:"/>
+    <Item english="Binary:" text="Двоичное:"/>
+    <Item english="Octal:" text="Восьмеричное:"/>
+    <Item english="Hex format is not conformed" text="Некорректный шестнадцатеричный формат"/>
+    <Item english="Export" text="Экспорт"/>
+    <Item english="Export to RTF" text="Экспорт в RTF"/>
+    <Item english="Export to HTML" text="Экспорт в HTML"/>
+    <Item english="Copy RTF to clipboard" text="Копировать RTF в буфер"/>
+    <Item english="Copy HTML to clipboard" text="Копировать HTML в буфер"/>
+    <Item english="Copy all formats to clipboard" text="Копировать все форматы в буфер"/>
+    <Item english="Spell Check" text="Проверка орфографии"/>
+    <Item english="Spell Check Document Automatically" text="Автоматически проверять орфографию документа"/>
+    <Item english="Language" text="Язык"/>
+    <Item english="Automatic" text="Автоматически"/>
+    <Item english="Ignore Spelling" text="Игнорировать орфографию"/>
+    <Item english="Learn Spelling" text="Запомнить орфографию"/>
+    <Item english="No Guesses Found" text="Вариантов не найдено"/>
     <Item english="Valid JSON." text="Корректный JSON."/>
     <Item english="Invalid JSON." text="Некорректный JSON."/>
     <Item english="Set as the first file to compare." text="Выбран первым файлом для сравнения."/>

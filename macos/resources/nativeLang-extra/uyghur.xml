@@ -111,6 +111,29 @@
     <Item english="Copy debug info to clipboard" text="سازلاش ئۇچۇرىنى ئىشتاختىغا كۆچۈرۈش"/>
     <Item english="Fonts…" text="فونتلار…"/>
     <Item english="This document is not valid JSON." text="بۇ ھۆججەت ئىناۋەتلىك JSON ئەمەس."/>
+    <Item english="Converter" text="ئايلاندۇرغۇچ"/>
+    <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
+    <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
+    <Item english="Conversion Panel" text="ئايلاندۇرۇش تاختىسى"/>
+    <Item english="Character:" text="ھەرپ:"/>
+    <Item english="Decimal:" text="ئونلۇق:"/>
+    <Item english="Hexadecimal:" text="ئون ئالتىلىك:"/>
+    <Item english="Binary:" text="ئىككىلىك:"/>
+    <Item english="Octal:" text="سەككىزلىك:"/>
+    <Item english="Hex format is not conformed" text="HEX فورماتى توغرا ئەمەس"/>
+    <Item english="Export" text="چىقىرىش"/>
+    <Item english="Export to RTF" text="RTF غا چىقىرىش"/>
+    <Item english="Export to HTML" text="HTML غا چىقىرىش"/>
+    <Item english="Copy RTF to clipboard" text="RTF نى ئىشتاختىغا كۆچۈرۈش"/>
+    <Item english="Copy HTML to clipboard" text="HTML نى ئىشتاختىغا كۆچۈرۈش"/>
+    <Item english="Copy all formats to clipboard" text="بارلىق فورماتلارنى ئىشتاختىغا كۆچۈرۈش"/>
+    <Item english="Spell Check" text="ئىملا تەكشۈرۈش"/>
+    <Item english="Spell Check Document Automatically" text="ھۆججەت ئىملاسىنى ئاپتوماتىك تەكشۈرۈش"/>
+    <Item english="Language" text="تىل"/>
+    <Item english="Automatic" text="ئاپتوماتىك"/>
+    <Item english="Ignore Spelling" text="ئىملانى نەزەردىن ساقىت قىلىش"/>
+    <Item english="Learn Spelling" text="ئىملانى ئۆگىنىش"/>
+    <Item english="No Guesses Found" text="تەۋسىيە تېپىلمىدى"/>
     <Item english="Valid JSON." text="JSON ئىناۋەتلىك."/>
     <Item english="Invalid JSON." text="JSON ئىناۋەتسىز."/>
     <Item english="Set as the first file to compare." text="سېلىشتۇرۇشتىكى بىرىنجى ھۆججەت قىلىپ بەلگىلەندى."/>
