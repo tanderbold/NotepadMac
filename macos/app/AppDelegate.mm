@@ -25,6 +25,7 @@
 #include "LangMap.h"
 #import "JsonCommands.h"
 #import "MimeCommands.h"
+#import "PluginHost.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -56,6 +57,7 @@
 @interface AppDelegate () <NSWindowDelegate>
 @property (nonatomic, strong) NSWindow *window;
 @property (nonatomic, strong) EditorController *editor;
+@property (nonatomic, strong) NSMenu *pluginsMenu;   // third-party plugins are appended here
 @property (nonatomic, copy) NSString *lastSearchTerm;
 @property (nonatomic, strong) DocumentListPanel *docList;
 @property (nonatomic, strong) FunctionListPanel *funcList;
@@ -478,6 +480,12 @@ static NSString *Ordinal(NSUInteger n) {
     [self.window makeFirstResponder:self.editor.sci];
     [NSApp activateIgnoringOtherApps:YES];
 
+    // Third-party plugins, once everything they may call is up.
+    NppPluginHost *host = [NppPluginHost shared];
+    host.editor = self.editor;
+    [host loadPluginsFromDirectory:[host pluginsDirectory] intoMenu:self.pluginsMenu];
+    [host notifyPlugins:NPPN_READY];
+
     if (getenv("NPPMAC_TEST")) {
         [self performSelector:@selector(runTestSuite) withObject:nil afterDelay:0.5];
     }
@@ -566,6 +574,7 @@ static NSString *Ordinal(NSUInteger n) {
 }
 
 - (void)applicationWillTerminate:(NSNotification *)note {
+    [[NppPluginHost shared] notifyPlugins:NPPN_SHUTDOWN];
     if ([self automaticUpdateCheckAllowed] && [NppPreferences shared].autoUpdateMode == 2) [self updateCheckAtExit];
     [self rememberFloatingPanels];
     [self.editor rememberPanelState];
@@ -1363,6 +1372,7 @@ static NSString *Ordinal(NSUInteger n) {
 
     [pluginsMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Open Plugins Folder…" action:@selector(openPluginsFolder:) key:@"" flags:0 menu:pluginsMenu];
+    self.pluginsMenu = pluginsMenu;
     pluginsItem.submenu = pluginsMenu;
 
     // ---- Settings

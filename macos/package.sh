@@ -40,7 +40,10 @@ rm -f "$SHIP/Contents/Resources/"test-*.py   # test-suite servers, not for users
 
 if [ -n "${NPPMAC_SIGN_IDENTITY:-}" ]; then
     echo "==> Signing as $NPPMAC_SIGN_IDENTITY"
+    # The entitlements disable library validation so third-party plugins
+    # (macos/plugin-sdk) load under the hardened runtime.
     codesign --force --options runtime --timestamp \
+             --entitlements "$ROOT/macos/entitlements.plist" \
              --sign "$NPPMAC_SIGN_IDENTITY" "$SHIP"
 else
     echo "==> Ad hoc signature (set NPPMAC_SIGN_IDENTITY to sign for distribution)"

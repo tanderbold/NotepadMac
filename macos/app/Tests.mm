@@ -23,6 +23,7 @@
 #import "TabBarView.h"
 #import "JsonCommands.h"
 #import "MimeCommands.h"
+#import "PluginHost.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -9913,6 +9914,58 @@ int NppMacRunTests(AppDelegate *app) {
         [sci message:SCI_UNDO wParam:0 lParam:0];
         Check(@"MIME Tools on the selection", @"the selection is replaced in place and one undo returns it",
               did && [encoded isEqualToString:@"Zm9vYmFy"] && [DocText(ed) isEqualToString:@"foobar"]);
+    }
+
+    printf("\n== Plugin host ==\n");
+    {
+        // Build the sample plugin with the system compiler, in the Windows
+        // plugins\Name\Name layout, and load it through the host.
+        NSString *sdk = [[[NSString stringWithUTF8String:__FILE__]
+                          stringByDeletingLastPathComponent].stringByDeletingLastPathComponent
+                         stringByAppendingPathComponent:@"plugin-sdk"];
+        NSString *sample = [sdk stringByAppendingPathComponent:@"sample/hellomac.c"];
+        NSString *root = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-plugin-test"];
+        NSString *dir = [root stringByAppendingPathComponent:@"HelloMac"];
+        [[NSFileManager defaultManager] removeItemAtPath:root error:NULL];
+        [[NSFileManager defaultManager] createDirectoryAtPath:dir withIntermediateDirectories:YES
+                                                   attributes:nil error:NULL];
+        NSString *dylib = [dir stringByAppendingPathComponent:@"HelloMac.dylib"];
+        NSTask *cc = [[NSTask alloc] init];
+        cc.executableURL = [NSURL fileURLWithPath:@"/usr/bin/clang"];
+        cc.arguments = @[@"-dynamiclib", @"-o", dylib, sample];
+        BOOL built = NO;
+        if ([cc launchAndReturnError:NULL]) { [cc waitUntilExit]; built = cc.terminationStatus == 0; }
+
+        NppPluginHost *host = [NppPluginHost shared];
+        host.editor = ed;
+        NSMenu *pluginsMenu = [[NSMenu alloc] initWithTitle:@"Plugins"];
+        NSUInteger loadedCount = [host loadPluginsFromDirectory:root intoMenu:pluginsMenu];
+        NppLoadedPlugin *plugin = host.plugins.lastObject;
+        NSMenu *sub = pluginsMenu.itemArray.lastObject.submenu;
+        Check(@"Plugin host (load)", @"the sample dylib builds, loads, and its commands become a submenu",
+              built && loadedCount == 1 && [plugin.name isEqualToString:@"HelloMac"] &&
+              plugin.commandCount == 3 && sub.numberOfItems == 3 &&
+              [sub itemAtIndex:1].separatorItem);
+
+        // A command runs and reaches the editor through send(): SCI_REPLACESEL.
+        [ed newDocument];
+        SetDoc(ed, @"");
+        [NSApp sendAction:[sub itemAtIndex:0].action to:[sub itemAtIndex:0].target from:[sub itemAtIndex:0]];
+        Check(@"Plugin host (a command edits)", @"the plugin's menu command writes into the document",
+              [DocText(ed) isEqualToString:@"hello from the sample plugin"]);
+
+        // The NPPM_* side and a notification: opening a file must both answer
+        // NPPM_GETFILENAME and raise NPPN_FILEOPENED in the plugin.
+        intptr_t openedBefore = [plugin sendMessage:1 wParam:NPPN_FILEOPENED lParam:0];
+        NSError *err = nil;
+        [ed openFileAtPath:TempFile(@"t_plugin.txt", @"plugin food\n") error:&err];
+        [ed.sci message:SCI_SETSEL wParam:0 lParam:0];
+        [NSApp sendAction:[sub itemAtIndex:2].action to:[sub itemAtIndex:2].target from:[sub itemAtIndex:2]];
+        Check(@"Plugin host (NPPM and NPPN)", @"NPPM_GETFILENAME answers and NPPN_FILEOPENED arrived",
+              [DocText(ed) hasPrefix:@"t_plugin.txt"] &&
+              [plugin sendMessage:1 wParam:NPPN_FILEOPENED lParam:0] == openedBefore + 1);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
+                  discardChanges:YES];
     }
 
     printf("\n== NppExec scripts ==\n");

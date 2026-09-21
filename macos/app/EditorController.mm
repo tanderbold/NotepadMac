@@ -22,6 +22,7 @@
 #import <objc/runtime.h>
 #import "TabBarView.h"
 #import "SettingsCommands.h"
+#import "PluginHost.h"
 #import "SearchCommands.h"
 #import "LanguageDetection.h"
 #include "ILexer.h"
@@ -749,6 +750,7 @@ static long SciColor(NSColor *c) {
 
     // A name with no extension says nothing, so the contents are asked instead.
     [self detectLanguageOfCurrentDocumentOffering:self.languageChoiceHandler];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppDocumentOpenedNotification object:self];
     return YES;
 }
 
@@ -803,6 +805,7 @@ static long SciColor(NSColor *c) {
     if (switching && doc.foldedLines.count) [self foldLines:doc.foldedLines];
     [self refreshChrome];
     [self.window makeFirstResponder:self.sciView];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppBufferActivatedNotification object:self];
 }
 
 /// Documents are created in a scratch view that shows nothing, as upstream
@@ -1002,6 +1005,7 @@ static long SciColor(NSColor *c) {
         [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
     [self dropBackupOfDocument:self.currentDocument];
     [self refreshChrome];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppDocumentSavedNotification object:self];
     return YES;
 }
 
