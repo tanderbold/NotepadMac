@@ -22,6 +22,7 @@
 #import "TypingCommands.h"
 #import "TabBarView.h"
 #import "JsonCommands.h"
+#import "MimeCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -9824,6 +9825,94 @@ int NppMacRunTests(AppDelegate *app) {
 
         [[NSFileManager defaultManager] removeItemAtPath:runPath error:NULL];
         [[NSFileManager defaultManager] removeItemAtPath:plainPath error:NULL];
+    }
+
+    printf("\n== MIME Tools ==\n");
+    {
+        // Base64, against RFC 4648's test vectors; the plugin encodes without
+        // padding unless asked (b64.cpp).
+        Check(@"MIME Base64 encode", @"RFC 4648 vector, no padding by default",
+              [[EditorController mimeBase64Encode:@"foobar" padded:NO wrapped:NO byLine:NO] isEqualToString:@"Zm9vYmFy"] &&
+              [[EditorController mimeBase64Encode:@"foob" padded:NO wrapped:NO byLine:NO] isEqualToString:@"Zm9vYg"] &&
+              [[EditorController mimeBase64Encode:@"foob" padded:YES wrapped:NO byLine:NO] isEqualToString:@"Zm9vYg=="]);
+        NSMutableString *long3 = [NSMutableString string];
+        for (int i = 0; i < 100; ++i) [long3 appendString:@"abc"];   // 300 bytes -> 400 base64 chars
+        NSString *wrapped = [EditorController mimeBase64Encode:long3 padded:YES wrapped:YES byLine:NO];
+        NSArray *wrappedLines = [wrapped componentsSeparatedByString:@"\n"];
+        BOOL wrapRight = wrappedLines.count == 7;   // 400 = 6*64 + 16
+        for (NSString *l in wrappedLines) wrapRight = wrapRight && l.length <= 64;
+        Check(@"MIME Base64 encode with Unix EOL", @"wraps at 64 columns with \\n",
+              wrapRight && [[wrapped stringByReplacingOccurrencesOfString:@"\n" withString:@""]
+                            isEqualToString:[EditorController mimeBase64Encode:long3 padded:YES wrapped:NO byLine:NO]]);
+        Check(@"MIME Base64 encode by line", @"each line is its own encoding, EOLs kept",
+              [[EditorController mimeBase64Encode:@"ab\ncd\r\nef" padded:NO wrapped:NO byLine:YES]
+               isEqualToString:@"YWI\nY2Q\r\nZWY"]);
+        Check(@"MIME Base64 decode", @"whitespace passed over, missing padding tolerated",
+              [[EditorController mimeBase64Decode:@"Zm9v\nYmFy" strict:NO byLine:NO] isEqualToString:@"foobar"] &&
+              [[EditorController mimeBase64Decode:@"Zm9vYg" strict:NO byLine:NO] isEqualToString:@"foob"] &&
+              [EditorController mimeBase64Decode:@"not base64!" strict:NO byLine:NO] == nil);
+        Check(@"MIME Base64 decode strict", @"whitespace or missing padding is refused",
+              [[EditorController mimeBase64Decode:@"Zm9vYg==" strict:YES byLine:NO] isEqualToString:@"foob"] &&
+              [EditorController mimeBase64Decode:@"Zm9v Yg==" strict:YES byLine:NO] == nil &&
+              [EditorController mimeBase64Decode:@"Zm9vYg" strict:YES byLine:NO] == nil);
+        Check(@"MIME Base64 decode by line", @"each line decoded on its own",
+              [[EditorController mimeBase64Decode:@"Zm9v\nYmE=" strict:NO byLine:YES] isEqualToString:@"foo\nba"]);
+
+        // Quoted-printable: UTF-8 bytes escape as =XX, '=' itself must escape,
+        // and encode/decode round-trips, soft breaks (=\r\n at column 76) included.
+        NSString *qp = [EditorController mimeQuotedPrintableEncode:@"Ünïcödé = fun\n"];
+        Check(@"MIME Quoted-printable encode", @"non-ASCII and '=' become =XX, the rest stays",
+              [qp isEqualToString:@"=C3=9Cn=C3=AFc=C3=B6d=C3=A9 =3D fun\n"]);
+        NSMutableString *longLine = [NSMutableString string];
+        for (int i = 0; i < 120; ++i) [longLine appendString:@"x"];
+        NSString *qpLong = [EditorController mimeQuotedPrintableEncode:longLine];
+        NSArray *qpLines = [qpLong componentsSeparatedByString:@"\r\n"];
+        BOOL qpWrapped = qpLines.count > 1;
+        for (NSString *l in qpLines) qpWrapped = qpWrapped && l.length <= 76;
+        Check(@"MIME Quoted-printable soft break", @"long lines wrap with =CRLF within 76 columns",
+              qpWrapped && [[EditorController mimeQuotedPrintableDecode:qpLong] isEqualToString:longLine]);
+        Check(@"MIME Quoted-printable decode", @"=XX and soft breaks come back; bad hex is refused",
+              [[EditorController mimeQuotedPrintableDecode:qp] isEqualToString:@"Ünïcödé = fun\n"] &&
+              [[EditorController mimeQuotedPrintableDecode:@"a=\nb=\r\nc"] isEqualToString:@"abc"] &&
+              [EditorController mimeQuotedPrintableDecode:@"=ZZ"] == nil);
+
+        // URL encoding in the plugin's three strengths (url.cpp).
+        Check(@"MIME URL encode (RFC1738)", @"unsafe characters and non-ASCII encode, the RFC's allowed marks stay",
+              [[EditorController mimeUrlEncode:@"a b&c(d)é" method:NppUrlEncodeRFC1738 byLine:NO]
+               isEqualToString:@"a%20b%26c(d)%C3%A9"]);
+        Check(@"MIME URL encode (Extended)", @"the common implementations' extra marks encode too",
+              [[EditorController mimeUrlEncode:@"a(d)+x" method:NppUrlEncodeExtended byLine:NO]
+               isEqualToString:@"a%28d%29%2Bx"]);
+        Check(@"MIME URL encode (Full)", @"every byte becomes a triplet",
+              [[EditorController mimeUrlEncode:@"Ab" method:NppUrlEncodeFull byLine:NO] isEqualToString:@"%41%62"]);
+        Check(@"MIME URL encode by line", @"line breaks survive un-encoded",
+              [[EditorController mimeUrlEncode:@"a b\nc d" method:NppUrlEncodeRFC1738 byLine:YES]
+               isEqualToString:@"a%20b\nc%20d"]);
+        Check(@"MIME URL decode", @"triplets decode; '+' and stray '%' pass through as written",
+              [[EditorController mimeUrlDecode:@"a%20b%26c%C3%A9"] isEqualToString:@"a b&céé"] == NO &&
+              [[EditorController mimeUrlDecode:@"a%20b%26c%C3%A9"] isEqualToString:@"a b&cé"] &&
+              [[EditorController mimeUrlDecode:@"1+1%3D2 and 100%"] isEqualToString:@"1+1=2 and 100%"]);
+
+        // SAML: the deflated+Base64+URL-encoded request the redirect binding
+        // carries (vector made with zlib raw deflate), and a plain Base64 XML.
+        NSString *redirect = @"sylOzM0psHIsLcnIC0otLE0tLlHwdLFVqjBUsstIzcnJt9HHVGEHAA%3D%3D";
+        Check(@"MIME SAML decode", @"URL-decode, Base64 and raw inflate give the request back",
+              [[EditorController mimeSamlDecode:redirect]
+               isEqualToString:@"<samlp:AuthnRequest ID=\"x1\">hello</samlp:AuthnRequest>"] &&
+              [[EditorController mimeSamlDecode:@"PD94bWwgdmVyc2lvbj0iMS4wIj8+"] hasPrefix:@"<?xml"] &&
+              [EditorController mimeSamlDecode:@"zzz"] == nil);
+
+        // Through the selection: encode in place, one undo step brings the text back.
+        [ed newDocument];
+        SetDoc(ed, @"foobar");
+        [sci message:SCI_SETSEL wParam:0 lParam:6];
+        BOOL did = [ed mimeTransformSelection:^NSString *(NSString *text) {
+            return [EditorController mimeBase64Encode:text padded:YES wrapped:NO byLine:NO];
+        }];
+        NSString *encoded = DocText(ed);
+        [sci message:SCI_UNDO wParam:0 lParam:0];
+        Check(@"MIME Tools on the selection", @"the selection is replaced in place and one undo returns it",
+              did && [encoded isEqualToString:@"Zm9vYmFy"] && [DocText(ed) isEqualToString:@"foobar"]);
     }
 
     printf("\n== NppExec scripts ==\n");

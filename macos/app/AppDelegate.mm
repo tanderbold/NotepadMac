@@ -24,6 +24,7 @@
 #import "Localization.h"
 #include "LangMap.h"
 #import "JsonCommands.h"
+#import "MimeCommands.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -1314,6 +1315,37 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Upload Current File" action:@selector(ftpUpload:) key:@"" flags:0 menu:ftpMenu];
     [pluginsMenu addItemWithTitle:@"FTP" action:nil keyEquivalent:@""].submenu = ftpMenu;
 
+    // MIME Tools, with the plugin's own items in the plugin's own order.
+    NSMenu *mimeMenu = [[NSMenu alloc] initWithTitle:@"MIME Tools"];
+    struct { NSString *title; SEL sel; NSInteger tag; } mimeRows[] = {
+        {@"Base64 Encode",                 @selector(mimeBase64Encode:),       0},
+        {@"Base64 Encode with padding",    @selector(mimeBase64Encode:),       1},
+        {@"Base64 Encode with Unix EOL",   @selector(mimeBase64Encode:),       2},
+        {@"Base64 Encode by line",         @selector(mimeBase64Encode:),       3},
+        {@"Base64 Decode",                 @selector(mimeBase64Decode:),       0},
+        {@"Base64 Decode strict",          @selector(mimeBase64Decode:),       1},
+        {@"Base64 Decode by line",         @selector(mimeBase64Decode:),       2},
+        {nil, NULL, 0},
+        {@"Quoted-printable Encode",       @selector(mimeQuotedPrintableEncode:), 0},
+        {@"Quoted-printable Decode",       @selector(mimeQuotedPrintableDecode:), 0},
+        {nil, NULL, 0},
+        {@"URL Encode (RFC1738)",          @selector(mimeUrlEncode:),          0},
+        {@"URL Encode (RFC1738) by line",  @selector(mimeUrlEncode:),          1},
+        {@"URL Encode (Extended)",         @selector(mimeUrlEncode:),          2},
+        {@"URL Encode (Extended) by line", @selector(mimeUrlEncode:),          3},
+        {@"URL Encode (Full)",             @selector(mimeUrlEncode:),          4},
+        {@"URL Encode (Full) by line",     @selector(mimeUrlEncode:),          5},
+        {@"URL Decode",                    @selector(mimeUrlDecode:),          0},
+        {nil, NULL, 0},
+        {@"SAML Decode",                   @selector(mimeSamlDecode:),         0},
+    };
+    for (size_t r = 0; r < sizeof(mimeRows)/sizeof(mimeRows[0]); ++r) {
+        if (!mimeRows[r].title) { [mimeMenu addItem:[NSMenuItem separatorItem]]; continue; }
+        NSMenuItem *mi = [self item:mimeRows[r].title action:mimeRows[r].sel key:@"" flags:0 menu:mimeMenu];
+        mi.tag = mimeRows[r].tag;
+    }
+    [pluginsMenu addItemWithTitle:@"MIME Tools" action:nil keyEquivalent:@""].submenu = mimeMenu;
+
     // NppExec's scripts; its saved scripts follow, rebuilt as they change.
     NSMenu *execMenu = [[NSMenu alloc] initWithTitle:@"NppExec"];
     NSMenuItem *execute = [self item:@"Execute NppExec Script…" action:@selector(executeScriptDialog:) key:@"" flags:0 menu:execMenu];
@@ -1432,6 +1464,60 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)jsonFormat:(id)sender  { if (![self.editor formatJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonCompact:(id)sender { if (![self.editor compactJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonSort:(id)sender    { if (![self.editor sortJSONDocument]) [self reportJSONProblem]; }
+
+#pragma mark Plugins > MIME Tools
+
+- (void)mimeBase64Encode:(NSMenuItem *)sender {
+    BOOL padded = sender.tag == 1, wrapped = sender.tag == 2, byLine = sender.tag == 3;
+    [self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeBase64Encode:text padded:padded wrapped:wrapped byLine:byLine];
+    }];
+}
+
+- (void)mimeBase64Decode:(NSMenuItem *)sender {
+    BOOL strict = sender.tag == 1, byLine = sender.tag == 2;
+    if (![self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeBase64Decode:text strict:strict byLine:byLine];
+    }]) [self reportMimeProblem:@"The selection is not valid Base64."];
+}
+
+- (void)mimeQuotedPrintableEncode:(id)sender {
+    [self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeQuotedPrintableEncode:text];
+    }];
+}
+
+- (void)mimeQuotedPrintableDecode:(id)sender {
+    if (![self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeQuotedPrintableDecode:text];
+    }]) [self reportMimeProblem:@"The selection is not valid Quoted-printable."];
+}
+
+- (void)mimeUrlEncode:(NSMenuItem *)sender {
+    NppUrlEncodeMethod method = (NppUrlEncodeMethod)(sender.tag / 2);
+    BOOL byLine = sender.tag % 2 == 1;
+    [self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeUrlEncode:text method:method byLine:byLine];
+    }];
+}
+
+- (void)mimeUrlDecode:(id)sender {
+    [self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeUrlDecode:text];
+    }];
+}
+
+- (void)mimeSamlDecode:(id)sender {
+    if (![self.editor mimeTransformSelection:^NSString *(NSString *text) {
+        return [EditorController mimeSamlDecode:text];
+    }]) [self reportMimeProblem:@"The selection is not a SAML message."];
+}
+
+- (void)reportMimeProblem:(NSString *)message {
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = message;
+    [alert runModal];
+}
 
 - (void)reportJSONProblem {
     NppJsonError *error = [self.editor validateJSONDocument];
