@@ -59,9 +59,11 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - Export: the styled text as RTF or HTML - to a file, or to the clipboard so a paste keeps the colours.
 - Spell checking on the system engine: squiggles as you type (in code: comments and strings only), suggestions in the context menu, every installed dictionary.
 
+- Markdown Preview: the document rendered live in a docked panel (CommonMark + tables), as MarkdownViewer++ does.
+
 **Plugins of your own**: native plugins load from the plugins folder the way they do
 on Windows — a small C interface, Scintilla messages and all. See
-[macos/plugin-sdk](macos/plugin-sdk/README.md).
+[Writing a plugin](#writing-a-plugin) below.
 
 **Interface**
 - The interface in any of Notepad++'s ~90 translations, chosen in Preferences; what only the Mac version says is translated too.
@@ -100,6 +102,52 @@ Security → *Open Anyway*).
 
 Settings live in `~/Library/Application Support/NotepadMac/` and in the
 `org.notepad-plus-plus.mac` preferences domain.
+
+## Writing a plugin
+
+NotepadMac loads native plugins the way Notepad++ loads DLLs on Windows: a
+plugin is a dynamic library with a small C interface —
+[macos/plugin-sdk/NotepadMacPlugin.h](macos/plugin-sdk/NotepadMacPlugin.h),
+Notepad++'s `PluginInterface.h` translated to macOS. If you have written a
+Notepad++ plugin, you already know it; if not, this is the whole of one:
+
+```c
+// myplugin.c — one menu command that writes into the document.
+#include "NotepadMacPlugin.h"
+#define SCI_REPLACESEL 2170               /* any Scintilla message works */
+
+static NppMacData npp;
+
+static void sayHello(void) {
+    npp.send(npp.scintillaHandle, SCI_REPLACESEL, 0, (intptr_t)"Hello from my plugin!");
+}
+
+static NppMacFuncItem items[] = { { "Say Hello", sayHello } };
+
+void nppmac_setInfo(NppMacData data) { npp = data; }
+const char *nppmac_getName(void) { return "MyPlugin"; }
+NppMacFuncItem *nppmac_getFuncsArray(int *count) { *count = 1; return items; }
+```
+
+Build it and put it where plugins live (*Run > Open Plugins Folder* opens it):
+
+```sh
+clang -dynamiclib -I path/to/macos/plugin-sdk -o MyPlugin.dylib myplugin.c
+mkdir -p ~/Library/Application\ Support/NotepadMac/plugins/MyPlugin
+cp MyPlugin.dylib ~/Library/Application\ Support/NotepadMac/plugins/MyPlugin/
+```
+
+Restart NotepadMac: a **MyPlugin** submenu appears in the Plugins menu, and
+*Say Hello* types into the document. From there the whole editor is yours:
+`send(scintillaHandle, SCI_*, …)` is the complete Scintilla API, documented at
+scintilla.org and identical to what Windows plugins use;
+`send(nppHandle, NPPM_*, …)` answers application-level questions (current file
+path, open a file, save, a config folder of your own), and
+`nppmac_beNotified` hears the application's life (file opened, saved, buffer
+activated, shutdown). Any language that can export C symbols from a dylib
+works — C, C++, Objective-C, Swift (`@_cdecl`), Rust (`#[no_mangle]`).
+The full reference, sample plugin and signing notes are in
+[macos/plugin-sdk/README.md](macos/plugin-sdk/README.md).
 
 ## Build it yourself
 

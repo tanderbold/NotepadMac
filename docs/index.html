@@ -114,7 +114,17 @@
     <li><b>Extra tools</b><span>Hashes (bcrypt, scrypt, Argon2, PBKDF2…), Base64/58/32, a password generator, HTTP Request.</span></li>
     <li><b>Knows your language</b><span>A trained model recognises the language of pasted or extension-less text — no rules, just data.</span></li>
     <li><b>Speaks ~90 languages</b><span>The interface follows Notepad++'s own localisations, including the port's additions.</span></li>
+    <li><b>Markdown preview</b><span>The document rendered live in a docked panel — CommonMark with tables.</span></li>
+    <li><b>Spell check &amp; more</b><span>System-engine spell checking, RTF/HTML export that keeps the colours, MIME and number conversions.</span></li>
   </ul>
+
+  <div class="install">
+    <h2>Write your own plugins</h2>
+    <p class="alt" style="margin-top:0">Plugins load the way they do on Windows &mdash; a dynamic library with a
+    small C interface, the full Scintilla API included. One file, one <code>clang -dynamiclib</code>, and your
+    command is in the Plugins menu. <a href="https://github.com/tanderbold/NotepadMac#writing-a-plugin">A complete
+    plugin in twenty lines</a> &middot; <a href="https://github.com/tanderbold/NotepadMac/blob/main/macos/plugin-sdk/README.md">SDK reference</a>.</p>
+  </div>
 
   <p class="links">
     <a href="https://github.com/tanderbold/NotepadMac">Source on GitHub</a>

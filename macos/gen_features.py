@@ -110,6 +110,8 @@ arguments):
 - Spell checking as DSpellCheck arranges it, on the system engine: squiggles
   as you type - in code only comments and strings - suggestions in the
   context menu, Ignore and Learn, every installed dictionary
+- Markdown Preview (MarkdownViewer++'s job): the document rendered live in a
+  docked panel - CommonMark by cmark, GFM tables by a pre-pass
 
 **Third-party plugins** load the way they do on Windows: a dynamic library in
 the plugins folder with the C interface of
