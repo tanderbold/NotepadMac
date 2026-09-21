@@ -96,6 +96,7 @@
     <Item english="Ignore Spelling" text="Ziba Ukupela"/>
     <Item english="Learn Spelling" text="Funda Ukupela"/>
     <Item english="No Guesses Found" text="Azikho iziphakamiso ezitholakele"/>
+    <Item english="Markdown Preview" text="Ukubuka Kuqala kwe-Markdown"/>
     <Item english="Valid JSON." text="I-JSON evumelekile."/>
     <Item english="Invalid JSON." text="I-JSON engavumelekile."/>
     <Item english="Nothing to compare with." text="Akukho okokuqhathanisa nakho."/>

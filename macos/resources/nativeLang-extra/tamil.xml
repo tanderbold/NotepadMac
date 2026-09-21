@@ -160,6 +160,7 @@
     <Item english="Ignore Spelling" text="எழுத்துக்கூட்டலைப் புறக்கணி"/>
     <Item english="Learn Spelling" text="எழுத்துக்கூட்டலைக் கற்றுக்கொள்"/>
     <Item english="No Guesses Found" text="பரிந்துரைகள் எதுவும் கிடைக்கவில்லை"/>
+    <Item english="Markdown Preview" text="Markdown முன்னோட்டம்"/>
     <Item english="Valid JSON." text="சரியான JSON."/>
     <Item english="Invalid JSON." text="தவறான JSON."/>
     <Item english="Set as the first file to compare." text="ஒப்பிட முதல் கோப்பாக அமைக்கப்பட்டது."/>

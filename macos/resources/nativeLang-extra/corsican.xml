@@ -138,6 +138,7 @@
     <Item english="Copy all formats to clipboard" text="Cupià tutti i furmati in u preme’papei"/>
     <Item english="Language" text="Lingua"/>
     <Item english="Automatic" text="Autumaticu"/>
+    <Item english="Markdown Preview" text="Fighjulata Markdown"/>
     <Item english="Valid JSON." text="JSON accettevule."/>
     <Item english="Invalid JSON." text="JSON inaccettevule."/>
     <Item english="Set as the first file to compare." text="Definitu cum’è primu schedariu à paragunà."/>

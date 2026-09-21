@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="ਸ਼ਬਦ-ਜੋੜ ਅਣਡਿੱਠ ਕਰੋ"/>
     <Item english="Learn Spelling" text="ਸ਼ਬਦ-ਜੋੜ ਸਿੱਖੋ"/>
     <Item english="No Guesses Found" text="ਕੋਈ ਸੁਝਾਅ ਨਹੀਂ ਮਿਲਿਆ"/>
+    <Item english="Markdown Preview" text="Markdown ਝਲਕ"/>
     <Item english="Valid JSON." text="ਵੈਧ JSON।"/>
     <Item english="Invalid JSON." text="ਅਵੈਧ JSON।"/>
     <Item english="Set as the first file to compare." text="ਤੁਲਨਾ ਲਈ ਪਹਿਲੀ ਫਾਇਲ ਸੈੱਟ ਕੀਤੀ ਗਈ।"/>

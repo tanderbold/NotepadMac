@@ -81,6 +81,7 @@
     <Item english="Copy RTF to clipboard" text="Còpia RTF inti aponti"/>
     <Item english="Copy HTML to clipboard" text="Còpia HTML inti aponti"/>
     <Item english="Language" text="Lengoaggio"/>
+    <Item english="Markdown Preview" text="Anteprimma Markdown"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON no valido."/>
     <Item english="FTP connections" text="Conescioin FTP"/>

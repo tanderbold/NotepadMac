@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="スペルを無視"/>
     <Item english="Learn Spelling" text="スペルを学習"/>
     <Item english="No Guesses Found" text="候補が見つかりません"/>
+    <Item english="Markdown Preview" text="Markdown プレビュー"/>
     <Item english="Valid JSON." text="有効な JSON です。"/>
     <Item english="Invalid JSON." text="無効な JSON です。"/>
     <Item english="Set as the first file to compare." text="比較の1番目のファイルに設定しました。"/>

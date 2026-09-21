@@ -159,6 +159,7 @@
     <Item english="Ignore Spelling" text="Παράβλεψη ορθογραφίας"/>
     <Item english="Learn Spelling" text="Εκμάθηση ορθογραφίας"/>
     <Item english="No Guesses Found" text="Δεν βρέθηκαν προτάσεις"/>
+    <Item english="Markdown Preview" text="Προεπισκόπηση Markdown"/>
     <Item english="Valid JSON." text="Έγκυρο JSON."/>
     <Item english="Invalid JSON." text="Μη έγκυρο JSON."/>
     <Item english="Set as the first file to compare." text="Ορίστηκε ως το πρώτο αρχείο για σύγκριση."/>

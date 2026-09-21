@@ -155,6 +155,7 @@
     <Item english="Ignore Spelling" text="Зөв бичгийг үл харгалзах"/>
     <Item english="Learn Spelling" text="Зөв бичгийг сурах"/>
     <Item english="No Guesses Found" text="Ямар ч санал олдсонгүй"/>
+    <Item english="Markdown Preview" text="Markdown-ийг урьдчилан харах"/>
     <Item english="Valid JSON." text="Зөв JSON."/>
     <Item english="Invalid JSON." text="Буруу JSON."/>
     <Item english="Set as the first file to compare." text="Харьцуулах эхний файл болголоо."/>

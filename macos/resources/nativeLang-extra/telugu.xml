@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="స్పెల్లింగ్‌ను విస్మరించు"/>
     <Item english="Learn Spelling" text="స్పెల్లింగ్‌ను నేర్చుకో"/>
     <Item english="No Guesses Found" text="సూచనలు కనబడలేదు"/>
+    <Item english="Markdown Preview" text="Markdown మునుజూపు"/>
     <Item english="Valid JSON." text="చెల్లుబాటు అయ్యే JSON."/>
     <Item english="Invalid JSON." text="చెల్లని JSON."/>
     <Item english="Set as the first file to compare." text="పోల్చడానికి మొదటి ఫైల్‌గా సెట్ చేయబడింది."/>

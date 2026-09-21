@@ -149,6 +149,7 @@
     <Item english="Ignore Spelling" text="Abaikan Ejaan"/>
     <Item english="Learn Spelling" text="Pelajari Ejaan"/>
     <Item english="No Guesses Found" text="Tiada Cadangan Ditemui"/>
+    <Item english="Markdown Preview" text="Pratonton Markdown"/>
     <Item english="Valid JSON." text="JSON sah."/>
     <Item english="Invalid JSON." text="JSON tidak sah."/>
     <Item english="Set as the first file to compare." text="Ditetapkan sebagai fail pertama untuk dibandingkan."/>

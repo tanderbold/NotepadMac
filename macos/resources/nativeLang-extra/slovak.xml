@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Ignorovať pravopis"/>
     <Item english="Learn Spelling" text="Naučiť sa pravopis"/>
     <Item english="No Guesses Found" text="Nenašli sa žiadne návrhy"/>
+    <Item english="Markdown Preview" text="Náhľad Markdown"/>
     <Item english="Valid JSON." text="Platný JSON."/>
     <Item english="Invalid JSON." text="Neplatný JSON."/>
     <Item english="Set as the first file to compare." text="Nastavený ako prvý súbor na porovnanie."/>

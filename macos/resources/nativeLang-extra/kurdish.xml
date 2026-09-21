@@ -68,6 +68,7 @@
     <Item english="Ignore Spelling" text="پشتگوێخستنی ڕێنووس"/>
     <Item english="Learn Spelling" text="فێربوونی ڕێنووس"/>
     <Item english="No Guesses Found" text="هیچ پێشنیارێك نەدۆزرایەوە"/>
+    <Item english="Markdown Preview" text="پێشبینینی Markdown"/>
     <Item english="FTP connections" text="پەیوەندییەكانی FTP"/>
     <Item english="Cannot connect." text="ناتوانرێت پەیوەندی بكرێت."/>
     <Item english="Which language is this?" text="ئەمە چ زمانێكە؟"/>

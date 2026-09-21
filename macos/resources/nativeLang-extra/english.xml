@@ -163,6 +163,7 @@
     <Item english="Ignore Spelling" text="Ignore Spelling"/>
     <Item english="Learn Spelling" text="Learn Spelling"/>
     <Item english="No Guesses Found" text="No Guesses Found"/>
+    <Item english="Markdown Preview" text="Markdown Preview"/>
     <Item english="Valid JSON." text="Valid JSON."/>
     <Item english="Invalid JSON." text="Invalid JSON."/>
     <Item english="Set as the first file to compare." text="Set as the first file to compare."/>

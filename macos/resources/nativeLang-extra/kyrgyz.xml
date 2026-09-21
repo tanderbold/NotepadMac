@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Жазылышты эске алба"/>
     <Item english="Learn Spelling" text="Жазылышты жаттап ал"/>
     <Item english="No Guesses Found" text="Сунуштар табылган жок"/>
+    <Item english="Markdown Preview" text="Markdown алдын ала көрүү"/>
     <Item english="Valid JSON." text="Туура JSON."/>
     <Item english="Invalid JSON." text="Туура эмес JSON."/>
     <Item english="Set as the first file to compare." text="Салыштыруу үчүн биринчи файл катары белгиленди."/>

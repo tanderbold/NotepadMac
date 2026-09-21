@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Imloni e’tiborsiz qoldirmoq"/>
     <Item english="Learn Spelling" text="Imloni oʻrganmoq"/>
     <Item english="No Guesses Found" text="Takliflar topilmadi"/>
+    <Item english="Markdown Preview" text="Markdown’ni oldindan koʻrish"/>
     <Item english="Valid JSON." text="Yaroqli JSON."/>
     <Item english="Invalid JSON." text="Yaroqsiz JSON."/>
     <Item english="Set as the first file to compare." text="Taqqoslash uchun birinchi fayl deb belgilandi."/>

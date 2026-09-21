@@ -141,6 +141,7 @@
     <Item english="Ignore Spelling" text="Déan neamhaird den litriú"/>
     <Item english="Learn Spelling" text="Foghlaim an litriú"/>
     <Item english="No Guesses Found" text="Níor aimsíodh aon mholadh"/>
+    <Item english="Markdown Preview" text="Réamhamharc Markdown"/>
     <Item english="Valid JSON." text="JSON bailí."/>
     <Item english="Invalid JSON." text="JSON neamhbhailí."/>
     <Item english="Set as the first file to compare." text="Socraithe mar an chéad chomhad le comparáid."/>

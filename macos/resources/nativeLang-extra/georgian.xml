@@ -155,6 +155,7 @@
     <Item english="Ignore Spelling" text="მართლწერის იგნორირება"/>
     <Item english="Learn Spelling" text="მართლწერის დამახსოვრება"/>
     <Item english="No Guesses Found" text="შემოთავაზებები ვერ მოიძებნა"/>
+    <Item english="Markdown Preview" text="Markdown-ის გადახედვა"/>
     <Item english="Valid JSON." text="სწორი JSON."/>
     <Item english="Invalid JSON." text="არასწორი JSON."/>
     <Item english="Set as the first file to compare." text="მონიშნულია პირველ შესადარებელ ფაილად."/>

@@ -157,6 +157,7 @@
     <Item english="Ignore Spelling" text="Anwybyddu Sillafiad"/>
     <Item english="Learn Spelling" text="Dysgu Sillafiad"/>
     <Item english="No Guesses Found" text="Ni Chanfuwyd Awgrymiadau"/>
+    <Item english="Markdown Preview" text="Rhagolwg Markdown"/>
     <Item english="Valid JSON." text="JSON dilys."/>
     <Item english="Invalid JSON." text="JSON annilys."/>
     <Item english="Set as the first file to compare." text="Wedi'i gosod fel y ffeil gyntaf i'w chymharu."/>

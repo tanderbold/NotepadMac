@@ -142,6 +142,7 @@
     <Item english="Ignore Spelling" text="Rechtschreiwung ignoréieren"/>
     <Item english="Learn Spelling" text="Rechtschreiwung léieren"/>
     <Item english="No Guesses Found" text="Keng Virschléi fonnt"/>
+    <Item english="Markdown Preview" text="Markdown-Virschau"/>
     <Item english="Valid JSON." text="Gültegen JSON."/>
     <Item english="Invalid JSON." text="Ongültegen JSON."/>
     <Item english="Set as the first file to compare." text="Als éischt Datei fir de Verglach festgeluecht."/>

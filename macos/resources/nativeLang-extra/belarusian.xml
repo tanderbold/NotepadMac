@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Ігнараваць правапіс"/>
     <Item english="Learn Spelling" text="Запомніць правапіс"/>
     <Item english="No Guesses Found" text="Прапаноў не знойдзена"/>
+    <Item english="Markdown Preview" text="Папярэдні прагляд Markdown"/>
     <Item english="Valid JSON." text="Карэктны JSON."/>
     <Item english="Invalid JSON." text="Некарэктны JSON."/>
     <Item english="Set as the first file to compare." text="Выбраны першым файлам для параўнання."/>

@@ -127,4 +127,5 @@
     <Item english="Copy as curl" text="Eilañ evel curl"/>
     <Item english="Open in New Document" text="Digeriñ en un teuliad nevez"/>
     <Item english="This is not a curl command." text="N'eo ket un urzhiad curl."/>
+    <Item english="Markdown Preview" text="Rakwel Markdown"/>
 </NativeLangExtra>

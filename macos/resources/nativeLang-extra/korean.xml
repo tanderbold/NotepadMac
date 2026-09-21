@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="맞춤법 무시"/>
     <Item english="Learn Spelling" text="맞춤법 학습"/>
     <Item english="No Guesses Found" text="추천 단어 없음"/>
+    <Item english="Markdown Preview" text="Markdown 미리 보기"/>
     <Item english="Valid JSON." text="유효한 JSON입니다."/>
     <Item english="Invalid JSON." text="유효하지 않은 JSON입니다."/>
     <Item english="Set as the first file to compare." text="비교할 첫 번째 파일로 지정했습니다."/>

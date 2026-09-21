@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Bỏ qua chính tả"/>
     <Item english="Learn Spelling" text="Học chính tả"/>
     <Item english="No Guesses Found" text="Không tìm thấy gợi ý"/>
+    <Item english="Markdown Preview" text="Xem trước Markdown"/>
     <Item english="Valid JSON." text="JSON hợp lệ."/>
     <Item english="Invalid JSON." text="JSON không hợp lệ."/>
     <Item english="Set as the first file to compare." text="Đã đặt làm tệp thứ nhất để so sánh."/>

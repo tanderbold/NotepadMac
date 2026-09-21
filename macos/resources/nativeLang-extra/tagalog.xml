@@ -120,6 +120,7 @@
     <Item english="Ignore Spelling" text="Baliwalain ang Baybay"/>
     <Item english="Learn Spelling" text="Matutunan ang Baybay"/>
     <Item english="No Guesses Found" text="Walang Nahanap na Mungkahi"/>
+    <Item english="Markdown Preview" text="Preview ng Markdown"/>
     <Item english="Valid JSON." text="Valid na JSON."/>
     <Item english="Invalid JSON." text="Hindi valid na JSON."/>
     <Item english="Set as the first file to compare." text="Itinakda bilang unang pila sa paghahambing."/>

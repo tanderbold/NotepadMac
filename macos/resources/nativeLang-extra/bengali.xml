@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="বানান উপেক্ষা করুন"/>
     <Item english="Learn Spelling" text="বানান শিখুন"/>
     <Item english="No Guesses Found" text="কোনো প্রস্তাব পাওয়া যায়নি"/>
+    <Item english="Markdown Preview" text="Markdown পূর্বরূপ"/>
     <Item english="Valid JSON." text="বৈধ JSON।"/>
     <Item english="Invalid JSON." text="অবৈধ JSON।"/>
     <Item english="Set as the first file to compare." text="তুলনার জন্য প্রথম ফাইল হিসেবে সেট করা হয়েছে।"/>

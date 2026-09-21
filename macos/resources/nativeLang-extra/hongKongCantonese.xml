@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="忽略拼字"/>
     <Item english="Learn Spelling" text="學習拼字"/>
     <Item english="No Guesses Found" text="搵唔到建議"/>
+    <Item english="Markdown Preview" text="Markdown 預覽"/>
     <Item english="Valid JSON." text="有效嘅 JSON。"/>
     <Item english="Invalid JSON." text="無效嘅 JSON。"/>
     <Item english="Set as the first file to compare." text="已經設定做第一個用嚟比較嘅檔案。"/>

@@ -158,6 +158,7 @@
     <Item english="Ignore Spelling" text="Сарфи назар аз имло"/>
     <Item english="Learn Spelling" text="Омӯхтани имло"/>
     <Item english="No Guesses Found" text="Пешниҳод ёфт нашуд"/>
+    <Item english="Markdown Preview" text="Пешнамоиши Markdown"/>
     <Item english="Valid JSON." text="JSON дуруст аст."/>
     <Item english="Invalid JSON." text="JSON нодуруст аст."/>
     <Item english="Set as the first file to compare." text="Ҳамчун файли аввал барои муқоиса таъин шуд."/>

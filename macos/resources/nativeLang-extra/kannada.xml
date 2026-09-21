@@ -146,6 +146,7 @@
     <Item english="Ignore Spelling" text="ಇಗ್ನೋರ್ ಸ್ಪೆಲ್ಲಿಂಗ್"/>
     <Item english="Learn Spelling" text="ಲರ್ನ್ ಸ್ಪೆಲ್ಲಿಂಗ್"/>
     <Item english="No Guesses Found" text="ನೋ ಗೆಸಸ್ ಫೌಂಡ್"/>
+    <Item english="Markdown Preview" text="ಮಾರ್ಕ್‌ಡೌನ್ ಪ್ರಿವ್ಯೂ"/>
     <Item english="Valid JSON." text="ವ್ಯಾಲಿಡ್ JSON."/>
     <Item english="Invalid JSON." text="ಇನ್‌ವ್ಯಾಲಿಡ್ JSON."/>
     <Item english="FTP connections" text="FTP ಕನೆಕ್ಷನ್ಸ್"/>

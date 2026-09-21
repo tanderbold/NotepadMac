@@ -134,6 +134,7 @@
     <Item english="Ignore Spelling" text="ئىملانى نەزەردىن ساقىت قىلىش"/>
     <Item english="Learn Spelling" text="ئىملانى ئۆگىنىش"/>
     <Item english="No Guesses Found" text="تەۋسىيە تېپىلمىدى"/>
+    <Item english="Markdown Preview" text="Markdown ئالدىن كۆرۈش"/>
     <Item english="Valid JSON." text="JSON ئىناۋەتلىك."/>
     <Item english="Invalid JSON." text="JSON ئىناۋەتسىز."/>
     <Item english="Set as the first file to compare." text="سېلىشتۇرۇشتىكى بىرىنجى ھۆججەت قىلىپ بەلگىلەندى."/>

@@ -156,6 +156,7 @@
     <Item english="Ignore Spelling" text="අක්ෂර වින්‍යාසය නොසලකා හරින්න"/>
     <Item english="Learn Spelling" text="අක්ෂර වින්‍යාසය ඉගෙන ගන්න"/>
     <Item english="No Guesses Found" text="යෝජනා හමු නොවීය"/>
+    <Item english="Markdown Preview" text="Markdown පෙරදසුන"/>
     <Item english="Valid JSON." text="වලංගු JSON."/>
     <Item english="Invalid JSON." text="අවලංගු JSON."/>
     <Item english="Set as the first file to compare." text="සැසඳීමට පළමු ගොනුව ලෙස තබන ලදී."/>

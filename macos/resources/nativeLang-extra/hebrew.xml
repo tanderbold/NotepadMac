@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="התעלם מאיות"/>
     <Item english="Learn Spelling" text="למד איות"/>
     <Item english="No Guesses Found" text="לא נמצאו הצעות"/>
+    <Item english="Markdown Preview" text="תצוגה מקדימה של Markdown"/>
     <Item english="Valid JSON." text="JSON תקין."/>
     <Item english="Invalid JSON." text="JSON לא תקין."/>
     <Item english="Set as the first file to compare." text="נקבע כקובץ הראשון להשוואה."/>

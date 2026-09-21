@@ -159,6 +159,7 @@
     <Item english="Ignore Spelling" text="Ignoru literumadon"/>
     <Item english="Learn Spelling" text="Lernu literumadon"/>
     <Item english="No Guesses Found" text="Neniu propono trovita"/>
+    <Item english="Markdown Preview" text="Markdown-antaŭrigardo"/>
     <Item english="Valid JSON." text="Valida JSON."/>
     <Item english="Invalid JSON." text="Nevalida JSON."/>
     <Item english="Set as the first file to compare." text="Difinita kiel la unua dosiero por komparo."/>

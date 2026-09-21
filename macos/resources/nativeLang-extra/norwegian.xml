@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Ignorer stavemåte"/>
     <Item english="Learn Spelling" text="Lær stavemåte"/>
     <Item english="No Guesses Found" text="Fant ingen forslag"/>
+    <Item english="Markdown Preview" text="Markdown-forhåndsvisning"/>
     <Item english="Valid JSON." text="Gyldig JSON."/>
     <Item english="Invalid JSON." text="Ugyldig JSON."/>
     <Item english="Set as the first file to compare." text="Valgt som første fil til sammenligning."/>

@@ -151,6 +151,7 @@
     <Item english="Ignore Spelling" text="Ezikusi ortografia"/>
     <Item english="Learn Spelling" text="Ikasi ortografia"/>
     <Item english="No Guesses Found" text="Ez da iradokizunik aurkitu"/>
+    <Item english="Markdown Preview" text="Markdown aurrebista"/>
     <Item english="Valid JSON." text="Baliozko JSON."/>
     <Item english="Invalid JSON." text="JSON baliogabea."/>
     <Item english="Set as the first file to compare." text="Konparatzeko lehen fitxategi gisa ezarrita."/>

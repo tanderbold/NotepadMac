@@ -41,6 +41,7 @@
     <Item english="Copy HTML to clipboard" text="Copial HTML al portapapelis"/>
     <Item english="Language" text="Luenga"/>
     <Item english="Automatic" text="Automáticu"/>
+    <Item english="Markdown Preview" text="Vista previa e Markdown"/>
     <Item english="Valid JSON." text="JSON váliu."/>
     <Item english="View 1" text="Vista 1"/>
     <Item english="View 2" text="Vista 2"/>

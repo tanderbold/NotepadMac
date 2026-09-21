@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Zanemari pravopis"/>
     <Item english="Learn Spelling" text="Nauči pravopis"/>
     <Item english="No Guesses Found" text="Nema pronađenih prijedloga"/>
+    <Item english="Markdown Preview" text="Markdown pregled"/>
     <Item english="Valid JSON." text="Ispravan JSON."/>
     <Item english="Invalid JSON." text="Neispravan JSON."/>
     <Item english="Set as the first file to compare." text="Postavljeno kao prva datoteka za poređenje."/>

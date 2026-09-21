@@ -159,6 +159,7 @@
     <Item english="Ignore Spelling" text="Nepaisyti rašybos"/>
     <Item english="Learn Spelling" text="Įsiminti rašybą"/>
     <Item english="No Guesses Found" text="Spėjimų nerasta"/>
+    <Item english="Markdown Preview" text="Markdown peržiūra"/>
     <Item english="Valid JSON." text="Teisingas JSON."/>
     <Item english="Invalid JSON." text="Neteisingas JSON."/>
     <Item english="Set as the first file to compare." text="Nustatytas pirmuoju failu palyginimui."/>

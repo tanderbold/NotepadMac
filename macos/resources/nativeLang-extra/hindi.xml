@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="वर्तनी को अनदेखा करें"/>
     <Item english="Learn Spelling" text="वर्तनी सीखें"/>
     <Item english="No Guesses Found" text="कोई सुझाव नहीं मिला"/>
+    <Item english="Markdown Preview" text="Markdown पूर्वावलोकन"/>
     <Item english="Valid JSON." text="मान्य JSON।"/>
     <Item english="Invalid JSON." text="अमान्य JSON।"/>
     <Item english="Set as the first file to compare." text="तुलना के लिए पहली फाइल के रूप में सेट किया गया।"/>

@@ -85,6 +85,7 @@
     <Item english="Copy all formats to clipboard" text="Còpia totus is formados in is notas"/>
     <Item english="Language" text="Limba"/>
     <Item english="Automatic" text="Automàtica"/>
+    <Item english="Markdown Preview" text="Antiprima Markdown"/>
     <Item english="Valid JSON." text="JSON vàlidu."/>
     <Item english="Invalid JSON." text="JSON non vàlidu."/>
     <Item english="FTP connections" text="Connessiones FTP"/>

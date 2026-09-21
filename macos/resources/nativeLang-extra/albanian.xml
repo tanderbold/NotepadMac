@@ -146,6 +146,7 @@
     <Item english="Ignore Spelling" text="Injoro drejtshkrimin"/>
     <Item english="Learn Spelling" text="Mëso drejtshkrimin"/>
     <Item english="No Guesses Found" text="Nuk u gjetën sugjerime"/>
+    <Item english="Markdown Preview" text="Pamje paraprake e Markdown-ut"/>
     <Item english="Valid JSON." text="JSON i vlefshëm."/>
     <Item english="Invalid JSON." text="JSON i pavlefshëm."/>
     <Item english="Set as the first file to compare." text="U caktua si file i parë për krahasim."/>

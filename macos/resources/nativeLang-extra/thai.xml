@@ -144,6 +144,7 @@
     <Item english="Ignore Spelling" text="ละเว้นการสะกด"/>
     <Item english="Learn Spelling" text="เรียนรู้การสะกด"/>
     <Item english="No Guesses Found" text="ไม่พบคำแนะนำ"/>
+    <Item english="Markdown Preview" text="แสดงตัวอย่าง Markdown"/>
     <Item english="Valid JSON." text="JSON ถูกต้อง"/>
     <Item english="Invalid JSON." text="JSON ไม่ถูกต้อง"/>
     <Item english="Set as the first file to compare." text="ตั้งเป็นไฟล์แรกที่จะเปรียบเทียบแล้ว"/>

@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Abaikan Ejaan"/>
     <Item english="Learn Spelling" text="Pelajari Ejaan"/>
     <Item english="No Guesses Found" text="Tidak Ada Saran Ditemukan"/>
+    <Item english="Markdown Preview" text="Pratinjau Markdown"/>
     <Item english="Valid JSON." text="JSON valid."/>
     <Item english="Invalid JSON." text="JSON tidak valid."/>
     <Item english="Set as the first file to compare." text="Ditetapkan sebagai berkas pertama untuk dibandingkan."/>

@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="نادیده گرفتن املا"/>
     <Item english="Learn Spelling" text="یادگیری املا"/>
     <Item english="No Guesses Found" text="پیشنهادی یافت نشد"/>
+    <Item english="Markdown Preview" text="پیش‌نمایش Markdown"/>
     <Item english="Valid JSON." text="JSON معتبر."/>
     <Item english="Invalid JSON." text="JSON نامعتبر."/>
     <Item english="Set as the first file to compare." text="بعنوان اولین فایل برای مقایسه تنظیم شد."/>

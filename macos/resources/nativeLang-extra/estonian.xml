@@ -159,6 +159,7 @@
     <Item english="Ignore Spelling" text="Eira õigekirja"/>
     <Item english="Learn Spelling" text="Õpi õigekirja"/>
     <Item english="No Guesses Found" text="Soovitusi ei leitud"/>
+    <Item english="Markdown Preview" text="Markdowni eelvaade"/>
     <Item english="Valid JSON." text="Kehtiv JSON."/>
     <Item english="Invalid JSON." text="Vigane JSON."/>
     <Item english="Set as the first file to compare." text="Määratud esimeseks võrreldavaks failiks."/>

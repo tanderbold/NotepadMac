@@ -134,6 +134,7 @@
     <Item english="Automatic" text="Automatico"/>
     <Item english="Ignore Spelling" text="Ignorar a ortografía"/>
     <Item english="Learn Spelling" text="Aprender a ortografía"/>
+    <Item english="Markdown Preview" text="Vista previa de Markdown"/>
     <Item english="Valid JSON." text="JSON valido."/>
     <Item english="Invalid JSON." text="JSON no valido."/>
     <Item english="Set as the first file to compare." text="Definiu como primer fichero ta comparar."/>

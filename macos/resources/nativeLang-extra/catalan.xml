@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Ignora l'ortografia"/>
     <Item english="Learn Spelling" text="Aprèn l'ortografia"/>
     <Item english="No Guesses Found" text="No s'han trobat suggeriments"/>
+    <Item english="Markdown Preview" text="Previsualització de Markdown"/>
     <Item english="Valid JSON." text="JSON vàlid."/>
     <Item english="Invalid JSON." text="JSON no vàlid."/>
     <Item english="Set as the first file to compare." text="Establert com a primer fitxer per comparar."/>

@@ -113,6 +113,7 @@
     <Item english="Copy all formats to clipboard" text="Copie ducj i formâts tai Aponts"/>
     <Item english="Language" text="Lenghe"/>
     <Item english="Automatic" text="Automatic"/>
+    <Item english="Markdown Preview" text="Anteprime Markdown"/>
     <Item english="Valid JSON." text="JSON valit."/>
     <Item english="Invalid JSON." text="JSON no valit."/>
     <Item english="The document is valid XML." text="Il document al è XML valit."/>

@@ -161,6 +161,7 @@
     <Item english="Ignore Spelling" text="Helyesírás mellőzése"/>
     <Item english="Learn Spelling" text="Helyesírás megtanulása"/>
     <Item english="No Guesses Found" text="Nincs javaslat"/>
+    <Item english="Markdown Preview" text="Markdown-előnézet"/>
     <Item english="Valid JSON." text="Érvényes JSON."/>
     <Item english="Invalid JSON." text="Érvénytelen JSON."/>
     <Item english="Set as the first file to compare." text="Beállítva első fájlként az összehasonlításhoz."/>

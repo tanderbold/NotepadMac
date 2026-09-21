@@ -143,6 +143,7 @@
     <Item english="Ignore Spelling" text="Ignoreer spelling"/>
     <Item english="Learn Spelling" text="Leer spelling"/>
     <Item english="No Guesses Found" text="Geen voorstelle gevind nie"/>
+    <Item english="Markdown Preview" text="Markdown-voorskou"/>
     <Item english="Valid JSON." text="Geldige JSON."/>
     <Item english="Invalid JSON." text="Ongeldige JSON."/>
     <Item english="Set as the first file to compare." text="Gestel as die eerste leêr om te vergelyk."/>
