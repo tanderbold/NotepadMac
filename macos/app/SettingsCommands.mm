@@ -183,6 +183,7 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"panelStateKeep"): @{}, Key(@"distractionFreeDivPart"): @4, Key(@"openAnsiAsUtf8"): @YES, Key(@"dockLayout"): @{}, Key(@"localizationFile"): @"",
         Key(@"autoUpdateMode"): @1, Key(@"updateIntervalDays"): @15, Key(@"nextUpdateDate"): @"",
         Key(@"updateRepository"): @"tanderbold/NotepadMac",
+        Key(@"spellCheckLanguage"): @"",
         Key(@"shortcutOverrides"): @{},
         Key(@"contextMenuCommands"): @[@"Cut", @"Copy", @"Paste", @"Select All",
                                        @"Toggle Line Comment", @"Go to Matching Brace"],
@@ -282,6 +283,8 @@ NPP_PREF_BOOL(sqlBackslashEscape, setSqlBackslashEscape, @"sqlBackslashEscape")
 NPP_PREF_BOOL(converterInsertSpace, setConverterInsertSpace, @"converterInsertSpace")
 NPP_PREF_BOOL(converterUppercase, setConverterUppercase, @"converterUppercase")
 NPP_PREF_INT(converterHexPerLine, setConverterHexPerLine, @"converterHexPerLine")
+NPP_PREF_BOOL(spellCheckEnabled, setSpellCheckEnabled, @"spellCheckEnabled")
+NPP_PREF_OBJ(spellCheckLanguage, setSpellCheckLanguage, NSString, @"spellCheckLanguage")
 NPP_PREF_OBJ(languageIndent, setLanguageIndent, NSDictionary, @"languageIndent")
 NPP_PREF_BOOL(backspaceUnindents, setBackspaceUnindents, @"backspaceUnindents")
 NPP_PREF_BOOL(statusBarHidden, setStatusBarHidden, @"statusBarHidden")

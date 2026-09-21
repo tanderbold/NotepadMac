@@ -23,6 +23,7 @@
 #import "TabBarView.h"
 #import "SettingsCommands.h"
 #import "PluginHost.h"
+#import "SpellCheck.h"
 #import "SearchCommands.h"
 #import "LanguageDetection.h"
 #include "ILexer.h"
@@ -2384,6 +2385,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         }
         return;
     }
+    // A misspelled word under the caret puts the engine's guesses on top,
+    // the way every Mac text field does.
+    for (NSMenuItem *item in [self spellingMenuItemsForPosition:
+            (long)[self.sci message:SCI_GETCURRENTPOS wParam:0 lParam:0]]) [menu addItem:item];
     for (NSMenuItem *item in [self contextMenuItems]) [menu addItem:item];
 }
 
@@ -2846,6 +2851,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             [self updateBraceMatch];
             if (n->updated & SC_UPDATE_SELECTION) [self updateSmartHighlight];
             if (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT)) [self highlightMatchingTags];
+            if (n->updated & (SC_UPDATE_CONTENT | SC_UPDATE_V_SCROLL)) [self scheduleSpellCheck];
             break;
         case SCN_CHARADDED:
             [self handleCharacterAdded:n->ch];

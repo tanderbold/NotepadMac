@@ -157,6 +157,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL converterInsertSpace;
 @property (nonatomic) BOOL converterUppercase;
 @property (nonatomic) NSInteger converterHexPerLine;
+// Spell checking (DSpellCheck's job): on/off and the language, "" = automatic.
+@property (nonatomic) BOOL spellCheckEnabled;
+@property (nonatomic, copy) NSString *spellCheckLanguage;
 // Indentation
 /// Per language: {"size": n, "spaces": BOOL}; absent means the default.
 @property (nonatomic, copy) NSDictionary<NSString *, NSDictionary *> *languageIndent;

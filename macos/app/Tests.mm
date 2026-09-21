@@ -26,6 +26,7 @@
 #import "PluginHost.h"
 #import "ConverterCommands.h"
 #import "ExportCommands.h"
+#import "SpellCheck.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -10013,6 +10014,60 @@ int NppMacRunTests(AppDelegate *app) {
 
         [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
                   discardChanges:YES];
+    }
+
+    printf("\n== Spell check ==\n");
+    {
+        NSSpellChecker *checker = [NSSpellChecker sharedSpellChecker];
+        NSRange probe = [checker checkSpellingOfString:@"helo" startingAt:0 language:@"en"
+                                                  wrap:NO inSpellDocumentWithTag:0 wordCount:NULL];
+        if (probe.location != 0) {
+            // No dictionaries to judge with (a stripped-down runner): the
+            // machinery cannot be exercised honestly, and that is said aloud.
+            printf("  note: the spelling engine offers no English here; spell checks not exercised\n");
+        } else {
+            NppPreferences *prefs = [NppPreferences shared];
+            BOOL wasOn = prefs.spellCheckEnabled;
+            NSString *wasLang = prefs.spellCheckLanguage;
+            prefs.spellCheckEnabled = YES;
+            prefs.spellCheckLanguage = @"en";
+
+            [ed newDocument];
+            SetDoc(ed, @"helo wrld\n");
+            [ed spellCheckNow];
+            Check(@"Spell check squiggles", @"misspelled words carry the indicator, in plain text everywhere",
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:1] &&
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:6]);
+
+            NSError *err = nil;
+            [ed openFileAtPath:TempFile(@"t_spell.py", @"wrld = 1  # helo wrld\n") error:&err];
+            [ed spellCheckNow];
+            Check(@"Spell check styles", @"in code only comments and strings are checked, identifiers are left alone",
+                  ![sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:1] &&
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:13]);
+
+            NSArray<NSMenuItem *> *offers = [ed spellingMenuItemsForPosition:13];
+            BOOL hasIgnore = NO, hasLearn = NO;
+            NSMenuItem *ignoreItem = nil;
+            for (NSMenuItem *item in offers) {
+                if (item.action == @selector(spellIgnoreWord:)) { hasIgnore = YES; ignoreItem = item; }
+                if (item.action == @selector(spellLearnWord:)) hasLearn = YES;
+            }
+            Check(@"Spell check suggestions", @"the context menu gets guesses, Ignore and Learn for the word",
+                  offers.count >= 4 && hasIgnore && hasLearn);
+
+            // Ignore is session-wide and safe to fire; Learn would write into
+            // the user's dictionary for good, so it is not.
+            [NSApp sendAction:ignoreItem.action to:ignoreItem.target from:ignoreItem];
+            Check(@"Spell check Ignore", @"an ignored word loses its squiggle",
+                  ![sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:13]);
+
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
+                      discardChanges:YES];
+            prefs.spellCheckEnabled = wasOn;
+            prefs.spellCheckLanguage = wasLang;
+            [ed spellCheckNow];
+        }
     }
 
     printf("\n== Plugin host ==\n");

@@ -28,6 +28,7 @@
 #import "PluginHost.h"
 #import "ConverterCommands.h"
 #import "ExportCommands.h"
+#import "SpellCheck.h"
 #import "CompareCommands.h"
 #import "FtpCommands.h"
 #import "XmlCommands.h"
@@ -56,7 +57,7 @@
 #import "ContextMenuFile.h"
 #import <objc/runtime.h>
 
-@interface AppDelegate () <NSWindowDelegate>
+@interface AppDelegate () <NSWindowDelegate, NSMenuDelegate>
 @property (nonatomic, strong) NSWindow *window;
 @property (nonatomic, strong) EditorController *editor;
 @property (nonatomic, strong) NSMenu *pluginsMenu;   // third-party plugins are appended here
@@ -1376,6 +1377,15 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Copy all formats to clipboard" action:@selector(copyAllFormatsToClipboard:) key:@"" flags:0 menu:exportMenu];
     [pluginsMenu addItemWithTitle:@"Export" action:nil keyEquivalent:@""].submenu = exportMenu;
 
+    // Spell Check (DSpellCheck's job, on the system engine).
+    NSMenu *spellMenu = [[NSMenu alloc] initWithTitle:@"Spell Check"];
+    [self item:@"Spell Check Document Automatically" action:@selector(toggleSpellCheck:) key:@"" flags:0 menu:spellMenu];
+    NSMenu *spellLangMenu = [[NSMenu alloc] initWithTitle:@"Language"];
+    spellLangMenu.delegate = self;
+    spellLangMenu.identifier = @"NppSpellLanguages";
+    [spellMenu addItemWithTitle:@"Language" action:nil keyEquivalent:@""].submenu = spellLangMenu;
+    [pluginsMenu addItemWithTitle:@"Spell Check" action:nil keyEquivalent:@""].submenu = spellMenu;
+
     // NppExec's scripts; its saved scripts follow, rebuilt as they change.
     NSMenu *execMenu = [[NSMenu alloc] initWithTitle:@"NppExec"];
     NSMenuItem *execute = [self item:@"Execute NppExec Script…" action:@selector(executeScriptDialog:) key:@"" flags:0 menu:execMenu];
@@ -1495,6 +1505,40 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)jsonFormat:(id)sender  { if (![self.editor formatJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonCompact:(id)sender { if (![self.editor compactJSONDocument]) [self reportJSONProblem]; }
 - (void)jsonSort:(id)sender    { if (![self.editor sortJSONDocument]) [self reportJSONProblem]; }
+
+#pragma mark Plugins > Spell Check
+
+- (void)toggleSpellCheck:(NSMenuItem *)sender {
+    NppPreferences *prefs = [NppPreferences shared];
+    prefs.spellCheckEnabled = !prefs.spellCheckEnabled;
+    [self.editor spellCheckNow];
+}
+
+- (void)chooseSpellLanguage:(NSMenuItem *)sender {
+    [NppPreferences shared].spellCheckLanguage = sender.representedObject ?: @"";
+    [self.editor spellCheckNow];
+}
+
+/// The Language submenu is built when opened: the system's dictionaries can
+/// change under a running application.
+- (void)menuNeedsUpdate:(NSMenu *)menu {
+    if (![menu.identifier isEqualToString:@"NppSpellLanguages"]) return;
+    [menu removeAllItems];
+    NSString *chosen = [NppPreferences shared].spellCheckLanguage;
+    NSMenuItem *automatic = [menu addItemWithTitle:@"Automatic" action:@selector(chooseSpellLanguage:) keyEquivalent:@""];
+    automatic.target = self;
+    automatic.representedObject = @"";
+    automatic.state = chosen.length ? NSControlStateValueOff : NSControlStateValueOn;
+    [menu addItem:[NSMenuItem separatorItem]];
+    for (NSString *identifier in [NSSpellChecker sharedSpellChecker].availableLanguages) {
+        NSString *shown = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:identifier]
+                          ?: identifier;
+        NSMenuItem *item = [menu addItemWithTitle:shown action:@selector(chooseSpellLanguage:) keyEquivalent:@""];
+        item.target = self;
+        item.representedObject = identifier;
+        item.state = [identifier isEqualToString:chosen] ? NSControlStateValueOn : NSControlStateValueOff;
+    }
+}
 
 #pragma mark Plugins > Export
 
@@ -2648,6 +2692,9 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
     if (a == @selector(stopScript:)) return self.runningScript != nil;
+    if (a == @selector(toggleSpellCheck:)) {
+        item.state = [NppPreferences shared].spellCheckEnabled ? NSControlStateValueOn : NSControlStateValueOff;
+    }
     if (a == @selector(pickLanguage:)) {
         item.state = [item.representedObject isEqualToString:self.editor.currentDocument.language.name]
                      ? NSControlStateValueOn : NSControlStateValueOff;
