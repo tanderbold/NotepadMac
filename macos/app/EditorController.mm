@@ -1984,10 +1984,21 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 }
 
 - (void)applyTheme {
-    ScintillaView *sci = self.sciView;
-    StyleCatalog *styles = [StyleCatalog sharedCatalog];
     NppDocument *doc = self.currentDocument;
-    NSString *langName = doc.language.name ?: @"normal";
+    [self applyThemeToView:self.sciView forLanguage:doc.language.name ?: @"normal"];
+    // Style definitions live in the view, not in the shared document, so the
+    // other pane needs its own set - for the language of the document *it*
+    // shows - or a clone renders in Scintilla's bare black-on-white defaults.
+    // Windows does the same per view in ScintillaEditView::defineDocType.
+    if (self.secondaryDocument) {
+        [self applyThemeToView:self.secondaryView
+                   forLanguage:self.secondaryDocument.language.name ?: @"normal"];
+    }
+    [self applyLook];
+}
+
+- (void)applyThemeToView:(ScintillaView *)sci forLanguage:(NSString *)langName {
+    StyleCatalog *styles = [StyleCatalog sharedCatalog];
 
     NppStyle *def = styles.globalStyles[@"Default Style"];
     NSString *fontName = def.fontName.length ? def.fontName : @"Menlo";
@@ -2121,7 +2132,6 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             [sci message:SCI_MARKERSETFORE wParam:(uptr_t)history[i].marker lParam:SciColor(hs.background)];
         }
     }
-    [self applyLook];
 }
 
 #pragma mark - Encoding + EOL
@@ -2530,6 +2540,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // the same buffer, exactly as Notepad++'s Clone to Other View does.
     [self.secondaryView message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)doc.docPointer];
     self.secondaryDocument = doc;
+    // The pane just received its first document: give it style definitions
+    // (the applyTheme wrapper styles both panes once a secondary document is set).
+    [self applyTheme];
     if (folds.count) [self foldLines:folds];
     return YES;
 }

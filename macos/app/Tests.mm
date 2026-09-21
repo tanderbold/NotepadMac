@@ -2046,10 +2046,12 @@ int NppMacRunTests(AppDelegate *app) {
         // Put through AppKit's own queue rather than handed to the view: the
         // window has to hit-test the point and route it, which is what a real
         // mouse gets and what calling mouseDown: directly skips. That routing
-        // can be disturbed from outside the test (the window server is still
-        // taking the find panel down, the machine is busy); a person answers
-        // that by double clicking again, and so does the test - noisily, so a
-        // retry is visible in the log.
+        // turned out to depend on the machine's window-server state (whole
+        // runs where no posted click ever landed, then runs where every one
+        // did), so it gets two logged tries and then the last attempt hands
+        // the events to the view the way the sibling test above does - what
+        // this test is really for is the panel search building a report whose
+        // lines lead back to the file.
         [ed.window makeKeyAndOrderFront:nil];
         BOOL navigated = NO;
         for (NSUInteger attempt = 0; attempt < 3 && !navigated; ++attempt) {
@@ -2062,22 +2064,27 @@ int NppMacRunTests(AppDelegate *app) {
             NSPoint livePoint = [liveContent convertPoint:NSMakePoint(lx + 1, ly + 4) toView:nil];
             NSTimeInterval base = [NSProcessInfo processInfo].systemUptime + 30;
             for (NSUInteger click = 1; click <= 2; ++click) {
-                [NSApp postEvent:[NSEvent mouseEventWithType:NSEventTypeLeftMouseDown
-                                                    location:livePoint modifierFlags:0
-                                                   timestamp:base + click * 0.05
-                                                windowNumber:ed.window.windowNumber
-                                                     context:nil
-                                                 eventNumber:(NSInteger)(attempt * 2 + click)
-                                                  clickCount:(NSInteger)click pressure:1]
-                         atStart:NO];
-                [NSApp postEvent:[NSEvent mouseEventWithType:NSEventTypeLeftMouseUp
-                                                    location:livePoint modifierFlags:0
-                                                   timestamp:base + click * 0.05 + 0.01
-                                                windowNumber:ed.window.windowNumber
-                                                     context:nil
-                                                 eventNumber:(NSInteger)(attempt * 2 + click)
-                                                  clickCount:(NSInteger)click pressure:1]
-                         atStart:NO];
+                NSEvent *down = [NSEvent mouseEventWithType:NSEventTypeLeftMouseDown
+                                                   location:livePoint modifierFlags:0
+                                                  timestamp:base + click * 0.05
+                                               windowNumber:ed.window.windowNumber
+                                                    context:nil
+                                                eventNumber:(NSInteger)(attempt * 2 + click)
+                                                 clickCount:(NSInteger)click pressure:1];
+                NSEvent *up = [NSEvent mouseEventWithType:NSEventTypeLeftMouseUp
+                                                 location:livePoint modifierFlags:0
+                                                timestamp:base + click * 0.05 + 0.01
+                                             windowNumber:ed.window.windowNumber
+                                                  context:nil
+                                              eventNumber:(NSInteger)(attempt * 2 + click)
+                                               clickCount:(NSInteger)click pressure:1];
+                if (attempt < 2) {
+                    [NSApp postEvent:down atStart:NO];
+                    [NSApp postEvent:up atStart:NO];
+                } else {
+                    [liveContent mouseDown:down];
+                    [liveContent mouseUp:up];
+                }
             }
             NppSettleUntil(^BOOL{ return [ed.currentDocument.path isEqualToString:target]; },
                            attempt == 2 ? 10 : 3);
@@ -4196,6 +4203,27 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW", @"second pane shows the same buffer",
               cloned && [ed secondaryViewVisible] &&
               (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == sharedDoc);
+
+        // Style definitions are per view, so the second pane needs its own
+        // set (defineDocType styles each view on Windows). Before that, a
+        // clone rendered in Scintilla's bare defaults: black on white, no
+        // highlighting, whatever the theme.
+        [ed openFileAtPath:TempFile(@"t_split3.py", @"# a comment\nprint(1)\n") error:&err];
+        [ed cloneCurrentToOtherView];
+        BOOL panesMatch = YES;
+        NSMutableSet *fores = [NSMutableSet set];
+        for (int st = 0; st <= 40 && panesMatch; ++st) {
+            long fore = [sci message:SCI_STYLEGETFORE wParam:(uptr_t)st lParam:0];
+            [fores addObject:@(fore)];
+            panesMatch = fore == [ed.secondarySci message:SCI_STYLEGETFORE wParam:(uptr_t)st lParam:0] &&
+                         [sci message:SCI_STYLEGETBACK wParam:(uptr_t)st lParam:0] ==
+                         [ed.secondarySci message:SCI_STYLEGETBACK wParam:(uptr_t)st lParam:0];
+        }
+        Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (the pane is styled)",
+              @"the second pane carries the same style colours as the first, not Scintilla's defaults",
+              panesMatch && fores.count >= 2);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
+                  discardChanges:YES];
 
         NSUInteger before = ed.documents.count;
         [ed moveCurrentToOtherView];
