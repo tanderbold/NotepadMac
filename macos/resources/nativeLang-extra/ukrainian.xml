@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Шрифти…"/>
     <Item english="This document is not valid JSON." text="Цей документ не є коректним JSON."/>
     <Item english="MIME Tools" text="Інструменти MIME"/>
-    <Item english="Base64 Encode" text="Кодувати Base64"/>
-    <Item english="Base64 Encode with padding" text="Кодувати Base64 з доповненням"/>
-    <Item english="Base64 Encode with Unix EOL" text="Кодувати Base64 з Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Кодувати Base64 порядково"/>
-    <Item english="Base64 Decode" text="Декодувати Base64"/>
-    <Item english="Base64 Decode strict" text="Декодувати Base64 (строго)"/>
-    <Item english="Base64 Decode by line" text="Декодувати Base64 порядково"/>
     <Item english="Quoted-printable Encode" text="Кодувати Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Декодувати Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Кодувати URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Кодувати URL (повністю) порядково"/>
     <Item english="URL Decode" text="Декодувати URL"/>
     <Item english="SAML Decode" text="Декодувати SAML"/>
-    <Item english="The selection is not valid Base64." text="Вибране не є коректним Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Вибране не є коректним Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Вибране не є повідомленням SAML."/>
     <Item english="Converter" text="Конвертер"/>

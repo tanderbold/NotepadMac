@@ -9839,35 +9839,6 @@ int NppMacRunTests(AppDelegate *app) {
 
     printf("\n== MIME Tools ==\n");
     {
-        // Base64, against RFC 4648's test vectors; the plugin encodes without
-        // padding unless asked (b64.cpp).
-        Check(@"MIME Base64 encode", @"RFC 4648 vector, no padding by default",
-              [[EditorController mimeBase64Encode:@"foobar" padded:NO wrapped:NO byLine:NO] isEqualToString:@"Zm9vYmFy"] &&
-              [[EditorController mimeBase64Encode:@"foob" padded:NO wrapped:NO byLine:NO] isEqualToString:@"Zm9vYg"] &&
-              [[EditorController mimeBase64Encode:@"foob" padded:YES wrapped:NO byLine:NO] isEqualToString:@"Zm9vYg=="]);
-        NSMutableString *long3 = [NSMutableString string];
-        for (int i = 0; i < 100; ++i) [long3 appendString:@"abc"];   // 300 bytes -> 400 base64 chars
-        NSString *wrapped = [EditorController mimeBase64Encode:long3 padded:YES wrapped:YES byLine:NO];
-        NSArray *wrappedLines = [wrapped componentsSeparatedByString:@"\n"];
-        BOOL wrapRight = wrappedLines.count == 7;   // 400 = 6*64 + 16
-        for (NSString *l in wrappedLines) wrapRight = wrapRight && l.length <= 64;
-        Check(@"MIME Base64 encode with Unix EOL", @"wraps at 64 columns with \\n",
-              wrapRight && [[wrapped stringByReplacingOccurrencesOfString:@"\n" withString:@""]
-                            isEqualToString:[EditorController mimeBase64Encode:long3 padded:YES wrapped:NO byLine:NO]]);
-        Check(@"MIME Base64 encode by line", @"each line is its own encoding, EOLs kept",
-              [[EditorController mimeBase64Encode:@"ab\ncd\r\nef" padded:NO wrapped:NO byLine:YES]
-               isEqualToString:@"YWI\nY2Q\r\nZWY"]);
-        Check(@"MIME Base64 decode", @"whitespace passed over, missing padding tolerated",
-              [[EditorController mimeBase64Decode:@"Zm9v\nYmFy" strict:NO byLine:NO] isEqualToString:@"foobar"] &&
-              [[EditorController mimeBase64Decode:@"Zm9vYg" strict:NO byLine:NO] isEqualToString:@"foob"] &&
-              [EditorController mimeBase64Decode:@"not base64!" strict:NO byLine:NO] == nil);
-        Check(@"MIME Base64 decode strict", @"whitespace or missing padding is refused",
-              [[EditorController mimeBase64Decode:@"Zm9vYg==" strict:YES byLine:NO] isEqualToString:@"foob"] &&
-              [EditorController mimeBase64Decode:@"Zm9v Yg==" strict:YES byLine:NO] == nil &&
-              [EditorController mimeBase64Decode:@"Zm9vYg" strict:YES byLine:NO] == nil);
-        Check(@"MIME Base64 decode by line", @"each line decoded on its own",
-              [[EditorController mimeBase64Decode:@"Zm9v\nYmE=" strict:NO byLine:YES] isEqualToString:@"foo\nba"]);
-
         // Quoted-printable: UTF-8 bytes escape as =XX, '=' itself must escape,
         // and encode/decode round-trips, soft breaks (=\r\n at column 76) included.
         NSString *qp = [EditorController mimeQuotedPrintableEncode:@"Ünïcödé = fun\n"];
@@ -9917,12 +9888,12 @@ int NppMacRunTests(AppDelegate *app) {
         SetDoc(ed, @"foobar");
         [sci message:SCI_SETSEL wParam:0 lParam:6];
         BOOL did = [ed mimeTransformSelection:^NSString *(NSString *text) {
-            return [EditorController mimeBase64Encode:text padded:YES wrapped:NO byLine:NO];
+            return [EditorController mimeUrlEncode:text method:NppUrlEncodeFull byLine:NO];
         }];
         NSString *encoded = DocText(ed);
         [sci message:SCI_UNDO wParam:0 lParam:0];
         Check(@"MIME Tools on the selection", @"the selection is replaced in place and one undo returns it",
-              did && [encoded isEqualToString:@"Zm9vYmFy"] && [DocText(ed) isEqualToString:@"foobar"]);
+              did && [encoded isEqualToString:@"%66%6F%6F%62%61%72"] && [DocText(ed) isEqualToString:@"foobar"]);
     }
 
     printf("\n== Converter ==\n");

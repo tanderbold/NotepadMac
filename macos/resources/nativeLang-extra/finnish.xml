@@ -116,13 +116,6 @@
     <Item english="Fonts…" text="Fontit…"/>
     <Item english="This document is not valid JSON." text="Tämä asiakirja ei ole kelvollista JSONia."/>
     <Item english="MIME Tools" text="MIME-työkalut"/>
-    <Item english="Base64 Encode" text="Koodaa Base64-muotoon"/>
-    <Item english="Base64 Encode with padding" text="Koodaa Base64-muotoon täytteen kanssa"/>
-    <Item english="Base64 Encode with Unix EOL" text="Koodaa Base64-muotoon Unix-rivinvaihdoin"/>
-    <Item english="Base64 Encode by line" text="Koodaa Base64-muotoon riveittäin"/>
-    <Item english="Base64 Decode" text="Dekoodaa Base64"/>
-    <Item english="Base64 Decode strict" text="Dekoodaa Base64 (tiukka)"/>
-    <Item english="Base64 Decode by line" text="Dekoodaa Base64 riveittäin"/>
     <Item english="Quoted-printable Encode" text="Koodaa Quoted-printable-muotoon"/>
     <Item english="Quoted-printable Decode" text="Dekoodaa Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Koodaa URL (RFC1738)"/>
@@ -133,7 +126,6 @@
     <Item english="URL Encode (Full) by line" text="Koodaa URL (täysi) riveittäin"/>
     <Item english="URL Decode" text="Dekoodaa URL"/>
     <Item english="SAML Decode" text="Dekoodaa SAML"/>
-    <Item english="The selection is not valid Base64." text="Valinta ei ole kelvollista Base64-dataa."/>
     <Item english="The selection is not valid Quoted-printable." text="Valinta ei ole kelvollista Quoted-printable-dataa."/>
     <Item english="The selection is not a SAML message." text="Valinta ei ole SAML-sanoma."/>
     <Item english="Converter" text="Muunnin"/>

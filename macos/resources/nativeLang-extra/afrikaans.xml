@@ -100,13 +100,6 @@
     <Item english="Fonts…" text="Lettertipes…"/>
     <Item english="This document is not valid JSON." text="Hierdie dokument is nie geldige JSON nie."/>
     <Item english="MIME Tools" text="MIME-nutsgoed"/>
-    <Item english="Base64 Encode" text="Base64-enkodeer"/>
-    <Item english="Base64 Encode with padding" text="Base64-enkodeer met opvulling"/>
-    <Item english="Base64 Encode with Unix EOL" text="Base64-enkodeer met Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Base64-enkodeer reël vir reël"/>
-    <Item english="Base64 Decode" text="Base64-dekodeer"/>
-    <Item english="Base64 Decode strict" text="Base64-dekodeer (streng)"/>
-    <Item english="Base64 Decode by line" text="Base64-dekodeer reël vir reël"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable-enkodeer"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable-dekodeer"/>
     <Item english="URL Encode (RFC1738)" text="URL-enkodeer (RFC1738)"/>
@@ -117,7 +110,6 @@
     <Item english="URL Encode (Full) by line" text="URL-enkodeer (volledig) reël vir reël"/>
     <Item english="URL Decode" text="URL-dekodeer"/>
     <Item english="SAML Decode" text="SAML-dekodeer"/>
-    <Item english="The selection is not valid Base64." text="Die seleksie is nie geldige Base64 nie."/>
     <Item english="The selection is not valid Quoted-printable." text="Die seleksie is nie geldige Quoted-printable nie."/>
     <Item english="The selection is not a SAML message." text="Die seleksie is nie 'n SAML-boodskap nie."/>
     <Item english="Converter" text="Omskakelaar"/>

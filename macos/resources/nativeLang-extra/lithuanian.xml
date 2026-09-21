@@ -116,13 +116,6 @@
     <Item english="Fonts…" text="Šriftai…"/>
     <Item english="This document is not valid JSON." text="Šis dokumentas nėra teisingas JSON."/>
     <Item english="MIME Tools" text="MIME įrankiai"/>
-    <Item english="Base64 Encode" text="Koduoti Base64"/>
-    <Item english="Base64 Encode with padding" text="Koduoti Base64 su užpildu"/>
-    <Item english="Base64 Encode with Unix EOL" text="Koduoti Base64 su Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Koduoti Base64 po eilutę"/>
-    <Item english="Base64 Decode" text="Dekoduoti Base64"/>
-    <Item english="Base64 Decode strict" text="Dekoduoti Base64 griežtai"/>
-    <Item english="Base64 Decode by line" text="Dekoduoti Base64 po eilutę"/>
     <Item english="Quoted-printable Encode" text="Koduoti Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Dekoduoti Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Koduoti URL (RFC1738)"/>
@@ -133,7 +126,6 @@
     <Item english="URL Encode (Full) by line" text="Koduoti URL (visiškai) po eilutę"/>
     <Item english="URL Decode" text="Dekoduoti URL"/>
     <Item english="SAML Decode" text="Dekoduoti SAML"/>
-    <Item english="The selection is not valid Base64." text="Pažymėtas tekstas nėra teisingas Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Pažymėtas tekstas nėra teisingas Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Pažymėtas tekstas nėra SAML pranešimas."/>
     <Item english="Converter" text="Konverteris"/>

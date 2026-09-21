@@ -57,8 +57,6 @@
     <Item english="Notepad++ update" text="Hizivadur Notepad++"/>
     <Item english="Fonts…" text="Skrituroù…"/>
     <Item english="MIME Tools" text="Ostilhoù MIME"/>
-    <Item english="Base64 Encode" text="Enkodañ Base64"/>
-    <Item english="Base64 Decode" text="Dienkodañ Base64"/>
     <Item english="Quoted-printable Encode" text="Enkodañ Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Dienkodañ Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Enkodañ URL (RFC1738)"/>

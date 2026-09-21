@@ -6,8 +6,6 @@
 #import "ScintillaView.h"
 #import <zlib.h>
 
-// b64.cpp: no padding unless asked; "with Unix EOL" wraps at 64 with '\n'.
-static const NSUInteger kBase64WrapColumn = 64;
 // qp.h: "It also limits line length to 76".
 static const NSUInteger kQuotedPrintableLineMax = 76;
 
@@ -46,52 +44,6 @@ static NSString *ByLine(NSString *text, NSString *(^piece)(NSString *)) {
 }
 
 @implementation EditorController (MimeCommands)
-
-#pragma mark - Base64
-
-+ (NSString *)mimeBase64Encode:(NSString *)text padded:(BOOL)padded wrapped:(BOOL)wrapped byLine:(BOOL)byLine {
-    NSString *(^one)(NSString *) = ^NSString *(NSString *piece) {
-        NSData *bytes = [piece dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *b64 = [bytes base64EncodedStringWithOptions:0];
-        if (!padded && !wrapped) b64 = [b64 stringByReplacingOccurrencesOfString:@"=" withString:@""];
-        if (wrapped) {
-            NSMutableString *broken = [NSMutableString string];
-            for (NSUInteger i = 0; i < b64.length; i += kBase64WrapColumn) {
-                if (i) [broken appendString:@"\n"];
-                [broken appendString:[b64 substringWithRange:
-                    NSMakeRange(i, MIN(kBase64WrapColumn, b64.length - i))]];
-            }
-            b64 = broken;
-        }
-        return b64;
-    };
-    return byLine ? ByLine(text, one) : one(text);
-}
-
-+ (NSString *)mimeBase64Decode:(NSString *)text strict:(BOOL)strict byLine:(BOOL)byLine {
-    NSCharacterSet *space = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    NSString *(^one)(NSString *) = ^NSString *(NSString *piece) {
-        if (!piece.length) return @"";
-        NSMutableString *clean = [NSMutableString stringWithCapacity:piece.length];
-        for (NSUInteger i = 0; i < piece.length; ++i) {
-            unichar c = [piece characterAtIndex:i];
-            if ([space characterIsMember:c]) {
-                // b64.cpp: whitespace stops a strict decode and is passed over otherwise.
-                if (strict) return nil;
-                continue;
-            }
-            BOOL b64Char = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-                           (c >= '0' && c <= '9') || c == '+' || c == '/' || c == '=';
-            if (!b64Char) return nil;
-            [clean appendFormat:@"%C", c];
-        }
-        if (strict && clean.length % 4 != 0) return nil;
-        while (clean.length % 4 != 0) [clean appendString:@"="];
-        NSData *bytes = [[NSData alloc] initWithBase64EncodedString:clean options:0];
-        return bytes ? StringFromBytes(bytes) : nil;
-    };
-    return byLine ? ByLine(text, one) : one(text);
-}
 
 #pragma mark - Quoted-printable
 

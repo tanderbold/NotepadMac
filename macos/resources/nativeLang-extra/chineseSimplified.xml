@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="字体…"/>
     <Item english="This document is not valid JSON." text="此文档不是有效的 JSON。"/>
     <Item english="MIME Tools" text="MIME 工具"/>
-    <Item english="Base64 Encode" text="Base64 编码"/>
-    <Item english="Base64 Encode with padding" text="Base64 编码（带填充）"/>
-    <Item english="Base64 Encode with Unix EOL" text="Base64 编码（Unix 换行符）"/>
-    <Item english="Base64 Encode by line" text="Base64 按行编码"/>
-    <Item english="Base64 Decode" text="Base64 解码"/>
-    <Item english="Base64 Decode strict" text="Base64 严格解码"/>
-    <Item english="Base64 Decode by line" text="Base64 按行解码"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable 编码"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable 解码"/>
     <Item english="URL Encode (RFC1738)" text="URL 编码（RFC1738）"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="URL 按行编码（完全）"/>
     <Item english="URL Decode" text="URL 解码"/>
     <Item english="SAML Decode" text="SAML 解码"/>
-    <Item english="The selection is not valid Base64." text="选中内容不是有效的 Base64。"/>
     <Item english="The selection is not valid Quoted-printable." text="选中内容不是有效的 Quoted-printable。"/>
     <Item english="The selection is not a SAML message." text="选中内容不是 SAML 消息。"/>
     <Item english="Converter" text="转换器"/>

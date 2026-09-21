@@ -106,13 +106,6 @@
     <Item english="Fonts…" text="Фонтови…"/>
     <Item english="This document is not valid JSON." text="Овој документ не е валиден JSON."/>
     <Item english="MIME Tools" text="MIME алатки"/>
-    <Item english="Base64 Encode" text="Кодирај Base64"/>
-    <Item english="Base64 Encode with padding" text="Кодирај Base64 со пополнување"/>
-    <Item english="Base64 Encode with Unix EOL" text="Кодирај Base64 со Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Кодирај Base64 по линија"/>
-    <Item english="Base64 Decode" text="Декодирај Base64"/>
-    <Item english="Base64 Decode strict" text="Декодирај Base64 строго"/>
-    <Item english="Base64 Decode by line" text="Декодирај Base64 по линија"/>
     <Item english="Quoted-printable Encode" text="Кодирај Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Декодирај Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Кодирај URL (RFC1738)"/>
@@ -123,7 +116,6 @@
     <Item english="URL Encode (Full) by line" text="Кодирај URL (целосно) по линија"/>
     <Item english="URL Decode" text="Декодирај URL"/>
     <Item english="SAML Decode" text="Декодирај SAML"/>
-    <Item english="The selection is not valid Base64." text="Одбраниот текст не е валиден Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Одбраниот текст не е валиден Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Одбраниот текст не е SAML порака."/>
     <Item english="Converter" text="Конвертор"/>

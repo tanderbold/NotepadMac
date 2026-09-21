@@ -114,13 +114,6 @@
     <Item english="Fonts…" text="Ffontiau…"/>
     <Item english="This document is not valid JSON." text="Nid yw'r ddogfen hon yn JSON dilys."/>
     <Item english="MIME Tools" text="Offer MIME"/>
-    <Item english="Base64 Encode" text="Amgodio Base64"/>
-    <Item english="Base64 Encode with padding" text="Amgodio Base64 gyda phadin"/>
-    <Item english="Base64 Encode with Unix EOL" text="Amgodio Base64 gydag Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Amgodio Base64 fesul llinell"/>
-    <Item english="Base64 Decode" text="Datgodio Base64"/>
-    <Item english="Base64 Decode strict" text="Datgodio Base64 (llym)"/>
-    <Item english="Base64 Decode by line" text="Datgodio Base64 fesul llinell"/>
     <Item english="Quoted-printable Encode" text="Amgodio Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Datgodio Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Amgodio URL (RFC1738)"/>
@@ -131,7 +124,6 @@
     <Item english="URL Encode (Full) by line" text="Amgodio URL (Llawn) fesul llinell"/>
     <Item english="URL Decode" text="Datgodio URL"/>
     <Item english="SAML Decode" text="Datgodio SAML"/>
-    <Item english="The selection is not valid Base64." text="Nid yw'r detholiad yn Base64 dilys."/>
     <Item english="The selection is not valid Quoted-printable." text="Nid yw'r detholiad yn Quoted-printable dilys."/>
     <Item english="The selection is not a SAML message." text="Nid yw'r detholiad yn neges SAML."/>
     <Item english="Converter" text="Trawsnewidydd"/>

@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="ਫੋਂਟ…"/>
     <Item english="This document is not valid JSON." text="ਇਹ ਦਸਤਾਵੇਜ਼ ਵੈਧ JSON ਨਹੀਂ ਹੈ।"/>
     <Item english="MIME Tools" text="MIME ਟੂਲ"/>
-    <Item english="Base64 Encode" text="Base64 ਇੰਕੋਡ ਕਰੋ"/>
-    <Item english="Base64 Encode with padding" text="ਪੈਡਿੰਗ ਨਾਲ Base64 ਇੰਕੋਡ ਕਰੋ"/>
-    <Item english="Base64 Encode with Unix EOL" text="Unix EOL ਨਾਲ Base64 ਇੰਕੋਡ ਕਰੋ"/>
-    <Item english="Base64 Encode by line" text="ਲਾਈਨ-ਦਰ-ਲਾਈਨ Base64 ਇੰਕੋਡ ਕਰੋ"/>
-    <Item english="Base64 Decode" text="Base64 ਡੀਕੋਡ ਕਰੋ"/>
-    <Item english="Base64 Decode strict" text="Base64 ਡੀਕੋਡ ਕਰੋ (ਸਖ਼ਤ)"/>
-    <Item english="Base64 Decode by line" text="ਲਾਈਨ-ਦਰ-ਲਾਈਨ Base64 ਡੀਕੋਡ ਕਰੋ"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable ਇੰਕੋਡ ਕਰੋ"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable ਡੀਕੋਡ ਕਰੋ"/>
     <Item english="URL Encode (RFC1738)" text="URL ਇੰਕੋਡ ਕਰੋ (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="ਲਾਈਨ-ਦਰ-ਲਾਈਨ URL ਇੰਕੋਡ ਕਰੋ (ਪੂਰਾ)"/>
     <Item english="URL Decode" text="URL ਡੀਕੋਡ ਕਰੋ"/>
     <Item english="SAML Decode" text="SAML ਡੀਕੋਡ ਕਰੋ"/>
-    <Item english="The selection is not valid Base64." text="ਚੋਣ ਵੈਧ Base64 ਨਹੀਂ ਹੈ।"/>
     <Item english="The selection is not valid Quoted-printable." text="ਚੋਣ ਵੈਧ Quoted-printable ਨਹੀਂ ਹੈ।"/>
     <Item english="The selection is not a SAML message." text="ਚੋਣ SAML ਸੁਨੇਹਾ ਨਹੀਂ ਹੈ।"/>
     <Item english="Converter" text="ਕਨਵਰਟਰ"/>

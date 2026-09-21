@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Fon…"/>
     <Item english="This document is not valid JSON." text="Dokumen ini bukan JSON yang valid."/>
     <Item english="MIME Tools" text="Alat MIME"/>
-    <Item english="Base64 Encode" text="Enkode Base64"/>
-    <Item english="Base64 Encode with padding" text="Enkode Base64 dengan padding"/>
-    <Item english="Base64 Encode with Unix EOL" text="Enkode Base64 dengan EOL Unix"/>
-    <Item english="Base64 Encode by line" text="Enkode Base64 per baris"/>
-    <Item english="Base64 Decode" text="Dekode Base64"/>
-    <Item english="Base64 Decode strict" text="Dekode Base64 ketat"/>
-    <Item english="Base64 Decode by line" text="Dekode Base64 per baris"/>
     <Item english="Quoted-printable Encode" text="Enkode Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Dekode Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Enkode URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Enkode URL (Penuh) per baris"/>
     <Item english="URL Decode" text="Dekode URL"/>
     <Item english="SAML Decode" text="Dekode SAML"/>
-    <Item english="The selection is not valid Base64." text="Pilihan ini bukan Base64 yang valid."/>
     <Item english="The selection is not valid Quoted-printable." text="Pilihan ini bukan Quoted-printable yang valid."/>
     <Item english="The selection is not a SAML message." text="Pilihan ini bukan pesan SAML."/>
     <Item english="Converter" text="Konverter"/>

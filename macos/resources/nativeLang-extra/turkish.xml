@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Yazı Tipleri…"/>
     <Item english="This document is not valid JSON." text="Bu belge geçerli bir JSON değil."/>
     <Item english="MIME Tools" text="MIME Araçları"/>
-    <Item english="Base64 Encode" text="Base64 Kodla"/>
-    <Item english="Base64 Encode with padding" text="Base64 Kodla (dolgu ile)"/>
-    <Item english="Base64 Encode with Unix EOL" text="Base64 Kodla (Unix EOL ile)"/>
-    <Item english="Base64 Encode by line" text="Base64 Kodla (satır satır)"/>
-    <Item english="Base64 Decode" text="Base64 Kodunu Çöz"/>
-    <Item english="Base64 Decode strict" text="Base64 Kodunu Çöz (katı)"/>
-    <Item english="Base64 Decode by line" text="Base64 Kodunu Çöz (satır satır)"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable Kodla"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable Kodunu Çöz"/>
     <Item english="URL Encode (RFC1738)" text="URL Kodla (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="URL Kodla (Tam, satır satır)"/>
     <Item english="URL Decode" text="URL Kodunu Çöz"/>
     <Item english="SAML Decode" text="SAML Kodunu Çöz"/>
-    <Item english="The selection is not valid Base64." text="Seçim geçerli bir Base64 değil."/>
     <Item english="The selection is not valid Quoted-printable." text="Seçim geçerli bir Quoted-printable değil."/>
     <Item english="The selection is not a SAML message." text="Seçim bir SAML mesajı değil."/>
     <Item english="Converter" text="Dönüştürücü"/>

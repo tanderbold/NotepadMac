@@ -114,13 +114,6 @@
     <Item english="Fonts…" text="Шрифтлар…"/>
     <Item english="This document is not valid JSON." text="Бу документ дөрес JSON түгел."/>
     <Item english="MIME Tools" text="MIME кораллары"/>
-    <Item english="Base64 Encode" text="Base64 кодларга"/>
-    <Item english="Base64 Encode with padding" text="Base64 кодларга (тутыру белән)"/>
-    <Item english="Base64 Encode with Unix EOL" text="Base64 кодларга (Unix EOL белән)"/>
-    <Item english="Base64 Encode by line" text="Base64 кодларга (юл саен)"/>
-    <Item english="Base64 Decode" text="Base64 декодларга"/>
-    <Item english="Base64 Decode strict" text="Base64 декодларга (каты)"/>
-    <Item english="Base64 Decode by line" text="Base64 декодларга (юл саен)"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable кодларга"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable декодларга"/>
     <Item english="URL Encode (RFC1738)" text="URL кодларга (RFC1738)"/>
@@ -131,7 +124,6 @@
     <Item english="URL Encode (Full) by line" text="URL кодларга (тулы, юл саен)"/>
     <Item english="URL Decode" text="URL декодларга"/>
     <Item english="SAML Decode" text="SAML декодларга"/>
-    <Item english="The selection is not valid Base64." text="Сайланган өлеш дөрес Base64 түгел."/>
     <Item english="The selection is not valid Quoted-printable." text="Сайланган өлеш дөрес Quoted-printable түгел."/>
     <Item english="The selection is not a SAML message." text="Сайланган өлеш SAML хәбәре түгел."/>
     <Item english="Converter" text="Конвертер"/>

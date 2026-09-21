@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Шрыфты…"/>
     <Item english="This document is not valid JSON." text="Гэты дакумент не з'яўляецца карэктным JSON."/>
     <Item english="MIME Tools" text="Інструменты MIME"/>
-    <Item english="Base64 Encode" text="Кадаванне ў Base64"/>
-    <Item english="Base64 Encode with padding" text="Кадаванне ў Base64 з дапаўненнем"/>
-    <Item english="Base64 Encode with Unix EOL" text="Кадаванне ў Base64 з Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Кадаванне ў Base64 па радках"/>
-    <Item english="Base64 Decode" text="Дэкадаванне Base64"/>
-    <Item english="Base64 Decode strict" text="Дэкадаванне Base64 (строгае)"/>
-    <Item english="Base64 Decode by line" text="Дэкадаванне Base64 па радках"/>
     <Item english="Quoted-printable Encode" text="Кадаванне ў Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Дэкадаванне Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Кадаванне URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Кадаванне URL (поўнае) па радках"/>
     <Item english="URL Decode" text="Дэкадаванне URL"/>
     <Item english="SAML Decode" text="Дэкадаванне SAML"/>
-    <Item english="The selection is not valid Base64." text="Выбранае не з'яўляецца карэктным Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Выбранае не з'яўляецца карэктным Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Выбранае не з'яўляецца паведамленнем SAML."/>
     <Item english="Converter" text="Канвертар"/>

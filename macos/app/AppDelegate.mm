@@ -1344,15 +1344,9 @@ static NSString *Ordinal(NSUInteger n) {
 
     // MIME Tools, with the plugin's own items in the plugin's own order.
     NSMenu *mimeMenu = [[NSMenu alloc] initWithTitle:@"MIME Tools"];
+    // The plugin's Base64 items are deliberately not here: Base64 lives in
+    // Tools > Base already, and one thing lives in one place.
     struct { NSString *title; SEL sel; NSInteger tag; } mimeRows[] = {
-        {@"Base64 Encode",                 @selector(mimeBase64Encode:),       0},
-        {@"Base64 Encode with padding",    @selector(mimeBase64Encode:),       1},
-        {@"Base64 Encode with Unix EOL",   @selector(mimeBase64Encode:),       2},
-        {@"Base64 Encode by line",         @selector(mimeBase64Encode:),       3},
-        {@"Base64 Decode",                 @selector(mimeBase64Decode:),       0},
-        {@"Base64 Decode strict",          @selector(mimeBase64Decode:),       1},
-        {@"Base64 Decode by line",         @selector(mimeBase64Decode:),       2},
-        {nil, NULL, 0},
         {@"Quoted-printable Encode",       @selector(mimeQuotedPrintableEncode:), 0},
         {@"Quoted-printable Decode",       @selector(mimeQuotedPrintableDecode:), 0},
         {nil, NULL, 0},
@@ -1675,20 +1669,6 @@ static NSString *Ordinal(NSUInteger n) {
 }
 
 #pragma mark Plugins > MIME Tools
-
-- (void)mimeBase64Encode:(NSMenuItem *)sender {
-    BOOL padded = sender.tag == 1, wrapped = sender.tag == 2, byLine = sender.tag == 3;
-    [self.editor mimeTransformSelection:^NSString *(NSString *text) {
-        return [EditorController mimeBase64Encode:text padded:padded wrapped:wrapped byLine:byLine];
-    }];
-}
-
-- (void)mimeBase64Decode:(NSMenuItem *)sender {
-    BOOL strict = sender.tag == 1, byLine = sender.tag == 2;
-    if (![self.editor mimeTransformSelection:^NSString *(NSString *text) {
-        return [EditorController mimeBase64Decode:text strict:strict byLine:byLine];
-    }]) [self reportMimeProblem:@"The selection is not valid Base64."];
-}
 
 - (void)mimeQuotedPrintableEncode:(id)sender {
     [self.editor mimeTransformSelection:^NSString *(NSString *text) {

@@ -14,8 +14,7 @@ typedef NS_ENUM(NSInteger, NppUrlEncodeMethod) {
 @interface EditorController (MimeCommands)
 
 // The conversions themselves, on text; nil where the input cannot be decoded.
-+ (NSString *)mimeBase64Encode:(NSString *)text padded:(BOOL)padded wrapped:(BOOL)wrapped byLine:(BOOL)byLine;
-+ (nullable NSString *)mimeBase64Decode:(NSString *)text strict:(BOOL)strict byLine:(BOOL)byLine;
+// (The plugin's Base64 commands are left out: Tools > Base carries Base64.)
 + (NSString *)mimeQuotedPrintableEncode:(NSString *)text;
 + (nullable NSString *)mimeQuotedPrintableDecode:(NSString *)text;
 + (NSString *)mimeUrlEncode:(NSString *)text method:(NppUrlEncodeMethod)method byLine:(BOOL)byLine;

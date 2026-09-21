@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Teckensnitt…"/>
     <Item english="This document is not valid JSON." text="Detta dokument är inte giltig JSON."/>
     <Item english="MIME Tools" text="MIME-verktyg"/>
-    <Item english="Base64 Encode" text="Koda till Base64"/>
-    <Item english="Base64 Encode with padding" text="Koda till Base64 med utfyllnad"/>
-    <Item english="Base64 Encode with Unix EOL" text="Koda till Base64 med Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Koda till Base64 rad för rad"/>
-    <Item english="Base64 Decode" text="Avkoda Base64"/>
-    <Item english="Base64 Decode strict" text="Avkoda Base64 (strikt)"/>
-    <Item english="Base64 Decode by line" text="Avkoda Base64 rad för rad"/>
     <Item english="Quoted-printable Encode" text="Koda till Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Avkoda Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Koda URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Koda URL (fullständig) rad för rad"/>
     <Item english="URL Decode" text="Avkoda URL"/>
     <Item english="SAML Decode" text="Avkoda SAML"/>
-    <Item english="The selection is not valid Base64." text="Markeringen är inte giltig Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Markeringen är inte giltig Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Markeringen är inte ett SAML-meddelande."/>
     <Item english="Converter" text="Konverterare"/>

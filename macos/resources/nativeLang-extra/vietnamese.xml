@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Phông chữ…"/>
     <Item english="This document is not valid JSON." text="Tài liệu này không phải là JSON hợp lệ."/>
     <Item english="MIME Tools" text="Công cụ MIME"/>
-    <Item english="Base64 Encode" text="Mã hóa Base64"/>
-    <Item english="Base64 Encode with padding" text="Mã hóa Base64 có phần đệm"/>
-    <Item english="Base64 Encode with Unix EOL" text="Mã hóa Base64 với Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Mã hóa Base64 theo từng dòng"/>
-    <Item english="Base64 Decode" text="Giải mã Base64"/>
-    <Item english="Base64 Decode strict" text="Giải mã Base64 (nghiêm ngặt)"/>
-    <Item english="Base64 Decode by line" text="Giải mã Base64 theo từng dòng"/>
     <Item english="Quoted-printable Encode" text="Mã hóa Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Giải mã Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Mã hóa URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Mã hóa URL (đầy đủ) theo từng dòng"/>
     <Item english="URL Decode" text="Giải mã URL"/>
     <Item english="SAML Decode" text="Giải mã SAML"/>
-    <Item english="The selection is not valid Base64." text="Phần được chọn không phải là Base64 hợp lệ."/>
     <Item english="The selection is not valid Quoted-printable." text="Phần được chọn không phải là Quoted-printable hợp lệ."/>
     <Item english="The selection is not a SAML message." text="Phần được chọn không phải là thông điệp SAML."/>
     <Item english="Converter" text="Bộ chuyển đổi"/>

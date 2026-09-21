@@ -62,8 +62,6 @@
     <Item english="Open the Releases Page" text="Aberi sa pàgina de is versiones"/>
     <Item english="Copy debug info to clipboard" text="Còpia is informatziones de debug in is notas"/>
     <Item english="Fonts…" text="Caràteres…"/>
-    <Item english="Base64 Encode" text="Codìfica Base64"/>
-    <Item english="Base64 Decode" text="Decodìfica Base64"/>
     <Item english="Quoted-printable Encode" text="Codìfica Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Decodìfica Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Codìfica URL (RFC1738)"/>

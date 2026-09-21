@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="फॉन्ट…"/>
     <Item english="This document is not valid JSON." text="यह दस्तावेज़ मान्य JSON नहीं है।"/>
     <Item english="MIME Tools" text="MIME टूल्स"/>
-    <Item english="Base64 Encode" text="Base64 एन्कोड करें"/>
-    <Item english="Base64 Encode with padding" text="पैडिंग के साथ Base64 एन्कोड करें"/>
-    <Item english="Base64 Encode with Unix EOL" text="Unix EOL के साथ Base64 एन्कोड करें"/>
-    <Item english="Base64 Encode by line" text="Base64 लाइन के अनुसार एन्कोड करें"/>
-    <Item english="Base64 Decode" text="Base64 डिकोड करें"/>
-    <Item english="Base64 Decode strict" text="Base64 स्ट्रिक्ट डिकोड करें"/>
-    <Item english="Base64 Decode by line" text="Base64 लाइन के अनुसार डिकोड करें"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable एन्कोड करें"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable डिकोड करें"/>
     <Item english="URL Encode (RFC1738)" text="URL एन्कोड करें (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="URL लाइन के अनुसार एन्कोड करें (फुल)"/>
     <Item english="URL Decode" text="URL डिकोड करें"/>
     <Item english="SAML Decode" text="SAML डिकोड करें"/>
-    <Item english="The selection is not valid Base64." text="चयन मान्य Base64 नहीं है।"/>
     <Item english="The selection is not valid Quoted-printable." text="चयन मान्य Quoted-printable नहीं है।"/>
     <Item english="The selection is not a SAML message." text="चयन SAML संदेश नहीं है।"/>
     <Item english="Converter" text="कन्वर्टर"/>

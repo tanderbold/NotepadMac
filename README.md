@@ -60,7 +60,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - XML tools: pretty print, linearize, validate (DTD/XSD), XPath, XSLT.
 - FTP/FTPS client panel.
 - NppExec-compatible scripting: a console, scripts, variables, its commands.
-- MIME Tools: Base64 (all seven variants of the plugin), Quoted-printable, URL encoding, SAML decode.
+- MIME Tools: Quoted-printable, URL encoding, SAML decode (its Base64 lives in Tools > Base already).
 - Converter: ASCII/HEX both ways and a Conversion Panel (decimal, hex, binary, octal, character).
 - Export: the styled text as RTF or HTML - to a file, or to the clipboard so a paste keeps the colours.
 - Spell checking on the system engine: squiggles as you type (in code: comments and strings only), suggestions in the context menu, every installed dictionary.

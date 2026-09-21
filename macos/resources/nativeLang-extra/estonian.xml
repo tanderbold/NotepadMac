@@ -116,13 +116,6 @@
     <Item english="Fonts…" text="Fondid…"/>
     <Item english="This document is not valid JSON." text="See dokument ei ole kehtiv JSON."/>
     <Item english="MIME Tools" text="MIME tööriistad"/>
-    <Item english="Base64 Encode" text="Kodeeri Base64 vormingusse"/>
-    <Item english="Base64 Encode with padding" text="Kodeeri Base64 vormingusse koos täitega"/>
-    <Item english="Base64 Encode with Unix EOL" text="Kodeeri Base64 vormingusse Unixi realõppudega"/>
-    <Item english="Base64 Encode by line" text="Kodeeri Base64 vormingusse ridade kaupa"/>
-    <Item english="Base64 Decode" text="Dekodeeri Base64"/>
-    <Item english="Base64 Decode strict" text="Dekodeeri Base64 (range)"/>
-    <Item english="Base64 Decode by line" text="Dekodeeri Base64 ridade kaupa"/>
     <Item english="Quoted-printable Encode" text="Kodeeri Quoted-printable vormingusse"/>
     <Item english="Quoted-printable Decode" text="Dekodeeri Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Kodeeri URL (RFC1738)"/>
@@ -133,7 +126,6 @@
     <Item english="URL Encode (Full) by line" text="Kodeeri URL (täielik) ridade kaupa"/>
     <Item english="URL Decode" text="Dekodeeri URL"/>
     <Item english="SAML Decode" text="Dekodeeri SAML"/>
-    <Item english="The selection is not valid Base64." text="Valik ei ole kehtiv Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Valik ei ole kehtiv Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Valik ei ole SAML-sõnum."/>
     <Item english="Converter" text="Teisendaja"/>

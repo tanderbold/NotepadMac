@@ -98,13 +98,6 @@
     <Item english="Fonts…" text="Clófhoirne…"/>
     <Item english="This document is not valid JSON." text="Ní JSON bailí í an cháipéis seo."/>
     <Item english="MIME Tools" text="Uirlisí MIME"/>
-    <Item english="Base64 Encode" text="Ionchódaigh Base64"/>
-    <Item english="Base64 Encode with padding" text="Ionchódaigh Base64 le stuáil"/>
-    <Item english="Base64 Encode with Unix EOL" text="Ionchódaigh Base64 le EOL Unix"/>
-    <Item english="Base64 Encode by line" text="Ionchódaigh Base64 de réir líne"/>
-    <Item english="Base64 Decode" text="Díchódaigh Base64"/>
-    <Item english="Base64 Decode strict" text="Díchódaigh Base64 go docht"/>
-    <Item english="Base64 Decode by line" text="Díchódaigh Base64 de réir líne"/>
     <Item english="Quoted-printable Encode" text="Ionchódaigh Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Díchódaigh Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Ionchódaigh URL (RFC1738)"/>
@@ -115,7 +108,6 @@
     <Item english="URL Encode (Full) by line" text="Ionchódaigh URL (iomlán) de réir líne"/>
     <Item english="URL Decode" text="Díchódaigh URL"/>
     <Item english="SAML Decode" text="Díchódaigh SAML"/>
-    <Item english="The selection is not valid Base64." text="Ní Base64 bailí é an roghnúchán."/>
     <Item english="The selection is not valid Quoted-printable." text="Ní Quoted-printable bailí é an roghnúchán."/>
     <Item english="The selection is not a SAML message." text="Ní teachtaireacht SAML é an roghnúchán."/>
     <Item english="Converter" text="Tiontaire"/>

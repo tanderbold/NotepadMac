@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Қаріптер…"/>
     <Item english="This document is not valid JSON." text="Бұл құжат жарамды JSON емес."/>
     <Item english="MIME Tools" text="MIME құралдары"/>
-    <Item english="Base64 Encode" text="Base64 кодтау"/>
-    <Item english="Base64 Encode with padding" text="Base64 кодтау (толтырумен)"/>
-    <Item english="Base64 Encode with Unix EOL" text="Base64 кодтау (Unix EOL-мен)"/>
-    <Item english="Base64 Encode by line" text="Base64 жол бойынша кодтау"/>
-    <Item english="Base64 Decode" text="Base64 декодтау"/>
-    <Item english="Base64 Decode strict" text="Base64 қатаң декодтау"/>
-    <Item english="Base64 Decode by line" text="Base64 жол бойынша декодтау"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable кодтау"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable декодтау"/>
     <Item english="URL Encode (RFC1738)" text="URL кодтау (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="URL жол бойынша кодтау (толық)"/>
     <Item english="URL Decode" text="URL декодтау"/>
     <Item english="SAML Decode" text="SAML декодтау"/>
-    <Item english="The selection is not valid Base64." text="Бөлектелген мәтін жарамды Base64 емес."/>
     <Item english="The selection is not valid Quoted-printable." text="Бөлектелген мәтін жарамды Quoted-printable емес."/>
     <Item english="The selection is not a SAML message." text="Бөлектелген мәтін SAML хабарламасы емес."/>
     <Item english="Converter" text="Түрлендіргіш"/>

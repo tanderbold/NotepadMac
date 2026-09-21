@@ -102,8 +102,8 @@ arguments):
 - XML tools
 - FTP client (profiles, remote browsing)
 - NppExec-style script console and Run commands
-- MIME Tools (Base64 in the plugin's seven flavours, Quoted-printable,
-  URL encoding, SAML decode)
+- MIME Tools (Quoted-printable, URL encoding, SAML decode; its Base64 is
+  Tools > Base's job and is not doubled)
 - Converter (ASCII/HEX both ways, the Conversion Panel for one value in
   every base)
 - NppExport (the styled text as RTF and HTML, to a file or the clipboard)

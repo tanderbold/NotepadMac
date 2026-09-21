@@ -115,13 +115,6 @@
     <Item english="Fonts…" text="Қаламҳо…"/>
     <Item english="This document is not valid JSON." text="Ин санад JSON-и дуруст нест."/>
     <Item english="MIME Tools" text="Абзорҳои MIME"/>
-    <Item english="Base64 Encode" text="Рамзгузории Base64"/>
-    <Item english="Base64 Encode with padding" text="Рамзгузории Base64 бо пуркунӣ"/>
-    <Item english="Base64 Encode with Unix EOL" text="Рамзгузории Base64 бо Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Рамзгузории Base64 сатр ба сатр"/>
-    <Item english="Base64 Decode" text="Рамзкушоии Base64"/>
-    <Item english="Base64 Decode strict" text="Рамзкушоии Base64 (қатъӣ)"/>
-    <Item english="Base64 Decode by line" text="Рамзкушоии Base64 сатр ба сатр"/>
     <Item english="Quoted-printable Encode" text="Рамзгузории Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Рамзкушоии Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Рамзгузории URL (RFC1738)"/>
@@ -132,7 +125,6 @@
     <Item english="URL Encode (Full) by line" text="Рамзгузории URL (пурра) сатр ба сатр"/>
     <Item english="URL Decode" text="Рамзкушоии URL"/>
     <Item english="SAML Decode" text="Рамзкушоии SAML"/>
-    <Item english="The selection is not valid Base64." text="Қисми интихобшуда Base64-и дуруст нест."/>
     <Item english="The selection is not valid Quoted-printable." text="Қисми интихобшуда Quoted-printable-и дуруст нест."/>
     <Item english="The selection is not a SAML message." text="Қисми интихобшуда паёми SAML нест."/>
     <Item english="Converter" text="Табдилгар"/>

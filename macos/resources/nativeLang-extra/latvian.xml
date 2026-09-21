@@ -116,13 +116,6 @@
     <Item english="Fonts…" text="Fonti…"/>
     <Item english="This document is not valid JSON." text="Šis dokuments nav derīgs JSON."/>
     <Item english="MIME Tools" text="MIME rīki"/>
-    <Item english="Base64 Encode" text="Kodēt Base64"/>
-    <Item english="Base64 Encode with padding" text="Kodēt Base64 ar aizpildījumu"/>
-    <Item english="Base64 Encode with Unix EOL" text="Kodēt Base64 ar Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Kodēt Base64 pa rindām"/>
-    <Item english="Base64 Decode" text="Dekodēt Base64"/>
-    <Item english="Base64 Decode strict" text="Dekodēt Base64 strikti"/>
-    <Item english="Base64 Decode by line" text="Dekodēt Base64 pa rindām"/>
     <Item english="Quoted-printable Encode" text="Kodēt Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Dekodēt Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Kodēt URL (RFC1738)"/>
@@ -133,7 +126,6 @@
     <Item english="URL Encode (Full) by line" text="Kodēt URL (pilnībā) pa rindām"/>
     <Item english="URL Decode" text="Dekodēt URL"/>
     <Item english="SAML Decode" text="Dekodēt SAML"/>
-    <Item english="The selection is not valid Base64." text="Iezīmētais teksts nav derīgs Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Iezīmētais teksts nav derīgs Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Iezīmētais teksts nav SAML ziņojums."/>
     <Item english="Converter" text="Pārveidotājs"/>

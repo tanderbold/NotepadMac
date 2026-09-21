@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Skrifttyper…"/>
     <Item english="This document is not valid JSON." text="Dette dokument er ikke gyldig JSON."/>
     <Item english="MIME Tools" text="MIME-værktøjer"/>
-    <Item english="Base64 Encode" text="Indkod til Base64"/>
-    <Item english="Base64 Encode with padding" text="Indkod til Base64 med fyldtegn"/>
-    <Item english="Base64 Encode with Unix EOL" text="Indkod til Base64 med Unix-linieskift"/>
-    <Item english="Base64 Encode by line" text="Indkod til Base64 pr. linie"/>
-    <Item english="Base64 Decode" text="Afkod Base64"/>
-    <Item english="Base64 Decode strict" text="Afkod Base64 (strikt)"/>
-    <Item english="Base64 Decode by line" text="Afkod Base64 pr. linie"/>
     <Item english="Quoted-printable Encode" text="Indkod til Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Afkod Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Indkod URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Indkod URL (fuld) pr. linie"/>
     <Item english="URL Decode" text="Afkod URL"/>
     <Item english="SAML Decode" text="Afkod SAML"/>
-    <Item english="The selection is not valid Base64." text="Markeringen er ikke gyldig Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Markeringen er ikke gyldig Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Markeringen er ikke en SAML-meddelelse."/>
     <Item english="Converter" text="Konvertering"/>

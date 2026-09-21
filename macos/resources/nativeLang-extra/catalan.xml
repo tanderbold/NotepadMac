@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Tipus de lletra…"/>
     <Item english="This document is not valid JSON." text="Aquest document no és JSON vàlid."/>
     <Item english="MIME Tools" text="Eines MIME"/>
-    <Item english="Base64 Encode" text="Codifica en Base64"/>
-    <Item english="Base64 Encode with padding" text="Codifica en Base64 amb farciment"/>
-    <Item english="Base64 Encode with Unix EOL" text="Codifica en Base64 amb EOL d'Unix"/>
-    <Item english="Base64 Encode by line" text="Codifica en Base64 línia per línia"/>
-    <Item english="Base64 Decode" text="Descodifica Base64"/>
-    <Item english="Base64 Decode strict" text="Descodifica Base64 (estricte)"/>
-    <Item english="Base64 Decode by line" text="Descodifica Base64 línia per línia"/>
     <Item english="Quoted-printable Encode" text="Codifica en Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Descodifica Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Codifica URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Codifica URL (complet) línia per línia"/>
     <Item english="URL Decode" text="Descodifica URL"/>
     <Item english="SAML Decode" text="Descodifica SAML"/>
-    <Item english="The selection is not valid Base64." text="La selecció no és Base64 vàlid."/>
     <Item english="The selection is not valid Quoted-printable." text="La selecció no és Quoted-printable vàlid."/>
     <Item english="The selection is not a SAML message." text="La selecció no és un missatge SAML."/>
     <Item english="Converter" text="Convertidor"/>

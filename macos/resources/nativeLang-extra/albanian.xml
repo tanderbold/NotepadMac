@@ -103,13 +103,6 @@
     <Item english="Fonts…" text="Fontet…"/>
     <Item english="This document is not valid JSON." text="Ky dokument nuk është JSON i vlefshëm."/>
     <Item english="MIME Tools" text="Vegla MIME"/>
-    <Item english="Base64 Encode" text="Kodo në Base64"/>
-    <Item english="Base64 Encode with padding" text="Kodo në Base64 me mbushje"/>
-    <Item english="Base64 Encode with Unix EOL" text="Kodo në Base64 me EOL Unix"/>
-    <Item english="Base64 Encode by line" text="Kodo në Base64 linjë për linjë"/>
-    <Item english="Base64 Decode" text="Dekodo Base64"/>
-    <Item english="Base64 Decode strict" text="Dekodo Base64 (strikt)"/>
-    <Item english="Base64 Decode by line" text="Dekodo Base64 linjë për linjë"/>
     <Item english="Quoted-printable Encode" text="Kodo në Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Dekodo Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Kodo URL (RFC1738)"/>
@@ -120,7 +113,6 @@
     <Item english="URL Encode (Full) by line" text="Kodo URL (i plotë) linjë për linjë"/>
     <Item english="URL Decode" text="Dekodo URL"/>
     <Item english="SAML Decode" text="Dekodo SAML"/>
-    <Item english="The selection is not valid Base64." text="Zgjedhja nuk është Base64 i vlefshëm."/>
     <Item english="The selection is not valid Quoted-printable." text="Zgjedhja nuk është Quoted-printable i vlefshëm."/>
     <Item english="The selection is not a SAML message." text="Zgjedhja nuk është një mesazh SAML."/>
     <Item english="Converter" text="Konvertues"/>

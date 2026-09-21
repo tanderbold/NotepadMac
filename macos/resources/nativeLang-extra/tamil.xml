@@ -117,13 +117,6 @@
     <Item english="Fonts…" text="எழுத்துருக்கள்…"/>
     <Item english="This document is not valid JSON." text="இந்த ஆவணம் சரியான JSON அல்ல."/>
     <Item english="MIME Tools" text="MIME கருவிகள்"/>
-    <Item english="Base64 Encode" text="Base64 குறிமுறைபடுத்து"/>
-    <Item english="Base64 Encode with padding" text="நிரப்புதலுடன் Base64 குறிமுறைபடுத்து"/>
-    <Item english="Base64 Encode with Unix EOL" text="Unix EOL உடன் Base64 குறிமுறைபடுத்து"/>
-    <Item english="Base64 Encode by line" text="வரி வாரியாக Base64 குறிமுறைபடுத்து"/>
-    <Item english="Base64 Decode" text="Base64 குறிமுறைநீக்கு"/>
-    <Item english="Base64 Decode strict" text="Base64 குறிமுறைநீக்கு (கண்டிப்பான)"/>
-    <Item english="Base64 Decode by line" text="வரி வாரியாக Base64 குறிமுறைநீக்கு"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable குறிமுறைபடுத்து"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable குறிமுறைநீக்கு"/>
     <Item english="URL Encode (RFC1738)" text="URL குறிமுறைபடுத்து (RFC1738)"/>
@@ -134,7 +127,6 @@
     <Item english="URL Encode (Full) by line" text="வரி வாரியாக URL குறிமுறைபடுத்து (முழுமையானது)"/>
     <Item english="URL Decode" text="URL குறிமுறைநீக்கு"/>
     <Item english="SAML Decode" text="SAML குறிமுறைநீக்கு"/>
-    <Item english="The selection is not valid Base64." text="தேர்வு சரியான Base64 அல்ல."/>
     <Item english="The selection is not valid Quoted-printable." text="தேர்வு சரியான Quoted-printable அல்ல."/>
     <Item english="The selection is not a SAML message." text="தேர்வு ஒரு SAML செய்தி அல்ல."/>
     <Item english="Converter" text="மாற்றி"/>

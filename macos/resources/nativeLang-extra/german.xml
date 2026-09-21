@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Schriften …"/>
     <Item english="This document is not valid JSON." text="Dieses Dokument ist kein gültiges JSON."/>
     <Item english="MIME Tools" text="MIME-Werkzeuge"/>
-    <Item english="Base64 Encode" text="Base64 codieren"/>
-    <Item english="Base64 Encode with padding" text="Base64 codieren mit Padding"/>
-    <Item english="Base64 Encode with Unix EOL" text="Base64 codieren mit Unix-EOL"/>
-    <Item english="Base64 Encode by line" text="Base64 zeilenweise codieren"/>
-    <Item english="Base64 Decode" text="Base64 decodieren"/>
-    <Item english="Base64 Decode strict" text="Base64 strikt decodieren"/>
-    <Item english="Base64 Decode by line" text="Base64 zeilenweise decodieren"/>
     <Item english="Quoted-printable Encode" text="Quoted-printable codieren"/>
     <Item english="Quoted-printable Decode" text="Quoted-printable decodieren"/>
     <Item english="URL Encode (RFC1738)" text="URL codieren (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="URL zeilenweise codieren (vollständig)"/>
     <Item english="URL Decode" text="URL decodieren"/>
     <Item english="SAML Decode" text="SAML decodieren"/>
-    <Item english="The selection is not valid Base64." text="Die Auswahl ist kein gültiges Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Die Auswahl ist kein gültiges Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Die Auswahl ist keine SAML-Nachricht."/>
     <Item english="Converter" text="Konverter"/>

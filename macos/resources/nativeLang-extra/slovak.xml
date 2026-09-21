@@ -118,13 +118,6 @@
     <Item english="Fonts…" text="Písma…"/>
     <Item english="This document is not valid JSON." text="Tento dokument nie je platný JSON."/>
     <Item english="MIME Tools" text="Nástroje MIME"/>
-    <Item english="Base64 Encode" text="Zakódovať do Base64"/>
-    <Item english="Base64 Encode with padding" text="Zakódovať do Base64 s výplňou"/>
-    <Item english="Base64 Encode with Unix EOL" text="Zakódovať do Base64 s Unix EOL"/>
-    <Item english="Base64 Encode by line" text="Zakódovať do Base64 po riadkoch"/>
-    <Item english="Base64 Decode" text="Dekódovať Base64"/>
-    <Item english="Base64 Decode strict" text="Dekódovať Base64 (prísne)"/>
-    <Item english="Base64 Decode by line" text="Dekódovať Base64 po riadkoch"/>
     <Item english="Quoted-printable Encode" text="Zakódovať do Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Dekódovať Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Zakódovať URL (RFC1738)"/>
@@ -135,7 +128,6 @@
     <Item english="URL Encode (Full) by line" text="Zakódovať URL (úplné) po riadkoch"/>
     <Item english="URL Decode" text="Dekódovať URL"/>
     <Item english="SAML Decode" text="Dekódovať SAML"/>
-    <Item english="The selection is not valid Base64." text="Výber nie je platný Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="Výber nie je platný Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="Výber nie je správa SAML."/>
     <Item english="Converter" text="Konvertor"/>

@@ -116,13 +116,6 @@
     <Item english="Fonts…" text="Tiparoj…"/>
     <Item english="This document is not valid JSON." text="Tiu ĉi dokumento ne estas valida JSON."/>
     <Item english="MIME Tools" text="MIME-iloj"/>
-    <Item english="Base64 Encode" text="Kodu al Base64"/>
-    <Item english="Base64 Encode with padding" text="Kodu al Base64 kun plenigo"/>
-    <Item english="Base64 Encode with Unix EOL" text="Kodu al Base64 kun uniksaj linifinoj"/>
-    <Item english="Base64 Encode by line" text="Kodu al Base64 laŭlinie"/>
-    <Item english="Base64 Decode" text="Malkodu Base64"/>
-    <Item english="Base64 Decode strict" text="Malkodu Base64 (strikte)"/>
-    <Item english="Base64 Decode by line" text="Malkodu Base64 laŭlinie"/>
     <Item english="Quoted-printable Encode" text="Kodu al Quoted-printable"/>
     <Item english="Quoted-printable Decode" text="Malkodu Quoted-printable"/>
     <Item english="URL Encode (RFC1738)" text="Kodu URL (RFC1738)"/>
@@ -133,7 +126,6 @@
     <Item english="URL Encode (Full) by line" text="Kodu URL (plena) laŭlinie"/>
     <Item english="URL Decode" text="Malkodu URL"/>
     <Item english="SAML Decode" text="Malkodu SAML"/>
-    <Item english="The selection is not valid Base64." text="La elektaĵo ne estas valida Base64."/>
     <Item english="The selection is not valid Quoted-printable." text="La elektaĵo ne estas valida Quoted-printable."/>
     <Item english="The selection is not a SAML message." text="La elektaĵo ne estas SAML-mesaĝo."/>
     <Item english="Converter" text="Konvertilo"/>
