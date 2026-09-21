@@ -851,8 +851,10 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Cut Binary Content" action:@selector(cutBinary:) key:@"" flags:0 menu:pasteMenu];
     [self item:@"Paste Binary Content" action:@selector(pasteBinaryContent:) key:@"" flags:0 menu:pasteMenu];
     [editMenu addItemWithTitle:@"Paste Special" action:nil keyEquivalent:@""].submenu = pasteMenu;
-    // A Mac reads pictures: the clipboard's image OCR'd at the caret.
+    // A Mac reads pictures: the clipboard's image OCR'd at the caret, and a
+    // whole image or PDF file into a new document.
     [self item:@"Paste Image as Text" action:@selector(pasteImageAsText:) key:@"" flags:0 menu:editMenu];
+    [self item:@"Recognize Text in File…" action:@selector(recognizeTextInFile:) key:@"" flags:0 menu:editMenu];
 
     NSMenu *selMenu = [[NSMenu alloc] initWithTitle:@"On Selection"];
     [self item:@"Open File" action:@selector(openSelectedFile:) key:@"" flags:0 menu:selMenu];
@@ -1522,6 +1524,25 @@ static NSString *Ordinal(NSUInteger n) {
 
 - (void)pasteImageAsText:(id)sender {
     if (![self.editor pasteImageAsText]) [self reportMimeProblem:@"No text was found in the clipboard's image."];
+}
+
+- (void)recognizeTextInFile:(id)sender {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    panel.allowedFileTypes = @[@"png", @"jpg", @"jpeg", @"tiff", @"tif", @"heic",
+                               @"webp", @"gif", @"bmp", @"pdf"];
+    if ([panel runModal] != NSModalResponseOK || !panel.URL) return;
+    NSString *path = panel.URL.path;
+    // A many-page PDF takes a while; the recognizing is off the main thread,
+    // the document opens back on it.
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSString *text = [EditorController textRecognizedInFileAt:path];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!text.length) { [self reportMimeProblem:@"No text was found in the file."]; return; }
+            [self.editor newDocument];
+            [self.editor.sci setString:text];
+            [self.editor refreshChrome];
+        });
+    });
 }
 
 - (void)qrFromSelection:(id)sender {

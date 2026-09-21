@@ -137,6 +137,8 @@
     <Item english="No Guesses Found" text="Geen voorstelle gevind nie"/>
     <Item english="Markdown Preview" text="Markdown-voorskou"/>
     <Item english="Paste Image as Text" text="Plak beeld as teks"/>
+    <Item english="Recognize Text in File…" text="Herken teks in leêr…"/>
+    <Item english="No text was found in the file." text="Geen teks is in die leêr gevind nie."/>
     <Item english="QR Code from Selection" text="QR-kode van seleksie"/>
     <Item english="Read QR Code from Clipboard" text="Lees QR-kode van klipbord"/>
     <Item english="Install Command Line Tool" text="Installeer opdraglyn-nutsprogram"/>

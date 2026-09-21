@@ -70,6 +70,8 @@
     <Item english="No Guesses Found" text="هیچ پێشنیارێك نەدۆزرایەوە"/>
     <Item english="Markdown Preview" text="پێشبینینی Markdown"/>
     <Item english="Paste Image as Text" text="لكاندنی وێنە وەك دەق"/>
+    <Item english="Recognize Text in File…" text="ناسینەوەی دەق لە پەڕگە…"/>
+    <Item english="No text was found in the file." text="هیچ دەقێك لە پەڕگەكەدا نەدۆزرایەوە."/>
     <Item english="Install Command Line Tool" text="دامەزراندنی ئامرازی هێڵی فەرمان"/>
     <Item english="QR Code" text="كۆدی QR"/>
     <Item english="Copy Image" text="لەبەرگرتنەوەی وێنە"/>

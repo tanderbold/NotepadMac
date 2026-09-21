@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Tahmin Bulunamadı"/>
     <Item english="Markdown Preview" text="Markdown Önizlemesi"/>
     <Item english="Paste Image as Text" text="Görseli Metin Olarak Yapıştır"/>
+    <Item english="Recognize Text in File…" text="Dosyadaki Metni Tanı…"/>
+    <Item english="No text was found in the file." text="Dosyada metin bulunamadı."/>
     <Item english="QR Code from Selection" text="Seçimden QR Kodu"/>
     <Item english="Read QR Code from Clipboard" text="Panodan QR Kodu Oku"/>
     <Item english="Install Command Line Tool" text="Komut Satırı Aracını Yükle"/>

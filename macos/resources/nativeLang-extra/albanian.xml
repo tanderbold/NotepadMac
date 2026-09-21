@@ -140,6 +140,8 @@
     <Item english="No Guesses Found" text="Nuk u gjetën sugjerime"/>
     <Item english="Markdown Preview" text="Pamje paraprake e Markdown-ut"/>
     <Item english="Paste Image as Text" text="Ngjit imazhin si tekst"/>
+    <Item english="Recognize Text in File…" text="Njih tekstin në file…"/>
+    <Item english="No text was found in the file." text="Nuk u gjet tekst në file."/>
     <Item english="QR Code from Selection" text="Kod QR nga zgjedhja"/>
     <Item english="Read QR Code from Clipboard" text="Lexo kodin QR nga clipboard-i"/>
     <Item english="Install Command Line Tool" text="Instalo mjetin e linjës së komandës"/>

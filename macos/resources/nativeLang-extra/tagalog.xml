@@ -114,6 +114,8 @@
     <Item english="No Guesses Found" text="Walang Nahanap na Mungkahi"/>
     <Item english="Markdown Preview" text="Preview ng Markdown"/>
     <Item english="Paste Image as Text" text="Idikit ang Larawan bilang Teksto"/>
+    <Item english="Recognize Text in File…" text="Kilalanin ang Teksto sa Pila…"/>
+    <Item english="No text was found in the file." text="Walang nahanap na teksto sa pila."/>
     <Item english="QR Code from Selection" text="QR Code mula sa Napiling Teksto"/>
     <Item english="Read QR Code from Clipboard" text="Basahin ang QR Code mula sa Clipboard"/>
     <Item english="Install Command Line Tool" text="I-install ang Command Line Tool"/>

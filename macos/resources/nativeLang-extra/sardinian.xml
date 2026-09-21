@@ -85,6 +85,8 @@
     <Item english="Automatic" text="Automàtica"/>
     <Item english="Markdown Preview" text="Antiprima Markdown"/>
     <Item english="Paste Image as Text" text="Apìtziga s'immàgine comente testu"/>
+    <Item english="Recognize Text in File…" text="Agata su testu in su file…"/>
+    <Item english="No text was found in the file." text="Perunu testu agatadu in su file."/>
     <Item english="QR Code from Selection" text="Còdighe QR dae sa seletzione"/>
     <Item english="Read QR Code from Clipboard" text="Lege su còdighe QR dae is notas"/>
     <Item english="Install Command Line Tool" text="Installa s'aina de sa lìnia de cumandu"/>

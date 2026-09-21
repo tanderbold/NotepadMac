@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Ingen forslag fundet"/>
     <Item english="Markdown Preview" text="Markdown-forhåndsvisning"/>
     <Item english="Paste Image as Text" text="Indsæt billede som tekst"/>
+    <Item english="Recognize Text in File…" text="Genkend tekst i fil…"/>
+    <Item english="No text was found in the file." text="Der blev ikke fundet nogen tekst i filen."/>
     <Item english="QR Code from Selection" text="QR-kode fra markering"/>
     <Item english="Read QR Code from Clipboard" text="Læs QR-kode fra udklipsholder"/>
     <Item english="Install Command Line Tool" text="Installér kommandolinjeværktøj"/>

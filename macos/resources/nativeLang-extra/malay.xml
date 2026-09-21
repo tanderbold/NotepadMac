@@ -143,6 +143,8 @@
     <Item english="No Guesses Found" text="Tiada Cadangan Ditemui"/>
     <Item english="Markdown Preview" text="Pratonton Markdown"/>
     <Item english="Paste Image as Text" text="Tampal Imej sebagai Teks"/>
+    <Item english="Recognize Text in File…" text="Kenal Pasti Teks dalam Fail…"/>
+    <Item english="No text was found in the file." text="Tiada teks ditemui dalam fail."/>
     <Item english="QR Code from Selection" text="Kod QR daripada Pilihan"/>
     <Item english="Read QR Code from Clipboard" text="Baca Kod QR daripada Papan Keratan"/>
     <Item english="Install Command Line Tool" text="Pasang Alat Baris Perintah"/>

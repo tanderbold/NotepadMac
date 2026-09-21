@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Nenašli sa žiadne návrhy"/>
     <Item english="Markdown Preview" text="Náhľad Markdown"/>
     <Item english="Paste Image as Text" text="Prilepiť obrázok ako text"/>
+    <Item english="Recognize Text in File…" text="Rozpoznať text v súbore…"/>
+    <Item english="No text was found in the file." text="V súbore sa nenašiel žiadny text."/>
     <Item english="QR Code from Selection" text="QR kód z výberu"/>
     <Item english="Read QR Code from Clipboard" text="Prečítať QR kód zo schránky"/>
     <Item english="Install Command Line Tool" text="Inštalovať nástroj príkazového riadka"/>

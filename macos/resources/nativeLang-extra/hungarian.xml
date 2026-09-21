@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Nincs javaslat"/>
     <Item english="Markdown Preview" text="Markdown-előnézet"/>
     <Item english="Paste Image as Text" text="Kép beillesztése szövegként"/>
+    <Item english="Recognize Text in File…" text="Szöveg felismerése fájlban…"/>
+    <Item english="No text was found in the file." text="A fájlban nem található szöveg."/>
     <Item english="QR Code from Selection" text="QR-kód a kijelölésből"/>
     <Item english="Read QR Code from Clipboard" text="QR-kód beolvasása a vágólapról"/>
     <Item english="Install Command Line Tool" text="Parancssori eszköz telepítése"/>

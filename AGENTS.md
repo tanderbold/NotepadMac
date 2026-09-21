@@ -35,7 +35,7 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
 
 - Every `.mm` in `macos/app/` is compiled; there is no file list to update.
   C sources of `macos/third_party/argon2` are compiled by their own block in `build.sh`.
-- Linked: Cocoa, QuartzCore, Security, WebKit, libcurl, libxml2, zlib; libpcre2 is loaded at run time.
+- Linked: Cocoa, QuartzCore, Security, WebKit, Vision, CoreImage, libcurl, libxml2, zlib; libpcre2 is loaded at run time.
 - The suite is `macos/app/Tests.mm` (one function, `NppMacRunTests`), run inside the real
   application with `NPPMAC_TEST=1`. A check is `Check(@"IDM_… or Area (what)", @"what must hold", condition)`.
   `macos/implemented.txt` lists upstream command ids the suite must cover (a meta-test reads it).
@@ -111,7 +111,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Panels and docking | `DockingManager.mm`, `NppPanel.mm`, `DocumentListPanel.mm`, `FunctionListPanel.mm`, `FunctionListCatalog.mm`, `ProjectPanel.mm`, `WorkspacePanel.mm`, `AuxPanels.mm` |
 | Preferences, shortcuts, context menu | `SettingsCommands.mm` (NPP_PREF_* macros, defaults), `SettingsPanels.mm`, `ShortcutMapper.mm`, `ContextMenuFile.mm` |
 | Localisation | `Localization.mm` (upstream `nativeLang/*.xml` by command id and by English text; the port's own texts from `resources/nativeLang-extra/`) |
-| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off) |
+| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker; indicator 17 - 8-16 are taken by mark styles, find mark, links and tag match), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off) |
 | Third-party plugins | `PluginHost.mm` (dlopen, the send() bridge, NPPM/NPPN subset); the public C interface and sample live in `macos/plugin-sdk/`. Release signing needs `macos/entitlements.plist` (library validation off) or the hardened runtime refuses the dylibs |
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
 | Mac extras | `ImageCommands.mm` (OCR paste, QR both ways - Vision + Core Image), `macos/cli/nppmac.m` (the command line tool, built into Contents/Helpers and heard over a distributed notification) |

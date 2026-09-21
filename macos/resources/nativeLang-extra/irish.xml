@@ -135,6 +135,8 @@
     <Item english="No Guesses Found" text="Níor aimsíodh aon mholadh"/>
     <Item english="Markdown Preview" text="Réamhamharc Markdown"/>
     <Item english="Paste Image as Text" text="Greamaigh an íomhá mar théacs"/>
+    <Item english="Recognize Text in File…" text="Aithin téacs i gcomhad…"/>
+    <Item english="No text was found in the file." text="Níor aimsíodh aon téacs sa chomhad."/>
     <Item english="QR Code from Selection" text="Cód QR ón roghnúchán"/>
     <Item english="Read QR Code from Clipboard" text="Léigh cód QR ón ngearrthaisce"/>
     <Item english="Install Command Line Tool" text="Suiteáil uirlis líne na n-orduithe"/>

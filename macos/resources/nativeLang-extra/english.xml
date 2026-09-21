@@ -157,6 +157,8 @@
     <Item english="No Guesses Found" text="No Guesses Found"/>
     <Item english="Markdown Preview" text="Markdown Preview"/>
     <Item english="Paste Image as Text" text="Paste Image as Text"/>
+    <Item english="Recognize Text in File…" text="Recognize Text in File…"/>
+    <Item english="No text was found in the file." text="No text was found in the file."/>
     <Item english="QR Code from Selection" text="QR Code from Selection"/>
     <Item english="Read QR Code from Clipboard" text="Read QR Code from Clipboard"/>
     <Item english="Install Command Line Tool" text="Install Command Line Tool"/>

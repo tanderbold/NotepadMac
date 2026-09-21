@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="没有拼写建议"/>
     <Item english="Markdown Preview" text="Markdown 预览"/>
     <Item english="Paste Image as Text" text="将图像粘贴为文本"/>
+    <Item english="Recognize Text in File…" text="识别文件中的文本…"/>
+    <Item english="No text was found in the file." text="文件中未找到文本。"/>
     <Item english="QR Code from Selection" text="从选中内容生成二维码"/>
     <Item english="Read QR Code from Clipboard" text="从剪贴板读取二维码"/>
     <Item english="Install Command Line Tool" text="安装命令行工具"/>

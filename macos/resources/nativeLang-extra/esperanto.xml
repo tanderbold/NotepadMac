@@ -153,6 +153,8 @@
     <Item english="No Guesses Found" text="Neniu propono trovita"/>
     <Item english="Markdown Preview" text="Markdown-antaŭrigardo"/>
     <Item english="Paste Image as Text" text="Algluu bildon kiel tekston"/>
+    <Item english="Recognize Text in File…" text="Rekonu tekston en dosiero…"/>
+    <Item english="No text was found in the file." text="Neniu teksto estis trovita en la dosiero."/>
     <Item english="QR Code from Selection" text="QR-kodo el la elektaĵo"/>
     <Item english="Read QR Code from Clipboard" text="Legu QR-kodon el la tondejo"/>
     <Item english="Install Command Line Tool" text="Instalu komandlinian ilon"/>

@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="לא נמצאו הצעות"/>
     <Item english="Markdown Preview" text="תצוגה מקדימה של Markdown"/>
     <Item english="Paste Image as Text" text="הדבק תמונה כטקסט"/>
+    <Item english="Recognize Text in File…" text="זהה טקסט בקובץ…"/>
+    <Item english="No text was found in the file." text="לא נמצא טקסט בקובץ."/>
     <Item english="QR Code from Selection" text="קוד QR מהבחירה"/>
     <Item english="Read QR Code from Clipboard" text="קרא קוד QR מהזיכרון"/>
     <Item english="Install Command Line Tool" text="התקן כלי שורת פקודה"/>

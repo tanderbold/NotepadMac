@@ -151,6 +151,8 @@
     <Item english="No Guesses Found" text="Ni Chanfuwyd Awgrymiadau"/>
     <Item english="Markdown Preview" text="Rhagolwg Markdown"/>
     <Item english="Paste Image as Text" text="Gludo Delwedd fel Testun"/>
+    <Item english="Recognize Text in File…" text="Adnabod Testun mewn Ffeil…"/>
+    <Item english="No text was found in the file." text="Ni chanfuwyd testun yn y ffeil."/>
     <Item english="QR Code from Selection" text="Cod QR o'r Testun a Ddewiswyd"/>
     <Item english="Read QR Code from Clipboard" text="Darllen Cod QR o'r Clipfwrdd"/>
     <Item english="Install Command Line Tool" text="Gosod Offeryn Llinell Gorchymyn"/>

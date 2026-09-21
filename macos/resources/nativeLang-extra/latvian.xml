@@ -153,6 +153,8 @@
     <Item english="No Guesses Found" text="Nav atrasts neviens minējums"/>
     <Item english="Markdown Preview" text="Markdown priekšskatījums"/>
     <Item english="Paste Image as Text" text="Ielīmēt attēlu kā tekstu"/>
+    <Item english="Recognize Text in File…" text="Atpazīt tekstu failā…"/>
+    <Item english="No text was found in the file." text="Failā nav atrasts teksts."/>
     <Item english="QR Code from Selection" text="QR kods no iezīmētā teksta"/>
     <Item english="Read QR Code from Clipboard" text="Nolasīt QR kodu no starpliktuves"/>
     <Item english="Install Command Line Tool" text="Instalēt komandrindas rīku"/>

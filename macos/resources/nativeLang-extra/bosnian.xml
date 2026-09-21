@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Nema pronađenih prijedloga"/>
     <Item english="Markdown Preview" text="Markdown pregled"/>
     <Item english="Paste Image as Text" text="Zalijepi sliku kao tekst"/>
+    <Item english="Recognize Text in File…" text="Prepoznaj tekst u datoteci…"/>
+    <Item english="No text was found in the file." text="U datoteci nije pronađen tekst."/>
     <Item english="QR Code from Selection" text="QR kod iz odabira"/>
     <Item english="Read QR Code from Clipboard" text="Očitaj QR kod iz clipboarda"/>
     <Item english="Install Command Line Tool" text="Instaliraj alat komandne linije"/>

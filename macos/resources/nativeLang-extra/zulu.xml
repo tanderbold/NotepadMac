@@ -98,6 +98,8 @@
     <Item english="No Guesses Found" text="Azikho iziphakamiso ezitholakele"/>
     <Item english="Markdown Preview" text="Ukubuka Kuqala kwe-Markdown"/>
     <Item english="Paste Image as Text" text="Namathisela isithombe njengombhalo"/>
+    <Item english="Recognize Text in File…" text="Thola umbhalo efayeleni…"/>
+    <Item english="No text was found in the file." text="Awukho umbhalo otholakele efayeleni."/>
     <Item english="QR Code from Selection" text="Ikhodi ye-QR kusuka ekukhethweni"/>
     <Item english="Read QR Code from Clipboard" text="Funda ikhodi ye-QR kusuka ku-Clipboard"/>
     <Item english="Install Command Line Tool" text="Faka ithuluzi lomugqa womyalo"/>

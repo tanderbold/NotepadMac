@@ -23,8 +23,7 @@
     return nil;
 }
 
-+ (NSString *)textRecognizedInImage:(NSImage *)image {
-    CGImageRef cg = [image CGImageForProposedRect:NULL context:nil hints:nil];
++ (NSString *)textRecognizedInCGImage:(CGImageRef)cg {
     if (!cg) return nil;
     VNRecognizeTextRequest *request = [[VNRecognizeTextRequest alloc] init];
     request.recognitionLevel = VNRequestTextRecognitionLevelAccurate;
@@ -48,6 +47,48 @@
         if (best.length) [lines addObject:best];
     }
     return lines.count ? [lines componentsJoinedByString:@"\n"] : nil;
+}
+
++ (NSString *)textRecognizedInImage:(NSImage *)image {
+    return [self textRecognizedInCGImage:[image CGImageForProposedRect:NULL context:nil hints:nil]];
+}
+
++ (NSString *)textRecognizedInFileAt:(NSString *)path {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    if ([path.pathExtension caseInsensitiveCompare:@"pdf"] == NSOrderedSame) {
+        CGPDFDocumentRef pdf = CGPDFDocumentCreateWithURL((__bridge CFURLRef)url);
+        if (!pdf) return nil;
+        NSMutableArray<NSString *> *pages = [NSMutableArray array];
+        size_t pageCount = CGPDFDocumentGetNumberOfPages(pdf);
+        for (size_t number = 1; number <= pageCount; ++number) {
+            CGPDFPageRef page = CGPDFDocumentGetPage(pdf, number);
+            if (!page) continue;
+            // Drawn large enough to read: the recognizer wants print-like
+            // resolution, ~2200 pixels along the long side.
+            CGRect box = CGPDFPageGetBoxRect(page, kCGPDFMediaBox);
+            CGFloat scale = 2200 / MAX(box.size.width, box.size.height);
+            size_t w = (size_t)(box.size.width * scale), hgt = (size_t)(box.size.height * scale);
+            CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+            CGContextRef ctx = CGBitmapContextCreate(NULL, w, hgt, 8, 0, space,
+                                                     kCGImageAlphaPremultipliedFirst);
+            CGColorSpaceRelease(space);
+            if (!ctx) continue;
+            CGContextSetRGBFillColor(ctx, 1, 1, 1, 1);
+            CGContextFillRect(ctx, CGRectMake(0, 0, w, hgt));
+            CGContextScaleCTM(ctx, scale, scale);
+            CGContextTranslateCTM(ctx, -box.origin.x, -box.origin.y);
+            CGContextDrawPDFPage(ctx, page);
+            CGImageRef cg = CGBitmapContextCreateImage(ctx);
+            CGContextRelease(ctx);
+            NSString *text = [self textRecognizedInCGImage:cg];
+            CGImageRelease(cg);
+            if (text.length) [pages addObject:text];
+        }
+        CGPDFDocumentRelease(pdf);
+        return pages.count ? [pages componentsJoinedByString:@"\n\n"] : nil;
+    }
+    NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
+    return image ? [self textRecognizedInImage:image] : nil;
 }
 
 /// Core Image on the processor: the default context wants a GPU, which a

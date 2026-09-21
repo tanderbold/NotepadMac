@@ -149,6 +149,8 @@
     <Item english="No Guesses Found" text="Ямар ч санал олдсонгүй"/>
     <Item english="Markdown Preview" text="Markdown-ийг урьдчилан харах"/>
     <Item english="Paste Image as Text" text="Зургийг текст болгон наах"/>
+    <Item english="Recognize Text in File…" text="Файл дахь текстийг таних…"/>
+    <Item english="No text was found in the file." text="Файлд текст олдсонгүй."/>
     <Item english="QR Code from Selection" text="Сонгосон хэсгээс QR код"/>
     <Item english="Read QR Code from Clipboard" text="Түр санах ойгоос QR код унших"/>
     <Item english="Install Command Line Tool" text="Тушаалын мөрний хэрэгсэл суулгах"/>

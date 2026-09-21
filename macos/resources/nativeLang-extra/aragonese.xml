@@ -129,6 +129,8 @@
     <Item english="Learn Spelling" text="Aprender a ortografía"/>
     <Item english="Markdown Preview" text="Vista previa de Markdown"/>
     <Item english="Paste Image as Text" text="Apegar a imachen como texto"/>
+    <Item english="Recognize Text in File…" text="Reconoixer o texto d'un fichero…"/>
+    <Item english="No text was found in the file." text="No s'ha trobau dengún texto en o fichero."/>
     <Item english="QR Code from Selection" text="Codigo QR d'a selección"/>
     <Item english="Read QR Code from Clipboard" text="Leyer o codigo QR d'o portafuellas"/>
     <Item english="Install Command Line Tool" text="Instalar a ferramienta d'a linia de comandos"/>

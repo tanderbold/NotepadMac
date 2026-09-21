@@ -138,6 +138,8 @@
     <Item english="No Guesses Found" text="ไม่พบคำแนะนำ"/>
     <Item english="Markdown Preview" text="แสดงตัวอย่าง Markdown"/>
     <Item english="Paste Image as Text" text="วางรูปภาพเป็นข้อความ"/>
+    <Item english="Recognize Text in File…" text="รู้จำข้อความในไฟล์…"/>
+    <Item english="No text was found in the file." text="ไม่พบข้อความในไฟล์"/>
     <Item english="QR Code from Selection" text="QR โค้ดจากข้อความที่เลือก"/>
     <Item english="Read QR Code from Clipboard" text="อ่าน QR โค้ดจากคลิปบอร์ด"/>
     <Item english="Install Command Line Tool" text="ติดตั้งเครื่องมือบรรทัดคำสั่ง"/>

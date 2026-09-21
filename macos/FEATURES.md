@@ -734,7 +734,8 @@ leans the other way:
 - The `nppmac` command line tool: files (at a line), folders as workspaces,
   standard input; installed into /usr/local/bin from the Tools menu.
 - Paste Image as Text: the clipboard's image through the system's text
-  recognizer (Vision), at the caret.
+  recognizer (Vision), at the caret; Recognize Text in File reads an image
+  or a PDF, page by page, into a new document.
 - QR codes both ways: the selection as a code, the clipboard's code as text.
 - Spell checking by the system engine, with every installed dictionary.
 

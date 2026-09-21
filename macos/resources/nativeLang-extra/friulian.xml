@@ -110,6 +110,8 @@
     <Item english="Automatic" text="Automatic"/>
     <Item english="Markdown Preview" text="Anteprime Markdown"/>
     <Item english="Paste Image as Text" text="Tache l'imagjin come test"/>
+    <Item english="Recognize Text in File…" text="Ricognòs il test intun file…"/>
+    <Item english="No text was found in the file." text="Nol è stât cjatât nissun test intal file."/>
     <Item english="QR Code from Selection" text="Codiç QR de selezion"/>
     <Item english="Read QR Code from Clipboard" text="Lei il codiç QR dai Aponts"/>
     <Item english="Install Command Line Tool" text="Instale il strument de rie di comant"/>

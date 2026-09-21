@@ -143,6 +143,8 @@
     <Item english="No Guesses Found" text="Не се најдени предлози"/>
     <Item english="Markdown Preview" text="Преглед на Markdown"/>
     <Item english="Paste Image as Text" text="Додади слика како текст"/>
+    <Item english="Recognize Text in File…" text="Препознај текст во фајл…"/>
+    <Item english="No text was found in the file." text="Во фајлот не е најден текст."/>
     <Item english="QR Code from Selection" text="QR-код од одбраниот текст"/>
     <Item english="Read QR Code from Clipboard" text="Прочитај QR-код од клипбордот"/>
     <Item english="Install Command Line Tool" text="Инсталирај алатка за командна линија"/>

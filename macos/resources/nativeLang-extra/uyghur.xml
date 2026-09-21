@@ -136,6 +136,8 @@
     <Item english="No Guesses Found" text="تەۋسىيە تېپىلمىدى"/>
     <Item english="Markdown Preview" text="Markdown ئالدىن كۆرۈش"/>
     <Item english="Paste Image as Text" text="سۈرەتنى تېكىست قىلىپ چاپلاش"/>
+    <Item english="Recognize Text in File…" text="ھۆججەتتىكى تېكىستنى تونۇش…"/>
+    <Item english="No text was found in the file." text="ھۆججەتتىن تېكىست تېپىلمىدى."/>
     <Item english="QR Code from Selection" text="تاللانغان تېكىستتىن QR كودى"/>
     <Item english="Read QR Code from Clipboard" text="ئىشتاختىدىن QR كودىنى ئوقۇش"/>
     <Item english="Install Command Line Tool" text="بۇيرۇق قۇرى قورالىنى ئورنىتىش"/>

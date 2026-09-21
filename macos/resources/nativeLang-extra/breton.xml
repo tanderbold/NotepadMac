@@ -127,6 +127,8 @@
     <Item english="This is not a curl command." text="N'eo ket un urzhiad curl."/>
     <Item english="Markdown Preview" text="Rakwel Markdown"/>
     <Item english="Paste Image as Text" text="Pegañ ar skeudenn evel testenn"/>
+    <Item english="Recognize Text in File…" text="Anavezout an destenn en ur restr…"/>
+    <Item english="No text was found in the file." text="N'eus bet kavet testenn ebet er restr."/>
     <Item english="QR Code from Selection" text="Kod QR diwar an diuzad"/>
     <Item english="Read QR Code from Clipboard" text="Lenn ar c'hod QR eus ar golver"/>
     <Item english="QR Code" text="Kod QR"/>

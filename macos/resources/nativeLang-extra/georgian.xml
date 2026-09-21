@@ -149,6 +149,8 @@
     <Item english="No Guesses Found" text="შემოთავაზებები ვერ მოიძებნა"/>
     <Item english="Markdown Preview" text="Markdown-ის გადახედვა"/>
     <Item english="Paste Image as Text" text="სურათის ჩასმა ტექსტის სახით"/>
+    <Item english="Recognize Text in File…" text="ტექსტის ამოცნობა ფაილში…"/>
+    <Item english="No text was found in the file." text="ფაილში ტექსტი ვერ მოიძებნა."/>
     <Item english="QR Code from Selection" text="QR კოდი მონიშნულიდან"/>
     <Item english="Read QR Code from Clipboard" text="QR კოდის წაკითხვა ბუფერიდან"/>
     <Item english="Install Command Line Tool" text="ბრძანების სტრიქონის ხელსაწყოს დაყენება"/>

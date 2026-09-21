@@ -153,6 +153,8 @@
     <Item english="No Guesses Found" text="Δεν βρέθηκαν προτάσεις"/>
     <Item english="Markdown Preview" text="Προεπισκόπηση Markdown"/>
     <Item english="Paste Image as Text" text="Επικόλληση εικόνας ως κείμενο"/>
+    <Item english="Recognize Text in File…" text="Αναγνώριση κειμένου σε αρχείο…"/>
+    <Item english="No text was found in the file." text="Δεν βρέθηκε κείμενο στο αρχείο."/>
     <Item english="QR Code from Selection" text="Κωδικός QR από την επιλογή"/>
     <Item english="Read QR Code from Clipboard" text="Ανάγνωση κωδικού QR από το πρόχειρο"/>
     <Item english="Install Command Line Tool" text="Εγκατάσταση εργαλείου γραμμής εντολών"/>

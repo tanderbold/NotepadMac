@@ -136,6 +136,8 @@
     <Item english="No Guesses Found" text="Keng Virschléi fonnt"/>
     <Item english="Markdown Preview" text="Markdown-Virschau"/>
     <Item english="Paste Image as Text" text="Bild als Text afügen"/>
+    <Item english="Recognize Text in File…" text="Text an der Datei erkennen …"/>
+    <Item english="No text was found in the file." text="Keen Text an der Datei fonnt."/>
     <Item english="QR Code from Selection" text="QR-Code aus dem markéierten Text"/>
     <Item english="Read QR Code from Clipboard" text="QR-Code aus der Tëschentablag liesen"/>
     <Item english="Install Command Line Tool" text="Kommandozeilen-Tool installéieren"/>

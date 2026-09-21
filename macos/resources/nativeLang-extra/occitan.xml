@@ -125,6 +125,8 @@
     <Item english="No Guesses Found" text="Cap de suggestion trobada"/>
     <Item english="Markdown Preview" text="Apercebut Markdown"/>
     <Item english="Paste Image as Text" text="Pegar l'imatge coma tèxt"/>
+    <Item english="Recognize Text in File…" text="Reconéisser lo tèxt dins un fichièr…"/>
+    <Item english="No text was found in the file." text="Cap de tèxt trobat dins lo fichièr."/>
     <Item english="QR Code from Selection" text="Còdi QR de la seleccion"/>
     <Item english="Read QR Code from Clipboard" text="Legir lo còdi QR del quichapapièrs"/>
     <Item english="Install Command Line Tool" text="Installar l'aisina de linha de comandas"/>

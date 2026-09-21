@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Nu s-au găsit sugestii"/>
     <Item english="Markdown Preview" text="Previzualizare Markdown"/>
     <Item english="Paste Image as Text" text="Lipește imaginea ca text"/>
+    <Item english="Recognize Text in File…" text="Recunoaște textul din fișier…"/>
+    <Item english="No text was found in the file." text="Nu s-a găsit text în fișier."/>
     <Item english="QR Code from Selection" text="Cod QR din selecție"/>
     <Item english="Read QR Code from Clipboard" text="Citește codul QR din clipboard"/>
     <Item english="Install Command Line Tool" text="Instalează instrumentul pentru linia de comandă"/>

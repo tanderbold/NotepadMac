@@ -51,7 +51,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 
 **Only a Mac could**
 - **`nppmac` command line**: `nppmac file.txt`, `nppmac +42 file.txt`, `echo hi | nppmac -`, a folder opens as a workspace; Tools > Install Command Line Tool links it into /usr/local/bin.
-- **Paste Image as Text**: the clipboard's image read by the system's text recognizer, straight to the caret.
+- **Paste Image as Text**: the clipboard's image read by the system's text recognizer, straight to the caret; **Recognize Text in File** reads a whole image or PDF, page by page, into a new document.
 - **Spell checking** on the system engine and **Markdown Preview** (listed with the plugins below) are system-native too.
 
 **Built in instead of plugins** (Windows plugins are Windows binaries and cannot load)

@@ -10115,6 +10115,38 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"OCR reads a picture", @"the system engine returns the words drawn into the image",
               [seen containsString:@"HELLO"] && [seen containsString:@"42"]);
 
+        // The same engine over files: a PNG written to disk, and a PDF drawn
+        // right here, page rendered and read back.
+        NSString *pngPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_ocr.png"];
+        CGImageRef pictureCG = [picture CGImageForProposedRect:NULL context:nil hints:nil];
+        NSBitmapImageRep *pictureRep = [[NSBitmapImageRep alloc] initWithCGImage:pictureCG];
+        [[pictureRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}]
+            writeToFile:pngPath atomically:YES];
+        NSString *fromPNG = [EditorController textRecognizedInFileAt:pngPath];
+
+        NSString *pdfPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_ocr.pdf"];
+        NSMutableData *pdfData = [NSMutableData data];
+        CGRect page = CGRectMake(0, 0, 612, 200);
+        CGDataConsumerRef consumer = CGDataConsumerCreateWithCFData((__bridge CFMutableDataRef)pdfData);
+        CGContextRef pdfCtx = CGPDFContextCreate(consumer, &page, NULL);
+        CGDataConsumerRelease(consumer);
+        CGPDFContextBeginPage(pdfCtx, NULL);
+        NSGraphicsContext *old = NSGraphicsContext.currentContext;
+        NSGraphicsContext.currentContext =
+            [NSGraphicsContext graphicsContextWithCGContext:pdfCtx flipped:NO];
+        [@"PDF PAGE WORDS 7" drawAtPoint:NSMakePoint(40, 80) withAttributes:
+            @{NSFontAttributeName: [NSFont boldSystemFontOfSize:40],
+              NSForegroundColorAttributeName: [NSColor blackColor]}];
+        NSGraphicsContext.currentContext = old;
+        CGPDFContextEndPage(pdfCtx);
+        CGPDFContextClose(pdfCtx);
+        CGContextRelease(pdfCtx);
+        [pdfData writeToFile:pdfPath atomically:YES];
+        NSString *fromPDF = [EditorController textRecognizedInFileAt:pdfPath];
+        Check(@"Recognize Text in File", @"a PNG on disk and a rendered PDF page both give their words back",
+              [fromPNG containsString:@"HELLO"] &&
+              [fromPDF containsString:@"PDF"] && [fromPDF containsString:@"7"]);
+
         // Paste Image as Text: through the clipboard, into the document.
         NSPasteboard *pb = [NSPasteboard generalPasteboard];
         [pb clearContents];

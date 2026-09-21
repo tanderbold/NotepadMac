@@ -153,6 +153,8 @@
     <Item english="No Guesses Found" text="Ehdotuksia ei löytynyt"/>
     <Item english="Markdown Preview" text="Markdown-esikatselu"/>
     <Item english="Paste Image as Text" text="Liitä kuva tekstinä"/>
+    <Item english="Recognize Text in File…" text="Tunnista teksti tiedostosta…"/>
+    <Item english="No text was found in the file." text="Tiedostosta ei löytynyt tekstiä."/>
     <Item english="QR Code from Selection" text="QR-koodi valinnasta"/>
     <Item english="Read QR Code from Clipboard" text="Lue QR-koodi leikepöydältä"/>
     <Item english="Install Command Line Tool" text="Asenna komentorivityökalu"/>

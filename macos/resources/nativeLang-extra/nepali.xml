@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="कुनै सुझाव फेला परेन"/>
     <Item english="Markdown Preview" text="Markdown पूर्वावलोकन"/>
     <Item english="Paste Image as Text" text="छवि पाठको रूपमा टाँस्नुहोस्"/>
+    <Item english="Recognize Text in File…" text="फाईलमा पाठ पहिचान गर्नुहोस्…"/>
+    <Item english="No text was found in the file." text="फाईलमा कुनै पाठ फेला परेन।"/>
     <Item english="QR Code from Selection" text="चयनबाट QR कोड"/>
     <Item english="Read QR Code from Clipboard" text="क्लिपबोर्डबाट QR कोड पढ्नुहोस्"/>
     <Item english="Install Command Line Tool" text="कमाण्ड लाइन उपकरण स्थापना गर्नुहोस्"/>

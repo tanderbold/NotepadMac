@@ -155,6 +155,8 @@
     <Item english="No Guesses Found" text="Onay Uessesgay Oundfay"/>
     <Item english="Markdown Preview" text="Markdown Eviewpray"/>
     <Item english="Paste Image as Text" text="Astepay Imageyay asyay Exttay"/>
+    <Item english="Recognize Text in File…" text="Ecognizeray Exttay inyay Ilefay…"/>
+    <Item english="No text was found in the file." text="Onay exttay asway oundfay inyay ethay ilefay."/>
     <Item english="QR Code from Selection" text="QR Odecay omfray Electionsay"/>
     <Item english="Read QR Code from Clipboard" text="Eadray QR Odecay omfray Ipboardclay"/>
     <Item english="Install Command Line Tool" text="Installyay Ommandcay Inelay Ooltay"/>

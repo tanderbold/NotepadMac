@@ -153,6 +153,8 @@
     <Item english="No Guesses Found" text="Spėjimų nerasta"/>
     <Item english="Markdown Preview" text="Markdown peržiūra"/>
     <Item english="Paste Image as Text" text="Įklijuoti paveikslėlį kaip tekstą"/>
+    <Item english="Recognize Text in File…" text="Atpažinti tekstą faile…"/>
+    <Item english="No text was found in the file." text="Faile teksto nerasta."/>
     <Item english="QR Code from Selection" text="QR kodas iš pažymėto teksto"/>
     <Item english="Read QR Code from Clipboard" text="Nuskaityti QR kodą iš mainų srities"/>
     <Item english="Install Command Line Tool" text="Įdiegti komandų eilutės įrankį"/>

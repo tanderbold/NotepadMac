@@ -152,6 +152,8 @@
     <Item english="No Guesses Found" text="Пешниҳод ёфт нашуд"/>
     <Item english="Markdown Preview" text="Пешнамоиши Markdown"/>
     <Item english="Paste Image as Text" text="Часбондани тасвир ҳамчун матн"/>
+    <Item english="Recognize Text in File…" text="Шинохтани матн дар файл…"/>
+    <Item english="No text was found in the file." text="Дар файл матн ёфт нашуд."/>
     <Item english="QR Code from Selection" text="QR-код аз матни интихобшуда"/>
     <Item english="Read QR Code from Clipboard" text="Хондани QR-код аз миёнгири табодул"/>
     <Item english="Install Command Line Tool" text="Насби абзори хати фармон"/>

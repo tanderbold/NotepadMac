@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// nil when the image carries none.
 + (nullable NSString *)textFromQRCodesInImage:(NSImage *)image;
 
+/// The file's text: an image, or a PDF page by page (rendered at reading
+/// resolution, pages joined by blank lines). nil when nothing is legible.
++ (nullable NSString *)textRecognizedInFileAt:(NSString *)path;
+
 /// Edit > Paste Image as Text. NO means: no image, or no text in it.
 - (BOOL)pasteImageAsText;
 

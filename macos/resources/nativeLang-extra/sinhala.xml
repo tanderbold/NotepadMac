@@ -150,6 +150,8 @@
     <Item english="No Guesses Found" text="යෝජනා හමු නොවීය"/>
     <Item english="Markdown Preview" text="Markdown පෙරදසුන"/>
     <Item english="Paste Image as Text" text="රූපය පාඨය ලෙස අලවන්න"/>
+    <Item english="Recognize Text in File…" text="ගොනුවේ පාඨය හඳුනාගන්න…"/>
+    <Item english="No text was found in the file." text="ගොනුවේ පාඨයක් හමු නොවීය."/>
     <Item english="QR Code from Selection" text="තේරීමෙන් QR කේතය"/>
     <Item english="Read QR Code from Clipboard" text="ඇමුණුම් පුවරුවෙන් QR කේතය කියවන්න"/>
     <Item english="Install Command Line Tool" text="විධාන රේඛා මෙවලම ස්ථාපනය කරන්න"/>

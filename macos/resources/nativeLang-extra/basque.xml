@@ -145,6 +145,8 @@
     <Item english="No Guesses Found" text="Ez da iradokizunik aurkitu"/>
     <Item english="Markdown Preview" text="Markdown aurrebista"/>
     <Item english="Paste Image as Text" text="Itsatsi Irudia Testu gisa"/>
+    <Item english="Recognize Text in File…" text="Ezagutu Testua Fitxategian…"/>
+    <Item english="No text was found in the file." text="Ez da testurik aurkitu fitxategian."/>
     <Item english="QR Code from Selection" text="QR Kodea Hautapenetik"/>
     <Item english="Read QR Code from Clipboard" text="Irakurri QR Kodea Arbeletik"/>
     <Item english="Install Command Line Tool" text="Instalatu Komando-lerroko Tresna"/>

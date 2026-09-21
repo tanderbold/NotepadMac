@@ -151,6 +151,8 @@
     <Item english="No Guesses Found" text="Тәкъдимнәр табылмады"/>
     <Item english="Markdown Preview" text="Markdown'ны алдан карау"/>
     <Item english="Paste Image as Text" text="Рәсемне текст итеп куярга"/>
+    <Item english="Recognize Text in File…" text="Файлдагы текстны танырга…"/>
+    <Item english="No text was found in the file." text="Файлда текст табылмады."/>
     <Item english="QR Code from Selection" text="Сайланган тексттан QR-код"/>
     <Item english="Read QR Code from Clipboard" text="Алмашыну буферыннан QR-кодны укырга"/>
     <Item english="Install Command Line Tool" text="Команда юлы коралын урнаштырырга"/>
