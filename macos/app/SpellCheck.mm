@@ -79,21 +79,21 @@ static NSInteger gSpellDocumentTag;
         NSString *text = [self spellTextFrom:lineStart to:lineEnd];
         if (!text.length) continue;
 
-        NSUInteger from = 0;
-        while (from < text.length) {
-            NSRange miss = [checker checkSpellingOfString:text startingAt:(NSInteger)from
-                                                 language:language.length ? language : nil
-                                                     wrap:NO inSpellDocumentWithTag:gSpellDocumentTag
-                                                wordCount:NULL];
-            if (miss.location == NSNotFound || miss.length == 0) break;
+        // checkString: is the one API whose automatic language identification
+        // actually works; checkSpellingOfString:language:nil quietly keeps
+        // whatever language the shared checker happened to hold.
+        NSArray<NSTextCheckingResult *> *misses =
+            [checker checkString:text range:NSMakeRange(0, text.length)
+                           types:NSTextCheckingTypeSpelling options:nil
+          inSpellDocumentWithTag:gSpellDocumentTag orthography:NULL wordCount:NULL];
+        for (NSTextCheckingResult *miss in misses) {
             long byteAt = lineStart +
-                (long)strlen([text substringToIndex:miss.location].UTF8String ?: "");
-            long byteLen = (long)strlen([text substringWithRange:miss].UTF8String ?: "");
+                (long)strlen([text substringToIndex:miss.range.location].UTF8String ?: "");
+            long byteLen = (long)strlen([text substringWithRange:miss.range].UTF8String ?: "");
             int style = (int)[sci message:SCI_GETSTYLEAT wParam:(uptr_t)byteAt lParam:0];
             if (!allowed || [allowed containsObject:@(style)]) {
                 [sci message:SCI_INDICATORFILLRANGE wParam:(uptr_t)byteAt lParam:(sptr_t)byteLen];
             }
-            from = NSMaxRange(miss);
         }
     }
 }
@@ -111,9 +111,19 @@ static NSInteger gSpellDocumentTag;
 
     NSMutableArray<NSMenuItem *> *items = [NSMutableArray array];
     NSString *language = [NppPreferences shared].spellCheckLanguage;
+    if (!language.length) {
+        // Automatic: ask the engine what language this very word is in, or
+        // the guesses come from whatever language the checker last held.
+        NSOrthography *orthography = nil;
+        [[NSSpellChecker sharedSpellChecker] checkString:word range:NSMakeRange(0, word.length)
+                                                   types:NSTextCheckingTypeSpelling options:nil
+                                  inSpellDocumentWithTag:gSpellDocumentTag
+                                             orthography:&orthography wordCount:NULL];
+        language = orthography.dominantLanguage ?: [NSSpellChecker sharedSpellChecker].language;
+    }
     NSArray<NSString *> *guesses = [[NSSpellChecker sharedSpellChecker]
         guessesForWordRange:NSMakeRange(0, word.length) inString:word
-                   language:language.length ? language : [NSSpellChecker sharedSpellChecker].language
+                   language:language
      inSpellDocumentWithTag:gSpellDocumentTag] ?: @[];
     NSDictionary *place = @{@"start": @(start), @"end": @(end), @"word": word};
     for (NSString *guess in [guesses subarrayWithRange:NSMakeRange(0, MIN(guesses.count, 5u))]) {

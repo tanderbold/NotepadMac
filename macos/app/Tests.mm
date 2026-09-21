@@ -10039,6 +10039,26 @@ int NppMacRunTests(AppDelegate *app) {
                   [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:1] &&
                   [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:6]);
 
+            // Automatic language: the engine must work the language out by
+            // itself. checkSpellingOfString:language:nil quietly kept the
+            // checker's old language, so a foreign text went unchecked - the
+            // very way the bug was reported.
+            NSString *french = @"bonjur le monde sa marche tres bien";
+            checker.automaticallyIdentifiesLanguages = YES;
+            NSArray *frProbe = [checker checkString:french range:NSMakeRange(0, french.length)
+                                              types:NSTextCheckingTypeSpelling options:nil
+                             inSpellDocumentWithTag:0 orthography:NULL wordCount:NULL];
+            if (frProbe.count) {
+                prefs.spellCheckLanguage = @"";
+                SetDoc(ed, @"bonjur le monde\n");
+                [ed spellCheckNow];
+                Check(@"Spell check automatic language", @"a French misspelling is found with no language chosen",
+                      [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:1]);
+                prefs.spellCheckLanguage = @"en";
+            } else {
+                printf("  note: no French dictionary here; the automatic-language check not exercised\n");
+            }
+
             NSError *err = nil;
             [ed openFileAtPath:TempFile(@"t_spell.py", @"wrld = 1  # helo wrld\n") error:&err];
             [ed spellCheckNow];
