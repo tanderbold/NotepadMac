@@ -1,5 +1,13 @@
 # Notepad++ for macOS
 
+[![Release](https://img.shields.io/github/v/release/tanderbold/NotepadMac?label=release)](https://github.com/tanderbold/NotepadMac/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/tanderbold/NotepadMac/total?label=downloads)](https://github.com/tanderbold/NotepadMac/releases)
+[![Build](https://img.shields.io/github/actions/workflow/status/tanderbold/NotepadMac/macos.yml?branch=main&label=build)](https://github.com/tanderbold/NotepadMac/actions/workflows/macos.yml)
+[![Licence](https://img.shields.io/github/license/tanderbold/NotepadMac?label=licence)](LICENSE)
+[![macOS 11+](https://img.shields.io/badge/macOS-11%2B-blue)](https://github.com/tanderbold/NotepadMac/releases/latest)
+[![Apple silicon and Intel](https://img.shields.io/badge/Apple%20silicon-%2B%20Intel-blue)](https://github.com/tanderbold/NotepadMac/releases/latest)
+[![Homebrew](https://img.shields.io/badge/Homebrew-tanderbold%2Ftap-orange)](https://github.com/tanderbold/homebrew-tap)
+
 A native macOS port of Notepad++: the same
 editing engine (Scintilla), the same syntax highlighting (Lexilla), the same
 language, colour, theme, function-list and translation files as the Windows
@@ -205,7 +213,8 @@ Notepad++ by Don Ho and its contributors (GPL) - the design, the data files, the
 the behaviour this application follows; Scintilla and Lexilla by Neil Hodgson and contributors;
 uchardet; the Argon2 reference implementation (CC0). "Notepad++" is the name of the original
 Windows application; the Mac application is called NotepadMac. Everything in `macos/` is
-licensed under the GPL, like Notepad++ itself (see `LICENSE`).
+licensed under the GPL version 3, like Notepad++ itself (see `LICENSE`; Notepad++'s own copyright
+notice is in `NOTEPAD-PLUS-PLUS-COPYING.txt`).
 
 `PowerEditor/`, `scintilla/`, `lexilla/` and `boostregex/` are a snapshot of upstream Notepad++,
 kept as the sources the application is built from and the reference it is written against;

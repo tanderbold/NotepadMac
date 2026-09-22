@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ — NotepadMac, Notepad++ for macOS</title>
+<meta name="description" content="Answers about running Notepad++ on a Mac with NotepadMac: installation, plugins, settings from Windows, languages, regular expressions, and how it differs from NotepadNext.">
+<meta property="og:title" content="FAQ — NotepadMac, Notepad++ for macOS">
+<meta property="og:description" content="Does Notepad++ run on a Mac? Do plugins work? Can I bring my Windows settings? Answers about NotepadMac.">
+<meta property="og:image" content="https://tanderbold.github.io/NotepadMac/screenshot-editor.png">
+<meta property="og:url" content="https://tanderbold.github.io/NotepadMac/faq.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="canonical" href="https://tanderbold.github.io/NotepadMac/faq.html">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Does Notepad++ run on a Mac?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Not the Windows program itself: Notepad++ is a Windows application and its makers do not publish a Mac version. NotepadMac is an unofficial native port. It is a Cocoa application built from the same editing engine (Scintilla) and syntax highlighting (Lexilla) as Notepad++, reads the same language, style, theme, function-list and translation files, and runs on Apple silicon and Intel Macs with macOS 11 or later. No Wine, no emulation, no virtual machine."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is NotepadMac the official Notepad++ for macOS?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. It is an independent port, not made, released or supported by the Notepad++ project. It is written against Notepad++'s own sources, so commands behave the way they do on Windows, but questions and bug reports about the Mac version belong in this repository's Issues and Discussions, not with the Notepad++ project."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I install it?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "With Homebrew: brew install --cask tanderbold/tap/notepadmac. Or download the .dmg from the Releases page on GitHub, open it and drag NotepadMac to Applications. One universal build runs on Apple silicon and Intel; macOS 11 or later is required. Releases are signed and notarised by Apple's notary service."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is it free?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. NotepadMac is free and open source under the GNU GPL version 3, the same licence as Notepad++. The complete source code is on GitHub and the application can be built with nothing but Apple's Command Line Tools."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do Notepad++ plugins work in NotepadMac?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Windows plugins (.dll files) cannot load: they are Windows binaries. The most used ones are built into the application instead: JSON viewer, Compare, XML tools, an FTP/FTPS client, NppExec-style scripting and MIME tools. Native Mac plugins can be written against a small C interface, Notepad++'s plugin interface translated to macOS, with the full Scintilla API available."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I bring my settings over from Notepad++ on Windows?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. session.xml, shortcuts.xml, contextMenu.xml, User Defined Language files, themes and stylers are read and written in the Windows formats, so a settings folder can be copied across. On the Mac, settings live in ~/Library/Application Support/NotepadMac/."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which languages does it highlight?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "About 90 languages, from Notepad++'s own langs.model.xml and stylers.model.xml, with folding, function list and auto-completion, plus User Defined Languages made in the built-in editor or imported from Windows. When a file has no extension, or text is pasted into an empty tab, a small model trained on real code works out the language from the contents."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How is NotepadMac different from NotepadNext?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "NotepadNext is a cross-platform reimplementation of Notepad++ in Qt for Windows, Linux and macOS, with its own language definitions and Lua scripting. NotepadMac is a macOS-only native Cocoa application written against Notepad++'s sources and using Notepad++'s own data files: all 579 menu commands, User Defined Languages, the Style Configurator and themes, all 46 character sets, Boost regular expressions, and Windows-format settings files. Which one fits depends on whether you need the same editor on several platforms or the Notepad++ behaviour on a Mac."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does it support the same regular expressions as Notepad++?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. Find, Replace, Find in Files and Mark use the Boost regular-expression engine with Notepad++'s syntax, including $1-style backreferences in replacements, look-ahead and look-behind, and the search results window with folding."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is the interface translated?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "The interface is available in Notepad++'s ~90 translations, chosen in Preferences. Texts that exist only in the Mac version are translated too, by machine for now, and not yet reviewed by native speakers."
+   }
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<main class="faq">
+  <p class="back"><a href="./">NotepadMac</a> › FAQ</p>
+  <h1>Frequently asked questions</h1>
+  <p class="tagline">Notepad++ on a Mac: what NotepadMac is, what it does, and what it does not.</p>
+  <h2>Does Notepad++ run on a Mac?</h2>
+  <p>Not the Windows program itself: Notepad++ is a Windows application and its makers do not publish a Mac version. NotepadMac is an unofficial native port. It is a Cocoa application built from the same editing engine (Scintilla) and syntax highlighting (Lexilla) as Notepad++, reads the same language, style, theme, function-list and translation files, and runs on Apple silicon and Intel Macs with macOS 11 or later. No Wine, no emulation, no virtual machine.</p>
+  <h2>Is NotepadMac the official Notepad++ for macOS?</h2>
+  <p>No. It is an independent port, not made, released or supported by the Notepad++ project. It is written against Notepad++&#x27;s own sources, so commands behave the way they do on Windows, but questions and bug reports about the Mac version belong in this repository&#x27;s Issues and Discussions, not with the Notepad++ project.</p>
+  <h2>How do I install it?</h2>
+  <p>With Homebrew: brew install --cask tanderbold/tap/notepadmac. Or download the .dmg from the Releases page on GitHub, open it and drag NotepadMac to Applications. One universal build runs on Apple silicon and Intel; macOS 11 or later is required. Releases are signed and notarised by Apple&#x27;s notary service.</p>
+  <h2>Is it free?</h2>
+  <p>Yes. NotepadMac is free and open source under the GNU GPL version 3, the same licence as Notepad++. The complete source code is on GitHub and the application can be built with nothing but Apple&#x27;s Command Line Tools.</p>
+  <h2>Do Notepad++ plugins work in NotepadMac?</h2>
+  <p>Windows plugins (.dll files) cannot load: they are Windows binaries. The most used ones are built into the application instead: JSON viewer, Compare, XML tools, an FTP/FTPS client, NppExec-style scripting and MIME tools. Native Mac plugins can be written against a small C interface, Notepad++&#x27;s plugin interface translated to macOS, with the full Scintilla API available.</p>
+  <h2>Can I bring my settings over from Notepad++ on Windows?</h2>
+  <p>Yes. session.xml, shortcuts.xml, contextMenu.xml, User Defined Language files, themes and stylers are read and written in the Windows formats, so a settings folder can be copied across. On the Mac, settings live in ~/Library/Application Support/NotepadMac/.</p>
+  <h2>Which languages does it highlight?</h2>
+  <p>About 90 languages, from Notepad++&#x27;s own langs.model.xml and stylers.model.xml, with folding, function list and auto-completion, plus User Defined Languages made in the built-in editor or imported from Windows. When a file has no extension, or text is pasted into an empty tab, a small model trained on real code works out the language from the contents.</p>
+  <h2>How is NotepadMac different from NotepadNext?</h2>
+  <p>NotepadNext is a cross-platform reimplementation of Notepad++ in Qt for Windows, Linux and macOS, with its own language definitions and Lua scripting. NotepadMac is a macOS-only native Cocoa application written against Notepad++&#x27;s sources and using Notepad++&#x27;s own data files: all 579 menu commands, User Defined Languages, the Style Configurator and themes, all 46 character sets, Boost regular expressions, and Windows-format settings files. Which one fits depends on whether you need the same editor on several platforms or the Notepad++ behaviour on a Mac.</p>
+  <h2>Does it support the same regular expressions as Notepad++?</h2>
+  <p>Yes. Find, Replace, Find in Files and Mark use the Boost regular-expression engine with Notepad++&#x27;s syntax, including $1-style backreferences in replacements, look-ahead and look-behind, and the search results window with folding.</p>
+  <h2>Is the interface translated?</h2>
+  <p>The interface is available in Notepad++&#x27;s ~90 translations, chosen in Preferences. Texts that exist only in the Mac version are translated too, by machine for now, and not yet reviewed by native speakers.</p>
+
+  <p class="links">
+    <a href="./">Home</a>
+    <a href="https://github.com/tanderbold/NotepadMac">Source on GitHub</a>
+    <a href="https://github.com/tanderbold/NotepadMac/releases">Releases</a>
+    <a href="https://github.com/tanderbold/NotepadMac/discussions">Discussions</a>
+  </p>
+</main>
+<footer>
+  An independent, unofficial port; not made, released or supported by the Notepad++ project.
+  Notepad++ is by Don Ho. NotepadMac is licensed under the GPL, the same licence as Notepad++.
+</footer>
+</body>
+</html>
