@@ -880,6 +880,9 @@ static CGFloat NeededWidth(NSControl *control) {
     y = [self addCheckbox:@"Mute all sounds" key:@"muteSounds" on:p.muteSounds to:v atY:y];
     y = [self addCheckbox:@"Allow loading symlinks in Folder as Workspace panel" key:@"workspaceSymlinks"
                        on:p.workspaceSymlinks to:v atY:y];
+    // The port's own: the MCP socket that nppmac mcp bridges agents to.
+    y = [self addCheckbox:@"Let AI agents drive the editor (MCP)" key:@"agentServer"
+                       on:p.agentServer to:v atY:y];
     y = [self addField:@"Session file ext." key:@"sessionFileExtension" value:p.sessionFileExtension to:v atY:y];
     y = [self addField:@"Workspace file ext." key:@"workspaceFileExtension" value:p.workspaceFileExtension to:v atY:y];
     y = [self addPopup:@"Auto-updater:" key:@"autoUpdateMode"

@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Komanda čita podatke iz datoteke, što se ovde ne radi."/>
     <Item english="Forms and uploads of files are not read from a command." text="Obrasci i otpremanje datoteka se ne čitaju iz komande."/>
     <Item english="The command's address is not an http or https address." text="Adresa u komandi nije http ili https adresa."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Dozvoli AI agentima da upravljaju editorom (MCP)"/>
 </NativeLangExtra>

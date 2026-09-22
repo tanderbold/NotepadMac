@@ -114,7 +114,8 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker; indicator 17 - 8-16 are taken by mark styles, find mark, links and tag match), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off) |
 | Third-party plugins | `PluginHost.mm` (dlopen, the send() bridge, NPPM/NPPN subset); the public C interface and sample live in `macos/plugin-sdk/`. Release signing needs `macos/entitlements.plist` (library validation off) or the hardened runtime refuses the dylibs |
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
-| Mac extras | `ImageCommands.mm` (OCR paste, QR both ways - Vision + Core Image), `macos/cli/nppmac.m` (the command line tool, built into Contents/Helpers and heard over a distributed notification) |
+| Mac extras | `ImageCommands.mm` (OCR paste, QR both ways - Vision + Core Image), `macos/cli/nppmac.m` (the command line tool, built into Contents/Helpers and heard over a distributed notification; `nppmac mcp` is the stdio bridge to the agent socket) |
+| Agent interface (MCP) | `AgentServer.mm`: the Unix socket, the JSON-RPC/MCP methods and the 21 tools; see below |
 | Help | `InfoWindows.mm`, `UpdateChecker.mm` |
 
 Generators (`macos/gen_*.py|sh`) rebuild headers and resources from upstream sources; rerun them
@@ -128,6 +129,34 @@ properties per family (`fold.html`, `fold.hypertext.comment`, `fold.preprocessor
 numbers the *lexer* reads, which for the C family, Objective-C, Tcl, TypeScript, XML and the
 hypertext family are not Notepad++'s `LANG_INDEX_*` numbers. HTML, PHP, ASP and JSP are all the
 `hypertext` lexer with HTML + embedded JavaScript + PHP + ASP words and styles.
+
+### Agent interface (MCP)
+
+`AgentServer.mm` is the application speaking MCP itself: JSON-RPC 2.0, one message per line,
+over a Unix socket (`~/Library/Application Support/NotepadMac/agent.sock`, 0600; the suite and
+tools point elsewhere with `NPPMAC_AGENT_SOCKET`, kept short - a socket path has 104 bytes).
+`nppmac mcp` is nothing but a pipe between an agent's stdio and that socket, so any MCP client
+works and the protocol lives in one place. Listening follows the MISC. preference `agentServer`
+(off by default) through `-[NppPreferences applyToEditor:]`; `applicationWillTerminate:` removes
+the socket file.
+
+- Every message is handled on the main thread (`handleMessage:`), so tools run where the editor
+  lives; the connection's thread waits. A tool is a block registered in `registerTools` with its
+  JSON schema; `callTool:arguments:error:` is what the suite calls.
+- Reading a document that is not in front goes through a hidden `ScintillaView` given the
+  document's pointer (`readDocument:using:`): text, styling and lexer belong to the Scintilla
+  document, so the tab in front is not touched. Changing one goes through the front view
+  (`withDocumentInFront:do:`), which is what keeps `modified`, bookmarks and folds, and the tab
+  and the recent order are put back, as `forEachOpenDocument:` does for a search.
+- Lines and columns in the protocol are one-based, columns in characters (`SCI_POSITIONAFTER`
+  walks UTF-8); answers carry byte positions too. Text in one answer stops at a million
+  characters with `truncated`.
+- Tools reuse the engines as they are: `FindCommands` (its `regexFor:`/`rangesOfMatches:` are
+  declared privately in `AgentServer.mm`), `LanguageModel`, `FunctionListCatalog`,
+  `CompareCommands`, `NppCharsetDetection`, `ImageCommands`, `NSSpellChecker`. Adding a tool means
+  one `addTool:` call, a check in the suite's "Agent interface" section, and a row in README's table.
+- Refused to agents: `IDM_FILE_EXIT`, `IDM_FILE_DELETE`; closing a modified document without
+  `discard_changes`; saving a document that has no file (that is a Save As panel, the user's).
 
 ### Localisation
 

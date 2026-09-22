@@ -286,4 +286,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Η εντολή διαβάζει τα δεδομένα της από αρχείο, κάτι που δεν γίνεται εδώ."/>
     <Item english="Forms and uploads of files are not read from a command." text="Οι φόρμες και οι αποστολές αρχείων δεν διαβάζονται από εντολή."/>
     <Item english="The command's address is not an http or https address." text="Η διεύθυνση της εντολής δεν είναι διεύθυνση http ή https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Να επιτρέπεται στους πράκτορες ΤΝ να χειρίζονται τον επεξεργαστή (MCP)"/>
 </NativeLangExtra>

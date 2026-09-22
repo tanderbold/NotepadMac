@@ -281,4 +281,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Mae'r gorchymyn yn darllen ei ddata o ffeil; ni wneir hynny yma."/>
     <Item english="Forms and uploads of files are not read from a command." text="Ni ddarllenir ffurflenni na llwytho ffeiliau i fyny o orchymyn."/>
     <Item english="The command's address is not an http or https address." text="Nid yw cyfeiriad y gorchymyn yn gyfeiriad http na https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Caniatáu i asiantau AI reoli'r golygydd (MCP)"/>
 </NativeLangExtra>

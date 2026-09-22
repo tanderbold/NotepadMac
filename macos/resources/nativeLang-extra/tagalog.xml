@@ -223,4 +223,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Binabasa ng utos ang data nito mula sa isang pila, na hindi ginagawa rito."/>
     <Item english="Forms and uploads of files are not read from a command." text="Hindi binabasa mula sa utos ang mga form at pag-upload ng pila."/>
     <Item english="The command's address is not an http or https address." text="Ang address ng utos ay hindi http o https address."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Pahintulutan ang mga AI agent na kontrolin ang editor (MCP)"/>
 </NativeLangExtra>

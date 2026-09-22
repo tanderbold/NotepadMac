@@ -286,4 +286,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Komanda nolasa datus no faila, kas šeit netiek darīts."/>
     <Item english="Forms and uploads of files are not read from a command." text="Veidlapas un failu augšupielādes no komandas netiek nolasītas."/>
     <Item english="The command's address is not an http or https address." text="Komandas adrese nav http vai https adrese."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Atļaut MI aģentiem vadīt redaktoru (MCP)"/>
 </NativeLangExtra>

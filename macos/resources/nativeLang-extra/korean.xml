@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="명령이 파일에서 데이터를 읽는데, 여기서는 지원하지 않습니다."/>
     <Item english="Forms and uploads of files are not read from a command." text="양식과 파일 업로드는 명령에서 읽어 오지 않습니다."/>
     <Item english="The command's address is not an http or https address." text="명령의 주소가 http 또는 https 주소가 아닙니다."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="AI 에이전트가 편집기를 제어하도록 허용 (MCP)"/>
 </NativeLangExtra>

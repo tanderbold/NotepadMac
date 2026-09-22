@@ -268,4 +268,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Die opdrag lees sy data uit 'n leêr, wat nie hier gedoen word nie."/>
     <Item english="Forms and uploads of files are not read from a command." text="Vorms en oplaaie van leêrs word nie uit 'n opdrag gelees nie."/>
     <Item english="The command's address is not an http or https address." text="Die opdrag se adres is nie 'n http- of https-adres nie."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Laat KI-agente die redigeerder beheer (MCP)"/>
 </NativeLangExtra>

@@ -261,4 +261,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="De Befeel liest seng Daten aus enger Datei, wat hei net gemaach gëtt."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formulairen an Datei-Uploads ginn net aus engem Befeel gelies."/>
     <Item english="The command's address is not an http or https address." text="D'Adress vum Befeel ass keng http- oder https-Adress."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="KI-Agenten erlaben, den Editor ze steieren (MCP)"/>
 </NativeLangExtra>

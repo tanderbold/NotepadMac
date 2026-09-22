@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="此指令從檔案讀取資料，這裡不支援。"/>
     <Item english="Forms and uploads of files are not read from a command." text="不會從指令讀取表單和檔案上傳。"/>
     <Item english="The command's address is not an http or https address." text="指令中的網址不是 http 或 https 網址。"/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="允許 AI 代理程式控制編輯器（MCP）"/>
 </NativeLangExtra>

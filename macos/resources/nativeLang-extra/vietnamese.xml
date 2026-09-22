@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Lệnh đọc dữ liệu từ một tệp, điều này không được hỗ trợ ở đây."/>
     <Item english="Forms and uploads of files are not read from a command." text="Biểu mẫu và việc tải tệp lên không được đọc từ lệnh."/>
     <Item english="The command's address is not an http or https address." text="Địa chỉ của lệnh không phải là địa chỉ http hay https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Cho phép các tác nhân AI điều khiển trình soạn thảo (MCP)"/>
 </NativeLangExtra>

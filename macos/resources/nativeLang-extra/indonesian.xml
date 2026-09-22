@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Perintah membaca datanya dari berkas, yang tidak dilakukan di sini."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formulir dan unggahan berkas tidak dibaca dari perintah."/>
     <Item english="The command's address is not an http or https address." text="Alamat pada perintah bukan alamat http atau https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Izinkan agen AI mengendalikan editor (MCP)"/>
 </NativeLangExtra>

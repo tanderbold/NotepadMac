@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Командата чете данните си от файл, което тук не се прави."/>
     <Item english="Forms and uploads of files are not read from a command." text="Формуляри и качване на файлове не се четат от команда."/>
     <Item english="The command's address is not an http or https address." text="Адресът в командата не е http или https адрес."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Разрешаване на ИИ агентите да управляват редактора (MCP)"/>
 </NativeLangExtra>

@@ -26,6 +26,7 @@
 #import "JsonCommands.h"
 #import "MimeCommands.h"
 #import "PluginHost.h"
+#import "AgentServer.h"
 #import "ConverterCommands.h"
 #import "ExportCommands.h"
 #import "SpellCheck.h"
@@ -586,6 +587,7 @@ static NSString *Ordinal(NSUInteger n) {
 
 - (void)applicationWillTerminate:(NSNotification *)note {
     [[NppPluginHost shared] notifyPlugins:NPPN_SHUTDOWN];
+    [[NppAgentServer shared] stop];   // takes its socket file with it
     if ([self automaticUpdateCheckAllowed] && [NppPreferences shared].autoUpdateMode == 2) [self updateCheckAtExit];
     [self rememberFloatingPanels];
     [self.editor rememberPanelState];

@@ -282,4 +282,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Тушаал өгөгдлөө файлаас уншдаг бөгөөд үүнийг энд дэмжээгүй."/>
     <Item english="Forms and uploads of files are not read from a command." text="Маягт болон файл байршуулалтыг тушаалаас уншихгүй."/>
     <Item english="The command's address is not an http or https address." text="Тушаалын хаяг нь http эсвэл https хаяг биш байна."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="AI агентуудад засварлагчийг удирдахыг зөвшөөрөх (MCP)"/>
 </NativeLangExtra>

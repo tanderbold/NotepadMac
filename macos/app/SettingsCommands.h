@@ -144,6 +144,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *workspaceFileExtension;
 /// Folder as Workspace lists symbolic links.
 @property (nonatomic) BOOL workspaceSymlinks;
+/// MISC. > Let AI agents drive the editor: the MCP socket `nppmac mcp`
+/// bridges to (AgentServer.mm). Off unless the user turns it on.
+@property (nonatomic) BOOL agentServer;
 // Search Engine: 0 DuckDuckGo, 1 Google, 2 Bing, 3 Yahoo!, 4 the custom URL.
 @property (nonatomic) NSInteger searchEngine;
 @property (nonatomic, copy) NSString *searchEngineCustom;

@@ -61,6 +61,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - **`nppmac` command line**: `nppmac file.txt`, `nppmac +42 file.txt`, `echo hi | nppmac -`, a folder opens as a workspace; Tools > Install Command Line Tool links it into /usr/local/bin.
 - **Paste Image as Text**: the clipboard's image read by the system's text recognizer, straight to the caret; **Recognize Text in File** reads a whole image or PDF, page by page, into a new document.
 - **Spell checking** on the system engine and **Markdown Preview** (listed with the plugins below) are system-native too.
+- **An MCP server for AI coding agents**: `nppmac mcp` gives Claude Code, Cursor and the like the editor's open documents, unsaved text, selection, lexer tokens, searches, Compare and more as tools (see [Working with AI agents](#working-with-ai-agents-mcp)). Off until turned on in Preferences.
 
 **Built in instead of plugins** (Windows plugins are Windows binaries and cannot load)
 - JSON: format, compact, sort keys, validate, tree.
@@ -162,6 +163,45 @@ activated, shutdown). Any language that can export C symbols from a dylib
 works — C, C++, Objective-C, Swift (`@_cdecl`), Rust (`#[no_mangle]`).
 The full reference, sample plugin and signing notes are in
 [macos/plugin-sdk/README.md](macos/plugin-sdk/README.md).
+
+## Working with AI agents (MCP)
+
+NotepadMac can be a [Model Context Protocol](https://modelcontextprotocol.io) server, so an
+AI coding agent on the same Mac works *with* the editor instead of past it: it sees which
+documents are open and what is selected, reads unsaved text, edits a buffer as one undo
+step, puts the caret where it is talking about, bookmarks lines, shows a Compare, and
+uses the editor's own engines for what an agent otherwise has to guess at.
+
+1. Preferences > MISC. > **Let AI agents drive the editor (MCP)**. It is off until you
+   turn it on; the application then listens on a socket that only your own processes can open
+   (`~/Library/Application Support/NotepadMac/agent.sock`, mode 0600). Nothing goes over the
+   network.
+2. Point the agent at `nppmac mcp` (Tools > Install Command Line Tool puts `nppmac` in
+   `/usr/local/bin`). Claude Code:
+   ```
+   claude mcp add notepadmac -- nppmac mcp
+   ```
+   Any other MCP client: a stdio server, command `nppmac`, argument `mcp`. The tool starts
+   the application if it is not running.
+
+The 21 tools, in the words the agent sees them:
+
+| Tool | What it gives the agent |
+|---|---|
+| `list_documents`, `get_document`, `get_selection` | the open tabs, a document's text as it is now (unsaved changes included, by line range), the selection and caret |
+| `open_document`, `close_document`, `go_to`, `edit_document`, `save_document`, `bookmarks` | a file or a text in a tab, the caret or a selection put on a line, edits as one undoable step, bookmarks on the lines to look at |
+| `list_commands`, `run_command` | any of the 579 menu commands by its Notepad++ name (`IDM_EDIT_UPPERCASE`) or menu path |
+| `detect_language` | the language of a text, by what it declares and by the trained model, with confidence |
+| `tokens` | the document as its lexer colours it: style names per run of text, and fold levels - what an unclosed string or a User Defined Language really does |
+| `function_list` | the functions and classes upstream's Function List parsers find |
+| `find`, `replace` | Notepad++'s search: normal, extended or regex (Boost syntax), in a document or in files; a bad expression comes back with the engine's reason |
+| `compare` | the line-by-line difference of two documents, files or texts, and optionally the Compare view for the user |
+| `file_encoding` | BOM, uchardet's character set, UTF-16 without a mark, line endings, a decoded preview |
+| `ocr`, `read_qr` | the text of an image or PDF, the contents of QR codes, by the system's engines |
+| `spell_check` | misspelled words with suggestions from the system's spelling engine |
+
+Quitting the application and moving files to the Trash are not offered to agents.
+Windows Notepad++ has no MCP server; this is the port's own.
 
 ## Build it yourself
 

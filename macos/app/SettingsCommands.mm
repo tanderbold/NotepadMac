@@ -1,4 +1,5 @@
 #import "SettingsCommands.h"
+#import "AgentServer.h"
 #import "UserLanguages.h"
 #import "LanguageCatalog.h"
 #import "StyleCatalog.h"
@@ -275,6 +276,7 @@ NPP_PREF_BOOL(muteSounds, setMuteSounds, @"muteSounds")
 NPP_PREF_OBJ(sessionFileExtension, setSessionFileExtension, NSString, @"sessionFileExtension")
 NPP_PREF_OBJ(workspaceFileExtension, setWorkspaceFileExtension, NSString, @"workspaceFileExtension")
 NPP_PREF_BOOL(workspaceSymlinks, setWorkspaceSymlinks, @"workspaceSymlinks")
+NPP_PREF_BOOL(agentServer, setAgentServer, @"agentServer")
 NPP_PREF_INT(searchEngine, setSearchEngine, @"searchEngine")
 NPP_PREF_OBJ(searchEngineCustom, setSearchEngineCustom, NSString, @"searchEngineCustom")
 NPP_PREF_OBJ(languageMenuHidden, setLanguageMenuHidden, NSArray, @"languageMenuHidden")
@@ -542,6 +544,9 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
     [sci message:SCI_SETINDENTATIONGUIDES
            wParam:(uptr_t)(self.showIndentGuides ? SC_IV_LOOKBOTH : SC_IV_NONE) lParam:0];
     [editor refreshChrome];
+    // The agent interface listens while MISC. says so, and not otherwise.
+    [NppAgentServer shared].editor = editor;
+    if (self.agentServer) [[NppAgentServer shared] start]; else [[NppAgentServer shared] stop];
 }
 
 - (void)reset {

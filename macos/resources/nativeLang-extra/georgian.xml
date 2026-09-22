@@ -282,4 +282,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="ბრძანება მონაცემებს ფაილიდან კითხულობს, რაც აქ არ ხდება."/>
     <Item english="Forms and uploads of files are not read from a command." text="ფორმები და ფაილების ატვირთვა ბრძანებიდან არ იკითხება."/>
     <Item english="The command's address is not an http or https address." text="ბრძანების მისამართი არ არის http ან https მისამართი."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="ხელოვნური ინტელექტის აგენტებისთვის რედაქტორის მართვის დაშვება (MCP)"/>
 </NativeLangExtra>

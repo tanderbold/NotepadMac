@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="కమాండ్ తన డేటాను ఫైల్ నుండి చదువుతుంది; అది ఇక్కడ చేయబడదు."/>
     <Item english="Forms and uploads of files are not read from a command." text="ఫారమ్‌లు, ఫైల్ అప్‌లోడ్‌లు కమాండ్ నుండి చదవబడవు."/>
     <Item english="The command's address is not an http or https address." text="కమాండ్‌లోని చిరునామా http లేదా https చిరునామా కాదు."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="AI ఏజెంట్లు ఎడిటర్‌ను నియంత్రించడానికి అనుమతించు (MCP)"/>
 </NativeLangExtra>

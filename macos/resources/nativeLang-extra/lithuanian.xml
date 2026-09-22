@@ -286,4 +286,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Komanda duomenis skaito iš failo, o čia tai nepalaikoma."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formos ir failų siuntimai iš komandos neskaitomi."/>
     <Item english="The command's address is not an http or https address." text="Komandos adresas nėra http arba https adresas."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Leisti DI agentams valdyti redaktorių (MCP)"/>
 </NativeLangExtra>

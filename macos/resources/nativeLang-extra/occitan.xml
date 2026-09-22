@@ -256,4 +256,6 @@
     <Item english="The command has no address." text="La comanda a pas cap d'adreça."/>
     <Item english="The command reads its data from a file, which is not done here." text="La comanda legís sas donadas dins un fichièr, çò que se fa pas aicí."/>
     <Item english="The command's address is not an http or https address." text="L'adreça de la comanda es pas una adreça http o https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Autorizar los agents IA a contrarotlar l'editor (MCP)"/>
 </NativeLangExtra>

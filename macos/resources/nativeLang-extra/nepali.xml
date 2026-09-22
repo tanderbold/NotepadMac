@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="आदेशले आफ्नो डाटा फाईलबाट पढ्छ, जुन यहाँ गरिँदैन।"/>
     <Item english="Forms and uploads of files are not read from a command." text="फारम र फाईल अपलोडहरू आदेशबाट पढिँदैनन्।"/>
     <Item english="The command's address is not an http or https address." text="आदेशको ठेगाना http वा https ठेगाना होइन।"/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="AI एजेन्टहरूलाई सम्पादक नियन्त्रण गर्न अनुमति दिनुहोस् (MCP)"/>
 </NativeLangExtra>

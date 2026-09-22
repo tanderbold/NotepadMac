@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Příkaz čte data ze souboru, což se zde neprovádí."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formuláře a nahrávání souborů se z příkazu nenačítají."/>
     <Item english="The command's address is not an http or https address." text="Adresa v příkazu není adresa http ani https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Povolit AI agentům ovládat editor (MCP)"/>
 </NativeLangExtra>

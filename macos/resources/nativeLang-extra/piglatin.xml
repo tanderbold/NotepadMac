@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="Ethay ommandcay eadsray itsyay ataday omfray ayay ilefay, ichwhay isyay otnay oneday erehay."/>
     <Item english="Forms and uploads of files are not read from a command." text="Ormsfay andyay uploadsyay ofyay ilesfay areyay otnay eadray omfray ayay ommandcay."/>
     <Item english="The command's address is not an http or https address." text="Ethay ommand'scay addressyay isyay otnay anyay http oryay https addressyay."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="Etlay AI agentsyay ivedray ethay editoryay (MCP)"/>
 </NativeLangExtra>

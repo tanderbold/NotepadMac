@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="הפקודה קוראת את הנתונים שלה מקובץ, וזה לא נעשה כאן."/>
     <Item english="Forms and uploads of files are not read from a command." text="טפסים והעלאות קבצים אינם נקראים מפקודה."/>
     <Item english="The command's address is not an http or https address." text="הכתובת שבפקודה אינה כתובת http או https."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="אפשר לסוכני AI לשלוט בעורך (MCP)"/>
 </NativeLangExtra>

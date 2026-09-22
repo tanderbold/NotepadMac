@@ -288,4 +288,6 @@
     <Item english="The command reads its data from a file, which is not done here." text="A parancs fájlból olvassa az adatait, ami itt nem támogatott."/>
     <Item english="Forms and uploads of files are not read from a command." text="Az űrlapok és fájlfeltöltések nem olvashatók be parancsból."/>
     <Item english="The command's address is not an http or https address." text="A parancsban lévő cím nem http- vagy https-cím."/>
+    <!-- Agent interface (MCP) -->
+    <Item english="Let AI agents drive the editor (MCP)" text="A szerkesztő vezérlésének engedélyezése MI-ügynökök számára (MCP)"/>
 </NativeLangExtra>
