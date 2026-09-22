@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="命令中的地址不是 http 或 https 地址。"/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="允许 AI 智能体控制编辑器 (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git 面板"/>
+    <Item english="Compare with HEAD" text="与 HEAD 比较"/>
+    <Item english="Blame" text="追溯 (Blame)"/>
+    <Item english="File History" text="文件历史"/>
+    <Item english="Stage File" text="暂存文件"/>
+    <Item english="Unstage File" text="取消暂存文件"/>
+    <Item english="Discard Changes in File…" text="放弃文件的更改…"/>
+    <Item english="Switch Branch" text="切换分支"/>
+    <Item english="New Branch…" text="新建分支…"/>
+    <Item english="Fetch" text="获取"/>
+    <Item english="Pull" text="拉取"/>
+    <Item english="Push" text="推送"/>
+    <Item english="Refresh Git Status" text="刷新 Git 状态"/>
+    <Item english="Stage" text="暂存"/>
+    <Item english="Unstage" text="取消暂存"/>
+    <Item english="Refresh" text="刷新"/>
+    <Item english="Staged" text="已暂存"/>
+    <Item english="Status" text="状态"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ 个已更改"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ 个已暂存"/>
+    <Item english="Commit" text="提交"/>
+    <Item english="Commit message" text="提交信息"/>
+    <Item english="Stage all changes first" text="先暂存所有更改"/>
+    <Item english="$INT_REPLACE$ files staged" text="已暂存 $INT_REPLACE$ 个文件"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ 个未暂存"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="将暂存并提交 $INT_REPLACE$ 个文件"/>
+    <Item english="Committed $STR_REPLACE$" text="已提交 $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="未安装 Git (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="此文件不在 Git 仓库中"/>
+    <Item english="The file is not in HEAD yet" text="此文件尚未在 HEAD 中"/>
+    <Item english="Save the file before staging it?" text="暂存前先保存文件？"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="放弃“$STR_REPLACE$”的更改？"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="文件将恢复到最后一次提交的版本。此操作无法撤消。"/>
+    <Item english="Discard" text="放弃"/>
+    <Item english="A commit needs a message" text="提交需要提交信息"/>
+    <Item english="Nothing is staged to commit" text="没有已暂存的更改可提交"/>
+    <Item english="A branch needs a name" text="分支需要名称"/>
+    <Item english="New branch name:" text="新分支名称："/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git：在侧边标记自上次提交以来更改的行"/>
 </NativeLangExtra>

@@ -292,4 +292,44 @@
     <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Неофициальный порт для macOS. Автор Notepad++ — Don HO."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Разрешить ИИ-агентам управлять редактором (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Панель Git"/>
+    <Item english="Compare with HEAD" text="Сравнить с HEAD"/>
+    <Item english="Blame" text="Авторство строк (blame)"/>
+    <Item english="File History" text="История файла"/>
+    <Item english="Stage File" text="Добавить файл в индекс"/>
+    <Item english="Unstage File" text="Убрать файл из индекса"/>
+    <Item english="Discard Changes in File…" text="Отменить изменения в файле…"/>
+    <Item english="Switch Branch" text="Переключить ветку"/>
+    <Item english="New Branch…" text="Новая ветка…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Обновить состояние Git"/>
+    <Item english="Stage" text="В индекс"/>
+    <Item english="Unstage" text="Из индекса"/>
+    <Item english="Refresh" text="Обновить"/>
+    <Item english="Staged" text="В индексе"/>
+    <Item english="Status" text="Состояние"/>
+    <Item english="$INT_REPLACE$ changed" text="изменено: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="в индексе: $INT_REPLACE$"/>
+    <Item english="Commit" text="Коммит"/>
+    <Item english="Commit message" text="Сообщение коммита"/>
+    <Item english="Stage all changes first" text="Сначала добавить все изменения в индекс"/>
+    <Item english="$INT_REPLACE$ files staged" text="Файлов в индексе: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="не в индексе: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Файлов будет добавлено в индекс и закоммичено: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Создан коммит $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git не установлен (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Файл не в репозитории Git"/>
+    <Item english="The file is not in HEAD yet" text="Файла ещё нет в HEAD"/>
+    <Item english="Save the file before staging it?" text="Сохранить файл перед добавлением в индекс?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Отменить изменения в «$STR_REPLACE$»?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Файл вернётся к последней закоммиченной версии. Это нельзя отменить."/>
+    <Item english="Discard" text="Отменить изменения"/>
+    <Item english="A commit needs a message" text="Коммиту нужно сообщение"/>
+    <Item english="Nothing is staged to commit" text="В индексе нет изменений для коммита"/>
+    <Item english="A branch needs a name" text="Ветке нужно имя"/>
+    <Item english="New branch name:" text="Имя новой ветки:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: отмечать на полях строки, изменённые после последнего коммита"/>
 </NativeLangExtra>

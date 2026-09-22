@@ -284,4 +284,36 @@
     <Item english="The command's address is not an http or https address." text="ბრძანების მისამართი არ არის http ან https მისამართი."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="ხელოვნური ინტელექტის აგენტებისთვის რედაქტორის მართვის დაშვება (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git პანელი"/>
+    <Item english="Compare with HEAD" text="HEAD-თან შედარება"/>
+    <Item english="File History" text="ფაილის ისტორია"/>
+    <Item english="Stage File" text="ფაილის ინდექსში დამატება"/>
+    <Item english="Unstage File" text="ფაილის ინდექსიდან ამოღება"/>
+    <Item english="Discard Changes in File…" text="ფაილში ცვლილებების გაუქმება…"/>
+    <Item english="Refresh Git Status" text="Git სტატუსის განახლება"/>
+    <Item english="Stage" text="ინდექსში"/>
+    <Item english="Unstage" text="ინდექსიდან"/>
+    <Item english="Refresh" text="განახლება"/>
+    <Item english="Staged" text="ინდექსში"/>
+    <Item english="Status" text="სტატუსი"/>
+    <Item english="$INT_REPLACE$ changed" text="შეცვლილი: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="ინდექსში: $INT_REPLACE$"/>
+    <Item english="Commit" text="კომიტი"/>
+    <Item english="Commit message" text="კომიტის შეტყობინება"/>
+    <Item english="Stage all changes first" text="ჯერ ყველა ცვლილების ინდექსში დამატება"/>
+    <Item english="$INT_REPLACE$ files staged" text="ფაილები ინდექსში: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="არ არის ინდექსში: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ ფაილი დაემატება ინდექსში და გაკეთდება კომიტი"/>
+    <Item english="Committed $STR_REPLACE$" text="შეიქმნა კომიტი $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git არ არის დაყენებული (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="ფაილი არ არის Git რეპოზიტორიაში"/>
+    <Item english="The file is not in HEAD yet" text="ფაილი ჯერ არ არის HEAD-ში"/>
+    <Item english="Save the file before staging it?" text="შევინახოთ ფაილი ინდექსში დამატებამდე?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="გავაუქმოთ ცვლილებები „$STR_REPLACE$“-ში?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="ფაილი დაუბრუნდება ბოლო კომიტის ვერსიას. ამის გაუქმება შეუძლებელია."/>
+    <Item english="Discard" text="ცვლილებების გაუქმება"/>
+    <Item english="A commit needs a message" text="კომიტს სჭირდება შეტყობინება"/>
+    <Item english="Nothing is staged to commit" text="ინდექსში კომიტისთვის არაფერია"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: ბოლო კომიტის შემდეგ შეცვლილი ხაზების მონიშვნა მინდორზე"/>
 </NativeLangExtra>

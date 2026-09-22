@@ -231,4 +231,29 @@
     <Item english="This is not a curl command." text="بۇ curl بۇيرۇقى ئەمەس."/>
     <Item english="The command has no address." text="بۇيرۇقتا ئادرېس يوق."/>
     <Item english="The command's address is not an http or https address." text="بۇيرۇقتىكى ئادرېس http ياكى https ئادرېسى ئەمەس."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git تاختىسى"/>
+    <Item english="Compare with HEAD" text="HEAD بىلەن سېلىشتۇرۇش"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="ھۆججەت تارىخى"/>
+    <Item english="Discard Changes in File…" text="ھۆججەتتىكى ئۆزگىرىشلەرنى تاشلىۋېتىش…"/>
+    <Item english="Switch Branch" text="تارماقنى ئالماشتۇرۇش"/>
+    <Item english="New Branch…" text="يېڭى تارماق…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git ھالىتىنى يېڭىلاش"/>
+    <Item english="Refresh" text="يېڭىلاش"/>
+    <Item english="Status" text="ھالىتى"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ ئۆزگەرگەن"/>
+    <Item english="Commit" text="تاپشۇرۇش"/>
+    <Item english="Commit message" text="تاپشۇرۇش ئۇچۇرى"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ئورنىتىلمىغان (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="ھۆججەت Git ئامبىرىدا ئەمەس"/>
+    <Item english="The file is not in HEAD yet" text="ھۆججەت تېخى HEAD دا ئەمەس"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot; دىكى ئۆزگىرىشلەرنى تاشلىۋېتەمسىز؟"/>
+    <Item english="Discard" text="تاشلىۋېتىش"/>
+    <Item english="A commit needs a message" text="تاپشۇرۇشقا ئۇچۇر كېرەك"/>
+    <Item english="A branch needs a name" text="تارماققا نام كېرەك"/>
+    <Item english="New branch name:" text="يېڭى تارماق نامى:"/>
 </NativeLangExtra>

@@ -288,4 +288,44 @@
     <Item english="The command's address is not an http or https address." text="Η διεύθυνση της εντολής δεν είναι διεύθυνση http ή https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Να επιτρέπεται στους πράκτορες ΤΝ να χειρίζονται τον επεξεργαστή (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Πίνακας Git"/>
+    <Item english="Compare with HEAD" text="Σύγκριση με το HEAD"/>
+    <Item english="Blame" text="Συντάκτης γραμμών (blame)"/>
+    <Item english="File History" text="Ιστορικό αρχείου"/>
+    <Item english="Stage File" text="Προσθήκη αρχείου στο ευρετήριο"/>
+    <Item english="Unstage File" text="Αφαίρεση αρχείου από το ευρετήριο"/>
+    <Item english="Discard Changes in File…" text="Απόρριψη αλλαγών στο αρχείο…"/>
+    <Item english="Switch Branch" text="Αλλαγή κλάδου"/>
+    <Item english="New Branch…" text="Νέος κλάδος…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Ανανέωση κατάστασης Git"/>
+    <Item english="Stage" text="Στο ευρετήριο"/>
+    <Item english="Unstage" text="Εκτός ευρετηρίου"/>
+    <Item english="Refresh" text="Ανανέωση"/>
+    <Item english="Staged" text="Στο ευρετήριο"/>
+    <Item english="Status" text="Κατάσταση"/>
+    <Item english="$INT_REPLACE$ changed" text="αλλαγμένα: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="στο ευρετήριο: $INT_REPLACE$"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Μήνυμα commit"/>
+    <Item english="Stage all changes first" text="Πρώτα προσθήκη όλων των αλλαγών στο ευρετήριο"/>
+    <Item english="$INT_REPLACE$ files staged" text="Αρχεία στο ευρετήριο: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="εκτός ευρετηρίου: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Αρχεία που θα προστεθούν στο ευρετήριο και θα γίνουν commit: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Δημιουργήθηκε το commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Το Git δεν είναι εγκατεστημένο (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Το αρχείο δεν βρίσκεται σε αποθετήριο Git"/>
+    <Item english="The file is not in HEAD yet" text="Το αρχείο δεν υπάρχει ακόμη στο HEAD"/>
+    <Item english="Save the file before staging it?" text="Αποθήκευση του αρχείου πριν την προσθήκη στο ευρετήριο;"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Απόρριψη των αλλαγών στο «$STR_REPLACE$»;"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Το αρχείο επανέρχεται στην έκδοση του τελευταίου commit. Αυτό δεν μπορεί να αναιρεθεί."/>
+    <Item english="Discard" text="Απόρριψη"/>
+    <Item english="A commit needs a message" text="Το commit χρειάζεται μήνυμα"/>
+    <Item english="Nothing is staged to commit" text="Δεν υπάρχει τίποτα στο ευρετήριο για commit"/>
+    <Item english="A branch needs a name" text="Ο κλάδος χρειάζεται όνομα"/>
+    <Item english="New branch name:" text="Όνομα νέου κλάδου:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: επισήμανση στο περιθώριο των γραμμών που άλλαξαν από το τελευταίο commit"/>
 </NativeLangExtra>

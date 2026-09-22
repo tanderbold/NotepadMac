@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="Ethay ommand'scay addressyay isyay otnay anyay http oryay https addressyay."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Etlay AI agentsyay ivedray ethay editoryay (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git Anelpay"/>
+    <Item english="Compare with HEAD" text="Omparecay ithway HEAD"/>
+    <Item english="Blame" text="Ameblay"/>
+    <Item english="File History" text="Ilefay Istoryhay"/>
+    <Item english="Stage File" text="Agestay Ilefay"/>
+    <Item english="Unstage File" text="Unstageyay Ilefay"/>
+    <Item english="Discard Changes in File…" text="Iscardday Angeschay inyay Ilefay…"/>
+    <Item english="Switch Branch" text="Itchsway Anchbray"/>
+    <Item english="New Branch…" text="Ewnay Anchbray…"/>
+    <Item english="Fetch" text="Etchfay"/>
+    <Item english="Pull" text="Ullpay"/>
+    <Item english="Push" text="Ushpay"/>
+    <Item english="Refresh Git Status" text="Efreshray Git Atusstay"/>
+    <Item english="Stage" text="Agestay"/>
+    <Item english="Unstage" text="Unstageyay"/>
+    <Item english="Refresh" text="Efreshray"/>
+    <Item english="Staged" text="Agedstay"/>
+    <Item english="Status" text="Atusstay"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ angedchay"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ agedstay"/>
+    <Item english="Commit" text="Ommitcay"/>
+    <Item english="Commit message" text="Ommitcay essagemay"/>
+    <Item english="Stage all changes first" text="Agestay allyay angeschay irstfay"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ ilesfay agedstay"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ otnay agedstay"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ ilesfay illway ebay agedstay andyay ommittedcay"/>
+    <Item english="Committed $STR_REPLACE$" text="Ommittedcay $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git isyay otnay installedyay (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Ethay ilefay isyay otnay inyay ayay Git epositoryray"/>
+    <Item english="The file is not in HEAD yet" text="Ethay ilefay isyay otnay inyay HEAD etyay"/>
+    <Item english="Save the file before staging it?" text="Avesay ethay ilefay eforebay agingstay ityay?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Iscardday ethay angeschay inyay &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Ethay ilefay oesgay ackbay otay ethay astlay ommittedcay ersionvay. Isthay annotcay ebay undoneyay."/>
+    <Item english="Discard" text="Iscardday"/>
+    <Item english="A commit needs a message" text="Ayay ommitcay eedsnay ayay essagemay"/>
+    <Item english="Nothing is staged to commit" text="Othingnay isyay agedstay otay ommitcay"/>
+    <Item english="A branch needs a name" text="Ayay anchbray eedsnay ayay amenay"/>
+    <Item english="New branch name:" text="Ewnay anchbray amenay:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: arkmay ineslay angedchay incesay ethay astlay ommitcay inyay ethay arginmay"/>
 </NativeLangExtra>

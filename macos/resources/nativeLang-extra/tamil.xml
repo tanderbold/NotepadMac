@@ -289,4 +289,44 @@
     <Item english="The command's address is not an http or https address." text="கட்டளையின் முகவரி http அல்லது https முகவரி அல்ல."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI ஏஜென்ட்கள் திருத்தியை இயக்க அனுமதி (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git பலகம்"/>
+    <Item english="Compare with HEAD" text="HEAD உடன் ஒப்பிடு"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="கோப்பு வரலாறு"/>
+    <Item english="Stage File" text="கோப்பை ஸ்டேஜ் செய்"/>
+    <Item english="Unstage File" text="கோப்பை அன்ஸ்டேஜ் செய்"/>
+    <Item english="Discard Changes in File…" text="கோப்பில் உள்ள மாற்றங்களை நிராகரி…"/>
+    <Item english="Switch Branch" text="கிளையை மாற்று"/>
+    <Item english="New Branch…" text="புதிய கிளை…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git நிலையைப் புதுப்பி"/>
+    <Item english="Stage" text="ஸ்டேஜ்"/>
+    <Item english="Unstage" text="அன்ஸ்டேஜ்"/>
+    <Item english="Refresh" text="புதுப்பி"/>
+    <Item english="Staged" text="ஸ்டேஜ் செய்யப்பட்டது"/>
+    <Item english="Status" text="நிலை"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ மாற்றப்பட்டது"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ ஸ்டேஜ் செய்யப்பட்டது"/>
+    <Item english="Commit" text="கமிட்"/>
+    <Item english="Commit message" text="கமிட் செய்தி"/>
+    <Item english="Stage all changes first" text="முதலில் அனைத்து மாற்றங்களையும் ஸ்டேஜ் செய்"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ கோப்புகள் ஸ்டேஜ் செய்யப்பட்டன"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ ஸ்டேஜ் செய்யப்படவில்லை"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ கோப்புகள் ஸ்டேஜ் செய்யப்பட்டு கமிட் செய்யப்படும்"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ கமிட் செய்யப்பட்டது"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git நிறுவப்படவில்லை (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="கோப்பு Git களஞ்சியத்தில் இல்லை"/>
+    <Item english="The file is not in HEAD yet" text="கோப்பு இன்னும் HEAD இல் இல்லை"/>
+    <Item english="Save the file before staging it?" text="ஸ்டேஜ் செய்வதற்கு முன் கோப்பைச் சேமிக்கவா?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot; இல் உள்ள மாற்றங்களை நிராகரிக்கவா?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="கோப்பு கடைசியாக கமிட் செய்யப்பட்ட பதிப்புக்குத் திரும்பும். இதைச் செயல்தவிர்க்க முடியாது."/>
+    <Item english="Discard" text="நிராகரி"/>
+    <Item english="A commit needs a message" text="கமிட்டுக்கு ஒரு செய்தி தேவை"/>
+    <Item english="Nothing is staged to commit" text="கமிட் செய்ய எதுவும் ஸ்டேஜ் செய்யப்படவில்லை"/>
+    <Item english="A branch needs a name" text="கிளைக்கு ஒரு பெயர் தேவை"/>
+    <Item english="New branch name:" text="புதிய கிளையின் பெயர்:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: கடைசி கமிட்டுக்குப் பிறகு மாற்றப்பட்ட வரிகளை எல்லைக்கோட்டில் குறி"/>
 </NativeLangExtra>

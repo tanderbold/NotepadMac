@@ -259,4 +259,44 @@
     <Item english="The command's address is not an http or https address." text="Ní seoladh http ná https é seoladh an ordaithe."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Ceadaigh do ghníomhairí IS an t-eagarthóir a rialú (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Painéal Git"/>
+    <Item english="Compare with HEAD" text="Cuir i gcomparáid le HEAD"/>
+    <Item english="Blame" text="Údar na línte (blame)"/>
+    <Item english="File History" text="Stair an chomhaid"/>
+    <Item english="Stage File" text="Cuir an comhad san innéacs"/>
+    <Item english="Unstage File" text="Bain an comhad den innéacs"/>
+    <Item english="Discard Changes in File…" text="Cuir na hathruithe sa chomhad i leataobh…"/>
+    <Item english="Switch Branch" text="Athraigh brainse"/>
+    <Item english="New Branch…" text="Brainse nua…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Athnuaigh stádas Git"/>
+    <Item english="Stage" text="Cuir san innéacs"/>
+    <Item english="Unstage" text="Bain den innéacs"/>
+    <Item english="Refresh" text="Athnuaigh"/>
+    <Item english="Staged" text="San innéacs"/>
+    <Item english="Status" text="Stádas"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ athraithe"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ san innéacs"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Teachtaireacht an commit"/>
+    <Item english="Stage all changes first" text="Cuir gach athrú san innéacs ar dtús"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ comhad san innéacs"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ nach bhfuil san innéacs"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Cuirfear $INT_REPLACE$ comhad san innéacs agus déanfar commit orthu"/>
+    <Item english="Committed $STR_REPLACE$" text="Rinneadh commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Níl Git suiteáilte (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Níl an comhad i stór Git"/>
+    <Item english="The file is not in HEAD yet" text="Níl an comhad in HEAD fós"/>
+    <Item english="Save the file before staging it?" text="Taisc an comhad sula gcuirtear san innéacs é?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Na hathruithe in &quot;$STR_REPLACE$&quot; a chur i leataobh?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Fillfidh an comhad ar an leagan deireanach a ndearnadh commit air. Ní féidir é seo a chealú."/>
+    <Item english="Discard" text="Cuir i leataobh"/>
+    <Item english="A commit needs a message" text="Tá teachtaireacht de dhíth ar commit"/>
+    <Item english="Nothing is staged to commit" text="Níl aon rud san innéacs le commit a dhéanamh air"/>
+    <Item english="A branch needs a name" text="Tá ainm de dhíth ar bhrainse"/>
+    <Item english="New branch name:" text="Ainm an bhrainse nua:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marcáil sa chiumhais na línte a athraíodh ón commit deireanach"/>
 </NativeLangExtra>

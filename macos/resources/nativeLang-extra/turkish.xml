@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="Komuttaki adres bir http veya https adresi değil."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Yapay zekâ ajanlarının düzenleyiciyi yönetmesine izin ver (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git Paneli"/>
+    <Item english="Compare with HEAD" text="HEAD ile Karşılaştır"/>
+    <Item english="Blame" text="Satır Yazarları (blame)"/>
+    <Item english="File History" text="Dosya Geçmişi"/>
+    <Item english="Stage File" text="Dosyayı Hazırla"/>
+    <Item english="Unstage File" text="Dosyayı Hazırlamadan Çıkar"/>
+    <Item english="Discard Changes in File…" text="Dosyadaki Değişiklikleri At…"/>
+    <Item english="Switch Branch" text="Dal Değiştir"/>
+    <Item english="New Branch…" text="Yeni Dal…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git Durumunu Yenile"/>
+    <Item english="Stage" text="Hazırla"/>
+    <Item english="Unstage" text="Hazırlamadan Çıkar"/>
+    <Item english="Refresh" text="Yenile"/>
+    <Item english="Staged" text="Hazırlandı"/>
+    <Item english="Status" text="Durum"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ değişti"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ hazırlandı"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit mesajı"/>
+    <Item english="Stage all changes first" text="Önce tüm değişiklikleri hazırla"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ dosya hazırlandı"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ hazırlanmadı"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ dosya hazırlanıp commit edilecek"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ commit edildi"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git yüklü değil (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Dosya bir Git deposunda değil"/>
+    <Item english="The file is not in HEAD yet" text="Dosya henüz HEAD'de değil"/>
+    <Item english="Save the file before staging it?" text="Hazırlamadan önce dosya kaydedilsin mi?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot; dosyasındaki değişiklikler atılsın mı?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Dosya son commit edilen sürüme döner. Bu geri alınamaz."/>
+    <Item english="Discard" text="At"/>
+    <Item english="A commit needs a message" text="Commit için bir mesaj gerekli"/>
+    <Item english="Nothing is staged to commit" text="Commit edilecek hazırlanmış bir şey yok"/>
+    <Item english="A branch needs a name" text="Dal için bir ad gerekli"/>
+    <Item english="New branch name:" text="Yeni dal adı:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: son commit'ten bu yana değişen satırları kenar boşluğunda işaretle"/>
 </NativeLangExtra>

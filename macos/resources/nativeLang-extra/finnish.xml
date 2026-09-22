@@ -288,4 +288,40 @@
     <Item english="The command's address is not an http or https address." text="Komennon osoite ei ole http- tai https-osoite."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Salli tekoälyagenttien ohjata editoria (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git-paneeli"/>
+    <Item english="Compare with HEAD" text="Vertaa HEAD:iin"/>
+    <Item english="File History" text="Tiedoston historia"/>
+    <Item english="Stage File" text="Lisää tiedosto indeksiin"/>
+    <Item english="Unstage File" text="Poista tiedosto indeksistä"/>
+    <Item english="Discard Changes in File…" text="Hylkää tiedoston muutokset…"/>
+    <Item english="Switch Branch" text="Vaihda haaraa"/>
+    <Item english="New Branch…" text="Uusi haara…"/>
+    <Item english="Refresh Git Status" text="Päivitä Git-tila"/>
+    <Item english="Stage" text="Indeksiin"/>
+    <Item english="Unstage" text="Indeksistä"/>
+    <Item english="Refresh" text="Päivitä"/>
+    <Item english="Staged" text="Indeksissä"/>
+    <Item english="Status" text="Tila"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ muutettu"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ indeksissä"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit-viesti"/>
+    <Item english="Stage all changes first" text="Lisää ensin kaikki muutokset indeksiin"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ tiedostoa indeksissä"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ ei indeksissä"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ tiedostoa lisätään indeksiin ja commitoidaan"/>
+    <Item english="Committed $STR_REPLACE$" text="Luotiin commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ei ole asennettu (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Tiedosto ei ole Git-repositoriossa"/>
+    <Item english="The file is not in HEAD yet" text="Tiedosto ei ole vielä HEAD:ssä"/>
+    <Item english="Save the file before staging it?" text="Tallennetaanko tiedosto ennen indeksiin lisäämistä?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Hylätäänkö tiedoston ”$STR_REPLACE$” muutokset?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Tiedosto palautuu viimeisimpään commitoituun versioon. Tätä ei voi kumota."/>
+    <Item english="Discard" text="Hylkää"/>
+    <Item english="A commit needs a message" text="Commit tarvitsee viestin"/>
+    <Item english="Nothing is staged to commit" text="Indeksissä ei ole mitään commitoitavaa"/>
+    <Item english="A branch needs a name" text="Haara tarvitsee nimen"/>
+    <Item english="New branch name:" text="Uuden haaran nimi:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: merkitse marginaaliin viimeisimmän commitin jälkeen muuttuneet rivit"/>
 </NativeLangExtra>

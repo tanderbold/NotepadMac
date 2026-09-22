@@ -229,4 +229,37 @@
     <Item english="This is not a curl command." text="Chest nol è un comant curl."/>
     <Item english="The command has no address." text="Il comant nol à nissune direzion."/>
     <Item english="The command's address is not an http or https address." text="La direzion dal comant no je une direzion http o https."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Panel Git"/>
+    <Item english="Compare with HEAD" text="Confronte cun HEAD"/>
+    <Item english="File History" text="Cronologjie dal file"/>
+    <Item english="Stage File" text="Zonte il file al indiç"/>
+    <Item english="Unstage File" text="Gjave il file dal indiç"/>
+    <Item english="Discard Changes in File…" text="Anule lis modifichis dal file…"/>
+    <Item english="Switch Branch" text="Cambie ram"/>
+    <Item english="New Branch…" text="Gnûf ram…"/>
+    <Item english="Refresh Git Status" text="Inzorne il stât Git"/>
+    <Item english="Stage" text="Al indiç"/>
+    <Item english="Unstage" text="Dal indiç"/>
+    <Item english="Refresh" text="Inzorne"/>
+    <Item english="Staged" text="Tal indiç"/>
+    <Item english="Status" text="Stât"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ modificâts"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ tal indiç"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Messaç dal commit"/>
+    <Item english="Stage all changes first" text="Prime zonte dutis lis modifichis al indiç"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ files tal indiç"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ fûr dal indiç"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ creât"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git nol è instalât (xcode-select --install)"/>
+    <Item english="The file is not in HEAD yet" text="Il file nol è ancjemò in HEAD"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Anulâ lis modifichis di &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Il file al torne ae version dal ultim commit. Cheste operazion no si pues anulâ."/>
+    <Item english="Discard" text="Anule lis modifichis"/>
+    <Item english="A commit needs a message" text="Il commit al à bisugne di un messaç"/>
+    <Item english="Nothing is staged to commit" text="Nol è nuie tal indiç di fâ commit"/>
+    <Item english="A branch needs a name" text="Il ram al à bisugne di un non"/>
+    <Item english="New branch name:" text="Non dal gnûf ram:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: segne sul margjin lis riis modificadis dal ultim commit"/>
 </NativeLangExtra>

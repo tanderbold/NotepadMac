@@ -290,4 +290,40 @@
     <Item english="The command's address is not an http or https address." text="Die Adresse des Befehls ist keine http- oder https-Adresse."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="KI-Agenten den Editor steuern lassen (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git-Bedienfeld"/>
+    <Item english="Compare with HEAD" text="Mit HEAD vergleichen"/>
+    <Item english="File History" text="Dateiverlauf"/>
+    <Item english="Stage File" text="Datei zum Index hinzufügen"/>
+    <Item english="Unstage File" text="Datei aus dem Index entfernen"/>
+    <Item english="Discard Changes in File…" text="Änderungen in Datei verwerfen …"/>
+    <Item english="Switch Branch" text="Branch wechseln"/>
+    <Item english="New Branch…" text="Neuer Branch …"/>
+    <Item english="Refresh Git Status" text="Git-Status aktualisieren"/>
+    <Item english="Stage" text="In den Index"/>
+    <Item english="Unstage" text="Aus dem Index"/>
+    <Item english="Refresh" text="Aktualisieren"/>
+    <Item english="Staged" text="Im Index"/>
+    <Item english="Status" text="Status"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ geändert"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ im Index"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit-Nachricht"/>
+    <Item english="Stage all changes first" text="Zuerst alle Änderungen zum Index hinzufügen"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ Dateien im Index"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ nicht im Index"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ Dateien werden zum Index hinzugefügt und committet"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ erstellt"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ist nicht installiert (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Die Datei liegt in keinem Git-Repository"/>
+    <Item english="The file is not in HEAD yet" text="Die Datei ist noch nicht in HEAD"/>
+    <Item english="Save the file before staging it?" text="Datei speichern, bevor sie zum Index hinzugefügt wird?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Änderungen in „$STR_REPLACE$“ verwerfen?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Die Datei wird auf die zuletzt committete Version zurückgesetzt. Dies kann nicht rückgängig gemacht werden."/>
+    <Item english="Discard" text="Verwerfen"/>
+    <Item english="A commit needs a message" text="Ein Commit braucht eine Nachricht"/>
+    <Item english="Nothing is staged to commit" text="Nichts im Index zum Committen"/>
+    <Item english="A branch needs a name" text="Ein Branch braucht einen Namen"/>
+    <Item english="New branch name:" text="Name des neuen Branches:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: seit dem letzten Commit geänderte Zeilen am Rand markieren"/>
 </NativeLangExtra>

@@ -50,4 +50,9 @@
     <Item english="User name:" text="Nòm d'usuari :"/>
     <Item english="Copy as curl" text="Copiar coma curl"/>
     <Item english="Open in New Document" text="Daurir en un document nau"/>
+    <!-- Git -->
+    <Item english="Compare with HEAD" text="Comparar damb HEAD"/>
+    <Item english="New Branch…" text="Branca naua…"/>
+    <Item english="Status" text="Estat"/>
+    <Item english="New branch name:" text="Nòm dera branca naua :"/>
 </NativeLangExtra>

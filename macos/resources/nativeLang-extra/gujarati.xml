@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="કમાન્ડનું સરનામું http કે https સરનામું નથી."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI એજન્ટોને એડિટર નિયંત્રિત કરવાની મંજૂરી આપો (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git પેનલ"/>
+    <Item english="Compare with HEAD" text="HEAD સાથે સરખામણી કરો"/>
+    <Item english="Blame" text="લાઈનના લેખક (blame)"/>
+    <Item english="File History" text="ફાઈલનો ઇતિહાસ"/>
+    <Item english="Stage File" text="ફાઈલ સ્ટેજ કરો"/>
+    <Item english="Unstage File" text="ફાઈલ અનસ્ટેજ કરો"/>
+    <Item english="Discard Changes in File…" text="ફાઈલમાં ફેરફારો કાઢી નાખો…"/>
+    <Item english="Switch Branch" text="બ્રાન્ચ બદલો"/>
+    <Item english="New Branch…" text="નવી બ્રાન્ચ…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git સ્ટેટસ રિફ્રેશ કરો"/>
+    <Item english="Stage" text="સ્ટેજ કરો"/>
+    <Item english="Unstage" text="અનસ્ટેજ કરો"/>
+    <Item english="Refresh" text="રિફ્રેશ કરો"/>
+    <Item english="Staged" text="સ્ટેજ કરેલ"/>
+    <Item english="Status" text="સ્ટેટસ"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ બદલાયેલ"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ સ્ટેજ કરેલ"/>
+    <Item english="Commit" text="કમિટ"/>
+    <Item english="Commit message" text="કમિટ મેસેજ"/>
+    <Item english="Stage all changes first" text="પહેલા બધા ફેરફારો સ્ટેજ કરો"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ ફાઈલ્સ સ્ટેજ કરેલ"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ સ્ટેજ કરેલ નથી"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ ફાઈલ્સ સ્ટેજ અને કમિટ કરવામાં આવશે"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ કમિટ કર્યું"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ઇન્સ્ટોલ કરેલ નથી (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="આ ફાઈલ Git રિપોઝિટરીમાં નથી"/>
+    <Item english="The file is not in HEAD yet" text="આ ફાઈલ હજી HEAD માં નથી"/>
+    <Item english="Save the file before staging it?" text="સ્ટેજ કરતા પહેલા ફાઈલ સેવ કરવી છે?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot; માં કરેલા ફેરફારો કાઢી નાખવા છે?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="ફાઈલ છેલ્લા કમિટ કરેલા વર્ઝન પર પાછી જશે. આ પૂર્વવત્ કરી શકાશે નહીં."/>
+    <Item english="Discard" text="કાઢી નાખો"/>
+    <Item english="A commit needs a message" text="કમિટ માટે મેસેજ જરૂરી છે"/>
+    <Item english="Nothing is staged to commit" text="કમિટ કરવા માટે કંઈ સ્ટેજ કરેલ નથી"/>
+    <Item english="A branch needs a name" text="બ્રાન્ચ માટે નામ જરૂરી છે"/>
+    <Item english="New branch name:" text="નવી બ્રાન્ચનું નામ:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: છેલ્લા કમિટ પછી બદલાયેલી લાઈનો માર્જિનમાં માર્ક કરો"/>
 </NativeLangExtra>

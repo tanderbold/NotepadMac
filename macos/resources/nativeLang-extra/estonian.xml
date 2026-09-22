@@ -288,4 +288,40 @@
     <Item english="The command's address is not an http or https address." text="Käsu aadress ei ole http- ega https-aadress."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Luba AI-agentidel redaktorit juhtida (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git-paneel"/>
+    <Item english="Compare with HEAD" text="Võrdle HEAD-iga"/>
+    <Item english="File History" text="Faili ajalugu"/>
+    <Item english="Stage File" text="Lisa fail indeksisse"/>
+    <Item english="Unstage File" text="Eemalda fail indeksist"/>
+    <Item english="Discard Changes in File…" text="Loobu faili muudatustest…"/>
+    <Item english="Switch Branch" text="Vaheta haru"/>
+    <Item english="New Branch…" text="Uus haru…"/>
+    <Item english="Refresh Git Status" text="Värskenda Git-olekut"/>
+    <Item english="Stage" text="Indeksisse"/>
+    <Item english="Unstage" text="Indeksist"/>
+    <Item english="Refresh" text="Värskenda"/>
+    <Item english="Staged" text="Indeksis"/>
+    <Item english="Status" text="Olek"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ muudetud"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ indeksis"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit'i sõnum"/>
+    <Item english="Stage all changes first" text="Lisa kõigepealt kõik muudatused indeksisse"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ faili indeksis"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ pole indeksis"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ faili lisatakse indeksisse ja commit'itakse"/>
+    <Item english="Committed $STR_REPLACE$" text="Loodud commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git pole paigaldatud (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Fail ei asu Git-hoidlas"/>
+    <Item english="The file is not in HEAD yet" text="Faili pole veel HEAD-is"/>
+    <Item english="Save the file before staging it?" text="Kas salvestada fail enne indeksisse lisamist?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Kas loobuda faili „$STR_REPLACE$“ muudatustest?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Fail läheb tagasi viimase commit'i versioonile. Seda ei saa tagasi võtta."/>
+    <Item english="Discard" text="Loobu muudatustest"/>
+    <Item english="A commit needs a message" text="Commit vajab sõnumit"/>
+    <Item english="Nothing is staged to commit" text="Indeksis pole midagi, mida commit'ida"/>
+    <Item english="A branch needs a name" text="Haru vajab nime"/>
+    <Item english="New branch name:" text="Uue haru nimi:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: märgi veerisel read, mida on pärast viimast commit'i muudetud"/>
 </NativeLangExtra>

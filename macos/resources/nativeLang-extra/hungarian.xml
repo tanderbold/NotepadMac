@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="A parancsban lévő cím nem http- vagy https-cím."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="A szerkesztő vezérlésének engedélyezése MI-ügynökök számára (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git panel"/>
+    <Item english="Compare with HEAD" text="Összehasonlítás a HEAD-del"/>
+    <Item english="Blame" text="Sorok szerzője (blame)"/>
+    <Item english="File History" text="Fájl előzményei"/>
+    <Item english="Stage File" text="Fájl hozzáadása az indexhez"/>
+    <Item english="Unstage File" text="Fájl eltávolítása az indexből"/>
+    <Item english="Discard Changes in File…" text="A fájl módosításainak elvetése…"/>
+    <Item english="Switch Branch" text="Ág váltása"/>
+    <Item english="New Branch…" text="Új ág…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git-állapot frissítése"/>
+    <Item english="Stage" text="Indexbe"/>
+    <Item english="Unstage" text="Indexből"/>
+    <Item english="Refresh" text="Frissítés"/>
+    <Item english="Staged" text="Indexben"/>
+    <Item english="Status" text="Állapot"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ módosítva"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ indexben"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit-üzenet"/>
+    <Item english="Stage all changes first" text="Előbb minden módosítás indexbe vétele"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ fájl az indexben"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ nincs az indexben"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ fájl kerül az indexbe és a commitba"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit létrehozva: $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="A Git nincs telepítve (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="A fájl nincs Git-tárolóban"/>
+    <Item english="The file is not in HEAD yet" text="A fájl még nincs a HEAD-ben"/>
+    <Item english="Save the file before staging it?" text="Menti a fájlt, mielőtt az indexbe kerül?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Elveti a(z) „$STR_REPLACE$” módosításait?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="A fájl visszaáll az utolsó commitolt verzióra. Ez nem vonható vissza."/>
+    <Item english="Discard" text="Elvetés"/>
+    <Item english="A commit needs a message" text="A commithoz üzenet kell"/>
+    <Item english="Nothing is staged to commit" text="Nincs semmi az indexben, amit commitolni lehetne"/>
+    <Item english="A branch needs a name" text="Az ágnak név kell"/>
+    <Item english="New branch name:" text="Az új ág neve:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: az utolsó commit óta módosított sorok jelölése a margón"/>
 </NativeLangExtra>

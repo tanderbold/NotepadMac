@@ -81,4 +81,8 @@
 - (void)executeScriptText:(NSString *)text;
 - (void)stopScript:(id)sender;
 @property (nonatomic, strong) NSMenu *execMenu;
+/// Plugins, with the port's stand-ins and the Git submenu.
+@property (nonatomic, strong) NSMenu *pluginsMenu;
+/// Menus filled when opened: the spelling languages, the Git branches.
+- (void)menuNeedsUpdate:(NSMenu *)menu;
 @end

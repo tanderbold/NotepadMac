@@ -166,4 +166,30 @@
     <Item english="The address is not an http or https address." text="L'indiriso no'l xe mìa on indiriso http o https."/>
     <Item english="This is not a curl command." text="No'l xe mìa on comando curl."/>
     <Item english="The command's address is not an http or https address." text="L'indiriso de'l comando no'l xe mìa on indiriso http o https."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Paneƚo Git"/>
+    <Item english="Compare with HEAD" text="Confronta co HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="Cronoloxia de el file"/>
+    <Item english="Discard Changes in File…" text="Scarta ƚe modifeghe de el file…"/>
+    <Item english="Switch Branch" text="Canbia ramo"/>
+    <Item english="New Branch…" text="Novo ramo…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Ajorna el stato de Git"/>
+    <Item english="Refresh" text="Ajorna"/>
+    <Item english="Status" text="Stato"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ modifegà"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Mesajo de el commit"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git no'l xe mìa instaƚà (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="El file no'l xe mìa in on repository Git"/>
+    <Item english="The file is not in HEAD yet" text="El file no'l xe gnancora in HEAD"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Scartare ƚe modifeghe de &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="El file el torna a ƚa version de l'ultimo commit. No se poƚe mìa anuƚare."/>
+    <Item english="Discard" text="Scarta"/>
+    <Item english="A commit needs a message" text="On commit el ga bisogno de on mesajo"/>
+    <Item english="A branch needs a name" text="On ramo el ga bisogno de on nome"/>
+    <Item english="New branch name:" text="Nome de el ramo novo:"/>
 </NativeLangExtra>

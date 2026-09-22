@@ -278,4 +278,44 @@
     <Item english="The command has no address." text="Дар фармон суроға нест."/>
     <Item english="The command reads its data from a file, which is not done here." text="Фармон маълумоти худро аз файл мехонад, ки ин ҷо иҷро намешавад."/>
     <Item english="The command's address is not an http or https address." text="Суроғаи фармон суроғаи http ё https нест."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Лавҳаи Git"/>
+    <Item english="Compare with HEAD" text="Муқоиса бо HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="Таърихи файл"/>
+    <Item english="Stage File" text="Иловаи файл ба индекс"/>
+    <Item english="Unstage File" text="Хориҷи файл аз индекс"/>
+    <Item english="Discard Changes in File…" text="Бекор кардани тағйироти файл…"/>
+    <Item english="Switch Branch" text="Иваз кардани шоха"/>
+    <Item english="New Branch…" text="Шохаи нав…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Навсозии ҳолати Git"/>
+    <Item english="Stage" text="Ба индекс"/>
+    <Item english="Unstage" text="Аз индекс"/>
+    <Item english="Refresh" text="Навсозӣ"/>
+    <Item english="Staged" text="Дар индекс"/>
+    <Item english="Status" text="Ҳолат"/>
+    <Item english="$INT_REPLACE$ changed" text="тағйирёфта: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="дар индекс: $INT_REPLACE$"/>
+    <Item english="Commit" text="Коммит"/>
+    <Item english="Commit message" text="Паёми коммит"/>
+    <Item english="Stage all changes first" text="Аввал ҳама тағйиротро ба индекс илова кардан"/>
+    <Item english="$INT_REPLACE$ files staged" text="Файлҳо дар индекс: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="дар индекс нест: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ файл ба индекс илова ва коммит мешавад"/>
+    <Item english="Committed $STR_REPLACE$" text="Коммити $STR_REPLACE$ сохта шуд"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git насб нашудааст (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Файл дар анбори Git нест"/>
+    <Item english="The file is not in HEAD yet" text="Файл ҳанӯз дар HEAD нест"/>
+    <Item english="Save the file before staging it?" text="Пеш аз илова ба индекс файлро захира мекунед?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Тағйироти &quot;$STR_REPLACE$&quot;-ро бекор мекунед?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Файл ба нусхаи коммити охирин бармегардад. Инро бекор кардан мумкин нест."/>
+    <Item english="Discard" text="Бекор кардан"/>
+    <Item english="A commit needs a message" text="Коммит ба паём ниёз дорад"/>
+    <Item english="Nothing is staged to commit" text="Дар индекс чизе барои коммит нест"/>
+    <Item english="A branch needs a name" text="Шоха ба ном ниёз дорад"/>
+    <Item english="New branch name:" text="Номи шохаи нав:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: аломатгузории сатрҳои пас аз коммити охирин тағйирёфта дар ҳошия"/>
 </NativeLangExtra>

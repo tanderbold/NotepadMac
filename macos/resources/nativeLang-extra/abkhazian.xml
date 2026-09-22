@@ -28,4 +28,7 @@
     <Item english="Digits (0-9)" text="Ацифрақәа (0-9)"/>
     <Item english="Symbols:" text="Асимволқәа:"/>
     <Item english="Insert into Document" text="Иҭаргылатәуп адокумент ахь"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git апанель"/>
+    <Item english="File History" text="Афаил аҭоурых"/>
 </NativeLangExtra>

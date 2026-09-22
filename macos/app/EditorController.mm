@@ -18,6 +18,7 @@
 #import "ToolsCommands.h"
 #import "BackupAndPrint.h"
 #import "BehaviourCommands.h"
+#import "GitCommands.h"
 #import "TypingCommands.h"
 #import <objc/runtime.h>
 #import "TabBarView.h"
@@ -455,7 +456,7 @@ static long SciColor(NSColor *c) {
                        (1 << SC_MARKNUM_HISTORY_SAVED) |
                        (1 << SC_MARKNUM_HISTORY_MODIFIED) |
                        (1 << SC_MARKNUM_HISTORY_REVERTED_TO_MODIFIED);
-    [sci message:SCI_SETMARGINS wParam:4 lParam:0];
+    [sci message:SCI_SETMARGINS wParam:5 lParam:0];   // 0-3 as upstream; 4 is the Git margin (GitCommands.mm)
     [sci message:SCI_SETMARGINTYPEN wParam:3 lParam:SC_MARGIN_SYMBOL];
     [sci message:SCI_SETMARGINMASKN wParam:3 lParam:historyMask];
     // Change History's modes (margin, text) are set by applyLook.
@@ -2432,14 +2433,57 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     long len = [sci message:SCI_GETLENGTH];
     long lines = [sci message:SCI_GETLINECOUNT];
 
-    NSString *eol = doc.eolMode == SC_EOL_CRLF ? @"CRLF" : doc.eolMode == SC_EOL_CR ? @"CR" : @"LF";
+    // The fields as Notepad++ fills them (Notepad_plus::setDisplayFormat, updateStatusBar), in
+    // the interface language: its nativeLang files carry statusbar-length-lines, statusbar-Ln-Col,
+    // statusbar-Pos, statusbar-Sel and the EOL names, looked up by their English text.
+    // The translation's labels around the two placeholders, put back together with upstream's
+    // four spaces between the pair: the loader folds runs of spaces in what it reads.
+    NSString *(^fill)(NSString *, NSString *, NSString *) = ^NSString *(NSString *english, NSString *one, NSString *two) {
+        NSString *t = NppL(english);
+        NSRange r1 = [t rangeOfString:@"$STR_REPLACE1$"], r2 = [t rangeOfString:@"$STR_REPLACE2$"];
+        if (r1.location == NSNotFound || r2.location == NSNotFound || r2.location < r1.location) return [NSString stringWithFormat:@"%@ %@", one, two];
+        NSString *first = [t substringToIndex:r1.location];
+        NSString *second = [[t substringWithRange:NSMakeRange(NSMaxRange(r1), r2.location - NSMaxRange(r1))]
+                            stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+        if ([second hasSuffix:@":"]) second = [second stringByAppendingString:@" "];
+        return [NSString stringWithFormat:@"%@%@    %@%@", first, one, second, two];
+    };
+    // "Sel: " and "Pos: " end in a space the loader trims.
+    NSString *(^label)(NSString *) = ^NSString *(NSString *english) {
+        NSString *t = NppL(english);
+        return [t hasSuffix:@" "] || [t hasSuffix:@":"] == NO ? t : [t stringByAppendingString:@" "];
+    };
+    NSString *lengthLines = fill(@"length: $STR_REPLACE1$    lines: $STR_REPLACE2$", [@(len) stringValue], [@(lines) stringValue]);
+    NSString *lnCol = fill(@"Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$", [@(line) stringValue], [@(col) stringValue]);
+    NSString *selection;
+    long selections = [sci message:SCI_GETSELECTIONS];
+    if (selections == 1 && [sci message:SCI_GETSELECTIONEMPTY]) {
+        selection = [label(@"Pos: ") stringByAppendingFormat:@"%ld", pos + 1];
+    } else if (selections == 1) {
+        long start = [sci message:SCI_GETSELECTIONSTART], end = [sci message:SCI_GETSELECTIONEND];
+        long chars = [sci message:SCI_COUNTCHARACTERS wParam:(uptr_t)start lParam:end];
+        long selLines = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)end] - [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)start] + 1;
+        selection = [label(@"Sel: ") stringByAppendingFormat:@"%ld | %ld", chars, selLines];
+    } else {
+        long chars = 0;
+        for (long i = 0; i < selections; ++i) {
+            long a = [sci message:SCI_GETSELECTIONNSTART wParam:(uptr_t)i], b = [sci message:SCI_GETSELECTIONNEND wParam:(uptr_t)i];
+            chars += [sci message:SCI_COUNTCHARACTERS wParam:(uptr_t)MIN(a, b) lParam:MAX(a, b)];
+        }
+        selection = [NppL(@"Sel") stringByAppendingFormat:@" %ld : %ld | %ld", selections, chars, selections];
+    }
+    // The EOL name is not translated upstream either (setDisplayFormat).
+    NSString *eol = doc.eolMode == SC_EOL_CRLF ? @"Windows (CR LF)" : doc.eolMode == SC_EOL_CR ? @"Macintosh (CR)" : @"Unix (LF)";
+    NSString *language = NppL([LanguageCatalog menuTitleForLanguage:doc.language.name ?: @"normal"]);
     // Notepad++ shows the typing mode in the status bar, and this is the only
     // place it is visible.
     NSString *typing = [self overtype] ? @"OVR" : @"INS";
+    // The Git branch is the port's own field, after Notepad++'s, and only inside a repository.
+    NSString *branch = [self gitStatusBarText];
     self.statusField.stringValue = [NSString stringWithFormat:
-        @"%@    Ln %ld, Col %ld    %ld lines, %ld bytes    %@    %@    %@    %@",
-        doc.path ?: @"(unsaved)", line, col, lines, len,
-        doc.language.name ?: @"normal", [self encodingDisplayName], eol, typing];
+        @"%@    %@    %@    %@    %@    %@    %@    %@%@",
+        doc.path ?: @"(unsaved)", language, lengthLines, lnCol, selection, eol, [self encodingDisplayName], typing,
+        branch.length ? [@"    " stringByAppendingString:branch] : @""];
 
     NSString *title = (doc.path && ![NppPreferences shared].titleBarFileNameOnly)
         ? [NSString stringWithFormat:@"%@ — %@", doc.displayName, doc.path.stringByDeletingLastPathComponent]
@@ -2846,6 +2890,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         case SCN_UPDATEUI:
             [self refreshChrome];
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateDocumentMap];
+            if (n->updated & SC_UPDATE_CONTENT) [self gitScheduleMarkerRefresh];   // the git margin follows the text
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateLineNumberWidth];
             [self mirrorScrollToSecondary];
             [self updateBraceMatch];

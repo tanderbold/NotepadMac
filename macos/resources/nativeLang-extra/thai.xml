@@ -273,4 +273,44 @@
     <Item english="The command's address is not an http or https address." text="ที่อยู่ในคำสั่งไม่ใช่ที่อยู่ http หรือ https"/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="อนุญาตให้เอเจนต์ AI ควบคุมตัวแก้ไข (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="แผง Git"/>
+    <Item english="Compare with HEAD" text="เปรียบเทียบกับ HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="ประวัติไฟล์"/>
+    <Item english="Stage File" text="สเตจไฟล์"/>
+    <Item english="Unstage File" text="ยกเลิกสเตจไฟล์"/>
+    <Item english="Discard Changes in File…" text="ละทิ้งการเปลี่ยนแปลงในไฟล์…"/>
+    <Item english="Switch Branch" text="สลับแบรนช์"/>
+    <Item english="New Branch…" text="แบรนช์ใหม่…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="รีเฟรชสถานะ Git"/>
+    <Item english="Stage" text="สเตจ"/>
+    <Item english="Unstage" text="ยกเลิกสเตจ"/>
+    <Item english="Refresh" text="รีเฟรช"/>
+    <Item english="Staged" text="สเตจแล้ว"/>
+    <Item english="Status" text="สถานะ"/>
+    <Item english="$INT_REPLACE$ changed" text="เปลี่ยนแปลง $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="สเตจแล้ว $INT_REPLACE$"/>
+    <Item english="Commit" text="คอมมิต"/>
+    <Item english="Commit message" text="ข้อความคอมมิต"/>
+    <Item english="Stage all changes first" text="สเตจการเปลี่ยนแปลงทั้งหมดก่อน"/>
+    <Item english="$INT_REPLACE$ files staged" text="สเตจแล้ว $INT_REPLACE$ ไฟล์"/>
+    <Item english="$INT_REPLACE$ not staged" text="ยังไม่สเตจ $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="จะสเตจและคอมมิต $INT_REPLACE$ ไฟล์"/>
+    <Item english="Committed $STR_REPLACE$" text="คอมมิต $STR_REPLACE$ แล้ว"/>
+    <Item english="Git is not installed (xcode-select --install)" text="ไม่ได้ติดตั้ง Git (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="ไฟล์ไม่ได้อยู่ในรีโพซิทอรี Git"/>
+    <Item english="The file is not in HEAD yet" text="ไฟล์ยังไม่อยู่ใน HEAD"/>
+    <Item english="Save the file before staging it?" text="บันทึกไฟล์ก่อนสเตจหรือไม่?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="ละทิ้งการเปลี่ยนแปลงใน &quot;$STR_REPLACE$&quot; หรือไม่?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="ไฟล์จะกลับไปเป็นเวอร์ชันที่คอมมิตล่าสุด การกระทำนี้ไม่สามารถยกเลิกได้"/>
+    <Item english="Discard" text="ละทิ้ง"/>
+    <Item english="A commit needs a message" text="คอมมิตต้องมีข้อความ"/>
+    <Item english="Nothing is staged to commit" text="ไม่มีสิ่งที่สเตจไว้ให้คอมมิต"/>
+    <Item english="A branch needs a name" text="แบรนช์ต้องมีชื่อ"/>
+    <Item english="New branch name:" text="ชื่อแบรนช์ใหม่:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: ทำเครื่องหมายบรรทัดที่เปลี่ยนแปลงตั้งแต่คอมมิตล่าสุดไว้ที่ขอบ"/>
 </NativeLangExtra>

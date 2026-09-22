@@ -290,4 +290,40 @@
     <Item english="The command's address is not an http or https address." text="Adresa v příkazu není adresa http ani https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Povolit AI agentům ovládat editor (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Panel Git"/>
+    <Item english="Compare with HEAD" text="Porovnat s HEAD"/>
+    <Item english="File History" text="Historie souboru"/>
+    <Item english="Stage File" text="Přidat soubor do indexu"/>
+    <Item english="Unstage File" text="Odebrat soubor z indexu"/>
+    <Item english="Discard Changes in File…" text="Zahodit změny v souboru…"/>
+    <Item english="Switch Branch" text="Přepnout větev"/>
+    <Item english="New Branch…" text="Nová větev…"/>
+    <Item english="Refresh Git Status" text="Obnovit stav Git"/>
+    <Item english="Stage" text="Do indexu"/>
+    <Item english="Unstage" text="Z indexu"/>
+    <Item english="Refresh" text="Obnovit"/>
+    <Item english="Staged" text="V indexu"/>
+    <Item english="Status" text="Stav"/>
+    <Item english="$INT_REPLACE$ changed" text="změněno: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="v indexu: $INT_REPLACE$"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Zpráva commitu"/>
+    <Item english="Stage all changes first" text="Nejprve přidat všechny změny do indexu"/>
+    <Item english="$INT_REPLACE$ files staged" text="Souborů v indexu: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="mimo index: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Souborů, které budou přidány do indexu a zahrnuty do commitu: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Vytvořen commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git není nainstalován (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Soubor není v repozitáři Git"/>
+    <Item english="The file is not in HEAD yet" text="Soubor ještě není v HEAD"/>
+    <Item english="Save the file before staging it?" text="Uložit soubor před přidáním do indexu?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Zahodit změny v „$STR_REPLACE$“?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Soubor se vrátí k poslední verzi z commitu. Tuto akci nelze vrátit zpět."/>
+    <Item english="Discard" text="Zahodit"/>
+    <Item english="A commit needs a message" text="Commit potřebuje zprávu"/>
+    <Item english="Nothing is staged to commit" text="V indexu není nic ke commitu"/>
+    <Item english="A branch needs a name" text="Větev potřebuje název"/>
+    <Item english="New branch name:" text="Název nové větve:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: označovat na okraji řádky změněné od posledního commitu"/>
 </NativeLangExtra>

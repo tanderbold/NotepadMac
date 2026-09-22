@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="指令入面嘅網址唔係 http 或者 https 網址。"/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="容許 AI 代理控制編輯器（MCP）"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git 面板"/>
+    <Item english="Compare with HEAD" text="同 HEAD 比較"/>
+    <Item english="Blame" text="逐行作者 (blame)"/>
+    <Item english="File History" text="檔案歷史"/>
+    <Item english="Stage File" text="Stage 呢個檔案"/>
+    <Item english="Unstage File" text="Unstage 呢個檔案"/>
+    <Item english="Discard Changes in File…" text="放棄檔案嘅修改…"/>
+    <Item english="Switch Branch" text="轉 branch"/>
+    <Item english="New Branch…" text="開新 branch…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="重新整理 Git 狀態"/>
+    <Item english="Stage" text="Stage"/>
+    <Item english="Unstage" text="Unstage"/>
+    <Item english="Refresh" text="重新整理"/>
+    <Item english="Staged" text="已 stage"/>
+    <Item english="Status" text="狀態"/>
+    <Item english="$INT_REPLACE$ changed" text="改咗 $INT_REPLACE$ 個"/>
+    <Item english="$INT_REPLACE$ staged" text="stage 咗 $INT_REPLACE$ 個"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit 訊息"/>
+    <Item english="Stage all changes first" text="先 stage 晒所有修改"/>
+    <Item english="$INT_REPLACE$ files staged" text="stage 咗 $INT_REPLACE$ 個檔案"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ 個未 stage"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="會 stage 埋 $INT_REPLACE$ 個檔案然後 commit"/>
+    <Item english="Committed $STR_REPLACE$" text="已經 commit 咗 $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="未裝 Git (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="呢個檔案唔喺 Git repository 入面"/>
+    <Item english="The file is not in HEAD yet" text="呢個檔案仲未喺 HEAD 入面"/>
+    <Item english="Save the file before staging it?" text="Stage 之前先儲存檔案？"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="放棄「$STR_REPLACE$」嘅修改？"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="個檔案會變返上次 commit 嘅版本。呢個動作冇得還原。"/>
+    <Item english="Discard" text="放棄"/>
+    <Item english="A commit needs a message" text="Commit 要有訊息"/>
+    <Item english="Nothing is staged to commit" text="冇嘢 stage 咗，冇嘢可以 commit"/>
+    <Item english="A branch needs a name" text="Branch 要有名"/>
+    <Item english="New branch name:" text="新 branch 個名："/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git：喺邊欄標示上次 commit 之後改過嘅行"/>
 </NativeLangExtra>

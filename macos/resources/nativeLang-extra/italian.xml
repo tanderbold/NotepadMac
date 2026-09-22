@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="L'indirizzo del comando non è un indirizzo http o https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Consenti agli agenti IA di controllare l'editor (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Pannello Git"/>
+    <Item english="Compare with HEAD" text="Confronta con HEAD"/>
+    <Item english="Blame" text="Autore delle righe (blame)"/>
+    <Item english="File History" text="Cronologia del file"/>
+    <Item english="Stage File" text="Aggiungi il file allo staging"/>
+    <Item english="Unstage File" text="Rimuovi il file dallo staging"/>
+    <Item english="Discard Changes in File…" text="Scarta le modifiche al file…"/>
+    <Item english="Switch Branch" text="Cambia branch"/>
+    <Item english="New Branch…" text="Nuovo branch…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Aggiorna lo stato Git"/>
+    <Item english="Stage" text="Aggiungi allo staging"/>
+    <Item english="Unstage" text="Rimuovi dallo staging"/>
+    <Item english="Refresh" text="Aggiorna"/>
+    <Item english="Staged" text="In staging"/>
+    <Item english="Status" text="Stato"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ modificati"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ in staging"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Messaggio del commit"/>
+    <Item english="Stage all changes first" text="Prima aggiungi tutte le modifiche allo staging"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ file in staging"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ non in staging"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ file saranno aggiunti allo staging e inclusi nel commit"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ creato"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git non è installato (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Il file non è in un repository Git"/>
+    <Item english="The file is not in HEAD yet" text="Il file non è ancora in HEAD"/>
+    <Item english="Save the file before staging it?" text="Salvare il file prima di aggiungerlo allo staging?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Scartare le modifiche a &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Il file torna all'ultima versione inclusa in un commit. Questa operazione non può essere annullata."/>
+    <Item english="Discard" text="Scarta"/>
+    <Item english="A commit needs a message" text="Un commit richiede un messaggio"/>
+    <Item english="Nothing is staged to commit" text="Niente in staging da includere nel commit"/>
+    <Item english="A branch needs a name" text="Un branch richiede un nome"/>
+    <Item english="New branch name:" text="Nome del nuovo branch:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: segna nel margine le righe modificate dall'ultimo commit"/>
 </NativeLangExtra>

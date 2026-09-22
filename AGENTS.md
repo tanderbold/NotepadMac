@@ -29,6 +29,7 @@ NPPMAC_ARCH=native bash macos/build.sh      # host architecture only; incrementa
 bash macos/build.sh                          # universal, what CI and releases use
 bash macos/test.sh                           # builds if needed, runs the suite, checks nativeLang-extra
 NPPMAC_TEST=1 macos/build/NotepadMac.app/Contents/MacOS/NotepadMac > log 2>&1   # the suite alone; last line "N passed, M failed"
+NPPMAC_TEST=1 NPPMAC_TEST_ONLY=Git,Agent macos/build/NotepadMac.app/Contents/MacOS/NotepadMac   # only the sections whose heading has one of the words: while working on an area
 open macos/build/NotepadMac.app
 bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC_SIGN_IDENTITY / NPPMAC_NOTARY_PROFILE are set
 ```
@@ -37,7 +38,9 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   C sources of `macos/third_party/argon2` are compiled by their own block in `build.sh`.
 - Linked: Cocoa, QuartzCore, Security, WebKit, Vision, CoreImage, libcurl, libxml2, zlib; libpcre2 is loaded at run time.
 - The suite is `macos/app/Tests.mm` (one function, `NppMacRunTests`), run inside the real
-  application with `NPPMAC_TEST=1`. A check is `Check(@"IDM_… or Area (what)", @"what must hold", condition)`.
+  application with `NPPMAC_TEST=1`. While working on one area run only its sections
+  (`NPPMAC_TEST_ONLY=Git,Agent`, matched against the `== … ==` headings); the whole suite,
+  coverage meta-test included, runs before every commit and must end `0 failed`. A check is `Check(@"IDM_… or Area (what)", @"what must hold", condition)`.
   `macos/implemented.txt` lists upstream command ids the suite must cover (a meta-test reads it).
 - Screenshots without a display server: `NPPMAC_SNAPSHOT=/path/out.png` plus optionally
   `NPPMAC_SNAPSHOT_PANEL=find:<tab>|prefs:<page>|style|mapper|about|debug|tools:<digest|files|bcrypt|scrypt|argon2|pbkdf2|base|unbase|password|converter|http[:<address>]>`.
@@ -116,6 +119,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
 | Mac extras | `ImageCommands.mm` (OCR paste, QR both ways - Vision + Core Image), `macos/cli/nppmac.m` (the command line tool, built into Contents/Helpers and heard over a distributed notification; `nppmac mcp` is the stdio bridge to the agent socket) |
 | Agent interface (MCP) | `AgentServer.mm`: the Unix socket, the JSON-RPC/MCP methods and the 21 tools; see below |
+| Git | `GitCommands.mm`: `NppGit` (runs the `git` executable; status, branches, HEAD contents), the margin markers against HEAD, the status-bar branch, the Git panel, the Commit window; see below |
 | Help | `InfoWindows.mm`, `UpdateChecker.mm` |
 
 Generators (`macos/gen_*.py|sh`) rebuild headers and resources from upstream sources; rerun them
@@ -157,6 +161,33 @@ the socket file.
   one `addTool:` call, a check in the suite's "Agent interface" section, and a row in README's table.
 - Refused to agents: `IDM_FILE_EXIT`, `IDM_FILE_DELETE`; closing a modified document without
   `discard_changes`; saving a document that has no file (that is a Save As panel, the user's).
+
+### Git
+
+`GitCommands.mm` drives the `git` executable (`NppGit executable`: the Command Line Tools' or
+Xcode's, found through `xcode-select -p` so that a Mac without the tools never gets Apple's
+install dialog from `/usr/bin/git`; else Homebrew's) - never a library, so what the editor shows
+is what `git status` says. Every call sets `GIT_TERMINAL_PROMPT=0`: git fails rather than hangs
+on a prompt no one can see. Quick calls (status, show, rev-parse) run synchronously on the main
+thread; fetch, pull and push stream into the NppExec console from a thread.
+
+- Repository roots are cached per folder (`repositoryRootForPath:`), forgotten when the app comes
+  to front, on Refresh and after fetch/pull/push. The document's path relative to the root is
+  worked out with symlinks resolved on both sides: git reports `/private/var/...`, the editor may
+  hold `/var/...`.
+- Margin markers 6-8 in margin 4 (`SCI_SETMARGINS` is 5 for that) mark added, changed and removed
+  lines against HEAD's text - fetched once per HEAD commit per document - diffed with Compare's
+  Myers implementation over the text as it is now, 0.6 s after typing stops (not for texts over
+  2 MB); on open, save, activation and after every git command at once. MISC. has the switch.
+- Bookmarks, folds and the modified flag are the front view's, so the panel's commands work on
+  paths and the editor reloads an open document that `discard` set back. Destructive commands ask
+  (`gitAsk:`); the suite sets `gitAnswersWithoutAsking`.
+- The panel's buttons are an `NppButtonFlow` that wraps, and its narrow columns are as wide as
+  their headings, because a panel is narrow and some languages' words are long; `relocalize`
+  is called from `applyLocalization`. The suite opens the commit window and the panel in every
+  language that translates the Git texts and checks nothing is cut.
+- The suite (`== Git ==`) makes its own repository in the temporary folder: `git init`, an
+  identity set in the repository's config, commits, a bare repository to push to.
 
 ### Localisation
 

@@ -225,4 +225,44 @@
     <Item english="The command's address is not an http or https address." text="Ang address ng utos ay hindi http o https address."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Pahintulutan ang mga AI agent na kontrolin ang editor (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git Panel"/>
+    <Item english="Compare with HEAD" text="Ihambing sa HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="Kasaysayan ng Pila"/>
+    <Item english="Stage File" text="I-stage ang Pila"/>
+    <Item english="Unstage File" text="I-unstage ang Pila"/>
+    <Item english="Discard Changes in File…" text="Itapon ang mga Pagbabago sa Pila…"/>
+    <Item english="Switch Branch" text="Lumipat ng Branch"/>
+    <Item english="New Branch…" text="Bagong Branch…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="I-refresh ang Git Status"/>
+    <Item english="Stage" text="I-stage"/>
+    <Item english="Unstage" text="I-unstage"/>
+    <Item english="Refresh" text="I-refresh"/>
+    <Item english="Staged" text="Naka-stage"/>
+    <Item english="Status" text="Status"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ ang nabago"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ ang naka-stage"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Mensahe ng commit"/>
+    <Item english="Stage all changes first" text="I-stage muna ang lahat ng pagbabago"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ pila ang naka-stage"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ ang hindi naka-stage"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ pila ang i-stage at i-commit"/>
+    <Item english="Committed $STR_REPLACE$" text="Na-commit ang $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Hindi naka-install ang Git (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Wala sa Git repository ang pila"/>
+    <Item english="The file is not in HEAD yet" text="Wala pa sa HEAD ang pila"/>
+    <Item english="Save the file before staging it?" text="Itabi muna ang pila bago i-stage?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Itapon ang mga pagbabago sa &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Babalik ang pila sa huling na-commit na bersyon. Hindi ito maaaring bawiin."/>
+    <Item english="Discard" text="Itapon"/>
+    <Item english="A commit needs a message" text="Kailangan ng mensahe ang commit"/>
+    <Item english="Nothing is staged to commit" text="Walang naka-stage para i-commit"/>
+    <Item english="A branch needs a name" text="Kailangan ng pangalan ang branch"/>
+    <Item english="New branch name:" text="Pangalan ng bagong branch:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: markahan sa margin ang mga taludtod na nabago mula sa huling commit"/>
 </NativeLangExtra>

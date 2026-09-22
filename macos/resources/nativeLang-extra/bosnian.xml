@@ -290,4 +290,40 @@
     <Item english="The command's address is not an http or https address." text="Adresa u naredbi nije http ili https adresa."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Dozvoli AI agentima da upravljaju uređivačem (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git panel"/>
+    <Item english="Compare with HEAD" text="Uporedi s HEAD"/>
+    <Item english="File History" text="Historija datoteke"/>
+    <Item english="Stage File" text="Dodaj datoteku u indeks"/>
+    <Item english="Unstage File" text="Ukloni datoteku iz indeksa"/>
+    <Item english="Discard Changes in File…" text="Odbaci izmjene u datoteci…"/>
+    <Item english="Switch Branch" text="Promijeni granu"/>
+    <Item english="New Branch…" text="Nova grana…"/>
+    <Item english="Refresh Git Status" text="Osvježi Git status"/>
+    <Item english="Stage" text="U indeks"/>
+    <Item english="Unstage" text="Iz indeksa"/>
+    <Item english="Refresh" text="Osvježi"/>
+    <Item english="Staged" text="U indeksu"/>
+    <Item english="Status" text="Status"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ izmijenjeno"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ u indeksu"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Poruka commita"/>
+    <Item english="Stage all changes first" text="Prvo dodaj sve izmjene u indeks"/>
+    <Item english="$INT_REPLACE$ files staged" text="Datoteka u indeksu: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="nije u indeksu: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Datoteka koje će biti dodane u indeks i uključene u commit: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Napravljen commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git nije instaliran (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Datoteka nije u Git repozitoriju"/>
+    <Item english="The file is not in HEAD yet" text="Datoteka još nije u HEAD"/>
+    <Item english="Save the file before staging it?" text="Snimiti datoteku prije dodavanja u indeks?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Odbaciti izmjene u &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Datoteka se vraća na verziju iz posljednjeg commita. Ovo se ne može poništiti."/>
+    <Item english="Discard" text="Odbaci"/>
+    <Item english="A commit needs a message" text="Commit mora imati poruku"/>
+    <Item english="Nothing is staged to commit" text="Ništa nije u indeksu za commit"/>
+    <Item english="A branch needs a name" text="Grana mora imati naziv"/>
+    <Item english="New branch name:" text="Naziv nove grane:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: označi na margini linije izmijenjene od posljednjeg commita"/>
 </NativeLangExtra>

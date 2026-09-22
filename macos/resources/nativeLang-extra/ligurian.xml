@@ -128,4 +128,15 @@
     <Item english="Paste curl Command" text="Incòlla comando curl"/>
     <Item english="Copy as curl" text="Còpia comme curl"/>
     <Item english="Open in New Document" text="Arvi inte 'n neuvo documento"/>
+    <!-- Git -->
+    <Item english="Compare with HEAD" text="Confronta con HEAD"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Agiorna o stato de Git"/>
+    <Item english="Refresh" text="Agiorna"/>
+    <Item english="Status" text="Stato"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Messaggio do commit"/>
+    <Item english="New branch name:" text="Nomme do neuvo branch:"/>
 </NativeLangExtra>

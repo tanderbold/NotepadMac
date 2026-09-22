@@ -281,4 +281,42 @@
     <Item english="The command reads its data from a file, which is not done here." text="විධානය එහි දත්ත ගොනුවකින් කියවයි; එය මෙහි සිදු නොකෙරේ."/>
     <Item english="Forms and uploads of files are not read from a command." text="ආකෘති පත්‍ර සහ ගොනු උඩුගත කිරීම් විධානයකින් කියවනු නොලැබේ."/>
     <Item english="The command's address is not an http or https address." text="විධානයේ ලිපිනය http හෝ https ලිපිනයක් නොවේ."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git පුවරුව"/>
+    <Item english="Compare with HEAD" text="HEAD සමඟ සසඳන්න"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="ගොනු ඉතිහාසය"/>
+    <Item english="Stage File" text="ගොනුව ස්ටේජ් කරන්න"/>
+    <Item english="Unstage File" text="ගොනුව අන්ස්ටේජ් කරන්න"/>
+    <Item english="Discard Changes in File…" text="ගොනුවේ වෙනස්කම් ඉවත දමන්න…"/>
+    <Item english="Switch Branch" text="ශාඛාව මාරු කරන්න"/>
+    <Item english="New Branch…" text="නව ශාඛාව…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git තත්ත්වය නැවුම් කරන්න"/>
+    <Item english="Stage" text="ස්ටේජ්"/>
+    <Item english="Unstage" text="අන්ස්ටේජ්"/>
+    <Item english="Refresh" text="නැවුම් කරන්න"/>
+    <Item english="Staged" text="ස්ටේජ් කළා"/>
+    <Item english="Status" text="තත්ත්වය"/>
+    <Item english="$INT_REPLACE$ changed" text="වෙනස් කළ $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="ස්ටේජ් කළ $INT_REPLACE$"/>
+    <Item english="Commit" text="කමිට්"/>
+    <Item english="Commit message" text="කමිට් පණිවිඩය"/>
+    <Item english="Stage all changes first" text="පළමුව සියලු වෙනස්කම් ස්ටේජ් කරන්න"/>
+    <Item english="$INT_REPLACE$ files staged" text="ගොනු $INT_REPLACE$ ක් ස්ටේජ් කළා"/>
+    <Item english="$INT_REPLACE$ not staged" text="ස්ටේජ් නොකළ $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="ගොනු $INT_REPLACE$ ක් ස්ටේජ් කර කමිට් කරනු ලැබේ"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ කමිට් කළා"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ස්ථාපනය කර නැත (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="ගොනුව Git ගබඩාවක නැත"/>
+    <Item english="The file is not in HEAD yet" text="ගොනුව තවම HEAD හි නැත"/>
+    <Item english="Save the file before staging it?" text="ස්ටේජ් කිරීමට පෙර ගොනුව සුරකින්නද?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot; හි වෙනස්කම් ඉවත දමන්නද?"/>
+    <Item english="Discard" text="ඉවත දමන්න"/>
+    <Item english="A commit needs a message" text="කමිට් එකකට පණිවිඩයක් අවශ්‍යයි"/>
+    <Item english="Nothing is staged to commit" text="කමිට් කිරීමට කිසිවක් ස්ටේජ් කර නැත"/>
+    <Item english="A branch needs a name" text="ශාඛාවකට නමක් අවශ්‍යයි"/>
+    <Item english="New branch name:" text="නව ශාඛාවේ නම:"/>
 </NativeLangExtra>

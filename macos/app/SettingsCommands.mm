@@ -1,5 +1,6 @@
 #import "SettingsCommands.h"
 #import "AgentServer.h"
+#import "GitCommands.h"
 #import "UserLanguages.h"
 #import "LanguageCatalog.h"
 #import "StyleCatalog.h"
@@ -22,6 +23,7 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
     if (!(self = [super init])) return nil;
     // Defaults chosen to match what the editor already did before it had settings.
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
+        Key(@"gitMarginMarks"):  @YES,
         Key(@"fontName"):        @"Menlo",
         Key(@"fontSize"):        @13,
         Key(@"tabWidth"):        @4,
@@ -277,6 +279,7 @@ NPP_PREF_OBJ(sessionFileExtension, setSessionFileExtension, NSString, @"sessionF
 NPP_PREF_OBJ(workspaceFileExtension, setWorkspaceFileExtension, NSString, @"workspaceFileExtension")
 NPP_PREF_BOOL(workspaceSymlinks, setWorkspaceSymlinks, @"workspaceSymlinks")
 NPP_PREF_BOOL(agentServer, setAgentServer, @"agentServer")
+NPP_PREF_BOOL(gitMarginMarks, setGitMarginMarks, @"gitMarginMarks")
 NPP_PREF_INT(searchEngine, setSearchEngine, @"searchEngine")
 NPP_PREF_OBJ(searchEngineCustom, setSearchEngineCustom, NSString, @"searchEngineCustom")
 NPP_PREF_OBJ(languageMenuHidden, setLanguageMenuHidden, NSArray, @"languageMenuHidden")
@@ -547,6 +550,7 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
     // The agent interface listens while MISC. says so, and not otherwise.
     [NppAgentServer shared].editor = editor;
     if (self.agentServer) [[NppAgentServer shared] start]; else [[NppAgentServer shared] stop];
+    [editor gitRefreshMarkers];
 }
 
 - (void)reset {

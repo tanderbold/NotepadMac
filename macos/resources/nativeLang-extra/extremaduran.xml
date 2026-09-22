@@ -64,4 +64,6 @@
     <Item english="Insert into Document" text="Insertal nel documentu"/>
     <!-- Tools: HTTP Request -->
     <Item english="Options" text="Ozionis"/>
+    <!-- Git -->
+    <Item english="Compare with HEAD" text="Comparal con HEAD"/>
 </NativeLangExtra>

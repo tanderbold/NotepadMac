@@ -26,11 +26,28 @@ static NSMapTable *Originals(void) {
 /// The English text of something shown. What the program itself has put
 /// there since - a status line, a count, a toggled title - is neither the
 /// English kept nor the translation last shown, and becomes the new English.
+/// The same text, compared canonically: AppKit hands a title back composed
+/// differently from how it was set (Tamil, Devanagari, Hangul with combining
+/// marks), and a literal comparison would take the translation for a new
+/// English text and keep it as such when English comes back.
+static BOOL SameText(NSString *a, NSString *b) {
+    if (!a || !b) return NO;
+    // A menu title comes back with its no-break spaces (Tamil's file has them)
+    // turned into plain ones and its format characters gone; the comparison
+    // does the same to both sides, and composes them alike.
+    NSString *(^bare)(NSString *) = ^NSString *(NSString *s) {
+        s = [[s componentsSeparatedByCharactersInSet:NSCharacterSet.controlCharacterSet] componentsJoinedByString:@""];
+        s = [[s componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] componentsJoinedByString:@" "];
+        return [s precomposedStringWithCanonicalMapping];
+    };
+    return [bare(a) compare:bare(b)] == NSOrderedSame;
+}
+
 static NSString *Original(id object, NSString *key, NSString *now) {
     NSMutableDictionary *d = [Originals() objectForKey:object];
     if (!d) { d = [NSMutableDictionary dictionary]; [Originals() setObject:d forKey:object]; }
     NSString *shown = d[[key stringByAppendingString:@".shown"]];
-    if (now && (!d[key] || (![now isEqualToString:d[key]] && ![now isEqualToString:shown ?: @""]))) d[key] = now;
+    if (now && (!d[key] || (!SameText(now, d[key]) && !SameText(now, shown ?: @"")))) d[key] = now;
     return d[key] ?: now;
 }
 
@@ -52,7 +69,7 @@ NSString *NppEnglishTitle(NSMenuItem *item) {
     NSDictionary *d = [Originals() objectForKey:item];
     NSString *now = item.title ?: @"";
     // A title the program changed since it was last translated is its own English.
-    if (d[@"title"] && ![now isEqualToString:d[@"title"]] && ![now isEqualToString:d[@"title.shown"] ?: @""]) return now;
+    if (d[@"title"] && !SameText(now, d[@"title"]) && !SameText(now, d[@"title.shown"] ?: @"")) return now;
     return d[@"title"] ?: now;
 }
 
@@ -118,6 +135,29 @@ static void FitPushButton(NSButton *b) {
         if (free) frame = grown;
     }
     b.frame = frame;
+}
+
+/// A pull-down shows its first item as its title, and a title that does not
+/// fit is cut with an ellipsis; a right-anchored one grows to the left instead,
+/// and a label on its row that it would then cover gives up that much width.
+static void FitPullDown(NSPopUpButton *popup) {
+    if (!popup.superview || popup.translatesAutoresizingMaskIntoConstraints == NO) return;
+    NSString *w = FirstSeen(popup, @"width", [NSString stringWithFormat:@"%g", popup.frame.size.width]);
+    NSRect frame = popup.frame;
+    CGFloat right = NSMaxX(frame);
+    frame.size.width = w.doubleValue;
+    CGFloat wanted = ceil(popup.cell.cellSize.width) + 2;
+    if (wanted > frame.size.width) frame.size.width = MIN(wanted, NSWidth(popup.superview.bounds) - 12);
+    frame.origin.x = (popup.autoresizingMask & NSViewMinXMargin) && !(popup.autoresizingMask & NSViewMaxXMargin) ? right - frame.size.width : frame.origin.x;
+    for (NSView *other in popup.superview.subviews) {
+        if (other == popup || other.hidden || ![other isKindOfClass:[NSTextField class]] || ((NSTextField *)other).editable) continue;
+        if (!NSIntersectsRect(NSInsetRect(other.frame, 0, 1), frame) || NSMinX(other.frame) >= NSMinX(frame)) continue;
+        NSRect shrunk = other.frame;
+        shrunk.size.width = MAX(0, NSMinX(frame) - 4 - NSMinX(shrunk));
+        other.frame = shrunk;
+        ((NSTextField *)other).lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+    popup.frame = frame;
 }
 
 /// A checkbox, radio button or label whose words no longer fit takes the
@@ -440,9 +480,11 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         }
     }
     if ([view isKindOfClass:[NSPopUpButton class]]) {
-        for (NSMenuItem *item in ((NSPopUpButton *)view).itemArray) {
+        NSPopUpButton *popup = (NSPopUpButton *)view;
+        for (NSMenuItem *item in popup.itemArray) {
             item.title = Shown(item, @"title", [self translate:Original(item, @"title", item.title)]);
         }
+        if (popup.pullsDown) FitPullDown(popup);
     } else if ([view isKindOfClass:[NSSegmentedControl class]]) {
         NSSegmentedControl *s = (NSSegmentedControl *)view;
         for (NSInteger i = 0; i < s.segmentCount; ++i) {

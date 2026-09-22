@@ -139,4 +139,13 @@
     <Item english="No QR code was found in the clipboard's image." text="N'eus bet kavet kod QR ebet e skeudenn ar golver."/>
     <Item english="The nppmac command is installed." text="Staliet eo an urzhiad nppmac."/>
     <Item english="Could not write to /usr/local/bin." text="N'haller ket skrivañ e /usr/local/bin."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Panell Git"/>
+    <Item english="Compare with HEAD" text="Keñveriañ gant HEAD"/>
+    <Item english="File History" text="Roll-istor ar restr"/>
+    <Item english="New Branch…" text="Skourr nevez…"/>
+    <Item english="Refresh" text="Freskaat"/>
+    <Item english="Status" text="Stad"/>
+    <Item english="Git is not installed (xcode-select --install)" text="N'eo ket staliet Git (xcode-select --install)"/>
+    <Item english="New branch name:" text="Anv ar skourr nevez:"/>
 </NativeLangExtra>

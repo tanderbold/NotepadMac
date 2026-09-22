@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="Adresa v príkaze nie je adresa http ani https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Povoliť agentom AI ovládať editor (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Panel Git"/>
+    <Item english="Compare with HEAD" text="Porovnať s HEAD"/>
+    <Item english="Blame" text="Autorstvo riadkov (blame)"/>
+    <Item english="File History" text="História súboru"/>
+    <Item english="Stage File" text="Pridať súbor do indexu"/>
+    <Item english="Unstage File" text="Odobrať súbor z indexu"/>
+    <Item english="Discard Changes in File…" text="Zahodiť zmeny v súbore…"/>
+    <Item english="Switch Branch" text="Prepnúť vetvu"/>
+    <Item english="New Branch…" text="Nová vetva…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Obnoviť stav Git"/>
+    <Item english="Stage" text="Do indexu"/>
+    <Item english="Unstage" text="Z indexu"/>
+    <Item english="Refresh" text="Obnoviť"/>
+    <Item english="Staged" text="V indexe"/>
+    <Item english="Status" text="Stav"/>
+    <Item english="$INT_REPLACE$ changed" text="zmenené: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="v indexe: $INT_REPLACE$"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Správa commitu"/>
+    <Item english="Stage all changes first" text="Najprv pridať všetky zmeny do indexu"/>
+    <Item english="$INT_REPLACE$ files staged" text="Súborov v indexe: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="nie v indexe: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Súborov, ktoré sa pridajú do indexu a zahrnú do commitu: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Vytvorený commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git nie je nainštalovaný (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Súbor nie je v repozitári Git"/>
+    <Item english="The file is not in HEAD yet" text="Súbor ešte nie je v HEAD"/>
+    <Item english="Save the file before staging it?" text="Uložiť súbor pred pridaním do indexu?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Zahodiť zmeny v „$STR_REPLACE$“?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Súbor sa vráti k verzii z posledného commitu. Toto nie je možné vrátiť späť."/>
+    <Item english="Discard" text="Zahodiť"/>
+    <Item english="A commit needs a message" text="Commit potrebuje správu"/>
+    <Item english="Nothing is staged to commit" text="V indexe nie je nič na commit"/>
+    <Item english="A branch needs a name" text="Vetva potrebuje názov"/>
+    <Item english="New branch name:" text="Názov novej vetvy:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: označovať na okraji riadky zmenené od posledného commitu"/>
 </NativeLangExtra>

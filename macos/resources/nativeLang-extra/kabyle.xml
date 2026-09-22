@@ -41,4 +41,10 @@
     <Item english="User name:" text="Isem n useqdac:"/>
     <Item english="Password:" text="Awal uffir:"/>
     <Item english="Copy as curl" text="Nɣel am curl"/>
+    <!-- Git -->
+    <Item english="File History" text="Amazray n ufaylu"/>
+    <Item english="Refresh Git Status" text="Smiren addad n Git"/>
+    <Item english="Refresh" text="Smiren"/>
+    <Item english="Status" text="Addad"/>
+    <Item english="Commit message" text="Izen n commit"/>
 </NativeLangExtra>

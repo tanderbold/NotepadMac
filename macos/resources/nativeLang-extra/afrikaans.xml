@@ -270,4 +270,40 @@
     <Item english="The command's address is not an http or https address." text="Die opdrag se adres is nie 'n http- of https-adres nie."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Laat KI-agente die redigeerder beheer (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git-paneel"/>
+    <Item english="Compare with HEAD" text="Vergelyk met HEAD"/>
+    <Item english="File History" text="Leêrgeskiedenis"/>
+    <Item english="Stage File" text="Voeg leêr by indeks"/>
+    <Item english="Unstage File" text="Verwyder leêr uit indeks"/>
+    <Item english="Discard Changes in File…" text="Verwerp veranderinge in leêr…"/>
+    <Item english="Switch Branch" text="Wissel tak"/>
+    <Item english="New Branch…" text="Nuwe tak…"/>
+    <Item english="Refresh Git Status" text="Verfris Git-status"/>
+    <Item english="Stage" text="Na indeks"/>
+    <Item english="Unstage" text="Uit indeks"/>
+    <Item english="Refresh" text="Verfris"/>
+    <Item english="Staged" text="In indeks"/>
+    <Item english="Status" text="Status"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ verander"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ in indeks"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit-boodskap"/>
+    <Item english="Stage all changes first" text="Voeg eers alle veranderinge by indeks"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ leêrs in indeks"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ nie in indeks nie"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ leêrs word by indeks gevoeg en gecommit"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ gemaak"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git is nie geïnstalleer nie (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Die leêr is nie in 'n Git-bewaarplek nie"/>
+    <Item english="The file is not in HEAD yet" text="Die leêr is nog nie in HEAD nie"/>
+    <Item english="Save the file before staging it?" text="Berg die leêr voordat dit by die indeks gevoeg word?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Verwerp die veranderinge in &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Die leêr keer terug na die laaste gecommitte weergawe. Dit kan nie ontdoen word nie."/>
+    <Item english="Discard" text="Verwerp"/>
+    <Item english="A commit needs a message" text="'n Commit het 'n boodskap nodig"/>
+    <Item english="Nothing is staged to commit" text="Niks is in die indeks om te commit nie"/>
+    <Item english="A branch needs a name" text="'n Tak het 'n naam nodig"/>
+    <Item english="New branch name:" text="Nuwe taknaam:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: merk reëls wat sedert die laaste commit verander is in die kantlyn"/>
 </NativeLangExtra>

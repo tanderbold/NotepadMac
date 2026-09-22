@@ -288,4 +288,44 @@
     <Item english="The command's address is not an http or https address." text="Komandos adresas nėra http arba https adresas."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Leisti DI agentams valdyti redaktorių (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git skydelis"/>
+    <Item english="Compare with HEAD" text="Palyginti su HEAD"/>
+    <Item english="Blame" text="Eilučių autorystė (blame)"/>
+    <Item english="File History" text="Failo istorija"/>
+    <Item english="Stage File" text="Įtraukti failą į indeksą"/>
+    <Item english="Unstage File" text="Pašalinti failą iš indekso"/>
+    <Item english="Discard Changes in File…" text="Atmesti failo pakeitimus…"/>
+    <Item english="Switch Branch" text="Perjungti šaką"/>
+    <Item english="New Branch…" text="Nauja šaka…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Atnaujinti Git būseną"/>
+    <Item english="Stage" text="Į indeksą"/>
+    <Item english="Unstage" text="Iš indekso"/>
+    <Item english="Refresh" text="Atnaujinti"/>
+    <Item english="Staged" text="Indekse"/>
+    <Item english="Status" text="Būsena"/>
+    <Item english="$INT_REPLACE$ changed" text="pakeista: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="indekse: $INT_REPLACE$"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit žinutė"/>
+    <Item english="Stage all changes first" text="Pirmiausia įtraukti visus pakeitimus į indeksą"/>
+    <Item english="$INT_REPLACE$ files staged" text="Failų indekse: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="ne indekse: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Failų, kurie bus įtraukti į indeksą ir commit: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Sukurtas commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git neįdiegtas (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Failas nėra Git saugykloje"/>
+    <Item english="The file is not in HEAD yet" text="Failo dar nėra HEAD"/>
+    <Item english="Save the file before staging it?" text="Išsaugoti failą prieš įtraukiant į indeksą?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Atmesti „$STR_REPLACE$“ pakeitimus?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Failas grįš į paskutinio commit versiją. To atšaukti negalima."/>
+    <Item english="Discard" text="Atmesti"/>
+    <Item english="A commit needs a message" text="Commit reikia žinutės"/>
+    <Item english="Nothing is staged to commit" text="Indekse nėra nieko, ką būtų galima įtraukti į commit"/>
+    <Item english="A branch needs a name" text="Šakai reikia pavadinimo"/>
+    <Item english="New branch name:" text="Naujos šakos pavadinimas:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: paraštėje žymėti eilutes, pakeistas po paskutinio commit"/>
 </NativeLangExtra>

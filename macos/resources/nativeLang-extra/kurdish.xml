@@ -116,4 +116,15 @@
     <Item english="Paste curl Command" text="لكاندنی فەرمانی curl"/>
     <Item english="Copy as curl" text="لەبەرگرتنەوە وەك curl"/>
     <Item english="Open in New Document" text="كردنەوە لە بەڵگەنامەی نوێ"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="پانێڵی Git"/>
+    <Item english="Compare with HEAD" text="بەراوردكردن لەگەڵ HEAD"/>
+    <Item english="File History" text="مێژووی پەڕگە"/>
+    <Item english="New Branch…" text="لقی نوێ…"/>
+    <Item english="Refresh Git Status" text="نوێكردنەوەی دۆخی Git"/>
+    <Item english="Refresh" text="نوێكردنەوە"/>
+    <Item english="Status" text="دۆخ"/>
+    <Item english="Commit message" text="پەیامی commit"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git دانەمەزراوە (xcode-select --install)"/>
+    <Item english="New branch name:" text="ناوی لقی نوێ:"/>
 </NativeLangExtra>

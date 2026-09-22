@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="명령의 주소가 http 또는 https 주소가 아닙니다."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI 에이전트가 편집기를 제어하도록 허용 (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git 패널"/>
+    <Item english="Compare with HEAD" text="HEAD와 비교"/>
+    <Item english="Blame" text="줄 작성자 (blame)"/>
+    <Item english="File History" text="파일 이력"/>
+    <Item english="Stage File" text="파일 스테이지"/>
+    <Item english="Unstage File" text="파일 스테이지 해제"/>
+    <Item english="Discard Changes in File…" text="파일의 변경 내용 버리기…"/>
+    <Item english="Switch Branch" text="브랜치 전환"/>
+    <Item english="New Branch…" text="새 브랜치…"/>
+    <Item english="Fetch" text="페치"/>
+    <Item english="Pull" text="풀"/>
+    <Item english="Push" text="푸시"/>
+    <Item english="Refresh Git Status" text="Git 상태 새로 고침"/>
+    <Item english="Stage" text="스테이지"/>
+    <Item english="Unstage" text="스테이지 해제"/>
+    <Item english="Refresh" text="새로 고침"/>
+    <Item english="Staged" text="스테이지됨"/>
+    <Item english="Status" text="상태"/>
+    <Item english="$INT_REPLACE$ changed" text="변경됨: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="스테이지됨: $INT_REPLACE$"/>
+    <Item english="Commit" text="커밋"/>
+    <Item english="Commit message" text="커밋 메시지"/>
+    <Item english="Stage all changes first" text="먼저 모든 변경 내용 스테이지"/>
+    <Item english="$INT_REPLACE$ files staged" text="파일 $INT_REPLACE$개 스테이지됨"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$개 스테이지 안 됨"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="파일 $INT_REPLACE$개를 스테이지하고 커밋합니다"/>
+    <Item english="Committed $STR_REPLACE$" text="커밋됨: $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git이 설치되어 있지 않습니다 (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="이 파일은 Git 저장소에 없습니다"/>
+    <Item english="The file is not in HEAD yet" text="이 파일은 아직 HEAD에 없습니다"/>
+    <Item english="Save the file before staging it?" text="스테이지하기 전에 파일을 저장할까요?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot;의 변경 내용을 버릴까요?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="파일이 마지막 커밋 버전으로 되돌아갑니다. 이 작업은 실행 취소할 수 없습니다."/>
+    <Item english="Discard" text="버리기"/>
+    <Item english="A commit needs a message" text="커밋에는 메시지가 필요합니다"/>
+    <Item english="Nothing is staged to commit" text="커밋할 스테이지된 변경 내용이 없습니다"/>
+    <Item english="A branch needs a name" text="브랜치에는 이름이 필요합니다"/>
+    <Item english="New branch name:" text="새 브랜치 이름:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: 마지막 커밋 이후 변경된 줄을 여백에 표시"/>
 </NativeLangExtra>

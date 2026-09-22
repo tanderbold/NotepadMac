@@ -290,4 +290,40 @@
     <Item english="The command's address is not an http or https address." text="عنوان الأمر ليس عنوان http أو https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="السماح لوكلاء الذكاء الاصطناعي بالتحكم في المحرر (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="لوحة Git"/>
+    <Item english="Compare with HEAD" text="مقارنة مع HEAD"/>
+    <Item english="File History" text="سجل الملف"/>
+    <Item english="Stage File" text="إضافة الملف إلى الفهرس"/>
+    <Item english="Unstage File" text="إزالة الملف من الفهرس"/>
+    <Item english="Discard Changes in File…" text="تجاهل التغييرات في الملف…"/>
+    <Item english="Switch Branch" text="تبديل الفرع"/>
+    <Item english="New Branch…" text="فرع جديد…"/>
+    <Item english="Refresh Git Status" text="تحديث حالة Git"/>
+    <Item english="Stage" text="إلى الفهرس"/>
+    <Item english="Unstage" text="من الفهرس"/>
+    <Item english="Refresh" text="تحديث"/>
+    <Item english="Staged" text="في الفهرس"/>
+    <Item english="Status" text="الحالة"/>
+    <Item english="$INT_REPLACE$ changed" text="المعدّلة: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="في الفهرس: $INT_REPLACE$"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="رسالة الـ commit"/>
+    <Item english="Stage all changes first" text="إضافة كل التغييرات إلى الفهرس أولاً"/>
+    <Item english="$INT_REPLACE$ files staged" text="الملفات في الفهرس: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="ليست في الفهرس: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="ستتم إضافة $INT_REPLACE$ ملفات إلى الفهرس وعمل commit لها"/>
+    <Item english="Committed $STR_REPLACE$" text="تم إنشاء commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git غير مثبّت (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="الملف ليس في مستودع Git"/>
+    <Item english="The file is not in HEAD yet" text="الملف ليس في HEAD بعد"/>
+    <Item english="Save the file before staging it?" text="هل تريد حفظ الملف قبل إضافته إلى الفهرس؟"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="هل تريد تجاهل التغييرات في &quot;$STR_REPLACE$&quot;؟"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="سيعود الملف إلى نسخة آخر commit. لا يمكن التراجع عن هذا."/>
+    <Item english="Discard" text="تجاهل"/>
+    <Item english="A commit needs a message" text="يحتاج الـ commit إلى رسالة"/>
+    <Item english="Nothing is staged to commit" text="لا يوجد شيء في الفهرس لعمل commit"/>
+    <Item english="A branch needs a name" text="يحتاج الفرع إلى اسم"/>
+    <Item english="New branch name:" text="اسم الفرع الجديد:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: تعليم الأسطر المعدّلة منذ آخر commit في الهامش"/>
 </NativeLangExtra>

@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="Alamat pada perintah bukan alamat http atau https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Izinkan agen AI mengendalikan editor (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Panel Git"/>
+    <Item english="Compare with HEAD" text="Bandingkan dengan HEAD"/>
+    <Item english="Blame" text="Penulis Baris (blame)"/>
+    <Item english="File History" text="Riwayat Berkas"/>
+    <Item english="Stage File" text="Masukkan Berkas ke Staging"/>
+    <Item english="Unstage File" text="Keluarkan Berkas dari Staging"/>
+    <Item english="Discard Changes in File…" text="Buang Perubahan pada Berkas…"/>
+    <Item english="Switch Branch" text="Ganti Cabang"/>
+    <Item english="New Branch…" text="Cabang Baru…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Segarkan Status Git"/>
+    <Item english="Stage" text="Masukkan ke Staging"/>
+    <Item english="Unstage" text="Keluarkan dari Staging"/>
+    <Item english="Refresh" text="Segarkan"/>
+    <Item english="Staged" text="Di Staging"/>
+    <Item english="Status" text="Status"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ diubah"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ di staging"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Pesan commit"/>
+    <Item english="Stage all changes first" text="Masukkan semua perubahan ke staging dahulu"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ berkas di staging"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ tidak di staging"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ berkas akan dimasukkan ke staging dan di-commit"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ dibuat"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git belum terpasang (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Berkas ini tidak berada di repositori Git"/>
+    <Item english="The file is not in HEAD yet" text="Berkas ini belum ada di HEAD"/>
+    <Item english="Save the file before staging it?" text="Simpan berkas sebelum dimasukkan ke staging?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Buang perubahan pada &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Berkas akan kembali ke versi commit terakhir. Ini tidak dapat diurungkan."/>
+    <Item english="Discard" text="Buang"/>
+    <Item english="A commit needs a message" text="Commit memerlukan pesan"/>
+    <Item english="Nothing is staged to commit" text="Tidak ada yang di staging untuk di-commit"/>
+    <Item english="A branch needs a name" text="Cabang memerlukan nama"/>
+    <Item english="New branch name:" text="Nama cabang baru:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: tandai di margin baris yang berubah sejak commit terakhir"/>
 </NativeLangExtra>

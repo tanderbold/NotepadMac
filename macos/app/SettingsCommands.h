@@ -147,6 +147,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// MISC. > Let AI agents drive the editor: the MCP socket `nppmac mcp`
 /// bridges to (AgentServer.mm). Off unless the user turns it on.
 @property (nonatomic) BOOL agentServer;
+/// MISC. > Git: the margin that marks lines changed since HEAD (GitCommands.mm). On by default.
+@property (nonatomic) BOOL gitMarginMarks;
 // Search Engine: 0 DuckDuckGo, 1 Google, 2 Bing, 3 Yahoo!, 4 the custom URL.
 @property (nonatomic) NSInteger searchEngine;
 @property (nonatomic, copy) NSString *searchEngineCustom;

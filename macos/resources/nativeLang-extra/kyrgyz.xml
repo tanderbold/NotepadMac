@@ -288,4 +288,44 @@
     <Item english="The command's address is not an http or https address." text="Командадагы дарек http же https дареги эмес."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="ЖИ агенттерине редакторду башкарууга уруксат бер (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git панели"/>
+    <Item english="Compare with HEAD" text="HEAD менен салыштыр"/>
+    <Item english="Blame" text="Саптардын автору (blame)"/>
+    <Item english="File History" text="Файлдын тарыхы"/>
+    <Item english="Stage File" text="Файлды индекске кош"/>
+    <Item english="Unstage File" text="Файлды индекстен чыгар"/>
+    <Item english="Discard Changes in File…" text="Файлдагы өзгөртүүлөрдөн баш тарт…"/>
+    <Item english="Switch Branch" text="Бутакты алмаштыр"/>
+    <Item english="New Branch…" text="Жаңы бутак…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git абалын жаңырт"/>
+    <Item english="Stage" text="Индекске"/>
+    <Item english="Unstage" text="Индекстен"/>
+    <Item english="Refresh" text="Жаңырт"/>
+    <Item english="Staged" text="Индексте"/>
+    <Item english="Status" text="Абалы"/>
+    <Item english="$INT_REPLACE$ changed" text="өзгөртүлгөн: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="индексте: $INT_REPLACE$"/>
+    <Item english="Commit" text="Коммит"/>
+    <Item english="Commit message" text="Коммит билдирүүсү"/>
+    <Item english="Stage all changes first" text="Адегенде бардык өзгөртүүлөрдү индекске кош"/>
+    <Item english="$INT_REPLACE$ files staged" text="Индекстеги файлдар: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="индексте эмес: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Индекске кошулуп, коммитке кире турган файлдар: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ коммити түзүлдү"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git орнотулган эмес (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Файл Git репозиторийинде эмес"/>
+    <Item english="The file is not in HEAD yet" text="Файл азырынча HEAD-де жок"/>
+    <Item english="Save the file before staging it?" text="Индекске кошуудан мурун файлды сактайсызбы?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="«$STR_REPLACE$» файлындагы өзгөртүүлөрдөн баш тартасызбы?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Файл акыркы коммиттеги версияга кайтат. Муну кайтарууга болбойт."/>
+    <Item english="Discard" text="Баш тарт"/>
+    <Item english="A commit needs a message" text="Коммитке билдирүү керек"/>
+    <Item english="Nothing is staged to commit" text="Индексте коммит кыла турган эч нерсе жок"/>
+    <Item english="A branch needs a name" text="Бутакка ат керек"/>
+    <Item english="New branch name:" text="Жаңы бутактын аты:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: акыркы коммиттен кийин өзгөргөн саптарды четинде белгиле"/>
 </NativeLangExtra>

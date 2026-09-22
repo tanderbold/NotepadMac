@@ -288,4 +288,40 @@
     <Item english="The command's address is not an http or https address." text="La adreso de la komando ne estas http- aŭ https-adreso."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Permesu al AI-agentoj regi la redaktilon (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git-panelo"/>
+    <Item english="Compare with HEAD" text="Komparu kun HEAD"/>
+    <Item english="File History" text="Historio de la dosiero"/>
+    <Item english="Stage File" text="Aldonu la dosieron al la indekso"/>
+    <Item english="Unstage File" text="Forigu la dosieron el la indekso"/>
+    <Item english="Discard Changes in File…" text="Forĵetu la ŝanĝojn en la dosiero…"/>
+    <Item english="Switch Branch" text="Ŝanĝu branĉon"/>
+    <Item english="New Branch…" text="Nova branĉo…"/>
+    <Item english="Refresh Git Status" text="Aktualigu la Git-staton"/>
+    <Item english="Stage" text="Al la indekso"/>
+    <Item english="Unstage" text="El la indekso"/>
+    <Item english="Refresh" text="Aktualigu"/>
+    <Item english="Staged" text="En la indekso"/>
+    <Item english="Status" text="Stato"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ ŝanĝitaj"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ en la indekso"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit-mesaĝo"/>
+    <Item english="Stage all changes first" text="Unue aldonu ĉiujn ŝanĝojn al la indekso"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ dosieroj en la indekso"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ ne en la indekso"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ dosieroj estos aldonitaj al la indekso kaj inkluzivitaj en la commit"/>
+    <Item english="Committed $STR_REPLACE$" text="Kreita commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ne estas instalita (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="La dosiero ne estas en Git-deponejo"/>
+    <Item english="The file is not in HEAD yet" text="La dosiero ankoraŭ ne estas en HEAD"/>
+    <Item english="Save the file before staging it?" text="Ĉu konservi la dosieron antaŭ ol aldoni ĝin al la indekso?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Ĉu forĵeti la ŝanĝojn en &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="La dosiero revenos al la versio de la lasta commit. Tion oni ne povas malfari."/>
+    <Item english="Discard" text="Forĵetu"/>
+    <Item english="A commit needs a message" text="Commit bezonas mesaĝon"/>
+    <Item english="Nothing is staged to commit" text="Nenio estas en la indekso por commit"/>
+    <Item english="A branch needs a name" text="Branĉo bezonas nomon"/>
+    <Item english="New branch name:" text="Nomo de la nova branĉo:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marku en la marĝeno la liniojn ŝanĝitajn ekde la lasta commit"/>
 </NativeLangExtra>

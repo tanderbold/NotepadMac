@@ -70,6 +70,12 @@ static NSString *SliceBytes(NSData *data, long start, long end) {
     _textView.editable = NO;
     _textView.richText = NO;
     _textView.font = [NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular];
+    // The system's dynamic colours, so the text is readable in dark mode too:
+    // appended plain text would otherwise be drawn black on the dark background.
+    _textView.textColor = [NSColor textColor];
+    _textView.backgroundColor = [NSColor textBackgroundColor];
+    _textView.insertionPointColor = [NSColor textColor];
+    _textView.typingAttributes = @{NSFontAttributeName: _textView.font, NSForegroundColorAttributeName: [NSColor textColor]};
     _textView.autoresizingMask = NSViewWidthSizable;
     _textView.minSize = NSMakeSize(0, 0);
     _textView.maxSize = NSMakeSize(FLT_MAX, FLT_MAX);
@@ -103,7 +109,9 @@ static NSString *SliceBytes(NSData *data, long start, long end) {
         dispatch_async(dispatch_get_main_queue(), ^{ [self appendText:text]; });
         return;
     }
-    [self.textView.textStorage.mutableString appendString:text];
+    NSDictionary *attributes = @{NSFontAttributeName: self.textView.font ?: [NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular],
+                                 NSForegroundColorAttributeName: [NSColor textColor]};
+    [self.textView.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:text attributes:attributes]];
     [self.textView scrollRangeToVisible:NSMakeRange(self.textView.string.length, 0)];
 }
 

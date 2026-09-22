@@ -277,4 +277,44 @@
     <Item english="The command's address is not an http or https address." text="Адресата во командата не е http или https адреса."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Дозволи агентите со ВИ да управуваат со едиторот (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git панел"/>
+    <Item english="Compare with HEAD" text="Спореди со HEAD"/>
+    <Item english="Blame" text="Авторство на редовите (blame)"/>
+    <Item english="File History" text="Историја на фајлот"/>
+    <Item english="Stage File" text="Додај го фајлот во индексот"/>
+    <Item english="Unstage File" text="Отстрани го фајлот од индексот"/>
+    <Item english="Discard Changes in File…" text="Отфрли ги промените во фајлот…"/>
+    <Item english="Switch Branch" text="Смени гранка"/>
+    <Item english="New Branch…" text="Нова гранка…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Освежи ја состојбата на Git"/>
+    <Item english="Stage" text="Во индекс"/>
+    <Item english="Unstage" text="Од индекс"/>
+    <Item english="Refresh" text="Освежи"/>
+    <Item english="Staged" text="Во индексот"/>
+    <Item english="Status" text="Состојба"/>
+    <Item english="$INT_REPLACE$ changed" text="променети: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="во индексот: $INT_REPLACE$"/>
+    <Item english="Commit" text="Комит"/>
+    <Item english="Commit message" text="Порака на комитот"/>
+    <Item english="Stage all changes first" text="Прво додај ги сите промени во индексот"/>
+    <Item english="$INT_REPLACE$ files staged" text="Фајлови во индексот: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="не се во индексот: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Фајлови што ќе се додадат во индексот и ќе се комитираат: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Направен е комит $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git не е инсталиран (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Фајлот не е во Git репозиториум"/>
+    <Item english="The file is not in HEAD yet" text="Фајлот сè уште не е во HEAD"/>
+    <Item english="Save the file before staging it?" text="Да се зачува фајлот пред да се додаде во индексот?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Да се отфрлат промените во „$STR_REPLACE$“?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Фајлот се враќа на последната комитирана верзија. Ова не може да се поништи."/>
+    <Item english="Discard" text="Отфрли"/>
+    <Item english="A commit needs a message" text="На комитот му треба порака"/>
+    <Item english="Nothing is staged to commit" text="Нема ништо во индексот за комит"/>
+    <Item english="A branch needs a name" text="На гранката ѝ треба име"/>
+    <Item english="New branch name:" text="Име на новата гранка:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: означи ги на маргината редовите променети од последниот комит"/>
 </NativeLangExtra>

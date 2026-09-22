@@ -257,4 +257,35 @@
     <Item english="The command has no address." text="A cumanda ùn hà micca indirizzu."/>
     <Item english="The command reads its data from a file, which is not done here." text="A cumanda leghje i so dati da un schedariu, ciò chì ùn si face micca quì."/>
     <Item english="The command's address is not an http or https address." text="L’indirizzu di a cumanda ùn hè micca un indirizzu http o https."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Pannellu Git"/>
+    <Item english="Compare with HEAD" text="Paragunà cù HEAD"/>
+    <Item english="File History" text="Cronolugia di u schedariu"/>
+    <Item english="Stage File" text="Aghjunghje u schedariu à l’indice"/>
+    <Item english="Unstage File" text="Caccià u schedariu da l’indice"/>
+    <Item english="Discard Changes in File…" text="Abbandunà i cambiamenti di u schedariu…"/>
+    <Item english="Switch Branch" text="Cambià di branca"/>
+    <Item english="New Branch…" text="Branca nova…"/>
+    <Item english="Stage" text="À l’indice"/>
+    <Item english="Unstage" text="Da l’indice"/>
+    <Item english="Staged" text="In l’indice"/>
+    <Item english="Status" text="Statu"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ cambiati"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ in l’indice"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Messaghju di u commit"/>
+    <Item english="Stage all changes first" text="Prima, aghjunghje tutti i cambiamenti à l’indice"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ schedarii in l’indice"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ fora di l’indice"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ fattu"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ùn hè micca installatu (xcode-select --install)"/>
+    <Item english="The file is not in HEAD yet" text="U schedariu ùn hè micca ancu in HEAD"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Abbandunà i cambiamenti in « $STR_REPLACE$ » ?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="U schedariu torna à l’ultima versione di u commit. Ùn si pò micca disfà."/>
+    <Item english="Discard" text="Abbandunà"/>
+    <Item english="A commit needs a message" text="Ci vole un messaghju per u commit"/>
+    <Item english="Nothing is staged to commit" text="Ùn ci hè nunda in l’indice per u commit"/>
+    <Item english="A branch needs a name" text="Ci vole un nome per a branca"/>
+    <Item english="New branch name:" text="Nome di a branca nova :"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git : marcà in a margine e linee cambiate dapoi l’ultimu commit"/>
 </NativeLangExtra>

@@ -288,4 +288,44 @@
     <Item english="The command's address is not an http or https address." text="Komandas adrese nav http vai https adrese."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Atļaut MI aģentiem vadīt redaktoru (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git panelis"/>
+    <Item english="Compare with HEAD" text="Salīdzināt ar HEAD"/>
+    <Item english="Blame" text="Rindu autorība (blame)"/>
+    <Item english="File History" text="Faila vēsture"/>
+    <Item english="Stage File" text="Pievienot failu indeksam"/>
+    <Item english="Unstage File" text="Izņemt failu no indeksa"/>
+    <Item english="Discard Changes in File…" text="Atmest izmaiņas failā…"/>
+    <Item english="Switch Branch" text="Pārslēgt zaru"/>
+    <Item english="New Branch…" text="Jauns zars…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Atjaunināt Git statusu"/>
+    <Item english="Stage" text="Indeksā"/>
+    <Item english="Unstage" text="No indeksa"/>
+    <Item english="Refresh" text="Atjaunināt"/>
+    <Item english="Staged" text="Indeksā"/>
+    <Item english="Status" text="Statuss"/>
+    <Item english="$INT_REPLACE$ changed" text="mainīti: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="indeksā: $INT_REPLACE$"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit ziņojums"/>
+    <Item english="Stage all changes first" text="Vispirms pievienot indeksam visas izmaiņas"/>
+    <Item english="$INT_REPLACE$ files staged" text="Failu indeksā: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="nav indeksā: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Failu, kas tiks pievienoti indeksam un iekļauti commit: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Izveidots commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git nav instalēts (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Fails nav Git repozitorijā"/>
+    <Item english="The file is not in HEAD yet" text="Fails vēl nav HEAD"/>
+    <Item english="Save the file before staging it?" text="Saglabāt failu pirms pievienošanas indeksam?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Atmest izmaiņas failā &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Fails atgriezīsies pēdējā commit versijā. To nevar atsaukt."/>
+    <Item english="Discard" text="Atmest"/>
+    <Item english="A commit needs a message" text="Commit nepieciešams ziņojums"/>
+    <Item english="Nothing is staged to commit" text="Indeksā nav nekā, ko iekļaut commit"/>
+    <Item english="A branch needs a name" text="Zaram nepieciešams nosaukums"/>
+    <Item english="New branch name:" text="Jaunā zara nosaukums:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: malā atzīmēt rindas, kas mainītas kopš pēdējā commit"/>
 </NativeLangExtra>

@@ -30,6 +30,7 @@
 #import "MarkdownPanel.h"
 #import "ImageCommands.h"
 #import "AgentServer.h"
+#import "GitCommands.h"
 #include <sys/socket.h>
 #include <sys/un.h>
 #import "CompareCommands.h"
@@ -107,6 +108,19 @@ static void Check(NSString *command, NSString *name, BOOL ok) {
     else    { gFail++; printf("  FAIL %-28s %s\n", command.UTF8String, name.UTF8String); }
 }
 
+/// NPPMAC_TEST_ONLY=Git,Agent runs only the sections whose heading contains one of
+/// the words (case aside); empty runs everything. For working on one area - the
+/// whole suite is for before a commit.
+static BOOL NppSectionWanted(NSString *heading) {
+    const char *only = getenv("NPPMAC_TEST_ONLY");
+    if (!only || !*only) return YES;
+    for (NSString *word in [@(only) componentsSeparatedByString:@","]) {
+        NSString *w = [word stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+        if (w.length && [heading rangeOfString:w options:NSCaseInsensitiveSearch].location != NSNotFound) return YES;
+    }
+    return NO;
+}
+
 static NSString *DocText(EditorController *ed) { return [ed.sci string] ?: @""; }
 
 static void SetDoc(EditorController *ed, NSString *text) {
@@ -144,8 +158,7 @@ int NppMacRunTests(AppDelegate *app) {
     EditorController *ed = [app editor];
     ScintillaView *sci = ed.sci;
 
-    printf("\n== File ==\n");
-    {
+    if (NppSectionWanted(@"File")) { printf("\n== File ==\n");
         NSUInteger before = ed.documents.count;
         [app newDocument:nil];
         Check(@"IDM_FILE_NEW", @"adds a tab", ed.documents.count == before + 1);
@@ -172,8 +185,7 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_FILE_CLOSE", @"removes a tab", ed.documents.count == n - 1);
     }
 
-    printf("\n== File: more ==\n");
-    {
+    if (NppSectionWanted(@"File: more")) { printf("\n== File: more ==\n");
         NSString *p = TempFile(@"t_reload.txt", @"first\n");
         NSError *err = nil;
         [ed openFileAtPath:p error:&err];
@@ -1416,8 +1428,7 @@ int NppMacRunTests(AppDelegate *app) {
               quit != nil && quit.target == NSApp);
     }
 
-    printf("\n== File: close family ==\n");
-    {
+    if (NppSectionWanted(@"File: close family")) { printf("\n== File: close family ==\n");
         NSError *err = nil;
         [ed closeAllDocuments];
         Check(@"IDM_FILE_CLOSEALL", @"leaves exactly one fresh, unsaved tab",
@@ -1490,8 +1501,7 @@ int NppMacRunTests(AppDelegate *app) {
         for (NppDocument *d in [ed.documents copy]) if (d.pinned) { [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:d]]; [ed togglePinCurrent]; }
     }
 
-    printf("\n== File: folders and workspace ==\n");
-    {
+    if (NppSectionWanted(@"File: folders and workspace")) { printf("\n== File: folders and workspace ==\n");
         NSError *err = nil;
         NSString *dir = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_ws"];
         [[NSFileManager defaultManager] removeItemAtPath:dir error:NULL];
@@ -1527,8 +1537,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed openFolderAsWorkspace:nil];
     }
 
-    printf("\n== Sessions ==\n");
-    {
+    if (NppSectionWanted(@"Sessions")) { printf("\n== Sessions ==\n");
         NSError *err = nil;
         [ed closeAllDocuments];
         NSString *f1 = TempFile(@"t_sess1.py", @"import os\n");
@@ -1549,8 +1558,7 @@ int NppMacRunTests(AppDelegate *app) {
               loaded && [paths containsObject:f1] && [paths containsObject:f2]);
     }
 
-    printf("\n== Edit ==\n");
-    {
+    if (NppSectionWanted(@"Edit")) { printf("\n== Edit ==\n");
         SetDoc(ed, @"alpha\n");
         [sci setStringProperty:SCI_INSERTTEXT parameter:0 value:@"X"];
         [app undo:nil];
@@ -1636,8 +1644,7 @@ int NppMacRunTests(AppDelegate *app) {
         [[NSFileManager defaultManager] removeItemAtPath:iniFile error:NULL];
     }
 
-    printf("\n== Find dialog: the tabs Notepad++ has ==\n");
-    {
+    if (NppSectionWanted(@"Find dialog: the tabs Notepad++ has")) { printf("\n== Find dialog: the tabs Notepad++ has ==\n");
         [ed newDocument];
         [app buildFindPanel];
         NSSegmentedControl *tabs = [app valueForKey:@"findTabs"];
@@ -1736,8 +1743,7 @@ int NppMacRunTests(AppDelegate *app) {
         [[NSFileManager defaultManager] removeItemAtPath:root error:NULL];
     }
 
-    printf("\n== Search: a folder search that does not hold the window ==\n");
-    {
+    if (NppSectionWanted(@"Search: a folder search that does not hold the window")) { printf("\n== Search: a folder search that does not hold the window ==\n");
         // Find in Files used to run on the main thread, so a search over a
         // large tree froze the application: it could not be brought forward,
         // said nothing about how far it had got and could not be called off.
@@ -1854,8 +1860,7 @@ int NppMacRunTests(AppDelegate *app) {
         [[NSFileManager defaultManager] removeItemAtPath:root error:NULL];
     }
 
-    printf("\n== Search results panel ==\n");
-    {
+    if (NppSectionWanted(@"Search results panel")) { printf("\n== Search results panel ==\n");
         // Searches stack up, newest first, the older ones folded; the panel's
         // own menu folds, copies, clears and deletes.
         NppPreferences *rp = [NppPreferences shared];
@@ -1904,8 +1909,7 @@ int NppMacRunTests(AppDelegate *app) {
               [copiedPaths isEqualToArray:@[@"/tmp/a.txt"]] && deleted && purged);
     }
 
-    printf("\n== Search: going from a result to the file ==\n");
-    {
+    if (NppSectionWanted(@"Search: going from a result to the file")) { printf("\n== Search: going from a result to the file ==\n");
         // Double clicking a line of the results opens that file at that line,
         // which is what the Search results panel does in Notepad++.
         NSString *root = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp_fif_open"];
@@ -2255,8 +2259,7 @@ int NppMacRunTests(AppDelegate *app) {
         [[NSFileManager defaultManager] removeItemAtPath:root error:NULL];
     }
 
-    printf("\n== Search: replacement escapes ==\n");
-    {
+    if (NppSectionWanted(@"Search: replacement escapes")) { printf("\n== Search: replacement escapes ==\n");
         [ed newDocument];
 
         // \U and \L change the case of what follows until \E; \u and \l change
@@ -2335,8 +2338,7 @@ int NppMacRunTests(AppDelegate *app) {
                                             options:NppFindNone]] == 1);
     }
 
-    printf("\n== Editor settings Notepad++ has ==\n");
-    {
+    if (NppSectionWanted(@"Editor settings Notepad++ has")) { printf("\n== Editor settings Notepad++ has ==\n");
         [ed newDocument];
         NppPreferences *p = [NppPreferences shared];
         ScintillaView *sv = ed.sci;
@@ -2356,6 +2358,79 @@ int NppMacRunTests(AppDelegate *app) {
               @"the typing mode can be switched and the status bar says which it is",
               startsInsert && showsIns && nowOvertype &&
               ![ed overtype] && [status.stringValue hasSuffix:@"INS"]);
+
+        // The status bar in the interface language, with upstream's own status-bar strings
+        // (statusbar-length-lines, statusbar-Ln-Col, statusbar-Pos/Sel, the EOL names).
+        NppPreferences *sp = [NppPreferences shared];
+        NSString *languageWas = sp.localizationFile;
+        SetDoc(ed, @"abc\ndef\n");
+        [ed.sci message:SCI_SETSEL wParam:0 lParam:5];
+        [ed refreshChrome];
+        NSString *english = [status.stringValue copy];
+        sp.localizationFile = @"russian.xml";
+        [app applyLocalization];
+        [ed refreshChrome];
+        NSString *russian = [status.stringValue copy];
+        sp.localizationFile = @"german.xml";
+        [app applyLocalization];
+        [ed refreshChrome];
+        NSString *german = [status.stringValue copy];
+        // Scripts with combining marks: AppKit hands a title back composed differently from how
+        // it was set, and the localiser must not take that for a new English text - the menu
+        // item would then stay Tamil after English came back, and a command by menu path would fail.
+        NSMenuItem *lineOps = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray) {
+            if (![NppEnglishMenuTitle(top.submenu) isEqualToString:@"Edit"]) continue;
+            for (NSMenuItem *it in top.submenu.itemArray) if ([NppEnglishMenuTitle(it.submenu) isEqualToString:@"Line Operations"]) lineOps = it;
+        }
+        NSMutableArray *stuck = [NSMutableArray array];
+        for (NSString *file in @[@"tamil.xml", @"hindi.xml", @"korean.xml", @"thai.xml", @"bengali.xml"]) {
+            sp.localizationFile = file;
+            [app applyLocalization];
+            NSString *shown = [lineOps.title copy];
+            sp.localizationFile = @"";
+            [app applyLocalization];
+            if (![lineOps.title isEqualToString:@"Line Operations"]) [stuck addObject:[NSString stringWithFormat:@"%@ left \"%@\"", file, shown]];
+        }
+        SetDoc(ed, @"b\na\n");
+        BOOL pathAfterScripts = [app performMenuCommandAtPath:@"Edit|Line Operations|Sort Lines Lexicographically Ascending"] && [DocText(ed) isEqualToString:@"a\nb\n"];
+        if (stuck.count) printf("    %s\n", [[stuck componentsJoinedByString:@"; "] UTF8String]);
+        // A right-anchored pull-down grows to its translated title instead of cutting it: the
+        // project panel's "Workspace".
+        [ed showProjectPanel:1];
+        NSPopUpButton *workspacePull = nil;
+        for (NSView *v in [ed projectPanel:1].view.subviews) if ([v isKindOfClass:[NSPopUpButton class]]) workspacePull = (NSPopUpButton *)v;
+        NSMutableArray *cutPulls = [NSMutableArray array];
+        for (NSString *file in @[@"russian.xml", @"german.xml", @"french.xml", @"finnish.xml", @"hungarian.xml", @""]) {
+            sp.localizationFile = file;
+            [app applyLocalization];
+            [[ed projectPanel:1].view layoutSubtreeIfNeeded];
+            CGFloat need = ceil(workspacePull.cell.cellSize.width), has = NSWidth(workspacePull.frame);
+            BOOL overlapsLabel = NO;
+            for (NSView *v in [ed projectPanel:1].view.subviews) {
+                if ([v isKindOfClass:[NSTextField class]] && NSIntersectsRect(NSInsetRect(v.frame, 0, 1), workspacePull.frame)) overlapsLabel = YES;
+            }
+            if (need > has + 2 || overlapsLabel || NSMaxX(workspacePull.frame) > NSWidth([ed projectPanel:1].view.bounds))
+                [cutPulls addObject:[NSString stringWithFormat:@"%@ \"%@\" needs %.0f has %.0f%@", file.length ? file : @"english", workspacePull.title, need, has, overlapsLabel ? @" (over the label)" : @""]];
+        }
+        if (cutPulls.count) printf("    %s\n", [[cutPulls componentsJoinedByString:@"; "] UTF8String]);
+        [ed showProjectPanel:1];
+        sp.localizationFile = languageWas ?: @"";
+        [app applyLocalization];
+        [ed.sci message:SCI_SETSEL wParam:0 lParam:0];
+        SetDoc(ed, @"abc\ndef\n");
+        [ed refreshChrome];
+        Check(@"Localization (scripts with combining marks, pull-downs)",
+              @"after Tamil, Hindi, Korean, Thai and Bengali the Edit > Line Operations item is English again and a command by menu path runs; the project panel's Workspace pull-down fits its title in Russian, German, French, Finnish and Hungarian without covering the label",
+              stuck.count == 0 && pathAfterScripts && workspacePull != nil && cutPulls.count == 0);
+        Check(@"IDM_VIEW_SUMMARY (status bar language)",
+              @"the status bar says length/lines, Ln/Col, Sel and the EOL name in English, then in Russian and German with upstream's translations, and comes back",
+              [english containsString:@"length: 8    lines: 3"] && [english containsString:@"Ln: 2    Col: 2"] && [english containsString:@"Sel: 5 | 2"] &&
+              [english containsString:@"Unix (LF)"] && [english containsString:@"None (Normal Text)"] &&
+              [russian containsString:@"длина: 8"] && [russian containsString:@"Стр: 2"] && [russian containsString:@"Выд: 5 | 2"] &&
+              [russian containsString:@"Unix (LF)"] && ![russian containsString:@"length:"] &&
+              [german containsString:@"Länge: 8"] && ![german containsString:@"length:"] &&
+              [status.stringValue containsString:@"length: 8"] && [status.stringValue containsString:@"Pos: 1"]);
 
         // A vertical edge, which Notepad++ can show as a line, as several
         // lines, or as a change of background.
@@ -2530,8 +2605,7 @@ int NppMacRunTests(AppDelegate *app) {
               indented && [sv message:SCI_GETWRAPINDENTMODE] == SC_WRAPINDENT_SAME);
     }
 
-    printf("\n== Sorting: the way Notepad++ sorts ==\n");
-    {
+    if (NppSectionWanted(@"Sorting: the way Notepad++ sorts")) { printf("\n== Sorting: the way Notepad++ sorts ==\n");
         [ed newDocument];
 
         // "Sort as integer" is not "read the line as a number": Notepad++ walks
@@ -2624,8 +2698,7 @@ int NppMacRunTests(AppDelegate *app) {
               columnUp && columnDown && stableDown);
     }
 
-    printf("\n== Search: modes and options ==\n");
-    {
+    if (NppSectionWanted(@"Search: modes and options")) { printf("\n== Search: modes and options ==\n");
         // Find was a literal search and nothing else: no case option, no whole
         // word, no extended escapes, no regular expressions. All of those are
         // what the Find dialog in Notepad++ is mostly made of.
@@ -3020,8 +3093,7 @@ int NppMacRunTests(AppDelegate *app) {
               marked == 2);
     }
 
-    printf("\n== Edit: convert case ==\n");
-    {
+    if (NppSectionWanted(@"Edit: convert case")) { printf("\n== Edit: convert case ==\n");
         struct { NppCaseMode mode; NSString *in; NSString *want; NSString *cmd; } cases[] = {
             {NppCaseUpper,          @"hello world", @"HELLO WORLD", @"IDM_EDIT_UPPERCASE"},
             {NppCaseLower,          @"HeLLo",       @"hello",       @"IDM_EDIT_LOWERCASE"},
@@ -3047,8 +3119,7 @@ int NppMacRunTests(AppDelegate *app) {
               r.length == 8 && [r.lowercaseString isEqualToString:@"abcdefgh"]);
     }
 
-    printf("\n== Edit: sorting ==\n");
-    {
+    if (NppSectionWanted(@"Edit: sorting")) { printf("\n== Edit: sorting ==\n");
         struct { NppSortKey key; BOOL desc; NSString *in; NSString *want; NSString *cmd; } sorts[] = {
             {NppSortLexicographic, NO,  @"b\na\nc\n", @"a\nb\nc\n", @"IDM_EDIT_SORTLINES_LEXICOGRAPHIC_ASCENDING"},
             {NppSortLexicographic, YES, @"b\na\nc\n", @"c\nb\na\n", @"IDM_EDIT_SORTLINES_LEXICOGRAPHIC_DESCENDING"},
@@ -3086,8 +3157,7 @@ int NppMacRunTests(AppDelegate *app) {
                   [NSSet setWithArray:@[@"a", @"b", @"c", @"d", @"e"]]]);
     }
 
-    printf("\n== Edit: line operations ==\n");
-    {
+    if (NppSectionWanted(@"Edit: line operations")) { printf("\n== Edit: line operations ==\n");
         SetDoc(ed, @"a\nb\na\nb\n");
         [ed removeDuplicateLines:NO];
         Check(@"IDM_EDIT_REMOVE_ANY_DUP_LINES", @"keeps the first of each",
@@ -3140,8 +3210,7 @@ int NppMacRunTests(AppDelegate *app) {
               [DocText(ed) isEqualToString:@"a\n\nb\n"]);
     }
 
-    printf("\n== Edit: blank operations ==\n");
-    {
+    if (NppSectionWanted(@"Edit: blank operations")) { printf("\n== Edit: blank operations ==\n");
         struct { NppTrimMode mode; NSString *in; NSString *want; NSString *cmd; } trims[] = {
             {NppTrimTrailing,       @"a   \nb\t\n", @"a\nb\n",     @"IDM_EDIT_TRIMTRAILING"},
             {NppTrimLeading,        @"   a\n\tb\n", @"a\nb\n",     @"IDM_EDIT_TRIMLINEHEAD"},
@@ -3168,8 +3237,7 @@ int NppMacRunTests(AppDelegate *app) {
               [DocText(ed) hasPrefix:@"a b"]);
     }
 
-    printf("\n== Edit: indent, delete, comments, read-only ==\n");
-    {
+    if (NppSectionWanted(@"Edit: indent, delete, comments, read-only")) { printf("\n== Edit: indent, delete, comments, read-only ==\n");
         // With the indent settings this expects, whatever the machine's own are.
         NppPreferences *indentPrefs = [NppPreferences shared];
         BOOL spacesWas = indentPrefs.useSpaces;
@@ -3223,8 +3291,7 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_EDIT_CLEARREADONLYFORALLDOCS", @"clears it again", ![ed isReadOnly]);
     }
 
-    printf("\n== Edit: clipboard and insert ==\n");
-    {
+    if (NppSectionWanted(@"Edit: clipboard and insert")) { printf("\n== Edit: clipboard and insert ==\n");
         NSError *err = nil;
         NSString *p = TempFile(@"t_clip.txt", @"x\n");
         [ed openFileAtPath:p error:&err];
@@ -3266,8 +3333,7 @@ int NppMacRunTests(AppDelegate *app) {
               DocText(ed).length == 4 && [DocText(ed) hasPrefix:@"20"]);
     }
 
-    printf("\n== Edit: multi-selection ==\n");
-    {
+    if (NppSectionWanted(@"Edit: multi-selection")) { printf("\n== Edit: multi-selection ==\n");
         // "cat" appears three times with different case and word boundaries, so
         // each flag combination must produce a different count.
         struct { NppMatchFlags flags; NSUInteger want; NSString *cmdAll; NSString *cmdNext; } ms[] = {
@@ -3314,8 +3380,7 @@ int NppMacRunTests(AppDelegate *app) {
               skipped && [ed selectionCount] == beforeSkip);
     }
 
-    printf("\n== Edit: begin/end select and column editor ==\n");
-    {
+    if (NppSectionWanted(@"Edit: begin/end select and column editor")) { printf("\n== Edit: begin/end select and column editor ==\n");
         SetDoc(ed, @"0123456789\n");
         [sci message:SCI_GOTOPOS wParam:2 lParam:0];
         BOOL anchored = ![ed beginEndSelectColumnMode:NO] && [ed beginEndSelectActive];
@@ -3349,8 +3414,7 @@ int NppMacRunTests(AppDelegate *app) {
               [DocText(ed) isEqualToString:@"1x\n2x\n3x\n"]);
     }
 
-    printf("\n== Edit: paste special ==\n");
-    {
+    if (NppSectionWanted(@"Edit: paste special")) { printf("\n== Edit: paste special ==\n");
         SetDoc(ed, @"AB\n");
         [sci message:SCI_SETSEL wParam:0 lParam:2];
         BOOL copied = [ed copySelectionAsBinary];
@@ -3388,8 +3452,7 @@ int NppMacRunTests(AppDelegate *app) {
               [ed pasteAsRTF] && [DocText(ed) containsString:@"rtf"]);
     }
 
-    printf("\n== Edit: on selection ==\n");
-    {
+    if (NppSectionWanted(@"Edit: on selection")) { printf("\n== Edit: on selection ==\n");
         NSError *err = nil;
         NSString *target = TempFile(@"t_sel_target.txt", @"opened via selection\n");
         NSString *holder = TempFile(@"t_sel_holder.txt",
@@ -3425,8 +3488,7 @@ int NppMacRunTests(AppDelegate *app) {
               ![ed searchSelectionOnInternet]);
     }
 
-    printf("\n== Edit: completion, panels, file attribute ==\n");
-    {
+    if (NppSectionWanted(@"Edit: completion, panels, file attribute")) { printf("\n== Edit: completion, panels, file attribute ==\n");
         SetDoc(ed, @"alphabet alpine\nalp");
         [sci message:SCI_GOTOPOS wParam:(uptr_t)[sci message:SCI_GETLENGTH] lParam:0];
         [ed showAutoCompletion];
@@ -3558,8 +3620,7 @@ int NppMacRunTests(AppDelegate *app) {
               wasWritable && nowReadOnly && ![ed systemReadOnly]);
     }
 
-    printf("\n== Search ==\n");
-    {
+    if (NppSectionWanted(@"Search")) { printf("\n== Search ==\n");
         SetDoc(ed, @"needle one\nneedle two\n");
         app.lastSearchTerm = @"needle";
         BOOL f1 = [app searchFrom:0 forward:YES wrap:YES];
@@ -3621,8 +3682,7 @@ int NppMacRunTests(AppDelegate *app) {
               [sci message:SCI_MARKERNEXT wParam:0 lParam:(1 << 1)] < 0);
     }
 
-    printf("\n== Search: token styling ==\n");
-    {
+    if (NppSectionWanted(@"Search: token styling")) { printf("\n== Search: token styling ==\n");
         NSArray *markAllIDs = @[@"IDM_SEARCH_MARKALLEXT1", @"IDM_SEARCH_MARKALLEXT2", @"IDM_SEARCH_MARKALLEXT3",
                                 @"IDM_SEARCH_MARKALLEXT4", @"IDM_SEARCH_MARKALLEXT5"];
         NSArray *markOneIDs = @[@"IDM_SEARCH_MARKONEEXT1", @"IDM_SEARCH_MARKONEEXT2", @"IDM_SEARCH_MARKONEEXT3",
@@ -3698,8 +3758,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed clearAllStyles];
     }
 
-    printf("\n== Search: bookmarked lines ==\n");
-    {
+    if (NppSectionWanted(@"Search: bookmarked lines")) { printf("\n== Search: bookmarked lines ==\n");
         SetDoc(ed, @"keep1\ndrop1\nkeep2\ndrop2\n");
         [sci message:SCI_MARKERDELETEALL wParam:1 lParam:0];
         [sci message:SCI_GOTOLINE wParam:0 lParam:0]; [ed toggleBookmark];
@@ -3747,8 +3806,7 @@ int NppMacRunTests(AppDelegate *app) {
         [sci message:SCI_MARKERDELETEALL wParam:1 lParam:0];
     }
 
-    printf("\n== Search: braces, selection, files ==\n");
-    {
+    if (NppSectionWanted(@"Search: braces, selection, files")) { printf("\n== Search: braces, selection, files ==\n");
         [ed setLanguageNamed:@"cpp"];
         SetDoc(ed, @"if (a) { b; }\n");
         [sci message:SCI_GOTOPOS wParam:7 lParam:0];       // the '{'
@@ -3832,8 +3890,7 @@ int NppMacRunTests(AppDelegate *app) {
               [ed goToSearchResult:NO] || hitLine >= 0);
     }
 
-    printf("\n== Search: change history ==\n");
-    {
+    if (NppSectionWanted(@"Search: change history")) { printf("\n== Search: change history ==\n");
         [ed newDocument];
         [ed enableChangeHistory:YES];
         SetDoc(ed, @"line1\nline2\nline3\n");
@@ -3869,8 +3926,7 @@ int NppMacRunTests(AppDelegate *app) {
               ![ed goToNextChange:YES]);
     }
 
-    printf("\n== View ==\n");
-    {
+    if (NppSectionWanted(@"View")) { printf("\n== View ==\n");
         [app zoomReset:nil];
         long z0 = [sci message:SCI_GETZOOM];
         [app zoomIn:nil];
@@ -3914,8 +3970,7 @@ int NppMacRunTests(AppDelegate *app) {
               [sci message:SCI_GETLINEVISIBLE wParam:1] != 0);
     }
 
-    printf("\n== View: tabs ==\n");
-    {
+    if (NppSectionWanted(@"View: tabs")) { printf("\n== View: tabs ==\n");
         NSError *err = nil;
         [ed closeAllDocuments];
         for (int i = 1; i <= 9; ++i) {
@@ -3974,8 +4029,7 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_TAB_COLOUR_NONE", @"removes the colour", ed.currentDocument.tabColour == 0);
     }
 
-    printf("\n== View: fold levels ==\n");
-    {
+    if (NppSectionWanted(@"View: fold levels")) { printf("\n== View: fold levels ==\n");
         [ed setLanguageNamed:@"cpp"];
         SetDoc(ed, @"void a() {\n  if (x) {\n    y();\n  }\n}\n");
         [sci message:SCI_COLOURISE wParam:0 lParam:-1];
@@ -4001,8 +4055,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed foldAll:NO];
     }
 
-    printf("\n== View: symbols, lines, direction ==\n");
-    {
+    if (NppSectionWanted(@"View: symbols, lines, direction")) { printf("\n== View: symbols, lines, direction ==\n");
         struct { NppSymbol sym; NSString *cmd; } syms[] = {
             {NppSymbolWhitespace,           @"IDM_VIEW_TAB_SPACE"},
             {NppSymbolEOL,                  @"IDM_VIEW_EOL"},
@@ -4045,8 +4098,7 @@ int NppMacRunTests(AppDelegate *app) {
               [sum[@"lines"] unsignedIntegerValue] >= 1);
     }
 
-    printf("\n== View: window modes and panels ==\n");
-    {
+    if (NppSectionWanted(@"View: window modes and panels")) { printf("\n== View: window modes and panels ==\n");
         NSError *err = nil;
         NSString *p = TempFile(@"t_view.txt", @"x\n");
         [ed openFileAtPath:p error:&err];
@@ -4200,8 +4252,7 @@ int NppMacRunTests(AppDelegate *app) {
         }
     }
 
-    printf("\n== View: split panes and panels ==\n");
-    {
+    if (NppSectionWanted(@"View: split panes and panels")) { printf("\n== View: split panes and panels ==\n");
         NSError *err = nil;
         [ed closeAllDocuments];
         [ed openFileAtPath:TempFile(@"t_split1.txt", @"one\ntwo\nthree\nfour\nfive\n") error:&err];
@@ -5272,8 +5323,7 @@ int NppMacRunTests(AppDelegate *app) {
               kept && discarded && searched);
     }
 
-    printf("\n== Encoding + EOL ==\n");
-    {
+    if (NppSectionWanted(@"Encoding + EOL")) { printf("\n== Encoding + EOL ==\n");
         // Round-trip each encoding through a real file.
         struct { NSString *name; NSStringEncoding enc; BOOL bom; NSString *cmd; } cases[] = {
             {@"utf8",    NSUTF8StringEncoding,              NO,  @"IDM_FORMAT_AS_UTF_8"},
@@ -5312,8 +5362,7 @@ int NppMacRunTests(AppDelegate *app) {
               [DocText(ed) containsString:@"\r"] && ![DocText(ed) containsString:@"\n"]);
     }
 
-    printf("\n== Encoding: character sets ==\n");
-    {
+    if (NppSectionWanted(@"Encoding: character sets")) { printf("\n== Encoding: character sets ==\n");
         // Every charset in the menu must resolve to a usable macOS encoding and
         // survive a byte round-trip through that charset.
         int resolved = 0;
@@ -5451,8 +5500,7 @@ int NppMacRunTests(AppDelegate *app) {
               reinterpreted && [DocText(ed) isEqualToString:cyr]);
     }
 
-    printf("\n== Encoding: convert to ==\n");
-    {
+    if (NppSectionWanted(@"Encoding: convert to")) { printf("\n== Encoding: convert to ==\n");
         struct { NSStringEncoding enc; BOOL bom; NSString *cmd; NSString *name; } convs[] = {
             {NSISOLatin1StringEncoding,         NO,  @"IDM_FORMAT_CONV2_ANSI",      @"ANSI"},
             {NSUTF8StringEncoding,              NO,  @"IDM_FORMAT_CONV2_AS_UTF_8",  @"UTF-8"},
@@ -5478,8 +5526,7 @@ int NppMacRunTests(AppDelegate *app) {
         }
     }
 
-    printf("\n== Language ==\n");
-    {
+    if (NppSectionWanted(@"Language")) { printf("\n== Language ==\n");
         LanguageCatalog *cat = [LanguageCatalog sharedCatalog];
         BOOL detects = [[cat languageForFileName:@"a.cpp"].name isEqualToString:@"cpp"] &&
                        [[cat languageForFileName:@"b.py"].name isEqualToString:@"python"] &&
@@ -5564,8 +5611,7 @@ int NppMacRunTests(AppDelegate *app) {
               unstyled.count == 0);
     }
 
-    printf("\n== Tools: hashes ==\n");
-    {
+    if (NppSectionWanted(@"Tools: hashes")) { printf("\n== Tools: hashes ==\n");
         // Reference values for "abc" from the published test vectors.
         struct { NppDigest d; NSString *want; NSString *gen; NSString *files; NSString *clip; } hashes[] = {
             {NppDigestMD5,    @"900150983cd24fb0d6963f7d28e17f72",
@@ -5599,8 +5645,7 @@ int NppMacRunTests(AppDelegate *app) {
         }
     }
 
-    printf("\n== Tools: the digests the port adds ==\n");
-    {
+    if (NppSectionWanted(@"Tools: the digests the port adds")) { printf("\n== Tools: the digests the port adds ==\n");
         NSData *abc = [@"abc" dataUsingEncoding:NSUTF8StringEncoding];
         struct { NppDigest d; NSString *want; } more[] = {
             {NppDigestSHA224,   @"23097d223405d8228642a477bda255b32aadbce4bda0b3f7e36c9da7"},
@@ -5650,8 +5695,7 @@ int NppMacRunTests(AppDelegate *app) {
               [perLine isEqualToString:[NSString stringWithFormat:@"%@\n\n%@", md5abc, md5x]] && [whole isEqualToString:md5abc]);
     }
 
-    printf("\n== Tools: password hashes ==\n");
-    {
+    if (NppSectionWanted(@"Tools: password hashes")) { printf("\n== Tools: password hashes ==\n");
         NSData *(^utf8)(NSString *) = ^NSData *(NSString *text) { return [text dataUsingEncoding:NSUTF8StringEncoding]; };
 
         // bcrypt, against the vectors of its reference implementations. The
@@ -5743,8 +5787,7 @@ int NppMacRunTests(AppDelegate *app) {
               [NppCrypto password:utf8(@"x") matches:@"$2b$12$tooshort"] == nil);
     }
 
-    printf("\n== Tools: Base64, Base58, Base32 and bytes in hexadecimal ==\n");
-    {
+    if (NppSectionWanted(@"Tools: Base64, Base58, Base32 and bytes in hexadecimal")) { printf("\n== Tools: Base64, Base58, Base32 and bytes in hexadecimal ==\n");
         NSData *(^utf8)(NSString *) = ^NSData *(NSString *text) { return [text dataUsingEncoding:NSUTF8StringEncoding]; };
         NSData *(^hex)(NSString *) = ^NSData *(NSString *text) { return [NppCrypto dataFromHex:text]; };
 
@@ -5788,8 +5831,7 @@ int NppMacRunTests(AppDelegate *app) {
               [NppCrypto decode:@"MZXW1" as:NppBase32] == nil);
     }
 
-    printf("\n== Tools: passwords ==\n");
-    {
+    if (NppSectionWanted(@"Tools: passwords")) { printf("\n== Tools: passwords ==\n");
         NSString *upper = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ", *lower = @"abcdefghijklmnopqrstuvwxyz", *digits = @"0123456789", *marks = @"!@#$%^&*";
         NSCharacterSet *(^setOf)(NSString *) = ^NSCharacterSet *(NSString *text) { return [NSCharacterSet characterSetWithCharactersInString:text]; };
         BOOL lengthsRight = YES, everySetSeen = YES, onlyFromSets = YES;
@@ -5842,8 +5884,7 @@ int NppMacRunTests(AppDelegate *app) {
               fabs([NppCrypto entropyOfLength:16 alphabetSize:62] - 95.27) < 0.01 && [NppCrypto entropyOfLength:16 alphabetSize:1] == 0);
     }
 
-    printf("\n== Tools: the menu and its windows ==\n");
-    {
+    if (NppSectionWanted(@"Tools: the menu and its windows")) { printf("\n== Tools: the menu and its windows ==\n");
         NppPreferences *tp = [NppPreferences shared];
         NSString *languageBefore = tp.localizationFile;
         tp.localizationFile = @"";
@@ -6228,8 +6269,7 @@ int NppMacRunTests(AppDelegate *app) {
         [app applyLocalization];
     }
 
-    printf("\n== Folding: what each lexer is told ==\n");
-    {
+    if (NppSectionWanted(@"Folding: what each lexer is told")) { printf("\n== Folding: what each lexer is told ==\n");
         // Lines that head a fold, after the whole text has been styled in the language named.
         NSArray<NSNumber *> *(^headers)(NSString *, NSString *) = ^NSArray<NSNumber *> *(NSString *language, NSString *text) {
             [ed newDocument];
@@ -6337,8 +6377,7 @@ int NppMacRunTests(AppDelegate *app) {
               escapeStyle == SCE_JSON_ESCAPESEQUENCE && commentStyle == SCE_JSON_LINECOMMENT);
     }
 
-    printf("\n== Tools: HTTP Request ==\n");
-    {
+    if (NppSectionWanted(@"Tools: HTTP Request")) { printf("\n== Tools: HTTP Request ==\n");
         NSData *(^utf8)(NSString *) = ^NSData *(NSString *text) { return [text dataUsingEncoding:NSUTF8StringEncoding]; };
         NSString *(^named)(NSArray<NppHttpPair *> *, NSString *) = ^NSString *(NSArray<NppHttpPair *> *pairs, NSString *name) {
             for (NppHttpPair *pair in pairs) if ([pair.name caseInsensitiveCompare:name] == NSOrderedSame) return pair.value;
@@ -6702,8 +6741,7 @@ int NppMacRunTests(AppDelegate *app) {
         if (server.isRunning) [server terminate];
     }
 
-    printf("\n== Macro ==\n");
-    {
+    if (NppSectionWanted(@"Macro")) { printf("\n== Macro ==\n");
         SetDoc(ed, @"");
         [ed startRecordingMacro];
         BOOL recording = [ed recordingMacro];
@@ -6732,8 +6770,7 @@ int NppMacRunTests(AppDelegate *app) {
               saved && [[ed savedMacroNames] containsObject:@"test macro"]);
     }
 
-    printf("\n== Window ==\n");
-    {
+    if (NppSectionWanted(@"Window")) { printf("\n== Window ==\n");
         NSError *err = nil;
         [ed closeAllDocuments];
         // Names, extensions and sizes all differ, so each sort key is distinguishable.
@@ -6797,8 +6834,7 @@ int NppMacRunTests(AppDelegate *app) {
               [ed windowList].count == ed.documents.count);
     }
 
-    printf("\n== Run and Help ==\n");
-    {
+    if (NppSectionWanted(@"Run and Help")) { printf("\n== Run and Help ==\n");
         // Regression: this used to wait with -waitUntilExit, which spins the run
         // loop on the main thread and could abort inside AppKit. Repeating the
         // call makes that crash reproducible rather than occasional.
@@ -6948,8 +6984,7 @@ int NppMacRunTests(AppDelegate *app) {
               [[NSFileManager defaultManager] fileExistsAtPath:pluginDir]);
     }
 
-    printf("\n== Settings ==\n");
-    {
+    if (NppSectionWanted(@"Settings")) { printf("\n== Settings ==\n");
         NppPreferences *p = [NppPreferences shared];
         NSString *fontBefore = p.fontName;
         p.fontName = @"Courier";
@@ -7347,8 +7382,7 @@ int NppMacRunTests(AppDelegate *app) {
               fromFile && stockMenu && fallsBack);
     }
 
-    printf("\n== Preferences: pages ==\n");
-    {
+    if (NppSectionWanted(@"Preferences: pages")) { printf("\n== Preferences: pages ==\n");
         PreferencesWindow *prefs = [[PreferencesWindow alloc] initWithEditor:ed];
         NSArray *pages = [prefs categoryNames];
 
@@ -7385,8 +7419,7 @@ int NppMacRunTests(AppDelegate *app) {
             [[unreachable componentsJoinedByString:@", "] UTF8String]);
     }
 
-    printf("\n== Appearance: themes ==\n");
-    {
+    if (NppSectionWanted(@"Appearance: themes")) { printf("\n== Appearance: themes ==\n");
         NppPreferences *p = [NppPreferences shared];
         NSArray *themes = [StyleCatalog availableThemeNames];
         Check(@"IDM_SETTING_PREFERENCE (themes listed)",
@@ -7462,8 +7495,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed applyLanguage];
     }
 
-    printf("\n== Toolbar ==\n");
-    {
+    if (NppSectionWanted(@"Toolbar")) { printf("\n== Toolbar ==\n");
         NppToolbar *tb = [app valueForKey:@"toolbar"];
         NSArray *ids = [tb itemIdentifiers];
         Check(@"IDM_SETTING_PREFERENCE (toolbar buttons)",
@@ -7613,8 +7645,7 @@ int NppMacRunTests(AppDelegate *app) {
               labels && labelsOnly && iconsOnly && regular && small);
     }
 
-    printf("\n== Backup and autosave ==\n");
-    {
+    if (NppSectionWanted(@"Backup and autosave")) { printf("\n== Backup and autosave ==\n");
         NppPreferences *p = [NppPreferences shared];
         NSFileManager *fm = [NSFileManager defaultManager];
         NSInteger savedMode = p.backupMode;
@@ -7715,8 +7746,7 @@ int NppMacRunTests(AppDelegate *app) {
               running && ![ed autosaveRunning]);
     }
 
-    printf("\n== Print options ==\n");
-    {
+    if (NppSectionWanted(@"Print options")) { printf("\n== Print options ==\n");
         NppPreferences *p = [NppPreferences shared];
         NSError *err = nil;
         NSString *path = TempFile(@"t_print.txt", @"alpha\nbeta\ngamma\n");
@@ -7762,8 +7792,7 @@ int NppMacRunTests(AppDelegate *app) {
         p.printColourMode = 2;
     }
 
-    printf("\n== Performance, links, delimiters ==\n");
-    {
+    if (NppSectionWanted(@"Performance, links, delimiters")) { printf("\n== Performance, links, delimiters ==\n");
         NppPreferences *p = [NppPreferences shared];
 
         // Large file restriction: a threshold of 0 MB makes any document large.
@@ -7877,8 +7906,7 @@ int NppMacRunTests(AppDelegate *app) {
         p.delimiterOpen = @"("; p.delimiterClose = @")";
     }
 
-    printf("\n== Instances, panels, settings folder ==\n");
-    {
+    if (NppSectionWanted(@"Instances, panels, settings folder")) { printf("\n== Instances, panels, settings folder ==\n");
         NppPreferences *p = [NppPreferences shared];
 
         p.multiInstanceMode = 0;
@@ -7935,8 +7963,7 @@ int NppMacRunTests(AppDelegate *app) {
               [[ed supportDirectory] isEqualToString:defaultDir]);
     }
 
-    printf("\n== Auto-completion and typing ==\n");
-    {
+    if (NppSectionWanted(@"Auto-completion and typing")) { printf("\n== Auto-completion and typing ==\n");
         NppPreferences *p = [NppPreferences shared];
         [ed newDocument];
         [ed setLanguageNamed:@"cpp"];
@@ -8144,8 +8171,7 @@ int NppMacRunTests(AppDelegate *app) {
         SetDoc(ed, @"");
     }
 
-    printf("\n== Preferences: Language, Indentation, MISC., Search Engine ==\n");
-    {
+    if (NppSectionWanted(@"Preferences: Language, Indentation, MISC., Search Engine")) { printf("\n== Preferences: Language, Indentation, MISC., Search Engine ==\n");
         NppPreferences *mp = [NppPreferences shared];
         // Per-language indent settings, and Backspace unindenting.
         NSDictionary *indentBefore = mp.languageIndent;
@@ -8282,8 +8308,7 @@ int NppMacRunTests(AppDelegate *app) {
               mruFirst && mruSecond && hidden && inOrder);
     }
 
-    printf("\n== Preferences: Editing and Margins ==\n");
-    {
+    if (NppSectionWanted(@"Preferences: Editing and Margins")) { printf("\n== Preferences: Editing and Margins ==\n");
         NppPreferences *lp = [NppPreferences shared];
         [ed newDocument];
         [ed setLanguageNamed:@"cpp"];
@@ -8384,8 +8409,7 @@ int NppMacRunTests(AppDelegate *app) {
               historyText && smooth && noC0 && toggledShut && toggledOpen);
     }
 
-    printf("\n== Preferences: Highlighting, Date, Print, Searching ==\n");
-    {
+    if (NppSectionWanted(@"Preferences: Highlighting, Date, Print, Searching")) { printf("\n== Preferences: Highlighting, Date, Print, Searching ==\n");
         NppPreferences *hp = [NppPreferences shared];
         // Highlight Matching Tags, as XmlMatchedTagsHighlighter marks them.
         [ed newDocument];
@@ -8464,8 +8488,7 @@ int NppMacRunTests(AppDelegate *app) {
               ![seedLong isEqualToString:@"abcdef"] && [seedShort isEqualToString:@"ab"]);
     }
 
-    printf("\n== Preferences: Toolbar, Tab Bar, panels, Cancel ==\n");
-    {
+    if (NppSectionWanted(@"Preferences: Toolbar, Tab Bar, panels, Cancel")) { printf("\n== Preferences: Toolbar, Tab Bar, panels, Cancel ==\n");
         NppPreferences *tp = [NppPreferences shared];
         // Toolbar colour, completely: every opaque pixel of the icon takes it.
         NppToolbar *bar = [app valueForKey:@"toolbar"];
@@ -8547,8 +8570,7 @@ int NppMacRunTests(AppDelegate *app) {
               (rebuilt.state == NSControlStateValueOn) == statusBefore);
     }
 
-    printf("\n== Files: monitoring, ANSI, big files ==\n");
-    {
+    if (NppSectionWanted(@"Files: monitoring, ANSI, big files")) { printf("\n== Files: monitoring, ANSI, big files ==\n");
         NppPreferences *fp = [NppPreferences shared];
         // Monitoring per document: read-only while watched; a change to a
         // file not in front waits for it to come to the front.
@@ -8666,8 +8688,7 @@ int NppMacRunTests(AppDelegate *app) {
               utf8Ok && latinOk && bomOk);
     }
 
-    printf("\n== Docking ==\n");
-    {
+    if (NppSectionWanted(@"Docking")) { printf("\n== Docking ==\n");
         NppDockingManager *dock = [NppDockingManager shared];
         NSDictionary *layoutBefore = [NppPreferences shared].dockLayout;
         // The default places are upstream's, and shown panels share a dock as tabs.
@@ -8755,8 +8776,7 @@ int NppMacRunTests(AppDelegate *app) {
               defaults && tabbed && bottom && floating && back && drops && remembered && allHidden);
     }
 
-    printf("\n== Session depth ==\n");
-    {
+    if (NppSectionWanted(@"Session depth")) { printf("\n== Session depth ==\n");
         // Folds belong to the document: they survive a trip to another tab.
         NSString *foldFile = TempFile(@"t_folds.cpp", @"int f() {\n    return 1;\n}\nint g() {\n    return 2;\n}\n");
         NSString *otherFile = TempFile(@"t_folds_other.txt", @"other\n");
@@ -8875,8 +8895,7 @@ int NppMacRunTests(AppDelegate *app) {
               located && menu && [wp.rootPaths isEqualToArray:@[rootB]]);
     }
 
-    printf("\n== Localization ==\n");
-    {
+    if (NppSectionWanted(@"Localization")) { printf("\n== Localization ==\n");
         NppPreferences *lp = [NppPreferences shared];
         NSString *before = lp.localizationFile;
         NSUInteger idsBefore = [app.shortcutStore menuItemsByIdentifier].count;
@@ -9131,8 +9150,7 @@ int NppMacRunTests(AppDelegate *app) {
               menus && mapper && dialog && message && english);
     }
 
-    printf("\n== New documents, recent files, directories ==\n");
-    {
+    if (NppSectionWanted(@"New documents, recent files, directories")) { printf("\n== New documents, recent files, directories ==\n");
         NppPreferences *p = [NppPreferences shared];
 
         p.defaultEOL = SC_EOL_CR;
@@ -9205,8 +9223,7 @@ int NppMacRunTests(AppDelegate *app) {
               [remembered isEqualToString:file.stringByDeletingLastPathComponent]);
     }
 
-    printf("\n== Searching and highlighting settings ==\n");
-    {
+    if (NppSectionWanted(@"Searching and highlighting settings")) { printf("\n== Searching and highlighting settings ==\n");
         NppPreferences *p = [NppPreferences shared];
         SetDoc(ed, @"alpha beta alpha\n");
 
@@ -9248,8 +9265,7 @@ int NppMacRunTests(AppDelegate *app) {
               loose == 3 && cased == 2 && strict == 1);
     }
 
-    printf("\n== Tab bar ==\n");
-    {
+    if (NppSectionWanted(@"Tab bar")) { printf("\n== Tab bar ==\n");
         NppPreferences *p = [NppPreferences shared];
         NSError *err = nil;
         [ed closeAllDocuments];
@@ -9349,8 +9365,7 @@ int NppMacRunTests(AppDelegate *app) {
               @"locking is passed to the bar", locked && !bar.locked);
     }
 
-    printf("\n== Language: user defined ==\n");
-    {
+    if (NppSectionWanted(@"Language: user defined")) { printf("\n== Language: user defined ==\n");
         LanguageCatalog *cat = [LanguageCatalog sharedCatalog];
         [ed setLanguageNamed:@"javascript.js"];
         Check(@"IDM_LANG_JS", @"the .js JavaScript variant can be selected",
@@ -9376,8 +9391,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed setLanguageNamed:@"normal"];
     }
 
-    printf("\n== JSON ==\n");
-    {
+    if (NppSectionWanted(@"JSON")) { printf("\n== JSON ==\n");
         NppPreferences *p = [NppPreferences shared];
         [ed newDocument];
 
@@ -9435,8 +9449,7 @@ int NppMacRunTests(AppDelegate *app) {
               [paths containsObject:@"top.inner"]);
     }
 
-    printf("\n== Compare ==\n");
-    {
+    if (NppSectionWanted(@"Compare")) { printf("\n== Compare ==\n");
         NSArray *oldLines = @[@"alpha", @"beta", @"gamma", @"delta"];
         NSArray *newLines = @[@"alpha", @"BETA", @"gamma", @"delta", @"epsilon"];
 
@@ -9512,8 +9525,7 @@ int NppMacRunTests(AppDelegate *app) {
               ![ed compareActive] && [ed firstToCompare] == nil && ![ed secondaryViewVisible]);
     }
 
-    printf("\n== FTP ==\n");
-    {
+    if (NppSectionWanted(@"FTP")) { printf("\n== FTP ==\n");
         // The listing parser sees both layouts servers actually send.
         NSString *unixListing =
             @"drwxr-xr-x 2 owner group     4096 Jan  1 00:00 folder\r\n"
@@ -9625,8 +9637,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed removeFtpProfileNamed:@"test-server"];
     }
 
-    printf("\n== XML ==\n");
-    {
+    if (NppSectionWanted(@"XML")) { printf("\n== XML ==\n");
         [ed newDocument];
         NSString *compact = @"<?xml version=\"1.0\"?><root a=\"1\" b=\"2\"><item>one</item><item>two</item></root>";
 
@@ -9732,8 +9743,7 @@ int NppMacRunTests(AppDelegate *app) {
               [indexedPath isEqualToString:@"/root[1]/list[1]/item[2]"]);
     }
 
-    printf("\n== Run ==\n");
-    {
+    if (NppSectionWanted(@"Run")) { printf("\n== Run ==\n");
         // The variables are read off a real document, so the test exercises the
         // same path the menu command does.
         NSString *runPath = TempFile(@"npp_run_test.txt", @"alpha beta\nsecond line\n");
@@ -9840,8 +9850,7 @@ int NppMacRunTests(AppDelegate *app) {
         [[NSFileManager defaultManager] removeItemAtPath:plainPath error:NULL];
     }
 
-    printf("\n== MIME Tools ==\n");
-    {
+    if (NppSectionWanted(@"MIME Tools")) { printf("\n== MIME Tools ==\n");
         // Quoted-printable: UTF-8 bytes escape as =XX, '=' itself must escape,
         // and encode/decode round-trips, soft breaks (=\r\n at column 76) included.
         NSString *qp = [EditorController mimeQuotedPrintableEncode:@"Ünïcödé = fun\n"];
@@ -9899,8 +9908,7 @@ int NppMacRunTests(AppDelegate *app) {
               did && [encoded isEqualToString:@"%66%6F%6F%62%61%72"] && [DocText(ed) isEqualToString:@"foobar"]);
     }
 
-    printf("\n== Converter ==\n");
-    {
+    if (NppSectionWanted(@"Converter")) { printf("\n== Converter ==\n");
         // ascii2hex, with the plugin's three settings.
         Check(@"Converter ASCII -> HEX", @"bytes become pairs; space and case options hold",
               [[EditorController converterHexFromText:@"AB" insertSpace:NO uppercase:NO charactersPerLine:0 eol:@"\n"]
@@ -9952,8 +9960,7 @@ int NppMacRunTests(AppDelegate *app) {
         [cw.panel orderOut:nil];
     }
 
-    printf("\n== Export ==\n");
-    {
+    if (NppSectionWanted(@"Export")) { printf("\n== Export ==\n");
         NSError *err = nil;
         [ed openFileAtPath:TempFile(@"t_export.py", @"# comment <>&\nx = 1 # Я\n") error:&err];
         [ed.sci message:SCI_SETSEL wParam:0 lParam:0];
@@ -9996,8 +10003,7 @@ int NppMacRunTests(AppDelegate *app) {
                   discardChanges:YES];
     }
 
-    printf("\n== Spell check ==\n");
-    {
+    if (NppSectionWanted(@"Spell check")) { printf("\n== Spell check ==\n");
         NSSpellChecker *checker = [NSSpellChecker sharedSpellChecker];
         NSRange probe = [checker checkSpellingOfString:@"helo" startingAt:0 language:@"en"
                                                   wrap:NO inSpellDocumentWithTag:0 wordCount:NULL];
@@ -10070,8 +10076,7 @@ int NppMacRunTests(AppDelegate *app) {
         }
     }
 
-    printf("\n== Markdown preview ==\n");
-    {
+    if (NppSectionWanted(@"Markdown preview")) { printf("\n== Markdown preview ==\n");
         // The table pre-pass: GFM alignment, escaped pipes, fences left alone.
         NSString *table = @"| Name | N |\n|:-----|--:|\n| a\\|b | **1** |\n";
         NSString *asHTML = [MarkdownPanel tablesToHTML:table];
@@ -10103,8 +10108,7 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"Markdown preview toggles away", @"the second toggle hides the panel", !panel.visible);
     }
 
-    printf("\n== Mac extras: OCR, QR, the command line ==\n");
-    {
+    if (NppSectionWanted(@"Mac extras: OCR, QR, the command line")) { printf("\n== Mac extras: OCR, QR, the command line ==\n");
         // OCR over a picture drawn right here: big black words on white.
         NSImage *picture = [[NSImage alloc] initWithSize:NSMakeSize(640, 140)];
         [picture lockFocus];
@@ -10200,8 +10204,7 @@ int NppMacRunTests(AppDelegate *app) {
                   discardChanges:YES];
     }
 
-    printf("\n== Plugin host ==\n");
-    {
+    if (NppSectionWanted(@"Plugin host")) { printf("\n== Plugin host ==\n");
         // Build the sample plugin with the system compiler, in the Windows
         // plugins\Name\Name layout, and load it through the host.
         NSString *sdk = [[[NSString stringWithUTF8String:__FILE__]
@@ -10252,8 +10255,7 @@ int NppMacRunTests(AppDelegate *app) {
                   discardChanges:YES];
     }
 
-    printf("\n== NppExec scripts ==\n");
-    {
+    if (NppSectionWanted(@"NppExec scripts")) { printf("\n== NppExec scripts ==\n");
         NSString *execDir = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_exec"];
         [[NSFileManager defaultManager] removeItemAtPath:execDir error:NULL];
         [[NSFileManager defaultManager] createDirectoryAtPath:execDir withIntermediateDirectories:YES attributes:nil error:NULL];
@@ -10437,8 +10439,388 @@ int NppMacRunTests(AppDelegate *app) {
 
     // ---- meta-test: nothing may be declared implemented without a test
 
-    printf("\n== Agent interface (MCP) ==\n");
-    {
+
+    if (NppSectionWanted(@"Git")) { printf("\n== Git ==\n");
+        // A repository of the suite's own, in the temporary folder (which on macOS is a
+        // symlink into /private - git reports the resolved root, the editor has the other).
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *repo = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_git_repo"];
+        [fm removeItemAtPath:repo error:NULL];
+        [fm createDirectoryAtPath:[repo stringByAppendingPathComponent:@"src"] withIntermediateDirectories:YES attributes:nil error:NULL];
+        BOOL (^git)(NSArray<NSString *> *) = ^BOOL(NSArray<NSString *> *args) { return [NppGit run:args in:repo output:NULL error:NULL]; };
+        NSString *(^gitOut)(NSArray<NSString *> *) = ^NSString *(NSArray<NSString *> *args) {
+            NSString *out = nil; [NppGit run:args in:repo output:&out error:NULL];
+            return [out stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] ?: @"";
+        };
+        BOOL made = [NppGit executable] != nil && git(@[@"init", @"-q"]) &&
+                    git(@[@"config", @"user.email", @"suite@example.invalid"]) && git(@[@"config", @"user.name", @"Suite Runner"]) &&
+                    git(@[@"config", @"commit.gpgsign", @"false"]);
+        NSString *tracked = [repo stringByAppendingPathComponent:@"src/tracked.txt"];
+        NSString *other = [repo stringByAppendingPathComponent:@"other.txt"];
+        [@"one\ntwo\nthree\nfour\n" writeToFile:tracked atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [@"keep\n" writeToFile:other atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        made = made && git(@[@"add", @"-A"]) && git(@[@"commit", @"-q", @"-m", @"first commit"]);
+        NSString *firstCommit = gitOut(@[@"rev-parse", @"HEAD"]);
+        NSString *branch = gitOut(@[@"rev-parse", @"--abbrev-ref", @"HEAD"]);   // main or master, as git is configured
+        Check(@"Git (setup)", @"git is found and a repository with one commit is made for the suite",
+              made && firstCommit.length == 40 && branch.length > 0);
+
+        // The porcelain, parsed: every state, a rename with its old name, and untracked.
+        NSArray<NppGitFileStatus *> *parsed = [NppGit statusesFromPorcelain:
+            @"M  staged.txt\0 M unstaged.txt\0MM both.txt\0A  added.txt\0D  gone.txt\0R  new-name.txt\0old-name.txt\0?? fresh.txt\0"];
+        Check(@"Git (porcelain)", @"seven entries: staged, unstaged, both, added, deleted, a rename carrying its old name, untracked",
+              parsed.count == 7 &&
+              parsed[0].staged && !parsed[0].unstaged && [parsed[0].shortStatus isEqualToString:@"M"] &&
+              !parsed[1].staged && parsed[1].unstaged && [parsed[1].path isEqualToString:@"unstaged.txt"] &&
+              parsed[2].staged && parsed[2].unstaged && [parsed[2].shortStatus isEqualToString:@"MM"] &&
+              [parsed[3].shortStatus isEqualToString:@"A"] && [parsed[4].shortStatus isEqualToString:@"D"] &&
+              [parsed[5].path isEqualToString:@"new-name.txt"] && [parsed[5].renamedFrom isEqualToString:@"old-name.txt"] &&
+              parsed[6].untracked && [parsed[6].shortStatus isEqualToString:@"??"] && !parsed[6].staged);
+
+        // Where a file is: the root is found through the symlinked temporary folder, cached, and forgotten on demand.
+        NSString *root = [NppGit repositoryRootForPath:tracked];
+        NSString *outside = TempFile(@"t_git_outside.txt", @"x\n");
+        BOOL noRepo = [NppGit repositoryRootForPath:outside] == nil;
+        [ed openFileAtPath:tracked error:NULL];
+        NppDocument *trackedDoc = ed.currentDocument;
+        NSString *relative = [ed gitRelativePathOfDocument:trackedDoc];
+        [NppGit forgetRepositoryRoots];
+        Check(@"Git (repository root)", @"the root of a file in the repository is the repository, a file outside has none, and the path relative to the root is right through the symlink",
+              [root.stringByResolvingSymlinksInPath isEqualToString:repo.stringByResolvingSymlinksInPath] && noRepo &&
+              [relative isEqualToString:@"src/tracked.txt"] &&
+              [[ed gitRootOfCurrentDocument].stringByResolvingSymlinksInPath isEqualToString:repo.stringByResolvingSymlinksInPath]);
+
+        // The branch in the status bar; nothing for a file outside a repository.
+        [ed gitRefreshState];
+        NSString *statusText = [ed gitStatusBarText];
+        [ed openFileAtPath:outside error:NULL];
+        [ed gitRefreshState];
+        BOOL emptyOutside = [ed gitStatusBarText].length == 0 && [ed.sci message:SCI_GETMARGINWIDTHN wParam:4 lParam:0] == 0;
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc]];
+        [ed gitRefreshState];
+        Check(@"Git (status bar)", @"the status bar names the branch inside the repository and nothing outside it, where the git margin is hidden too",
+              [statusText containsString:branch] && [statusText hasPrefix:@"⎇ "] && emptyOutside &&
+              [[(NSTextField *)[ed valueForKey:@"statusField"] stringValue] containsString:statusText]);
+
+        // Markers against HEAD, on the text as it is now: a changed line, an added line, and where a line went.
+        long (^markersOn)(long) = ^long(long line) { return [ed.sci message:SCI_MARKERGET wParam:(uptr_t)line lParam:0] & ((1 << 6) | (1 << 7) | (1 << 8)); };
+        SetDoc(ed, @"one\nTWO\nthree\nfour\nfive\n");            // two changed, five added
+        [ed gitRefreshMarkers];
+        long changedMark = markersOn(1), addedMark = markersOn(4), untouched = markersOn(0) | markersOn(2) | markersOn(3);
+        SetDoc(ed, @"one\nthree\nfour\n");                        // two removed
+        [ed gitRefreshMarkers];
+        long removedMark = markersOn(1);
+        long width = [ed.sci message:SCI_GETMARGINWIDTHN wParam:4 lParam:0];
+        Check(@"Git (margin markers)", @"a changed line carries the changed mark, an added line the added mark, unchanged lines none, and the line after a removal the removed mark; the margin is six pixels wide",
+              changedMark == (1 << 7) && addedMark == (1 << 6) && untouched == 0 && removedMark == (1 << 8) && width == 6);
+        // Typing refreshes them by itself, a moment later; the setting hides them.
+        [ed.sci setString:@"one\ntwo\nthree\nfour\n"];
+        [ed.sci message:SCI_APPENDTEXT wParam:4 lParam:(sptr_t)"six\n"];
+        NppSettleUntil(^BOOL{ return markersOn(4) == (1 << 6); }, 5);
+        BOOL byTyping = markersOn(4) == (1 << 6) && markersOn(1) == 0;
+        NppPreferences *gp = [NppPreferences shared];
+        BOOL marksOn = gp.gitMarginMarks;
+        gp.gitMarginMarks = NO;
+        [ed gitRefreshMarkers];
+        BOOL hidden = markersOn(4) == 0 && [ed.sci message:SCI_GETMARGINWIDTHN wParam:4 lParam:0] == 0;
+        gp.gitMarginMarks = marksOn;
+        [ed gitRefreshMarkers];
+        Check(@"Git (markers follow typing, the setting)", @"an appended line is marked after typing stops; the MISC. setting off empties and hides the margin",
+              byTyping && hidden && markersOn(4) == (1 << 6));
+
+        // Compare with HEAD: HEAD's text in the second view, the changed line marked; blame and history as documents.
+        SetDoc(ed, @"one\nTWO\nthree\nfour\n");
+        BOOL compared = [ed gitCompareWithHead];
+        NSString *headSide = [ed.secondarySci string] ?: @"";
+        BOOL compareShown = compared && [ed compareActive] && [headSide isEqualToString:@"one\ntwo\nthree\nfour\n"] && [ed currentDiff].count > 0;
+        [ed clearAllCompares];
+        SetDoc(ed, @"one\ntwo\nthree\nfour\n");
+        NSUInteger tabsBefore = ed.documents.count;
+        BOOL blamed = [ed gitBlame];
+        NSString *blameText = DocText(ed);
+        BOOL blameDoc = blamed && [ed.currentDocument.displayName isEqualToString:@"tracked.txt (blame)"] && ed.currentDocument.userReadOnly &&
+                        [blameText containsString:@"Suite Runner"] && [blameText containsString:@"three"];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc]];
+        BOOL logged = [ed gitFileHistory];
+        NSString *logText = DocText(ed);
+        BOOL logDoc = logged && [ed.currentDocument.displayName isEqualToString:@"tracked.txt (history)"] && [logText containsString:@"first commit"] &&
+                      [logText containsString:[firstCommit substringToIndex:7]];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc]];
+        Check(@"Git (Compare with HEAD, Blame, File History)", @"HEAD's text goes into the second view with the difference marked; blame and history open as read-only documents named after the file, with the author and the commit",
+              compareShown && blameDoc && logDoc && ed.documents.count == tabsBefore);
+
+        // Stage, unstage, the panel's rows and its label; a rename; an untracked file.
+        [@"one\ntwo\nthree\nfour\nfive\n" writeToFile:tracked atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [ed reloadCurrentDocument:NULL];
+        NSString *fresh = [repo stringByAppendingPathComponent:@"fresh.txt"];
+        [@"new\n" writeToFile:fresh atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        git(@[@"mv", @"other.txt", @"renamed.txt"]);
+        NppGitPanel *panel = [ed gitPanel];
+        [panel show];
+        NSArray<NppGitFileStatus *> *rows = panel.rows;
+        NSMutableDictionary *byPath = [NSMutableDictionary dictionary];
+        for (NppGitFileStatus *r in rows) byPath[r.path] = r;
+        BOOL rowsRight = rows.count == 3 && [byPath[@"src/tracked.txt"] unstaged] && ![byPath[@"src/tracked.txt"] staged] &&
+                         [byPath[@"fresh.txt"] untracked] && [byPath[@"renamed.txt"] staged] && [[byPath[@"renamed.txt"] renamedFrom] isEqualToString:@"other.txt"] &&
+                         [rows.firstObject.path isEqualToString:@"renamed.txt"] &&   // staged rows first, untracked last
+                         [rows.lastObject.path isEqualToString:@"fresh.txt"] &&
+                         [panel.branchLabel.stringValue containsString:branch] && [panel.branchLabel.stringValue containsString:@"3 changed"] &&
+                         [panel.branchLabel.stringValue containsString:@"1 staged"];
+        BOOL staged = [ed gitStageCurrent];
+        [panel reload];
+        for (NppGitFileStatus *r in panel.rows) byPath[r.path] = r;
+        BOOL nowStaged = staged && [byPath[@"src/tracked.txt"] staged] && ![byPath[@"src/tracked.txt"] unstaged];
+        BOOL unstaged = [ed gitUnstageCurrent];
+        [panel reload];
+        for (NppGitFileStatus *r in panel.rows) byPath[r.path] = r;
+        BOOL backAgain = unstaged && ![byPath[@"src/tracked.txt"] staged] && [byPath[@"src/tracked.txt"] unstaged];
+        // The panel's own buttons, on the selected rows.
+        NSInteger freshRow = (NSInteger)[panel.rows indexOfObjectPassingTest:^BOOL(NppGitFileStatus *r, NSUInteger i, BOOL *stop) { return [r.path isEqualToString:@"fresh.txt"]; }];
+        [panel.table selectRowIndexes:[NSIndexSet indexSetWithIndex:(NSUInteger)freshRow] byExtendingSelection:NO];
+        [panel stageSelected:nil];
+        for (NppGitFileStatus *r in panel.rows) byPath[r.path] = r;
+        BOOL freshStaged = [[byPath[@"fresh.txt"] shortStatus] isEqualToString:@"A"];
+        freshRow = (NSInteger)[panel.rows indexOfObjectPassingTest:^BOOL(NppGitFileStatus *r, NSUInteger i, BOOL *stop) { return [r.path isEqualToString:@"fresh.txt"]; }];
+        [panel.table selectRowIndexes:[NSIndexSet indexSetWithIndex:(NSUInteger)freshRow] byExtendingSelection:NO];
+        [panel unstageSelected:nil];
+        for (NppGitFileStatus *r in panel.rows) byPath[r.path] = r;
+        BOOL freshBack = [byPath[@"fresh.txt"] untracked];
+        Check(@"Git (stage, unstage, the panel)", @"the panel lists the modified, the renamed (with its old name, staged first) and the untracked file with the branch and counts; Stage File and Unstage File move the file between the index and the working tree, and the panel's buttons do the same for the selected row",
+              rowsRight && nowStaged && backAgain && freshStaged && freshBack);
+
+        // Discard: the tracked file goes back to HEAD and the open document is reread; an untracked one is removed.
+        ed.gitAnswersWithoutAsking = YES;
+        BOOL discarded = [ed gitDiscardCurrent];
+        NSString *onDisk = [NSString stringWithContentsOfFile:tracked encoding:NSUTF8StringEncoding error:NULL];
+        BOOL discardedWell = discarded && [onDisk isEqualToString:@"one\ntwo\nthree\nfour\n"] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\nfour\n"] && !trackedDoc.modified;
+        BOOL cleaned = [ed gitDiscardPaths:@[@"fresh.txt"]] && ![fm fileExistsAtPath:fresh];
+        Check(@"Git (discard)", @"discarding puts the last committed text back on disk and in the tab, unmodified; discarding an untracked file removes it",
+              discardedWell && cleaned);
+
+        // Commit: refused without a message or without anything staged; done, HEAD moves and the markers go.
+        NSString *sha = nil;
+        BOOL noMessage = ![ed gitCommitWithMessage:@"  " stageAll:NO commit:&sha] && [ed.gitLastError containsString:@"message"];
+        git(@[@"reset", @"-q", @"HEAD"]);   // the rename back to unstaged: nothing staged
+        git(@[@"mv", @"renamed.txt", @"other.txt"]);
+        git(@[@"reset", @"-q", @"HEAD"]);
+        BOOL nothingStaged = ![ed gitCommitWithMessage:@"nothing" stageAll:NO commit:&sha] && [ed.gitLastError containsString:@"staged"];
+        SetDoc(ed, @"one\ntwo\nthree\nfour\nfive\n");
+        [ed saveCurrentDocument];
+        [ed gitRefreshMarkers];
+        BOOL markedBefore = markersOn(4) == (1 << 6);
+        BOOL committed = [ed gitCommitWithMessage:@"second commit\n\nwith a body" stageAll:YES commit:&sha];
+        NSString *head = gitOut(@[@"rev-parse", @"HEAD"]);
+        NSString *subject = gitOut(@[@"log", @"-1", @"--format=%s"]);
+        BOOL markedAfter = markersOn(4) != 0;
+        Check(@"Git (commit)", @"a blank message and nothing staged are refused with the reason; with stage-all the change is committed, HEAD is the new commit with the subject, and the margin is clean again",
+              noMessage && nothingStaged && markedBefore && committed && [sha isEqualToString:head] && ![head isEqualToString:firstCommit] &&
+              [subject isEqualToString:@"second commit"] && !markedAfter && gitOut(@[@"status", @"--porcelain"]).length == 0);
+
+        // The commit window: what it says, and the commit it makes.
+        SetDoc(ed, @"one\ntwo\nthree\nfour\nfive\nsix\n");
+        [ed saveCurrentDocument];
+        NppCommitWindow *cw = [NppCommitWindow shared];
+        [cw showForEditor:ed];
+        BOOL disabledEmpty = !cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:@"0 files staged"] && [cw.stagedSummary.stringValue containsString:@"1 not staged"];
+        cw.message.string = @"third commit";
+        [cw textDidChange:nil];
+        BOOL stillDisabled = !cw.commitButton.enabled;   // nothing staged yet
+        cw.stageAll.state = NSControlStateValueOn;
+        [cw optionChanged:nil];
+        BOOL enabledNow = cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:@"1 files will be staged"];
+        BOOL windowCommitted = [cw commit:nil];
+        NSString *third = gitOut(@[@"rev-parse", @"HEAD"]);
+        Check(@"Git (commit window)", @"Commit is off with nothing staged and no message, on once the message is typed and stage-all ticked; the button commits, closes the window and the console names the commit",
+              disabledEmpty && stillDisabled && enabledNow && windowCommitted && [cw.lastCommit isEqualToString:third] && !cw.panel.visible &&
+              [ed.console.text containsString:[third substringToIndex:7]] && [gitOut(@[@"log", @"-1", @"--format=%s"]) isEqualToString:@"third commit"]);
+
+        // Branches: made, listed with the current one ticked in the menu, switched back; a detached HEAD is called HEAD.
+        BOOL created = [ed gitCreateBranch:@"feature/suite"];
+        NSArray *branches = [NppGit branchesOfRepository:repo];
+        NSString *onBranch = [NppGit branchOfRepository:repo ahead:NULL behind:NULL];
+        NSMenu *branchMenu = [[NSMenu alloc] initWithTitle:@"Switch Branch"];
+        branchMenu.identifier = @"NppGitBranches";
+        [app menuNeedsUpdate:branchMenu];
+        NSMenuItem *ticked = nil;
+        for (NSMenuItem *it in branchMenu.itemArray) if (it.state == NSControlStateValueOn) ticked = it;
+        BOOL switchedBack = [ed gitCheckoutBranch:branch] && [[NppGit branchOfRepository:repo ahead:NULL behind:NULL] isEqualToString:branch];
+        BOOL badName = ![ed gitCreateBranch:@" "] && [ed.gitLastError containsString:@"name"];
+        git(@[@"checkout", @"-q", @"--detach"]);
+        [ed gitRefreshState];
+        BOOL detached = [[NppGit branchOfRepository:repo ahead:NULL behind:NULL] isEqualToString:@"HEAD"] && [[ed gitStatusBarText] containsString:@"HEAD"];
+        git(@[@"checkout", @"-q", branch]);
+        [ed gitRefreshState];
+        Check(@"Git (branches)", @"New Branch makes and checks out feature/suite, the Switch Branch menu lists both with the current one ticked, switching back works, a blank name is refused, detached HEAD shows as HEAD",
+              created && [branches containsObject:@"feature/suite"] && [branches containsObject:branch] && [onBranch isEqualToString:@"feature/suite"] &&
+              branchMenu.numberOfItems == 2 && [ticked.title isEqualToString:@"feature/suite"] && switchedBack && badName && detached);
+
+        // Push to a bare repository beside it, then fetch from one that does not exist: both run in the
+        // background with their output in the console, one ending done and the other failed.
+        NSString *bare = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_git_bare.git"];
+        [fm removeItemAtPath:bare error:NULL];
+        [fm createDirectoryAtPath:bare withIntermediateDirectories:YES attributes:nil error:NULL];
+        [NppGit run:@[@"init", @"-q", @"--bare"] in:bare output:NULL error:NULL];
+        git(@[@"remote", @"add", @"origin", bare]);
+        git(@[@"config", @"push.default", @"current"]);
+        [ed.console clear];
+        [ed gitPush];
+        NppSettleUntil(^BOOL{ return [ed.console.text containsString:@"- done"] || [ed.console.text containsString:@"- git failed"]; }, 20);
+        NSString *pushText = [ed.console.text copy];   // the console's string is its live storage
+        NSString *bareHead = nil;
+        [NppGit run:@[@"rev-parse", branch] in:bare output:&bareHead error:NULL];
+        bareHead = [bareHead stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+        git(@[@"remote", @"set-url", @"origin", @"/nonexistent/t_git_remote"]);
+        [ed.console clear];
+        [ed gitFetch];
+        NppSettleUntil(^BOOL{ return [ed.console.text containsString:@"- done"] || [ed.console.text containsString:@"- git failed"]; }, 20);
+        NSString *fetchText = [ed.console.text copy];
+        git(@[@"remote", @"remove", @"origin"]);
+        [fm removeItemAtPath:bare error:NULL];
+        Check(@"Git (push and fetch in the console)", @"push to a local bare repository runs in the background and ends done with the commit there; fetch from a remote that does not exist shows git's complaint and ends failed",
+              [pushText containsString:@"$ git push"] && [pushText containsString:@"- done"] && [bareHead isEqualToString:third] &&
+              [fetchText containsString:@"$ git fetch"] && [fetchText containsString:@"- git failed"] &&
+              ([fetchText containsString:@"does not appear"] || [fetchText containsString:@"fatal"]));
+
+        // Before the first commit: unstaging takes the file out of the index (there is no HEAD to reset to); Compare with HEAD says so.
+        NSString *young = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_git_young"];
+        [fm removeItemAtPath:young error:NULL];
+        [fm createDirectoryAtPath:young withIntermediateDirectories:YES attributes:nil error:NULL];
+        [NppGit run:@[@"init", @"-q"] in:young output:NULL error:NULL];
+        NSString *youngFile = [young stringByAppendingPathComponent:@"a.txt"];
+        [@"a\n" writeToFile:youngFile atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [ed openFileAtPath:youngFile error:NULL];
+        BOOL stagedYoung = [ed gitStageCurrent];
+        NSString *youngOut = nil; [NppGit run:@[@"status", @"--porcelain"] in:young output:&youngOut error:NULL];
+        BOOL wasAdded = [youngOut hasPrefix:@"A "];
+        BOOL unstagedYoung = [ed gitUnstageCurrent];
+        [NppGit run:@[@"status", @"--porcelain"] in:young output:&youngOut error:NULL];
+        BOOL noHeadCompare = ![ed gitCompareWithHead] && [ed.gitLastError containsString:@"HEAD"];
+        BOOL allNew = ({ [ed gitRefreshMarkers]; markersOn(0) == (1 << 6); });
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        Check(@"Git (before the first commit)", @"a file is staged as added and unstaged back to untracked with no HEAD yet; Compare with HEAD is refused with the reason; every line is marked new",
+              stagedYoung && wasAdded && unstagedYoung && [youngOut hasPrefix:@"??"] && noHeadCompare && allNew);
+
+        // Outside a repository, every command declines and says why.
+        [ed openFileAtPath:outside error:NULL];
+        BOOL declined = ![ed gitStageCurrent] && [ed.gitLastError containsString:@"not in a Git repository"] &&
+                        ![ed gitBlame] && ![ed gitFileHistory] && ![ed gitCompareWithHead] && ![ed gitCommitWithMessage:@"x" stageAll:YES commit:NULL] &&
+                        ![ed gitCheckoutBranch:@"main"] && [ed gitStatusBarText].length == 0;
+        [panel reload];
+        BOOL panelSaysSo = panel.rows.count == 0 && [panel.branchLabel.stringValue containsString:@"not in a Git repository"];
+        [cw showForEditor:ed];
+        BOOL windowSaysSo = !cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:@"not in a Git repository"];
+        [cw cancel:nil];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        Check(@"Git (outside a repository)", @"stage, blame, history, compare, commit and checkout all decline with the reason; the panel and the commit window say it too",
+              declined && panelSaysSo && windowSaysSo);
+
+        // The menu: Plugins > Git with its commands; then every interface language that translates the
+        // Git texts: the menu item and the window are translated, and nothing in the window or the
+        // panel's buttons is cut off - long German, Finnish and Hungarian words, Arabic, CJK alike.
+        NSMenuItem *gitItem = nil;
+        for (NSMenuItem *it in app.pluginsMenu.itemArray) if ([NppEnglishMenuTitle(it.submenu) isEqualToString:@"Git"] || [it.title isEqualToString:@"Git"]) gitItem = it;
+        NSMutableArray *titles = [NSMutableArray array];
+        for (NSMenuItem *it in gitItem.submenu.itemArray) if (!it.isSeparatorItem) [titles addObject:NppEnglishTitle(it)];
+        NSString *extraDir = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"nativeLang-extra"];
+        NSMutableArray<NSString *> *languagesWithGit = [NSMutableArray array];
+        for (NSString *file in [[fm contentsOfDirectoryAtPath:extraDir error:NULL] sortedArrayUsingSelector:@selector(compare:)]) {
+            if (![file hasSuffix:@".xml"] || [file isEqualToString:@"english.xml"]) continue;
+            NSString *xml = [NSString stringWithContentsOfFile:[extraDir stringByAppendingPathComponent:file] encoding:NSUTF8StringEncoding error:NULL];
+            if ([xml containsString:@"english=\"Commit message\""]) [languagesWithGit addObject:file];
+        }
+        NppPreferences *lp = [NppPreferences shared];
+        NSString *languageBefore = lp.localizationFile;
+        NSMutableArray<NSString *> *problems = [NSMutableArray array];
+        [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc]];
+        NSString *(^cutIn)(NSView *) = ^NSString *(NSView *rootView) {
+            [rootView layoutSubtreeIfNeeded];
+            NSMutableArray<NSString *> *bad = [NSMutableArray array];
+            NSMutableArray<NSView *> *queue = [NSMutableArray arrayWithObject:rootView];
+            while (queue.count) {
+                NSView *v = queue.firstObject; [queue removeObjectAtIndex:0];
+                if (v.hidden) continue;
+                [queue addObjectsFromArray:v.subviews];
+                BOOL isLabel = [v isKindOfClass:[NSTextField class]] && !((NSTextField *)v).editable && !((NSTextField *)v).selectable;
+                BOOL isButton = [v isKindOfClass:[NSButton class]] && ![v isKindOfClass:[NSPopUpButton class]];
+                if (!isLabel && !isButton) continue;
+                NSControl *c = (NSControl *)v;
+                NSString *text = isLabel ? c.stringValue : ((NSButton *)c).title;
+                if (!text.length || c.cell.wraps) continue;
+                if (c.cell.cellSize.width > NSWidth(c.frame) + 1.5 || c.cell.cellSize.height > NSHeight(c.frame) + 1.5)
+                    [bad addObject:[NSString stringWithFormat:@"\"%@\" needs %.0f, has %.0f", text, c.cell.cellSize.width, NSWidth(c.frame)]];
+            }
+            return [bad componentsJoinedByString:@"; "];
+        };
+        for (NSString *file in languagesWithGit) {
+            lp.localizationFile = file;
+            [app applyLocalization];
+            // What the file says a text is, is what the menu and the window must show (a language may keep "Commit").
+            NSString *xml = [NSString stringWithContentsOfFile:[extraDir stringByAppendingPathComponent:file] encoding:NSUTF8StringEncoding error:NULL];
+            NSString *(^said)(NSString *) = ^NSString *(NSString *english) {
+                NSRange r = [xml rangeOfString:[NSString stringWithFormat:@"english=\"%@\" text=\"", english]];
+                if (r.location == NSNotFound) return english;
+                NSUInteger from = NSMaxRange(r);
+                NSRange end = [xml rangeOfString:@"\"" options:0 range:NSMakeRange(from, xml.length - from)];
+                NSString *raw = [xml substringWithRange:NSMakeRange(from, end.location - from)];
+                return [[[[raw stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""] stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"]
+                         stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"] stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+            };
+            NSString *menuTitle = nil;
+            for (NSMenuItem *it in gitItem.submenu.itemArray) if ([NppEnglishTitle(it) isEqualToString:@"Commit…"]) menuTitle = it.title;
+            NppCommitWindow *lw = [[NppCommitWindow alloc] init];
+            [lw showForEditor:ed];
+            NSString *cutWindow = cutIn(lw.panel.contentView);
+            // Compared without the ellipsis and spaces around it: "Commit …" and "Commit…" are one translation.
+            NSString *(^plain)(NSString *) = ^NSString *(NSString *t) {
+                return [[[t stringByReplacingOccurrencesOfString:@"…" withString:@""] stringByReplacingOccurrencesOfString:@"..." withString:@""]
+                        stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+            };
+            // As the localiser compares: AppKit hands titles back with no-break spaces plain and format characters gone.
+            BOOL (^same)(NSString *, NSString *) = ^BOOL(NSString *a, NSString *b) {
+                NSString *(^bare)(NSString *) = ^NSString *(NSString *t) {
+                    t = [[t componentsSeparatedByCharactersInSet:NSCharacterSet.controlCharacterSet] componentsJoinedByString:@""];
+                    t = [[t componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] componentsJoinedByString:@" "];
+                    return [t precomposedStringWithCanonicalMapping];
+                };
+                return a && b && [bare(a) compare:bare(b)] == NSOrderedSame;
+            };
+            BOOL translated = same(lw.panel.title, said(@"Commit")) && same(lw.commitButton.title, said(@"Commit")) &&
+                              same(lw.messageLabel.stringValue, said(@"Commit message")) && same(lw.stageAll.title, said(@"Stage all changes first")) &&
+                              same(plain(menuTitle), plain(said(@"Commit")));   // the menu item is "Commit" with the ellipsis put back
+            [lw cancel:nil];
+            NppGitPanel *lpanel = [ed gitPanel];   // relocalized by applyLocalization
+            NSView *panelView = lpanel.table.enclosingScrollView.superview;
+            NSRect panelFrame = panelView.frame;
+            panelView.frame = NSMakeRect(0, 0, 600, 300);   // wide enough for any row of buttons; what is cut is then the button's own doing
+            NSString *cutPanel = cutIn(panelView);
+            panelView.frame = panelFrame;
+            NSString *stageTitle = nil;
+            for (NSView *v in lpanel.table.enclosingScrollView.superview.subviews) {
+                for (NSView *b in v.subviews) if ([b.identifier isEqualToString:@"Stage"]) stageTitle = ((NSButton *)b).title;
+            }
+            if (!same(stageTitle, said(@"Stage"))) translated = NO;
+            if (!translated) [problems addObject:[NSString stringWithFormat:@"%@: not translated", file]];
+            if (cutWindow.length) [problems addObject:[NSString stringWithFormat:@"%@ window: %@", file, cutWindow]];
+            if (cutPanel.length) [problems addObject:[NSString stringWithFormat:@"%@ panel: %@", file, cutPanel]];
+        }
+        lp.localizationFile = languageBefore ?: @"";
+        [app applyLocalization];
+        if (problems.count) printf("       %s\n", [[problems componentsJoinedByString:@"\n       "] UTF8String]);
+        Check(@"Git (menu, every language)", [NSString stringWithFormat:@"Plugins > Git carries its fourteen commands; in each of the %lu languages that translate it the menu item, the window title and the Commit button are translated and nothing in the window or the panel is cut off", (unsigned long)languagesWithGit.count],
+              gitItem != nil && titles.count == 14 && [titles containsObject:@"Compare with HEAD"] && [titles containsObject:@"Switch Branch"] &&
+              languagesWithGit.count >= 20 && problems.count == 0);
+
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc] discardChanges:YES];
+        [[NppDockingManager shared] hidePanel:@"git"];
+        ed.gitAnswersWithoutAsking = NO;
+        [fm removeItemAtPath:repo error:NULL];
+        [fm removeItemAtPath:young error:NULL];
+    }
+
+    if (NppSectionWanted(@"Agent interface (MCP)")) { printf("\n== Agent interface (MCP) ==\n");
         NppAgentServer *agent = [NppAgentServer shared];
         agent.editor = ed;
         NSDictionary *(^rpc)(NSString *, NSDictionary *) = ^NSDictionary *(NSString *method, NSDictionary *params) {
@@ -10561,6 +10943,7 @@ int NppMacRunTests(AppDelegate *app) {
         NSDictionary *ran = tool(@"run_command", @{@"command": @"IDM_EDIT_LOWERCASE"});
         NSDictionary *byPath = tool(@"run_command", @{@"command": @"Edit|Line Operations|Sort Lines Lexicographically Ascending"});
         NSDictionary *refused = tool(@"run_command", @{@"command": @"IDM_FILE_EXIT"});
+        printf("DEBUG agent commands: listed=%s ran=%s text=[%s] byPath=%s refused=%s\n", [listed description].UTF8String, [ran description].UTF8String, DocText(ed).UTF8String, [byPath description].UTF8String, [refused description].UTF8String);
         Check(@"Agent (list_commands, run_command)", @"lowercase is found by a word of its label, runs on the selection, sort runs by menu path, exit is refused",
               [listed[@"commands"] count] >= 1 && [listed[@"commands"][0][@"name"] isEqualToString:@"IDM_EDIT_LOWERCASE"] &&
               [ran[@"ran"] boolValue] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\n"] &&
@@ -10859,8 +11242,8 @@ int NppMacRunTests(AppDelegate *app) {
               [secondConnection containsString:@"structuredContent"] && holding && leftAlone && onByPreference && offByPreference);
     }
 
-    printf("\n== Coverage ==\n");
-    {
+    // The coverage meta-test only means something over the whole suite.
+    if (!getenv("NPPMAC_TEST_ONLY") || !*getenv("NPPMAC_TEST_ONLY")) { printf("\n== Coverage ==\n");
         NSString *listPath = [[NSBundle mainBundle] pathForResource:@"implemented" ofType:@"txt"];
         NSString *list = listPath ? [NSString stringWithContentsOfFile:listPath
                                                              encoding:NSUTF8StringEncoding error:NULL] : nil;

@@ -69,6 +69,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - XML tools: pretty print, linearize, validate (DTD/XSD), XPath, XSLT.
 - FTP/FTPS client panel.
 - NppExec-compatible scripting: a console, scripts, variables, its commands.
+- **Git**: the lines changed since the last commit marked in the margin as you type, the branch in the status bar, a panel of the repository's changed files with stage / unstage / discard, Compare with HEAD, Blame and File History as documents, Commit, Switch Branch and New Branch, Fetch / Pull / Push into the console. Windows Notepad++ has plugins for this; here it is built in, driving the `git` of the Command Line Tools.
 - MIME Tools: Quoted-printable, URL encoding, SAML decode (its Base64 lives in Tools > Base already).
 - Converter: ASCII/HEX both ways and a Conversion Panel (decimal, hex, binary, octal, character).
 - Export: the styled text as RTF or HTML - to a file, or to the clipboard so a paste keeps the colours.
@@ -88,7 +89,7 @@ on Windows — a small C interface, Scintilla messages and all. See
 ## Differences from the Windows version
 
 - **Windows plugins (`.dll`) do not run** and cannot: they are Windows binaries. The most used
-  ones are built in instead (JSON, Compare, XML tools, FTP, NppExec scripting, MIME Tools), and
+  ones are built in instead (JSON, Compare, XML tools, FTP, NppExec scripting, MIME Tools, Git), and
   native Mac plugins can be written against [macos/plugin-sdk](macos/plugin-sdk/README.md);
   Plugins Admin is absent.
 - Mac conventions replace Windows ones: Finder and Terminal instead of Explorer and cmd, the Trash

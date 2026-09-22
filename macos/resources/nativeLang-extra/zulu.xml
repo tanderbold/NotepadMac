@@ -163,4 +163,30 @@
     <Item english="Open in New Document" text="Vula kudokhumenti entsha"/>
     <Item english="This is not a curl command." text="Lokhu akuwona umyalo we-curl."/>
     <Item english="The command has no address." text="Umyalo awunalo ikheli."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Iphaneli ye-Git"/>
+    <Item english="Compare with HEAD" text="Qhathanisa ne-HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="Umlando wefayela"/>
+    <Item english="Discard Changes in File…" text="Lahla izinguquko efayeleni…"/>
+    <Item english="Switch Branch" text="Shintsha igatsha"/>
+    <Item english="New Branch…" text="Igatsha elisha…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Vuselela isimo se-Git"/>
+    <Item english="Refresh" text="Vuselela"/>
+    <Item english="Status" text="Isimo"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ okushintshiwe"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Umlayezo we-commit"/>
+    <Item english="Git is not installed (xcode-select --install)" text="I-Git ayifakiwe (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Ifayela alikho ku-repository ye-Git"/>
+    <Item english="The file is not in HEAD yet" text="Ifayela alikakabi ku-HEAD"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Lahla izinguquko ku-&quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Ifayela libuyela enguqulweni yokugcina ye-commit. Lokhu akukwazi ukuhlehliswa."/>
+    <Item english="Discard" text="Lahla"/>
+    <Item english="A commit needs a message" text="I-commit idinga umlayezo"/>
+    <Item english="A branch needs a name" text="Igatsha lidinga igama"/>
+    <Item english="New branch name:" text="Igama legatsha elisha:"/>
 </NativeLangExtra>

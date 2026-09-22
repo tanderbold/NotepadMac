@@ -212,4 +212,33 @@
     <Item english="Paste curl Command" text="ಪೇಸ್ಟ್ curl ಕಮ್ಯಾಂಡ್"/>
     <Item english="Copy as curl" text="ಕಾಪಿ ಆಸ್ curl"/>
     <Item english="Open in New Document" text="ಓಪನ್ ಇನ್ ನ್ಯೂ ಡಾಕ್ಯುಮೆಂಟ್"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git ಪ್ಯಾನೆಲ್"/>
+    <Item english="Compare with HEAD" text="ಕಂಪೇರ್ ವಿತ್ HEAD"/>
+    <Item english="Blame" text="ಬ್ಲೇಮ್"/>
+    <Item english="File History" text="ಫೈಲ್ ಹಿಸ್ಟರಿ"/>
+    <Item english="Stage File" text="ಸ್ಟೇಜ್ ಫೈಲ್"/>
+    <Item english="Unstage File" text="ಅನ್‌ಸ್ಟೇಜ್ ಫೈಲ್"/>
+    <Item english="Discard Changes in File…" text="ಡಿಸ್ಕಾರ್ಡ್ ಚೇಂಜಸ್ ಇನ್ ಫೈಲ್…"/>
+    <Item english="Switch Branch" text="ಸ್ವಿಚ್ ಬ್ರಾಂಚ್"/>
+    <Item english="New Branch…" text="ನ್ಯೂ ಬ್ರಾಂಚ್…"/>
+    <Item english="Fetch" text="ಫೆಚ್"/>
+    <Item english="Pull" text="ಪುಲ್"/>
+    <Item english="Push" text="ಪುಶ್"/>
+    <Item english="Refresh Git Status" text="ರಿಫ್ರೆಶ್ Git ಸ್ಟೇಟಸ್"/>
+    <Item english="Stage" text="ಸ್ಟೇಜ್"/>
+    <Item english="Unstage" text="ಅನ್‌ಸ್ಟೇಜ್"/>
+    <Item english="Refresh" text="ರಿಫ್ರೆಶ್"/>
+    <Item english="Staged" text="ಸ್ಟೇಜ್ಡ್"/>
+    <Item english="Status" text="ಸ್ಟೇಟಸ್"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ ಚೇಂಜ್ಡ್"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ ಸ್ಟೇಜ್ಡ್"/>
+    <Item english="Commit" text="ಕಮಿಟ್"/>
+    <Item english="Commit message" text="ಕಮಿಟ್ ಮೆಸೇಜ್"/>
+    <Item english="Stage all changes first" text="ಸ್ಟೇಜ್ ಆಲ್ ಚೇಂಜಸ್ ಫಸ್ಟ್"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ ಫೈಲ್ಸ್ ಸ್ಟೇಜ್ಡ್"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ ನಾಟ್ ಸ್ಟೇಜ್ಡ್"/>
+    <Item english="Committed $STR_REPLACE$" text="ಕಮಿಟೆಡ್ $STR_REPLACE$"/>
+    <Item english="Discard" text="ಡಿಸ್ಕಾರ್ಡ್"/>
+    <Item english="New branch name:" text="ನ್ಯೂ ಬ್ರಾಂಚ್ ನೇಮ್:"/>
 </NativeLangExtra>

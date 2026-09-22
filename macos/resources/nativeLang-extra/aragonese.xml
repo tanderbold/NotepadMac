@@ -256,4 +256,37 @@
     <Item english="The command has no address." text="A orden no tiene adreza."/>
     <Item english="The command reads its data from a file, which is not done here." text="A orden leye os suyos datos d'un fichero, cosa que aquí no se fa."/>
     <Item english="The command's address is not an http or https address." text="L'adreza d'a orden no ye una adreza http u https."/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Quadro de Git"/>
+    <Item english="Compare with HEAD" text="Comparar con HEAD"/>
+    <Item english="File History" text="Historial d'o fichero"/>
+    <Item english="Stage File" text="Adhibir o fichero a l'indiz"/>
+    <Item english="Unstage File" text="Sacar o fichero de l'indiz"/>
+    <Item english="Discard Changes in File…" text="Desfer os cambeos d'o fichero…"/>
+    <Item english="Switch Branch" text="Cambiar de rama"/>
+    <Item english="New Branch…" text="Nueva rama…"/>
+    <Item english="Refresh Git Status" text="Actualizar l'estau de Git"/>
+    <Item english="Stage" text="A l'indiz"/>
+    <Item english="Unstage" text="De l'indiz"/>
+    <Item english="Refresh" text="Actualizar"/>
+    <Item english="Staged" text="En l'indiz"/>
+    <Item english="Status" text="Estau"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ modificaus"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ en l'indiz"/>
+    <Item english="Commit message" text="Mensache d'o commit"/>
+    <Item english="Stage all changes first" text="Adhibir antes totz os cambeos a l'indiz"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ fichers en l'indiz"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ sin adhibir a l'indiz"/>
+    <Item english="Committed $STR_REPLACE$" text="Feito o commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git no ye instalau (xcode-select --install)"/>
+    <Item english="The file is not in HEAD yet" text="O fichero encara no ye en HEAD"/>
+    <Item english="Save the file before staging it?" text="Alzar o fichero antes d'adhibir-lo a l'indiz?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Desfer os cambeos de &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="O fichero torna ta la zaguera versión d'o commit. Isto no se puede desfer."/>
+    <Item english="Discard" text="Desfer os cambeos"/>
+    <Item english="A commit needs a message" text="O commit ha de tener un mensache"/>
+    <Item english="Nothing is staged to commit" text="No i hai garra cambeo en l'indiz ta fer commit"/>
+    <Item english="A branch needs a name" text="A rama ha de tener un nombre"/>
+    <Item english="New branch name:" text="Nombre d'a nueva rama:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marcar en o marguin as linias modificadas dende o zaguer commit"/>
 </NativeLangExtra>

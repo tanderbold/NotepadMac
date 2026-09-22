@@ -284,4 +284,44 @@
     <Item english="The command's address is not an http or https address." text="Тушаалын хаяг нь http эсвэл https хаяг биш байна."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI агентуудад засварлагчийг удирдахыг зөвшөөрөх (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git хавтан"/>
+    <Item english="Compare with HEAD" text="HEAD-тэй харьцуулах"/>
+    <Item english="Blame" text="Мөрийн зохиогч (blame)"/>
+    <Item english="File History" text="Файлын түүх"/>
+    <Item english="Stage File" text="Файлыг индекст нэмэх"/>
+    <Item english="Unstage File" text="Файлыг индексээс хасах"/>
+    <Item english="Discard Changes in File…" text="Файлын өөрчлөлтийг хаях…"/>
+    <Item english="Switch Branch" text="Салбар солих"/>
+    <Item english="New Branch…" text="Шинэ салбар…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Git төлөвийг шинэчлэх"/>
+    <Item english="Stage" text="Индекст нэмэх"/>
+    <Item english="Unstage" text="Индексээс хасах"/>
+    <Item english="Refresh" text="Шинэчлэх"/>
+    <Item english="Staged" text="Индекст байгаа"/>
+    <Item english="Status" text="Төлөв"/>
+    <Item english="$INT_REPLACE$ changed" text="өөрчлөгдсөн: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="индекст: $INT_REPLACE$"/>
+    <Item english="Commit" text="Коммит"/>
+    <Item english="Commit message" text="Коммитын зурвас"/>
+    <Item english="Stage all changes first" text="Эхлээд бүх өөрчлөлтийг индекст нэмэх"/>
+    <Item english="$INT_REPLACE$ files staged" text="Индекст байгаа файл: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="индекст байхгүй: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Индекст нэмэгдэж коммит хийгдэх файл: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ коммит хийгдлээ"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git суулгаагүй байна (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Энэ файл Git репозиторид байхгүй байна"/>
+    <Item english="The file is not in HEAD yet" text="Энэ файл HEAD-д хараахан байхгүй байна"/>
+    <Item english="Save the file before staging it?" text="Индекст нэмэхийн өмнө файлыг хадгалах уу?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot;-ийн өөрчлөлтийг хаях уу?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Файл сүүлийн коммитын хувилбар руу буцна. Үүнийг буцаах боломжгүй."/>
+    <Item english="Discard" text="Хаях"/>
+    <Item english="A commit needs a message" text="Коммитод зурвас хэрэгтэй"/>
+    <Item english="Nothing is staged to commit" text="Коммит хийх зүйл индекст алга"/>
+    <Item english="A branch needs a name" text="Салбарт нэр хэрэгтэй"/>
+    <Item english="New branch name:" text="Шинэ салбарын нэр:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: сүүлийн коммитоос хойш өөрчлөгдсөн мөрүүдийг захад тэмдэглэх"/>
 </NativeLangExtra>

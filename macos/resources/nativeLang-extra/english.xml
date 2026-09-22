@@ -294,4 +294,44 @@
     <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="An unofficial macOS port. Notepad++ is by Don HO."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Let AI agents drive the editor (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git Panel"/>
+    <Item english="Compare with HEAD" text="Compare with HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="File History"/>
+    <Item english="Stage File" text="Stage File"/>
+    <Item english="Unstage File" text="Unstage File"/>
+    <Item english="Discard Changes in File…" text="Discard Changes in File…"/>
+    <Item english="Switch Branch" text="Switch Branch"/>
+    <Item english="New Branch…" text="New Branch…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Refresh Git Status"/>
+    <Item english="Stage" text="Stage"/>
+    <Item english="Unstage" text="Unstage"/>
+    <Item english="Refresh" text="Refresh"/>
+    <Item english="Staged" text="Staged"/>
+    <Item english="Status" text="Status"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ changed"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ staged"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Commit message"/>
+    <Item english="Stage all changes first" text="Stage all changes first"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ files staged"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ not staged"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$ files will be staged and committed"/>
+    <Item english="Committed $STR_REPLACE$" text="Committed $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git is not installed (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="The file is not in a Git repository"/>
+    <Item english="The file is not in HEAD yet" text="The file is not in HEAD yet"/>
+    <Item english="Save the file before staging it?" text="Save the file before staging it?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Discard the changes in &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="The file goes back to the last committed version. This cannot be undone."/>
+    <Item english="Discard" text="Discard"/>
+    <Item english="A commit needs a message" text="A commit needs a message"/>
+    <Item english="Nothing is staged to commit" text="Nothing is staged to commit"/>
+    <Item english="A branch needs a name" text="A branch needs a name"/>
+    <Item english="New branch name:" text="New branch name:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: mark lines changed since the last commit in the margin"/>
 </NativeLangExtra>

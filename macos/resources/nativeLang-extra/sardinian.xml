@@ -183,4 +183,39 @@
     <Item english="This is not a curl command." text="Custu no est unu cumandu curl."/>
     <Item english="The command has no address." text="Su cumandu non tenet indiritzu."/>
     <Item english="The command's address is not an http or https address." text="S'indiritzu de su cumandu no est unu indiritzu http o https."/>
+    <!-- Git -->
+    <Item english="Compare with HEAD" text="Cunfronta cun HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="Istòria de su file"/>
+    <Item english="Stage File" text="Agiunghe su file a s'ìndighe"/>
+    <Item english="Unstage File" text="Boga su file dae s'ìndighe"/>
+    <Item english="Discard Changes in File…" text="Iscarta is modìficas de su file…"/>
+    <Item english="Switch Branch" text="Càmbia ramu"/>
+    <Item english="New Branch…" text="Ramu nou…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Agiorna s'istadu de Git"/>
+    <Item english="Stage" text="A s'ìndighe"/>
+    <Item english="Unstage" text="Dae s'ìndighe"/>
+    <Item english="Refresh" text="Agiorna"/>
+    <Item english="Staged" text="In s'ìndighe"/>
+    <Item english="Status" text="Istadu"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ modificados"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ in s'ìndighe"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Messàgiu de su commit"/>
+    <Item english="Stage all changes first" text="Agiunghe prima totu is modìficas a s'ìndighe"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ files in s'ìndighe"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ foras de s'ìndighe"/>
+    <Item english="Committed $STR_REPLACE$" text="Commit $STR_REPLACE$ creadu"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git no est installadu (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Su file no est in unu repositòriu Git"/>
+    <Item english="The file is not in HEAD yet" text="Su file no est ancora in HEAD"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Boles iscartare is modìficas de &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Su file torrat a sa versione de s'ùrtimu commit. Custu non si podet annuddare."/>
+    <Item english="Discard" text="Iscarta"/>
+    <Item english="A commit needs a message" text="Su commit tenet bisòngiu de unu messàgiu"/>
+    <Item english="A branch needs a name" text="Su ramu tenet bisòngiu de unu nùmene"/>
+    <Item english="New branch name:" text="Nùmene de su ramu nou:"/>
 </NativeLangExtra>

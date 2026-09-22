@@ -290,4 +290,44 @@
     <Item english="The command's address is not an http or https address." text="Адреса в команді не є адресою http або https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Дозволити ШІ-агентам керувати редактором (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Панель Git"/>
+    <Item english="Compare with HEAD" text="Порівняти з HEAD"/>
+    <Item english="Blame" text="Авторство рядків (blame)"/>
+    <Item english="File History" text="Історія файлу"/>
+    <Item english="Stage File" text="Додати файл до індексу"/>
+    <Item english="Unstage File" text="Прибрати файл з індексу"/>
+    <Item english="Discard Changes in File…" text="Відкинути зміни у файлі…"/>
+    <Item english="Switch Branch" text="Перемкнути гілку"/>
+    <Item english="New Branch…" text="Нова гілка…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Оновити стан Git"/>
+    <Item english="Stage" text="До індексу"/>
+    <Item english="Unstage" text="З індексу"/>
+    <Item english="Refresh" text="Оновити"/>
+    <Item english="Staged" text="В індексі"/>
+    <Item english="Status" text="Стан"/>
+    <Item english="$INT_REPLACE$ changed" text="змінено: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ staged" text="в індексі: $INT_REPLACE$"/>
+    <Item english="Commit" text="Коміт"/>
+    <Item english="Commit message" text="Повідомлення коміту"/>
+    <Item english="Stage all changes first" text="Спочатку додати всі зміни до індексу"/>
+    <Item english="$INT_REPLACE$ files staged" text="Файлів в індексі: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ not staged" text="не в індексі: $INT_REPLACE$"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Файлів буде додано до індексу та закомічено: $INT_REPLACE$"/>
+    <Item english="Committed $STR_REPLACE$" text="Створено коміт $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git не встановлено (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Файл не в репозиторії Git"/>
+    <Item english="The file is not in HEAD yet" text="Файлу ще немає в HEAD"/>
+    <Item english="Save the file before staging it?" text="Зберегти файл перед додаванням до індексу?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Відкинути зміни в «$STR_REPLACE$»?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Файл повернеться до останньої закоміченої версії. Це неможливо скасувати."/>
+    <Item english="Discard" text="Відкинути зміни"/>
+    <Item english="A commit needs a message" text="Коміту потрібне повідомлення"/>
+    <Item english="Nothing is staged to commit" text="В індексі немає змін для коміту"/>
+    <Item english="A branch needs a name" text="Гілці потрібна назва"/>
+    <Item english="New branch name:" text="Назва нової гілки:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: позначати на полях рядки, змінені після останнього коміту"/>
 </NativeLangExtra>

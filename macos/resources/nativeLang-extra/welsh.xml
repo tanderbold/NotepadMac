@@ -283,4 +283,44 @@
     <Item english="The command's address is not an http or https address." text="Nid yw cyfeiriad y gorchymyn yn gyfeiriad http na https."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Caniatáu i asiantau AI reoli'r golygydd (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Panel Git"/>
+    <Item english="Compare with HEAD" text="Cymharu â HEAD"/>
+    <Item english="Blame" text="Blame"/>
+    <Item english="File History" text="Hanes y Ffeil"/>
+    <Item english="Stage File" text="Ychwanegu'r Ffeil at y Mynegai"/>
+    <Item english="Unstage File" text="Tynnu'r Ffeil o'r Mynegai"/>
+    <Item english="Discard Changes in File…" text="Taflu'r Newidiadau yn y Ffeil…"/>
+    <Item english="Switch Branch" text="Newid Cangen"/>
+    <Item english="New Branch…" text="Cangen Newydd…"/>
+    <Item english="Fetch" text="Fetch"/>
+    <Item english="Pull" text="Pull"/>
+    <Item english="Push" text="Push"/>
+    <Item english="Refresh Git Status" text="Adnewyddu Statws Git"/>
+    <Item english="Stage" text="I'r Mynegai"/>
+    <Item english="Unstage" text="O'r Mynegai"/>
+    <Item english="Refresh" text="Adnewyddu"/>
+    <Item english="Staged" text="Yn y Mynegai"/>
+    <Item english="Status" text="Statws"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$ wedi newid"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$ yn y mynegai"/>
+    <Item english="Commit" text="Commit"/>
+    <Item english="Commit message" text="Neges y commit"/>
+    <Item english="Stage all changes first" text="Ychwanegu pob newid at y mynegai yn gyntaf"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$ ffeil yn y mynegai"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$ ddim yn y mynegai"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="Bydd $INT_REPLACE$ ffeil yn cael eu hychwanegu at y mynegai a'u cynnwys yn y commit"/>
+    <Item english="Committed $STR_REPLACE$" text="Crëwyd commit $STR_REPLACE$"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Nid yw Git wedi'i osod (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="Nid yw'r ffeil mewn storfa Git"/>
+    <Item english="The file is not in HEAD yet" text="Nid yw'r ffeil yn HEAD eto"/>
+    <Item english="Save the file before staging it?" text="Cadw'r ffeil cyn ei hychwanegu at y mynegai?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="Taflu'r newidiadau yn &quot;$STR_REPLACE$&quot;?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="Bydd y ffeil yn mynd yn ôl i fersiwn y commit diwethaf. Nid oes modd dadwneud hyn."/>
+    <Item english="Discard" text="Taflu"/>
+    <Item english="A commit needs a message" text="Mae angen neges ar commit"/>
+    <Item english="Nothing is staged to commit" text="Nid oes dim yn y mynegai i'w gynnwys mewn commit"/>
+    <Item english="A branch needs a name" text="Mae angen enw ar gangen"/>
+    <Item english="New branch name:" text="Enw'r gangen newydd:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: nodi yn yr ymyl y llinellau a newidiwyd ers y commit diwethaf"/>
 </NativeLangExtra>

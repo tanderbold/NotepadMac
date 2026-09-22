@@ -27,6 +27,7 @@
 #import "MimeCommands.h"
 #import "PluginHost.h"
 #import "AgentServer.h"
+#import "GitCommands.h"
 #import "ConverterCommands.h"
 #import "ExportCommands.h"
 #import "SpellCheck.h"
@@ -399,6 +400,7 @@ static NSString *Ordinal(NSUInteger n) {
 
     self.editor = [[EditorController alloc] initWithFrame:frame];
     self.editor.window = self.window;
+    [self.editor gitInstall];
     self.window.delegate = self;
     // Files dropped anywhere on the window open, as on Windows.
     [self.window registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
@@ -1337,6 +1339,33 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Unescape Characters in Selection" action:@selector(xmlUnescape:) key:@"" flags:0 menu:xmlMenu];
     [pluginsMenu addItemWithTitle:@"XML" action:nil keyEquivalent:@""].submenu = xmlMenu;
 
+    // Git, the port's own (Windows has plugins for it): the panel, diffs and
+    // history, the everyday operations, branches, and the remote in the console.
+    NSMenu *gitMenu = [[NSMenu alloc] initWithTitle:@"Git"];
+    [self item:@"Git Panel" action:@selector(gitTogglePanel:) key:@"" flags:0 menu:gitMenu];
+    [gitMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Compare with HEAD" action:@selector(gitCompareWithHead:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Blame" action:@selector(gitBlame:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"File History" action:@selector(gitFileHistory:) key:@"" flags:0 menu:gitMenu];
+    [gitMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Stage File" action:@selector(gitStage:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Unstage File" action:@selector(gitUnstage:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Discard Changes in File…" action:@selector(gitDiscard:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Commit…" action:@selector(gitCommit:) key:@"" flags:0 menu:gitMenu];
+    [gitMenu addItem:[NSMenuItem separatorItem]];
+    NSMenu *branchMenu = [[NSMenu alloc] initWithTitle:@"Switch Branch"];
+    branchMenu.identifier = @"NppGitBranches";
+    branchMenu.delegate = self;
+    [gitMenu addItemWithTitle:@"Switch Branch" action:nil keyEquivalent:@""].submenu = branchMenu;
+    [self item:@"New Branch…" action:@selector(gitNewBranch:) key:@"" flags:0 menu:gitMenu];
+    [gitMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Fetch" action:@selector(gitFetch:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Pull" action:@selector(gitPull:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Push" action:@selector(gitPush:) key:@"" flags:0 menu:gitMenu];
+    [gitMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Refresh Git Status" action:@selector(gitRefresh:) key:@"" flags:0 menu:gitMenu];
+    [pluginsMenu addItemWithTitle:@"Git" action:nil keyEquivalent:@""].submenu = gitMenu;
+
     NSMenu *ftpMenu = [[NSMenu alloc] initWithTitle:@"FTP"];
     [self item:@"Connections…" action:@selector(ftpProfiles:) key:@"" flags:0 menu:ftpMenu];
     [self item:@"Connect…" action:@selector(ftpConnect:) key:@"" flags:0 menu:ftpMenu];
@@ -1621,6 +1650,7 @@ static NSString *Ordinal(NSUInteger n) {
 /// The Language submenu is built when opened: the system's dictionaries can
 /// change under a running application.
 - (void)menuNeedsUpdate:(NSMenu *)menu {
+    if ([menu.identifier isEqualToString:@"NppGitBranches"]) { [self fillBranchMenu:menu]; return; }
     if (![menu.identifier isEqualToString:@"NppSpellLanguages"]) return;
     [menu removeAllItems];
     NSString *chosen = [NppPreferences shared].spellCheckLanguage;
@@ -1638,6 +1668,50 @@ static NSString *Ordinal(NSUInteger n) {
         item.state = [identifier isEqualToString:chosen] ? NSControlStateValueOn : NSControlStateValueOff;
     }
 }
+
+#pragma mark Plugins > Git
+
+/// The branches of the current document's repository, the checked-out one ticked.
+- (void)fillBranchMenu:(NSMenu *)menu {
+    [menu removeAllItems];
+    NSString *root = [self.editor gitRootOfCurrentDocument];
+    if (!root) {
+        NSMenuItem *none = [menu addItemWithTitle:NppL(@"The file is not in a Git repository") action:nil keyEquivalent:@""];
+        none.enabled = NO;
+        return;
+    }
+    NSString *current = [NppGit branchOfRepository:root ahead:NULL behind:NULL];
+    for (NSString *name in [NppGit branchesOfRepository:root]) {
+        NSMenuItem *item = [menu addItemWithTitle:name action:@selector(gitSwitchBranch:) keyEquivalent:@""];
+        item.target = self;
+        item.representedObject = name;
+        item.state = [name isEqualToString:current] ? NSControlStateValueOn : NSControlStateValueOff;
+    }
+}
+
+- (void)gitReport:(BOOL)ok {
+    if (ok || !self.editor.gitLastError.length) return;
+    [self.editor.console showWithoutFocus];
+    [self.editor.console appendText:[NSString stringWithFormat:@"[git] %@\n", self.editor.gitLastError]];
+}
+
+- (void)gitTogglePanel:(id)sender { [[self.editor gitPanel] toggle]; }
+- (void)gitCompareWithHead:(id)sender { [self gitReport:[self.editor gitCompareWithHead]]; }
+- (void)gitBlame:(id)sender { [self gitReport:[self.editor gitBlame]]; }
+- (void)gitFileHistory:(id)sender { [self gitReport:[self.editor gitFileHistory]]; }
+- (void)gitStage:(id)sender { [self gitReport:[self.editor gitStageCurrent]]; }
+- (void)gitUnstage:(id)sender { [self gitReport:[self.editor gitUnstageCurrent]]; }
+- (void)gitDiscard:(id)sender { [self gitReport:[self.editor gitDiscardCurrent]]; }
+- (void)gitCommit:(id)sender { [[NppCommitWindow shared] showForEditor:self.editor]; }
+- (void)gitSwitchBranch:(id)sender { [self gitReport:[self.editor gitCheckoutBranch:[sender representedObject]]]; }
+- (void)gitNewBranch:(id)sender {
+    NSString *name = [self promptForString:NppL(@"New branch name:") default:@""];
+    if (name) [self gitReport:[self.editor gitCreateBranch:name]];
+}
+- (void)gitFetch:(id)sender { [self.editor gitFetch]; }
+- (void)gitPull:(id)sender { [self.editor gitPull]; }
+- (void)gitPush:(id)sender { [self.editor gitPush]; }
+- (void)gitRefresh:(id)sender { [NppGit forgetRepositoryRoots]; [self.editor gitRefreshState]; }
 
 #pragma mark Plugins > Export
 
@@ -3828,6 +3902,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     [l localizeMenu:NSApp.mainMenu identifiers:self.menuIdentifiers ?: @{}];
     for (NSWindow *w in NSApp.windows) [l localizeWindow:w];
     [self.editor rebuildContextMenu];   // copies of menu titles, made anew in the language
+    [[self.editor gitPanel] relocalize];   // its buttons and columns are made once
 }
 
 - (void)windowBecameKey:(NSNotification *)note {
@@ -4693,7 +4768,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     [self.editor.view displayIfNeeded];
 
     NSView *view = self.window.contentView;
-    // NPPMAC_SNAPSHOT_PANEL=find:<tab>, prefs:<page>, style, mapper, about or debug captures that dialog instead.
+    // NPPMAC_SNAPSHOT_PANEL=find:<tab>, prefs:<page>, style, mapper, about, debug, commit or git captures that dialog instead.
     const char *panel = getenv("NPPMAC_SNAPSHOT_PANEL");
     if (panel && !strncmp(panel, "find", 4)) {
         [self openFindPanelOnTab:strlen(panel) > 5 ? atoi(panel + 5) : 0];
@@ -4718,6 +4793,17 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     } else if (panel && !strcmp(panel, "debug")) {
         [self showDebugInfo:nil];
         view = [NppDebugInfoWindow shared].panel.contentView;
+    } else if (panel && !strcmp(panel, "commit")) {
+        // The Git commit window, on whatever file is open (NPPMAC_SNAPSHOT_FILE opens one first).
+        [[NppCommitWindow shared] showForEditor:self.editor];
+        view = [NppCommitWindow shared].panel.contentView;
+        [view.window.contentView layoutSubtreeIfNeeded];
+    } else if (panel && !strcmp(panel, "git")) {
+        // The Git panel, floating, at a panel's usual size.
+        [[NppDockingManager shared] movePanel:@"git" to:NppDockFloating];
+        [[self.editor gitPanel] show];
+        view = [self.editor gitPanel].table.enclosingScrollView.superview;
+        [view.window.contentView layoutSubtreeIfNeeded];
     } else if (panel && !strncmp(panel, "tools:", 6)) {
         // tools:digest, tools:files, tools:bcrypt, tools:scrypt, tools:argon2, tools:pbkdf2, tools:base, tools:unbase, tools:password, tools:converter
         NSString *which = @(panel + 6);
@@ -4761,7 +4847,8 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
         }
         [view.window.contentView layoutSubtreeIfNeeded];
     }
-    if (panel && (!strcmp(panel, "about") || !strcmp(panel, "debug") || !strcmp(panel, "mapper") || !strncmp(panel, "tools:", 6))) {
+    if (panel && (!strcmp(panel, "about") || !strcmp(panel, "debug") || !strcmp(panel, "mapper") || !strncmp(panel, "tools:", 6) ||
+                  !strcmp(panel, "commit") || !strcmp(panel, "git"))) {
         // The window's frame draws its background, which a view capture leaves out.
         view.wantsLayer = YES;
         [view.effectiveAppearance performAsCurrentDrawingAppearance:^{

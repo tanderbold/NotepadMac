@@ -290,4 +290,40 @@
     <Item english="The command's address is not an http or https address." text="কমান্ডের ঠিকানাটি http বা https ঠিকানা নয়।"/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI এজেন্টদের এডিটর নিয়ন্ত্রণ করার অনুমতি দিন (MCP)"/>
+    <!-- Git -->
+    <Item english="Git Panel" text="Git প্যানেল"/>
+    <Item english="Compare with HEAD" text="HEAD-এর সাথে তুলনা করুন"/>
+    <Item english="File History" text="ফাইলের ইতিহাস"/>
+    <Item english="Stage File" text="ফাইল স্টেজ করুন"/>
+    <Item english="Unstage File" text="ফাইল আনস্টেজ করুন"/>
+    <Item english="Discard Changes in File…" text="ফাইলের পরিবর্তন বাতিল করুন…"/>
+    <Item english="Switch Branch" text="ব্রাঞ্চ পরিবর্তন করুন"/>
+    <Item english="New Branch…" text="নতুন ব্রাঞ্চ…"/>
+    <Item english="Refresh Git Status" text="Git স্ট্যাটাস রিফ্রেশ করুন"/>
+    <Item english="Stage" text="স্টেজ"/>
+    <Item english="Unstage" text="আনস্টেজ"/>
+    <Item english="Refresh" text="রিফ্রেশ"/>
+    <Item english="Staged" text="স্টেজড"/>
+    <Item english="Status" text="স্ট্যাটাস"/>
+    <Item english="$INT_REPLACE$ changed" text="$INT_REPLACE$টি পরিবর্তিত"/>
+    <Item english="$INT_REPLACE$ staged" text="$INT_REPLACE$টি স্টেজড"/>
+    <Item english="Commit" text="কমিট"/>
+    <Item english="Commit message" text="কমিট বার্তা"/>
+    <Item english="Stage all changes first" text="প্রথমে সব পরিবর্তন স্টেজ করুন"/>
+    <Item english="$INT_REPLACE$ files staged" text="$INT_REPLACE$টি ফাইল স্টেজড"/>
+    <Item english="$INT_REPLACE$ not staged" text="$INT_REPLACE$টি স্টেজ করা হয়নি"/>
+    <Item english="$INT_REPLACE$ files will be staged and committed" text="$INT_REPLACE$টি ফাইল স্টেজ ও কমিট করা হবে"/>
+    <Item english="Committed $STR_REPLACE$" text="$STR_REPLACE$ কমিট করা হয়েছে"/>
+    <Item english="Git is not installed (xcode-select --install)" text="Git ইনস্টল করা নেই (xcode-select --install)"/>
+    <Item english="The file is not in a Git repository" text="ফাইলটি কোনো Git রিপোজিটরিতে নেই"/>
+    <Item english="The file is not in HEAD yet" text="ফাইলটি এখনও HEAD-এ নেই"/>
+    <Item english="Save the file before staging it?" text="স্টেজ করার আগে ফাইলটি সংরক্ষণ করবেন?"/>
+    <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot;-এর পরিবর্তনগুলি বাতিল করবেন?"/>
+    <Item english="The file goes back to the last committed version. This cannot be undone." text="ফাইলটি সর্বশেষ কমিট করা সংস্করণে ফিরে যাবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।"/>
+    <Item english="Discard" text="বাতিল করুন"/>
+    <Item english="A commit needs a message" text="কমিটের জন্য একটি বার্তা প্রয়োজন"/>
+    <Item english="Nothing is staged to commit" text="কমিট করার জন্য কিছুই স্টেজ করা নেই"/>
+    <Item english="A branch needs a name" text="ব্রাঞ্চের জন্য একটি নাম প্রয়োজন"/>
+    <Item english="New branch name:" text="নতুন ব্রাঞ্চের নাম:"/>
+    <Item english="Git: mark lines changed since the last commit in the margin" text="Git: সর্বশেষ কমিটের পর পরিবর্তিত লাইনগুলি মার্জিনে চিহ্নিত করুন"/>
 </NativeLangExtra>
