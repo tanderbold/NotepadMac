@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FAQ — NotepadMac, Notepad++ for macOS</title>
-<meta name="description" content="Answers about running Notepad++ on a Mac with NotepadMac: installation, plugins, settings from Windows, languages, regular expressions, and how it differs from NotepadNext.">
+<meta name="description" content="Answers about running Notepad++ on a Mac with NotepadMac: installation, plugins, settings from Windows, languages, regular expressions, AI agents (MCP), and how it differs from NotepadNext.">
 <meta property="og:title" content="FAQ — NotepadMac, Notepad++ for macOS">
 <meta property="og:description" content="Does Notepad++ run on a Mac? Do plugins work? Can I bring my Windows settings? Answers about NotepadMac.">
 <meta property="og:image" content="https://tanderbold.github.io/NotepadMac/screenshot-editor.png">
@@ -97,6 +97,14 @@
     "@type": "Answer",
     "text": "The interface is available in Notepad++'s ~90 translations, chosen in Preferences. Texts that exist only in the Mac version are translated too, by machine for now, and not yet reviewed by native speakers."
    }
+  },
+  {
+   "@type": "Question",
+   "name": "Can an AI coding agent use NotepadMac?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. NotepadMac is itself a Model Context Protocol (MCP) server: turn on Preferences > MISC. > Let AI agents drive the editor, then give the agent the command nppmac mcp (for Claude Code: claude mcp add notepadmac -- nppmac mcp). The agent then sees which documents are open and what is selected, reads unsaved text, edits a document as one undoable step, moves the caret to the place it is talking about, bookmarks lines, shows a Compare, runs any of the 579 menu commands, and uses the editor's own engines: the language model, the Lexilla lexers (tokens as the editor colours them), Notepad++'s regular-expression search, the Function List parsers, character-set detection, OCR and the spelling engine. It is off until you turn it on, listens only on a socket your own processes can open, and sends nothing over the network."
+   }
   }
  ]
 }
@@ -128,6 +136,8 @@
   <h2>Is the interface translated?</h2>
   <p>The interface is available in Notepad++&#x27;s ~90 translations, chosen in Preferences. Texts that exist only in the Mac version are translated too, by machine for now, and not yet reviewed by native speakers.</p>
 
+  <h2>Can an AI coding agent use NotepadMac?</h2>
+  <p>Yes. NotepadMac is itself a Model Context Protocol (MCP) server: turn on Preferences &gt; MISC. &gt; Let AI agents drive the editor, then give the agent the command nppmac mcp (for Claude Code: claude mcp add notepadmac -- nppmac mcp). The agent then sees which documents are open and what is selected, reads unsaved text, edits a document as one undoable step, moves the caret to the place it is talking about, bookmarks lines, shows a Compare, runs any of the 579 menu commands, and uses the editor&#x27;s own engines: the language model, the Lexilla lexers (tokens as the editor colours them), Notepad++&#x27;s regular-expression search, the Function List parsers, character-set detection, OCR and the spelling engine. It is off until you turn it on, listens only on a socket your own processes can open, and sends nothing over the network.</p>
   <p class="links">
     <a href="./">Home</a>
     <a href="https://github.com/tanderbold/NotepadMac">Source on GitHub</a>

@@ -4,12 +4,14 @@
 
 Key facts: all 579 commands of the Windows menus are implemented; syntax highlighting for about 90 languages plus User Defined Languages; Boost regular expressions; all 46 Notepad++ character sets; Windows-format settings files (session.xml, shortcuts.xml, contextMenu.xml, UDL, themes) work unchanged. Windows plugins (.dll) cannot load; JSON, Compare, XML tools, FTP, NppExec-style scripting and MIME tools are built in, and native Mac plugins can be written against a C plugin interface. Not made, released or supported by the Notepad++ project; questions about the Mac version go to this repository's Issues and Discussions.
 
+For AI agents: NotepadMac is itself an MCP (Model Context Protocol) server, off by default (Preferences > MISC.); `nppmac mcp` bridges an agent's stdio to it (`claude mcp add notepadmac -- nppmac mcp`). Tools: open documents and unsaved text, selection, caret placement, edits with undo, bookmarks, any menu command, language detection, lexer tokens, function list, Notepad++'s regex search, Compare, character-set detection, OCR, QR, spell check.
+
 Install: `brew install --cask tanderbold/tap/notepadmac`, or the notarised .dmg from the Releases page.
 
 ## Pages
 
 - [Home](https://tanderbold.github.io/NotepadMac/): overview, install, feature list
-- [FAQ](https://tanderbold.github.io/NotepadMac/faq.html): installation, plugins, Windows settings, languages, differences from NotepadNext
+- [FAQ](https://tanderbold.github.io/NotepadMac/faq.html): installation, plugins, Windows settings, languages, AI agents (MCP), differences from NotepadNext
 - [Source and README](https://github.com/tanderbold/NotepadMac): full feature description, build instructions
 - [Feature list](https://github.com/tanderbold/NotepadMac/blob/main/macos/FEATURES.md): every menu command and its status
 - [Plugin SDK](https://github.com/tanderbold/NotepadMac/blob/main/macos/plugin-sdk/README.md): writing native Mac plugins
