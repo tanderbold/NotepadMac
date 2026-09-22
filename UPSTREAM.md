@@ -1,6 +1,7 @@
 # Upstream sources in this repository
 
-`PowerEditor/`, `scintilla/`, `lexilla/`, `boostregex/` and `LICENSE` are a snapshot of
+`PowerEditor/`, `scintilla/`, `lexilla/`, `boostregex/` and `NOTEPAD-PLUS-PLUS-COPYING.txt` (upstream's
+`LICENSE`) are a snapshot of
 [Notepad++](https://github.com/notepad-plus-plus/notepad-plus-plus), copyright Don Ho and the
 Notepad++ contributors (Scintilla and Lexilla: Neil Hodgson and contributors), under their
 licences, unchanged except where noted below.
@@ -12,6 +13,9 @@ They are here because the Mac application is built from Scintilla and Lexilla, r
 data files (languages, styles, themes, function lists, translations) and is written against
 `PowerEditor/src` as its specification. Upstream's own README, Windows build instructions, CI
 configuration and release key are left out: they describe and sign the Windows version.
+
+`LICENSE` at the root is the GNU GPL version 3, verbatim, the licence of Notepad++ and of this port;
+upstream's copyright notice for Notepad++ is kept, unchanged, in `NOTEPAD-PLUS-PLUS-COPYING.txt`.
 
 Changed from upstream: `lexilla/lexers/LexUser.cxx`, the one file that kept Lexilla from building
 on macOS - `#include <windows.h>` is now inside `#ifdef _WIN32` (nothing in the file needs it), and
