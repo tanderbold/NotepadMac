@@ -818,9 +818,11 @@ int NppMacRunTests(AppDelegate *app) {
 
             // Proper and sentence case, and trim, as Windows does them.
             [ed setDocumentText:@"don't 3rd"];
+            [ed.sci message:SCI_SELECTALL];   // convertSelectedTextTo acts on a selection only
             [ed convertCase:NppCaseProperBlend];
             BOOL proper = [[ed documentText] isEqualToString:@"Don't 3rd"];
             [ed setDocumentText:@"hello. world\n\nnext i am"];
+            [ed.sci message:SCI_SELECTALL];   // convertSelectedTextTo acts on a selection only
             [ed convertCase:NppCaseSentenceBlend];
             BOOL sentence = [[ed documentText] isEqualToString:@"Hello. World\n\nNext I am"];
             [ed setDocumentText:@"a\u00A0 \t\n"];
@@ -969,9 +971,11 @@ int NppMacRunTests(AppDelegate *app) {
             [ed sortLines:NppSortLexicographic descending:NO];
             BOOL afterTab = [[ed documentText] isEqualToString:@"\ty a\n\tz b\n\tx c\n"];
             [ed setDocumentText:@"DON'T 3RD"];
+            [ed.sci message:SCI_SELECTALL];   // convertSelectedTextTo acts on a selection only
             [ed convertCase:NppCaseProperForce];
             BOOL force = [[ed documentText] isEqualToString:@"Don't 3rd"];
             [ed setDocumentText:@"\"go.\" she said (i) i am"];
+            [ed.sci message:SCI_SELECTALL];   // convertSelectedTextTo acts on a selection only
             [ed convertCase:NppCaseSentenceBlend];
             BOOL sentence = [[ed documentText] isEqualToString:@"\"Go.\" she said (i) I am"];
             [ed closeDocumentAtIndex:ed.documents.count - 1 discardChanges:YES];
@@ -3223,6 +3227,20 @@ int NppMacRunTests(AppDelegate *app) {
             Check(cases[i].cmd, [NSString stringWithFormat:@"%@ -> %@", cases[i].in, cases[i].want],
                   [DocText(ed) isEqualToString:cases[i].want]);
         }
+        SetDoc(ed, @"keep\n");
+        [sci message:SCI_SETEMPTYSELECTION wParam:2];
+        [ed convertCase:NppCaseUpper];
+        Check(@"IDM_EDIT_UPPERCASE", @"with nothing selected nothing changes (convertSelectedTextTo)",
+              [DocText(ed) isEqualToString:@"keep\n"]);
+        // The same letters on both lines: a rectangle is made by pixels, and a proportional font
+        // (no Consolas on the Mac) would make "ab" and "ef" differ in width.
+        SetDoc(ed, @"ab cd\nab gh\n");
+        [sci message:SCI_SETRECTANGULARSELECTIONANCHOR wParam:0];
+        [sci message:SCI_SETRECTANGULARSELECTIONCARET wParam:8];
+        [ed convertCase:NppCaseUpper];
+        Check(@"IDM_EDIT_UPPERCASE", @"a rectangular selection converts only the rectangle",
+              [DocText(ed) isEqualToString:@"AB cd\nAB gh\n"]);
+        [sci message:SCI_SETEMPTYSELECTION wParam:0];
         // Random case is non-deterministic; assert the invariant instead.
         SetDoc(ed, @"abcdefgh");
         [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
@@ -3329,7 +3347,10 @@ int NppMacRunTests(AppDelegate *app) {
             {NppTrimLeading,        @"   a\n\tb\n", @"a\nb\n",     @"IDM_EDIT_TRIMLINEHEAD"},
             {NppTrimBoth,           @"  a  \n",      @"a\n",         @"IDM_EDIT_TRIM_BOTH"},
             {NppTabToSpace,         @"\ta\n",        @"    a\n",     @"IDM_EDIT_TAB2SW"},
-            {NppSpaceToTabAll,      @"    a    b\n",  @"\ta\tb\n",   @"IDM_EDIT_SW2TAB_ALL"},
+            // wsTabConvert: the spaces reaching the stop after "a" become a tab, the one past
+            // it stays, so "b" keeps its column (9).
+            {NppSpaceToTabAll,      @"    a    b\n",  @"\ta\t b\n",  @"IDM_EDIT_SW2TAB_ALL"},
+            {NppTabToSpace,         @"ab\t\tc\n",     @"ab      c\n", @"IDM_EDIT_TAB2SW"},   // to the next stop, not 4 each
             {NppSpaceToTabLeading,  @"    a    b\n",  @"\ta    b\n",  @"IDM_EDIT_SW2TAB_LEADING"},
         };
         for (size_t i = 0; i < sizeof(trims)/sizeof(trims[0]); ++i) {
@@ -3338,6 +3359,14 @@ int NppMacRunTests(AppDelegate *app) {
             Check(trims[i].cmd, @"transforms whitespace as expected",
                   [DocText(ed) isEqualToString:trims[i].want]);
         }
+
+        SetDoc(ed, @"\ta\n\tb\n");
+        [sci message:SCI_SETRECTANGULARSELECTIONANCHOR wParam:0];
+        [sci message:SCI_SETRECTANGULARSELECTIONCARET wParam:4];
+        [ed applyTrim:NppTabToSpace];
+        Check(@"IDM_EDIT_TAB2SW", @"a rectangular selection is left alone (block selection is not supported)",
+              [DocText(ed) isEqualToString:@"\ta\n\tb\n"]);
+        [sci message:SCI_SETEMPTYSELECTION wParam:0];
 
         SetDoc(ed, @"a\nb\n");
         [ed applyTrim:NppTrimEOLToSpace];
@@ -3431,6 +3460,14 @@ int NppMacRunTests(AppDelegate *app) {
         [ed copyToClipboard:[ed allDocumentPaths]];
         Check(@"IDM_EDIT_COPY_ALL_PATHS", @"clipboard lists every tab path",
               [[[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString] containsString:p]);
+        [ed newDocument];
+        NSString *untitledName = ed.currentDocument.displayName;
+        [app performMenuCommandAtPath:@"Edit|Copy to Clipboard|Copy Current Full File path"];
+        BOOL fullIsName = [[[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString] isEqualToString:untitledName];
+        BOOL listed = [[[ed allDocumentPaths] componentsSeparatedByString:@"\n"] containsObject:untitledName];
+        Check(@"IDM_EDIT_FULLPATHTOCLIP", @"an untitled document's full path is its name, and Copy All File Paths lists it",
+              fullIsName && listed);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
 
         SetDoc(ed, @"");
         [ed insertDateTimeShort:YES];
@@ -5529,6 +5566,17 @@ int NppMacRunTests(AppDelegate *app) {
                   textOK && bomOK);
         }
 
+        {
+            NSMenuItem *toLF = nil;
+            for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+                for (NSMenuItem *it in top.submenu.itemArray)
+                    if (it.action == NSSelectorFromString(@"eolLF:")) toLF = it;   // Encoding > EOL Conversion
+            [ed convertEOLTo:SC_EOL_LF];
+            BOOL greyed = ![(id<NSMenuItemValidation>)app validateMenuItem:toLF];
+            [ed convertEOLTo:SC_EOL_CRLF];
+            Check(@"IDM_FORMAT_TOUNIX", @"the conversion to the format the document has is greyed out",
+                  toLF && greyed && [(id<NSMenuItemValidation>)app validateMenuItem:toLF]);
+        }
         SetDoc(ed, @"a\r\nb\r\n");
         [ed convertEOLTo:SC_EOL_LF];
         Check(@"IDM_FORMAT_TOUNIX", @"CRLF becomes LF", ![DocText(ed) containsString:@"\r"]);

@@ -2898,6 +2898,10 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // enableConvertMenuItems: the conversion to the format the document has is greyed out.
+    if (a == @selector(eolCRLF:)) return self.editor.currentDocument.eolMode != SC_EOL_CRLF;
+    if (a == @selector(eolLF:))   return self.editor.currentDocument.eolMode != SC_EOL_LF;
+    if (a == @selector(eolCR:))   return self.editor.currentDocument.eolMode != SC_EOL_CR;
     // Notepad_plus::checkMacroState: the Macro menu follows the recording.
     if (a == @selector(macroStart:) || a == @selector(macroStop:) || a == @selector(macroPlay:) ||
         a == @selector(macroSave:) || a == @selector(macroRunMultiple:)) {
@@ -3357,7 +3361,9 @@ static BOOL NppForwardToFieldEditor(SEL action, id sender) {
 - (void)readOnlyAll:(id)sender       { [self.editor setReadOnlyForAllDocuments:YES]; }
 - (void)clearReadOnlyAll:(id)sender  { [self.editor setReadOnlyForAllDocuments:NO]; }
 
-- (void)copyFullPath:(id)sender  { [self.editor copyToClipboard:self.editor.currentDocument.path ?: @""]; }
+// IDM_EDIT_FULLPATHTOCLIP copies getFullPathName, which for an untitled buffer is its name ("new 1").
+- (void)copyFullPath:(id)sender  { NppDocument *d = self.editor.currentDocument;
+                                   [self.editor copyToClipboard:d.path ?: (d.displayName ?: @"")]; }
 - (void)copyFileName:(id)sender  { [self.editor copyToClipboard:self.editor.currentDocument.displayName]; }
 - (void)copyDirPath:(id)sender   { [self.editor copyToClipboard:[self.editor containingFolderURL].path ?: @""]; }
 - (void)copyAllNames:(id)sender  { [self.editor copyToClipboard:[self.editor allDocumentNames]]; }

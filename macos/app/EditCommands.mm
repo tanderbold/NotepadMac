@@ -2,6 +2,7 @@
 #import "LanguageCatalog.h"
 #import "ScintillaView.h"
 #import "SettingsCommands.h"
+#include <string>
 
 #pragma mark - Byte/character bridging
 
@@ -54,6 +55,96 @@ static NSString *LineBody(NSString *line) {
 
 static NSString *LineEnding(NSString *line) {
     return [line substringFromIndex:LineBody(line).length];
+}
+
+/// Notepad_plus::wsTabConvert, tab2Space, for one line's bytes (no line end):
+/// each tab becomes the spaces up to the next tab stop.
+static std::string TabsToSpaces(const std::string &source, long tabWidth) {
+    std::string dest;
+    long column = 0;
+    for (char ch : source) {
+        if (ch == '\t') {
+            long insert = tabWidth - (column % tabWidth);
+            dest.append((size_t)insert, ' ');
+            column += insert;
+        } else {
+            dest.push_back(ch);
+            if (((unsigned char)ch & 0xC0) != 0x80) ++column;   // count UTF-8 lead bytes only
+        }
+    }
+    return dest;
+}
+
+/// Notepad_plus::wsTabConvert, space2TabAll / space2TabLeading, for one line:
+/// spaces that reach a tab stop become a tab, a single space stays unless a
+/// space or tab follows it, spaces before a tab are absorbed by it.
+static std::string SpacesToTabs(const std::string &line, long tabWidth, bool onlyLeading) {
+    std::string src = line;
+    src.push_back('\0');   // upstream reads source[i + counter] up to the terminator
+    std::string dest;
+    long column = 0, tabStop = tabWidth - 1;
+    bool nextChar = false, nonSpaceFound = false;
+    int counter = 0;
+    for (size_t i = 0; src[i] != '\0'; ++i) {
+        if (!nonSpaceFound) {
+            while (src[i + counter] == ' ') {
+                if (column + counter == tabStop) {
+                    tabStop += tabWidth;
+                    if (counter >= 1) {
+                        dest.push_back('\t');
+                        i += counter;
+                        column += counter + 1;
+                        counter = 0;
+                        nextChar = true;
+                        break;
+                    } else if (src[i + 1] == ' ' || src[i + 1] == '\t') {
+                        dest.push_back('\t');
+                        i++;
+                        column += 1;
+                        counter = 0;
+                    } else {
+                        dest.push_back(src[i]);
+                        column += 1;
+                        counter = 0;
+                        nextChar = true;
+                        break;
+                    }
+                } else {
+                    ++counter;
+                }
+            }
+            if (nextChar) { nextChar = false; continue; }
+            if (src[i] == ' ' && src[i + counter] == '\t') {
+                dest.push_back('\t');
+                i += counter;
+                column = tabStop + 1;
+                tabStop += tabWidth;
+                counter = 0;
+                continue;
+            }
+        }
+        if (onlyLeading && !nonSpaceFound) nonSpaceFound = true;
+        if (src[i] == '\t') {
+            dest.push_back(src[i]);
+            column = tabStop + 1;
+            tabStop += tabWidth;
+            counter = 0;
+        } else {
+            dest.push_back(src[i]);
+            counter = 0;
+            if (((unsigned char)src[i] & 0xC0) != 0x80) {
+                ++column;
+                if (column > 0 && column % tabWidth == 0) tabStop += tabWidth;
+            }
+        }
+    }
+    return dest;
+}
+
+static NSString *ConvertLineBytes(NSString *line, std::string (^convert)(const std::string &)) {
+    const char *utf8 = line.UTF8String ?: "";
+    std::string out = convert(std::string(utf8));
+    return [[NSString alloc] initWithBytes:out.data() length:out.size() encoding:NSUTF8StringEncoding] ?: line;
 }
 
 @implementation EditorController (EditCommands)
@@ -258,8 +349,50 @@ static NSString *ApplyCase(NSString *s, NppCaseMode mode) {
     return s;
 }
 
+// ScintillaEditView::convertSelectedTextTo: each piece of a multiple or
+// rectangular selection is converted on its own; a single selection only
+// when it holds something - with nothing selected nothing changes.
 - (void)convertCase:(NppCaseMode)mode {
-    [self transformSelectedText:^NSString *(NSString *sel) { return ApplyCase(sel, mode); }];
+    ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETREADONLY]) { NppBeep(); return; }
+    long count = [sci message:SCI_GETSELECTIONS];
+    if (count <= 1) {
+        if ([sci message:SCI_GETSELECTIONSTART] == [sci message:SCI_GETSELECTIONEND]) return;
+        [self transformSelectedText:^NSString *(NSString *sel) { return ApplyCase(sel, mode); }];
+        return;
+    }
+    NSMutableArray<NSArray<NSNumber *> *> *pieces = [NSMutableArray array];
+    for (long i = 0; i < count; ++i) {
+        [pieces addObject:@[@([sci message:SCI_GETSELECTIONNSTART wParam:(uptr_t)i]),
+                            @([sci message:SCI_GETSELECTIONNEND wParam:(uptr_t)i]),
+                            @([sci message:SCI_GETSELECTIONNANCHOR wParam:(uptr_t)i] > [sci message:SCI_GETSELECTIONNCARET wParam:(uptr_t)i])]];
+    }
+    [pieces sortUsingComparator:^NSComparisonResult(NSArray *a, NSArray *b) { return [a[0] compare:b[0]]; }];
+    NSData *doc = [self.documentText dataUsingEncoding:NSUTF8StringEncoding];
+    long delta = 0;
+    NSMutableArray<NSArray<NSNumber *> *> *placed = [NSMutableArray array];
+    [sci message:SCI_BEGINUNDOACTION];
+    for (NSArray<NSNumber *> *piece in pieces) {
+        long a = piece[0].longValue, b = piece[1].longValue;
+        NSString *converted = ApplyCase(StringFromBytes(doc, a, b), mode);
+        long newLength = Utf8Length(converted);
+        if (b > a) {
+            [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)(a + delta) lParam:b + delta];
+            [sci setStringProperty:SCI_REPLACETARGET parameter:newLength value:converted];
+        }
+        [placed addObject:@[@(a + delta), @(a + delta + newLength), piece[2]]];
+        delta += newLength - (b - a);
+    }
+    [sci message:SCI_ENDUNDOACTION];
+    // The same pieces stay selected, each with its caret where it was.
+    for (NSUInteger i = 0; i < placed.count; ++i) {
+        long start = placed[i][0].longValue, end = placed[i][1].longValue;
+        BOOL caretFirst = placed[i][2].boolValue;
+        uptr_t caret = (uptr_t)(caretFirst ? start : end);
+        sptr_t anchor = caretFirst ? end : start;
+        [sci message:i == 0 ? SCI_SETSELECTION : SCI_ADDSELECTION wParam:caret lParam:anchor];
+    }
+    [self refreshChrome];
 }
 
 #pragma mark - Sorting
@@ -568,6 +701,11 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
 - (void)applyTrim:(NppTrimMode)mode {
     long tabWidth = [self.sci message:SCI_GETTABWIDTH];
     if (tabWidth <= 0) tabWidth = 4;
+    if (mode == NppTabToSpace || mode == NppSpaceToTabAll || mode == NppSpaceToTabLeading) {
+        // wsTabConvert: "block selection is not supported".
+        long selMode = [self.sci message:SCI_GETSELECTIONMODE];
+        if (selMode == SC_SEL_RECTANGLE || selMode == SC_SEL_THIN) return;
+    }
 
     if (mode == NppTrimEOLToSpace || mode == NppTrimAll) {
         [self transformSelectedLines:^NSArray *(NSArray *bodies) {
@@ -586,7 +724,6 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
         NSMutableArray *out = [NSMutableArray array];
         // Tabs and spaces, as Windows trims: a no-break space is content.
         NSCharacterSet *ws = [NSCharacterSet characterSetWithCharactersInString:@" \t"];
-        NSString *spaces = [@"" stringByPaddingToLength:(NSUInteger)tabWidth withString:@" " startingAtIndex:0];
         for (NSString *line in bodies) {
             NSString *r = line;
             switch (mode) {
@@ -606,17 +743,12 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
                     r = [r stringByTrimmingCharactersInSet:ws];
                     break;
                 case NppTabToSpace:
-                    r = [r stringByReplacingOccurrencesOfString:@"\t" withString:spaces];
+                    r = ConvertLineBytes(r, ^std::string(const std::string &b) { return TabsToSpaces(b, tabWidth); });
                     break;
                 case NppSpaceToTabAll:
-                    r = [r stringByReplacingOccurrencesOfString:spaces withString:@"\t"];
-                    break;
                 case NppSpaceToTabLeading: {
-                    NSUInteger i = 0;
-                    while (i < r.length && [ws characterIsMember:[r characterAtIndex:i]]) i++;
-                    NSString *indent = [[r substringToIndex:i]
-                        stringByReplacingOccurrencesOfString:spaces withString:@"\t"];
-                    r = [indent stringByAppendingString:[r substringFromIndex:i]];
+                    bool leading = mode == NppSpaceToTabLeading;
+                    r = ConvertLineBytes(r, ^std::string(const std::string &b) { return SpacesToTabs(b, tabWidth, leading); });
                     break;
                 }
                 default: break;
@@ -670,7 +802,9 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
 
 - (NSString *)allDocumentPaths {
     NSMutableArray *out = [NSMutableArray array];
-    for (NppDocument *d in self.documents) if (d.path) [out addObject:d.path];
+    // IDM_EDIT_COPY_ALL_PATHS lists every tab: an untitled one by its name, which is
+    // what getFullPathName holds for it.
+    for (NppDocument *d in self.documents) [out addObject:d.path ?: (d.displayName ?: @"")];
     return [out componentsJoinedByString:@"\n"];
 }
 
