@@ -195,4 +195,15 @@
     <!-- Status bar: the path field -->
     <Item english="Click to copy the full path" text="Chofoza ukuze ukopishe indlela egcwele"/>
     <Item english="Copied: $STR_REPLACE$" text="Kukopishiwe: $STR_REPLACE$"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Izinombolo ezikhethiwe"/>
+    <Item english="Sum" text="Isamba"/>
+    <Item english="Average" text="Isilinganiso"/>
+    <Item english="Count" text="Isibalo"/>
+    <Item english="Sort Ascending" text="Hlunga ngokukhuphuka"/>
+    <Item english="Sort Descending" text="Hlunga ngokwehla"/>
+    <Item english="Copy" text="Kopisha"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Bala"/>
+    <Item english="Cannot calculate" text="Ayikwazi ukubala"/>
 </NativeLangExtra>

@@ -219,6 +219,10 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)refreshChrome;                            // tab titles + status bar
 /// What a click on the path in the status bar does: the full path to the clipboard, "Copied" shown for a moment.
 - (void)copyPathFromStatusBar;
+/// Text to the clipboard, with "Copied: <text>" in the status bar for a moment.
+- (void)copyText:(NSString *)text;
+/// A message in the status bar's path field for a moment.
+- (void)flashStatus:(NSString *)message;
 - (void)setChromeVisible:(BOOL)visible;           // hides tab bar + status bar
 - (BOOL)chromeVisible;
 

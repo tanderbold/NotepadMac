@@ -310,4 +310,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Braith línte bogtha"/>
     <Item english="Detect Character Differences" text="Braith difríochtaí carachtar"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Uimhreacha roghnaithe"/>
+    <Item english="Sum" text="Suim"/>
+    <Item english="Average" text="Meán"/>
+    <Item english="Minimum" text="Íosmhéid"/>
+    <Item english="Maximum" text="Uasmhéid"/>
+    <Item english="Count" text="Líon"/>
+    <Item english="Sort Ascending" text="Sórtáil in ord ardaitheach"/>
+    <Item english="Sort Descending" text="Sórtáil in ord íslitheach"/>
+    <Item english="Copy" text="Cóipeáil"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Ríomh"/>
+    <Item english="Division by zero" text="Roinnt ar nialas"/>
+    <Item english="Cannot calculate" text="Ní féidir ríomh"/>
 </NativeLangExtra>

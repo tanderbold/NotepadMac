@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="ਥਾਂ ਬਦਲੀਆਂ ਲਾਈਨਾਂ ਖੋਜੋ"/>
     <Item english="Detect Character Differences" text="ਅੱਖਰਾਂ ਦੇ ਫਰਕ ਖੋਜੋ"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="ਚੁਣੀਆਂ ਸੰਖਿਆਵਾਂ"/>
+    <Item english="Sum" text="ਜੋੜ"/>
+    <Item english="Average" text="ਔਸਤ"/>
+    <Item english="Minimum" text="ਘੱਟੋ-ਘੱਟ"/>
+    <Item english="Maximum" text="ਵੱਧ ਤੋਂ ਵੱਧ"/>
+    <Item english="Count" text="ਗਿਣਤੀ"/>
+    <Item english="Sort Ascending" text="ਵੱਧਦੇ ਕ੍ਰਮ ਵਿੱਚ ਕ੍ਰਮਬੱਧ ਕਰੋ"/>
+    <Item english="Sort Descending" text="ਘੱਟਦੇ ਕ੍ਰਮ ਵਿੱਚ ਕ੍ਰਮਬੱਧ ਕਰੋ"/>
+    <Item english="Copy" text="ਕਾਪੀ"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="ਗਣਨਾ ਕਰੋ"/>
+    <Item english="Division by zero" text="ਜ਼ੀਰੋ ਨਾਲ ਭਾਗ"/>
+    <Item english="Cannot calculate" text="ਗਣਨਾ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ"/>
 </NativeLangExtra>

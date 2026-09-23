@@ -301,4 +301,12 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Detectar os movimientos"/>
     <Item english="Detect Character Differences" text="Detectar as diferencias de caracters"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Numeros seleccionaus"/>
+    <Item english="Sum" text="Suma"/>
+    <Item english="Minimum" text="Minimo"/>
+    <Item english="Maximum" text="Maximo"/>
+    <Item english="Copy" text="Copiar"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcular"/>
 </NativeLangExtra>

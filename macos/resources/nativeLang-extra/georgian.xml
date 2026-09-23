@@ -328,4 +328,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="გადატანების აღმოჩენა"/>
     <Item english="Detect Character Differences" text="სიმბოლოთა განსხვავებების აღმოჩენა"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="მონიშნული რიცხვები"/>
+    <Item english="Sum" text="ჯამი"/>
+    <Item english="Average" text="საშუალო"/>
+    <Item english="Minimum" text="მინიმუმი"/>
+    <Item english="Maximum" text="მაქსიმუმი"/>
+    <Item english="Count" text="რაოდენობა"/>
+    <Item english="Sort Ascending" text="ზრდადობით დახარისხება"/>
+    <Item english="Sort Descending" text="კლებადობით დახარისხება"/>
+    <Item english="Copy" text="კოპირება"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="გამოთვლა"/>
+    <Item english="Division by zero" text="ნულზე გაყოფა"/>
+    <Item english="Cannot calculate" text="გამოთვლა შეუძლებელია"/>
 </NativeLangExtra>

@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="检测移动"/>
     <Item english="Detect Character Differences" text="检测字符差异"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="选中的数字"/>
+    <Item english="Sum" text="求和"/>
+    <Item english="Average" text="平均值"/>
+    <Item english="Minimum" text="最小值"/>
+    <Item english="Maximum" text="最大值"/>
+    <Item english="Count" text="计数"/>
+    <Item english="Sort Ascending" text="升序排列"/>
+    <Item english="Sort Descending" text="降序排列"/>
+    <Item english="Copy" text="复制"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="计算"/>
+    <Item english="Division by zero" text="除数为零"/>
+    <Item english="Cannot calculate" text="无法计算"/>
 </NativeLangExtra>

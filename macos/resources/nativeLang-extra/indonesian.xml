@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Deteksi Perpindahan"/>
     <Item english="Detect Character Differences" text="Deteksi Perbedaan Karakter"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Angka Terpilih"/>
+    <Item english="Sum" text="Jumlah"/>
+    <Item english="Average" text="Rata-rata"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maksimum"/>
+    <Item english="Count" text="Hitungan"/>
+    <Item english="Sort Ascending" text="Urutkan Menanjak"/>
+    <Item english="Sort Descending" text="Urutkan Menurun"/>
+    <Item english="Copy" text="Salin"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Hitung"/>
+    <Item english="Division by zero" text="Pembagian dengan nol"/>
+    <Item english="Cannot calculate" text="Tidak dapat menghitung"/>
 </NativeLangExtra>

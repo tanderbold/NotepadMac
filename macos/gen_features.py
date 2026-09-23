@@ -131,6 +131,12 @@ leans the other way:
 
 **And besides the menus:**
 
+- Selected numbers: the context menu writes a selected set of numbers' sum,
+  average, minimum, maximum or count after them and sorts them in place; Edit >
+  Calculate (Cmd+=) writes a formula's value after its "=" - the selected
+  formula or the one being typed - with functions (sin, ln, log, sqrt...),
+  degrees, constants and percent.
+
 - When a file's name says nothing, a trained model recognises the language of
   the text — 91 languages, no hand-written rules.
 - The interface is localized into ~90 languages, the port's own strings

@@ -145,4 +145,12 @@
     <Item english="Pos: " text="Pos: "/>
     <Item english="Sel: " text="Sel: "/>
     <Item english="Sel" text="Sel"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Numeri seleçionæ"/>
+    <Item english="Sum" text="Somma"/>
+    <Item english="Average" text="Media"/>
+    <Item english="Minimum" text="Minimo"/>
+    <Item english="Copy" text="Còpia"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcola"/>
 </NativeLangExtra>

@@ -66,4 +66,8 @@
     <Item english="Options" text="Ozionis"/>
     <!-- Git -->
     <Item english="Compare with HEAD" text="Comparal con HEAD"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Copy" text="Copial"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calculal"/>
 </NativeLangExtra>

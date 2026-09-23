@@ -230,4 +230,17 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Rileva is movimentos"/>
     <Item english="Detect Character Differences" text="Rileva is diferèntzias de caràteres"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Nùmeros seletzionados"/>
+    <Item english="Sum" text="Summa"/>
+    <Item english="Average" text="Mèdia"/>
+    <Item english="Minimum" text="Mìnimu"/>
+    <Item english="Maximum" text="Màssimu"/>
+    <Item english="Count" text="Cantidade"/>
+    <Item english="Sort Ascending" text="Òrdina in manera creschente"/>
+    <Item english="Sort Descending" text="Òrdina in manera decreschente"/>
+    <Item english="Copy" text="Còpia"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Càlcula"/>
+    <Item english="Cannot calculate" text="Non si podet calculare"/>
 </NativeLangExtra>

@@ -328,4 +328,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Antzeman Mugimenduak"/>
     <Item english="Detect Character Differences" text="Antzeman Karaktere Desberdintasunak"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Hautatutako zenbakiak"/>
+    <Item english="Sum" text="Batura"/>
+    <Item english="Average" text="Batez bestekoa"/>
+    <Item english="Minimum" text="Minimoa"/>
+    <Item english="Maximum" text="Maximoa"/>
+    <Item english="Count" text="Kopurua"/>
+    <Item english="Sort Ascending" text="Ordenatu gorantz"/>
+    <Item english="Sort Descending" text="Ordenatu beherantz"/>
+    <Item english="Copy" text="Kopiatu"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Kalkulatu"/>
+    <Item english="Division by zero" text="Zeroz zatitzea"/>
+    <Item english="Cannot calculate" text="Ezin da kalkulatu"/>
 </NativeLangExtra>

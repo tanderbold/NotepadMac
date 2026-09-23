@@ -344,4 +344,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="తరలింపులను గుర్తించు"/>
     <Item english="Detect Character Differences" text="క్యారెక్టర్ తేడాలను గుర్తించు"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="ఎంచుకున్న సంఖ్యలు"/>
+    <Item english="Sum" text="మొత్తం"/>
+    <Item english="Average" text="సగటు"/>
+    <Item english="Minimum" text="కనిష్ఠం"/>
+    <Item english="Maximum" text="గరిష్ఠం"/>
+    <Item english="Count" text="గణన"/>
+    <Item english="Sort Ascending" text="ఆరోహణ క్రమంలో క్రమబద్ధీకరించు"/>
+    <Item english="Sort Descending" text="అవరోహణ క్రమంలో క్రమబద్ధీకరించు"/>
+    <Item english="Copy" text="కాపీ"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="లెక్కించు"/>
+    <Item english="Division by zero" text="సున్నాతో భాగహారం"/>
+    <Item english="Cannot calculate" text="లెక్కించడం సాధ్యం కాలేదు"/>
 </NativeLangExtra>

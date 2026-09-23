@@ -1,6 +1,7 @@
 #include <string>
 #import "EditorController.h"
 #import "Localization.h"
+#import "NumberSetCommands.h"
 #import "ProjectPanel.h"
 #import "CharsetDetection.h"
 #import "UserLanguages.h"
@@ -2438,6 +2439,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         }
         return;
     }
+    // A selected formula gets Calculate, a selected set of numbers its sum,
+    // average... and sorting, on top.
+    for (NSMenuItem *item in [self formulaMenuItems]) [menu addItem:item];
+    for (NSMenuItem *item in [self numberSetMenuItems]) [menu addItem:item];
     // A misspelled word under the caret puts the engine's guesses on top,
     // the way every Mac text field does.
     for (NSMenuItem *item in [self spellingMenuItemsForPosition:
@@ -2593,11 +2598,19 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 - (void)copyPathFromStatusBar {
     NSString *path = self.currentDocument.path;
     if (!path) { NppBeep(); return; }
+    [self copyText:path];
+}
+
+- (void)copyText:(NSString *)text {
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     [pb clearContents];
-    [pb setString:path forType:NSPasteboardTypeString];
+    [pb setString:text forType:NSPasteboardTypeString];
+    [self flashStatus:[NSString stringWithFormat:@"✓ %@", NppLMessage(@"Copied: $STR_REPLACE$", text, 0)]];
+}
+
+- (void)flashStatus:(NSString *)message {
     [self.copiedTimer invalidate];
-    self.pathField.stringValue = [NSString stringWithFormat:@"✓ %@", NppLMessage(@"Copied: $STR_REPLACE$", path, 0)];
+    self.pathField.stringValue = message;
     [self layoutStatusFields];
     __weak EditorController *weakSelf = self;
     self.copiedTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 repeats:NO block:^(NSTimer *t) {

@@ -339,4 +339,17 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Зөөлтийг илрүүлэх"/>
     <Item english="Detect Character Differences" text="Тэмдэгтийн ялгааг илрүүлэх"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Сонгосон тоонууд"/>
+    <Item english="Sum" text="Нийлбэр"/>
+    <Item english="Average" text="Дундаж"/>
+    <Item english="Minimum" text="Хамгийн бага"/>
+    <Item english="Maximum" text="Хамгийн их"/>
+    <Item english="Count" text="Тоо ширхэг"/>
+    <Item english="Sort Ascending" text="Өсөх дарааллаар эрэмбэлэх"/>
+    <Item english="Sort Descending" text="Буурах дарааллаар эрэмбэлэх"/>
+    <Item english="Copy" text="Хуулах"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Тооцоолох"/>
+    <Item english="Cannot calculate" text="Тооцоолж чадсангүй"/>
 </NativeLangExtra>

@@ -276,4 +276,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Tuklasin ang mga Paglipat"/>
     <Item english="Detect Character Differences" text="Tuklasin ang mga Pagkakaiba ng Karakter"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Mga Napiling Numero"/>
+    <Item english="Sum" text="Kabuuan"/>
+    <Item english="Average" text="Katamtaman"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Bilang"/>
+    <Item english="Sort Ascending" text="Ayusin nang Pataas"/>
+    <Item english="Sort Descending" text="Ayusin nang Pababa"/>
+    <Item english="Copy" text="Sipiin"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Kalkulahin"/>
+    <Item english="Division by zero" text="Paghahati sa zero"/>
+    <Item english="Cannot calculate" text="Hindi makalkula"/>
 </NativeLangExtra>

@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Zisťovať presuny"/>
     <Item english="Detect Character Differences" text="Zisťovať rozdiely v znakoch"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Vybrané čísla"/>
+    <Item english="Sum" text="Súčet"/>
+    <Item english="Average" text="Priemer"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Počet"/>
+    <Item english="Sort Ascending" text="Usporiadať vzostupne"/>
+    <Item english="Sort Descending" text="Usporiadať zostupne"/>
+    <Item english="Copy" text="Kopírovať"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Vypočítať"/>
+    <Item english="Division by zero" text="Delenie nulou"/>
+    <Item english="Cannot calculate" text="Nedá sa vypočítať"/>
 </NativeLangExtra>

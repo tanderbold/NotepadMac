@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Detectează mutările"/>
     <Item english="Detect Character Differences" text="Detectează diferențele de caractere"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Numere selectate"/>
+    <Item english="Sum" text="Sumă"/>
+    <Item english="Average" text="Medie"/>
+    <Item english="Minimum" text="Minim"/>
+    <Item english="Maximum" text="Maxim"/>
+    <Item english="Count" text="Număr"/>
+    <Item english="Sort Ascending" text="Sortează crescător"/>
+    <Item english="Sort Descending" text="Sortează descrescător"/>
+    <Item english="Copy" text="Copiere"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calculează"/>
+    <Item english="Division by zero" text="Împărțire la zero"/>
+    <Item english="Cannot calculate" text="Nu se poate calcula"/>
 </NativeLangExtra>

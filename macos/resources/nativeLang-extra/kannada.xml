@@ -253,4 +253,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="ಡಿಟೆಕ್ಟ್ ಮೂವ್ಸ್"/>
     <Item english="Detect Character Differences" text="ಡಿಟೆಕ್ಟ್ ಕ್ಯಾರಕ್ಟರ್ ಡಿಫರೆನ್ಸಸ್"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="ಸೆಲೆಕ್ಟೆಡ್ ನಂಬರ್ಸ್"/>
+    <Item english="Sum" text="ಸಮ್"/>
+    <Item english="Average" text="ಆವರೇಜ್"/>
+    <Item english="Minimum" text="ಮಿನಿಮಮ್"/>
+    <Item english="Maximum" text="ಮ್ಯಾಕ್ಸಿಮಮ್"/>
+    <Item english="Count" text="ಕೌಂಟ್"/>
+    <Item english="Sort Ascending" text="ಸಾರ್ಟ್ ಅಸೆಂಡಿಂಗ್"/>
+    <Item english="Sort Descending" text="ಸಾರ್ಟ್ ಡಿಸೆಂಡಿಂಗ್"/>
+    <Item english="Copy" text="ಕಾಪೀ"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="ಕ್ಯಾಲ್ಕುಲೇಟ್"/>
+    <Item english="Division by zero" text="ಡಿವಿಶನ್ ಬೈ ಜೀರೋ"/>
+    <Item english="Cannot calculate" text="ಕ್ಯಾನಾಟ್ ಕ್ಯಾಲ್ಕುಲೇಟ್"/>
 </NativeLangExtra>

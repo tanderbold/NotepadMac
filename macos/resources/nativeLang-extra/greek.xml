@@ -343,4 +343,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Ανίχνευση μετακινήσεων"/>
     <Item english="Detect Character Differences" text="Ανίχνευση διαφορών χαρακτήρων"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Επιλεγμένοι αριθμοί"/>
+    <Item english="Sum" text="Άθροισμα"/>
+    <Item english="Average" text="Μέσος όρος"/>
+    <Item english="Minimum" text="Ελάχιστο"/>
+    <Item english="Maximum" text="Μέγιστο"/>
+    <Item english="Count" text="Πλήθος"/>
+    <Item english="Sort Ascending" text="Ταξινόμηση με αύξουσα σειρά"/>
+    <Item english="Sort Descending" text="Ταξινόμηση με φθίνουσα σειρά"/>
+    <Item english="Copy" text="Αντιγραφή"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Υπολογισμός"/>
+    <Item english="Division by zero" text="Διαίρεση με το μηδέν"/>
+    <Item english="Cannot calculate" text="Αδυναμία υπολογισμού"/>
 </NativeLangExtra>

@@ -341,4 +341,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="تشخیص جابه‌جایی‌ها"/>
     <Item english="Detect Character Differences" text="تشخیص تفاوت کاراکترها"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="اعداد انتخاب‌شده"/>
+    <Item english="Sum" text="مجموع"/>
+    <Item english="Average" text="میانگین"/>
+    <Item english="Minimum" text="کمینه"/>
+    <Item english="Maximum" text="بیشینه"/>
+    <Item english="Count" text="تعداد"/>
+    <Item english="Sort Ascending" text="مرتب‌سازی صعودی"/>
+    <Item english="Sort Descending" text="مرتب‌سازی نزولی"/>
+    <Item english="Copy" text="کپی"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="محاسبه"/>
+    <Item english="Division by zero" text="تقسیم بر صفر"/>
+    <Item english="Cannot calculate" text="محاسبه ممکن نیست"/>
 </NativeLangExtra>

@@ -335,4 +335,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Prepoznaj premještanja"/>
     <Item english="Detect Character Differences" text="Prepoznaj razlike u znakovima"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Odabrani brojevi"/>
+    <Item english="Sum" text="Zbroj"/>
+    <Item english="Average" text="Prosjek"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maksimum"/>
+    <Item english="Count" text="Broj"/>
+    <Item english="Sort Ascending" text="Sortiraj rastuće"/>
+    <Item english="Sort Descending" text="Sortiraj padajuće"/>
+    <Item english="Copy" text="Kopiraj"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Izračunaj"/>
+    <Item english="Division by zero" text="Dijeljenje s nulom"/>
+    <Item english="Cannot calculate" text="Nije moguće izračunati"/>
 </NativeLangExtra>

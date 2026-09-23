@@ -2,6 +2,7 @@
 //
 // A meta-test cross-checks this file against macos/implemented.txt, so a
 // command cannot be declared implemented without a test covering it.
+#import "NumberSetCommands.h"
 #import "Tests.h"
 #import "AppDelegate.h"
 #import "AppDelegate+Testing.h"
@@ -10301,6 +10302,137 @@ int NppMacRunTests(AppDelegate *app) {
         }
     }
 
+    if (NppSectionWanted(@"Selected numbers")) { printf("\n== Selected numbers ==\n");
+        NppNumberSet *list = [NppNumberSet setFromPieces:@[@"10, 20.5, -3"]];
+        Check(@"Selected numbers", @"sum, average, minimum, maximum and count of a comma list",
+              list.count == 3 && [list.sum isEqualToString:@"27.5"] && [list.average isEqualToString:@"9.1666666667"] &&
+              [list.minimum isEqualToString:@"-3"] && [list.maximum isEqualToString:@"20.5"]);
+        Check(@"Selected numbers", @"decimal arithmetic (0.1 + 0.2 is 0.3), a decimal comma kept in the results",
+              [[NppNumberSet setFromPieces:@[@"0.1\n0.2"]].sum isEqualToString:@"0.3"] &&
+              [[NppNumberSet setFromPieces:@[@"1,5 2,25"]].sum isEqualToString:@"3,75"]);
+        Check(@"Selected numbers", @"words, a lone number or an empty value between commas are not a set",
+              ![NppNumberSet setFromPieces:@[@"1 two 3"]] && ![NppNumberSet setFromPieces:@[@"42"]] &&
+              ![NppNumberSet setFromPieces:@[@"1,,2"]]);
+
+        SetDoc(ed, @"x = [30, 4, 100];\n");
+        [sci message:SCI_SETSEL wParam:5 lParam:15];
+        NSArray<NSMenuItem *> *offer = [ed numberSetMenuItems];
+        NSMenu *sub = offer.firstObject.submenu;
+        Check(@"Selected numbers", @"the context menu offers the five values by name and both sorts",
+              sub.numberOfItems == 8 && [sub.itemArray[0].title isEqualToString:NppL(@"Sum")] &&
+              [sub.itemArray[4].title isEqualToString:NppL(@"Count")] &&
+              sub.itemArray[6].action == NSSelectorFromString(@"numberSetSort:") && sub.itemArray[6].enabled);
+        [ed insertNumberSetValue:NppNumberSetSum];
+        Check(@"Selected numbers", @"Sum writes SUM = <value> after numbers on one line",
+              [DocText(ed) isEqualToString:@"x = [30, 4, 100 SUM = 134];\n"]);
+        [sci message:SCI_UNDO];
+        SetDoc(ed, @"15\n8\n42\nnext\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:7];
+        [ed insertNumberSetValue:NppNumberSetAverage];
+        Check(@"Selected numbers", @"Average of numbers one per line goes on a line of its own under them",
+              [DocText(ed) isEqualToString:@"15\n8\n42\nAVG = 21.6666666667\nnext\n"]);
+        SetDoc(ed, @"15\n8\n42\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:8];
+        [ed insertNumberSetValue:NppNumberSetMaximum];
+        Check(@"Selected numbers", @"a selection that took the last line break: the value is the next line",
+              [DocText(ed) isEqualToString:@"15\n8\n42\nMAX = 42\n"]);
+        SetDoc(ed, @"x = [30, 4, 100];\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        Check(@"Selected numbers", @"no offer when the selection holds other text", [ed numberSetMenuItems].count == 0);
+
+        [sci message:SCI_SETSEL wParam:5 lParam:15];
+        BOOL sorted = [ed sortSelectedNumbersAscending:YES];
+        Check(@"Selected numbers", @"Sort Ascending keeps the separators and the selection",
+              sorted && [DocText(ed) isEqualToString:@"x = [4, 30, 100];\n"] &&
+              [sci message:SCI_GETSELECTIONSTART] == 5 && [sci message:SCI_GETSELECTIONEND] == 15);
+        [ed sortSelectedNumbersAscending:NO];
+        Check(@"Selected numbers", @"Sort Descending", [DocText(ed) isEqualToString:@"x = [100, 30, 4];\n"]);
+        [sci message:SCI_UNDO];
+        [sci message:SCI_UNDO];
+        Check(@"Selected numbers", @"each sort is one undo step", [DocText(ed) isEqualToString:@"x = [30, 4, 100];\n"]);
+
+        SetDoc(ed, @"a 7\nb 5\nc 6\n");
+        [sci message:SCI_SETRECTANGULARSELECTIONANCHOR wParam:2];
+        [sci message:SCI_SETRECTANGULARSELECTIONCARET wParam:11];
+        [ed sortSelectedNumbersAscending:YES];
+        Check(@"Selected numbers", @"a column selection sorts the column only",
+              [DocText(ed) isEqualToString:@"a 5\nb 6\nc 7\n"]);
+
+        SetDoc(ed, @"3 1 2\n");
+        [sci message:SCI_SETREADONLY wParam:1];
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        Check(@"Selected numbers", @"a read-only document is summed but not sorted",
+              [ed numberSetMenuItems].count && !([ed numberSetMenuItems].firstObject.submenu.itemArray[6].enabled) &&
+              ![ed sortSelectedNumbersAscending:YES] && [DocText(ed) isEqualToString:@"3 1 2\n"]);
+        [sci message:SCI_SETREADONLY wParam:0];
+
+        Check(@"Selected numbers (formula)", @"a formula's value: operations, functions, degrees, constants, percent",
+              [[NppFormula formulaFromText:@"2 + 3 * 4 ="].result isEqualToString:@"14"] &&
+              [[NppFormula formulaFromText:@"sin 30° + ln e + log(8; 2) ="].result isEqualToString:@"4.5"] &&
+              [[NppFormula formulaFromText:@"2π ="].result isEqualToString:@"6.2831853072"] &&
+              [[NppFormula formulaFromText:@"200 + 15% ="].result isEqualToString:@"230"] &&
+              [[NppFormula formulaFromText:@"1,5 * 3 ="].result isEqualToString:@"4,5"]);
+        Check(@"Selected numbers (formula)", @"no formula without an operation or with an unknown word; a reason when there is no value",
+              ![NppFormula formulaFromText:@"5 ="] && ![NppFormula formulaFromText:@"x + 1 ="] &&
+              [[NppFormula formulaFromText:@"1/0 ="].problem isEqualToString:@"Division by zero"]);
+
+        SetDoc(ed, @"total: 2^10 - 24 =\n");
+        [sci message:SCI_SETSEL wParam:7 lParam:18];
+        NSArray<NSMenuItem *> *calc = [ed formulaMenuItems];
+        Check(@"Selected numbers (formula)", @"the context menu offers Calculate",
+              calc.count == 2 && [calc[0].title isEqualToString:NppL(@"Calculate")] && calc[0].action != NULL);
+        BOOL wrote = [ed calculateSelectedFormula];
+        Check(@"Selected numbers (formula)", @"Calculate writes the value after the \"=\" and keeps formula and value selected",
+              wrote && [DocText(ed) isEqualToString:@"total: 2^10 - 24 = 1000\n"] &&
+              [sci message:SCI_GETSELECTIONSTART] == 7 && [sci message:SCI_GETSELECTIONEND] == 23);
+        [sci message:SCI_SETSEL wParam:7 lParam:23];
+        [sci message:SCI_SETTARGETRANGE wParam:14 lParam:16];
+        [sci message:SCI_REPLACETARGET wParam:2 lParam:(sptr_t)"23"];
+        [sci message:SCI_SETSEL wParam:7 lParam:23];
+        [ed calculateSelectedFormula];
+        Check(@"Selected numbers (formula)", @"calculating again replaces the old value",
+              [DocText(ed) isEqualToString:@"total: 2^10 - 23 = 1001\n"]);
+        [sci message:SCI_UNDO];
+        Check(@"Selected numbers (formula)", @"one undo step", [DocText(ed) isEqualToString:@"total: 2^10 - 23 = 1000\n"]);
+        SetDoc(ed, @"total: 2 + 3 =");
+        [sci message:SCI_GOTOPOS wParam:14];
+        Check(@"Selected numbers (Cmd+=)", @"without a selection, the formula ending at the caret gets its value, the caret after it",
+              [ed calculateFormulaAtCaret] && [DocText(ed) isEqualToString:@"total: 2 + 3 = 5"] &&
+              [sci message:SCI_GETCURRENTPOS] == 16);
+        [sci message:SCI_GOTOPOS wParam:9];
+        [sci message:SCI_SETTARGETRANGE wParam:11 lParam:12];
+        [sci message:SCI_REPLACETARGET wParam:1 lParam:(sptr_t)"4"];
+        [sci message:SCI_GOTOPOS wParam:14];
+        Check(@"Selected numbers (Cmd+=)", @"an old value after the \"=\" is replaced",
+              [ed calculateFormulaAtCaret] && [DocText(ed) isEqualToString:@"total: 2 + 4 = 6"]);
+        SetDoc(ed, @"x = 2^8");
+        [sci message:SCI_GOTOPOS wParam:7];
+        Check(@"Selected numbers (Cmd+=)", @"with no \"=\" typed it is written too; an assignment's \"=\" is left alone",
+              [ed calculateFormulaAtCaret] && [DocText(ed) isEqualToString:@"x = 2^8=256"]);
+        SetDoc(ed, @"just words");
+        [sci message:SCI_GOTOPOS wParam:10];
+        Check(@"Selected numbers (Cmd+=)", @"no formula, nothing written",
+              ![ed calculateFormulaAtCaret] && [DocText(ed) isEqualToString:@"just words"]);
+        NSMenuItem *calcItem = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+            for (NSMenuItem *it in top.submenu.itemArray)
+                if (it.action == NSSelectorFromString(@"calculateFormula:")) calcItem = it;
+        Check(@"Selected numbers (Cmd+=)", @"Edit > Calculate carries Cmd+=",
+              calcItem && [calcItem.keyEquivalent isEqualToString:@"="] &&
+              calcItem.keyEquivalentModifierMask == NSEventModifierFlagCommand);
+        SetDoc(ed, @"plain");
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        calc = [ed formulaMenuItems];
+        Check(@"Selected numbers (formula)", @"the context menu always has Calculate, disabled unless a formula is selected",
+              calc.count == 2 && calc[0].action == NULL);
+        SetDoc(ed, @"1/0 =\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        calc = [ed formulaMenuItems];
+        Check(@"Selected numbers (formula)", @"a formula without a value (1/0) is offered but left unchanged",
+              calc.count == 2 && ![ed calculateSelectedFormula] && [DocText(ed) isEqualToString:@"1/0 =\n"]);
+        SetDoc(ed, @"");
+    }
+
     if (NppSectionWanted(@"Markdown preview")) { printf("\n== Markdown preview ==\n");
         // The table pre-pass: GFM alignment, escaped pipes, fences left alone.
         NSString *table = @"| Name | N |\n|:-----|--:|\n| a\\|b | **1** |\n";
@@ -10432,9 +10564,14 @@ int NppMacRunTests(AppDelegate *app) {
     if (NppSectionWanted(@"Plugin host")) { printf("\n== Plugin host ==\n");
         // Build the sample plugin with the system compiler, in the Windows
         // plugins\Name\Name layout, and load it through the host.
-        NSString *sdk = [[[NSString stringWithUTF8String:__FILE__]
-                          stringByDeletingLastPathComponent].stringByDeletingLastPathComponent
+        // Beside the build (macos/build/NotepadMac.app -> macos/plugin-sdk), so a checkout copied
+        // elsewhere - a VM, another Mac - finds it; else where this file was compiled.
+        NSString *sdk = [[NSBundle.mainBundle.bundlePath stringByDeletingLastPathComponent].stringByDeletingLastPathComponent
                          stringByAppendingPathComponent:@"plugin-sdk"];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:sdk])
+            sdk = [[[NSString stringWithUTF8String:__FILE__]
+                     stringByDeletingLastPathComponent].stringByDeletingLastPathComponent
+                    stringByAppendingPathComponent:@"plugin-sdk"];
         NSString *sample = [sdk stringByAppendingPathComponent:@"sample/hellomac.c"];
         NSString *root = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-plugin-test"];
         NSString *dir = [root stringByAppendingPathComponent:@"HelloMac"];

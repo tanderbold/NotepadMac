@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Вызначаць перамяшчэнні"/>
     <Item english="Detect Character Differences" text="Вызначаць адрозненні ў сімвалах"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Выбраныя лікі"/>
+    <Item english="Sum" text="Сума"/>
+    <Item english="Average" text="Сярэдняе"/>
+    <Item english="Minimum" text="Мінімум"/>
+    <Item english="Maximum" text="Максімум"/>
+    <Item english="Count" text="Колькасць"/>
+    <Item english="Sort Ascending" text="Сартаваць па ўзрастанні"/>
+    <Item english="Sort Descending" text="Сартаваць па змяншэнні"/>
+    <Item english="Copy" text="Капіяваць"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Вылічыць"/>
+    <Item english="Division by zero" text="Дзяленне на нуль"/>
+    <Item english="Cannot calculate" text="Не ўдаецца вылічыць"/>
 </NativeLangExtra>

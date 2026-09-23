@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Taşımaları Algıla"/>
     <Item english="Detect Character Differences" text="Karakter Farklarını Algıla"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Seçili Sayılar"/>
+    <Item english="Sum" text="Toplam"/>
+    <Item english="Average" text="Ortalama"/>
+    <Item english="Minimum" text="En Küçük"/>
+    <Item english="Maximum" text="En Büyük"/>
+    <Item english="Count" text="Adet"/>
+    <Item english="Sort Ascending" text="Sırala (Artan)"/>
+    <Item english="Sort Descending" text="Sırala (Azalan)"/>
+    <Item english="Copy" text="Kopyala"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Hesapla"/>
+    <Item english="Division by zero" text="Sıfıra bölme"/>
+    <Item english="Cannot calculate" text="Hesaplanamıyor"/>
 </NativeLangExtra>

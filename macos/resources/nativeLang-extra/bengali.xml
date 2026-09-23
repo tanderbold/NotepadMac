@@ -340,4 +340,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="সরানো লাইন সনাক্ত করুন"/>
     <Item english="Detect Character Differences" text="অক্ষরের পার্থক্য সনাক্ত করুন"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="নির্বাচিত সংখ্যাগুলো"/>
+    <Item english="Sum" text="যোগফল"/>
+    <Item english="Average" text="গড়"/>
+    <Item english="Minimum" text="সর্বনিম্ন"/>
+    <Item english="Maximum" text="সর্বোচ্চ"/>
+    <Item english="Count" text="গণনা"/>
+    <Item english="Sort Ascending" text="ঊর্ধ্বক্রমে সাজান"/>
+    <Item english="Sort Descending" text="নিম্নক্রমে সাজান"/>
+    <Item english="Copy" text="কপি"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="গণনা করুন"/>
+    <Item english="Division by zero" text="শূন্য দিয়ে ভাগ"/>
+    <Item english="Cannot calculate" text="গণনা করা যাচ্ছে না"/>
 </NativeLangExtra>

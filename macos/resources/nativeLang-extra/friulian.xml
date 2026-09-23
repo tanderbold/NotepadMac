@@ -277,4 +277,14 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Rileve i spostaments"/>
     <Item english="Detect Character Differences" text="Rileve lis diferencis di caratars"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Numars selezionâts"/>
+    <Item english="Sum" text="Sume"/>
+    <Item english="Average" text="Medie"/>
+    <Item english="Minimum" text="Minim"/>
+    <Item english="Maximum" text="Massim"/>
+    <Item english="Copy" text="Copie"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcole"/>
+    <Item english="Cannot calculate" text="No si pues calcolâ"/>
 </NativeLangExtra>

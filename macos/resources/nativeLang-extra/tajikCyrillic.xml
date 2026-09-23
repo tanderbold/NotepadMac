@@ -333,4 +333,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Ташхиси интиқолҳо"/>
     <Item english="Detect Character Differences" text="Ташхиси фарқиятҳои аломатҳо"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Ададҳои интихобшуда"/>
+    <Item english="Sum" text="Ҷамъ"/>
+    <Item english="Average" text="Миёна"/>
+    <Item english="Minimum" text="Ҳадди ақал"/>
+    <Item english="Maximum" text="Ҳадди аксар"/>
+    <Item english="Count" text="Шумора"/>
+    <Item english="Sort Ascending" text="Мураттабсозӣ бо афзуншавӣ"/>
+    <Item english="Sort Descending" text="Мураттабсозӣ бо камшавӣ"/>
+    <Item english="Copy" text="Нусхагирӣ"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Ҳисоб кардан"/>
+    <Item english="Division by zero" text="Тақсим ба сифр"/>
+    <Item english="Cannot calculate" text="Ҳисоб кардан имконнопазир аст"/>
 </NativeLangExtra>

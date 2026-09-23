@@ -332,4 +332,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Kesan Pemindahan"/>
     <Item english="Detect Character Differences" text="Kesan Perbezaan Aksara"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Nombor Dipilih"/>
+    <Item english="Sum" text="Jumlah"/>
+    <Item english="Average" text="Purata"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maksimum"/>
+    <Item english="Count" text="Bilangan"/>
+    <Item english="Sort Ascending" text="Isih Menaik"/>
+    <Item english="Sort Descending" text="Isih Menurun"/>
+    <Item english="Copy" text="Salin"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Kira"/>
+    <Item english="Division by zero" text="Pembahagian dengan sifar"/>
+    <Item english="Cannot calculate" text="Tidak dapat mengira"/>
 </NativeLangExtra>

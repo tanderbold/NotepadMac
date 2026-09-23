@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Koʻchirishlarni aniqlamoq"/>
     <Item english="Detect Character Differences" text="Belgilar farqini aniqlamoq"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Belgilangan sonlar"/>
+    <Item english="Sum" text="Yigʻindi"/>
+    <Item english="Average" text="Oʻrtacha"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maksimum"/>
+    <Item english="Count" text="Soni"/>
+    <Item english="Sort Ascending" text="Oʻsish boʻyicha saralamoq"/>
+    <Item english="Sort Descending" text="Kamayish boʻyicha saralamoq"/>
+    <Item english="Copy" text="Nusxa olmoq"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Hisoblamoq"/>
+    <Item english="Division by zero" text="Nolga boʻlish"/>
+    <Item english="Cannot calculate" text="Hisoblab boʻlmadi"/>
 </NativeLangExtra>

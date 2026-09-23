@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Oppdag flyttinger"/>
     <Item english="Detect Character Differences" text="Oppdag tegnforskjeller"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Markerte tall"/>
+    <Item english="Sum" text="Sum"/>
+    <Item english="Average" text="Gjennomsnitt"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maksimum"/>
+    <Item english="Count" text="Antall"/>
+    <Item english="Sort Ascending" text="Sorter stigende"/>
+    <Item english="Sort Descending" text="Sorter synkende"/>
+    <Item english="Copy" text="Kopier"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Beregn"/>
+    <Item english="Division by zero" text="Divisjon med null"/>
+    <Item english="Cannot calculate" text="Kan ikke beregne"/>
 </NativeLangExtra>

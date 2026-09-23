@@ -335,4 +335,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Verplaatsingen detecteren"/>
     <Item english="Detect Character Differences" text="Tekenverschillen detecteren"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Geselecteerde getallen"/>
+    <Item english="Sum" text="Som"/>
+    <Item english="Average" text="Gemiddelde"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Aantal"/>
+    <Item english="Sort Ascending" text="Oplopend sorteren"/>
+    <Item english="Sort Descending" text="Aflopend sorteren"/>
+    <Item english="Copy" text="Kopiëren"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Berekenen"/>
+    <Item english="Division by zero" text="Deling door nul"/>
+    <Item english="Cannot calculate" text="Kan niet berekenen"/>
 </NativeLangExtra>

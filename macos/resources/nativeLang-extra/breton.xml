@@ -153,4 +153,15 @@
     <!-- Status bar: the path field -->
     <Item english="Click to copy the full path" text="Klikañ evit eilañ an hent klok"/>
     <Item english="Copied: $STR_REPLACE$" text="Eilet: $STR_REPLACE$"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Niveroù diuzet"/>
+    <Item english="Sum" text="Sammad"/>
+    <Item english="Average" text="Keitad"/>
+    <Item english="Count" text="Niver"/>
+    <Item english="Sort Ascending" text="Rummañ war-greskiñ"/>
+    <Item english="Sort Descending" text="Rummañ war-zigreskiñ"/>
+    <Item english="Copy" text="Eilañ"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Jediñ"/>
+    <Item english="Cannot calculate" text="N'haller ket jediñ"/>
 </NativeLangExtra>

@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="זהה הזזות"/>
     <Item english="Detect Character Differences" text="זהה הבדלים בתווים"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="מספרים נבחרים"/>
+    <Item english="Sum" text="סכום"/>
+    <Item english="Average" text="ממוצע"/>
+    <Item english="Minimum" text="מינימום"/>
+    <Item english="Maximum" text="מקסימום"/>
+    <Item english="Count" text="כמות"/>
+    <Item english="Sort Ascending" text="מיין בסדר עולה"/>
+    <Item english="Sort Descending" text="מיין בסדר יורד"/>
+    <Item english="Copy" text="העתק"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="חשב"/>
+    <Item english="Division by zero" text="חלוקה באפס"/>
+    <Item english="Cannot calculate" text="לא ניתן לחשב"/>
 </NativeLangExtra>

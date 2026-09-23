@@ -52,4 +52,6 @@
     <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Ajerriḍ: $STR_REPLACE1$    Tagejdit: $STR_REPLACE2$"/>
     <Item english="Sel: " text="Tafrayt: "/>
     <Item english="Sel" text="Tafrayt"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Copy" text="Nɣel"/>
 </NativeLangExtra>

@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Phát hiện di chuyển"/>
     <Item english="Detect Character Differences" text="Phát hiện khác biệt kí tự"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Các số được chọn"/>
+    <Item english="Sum" text="Tổng"/>
+    <Item english="Average" text="Trung bình"/>
+    <Item english="Minimum" text="Nhỏ nhất"/>
+    <Item english="Maximum" text="Lớn nhất"/>
+    <Item english="Count" text="Số lượng"/>
+    <Item english="Sort Ascending" text="Sắp xếp tăng dần"/>
+    <Item english="Sort Descending" text="Sắp xếp giảm dần"/>
+    <Item english="Copy" text="Sao chép"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Tính toán"/>
+    <Item english="Division by zero" text="Chia cho số không"/>
+    <Item english="Cannot calculate" text="Không thể tính toán"/>
 </NativeLangExtra>

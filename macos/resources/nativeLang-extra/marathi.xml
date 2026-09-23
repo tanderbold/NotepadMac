@@ -344,4 +344,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="हलवलेल्या ओळी ओळखा"/>
     <Item english="Detect Character Differences" text="अक्षरांतील फरक ओळखा"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="निवडलेल्या संख्या"/>
+    <Item english="Sum" text="बेरीज"/>
+    <Item english="Average" text="सरासरी"/>
+    <Item english="Minimum" text="किमान"/>
+    <Item english="Maximum" text="कमाल"/>
+    <Item english="Count" text="गणना"/>
+    <Item english="Sort Ascending" text="चढत्या क्रमाने लावा"/>
+    <Item english="Sort Descending" text="उतरत्या क्रमाने लावा"/>
+    <Item english="Copy" text="कॉपी"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="गणना करा"/>
+    <Item english="Division by zero" text="शून्याने भागाकार"/>
+    <Item english="Cannot calculate" text="गणना करता आली नाही"/>
 </NativeLangExtra>

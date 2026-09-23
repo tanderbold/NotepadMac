@@ -338,4 +338,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Tuvasta teisaldused"/>
     <Item english="Detect Character Differences" text="Tuvasta märgierinevused"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Valitud arvud"/>
+    <Item english="Sum" text="Summa"/>
+    <Item english="Average" text="Keskmine"/>
+    <Item english="Minimum" text="Miinimum"/>
+    <Item english="Maximum" text="Maksimum"/>
+    <Item english="Count" text="Loendus"/>
+    <Item english="Sort Ascending" text="Sordi kasvavalt"/>
+    <Item english="Sort Descending" text="Sordi kahanevalt"/>
+    <Item english="Copy" text="Kopeeri"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Arvuta"/>
+    <Item english="Division by zero" text="Nulliga jagamine"/>
+    <Item english="Cannot calculate" text="Ei saa arvutada"/>
 </NativeLangExtra>

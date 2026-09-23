@@ -338,4 +338,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Canfod Symudiadau"/>
     <Item english="Detect Character Differences" text="Canfod Gwahaniaethau Nodau"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Rhifau a Ddewiswyd"/>
+    <Item english="Sum" text="Cyfanswm"/>
+    <Item english="Average" text="Cyfartaledd"/>
+    <Item english="Minimum" text="Lleiafswm"/>
+    <Item english="Maximum" text="Uchafswm"/>
+    <Item english="Count" text="Nifer"/>
+    <Item english="Sort Ascending" text="Trefnu mewn Trefn Esgynnol"/>
+    <Item english="Sort Descending" text="Trefnu mewn Trefn Disgynnol"/>
+    <Item english="Copy" text="Copïo"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Cyfrifo"/>
+    <Item english="Division by zero" text="Rhannu â sero"/>
+    <Item english="Cannot calculate" text="Methu cyfrifo"/>
 </NativeLangExtra>

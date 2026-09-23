@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Etectday Ovesmay"/>
     <Item english="Detect Character Differences" text="Etectday Aracterchay Ifferencesday"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Electedsay Umbersnay"/>
+    <Item english="Sum" text="Umsay"/>
+    <Item english="Average" text="Averageyay"/>
+    <Item english="Minimum" text="Inimummay"/>
+    <Item english="Maximum" text="Aximummay"/>
+    <Item english="Count" text="Ountcay"/>
+    <Item english="Sort Ascending" text="Ortsay Ascendingyay"/>
+    <Item english="Sort Descending" text="Ortsay Escendingday"/>
+    <Item english="Copy" text="Opycay"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Alculatecay"/>
+    <Item english="Division by zero" text="Ivisionday ybay erozay"/>
+    <Item english="Cannot calculate" text="Annotcay alculatecay"/>
 </NativeLangExtra>

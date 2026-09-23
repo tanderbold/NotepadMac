@@ -341,4 +341,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Detecta els moviments"/>
     <Item english="Detect Character Differences" text="Detecta les diferències de caràcters"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Nombres seleccionats"/>
+    <Item english="Sum" text="Suma"/>
+    <Item english="Average" text="Mitjana"/>
+    <Item english="Minimum" text="Mínim"/>
+    <Item english="Maximum" text="Màxim"/>
+    <Item english="Count" text="Recompte"/>
+    <Item english="Sort Ascending" text="Ordena ascendentment"/>
+    <Item english="Sort Descending" text="Ordena descendentment"/>
+    <Item english="Copy" text="Copia"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcula"/>
+    <Item english="Division by zero" text="Divisió per zero"/>
+    <Item english="Cannot calculate" text="No es pot calcular"/>
 </NativeLangExtra>

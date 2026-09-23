@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Identifiera flyttningar"/>
     <Item english="Detect Character Differences" text="Identifiera teckenskillnader"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Markerade tal"/>
+    <Item english="Sum" text="Summa"/>
+    <Item english="Average" text="Medelvärde"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Antal"/>
+    <Item english="Sort Ascending" text="Sortera stigande"/>
+    <Item english="Sort Descending" text="Sortera fallande"/>
+    <Item english="Copy" text="Kopiera"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Beräkna"/>
+    <Item english="Division by zero" text="Division med noll"/>
+    <Item english="Cannot calculate" text="Det går inte att beräkna"/>
 </NativeLangExtra>

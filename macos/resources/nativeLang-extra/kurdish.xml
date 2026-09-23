@@ -131,4 +131,16 @@
     <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="درێژی: $STR_REPLACE1$    هێلەكان: $STR_REPLACE2$"/>
     <Item english="Sel: " text="هەڵبژاردن: "/>
     <Item english="Sel" text="هەڵبژاردن"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="ژمارە هەڵبژێردراوەكان"/>
+    <Item english="Sum" text="كۆ"/>
+    <Item english="Average" text="تێكڕا"/>
+    <Item english="Minimum" text="كەمترین"/>
+    <Item english="Maximum" text="زۆرترین"/>
+    <Item english="Count" text="ژمارە"/>
+    <Item english="Copy" text="لەبەرگرتنەوە"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="هەژماركردن"/>
+    <Item english="Division by zero" text="دابەشكردن بە سفر"/>
+    <Item english="Cannot calculate" text="ناتوانرێت هەژمار بكرێت"/>
 </NativeLangExtra>

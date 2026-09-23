@@ -1,3 +1,4 @@
+#import "NumberSetCommands.h"
 #import "NppPanel.h"
 #import "AppDelegate.h"
 #import "UserLanguages.h"
@@ -864,6 +865,8 @@ static NSString *Ordinal(NSUInteger n) {
     // whole image or PDF file into a new document.
     [self item:@"Paste Image as Text" action:@selector(pasteImageAsText:) key:@"" flags:0 menu:editMenu];
     [self item:@"Recognize Text in File…" action:@selector(recognizeTextInFile:) key:@"" flags:0 menu:editMenu];
+    // The selected formula's value, or the one ending at the caret, after its "=".
+    [self item:@"Calculate" action:@selector(calculateFormula:) key:@"=" flags:NSEventModifierFlagCommand menu:editMenu];
 
     NSMenu *selMenu = [[NSMenu alloc] initWithTitle:@"On Selection"];
     [self item:@"Open File" action:@selector(openSelectedFile:) key:@"" flags:0 menu:selMenu];
@@ -1561,6 +1564,8 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)jsonSort:(id)sender    { if (![self.editor sortJSONDocument]) [self reportJSONProblem]; }
 
 #pragma mark Mac extras: OCR, QR, the command line
+
+- (void)calculateFormula:(id)sender { [self.editor calculateFormula]; }
 
 - (void)pasteImageAsText:(id)sender {
     if (![self.editor pasteImageAsText]) [self reportMimeProblem:@"No text was found in the clipboard's image."];

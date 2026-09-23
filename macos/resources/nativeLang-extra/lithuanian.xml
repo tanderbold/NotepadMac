@@ -343,4 +343,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Aptikti perkėlimus"/>
     <Item english="Detect Character Differences" text="Aptikti ženklų skirtumus"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Pažymėti skaičiai"/>
+    <Item english="Sum" text="Suma"/>
+    <Item english="Average" text="Vidurkis"/>
+    <Item english="Minimum" text="Minimumas"/>
+    <Item english="Maximum" text="Maksimumas"/>
+    <Item english="Count" text="Kiekis"/>
+    <Item english="Sort Ascending" text="Rūšiuoti didėjančiai"/>
+    <Item english="Sort Descending" text="Rūšiuoti mažėjančiai"/>
+    <Item english="Copy" text="Kopijuoti"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Apskaičiuoti"/>
+    <Item english="Division by zero" text="Dalyba iš nulio"/>
+    <Item english="Cannot calculate" text="Nepavyko apskaičiuoti"/>
 </NativeLangExtra>

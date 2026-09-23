@@ -338,4 +338,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="நகர்த்தல்களைக் கண்டறி"/>
     <Item english="Detect Character Differences" text="எழுத்து வேறுபாடுகளைக் கண்டறி"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="தேர்ந்தெடுத்த எண்கள்"/>
+    <Item english="Sum" text="கூட்டுத்தொகை"/>
+    <Item english="Average" text="சராசரி"/>
+    <Item english="Minimum" text="குறைந்தபட்சம்"/>
+    <Item english="Maximum" text="அதிகபட்சம்"/>
+    <Item english="Count" text="எண்ணிக்கை"/>
+    <Item english="Sort Ascending" text="ஏறுவரிசையில் வரிசைப்படுத்து"/>
+    <Item english="Sort Descending" text="இறங்குவரிசையில் வரிசைப்படுத்து"/>
+    <Item english="Copy" text="நகலெடு"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="கணக்கிடு"/>
+    <Item english="Division by zero" text="பூஜ்ஜியத்தால் வகுத்தல்"/>
+    <Item english="Cannot calculate" text="கணக்கிட முடியவில்லை"/>
 </NativeLangExtra>

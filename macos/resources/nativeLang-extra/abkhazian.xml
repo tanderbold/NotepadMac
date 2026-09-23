@@ -33,4 +33,8 @@
     <Item english="File History" text="Афаил аҭоурых"/>
     <!-- Status bar -->
     <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="аура: $STR_REPLACE1$    ацәаҳәақәа: $STR_REPLACE2$"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Sort Ascending" text="Асортра Еиҵоу-Еиҳаула"/>
+    <Item english="Sort Descending" text="Асортра Еиҳау-Еиҵоула"/>
+    <Item english="Copy" text="Икопиатәуп"/>
 </NativeLangExtra>

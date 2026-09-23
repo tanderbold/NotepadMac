@@ -323,4 +323,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Zbulo lëvizjet"/>
     <Item english="Detect Character Differences" text="Zbulo dallimet e karaktereve"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Numrat e zgjedhur"/>
+    <Item english="Sum" text="Shuma"/>
+    <Item english="Average" text="Mesatarja"/>
+    <Item english="Minimum" text="Minimumi"/>
+    <Item english="Maximum" text="Maksimumi"/>
+    <Item english="Count" text="Numri"/>
+    <Item english="Sort Ascending" text="Rendit në renditje ngritëse"/>
+    <Item english="Sort Descending" text="Rendit në renditje zbritëse"/>
+    <Item english="Copy" text="Kopjo"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Llogarit"/>
+    <Item english="Division by zero" text="Pjesëtim me zero"/>
+    <Item english="Cannot calculate" text="Nuk mund të llogaritet"/>
 </NativeLangExtra>

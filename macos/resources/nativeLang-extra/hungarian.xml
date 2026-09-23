@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Áthelyezések felismerése"/>
     <Item english="Detect Character Differences" text="Karaktereltérések felismerése"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Kijelölt számok"/>
+    <Item english="Sum" text="Összeg"/>
+    <Item english="Average" text="Átlag"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Darabszám"/>
+    <Item english="Sort Ascending" text="Rendezés növekvően"/>
+    <Item english="Sort Descending" text="Rendezés csökkenően"/>
+    <Item english="Copy" text="Másolás"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Kiszámítás"/>
+    <Item english="Division by zero" text="Nullával való osztás"/>
+    <Item english="Cannot calculate" text="Nem sikerült kiszámítani"/>
 </NativeLangExtra>

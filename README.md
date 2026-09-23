@@ -35,6 +35,8 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - Bookmarks with line operations, five mark styles, Change History, code folding, hidden lines.
 - Macros: record, play, run many times, save with a shortcut - including menu commands and searches, in the Windows `shortcuts.xml` format.
 - Clipboard History, Character Panel, paste as HTML / RTF / binary.
+- **Selected numbers**: select a set of numbers - `3, 1, 2`, `3 1 2`, one per line, or a column - and the context menu's Selected Numbers writes their sum, average, minimum, maximum or count after them (`30, 4, 100 SUM = 134`; under them for numbers one per line) and sorts them either way in place, each number keeping its own spelling and every separator staying where it was. Decimal arithmetic (0.1 + 0.2 is 0.3); a decimal comma (`1,5 2,25`) is understood.
+- **Calculate** (Edit menu, ⌘=, and the context menu): a formula's value written after its `=` - the selected formula, or the one just typed (`2 + 3 =` ⌘= gives `2 + 3 = 5`; without the `=` it is added). `+ - * / : ^`, `mod`, `n!`, percent as a calculator has it (`200 + 15%` is 230), and functions: `sin cos tan cot` and their inverses and hyperbolics, `sqrt cbrt exp ln log lg log2`, `log(x; base)`, `root(x; n)`, `abs floor ceil round`, `min max gcd lcm`; `pi`, `e`; `°` for degrees (`sin 30° = 0.5`). Decimal arithmetic, ten decimal places.
 
 **Languages**
 - Syntax highlighting and folding for about 90 languages, from Notepad++'s own `langs.model.xml` and `stylers.model.xml`; all upstream themes; the Style Configurator.

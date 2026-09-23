@@ -337,4 +337,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Күчерүләрне ачыкларга"/>
     <Item english="Detect Character Differences" text="Символ аермаларын ачыкларга"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Сайланган саннар"/>
+    <Item english="Sum" text="Сумма"/>
+    <Item english="Average" text="Уртача"/>
+    <Item english="Minimum" text="Минимум"/>
+    <Item english="Maximum" text="Максимум"/>
+    <Item english="Count" text="Саны"/>
+    <Item english="Sort Ascending" text="Үсү буенча тәртипләргә"/>
+    <Item english="Sort Descending" text="Кимү буенча тәртипләргә"/>
+    <Item english="Copy" text="Күчермә алырга"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Исәпләргә"/>
+    <Item english="Division by zero" text="Нульгә бүлү"/>
+    <Item english="Cannot calculate" text="Исәпләп булмады"/>
 </NativeLangExtra>

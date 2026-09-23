@@ -337,4 +337,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Rekonu movojn"/>
     <Item english="Detect Character Differences" text="Rekonu diferencojn inter signoj"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Elektitaj nombroj"/>
+    <Item english="Sum" text="Sumo"/>
+    <Item english="Average" text="Meznombro"/>
+    <Item english="Minimum" text="Minimumo"/>
+    <Item english="Maximum" text="Maksimumo"/>
+    <Item english="Count" text="Kvanto"/>
+    <Item english="Sort Ascending" text="Ordigu kreske"/>
+    <Item english="Sort Descending" text="Ordigu malkreske"/>
+    <Item english="Copy" text="Kopiu"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Kalkulu"/>
+    <Item english="Division by zero" text="Divido per nulo"/>
+    <Item english="Cannot calculate" text="Ne eblas kalkuli"/>
 </NativeLangExtra>

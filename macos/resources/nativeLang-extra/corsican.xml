@@ -294,4 +294,16 @@
     <!-- Git: revert -->
     <Item english="Revert Change at Caret to HEAD" text="Rimette à HEAD u cambiamentu sottu à u cursore"/>
     <Item english="The caret is on no change since the last commit" text="U cursore ùn hè nant’à nisun cambiamentu dapoi l’ultimu commit"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Numeri selezziunati"/>
+    <Item english="Sum" text="Somma"/>
+    <Item english="Average" text="Media"/>
+    <Item english="Minimum" text="Minimu"/>
+    <Item english="Maximum" text="Massimu"/>
+    <Item english="Sort Ascending" text="Ordinà da manera crescente"/>
+    <Item english="Sort Descending" text="Ordinà da manera discendente"/>
+    <Item english="Copy" text="Cupià"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calculà"/>
+    <Item english="Division by zero" text="Divisione per zeru"/>
 </NativeLangExtra>

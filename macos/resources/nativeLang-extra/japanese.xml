@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="移動を検出"/>
     <Item english="Detect Character Differences" text="文字の差分を検出"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="選択した数値"/>
+    <Item english="Sum" text="合計"/>
+    <Item english="Average" text="平均"/>
+    <Item english="Minimum" text="最小"/>
+    <Item english="Maximum" text="最大"/>
+    <Item english="Count" text="個数"/>
+    <Item english="Sort Ascending" text="昇順ソート"/>
+    <Item english="Sort Descending" text="降順ソート"/>
+    <Item english="Copy" text="コピー"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="計算"/>
+    <Item english="Division by zero" text="ゼロ除算"/>
+    <Item english="Cannot calculate" text="計算できません"/>
 </NativeLangExtra>

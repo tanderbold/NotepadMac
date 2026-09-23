@@ -65,4 +65,10 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Detectar es moviments"/>
     <Item english="Detect Character Differences" text="Detectar es diferéncies de caracters"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Minimum" text="Mínim"/>
+    <Item english="Maximum" text="Màxim"/>
+    <Item english="Copy" text="Copiar"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcular"/>
 </NativeLangExtra>

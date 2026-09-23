@@ -267,4 +267,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="يۆتكەشلەرنى بايقاش"/>
     <Item english="Detect Character Differences" text="ھەرپ پەرقلىرىنى بايقاش"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="تاللانغان سانلار"/>
+    <Item english="Sum" text="يىغىندى"/>
+    <Item english="Average" text="ئوتتۇرىچە"/>
+    <Item english="Minimum" text="ئەڭ كىچىك"/>
+    <Item english="Maximum" text="ئەڭ چوڭ"/>
+    <Item english="Count" text="سانى"/>
+    <Item english="Sort Ascending" text="ئۆسۈش تەرتىپىدە تەرتىپلەش"/>
+    <Item english="Sort Descending" text="كېمىيىش تەرتىپىدە تەرتىپلەش"/>
+    <Item english="Copy" text="كۆچۈرۈش"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="ھېسابلاش"/>
+    <Item english="Division by zero" text="نۆلگە بۆلۈش"/>
+    <Item english="Cannot calculate" text="ھېسابلىغىلى بولمىدى"/>
 </NativeLangExtra>

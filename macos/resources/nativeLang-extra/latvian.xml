@@ -343,4 +343,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Noteikt pārvietojumus"/>
     <Item english="Detect Character Differences" text="Noteikt rakstzīmju atšķirības"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Iezīmētie skaitļi"/>
+    <Item english="Sum" text="Summa"/>
+    <Item english="Average" text="Vidējais"/>
+    <Item english="Minimum" text="Minimums"/>
+    <Item english="Maximum" text="Maksimums"/>
+    <Item english="Count" text="Skaits"/>
+    <Item english="Sort Ascending" text="Kārtot pieaugošā secībā"/>
+    <Item english="Sort Descending" text="Kārtot dilstošā secībā"/>
+    <Item english="Copy" text="Kopēt"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Aprēķināt"/>
+    <Item english="Division by zero" text="Dalīšana ar nulli"/>
+    <Item english="Cannot calculate" text="Neizdevās aprēķināt"/>
 </NativeLangExtra>

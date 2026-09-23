@@ -345,4 +345,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Detectar movimientos"/>
     <Item english="Detect Character Differences" text="Detectar diferencias de caracteres"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Números seleccionados"/>
+    <Item english="Sum" text="Suma"/>
+    <Item english="Average" text="Promedio"/>
+    <Item english="Minimum" text="Mínimo"/>
+    <Item english="Maximum" text="Máximo"/>
+    <Item english="Count" text="Cantidad"/>
+    <Item english="Sort Ascending" text="Ordenar en sentido ascendente"/>
+    <Item english="Sort Descending" text="Ordenar en sentido descendente"/>
+    <Item english="Copy" text="Copiar"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcular"/>
+    <Item english="Division by zero" text="División por cero"/>
+    <Item english="Cannot calculate" text="No se puede calcular"/>
 </NativeLangExtra>

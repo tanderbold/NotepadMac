@@ -203,4 +203,16 @@
     <Item english="The caret is on no change since the last commit" text="El cursore no'l xe su nisuna modifega da l'ultimo commit"/>
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Riƚeva i spostamenti"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Nùmari seƚesionà"/>
+    <Item english="Sum" text="Soma"/>
+    <Item english="Average" text="Mèdia"/>
+    <Item english="Minimum" text="Mìnimo"/>
+    <Item english="Maximum" text="Màsimo"/>
+    <Item english="Sort Ascending" text="Órdena en maniera cresente"/>
+    <Item english="Sort Descending" text="Órdena en maniera decresente"/>
+    <Item english="Copy" text="Còpia"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Calcoƚa"/>
+    <Item english="Cannot calculate" text="No se pol calcoƚar"/>
 </NativeLangExtra>

@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="이동 감지"/>
     <Item english="Detect Character Differences" text="문자 차이점 감지"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="선택한 숫자"/>
+    <Item english="Sum" text="합계"/>
+    <Item english="Average" text="평균"/>
+    <Item english="Minimum" text="최소값"/>
+    <Item english="Maximum" text="최대값"/>
+    <Item english="Count" text="개수"/>
+    <Item english="Sort Ascending" text="오름차순 정렬"/>
+    <Item english="Sort Descending" text="내림차순 정렬"/>
+    <Item english="Copy" text="복사"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="계산"/>
+    <Item english="Division by zero" text="0으로 나누기"/>
+    <Item english="Cannot calculate" text="계산할 수 없습니다"/>
 </NativeLangExtra>

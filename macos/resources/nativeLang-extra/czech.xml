@@ -335,4 +335,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Rozpoznávat přesuny"/>
     <Item english="Detect Character Differences" text="Rozpoznávat rozdíly ve znacích"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Vybraná čísla"/>
+    <Item english="Sum" text="Součet"/>
+    <Item english="Average" text="Průměr"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Počet"/>
+    <Item english="Sort Ascending" text="Setřídit vzestupně"/>
+    <Item english="Sort Descending" text="Setřídit sestupně"/>
+    <Item english="Copy" text="Kopírovat"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Vypočítat"/>
+    <Item english="Division by zero" text="Dělení nulou"/>
+    <Item english="Cannot calculate" text="Nelze vypočítat"/>
 </NativeLangExtra>

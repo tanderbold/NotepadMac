@@ -344,4 +344,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="منتقل شدہ سطریں شناخت کریں"/>
     <Item english="Detect Character Differences" text="حروف کے فرق شناخت کریں"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="منتخب اعداد"/>
+    <Item english="Sum" text="مجموعہ"/>
+    <Item english="Average" text="اوسط"/>
+    <Item english="Minimum" text="کم از کم"/>
+    <Item english="Maximum" text="زیادہ سے زیادہ"/>
+    <Item english="Count" text="تعداد"/>
+    <Item english="Sort Ascending" text="صعودی ترتیب دیں"/>
+    <Item english="Sort Descending" text="نزولی ترتیب دیں"/>
+    <Item english="Copy" text="نقل"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="حساب لگائیں"/>
+    <Item english="Division by zero" text="صفر سے تقسیم"/>
+    <Item english="Cannot calculate" text="حساب نہیں لگایا جا سکا"/>
 </NativeLangExtra>

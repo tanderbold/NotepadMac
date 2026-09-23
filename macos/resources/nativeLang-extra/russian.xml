@@ -347,4 +347,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Находить перемещения"/>
     <Item english="Detect Character Differences" text="Находить отличия в символах"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Выделенные числа"/>
+    <Item english="Sum" text="Сумма"/>
+    <Item english="Average" text="Среднее"/>
+    <Item english="Minimum" text="Минимум"/>
+    <Item english="Maximum" text="Максимум"/>
+    <Item english="Count" text="Количество"/>
+    <Item english="Sort Ascending" text="Сортировать по возрастанию"/>
+    <Item english="Sort Descending" text="Сортировать по убыванию"/>
+    <Item english="Copy" text="Копировать"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Вычислить"/>
+    <Item english="Division by zero" text="Деление на ноль"/>
+    <Item english="Cannot calculate" text="Не удаётся вычислить"/>
 </NativeLangExtra>

@@ -328,4 +328,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="ตรวจหาการย้าย"/>
     <Item english="Detect Character Differences" text="ตรวจหาความแตกต่างของอักขระ"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="ตัวเลขที่เลือก"/>
+    <Item english="Sum" text="ผลรวม"/>
+    <Item english="Average" text="ค่าเฉลี่ย"/>
+    <Item english="Minimum" text="ค่าต่ำสุด"/>
+    <Item english="Maximum" text="ค่าสูงสุด"/>
+    <Item english="Count" text="จำนวน"/>
+    <Item english="Sort Ascending" text="เรียงลำดับจากน้อยไปมาก"/>
+    <Item english="Sort Descending" text="เรียงลำดับจากมากไปน้อย"/>
+    <Item english="Copy" text="คัดลอก"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="คำนวณ"/>
+    <Item english="Division by zero" text="หารด้วยศูนย์"/>
+    <Item english="Cannot calculate" text="ไม่สามารถคำนวณได้"/>
 </NativeLangExtra>

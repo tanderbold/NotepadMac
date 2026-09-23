@@ -342,4 +342,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Жылдырууларды аныкта"/>
     <Item english="Detect Character Differences" text="Белгилердеги айырмаларды аныкта"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Тандалган сандар"/>
+    <Item english="Sum" text="Сумма"/>
+    <Item english="Average" text="Орточо"/>
+    <Item english="Minimum" text="Минимум"/>
+    <Item english="Maximum" text="Максимум"/>
+    <Item english="Count" text="Саны"/>
+    <Item english="Sort Ascending" text="Өсүү боюнча ирээтте"/>
+    <Item english="Sort Descending" text="Кемүү боюнча ирээтте"/>
+    <Item english="Copy" text="Көчүр"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Эсепте"/>
+    <Item english="Division by zero" text="Нөлгө бөлүү"/>
+    <Item english="Cannot calculate" text="Эсептөө мүмкүн болгон жок"/>
 </NativeLangExtra>

@@ -341,4 +341,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="كشف الأسطر المنقولة"/>
     <Item english="Detect Character Differences" text="كشف الاختلافات في الأحرف"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="الأعداد المحددة"/>
+    <Item english="Sum" text="المجموع"/>
+    <Item english="Average" text="المتوسط"/>
+    <Item english="Minimum" text="الحد الأدنى"/>
+    <Item english="Maximum" text="الحد الأقصى"/>
+    <Item english="Count" text="العدد"/>
+    <Item english="Sort Ascending" text="ترتيب تصاعدي"/>
+    <Item english="Sort Descending" text="ترتيب تنازلي"/>
+    <Item english="Copy" text="نسخ"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="حساب"/>
+    <Item english="Division by zero" text="القسمة على صفر"/>
+    <Item english="Cannot calculate" text="تعذّر الحساب"/>
 </NativeLangExtra>

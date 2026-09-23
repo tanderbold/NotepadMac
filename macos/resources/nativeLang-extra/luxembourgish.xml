@@ -318,4 +318,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Verréckelt Zeilen erkennen"/>
     <Item english="Detect Character Differences" text="Zeechenënnerscheeder erkennen"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Markéiert Zuelen"/>
+    <Item english="Sum" text="Zomm"/>
+    <Item english="Average" text="Duerchschnëtt"/>
+    <Item english="Minimum" text="Minimum"/>
+    <Item english="Maximum" text="Maximum"/>
+    <Item english="Count" text="Unzuel"/>
+    <Item english="Sort Ascending" text="Opsteigend sortéieren"/>
+    <Item english="Sort Descending" text="Ofsteigend sortéieren"/>
+    <Item english="Copy" text="Kopéieren"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Berechnen"/>
+    <Item english="Division by zero" text="Divisioun duerch Null"/>
+    <Item english="Cannot calculate" text="Berechnung net méiglech"/>
 </NativeLangExtra>

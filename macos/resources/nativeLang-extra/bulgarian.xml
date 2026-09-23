@@ -339,4 +339,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="Откриване на премествания"/>
     <Item english="Detect Character Differences" text="Откриване на разлики в знаците"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="Избрани числа"/>
+    <Item english="Sum" text="Сума"/>
+    <Item english="Average" text="Средно"/>
+    <Item english="Minimum" text="Минимум"/>
+    <Item english="Maximum" text="Максимум"/>
+    <Item english="Count" text="Брой"/>
+    <Item english="Sort Ascending" text="Подреждане по възходящ ред"/>
+    <Item english="Sort Descending" text="Подреждане по низходящ ред"/>
+    <Item english="Copy" text="Копиране"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="Изчисляване"/>
+    <Item english="Division by zero" text="Деление на нула"/>
+    <Item english="Cannot calculate" text="Не може да се изчисли"/>
 </NativeLangExtra>

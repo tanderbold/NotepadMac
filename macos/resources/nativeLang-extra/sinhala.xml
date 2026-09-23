@@ -330,4 +330,18 @@
     <!-- Compare: the ComparePlus options -->
     <Item english="Detect Moves" text="ගෙන ගිය පේලි හඳුනාගන්න"/>
     <Item english="Detect Character Differences" text="අක්ෂර වෙනස්කම් හඳුනාගන්න"/>
+    <!-- Selected numbers (editor context menu) -->
+    <Item english="Selected Numbers" text="තෝරාගත් සංඛ්‍යා"/>
+    <Item english="Sum" text="එකතුව"/>
+    <Item english="Average" text="සාමාන්‍යය"/>
+    <Item english="Minimum" text="අවම"/>
+    <Item english="Maximum" text="උපරිම"/>
+    <Item english="Count" text="ගණන"/>
+    <Item english="Sort Ascending" text="ආරෝහණ ලෙස පෙළගස්වන්න"/>
+    <Item english="Sort Descending" text="අවරෝහණ ලෙස පෙළගස්වන්න"/>
+    <Item english="Copy" text="පිටපත් කරන්න"/>
+    <!-- Calculate a selected formula (editor context menu) -->
+    <Item english="Calculate" text="ගණනය කරන්න"/>
+    <Item english="Division by zero" text="බිංදුවෙන් බෙදීම"/>
+    <Item english="Cannot calculate" text="ගණනය කළ නොහැක"/>
 </NativeLangExtra>
