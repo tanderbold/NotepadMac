@@ -866,6 +866,27 @@ static NSArray *E2EMenuTree(NSMenu *menu, NSInteger depth) {
     return out;
 }
 
+/// A click: the mouse-up is queued before the mouse-down is sent. A view that
+/// tracks the mouse on a down (NSTableView, sliders, buttons in a loop) pulls
+/// the up from the queue and returns; sent one after the other, the down never
+/// returned (it waited for an up only it could let through) and the main
+/// thread hung. A view that does not track leaves the up queued, and it is
+/// taken back and delivered here, so the click is still over on return.
+/// `view` given: the events go to it directly (a custom view without a window
+/// route), else through NSApp.
+static void E2EClickAt(NSWindow *w, NSPoint inWindow, NSEventModifierFlags flags, NSInteger clickCount, NSView *view) {
+    NSTimeInterval now = NSProcessInfo.processInfo.systemUptime;
+    NSEvent *down = [NSEvent mouseEventWithType:NSEventTypeLeftMouseDown location:inWindow modifierFlags:flags timestamp:now
+                                   windowNumber:w.windowNumber context:nil eventNumber:0 clickCount:clickCount pressure:1];
+    NSEvent *up = [NSEvent mouseEventWithType:NSEventTypeLeftMouseUp location:inWindow modifierFlags:flags timestamp:now
+                                 windowNumber:w.windowNumber context:nil eventNumber:0 clickCount:clickCount pressure:1];
+    [NSApp postEvent:up atStart:YES];
+    if (view) [view mouseDown:down]; else [NSApp sendEvent:down];
+    NSEvent *left = [NSApp nextEventMatchingMask:NSEventMaskLeftMouseUp untilDate:[NSDate distantPast]
+                                          inMode:NSDefaultRunLoopMode dequeue:YES];
+    if (left) { if (view) [view mouseUp:left]; else [NSApp sendEvent:left]; }
+}
+
 #pragma mark - Values across the JSON boundary
 
 static id E2EJSONValue(id value) {
@@ -1175,11 +1196,7 @@ static id E2ETarget(NSString *name, NSError **error) {
             else {
                 // A custom view that takes clicks: a mouse down and up in its middle.
                 NSPoint mid = [v convertPoint:NSMakePoint(NSMidX(v.bounds), NSMidY(v.bounds)) toView:nil];
-                for (NSEventType t : {NSEventTypeLeftMouseDown, NSEventTypeLeftMouseUp}) {
-                    NSEvent *e = [NSEvent mouseEventWithType:t location:mid modifierFlags:0 timestamp:NSProcessInfo.processInfo.systemUptime
-                                                windowNumber:w.windowNumber context:nil eventNumber:0 clickCount:1 pressure:1];
-                    if (t == NSEventTypeLeftMouseDown) [v mouseDown:e]; else [v mouseUp:e];
-                }
+                E2EClickAt(w, mid, 0, 1, v);
             }
         } else if ([action isEqual:@"set_value"]) {
             NSString *s = E2EString(value) ?: @"";
@@ -1270,12 +1287,7 @@ static id E2ETarget(NSString *name, NSError **error) {
             if (args[@"column"]) rect = NSIntersectionRect(rect, [t rectOfColumn:[args[@"column"] integerValue]]);
             NSPoint p = [t convertPoint:NSMakePoint(NSMidX(rect), NSMidY(rect)) toView:nil];
             gE2EForcedKeyWindow = w;
-            for (NSInteger c = 1; c <= 2; ++c) {
-                for (NSEventType type : {NSEventTypeLeftMouseDown, NSEventTypeLeftMouseUp}) {
-                    [NSApp sendEvent:[NSEvent mouseEventWithType:type location:p modifierFlags:0 timestamp:NSProcessInfo.processInfo.systemUptime
-                                                    windowNumber:w.windowNumber context:nil eventNumber:0 clickCount:c pressure:1]];
-                }
-            }
+            for (NSInteger c = 1; c <= 2; ++c) E2EClickAt(w, p, 0, c, nil);
             gE2EForcedKeyWindow = nil;
         } else if ([action isEqual:@"set_text"]) {
             if (![v isKindOfClass:[NSTextView class]]) { *error = E2EFail(@"Not a text view"); return nil; }
@@ -1585,14 +1597,7 @@ static id E2ETarget(NSString *name, NSError **error) {
         }
         NSInteger clicks = args[@"clicks"] ? [args[@"clicks"] integerValue] : 1;
         gE2EForcedKeyWindow = w;
-        for (NSInteger c = 1; c <= clicks; ++c) {
-            for (NSEventType t : {NSEventTypeLeftMouseDown, NSEventTypeLeftMouseUp}) {
-                NSEvent *e = [NSEvent mouseEventWithType:t location:inWindow modifierFlags:flags
-                                               timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:w.windowNumber
-                                                 context:nil eventNumber:0 clickCount:c pressure:1];
-                [NSApp sendEvent:e];
-            }
-        }
+        for (NSInteger c = 1; c <= clicks; ++c) E2EClickAt(w, inWindow, flags, c, nil);
         gE2EForcedKeyWindow = nil;
         return @{@"clicked": @(clicks), @"at": @[@(inWindow.x), @(inWindow.y)]};
     }];
