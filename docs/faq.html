@@ -108,6 +108,14 @@
   },
   {
    "@type": "Question",
+   "name": "Can NotepadMac add up numbers or calculate a formula?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. Select a set of numbers - separated by commas, spaces or semicolons, one per line, or a column - and the right-click menu's Selected Numbers writes their sum, average, minimum, maximum or count after them (\"30, 4, 100 SUM = 134\"), or sorts them in place, each number keeping its own spelling. For a formula, type it with an equals sign, such as 2 + 3 * 4 =, and press Cmd+= (Edit > Calculate, also in the right-click menu for a selected formula): the value is written after the \"=\". It knows + - * / : ^, mod, factorial, percent as a calculator has it (200 + 15% is 230), sin, cos, tan and their inverses, sinh and cosh, sqrt, ln, log, log2, log(x; base), root(x; n), abs, round, min, max, gcd, lcm, pi and e, and degrees with the ° sign (sin 30° = 0.5). The arithmetic is decimal, so 0.1 + 0.2 is 0.3, and a decimal comma works too."
+   }
+  },
+  {
+   "@type": "Question",
    "name": "Can an AI coding agent use NotepadMac?",
    "acceptedAnswer": {
     "@type": "Answer",
@@ -146,6 +154,8 @@
   <h2>Is the interface translated?</h2>
   <p>The interface is available in Notepad++&#x27;s ~90 translations, chosen in Preferences. Texts that exist only in the Mac version are translated too, by machine for now, and not yet reviewed by native speakers.</p>
 
+  <h2>Can NotepadMac add up numbers or calculate a formula?</h2>
+  <p>Yes. Select a set of numbers - separated by commas, spaces or semicolons, one per line, or a column - and the right-click menu&#x27;s Selected Numbers writes their sum, average, minimum, maximum or count after them (&quot;30, 4, 100 SUM = 134&quot;), or sorts them in place, each number keeping its own spelling. For a formula, type it with an equals sign, such as 2 + 3 * 4 =, and press Cmd+= (Edit &gt; Calculate, also in the right-click menu for a selected formula): the value is written after the &quot;=&quot;. It knows + - * / : ^, mod, factorial, percent as a calculator has it (200 + 15% is 230), sin, cos, tan and their inverses, sinh and cosh, sqrt, ln, log, log2, log(x; base), root(x; n), abs, round, min, max, gcd, lcm, pi and e, and degrees with the ° sign (sin 30° = 0.5). The arithmetic is decimal, so 0.1 + 0.2 is 0.3, and a decimal comma works too.</p>
   <h2>Can an AI coding agent use NotepadMac?</h2>
   <p>Yes. NotepadMac is itself a Model Context Protocol (MCP) server: turn on Preferences &gt; MISC. &gt; Let AI agents drive the editor, then give the agent the command nppmac mcp (for Claude Code: claude mcp add notepadmac -- nppmac mcp). The agent then sees which documents are open and what is selected, reads unsaved text, edits a document as one undoable step, moves the caret to the place it is talking about, bookmarks lines, shows a Compare, runs any of the 579 menu commands, and uses the editor&#x27;s own engines: the language model, the Lexilla lexers (tokens as the editor colours them), Notepad++&#x27;s regular-expression search, the Function List parsers, character-set detection, OCR and the spelling engine. It is off until you turn it on, listens only on a socket your own processes can open, and sends nothing over the network.</p>
   <p class="links">
