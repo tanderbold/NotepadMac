@@ -91,6 +91,10 @@
 @property (nonatomic) BOOL postItOn;
 @property (nonatomic) BOOL distractionFreeOn;
 @property (nonatomic) BOOL alwaysOnTopBeforePostIt;
+/// The clipboard as last seen, so the toolbar's Paste follows it (upstream's
+/// checkClipboard on WM_CLIPBOARDUPDATE; a Mac sends no such message).
+@property (nonatomic) NSInteger seenPasteboardChange;
+@property (nonatomic, strong) NSTimer *pasteboardWatch;
 @property (nonatomic, strong) NSMenu *runMenu;
 @property (nonatomic, strong) NSMenu *execMenu;
 @property (nonatomic) NSInteger fixedExecItemCount;
@@ -497,6 +501,13 @@ static NSString *Ordinal(NSUInteger n) {
 
     [self.editor refreshChrome];
 
+    __weak AppDelegate *watcher = self;
+    self.pasteboardWatch = [NSTimer scheduledTimerWithTimeInterval:0.5 repeats:YES block:^(NSTimer *t) {
+        NSInteger now = [NSPasteboard generalPasteboard].changeCount;
+        if (now == watcher.seenPasteboardChange) return;
+        watcher.seenPasteboardChange = now;
+        [watcher.window.toolbar validateVisibleItems];
+    }];
     [self.window makeKeyAndOrderFront:nil];
     [self.window makeFirstResponder:self.editor.sci.content];
     [NSApp activateIgnoringOtherApps:YES];

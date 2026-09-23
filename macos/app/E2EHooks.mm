@@ -1136,6 +1136,7 @@ static id E2ETarget(NSString *name, NSError **error) {
         E2EWalk(root, @"0", [args[@"include_hidden"] boolValue], controls);
         NSMutableDictionary *out = [@{@"window": E2EWindowInfo(w), @"controls": controls} mutableCopy];
         if (w.toolbar) {
+            [w.toolbar validateVisibleItems];   // as the user would see it after the next event
             NSMutableArray *items = [NSMutableArray array];
             for (NSToolbarItem *i in w.toolbar.items) {
                 [items addObject:@{@"id": i.itemIdentifier ?: @"", @"label": i.label ?: @"", @"tooltip": i.toolTip ?: @"",
@@ -1175,6 +1176,8 @@ static id E2ETarget(NSString *name, NSError **error) {
             return @{@"frame": E2ERect(w.frame), @"content": E2ERect([w contentRectForFrameRect:w.frame])};
         }
         if ([action isEqual:@"toolbar"]) {
+            // AppKit validates the toolbar on every event, long before a real click lands.
+            [w.toolbar validateVisibleItems];
             for (NSToolbarItem *i in w.toolbar.items) {
                 if ([i.itemIdentifier isEqual:value] || [i.label isEqual:value] || [i.toolTip isEqual:value]) {
                     if (!i.isEnabled) return @{@"ran": @NO};
