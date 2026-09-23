@@ -791,8 +791,13 @@ NSString *NppCanonicalPath(NSString *path) {
     doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL]
                                 fileModificationDate];
 
+    // loadBufferIntoView: the file takes the place of a lone clean untitled tab.
+    NppDocument *lone = self.docs.count == 1 ? self.docs.firstObject : nil;
+    if (lone && (lone.path || lone.modified || lone.isSearchResults || lone.pinned)) lone = nil;
+
     [self.docs addObject:doc];
     [self selectDocumentAtIndex:(NSInteger)self.docs.count - 1];
+    if (lone) [self closeDocumentAtIndex:(NSInteger)[self.docs indexOfObject:lone] discardChanges:YES];
 
     if (direct) [self setDocumentBytes:direct];
     else [self setDocumentText:text];

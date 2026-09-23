@@ -1465,12 +1465,12 @@ int NppMacRunTests(AppDelegate *app) {
             [ed openFileAtPath:TempFile([NSString stringWithFormat:@"t_close%d.txt", i],
                                         [NSString stringWithFormat:@"file %d\n", i]) error:&err];
         }
-        // tabs: [new, t_close0 .. t_close4]
+        // tabs: [t_close0 .. t_close4] - the first file took the lone clean "new 1"'s place
         [ed selectDocumentAtIndex:3];
         NSString *active = ed.currentDocument.displayName;
         [ed closeAllToLeft];
         Check(@"IDM_FILE_CLOSEALL_TOLEFT", @"drops everything before the active tab, which stays active",
-              ed.documents.count == 3 && [ed.currentDocument.displayName isEqualToString:active]);
+              ed.documents.count == 2 && [ed.currentDocument.displayName isEqualToString:active]);
 
         [ed closeAllToRight];
         Check(@"IDM_FILE_CLOSEALL_TORIGHT", @"drops everything after the active tab, which stays active",
@@ -10332,7 +10332,10 @@ int NppMacRunTests(AppDelegate *app) {
               [ed.currentDocument.displayName isEqualToString:@"new 2"]);
         while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
         NSString *one = [root stringByAppendingPathComponent:@"a.txt"];
+        BOOL wasLoneClean = ed.documents.count == 1 && !ed.currentDocument.path && !ed.currentDocument.modified;
         [ed openFileAtPath:one error:NULL];
+        Check(@"IDM_FILE_OPEN (lone new 1)", @"a file opened over a lone clean untitled tab takes its place",
+              wasLoneClean && ed.documents.count == 1 && [ed.currentDocument.path isEqualToString:one]);
         NSString *other = [root stringByAppendingPathComponent:@"sub/../a.txt"];
         NSString *priv = [one hasPrefix:@"/var/"] ? [@"/private" stringByAppendingString:one] : one;
         NSUInteger tabs = ed.documents.count;
