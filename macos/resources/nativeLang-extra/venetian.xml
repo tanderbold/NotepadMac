@@ -192,4 +192,15 @@
     <Item english="A commit needs a message" text="On commit el ga bisogno de on mesajo"/>
     <Item english="A branch needs a name" text="On ramo el ga bisogno de on nome"/>
     <Item english="New branch name:" text="Nome de el ramo novo:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ƚonghesa: $STR_REPLACE1$    righe: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Riga: $STR_REPLACE1$    Coƚona: $STR_REPLACE2$"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Clic par copiare el percorso intiero"/>
+    <Item english="Copied: $STR_REPLACE$" text="Copià: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Ripristina a HEAD ƚa modifega al cursore"/>
+    <Item english="The caret is on no change since the last commit" text="El cursore no'l xe su nisuna modifega da l'ultimo commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Riƚeva i spostamenti"/>
 </NativeLangExtra>

@@ -326,4 +326,19 @@
     <Item english="A branch needs a name" text="يحتاج الفرع إلى اسم"/>
     <Item english="New branch name:" text="اسم الفرع الجديد:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: تعليم الأسطر المعدّلة منذ آخر commit في الهامش"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="الطول: $STR_REPLACE1$    الأسطر: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="سطر: $STR_REPLACE1$    عمود: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="موقع: "/>
+    <Item english="Sel: " text="تحديد: "/>
+    <Item english="Sel" text="تحديد"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="انقر لنسخ المسار الكامل"/>
+    <Item english="Copied: $STR_REPLACE$" text="تم النسخ: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="إرجاع التغيير عند المؤشر إلى HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="المؤشر ليس على أي تغيير منذ آخر commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="كشف الأسطر المنقولة"/>
+    <Item english="Detect Character Differences" text="كشف الاختلافات في الأحرف"/>
 </NativeLangExtra>

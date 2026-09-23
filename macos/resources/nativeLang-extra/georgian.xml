@@ -316,4 +316,16 @@
     <Item english="A commit needs a message" text="კომიტს სჭირდება შეტყობინება"/>
     <Item english="Nothing is staged to commit" text="ინდექსში კომიტისთვის არაფერია"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: ბოლო კომიტის შემდეგ შეცვლილი ხაზების მონიშვნა მინდორზე"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="სიგრძე: $STR_REPLACE1$    ხაზები: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="ხაზი: $STR_REPLACE1$    სვეტი: $STR_REPLACE2$"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="დააწკაპუნეთ სრული მისამართის დასაკოპირებლად"/>
+    <Item english="Copied: $STR_REPLACE$" text="დაკოპირდა: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="კურსორთან არსებული ცვლილების HEAD-ზე დაბრუნება"/>
+    <Item english="The caret is on no change since the last commit" text="კურსორი ბოლო კომიტის შემდეგ შეცვლილ ადგილზე არ დგას"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="გადატანების აღმოჩენა"/>
+    <Item english="Detect Character Differences" text="სიმბოლოთა განსხვავებების აღმოჩენა"/>
 </NativeLangExtra>

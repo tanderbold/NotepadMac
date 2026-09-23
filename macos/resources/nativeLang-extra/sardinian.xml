@@ -218,4 +218,16 @@
     <Item english="A commit needs a message" text="Su commit tenet bisòngiu de unu messàgiu"/>
     <Item english="A branch needs a name" text="Su ramu tenet bisòngiu de unu nùmene"/>
     <Item english="New branch name:" text="Nùmene de su ramu nou:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="longària: $STR_REPLACE1$    rigas: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Riga: $STR_REPLACE1$    Col: $STR_REPLACE2$"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Click pro copiare s'àndala intrea"/>
+    <Item english="Copied: $STR_REPLACE$" text="Copiadu: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Torra a HEAD sa modìfica a su cursore"/>
+    <Item english="The caret is on no change since the last commit" text="Su cursore non est subra de peruna modìfica dae s'ùrtimu commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Rileva is movimentos"/>
+    <Item english="Detect Character Differences" text="Rileva is diferèntzias de caràteres"/>
 </NativeLangExtra>

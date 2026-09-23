@@ -256,4 +256,15 @@
     <Item english="A commit needs a message" text="تاپشۇرۇشقا ئۇچۇر كېرەك"/>
     <Item english="A branch needs a name" text="تارماققا نام كېرەك"/>
     <Item english="New branch name:" text="يېڭى تارماق نامى:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ئۇزۇنلۇقى: $STR_REPLACE1$    قۇرلار: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="قۇر: $STR_REPLACE1$    ئىستون: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="تاللاش: "/>
+    <Item english="Sel" text="تاللاش"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="تولۇق يولنى كۆچۈرۈش ئۈچۈن چېكىڭ"/>
+    <Item english="Copied: $STR_REPLACE$" text="كۆچۈرۈلدى: $STR_REPLACE$"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="يۆتكەشلەرنى بايقاش"/>
+    <Item english="Detect Character Differences" text="ھەرپ پەرقلىرىنى بايقاش"/>
 </NativeLangExtra>

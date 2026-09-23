@@ -4,12 +4,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Markers for compared lines; above the fold markers and the bookmark.
+/// The markers of compared lines are the ComparePlus engine's (macos/third_party/compareplus,
+/// shim/NppHelpers.h): whole-line backgrounds on these numbers, with symbols in the margin.
+#define NPPMAC_MARKER_CHANGED 0
 #define NPPMAC_MARKER_ADDED   2
 #define NPPMAC_MARKER_REMOVED 3
-#define NPPMAC_MARKER_CHANGED 4
-#define NPPMAC_MARKER_MOVED   5
-
+#define NPPMAC_MARKER_MOVED   4
+/// The revert arrow beside a differing line, the port's own, in the engine's margin (5).
+#define NPPMAC_MARKER_REVERT  9
+#define NPPMAC_COMPARE_MARGIN 5
 typedef NS_ENUM(NSInteger, NppDiffKind) {
     NppDiffSame = 0,
     NppDiffAdded,       // only in the new file
@@ -51,11 +54,25 @@ typedef NS_ENUM(NSInteger, NppDiffKind) {
 - (BOOL)goToDiff:(NSInteger)direction;   // +1 next, -1 previous
 - (BOOL)goToFirstDiff;
 - (BOOL)goToLastDiff;
+/// The differing run a line belongs to - changed or added lines, or the place lines were taken
+/// out - replaced by what the other side has there, as one undo step; then the comparison is
+/// worked out again. What the arrow in the margin does. NO when the line is on no difference.
+- (BOOL)compareRevertChangeAtLine:(long)line;
+/// The comparison worked out again over what the document is now - typing while it is on
+/// changes what differs - at once, or a moment after typing stops.
+- (void)compareRefreshNow;
+- (void)compareScheduleRefresh;
+/// The bar above the other pane: the summary, Previous / Next, and the way out.
+@property (nonatomic, readonly, nullable) NSView *compareBar;
 
-// Options
+/// The document in front against a text, as the menu commands do it with a file.
+- (BOOL)compareCurrentWithText:(NSString *)text;
+// Options, as the plugin's Compare Options dialog has them.
 @property (nonatomic) BOOL compareIgnoreCase;
 @property (nonatomic) BOOL compareIgnoreSpaces;
 @property (nonatomic) BOOL compareIgnoreEmptyLines;
+@property (nonatomic) BOOL compareDetectMoves;
+@property (nonatomic) BOOL compareCharDiffs;
 
 @end
 

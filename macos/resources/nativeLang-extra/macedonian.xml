@@ -317,4 +317,17 @@
     <Item english="A branch needs a name" text="На гранката ѝ треба име"/>
     <Item english="New branch name:" text="Име на новата гранка:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: означи ги на маргината редовите променети од последниот комит"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="должина: $STR_REPLACE1$    линии: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Линија: $STR_REPLACE1$    Колона: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Поз: "/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Кликнете за да ја копирате целосната патека"/>
+    <Item english="Copied: $STR_REPLACE$" text="Копирано: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Врати ја промената кај покажувачот на HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Покажувачот не е на промена од последниот комит"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Препознај преместувања"/>
+    <Item english="Detect Character Differences" text="Препознај разлики во знаците"/>
 </NativeLangExtra>

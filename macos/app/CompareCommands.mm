@@ -1,10 +1,52 @@
+// Compare, as the ComparePlus plugin does it on Windows: its engine
+// (macos/third_party/compareplus - the diff algorithms, moved lines, sub-line
+// differences, the alignment of both panes with blank annotations, the
+// margin symbols and colours) runs over the two panes here, through the shims
+// beside it. Around the engine is what the plugin's Compare.cpp does for the
+// user, in this port's own way: the other text in the second pane with the
+// document's language and theme, a bar with the summary and navigation,
+// Escape to leave, a comparison that follows typing, and the port's own
+// revert arrow beside each difference.
 #import "CompareCommands.h"
+#import "LanguageCatalog.h"
+#import "Localization.h"
+#import "GitCommands.h"
 #import "SettingsCommands.h"
 #import "ScintillaView.h"
 #import <objc/runtime.h>
+#include "Engine.h"
+#include "NppHelpers.h"
 
 @implementation NppDiffLine
 @end
+
+#pragma mark - The engine's surroundings
+
+/// What one comparison holds: the other side's text, the engine's summary, and
+/// the alignment it asks for. One editor, one comparison at a time.
+namespace {
+struct ActiveCompare {
+    CompareSummary summary;
+    std::string otherText;
+    bool mismatch = false;
+};
+ActiveCompare gCompare;
+}
+
+/// The engine reaches the panes through Scintilla's direct function: the
+/// document in front is MAIN_VIEW, the other text SUB_VIEW.
+static void BindViews(EditorController *ed) {
+    sciFunc = (SciFnDirect)[ed.sci message:SCI_GETDIRECTFUNCTION wParam:0 lParam:0];
+    sciPtr[MAIN_VIEW] = [ed.sci message:SCI_GETDIRECTPOINTER wParam:0 lParam:0];
+    sciPtr[SUB_VIEW] = [ed.secondarySci message:SCI_GETDIRECTPOINTER wParam:0 lParam:0];
+    marginNum = NPPMAC_COMPARE_MARGIN;
+    nppBookmarkMarker = 1 << 1;
+}
+
+static BOOL DarkAppearance(void) {
+    return [[NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]]
+            isEqualToString:NSAppearanceNameDarkAqua];
+}
 
 @implementation EditorController (CompareCommands)
 
@@ -120,17 +162,32 @@ static NSString *NormalisedLine(NSString *line, BOOL ignoreCase, BOOL ignoreSpac
     NSMutableArray<NppDiffLine *> *result = [NSMutableArray array];
     for (NppDiffLine *line in reversed.reverseObjectEnumerator) [result addObject:line];
 
-    // A removal immediately followed by an addition is one changed line, which
-    // is how ComparePlus presents it.
-    for (NSUInteger i = 0; i + 1 < result.count; ++i) {
-        if (result[i].kind == NppDiffRemoved && result[i + 1].kind == NppDiffAdded) {
-            result[i].kind = NppDiffChanged;
-            result[i].newLine = result[i + 1].newLine;
-            [result removeObjectAtIndex:i + 1];
+    // A run of removals followed by a run of additions is a block of changed
+    // lines, paired up as far as both runs go, which is how ComparePlus presents
+    // it: two lines edited in a row are two changed lines, not one changed and
+    // one added. What is left over in the longer run stays removed or added.
+    NSMutableArray<NppDiffLine *> *paired = [NSMutableArray array];
+    NSUInteger i = 0;
+    while (i < result.count) {
+        if (result[i].kind != NppDiffRemoved) { [paired addObject:result[i++]]; continue; }
+        NSUInteger r = i;
+        while (r < result.count && result[r].kind == NppDiffRemoved) r++;
+        NSUInteger a = r;
+        while (a < result.count && result[a].kind == NppDiffAdded) a++;
+        NSUInteger removed = r - i, added = a - r, pairs = MIN(removed, added);
+        for (NSUInteger k = 0; k < pairs; ++k) {
+            NppDiffLine *line = result[i + k];
+            line.kind = NppDiffChanged;
+            line.newLine = result[r + k].newLine;
+            [paired addObject:line];
         }
+        for (NSUInteger k = pairs; k < removed; ++k) [paired addObject:result[i + k]];
+        for (NSUInteger k = pairs; k < added; ++k) [paired addObject:result[r + k]];
+        i = a;
     }
-    return result;
+    return paired;
 }
+
 
 #pragma mark - State
 
@@ -141,16 +198,18 @@ static const char kCurrentDiffKey = 0;
 
 - (void)setFirstToCompare {
     NSString *path = self.currentDocument.path;
-    objc_setAssociatedObject(self, &kFirstToCompareKey,
-                             path ?: self.currentDocument.displayName, OBJC_ASSOCIATION_COPY);
-    [self refreshChrome];
+    if (!path) { NppBeep(); return; }
+    objc_setAssociatedObject(self, &kFirstToCompareKey, path, OBJC_ASSOCIATION_COPY);
 }
 
+/// The line-by-line difference of the last comparison, in the four kinds the
+/// port's own callers work with (the git margin, the agent, the revert). The
+/// engine's own marks - moved lines, sub-line changes - are in the panes.
 - (NSArray<NppDiffLine *> *)currentDiff {
     return objc_getAssociatedObject(self, &kCurrentDiffKey) ?: @[];
 }
 
-- (BOOL)compareActive { return [self currentDiff].count > 0; }
+- (BOOL)compareActive { return gCompare.mismatch && [self secondaryViewVisible]; }
 
 - (BOOL)compareIgnoreCase { return [NppPreferences shared].compareIgnoreCase; }
 - (void)setCompareIgnoreCase:(BOOL)v { [NppPreferences shared].compareIgnoreCase = v; }
@@ -158,54 +217,66 @@ static const char kCurrentDiffKey = 0;
 - (void)setCompareIgnoreSpaces:(BOOL)v { [NppPreferences shared].compareIgnoreSpaces = v; }
 - (BOOL)compareIgnoreEmptyLines { return [NppPreferences shared].compareIgnoreEmptyLines; }
 - (void)setCompareIgnoreEmptyLines:(BOOL)v { [NppPreferences shared].compareIgnoreEmptyLines = v; }
+- (BOOL)compareDetectMoves { return [NppPreferences shared].compareDetectMoves; }
+- (void)setCompareDetectMoves:(BOOL)v { [NppPreferences shared].compareDetectMoves = v; }
+- (BOOL)compareCharDiffs { return [NppPreferences shared].compareCharDiffs; }
+- (void)setCompareCharDiffs:(BOOL)v { [NppPreferences shared].compareCharDiffs = v; }
 
-#pragma mark - Marking
+#pragma mark - The revert arrow
 
-- (void)defineCompareMarkers {
+/// The system's "undo" symbol as a marker image, in the label colour, once per appearance.
+- (void)defineRevertMarker {
     ScintillaView *sci = self.sci;
-    struct { int marker; long colour; } marks[] = {
-        {NPPMAC_MARKER_ADDED,   0x90EE90},   // BGR: light green
-        {NPPMAC_MARKER_REMOVED, 0x9090FF},   // light red
-        {NPPMAC_MARKER_CHANGED, 0xC0E0FF},   // light amber
-        {NPPMAC_MARKER_MOVED,   0xE0D0A0},   // light blue-grey
-    };
-    for (size_t i = 0; i < sizeof(marks)/sizeof(marks[0]); ++i) {
-        // A marker with no margin is drawn as a whole-line background, which is
-        // exactly what a compared line wants.
-        [sci message:SCI_MARKERDEFINE wParam:(uptr_t)marks[i].marker lParam:SC_MARK_BACKGROUND];
-        [sci message:SCI_MARKERSETBACK wParam:(uptr_t)marks[i].marker lParam:marks[i].colour];
-        [sci message:SCI_MARKERSETALPHA wParam:(uptr_t)marks[i].marker lParam:80];
+    const int side = 14;
+    NSImage *symbol = [NSImage imageWithSystemSymbolName:@"arrow.uturn.backward" accessibilityDescription:nil];
+    NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:side pixelsHigh:side bitsPerSample:8
+                                                             samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace
+                                                                bytesPerRow:side * 4 bitsPerPixel:32];
+    [NSGraphicsContext saveGraphicsState];
+    NSGraphicsContext.currentContext = [NSGraphicsContext graphicsContextWithBitmapImageRep:rep];
+    NSImage *tinted = [symbol imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightBold]];
+    NSRect box = NSMakeRect(1, 1, side - 2, side - 2);
+    [tinted drawInRect:box fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0 respectFlipped:YES hints:nil];
+    CGContextRef cg = NSGraphicsContext.currentContext.CGContext;
+    CGContextSetBlendMode(cg, kCGBlendModeSourceIn);
+    CGContextSetFillColorWithColor(cg, [NSColor labelColor].CGColor);
+    CGContextFillRect(cg, NSMakeRect(0, 0, side, side));
+    [NSGraphicsContext restoreGraphicsState];
+    // Scintilla wants rows top down and straight alpha; the bitmap is bottom up and premultiplied.
+    NSMutableData *pixels = [NSMutableData dataWithLength:(NSUInteger)(side * side * 4)];
+    for (int y = 0; y < side; ++y) {
+        unsigned char *out = (unsigned char *)pixels.mutableBytes + (size_t)y * side * 4;
+        const unsigned char *in = rep.bitmapData + (size_t)(side - 1 - y) * rep.bytesPerRow;
+        for (int x = 0; x < side; ++x) {
+            unsigned a = in[x * 4 + 3];
+            for (int c = 0; c < 3; ++c) out[x * 4 + c] = a ? (unsigned char)MIN(255u, in[x * 4 + c] * 255u / a) : 0;
+            out[x * 4 + 3] = (unsigned char)a;
+        }
     }
+    [sci message:SCI_RGBAIMAGESETWIDTH wParam:(uptr_t)side lParam:0];
+    [sci message:SCI_RGBAIMAGESETHEIGHT wParam:(uptr_t)side lParam:0];
+    [sci message:SCI_RGBAIMAGESETSCALE wParam:100 lParam:0];
+    [sci message:SCI_MARKERDEFINERGBAIMAGE wParam:NPPMAC_MARKER_REVERT lParam:(sptr_t)pixels.bytes];
+    [sci message:SCI_SETMARGINCURSORN wParam:NPPMAC_COMPARE_MARGIN lParam:SC_CURSORARROW];
 }
 
-- (void)clearCompareMarkers {
-    for (int m = NPPMAC_MARKER_ADDED; m <= NPPMAC_MARKER_MOVED; ++m) {
-        [self.sci message:SCI_MARKERDELETEALL wParam:(uptr_t)m lParam:0];
-        [self.secondarySci message:SCI_MARKERDELETEALL wParam:(uptr_t)m lParam:0];
-    }
-}
-
-- (void)markDiff:(NSArray<NppDiffLine *> *)diff {
-    [self defineCompareMarkers];
-    [self clearCompareMarkers];
+/// An arrow beside every run of the line diff: on its changed and added lines, and on the
+/// line after lines that were taken out.
+- (void)placeRevertArrows:(NSArray<NppDiffLine *> *)diff {
     ScintillaView *sci = self.sci;
-
+    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_MARKER_REVERT lParam:0];
+    long lineCount = [sci message:SCI_GETLINECOUNT wParam:0 lParam:0];
+    BOOL removedPending = NO;
     for (NppDiffLine *line in diff) {
-        if (line.kind == NppDiffSame || line.newLine < 0) continue;
-        int marker = line.kind == NppDiffAdded ? NPPMAC_MARKER_ADDED
-                   : line.kind == NppDiffChanged ? NPPMAC_MARKER_CHANGED
-                                                 : NPPMAC_MARKER_REMOVED;
-        [sci message:SCI_MARKERADD wParam:(uptr_t)line.newLine lParam:marker];
+        if (line.kind == NppDiffRemoved) { removedPending = YES; continue; }
+        if (line.newLine < 0 || line.newLine >= lineCount) continue;
+        if (line.kind != NppDiffSame || removedPending) [sci message:SCI_MARKERADD wParam:(uptr_t)line.newLine lParam:NPPMAC_MARKER_REVERT];
+        removedPending = NO;
     }
-    // Lines only in the old file are marked in the pane showing it.
-    for (NppDiffLine *line in diff) {
-        if (line.kind != NppDiffRemoved || line.oldLine < 0) continue;
-        [self.secondarySci message:SCI_MARKERADD wParam:(uptr_t)line.oldLine
-                            lParam:NPPMAC_MARKER_REMOVED];
-    }
+    if (removedPending && lineCount > 0) [sci message:SCI_MARKERADD wParam:(uptr_t)(lineCount - 1) lParam:NPPMAC_MARKER_REVERT];
 }
 
-#pragma mark - Commands
+#pragma mark - Running the engine
 
 + (NSArray<NSString *> *)linesForComparison:(NSString *)text {
     // CRLF, LF and CR are all endings; a CR left on a line would make every
@@ -219,43 +290,170 @@ static const char kCurrentDiffKey = 0;
     return [EditorController linesForComparison:[self documentText]];
 }
 
+/// The plugin's compare options, from the port's preferences (setupCompare in Compare.cpp).
+- (CompareOptions)compareOptions {
+    CompareOptions options;
+    options.newFileViewId = MAIN_VIEW;
+    options.findUniqueMode = false;
+    options.neverMarkIgnored = Settings.NeverMarkIgnored;
+    options.detectMoves = self.compareDetectMoves;
+    options.detectSubBlockDiffs = Settings.DetectSubBlockDiffs;
+    options.detectSubLineMoves = Settings.DetectSubLineMoves && options.detectSubBlockDiffs;
+    options.detectCharDiffs = self.compareCharDiffs && options.detectSubBlockDiffs;
+    options.ignoreEmptyLines = self.compareIgnoreEmptyLines;
+    options.ignoreFoldedLines = false;
+    options.ignoreHiddenLines = false;
+    options.ignoreChangedSpaces = self.compareIgnoreSpaces;
+    options.ignoreAllSpaces = false;
+    options.ignoreEOL = true;   // the second pane's text is normalised to LF; endings never differ here
+    options.ignoreCase = self.compareIgnoreCase;
+    options.bookmarksAsSync = false;
+    options.recompareOnChange = true;
+    options.changedResemblPercent = Settings.ChangedThresholdPercent;
+    options.selectionCompare = false;
+    return options;
+}
+
+/// The engine over the two panes: its marks and indicators go straight into
+/// them. YES when they differ; NO when they match (the panes are then clean).
+- (BOOL)runEngine {
+    BindViews(self);
+    Settings.dark = DarkAppearance();
+    setStyles(Settings);
+    clearWindow(MAIN_VIEW);
+    clearWindow(SUB_VIEW);
+    gCompare.summary.clear();
+    CompareOptions options = [self compareOptions];
+    CompareResult result = compareViews(options, L"Compare", gCompare.summary);
+    gCompare.mismatch = result == CompareResult::COMPARE_MISMATCH;
+    if (gCompare.mismatch) {
+        setCompareView(MAIN_VIEW, true, Settings.colors().blank, Settings.colors().caret_line_transparency);
+        setCompareView(SUB_VIEW, true, Settings.colors().blank, Settings.colors().caret_line_transparency);
+        [self alignPanes];
+    }
+    return gCompare.mismatch;
+}
+
+/// alignDiffs of Compare.cpp, the whole-document case: blank annotations put
+/// each difference at the same height in both panes.
+- (void)alignPanes {
+    const AlignmentInfo_t &alignmentInfo = gCompare.summary.alignmentInfo;
+    const intptr_t maxSize = (intptr_t)alignmentInfo.size();
+    CallScintilla(MAIN_VIEW, SCI_ANNOTATIONCLEARALL, 0, 0);
+    CallScintilla(SUB_VIEW, SCI_ANNOTATIONCLEARALL, 0, 0);
+    const intptr_t mainEndLine = getEndNotEmptyLine(MAIN_VIEW);
+    const intptr_t subEndLine = getEndNotEmptyLine(SUB_VIEW);
+    bool skipFirst = false;
+    intptr_t i = 0;
+    // A difference at line 0 cannot be aligned with an annotation (there is no line above it):
+    // the two panes are padded at their first lines instead.
+    for (; i < maxSize && alignmentInfo[i].main.line <= mainEndLine && alignmentInfo[i].sub.line <= subEndLine; ++i) {
+        if (alignmentInfo[i].main.line == 0 || alignmentInfo[i].sub.line == 0) {
+            skipFirst = (alignmentInfo[i].main.line == alignmentInfo[i].sub.line);
+            continue;
+        }
+        if (i == 0 || skipFirst) break;
+        const intptr_t mismatchLen = getVisibleFromDocLine(MAIN_VIEW, alignmentInfo[i].main.line) -
+                                     getVisibleFromDocLine(SUB_VIEW, alignmentInfo[i].sub.line);
+        if (mismatchLen > 0) {
+            addBlankSection(MAIN_VIEW, alignmentInfo[i].main.line, 1, 1, "");
+            addBlankSection(SUB_VIEW, alignmentInfo[i].sub.line, mismatchLen + 1, mismatchLen + 1, "");
+        } else if (mismatchLen < 0) {
+            addBlankSection(MAIN_VIEW, alignmentInfo[i].main.line, -mismatchLen + 1, -mismatchLen + 1, "");
+            addBlankSection(SUB_VIEW, alignmentInfo[i].sub.line, 1, 1, "");
+        }
+        ++i;
+        break;
+    }
+    for (; i < maxSize && alignmentInfo[i].main.line <= mainEndLine && alignmentInfo[i].sub.line <= subEndLine; ++i) {
+        intptr_t previousUnhiddenLine = getPreviousUnhiddenLine(MAIN_VIEW, alignmentInfo[i].main.line);
+        if (isLineAnnotated(MAIN_VIEW, previousUnhiddenLine)) clearAnnotation(MAIN_VIEW, previousUnhiddenLine);
+        previousUnhiddenLine = getPreviousUnhiddenLine(SUB_VIEW, alignmentInfo[i].sub.line);
+        if (isLineAnnotated(SUB_VIEW, previousUnhiddenLine)) clearAnnotation(SUB_VIEW, previousUnhiddenLine);
+        if (isLineHidden(MAIN_VIEW, alignmentInfo[i].main.line) || isLineHidden(SUB_VIEW, alignmentInfo[i].sub.line)) continue;
+        const intptr_t mismatchLen = getVisibleFromDocLine(MAIN_VIEW, alignmentInfo[i].main.line) -
+                                     getVisibleFromDocLine(SUB_VIEW, alignmentInfo[i].sub.line);
+        if (mismatchLen > 0) {
+            if ((i + 1 < maxSize) && (alignmentInfo[i].sub.line == alignmentInfo[i + 1].sub.line)) continue;
+            addBlankSection(SUB_VIEW, alignmentInfo[i].sub.line, mismatchLen);
+        } else if (mismatchLen < 0) {
+            if ((i + 1 < maxSize) && (alignmentInfo[i].main.line == alignmentInfo[i + 1].main.line)) continue;
+            addBlankSection(MAIN_VIEW, alignmentInfo[i].main.line, -mismatchLen);
+        }
+    }
+    // The ends: whichever pane is shorter is padded so both scroll to the same bottom.
+    const intptr_t mainEndVisible = getVisibleFromDocLine(MAIN_VIEW, mainEndLine) + getWrapCount(MAIN_VIEW, mainEndLine) - 1;
+    const intptr_t subEndVisible = getVisibleFromDocLine(SUB_VIEW, subEndLine) + getWrapCount(SUB_VIEW, subEndLine) - 1;
+    const intptr_t mismatchLen = mainEndVisible - subEndVisible;
+    const intptr_t absMismatchLen = std::abs(mismatchLen);
+    const intptr_t linesOnScreen = CallScintilla(MAIN_VIEW, SCI_LINESONSCREEN, 0, 0);
+    const intptr_t endMisalignment = (absMismatchLen < linesOnScreen) ? absMismatchLen : linesOnScreen;
+    if (mismatchLen > 0) { clearAnnotation(MAIN_VIEW, mainEndLine); addBlankSectionAfter(SUB_VIEW, subEndLine, endMisalignment); }
+    else if (mismatchLen < 0) { clearAnnotation(SUB_VIEW, subEndLine); addBlankSectionAfter(MAIN_VIEW, mainEndLine, endMisalignment); }
+}
+
+/// The comparison of the document in front with a text: the text goes into the
+/// second pane with the document's language and theme, the engine runs, the
+/// line diff is kept for the revert and the callers that want it, the bar
+/// comes up, and the first difference is put on screen.
+- (BOOL)compareCurrentWithText:(NSString *)other {
+    if (!self.currentDocument) { NppBeep(); return NO; }
+    gCompare.otherText = other.UTF8String ?: "";
+    NSString *normalised = [[other stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"] stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    [self setSecondaryViewVisible:YES];
+    [self.secondarySci message:SCI_SETREADONLY wParam:0 lParam:0];
+    [self.secondarySci setString:normalised];
+    [self.secondarySci message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
+    [self.secondarySci message:SCI_SETREADONLY wParam:1 lParam:0];
+    NppDocument *doc = self.currentDocument;
+    [self applyLanguageOfDocument:doc toView:self.secondarySci];
+    [self applyThemeToView:self.secondarySci forLanguage:doc.language.name ?: @"normal"];
+    [self.secondarySci message:SCI_COLOURISE wParam:0 lParam:-1];
+    [self.sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    [self setSyncVerticalScroll:YES];
+    [self defineRevertMarker];
+
+    BOOL mismatch = [self runEngine];
+    NSArray *diff = [EditorController diffBetween:[EditorController linesForComparison:normalised] and:[self linesOfCurrentDocument]
+                                       ignoreCase:self.compareIgnoreCase ignoreSpaces:self.compareIgnoreSpaces
+                                 ignoreEmptyLines:self.compareIgnoreEmptyLines];
+    objc_setAssociatedObject(self, &kCurrentDiffKey, mismatch ? diff : @[], OBJC_ASSOCIATION_RETAIN);
+    if (mismatch) [self placeRevertArrows:diff];
+    [self setCompareBarShown:YES];
+    if (mismatch) [self goToFirstDiff];
+    [self refreshChrome];
+    return YES;
+}
+
 - (BOOL)compareWithFileAtPath:(NSString *)path {
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (!data) { NppBeep(); return NO; }
     NSString *other = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]
                    ?: [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
     if (!other) { NppBeep(); return NO; }
-
-    NSArray *oldLines = [EditorController linesForComparison:other];
-    NSArray *newLines = [self linesOfCurrentDocument];
-    NSArray *diff = [EditorController diffBetween:oldLines and:newLines
-                                       ignoreCase:self.compareIgnoreCase
-                                     ignoreSpaces:self.compareIgnoreSpaces
-                                 ignoreEmptyLines:self.compareIgnoreEmptyLines];
-    objc_setAssociatedObject(self, &kCurrentDiffKey, diff, OBJC_ASSOCIATION_RETAIN);
-
-    // The other file goes into the second pane, so both sides are visible.
-    [self setSecondaryViewVisible:YES];
-    [self.secondarySci message:SCI_SETREADONLY wParam:0 lParam:0];
-    [self.secondarySci setString:other];
-    [self.secondarySci message:SCI_SETREADONLY wParam:1 lParam:0];
-    [self setSyncVerticalScroll:YES];
-
-    [self markDiff:diff];
-    [self refreshChrome];
-    return YES;
+    return [self compareCurrentWithText:other];
 }
 
 - (BOOL)compareWithFirst {
     NSString *first = [self firstToCompare];
-    if (!first.length) { NppBeep(); return NO; }
-    if ([first isEqualToString:self.currentDocument.path]) { NppBeep(); return NO; }
+    if (!first) { NppBeep(); return NO; }
     return [self compareWithFileAtPath:first];
 }
 
 - (void)clearActiveCompare {
+    if ([self secondaryViewVisible] && sciPtr[MAIN_VIEW]) {
+        BindViews(self);
+        clearWindow(MAIN_VIEW);
+        clearWindow(SUB_VIEW);
+        setNormalView(MAIN_VIEW);
+        setNormalView(SUB_VIEW);
+    }
+    [self.sci message:SCI_MARKERDELETEALL wParam:NPPMAC_MARKER_REVERT lParam:0];
+    [self.sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0];
+    gCompare.mismatch = false;
+    gCompare.summary.clear();
     objc_setAssociatedObject(self, &kCurrentDiffKey, nil, OBJC_ASSOCIATION_RETAIN);
-    [self clearCompareMarkers];
+    [self setCompareBarShown:NO];
     [self setSyncVerticalScroll:NO];
     [self setSecondaryViewVisible:NO];
     [self refreshChrome];
@@ -266,70 +464,278 @@ static const char kCurrentDiffKey = 0;
     [self clearActiveCompare];
 }
 
-- (NSString *)compareSummary {
-    NSUInteger added = 0, removed = 0, changed = 0, same = 0;
-    for (NppDiffLine *line in [self currentDiff]) {
-        switch (line.kind) {
-            case NppDiffAdded:   added++;   break;
-            case NppDiffRemoved: removed++; break;
-            case NppDiffChanged: changed++; break;
-            default:             same++;    break;
-        }
-    }
-    if (!added && !removed && !changed) {
-        return same ? @"The files are identical." : @"Nothing has been compared.";
-    }
-    return [NSString stringWithFormat:@"%lu added, %lu removed, %lu changed, %lu unchanged.",
-            (unsigned long)added, (unsigned long)removed,
-            (unsigned long)changed, (unsigned long)same];
+#pragma mark - The bar, Escape, following the typing
+
+static const char kCompareBarKey = 0;
+static const char kCompareEscapeKey = 0;
+static const char kCompareTimerKey = 0;
+
+- (NSView *)compareBar { return objc_getAssociatedObject(self, &kCompareBarKey); }
+
+/// Built once: the summary on the left, Previous / Next and the close button on the right.
+- (NSView *)buildCompareBar {
+    NSView *bar = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 400, 26)];
+    bar.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
+    bar.wantsLayer = YES;
+    NSTextField *summary = [NSTextField labelWithString:@""];
+    summary.translatesAutoresizingMaskIntoConstraints = NO;
+    summary.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+    summary.textColor = [NSColor secondaryLabelColor];
+    summary.lineBreakMode = NSLineBreakByTruncatingTail;
+    summary.identifier = @"compareSummary";
+    NSButton *(^button)(NSString *, SEL, NSString *) = ^NSButton *(NSString *title, SEL action, NSString *tip) {
+        NSButton *b = [NSButton buttonWithTitle:NppL(title) target:self action:action];
+        b.identifier = title;
+        b.controlSize = NSControlSizeSmall;
+        b.font = [NSFont systemFontOfSize:[NSFont systemFontSizeForControlSize:NSControlSizeSmall]];
+        b.bezelStyle = NSBezelStyleRounded;
+        b.translatesAutoresizingMaskIntoConstraints = NO;
+        b.toolTip = NppL(tip);
+        [b setContentCompressionResistancePriority:NSLayoutPriorityRequired forOrientation:NSLayoutConstraintOrientationHorizontal];
+        return b;
+    };
+    NSButton *previous = button(@"◀", @selector(comparePreviousPressed:), @"Previous Difference");
+    NSButton *next = button(@"▶", @selector(compareNextPressed:), @"Next Difference");
+    NSButton *close = button(@"✕", @selector(compareClosePressed:), @"Clear Active Compare");
+    close.keyEquivalent = @"\033";   // Escape, when the bar's window has the keyboard in a pane
+    [bar addSubview:summary]; [bar addSubview:previous]; [bar addSubview:next]; [bar addSubview:close];
+    [NSLayoutConstraint activateConstraints:@[
+        [summary.leadingAnchor constraintEqualToAnchor:bar.leadingAnchor constant:8],
+        [summary.centerYAnchor constraintEqualToAnchor:bar.centerYAnchor],
+        [summary.trailingAnchor constraintLessThanOrEqualToAnchor:previous.leadingAnchor constant:-8],
+        [close.trailingAnchor constraintEqualToAnchor:bar.trailingAnchor constant:-6],
+        [close.centerYAnchor constraintEqualToAnchor:bar.centerYAnchor],
+        [next.trailingAnchor constraintEqualToAnchor:close.leadingAnchor constant:-10],
+        [next.centerYAnchor constraintEqualToAnchor:bar.centerYAnchor],
+        [previous.trailingAnchor constraintEqualToAnchor:next.leadingAnchor constant:-4],
+        [previous.centerYAnchor constraintEqualToAnchor:bar.centerYAnchor],
+    ]];
+    objc_setAssociatedObject(self, &kCompareBarKey, bar, OBJC_ASSOCIATION_RETAIN);
+    return bar;
 }
 
-#pragma mark - Navigation
+- (void)comparePreviousPressed:(id)sender { [self goToDiff:-1]; }
+- (void)compareNextPressed:(id)sender { [self goToDiff:1]; }
+- (void)compareClosePressed:(id)sender { [self clearActiveCompare]; }
 
-/// Lines in the current document that a comparison marked.
+- (void)updateCompareBar {
+    NSView *bar = [self compareBar];
+    if (!bar) return;
+    for (NSView *v in bar.subviews) if ([v.identifier isEqualToString:@"compareSummary"]) ((NSTextField *)v).stringValue = [self compareSummary];
+}
+
+/// Shown, the bar takes the top of the host and the pane the rest; hidden, the pane has it all.
+- (void)setCompareBarShown:(BOOL)shown {
+    NSView *host = [self secondaryHost];
+    NSView *bar = [self compareBar] ?: (shown ? [self buildCompareBar] : nil);
+    const CGFloat barHeight = 26;
+    if (shown) {
+        if (bar.superview != host) [host addSubview:bar];
+        bar.frame = NSMakeRect(0, NSHeight(host.bounds) - barHeight, NSWidth(host.bounds), barHeight);
+        bar.layer.backgroundColor = [NSColor windowBackgroundColor].CGColor;
+        self.secondarySci.frame = NSMakeRect(0, 0, NSWidth(host.bounds), NSHeight(host.bounds) - barHeight);
+        [self updateCompareBar];
+        id monitor = objc_getAssociatedObject(self, &kCompareEscapeKey);
+        if (!monitor) {
+            // Escape in either pane ends the comparison, as the ✕ does.
+            __weak EditorController *weakSelf = self;
+            monitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskKeyDown handler:^NSEvent *(NSEvent *event) {
+                EditorController *me = weakSelf;
+                if (!me || event.keyCode != 53 || ![me compareActive]) return event;
+                NSResponder *first = event.window.firstResponder;
+                BOOL inPane = [first isKindOfClass:[NSView class]] &&
+                    ([(NSView *)first isDescendantOf:me.sci] || [(NSView *)first isDescendantOf:me.secondaryHost]);
+                if (!inPane) return event;
+                [me clearActiveCompare];
+                return nil;
+            }];
+            objc_setAssociatedObject(self, &kCompareEscapeKey, monitor, OBJC_ASSOCIATION_RETAIN);
+        }
+    } else {
+        [bar removeFromSuperview];
+        self.secondarySci.frame = host.bounds;
+        id monitor = objc_getAssociatedObject(self, &kCompareEscapeKey);
+        if (monitor) { [NSEvent removeMonitor:monitor]; objc_setAssociatedObject(self, &kCompareEscapeKey, nil, OBJC_ASSOCIATION_RETAIN); }
+    }
+}
+
+/// The comparison worked out again over what the document is now, the view
+/// where it was (ViewLocation of the plugin): what typing leads to.
+- (void)compareRefreshNow {
+    if (![self compareBar] || [self compareBar].superview == nil) return;
+    if (![self secondaryViewVisible]) return;
+    BindViews(self);
+    const intptr_t firstLine = getFirstLine(MAIN_VIEW);
+    const intptr_t offset = getVisibleFromDocLine(MAIN_VIEW, firstLine) - getFirstVisibleLine(MAIN_VIEW);
+    BOOL mismatch = [self runEngine];
+    NSString *other = [NSString stringWithUTF8String:gCompare.otherText.c_str()] ?: @"";
+    NSArray *diff = [EditorController diffBetween:[EditorController linesForComparison:other] and:[self linesOfCurrentDocument]
+                                       ignoreCase:self.compareIgnoreCase ignoreSpaces:self.compareIgnoreSpaces
+                                 ignoreEmptyLines:self.compareIgnoreEmptyLines];
+    objc_setAssociatedObject(self, &kCurrentDiffKey, mismatch ? diff : @[], OBJC_ASSOCIATION_RETAIN);
+    [self placeRevertArrows:mismatch ? diff : @[]];
+    if (!mismatch) [self.sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0];
+    CallScintilla(MAIN_VIEW, SCI_SETFIRSTVISIBLELINE, getVisibleFromDocLine(MAIN_VIEW, firstLine) - offset, 0);
+    [self mirrorScrollToSecondary];
+    [self updateCompareBar];
+    [self refreshChrome];
+}
+
+- (void)compareScheduleRefresh {
+    if (![self compareBar] || [self compareBar].superview == nil) return;
+    NSTimer *pending = objc_getAssociatedObject(self, &kCompareTimerKey);
+    [pending invalidate];
+    __weak EditorController *weakSelf = self;
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.4 repeats:NO block:^(NSTimer *t) { [weakSelf compareRefreshNow]; }];
+    objc_setAssociatedObject(self, &kCompareTimerKey, timer, OBJC_ASSOCIATION_RETAIN);
+}
+
+#pragma mark - The revert
+
+- (BOOL)compareRevertChangeAtLine:(long)line {
+    NSArray<NppDiffLine *> *diff = [self currentDiff];
+    if (!diff.count) { NppBeep(); return NO; }
+    ScintillaView *sci = self.sci;
+    NSArray<NSString *> *old = [EditorController linesForComparison:[self.secondarySci string] ?: @""];
+    NSArray<NSString *> *now = [self linesOfCurrentDocument];
+    long lineCount = [sci message:SCI_GETLINECOUNT wParam:0 lParam:0];
+
+    // The runs of the diff: a stretch of differing lines, the new-side lines it covers and the
+    // old-side lines that stood there; a pure removal covers no new line and sits before the
+    // next unchanged one, where its arrow is.
+    NSInteger newFirst = -1, newLast = -1, oldFirst = -1, oldLast = -1, anchor = -1;
+    BOOL found = NO;
+    NSUInteger i = 0;
+    while (i < diff.count && !found) {
+        if (diff[i].kind == NppDiffSame) { i++; continue; }
+        newFirst = newLast = oldFirst = oldLast = -1;
+        NSUInteger j = i;
+        for (; j < diff.count && diff[j].kind != NppDiffSame; ++j) {
+            NppDiffLine *d = diff[j];
+            if (d.newLine >= 0) { if (newFirst < 0) newFirst = d.newLine; newLast = d.newLine; }
+            if (d.oldLine >= 0) { if (oldFirst < 0) oldFirst = d.oldLine; oldLast = d.oldLine; }
+        }
+        anchor = j < diff.count ? diff[j].newLine : (NSInteger)now.count - 1;
+        if (newFirst >= 0 ? (line >= newFirst && line <= newLast) : line == anchor) found = YES;
+        i = j;
+    }
+    if (!found) { NppBeep(); return NO; }
+
+    NSString *eol = self.currentDocument.eolMode == SC_EOL_CRLF ? @"\r\n" : self.currentDocument.eolMode == SC_EOL_CR ? @"\r" : @"\n";
+    NSMutableString *replacement = [NSMutableString string];
+    for (NSInteger k = oldFirst; oldFirst >= 0 && k <= oldLast; ++k) [replacement appendFormat:@"%@%@", old[(NSUInteger)k], eol];
+    long from, to;
+    if (newFirst >= 0) {
+        from = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)newFirst lParam:0];
+        BOOL endingKept = newLast + 1 < lineCount;
+        to = endingKept ? [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)(newLast + 1) lParam:0] : [sci message:SCI_GETLENGTH wParam:0 lParam:0];
+        if (!endingKept && [replacement hasSuffix:eol]) [replacement deleteCharactersInRange:NSMakeRange(replacement.length - eol.length, eol.length)];
+    } else {
+        from = to = anchor < lineCount ? [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)anchor lParam:0] : [sci message:SCI_GETLENGTH wParam:0 lParam:0];
+    }
+    NSData *utf8 = [replacement dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+    [sci message:SCI_BEGINUNDOACTION wParam:0 lParam:0];
+    [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)from lParam:to];
+    [sci message:SCI_REPLACETARGET wParam:(uptr_t)utf8.length lParam:(sptr_t)utf8.bytes];
+    [sci message:SCI_ENDUNDOACTION wParam:0 lParam:0];
+    [sci message:SCI_GOTOPOS wParam:(uptr_t)from lParam:0];
+
+    [self compareRefreshNow];
+    return YES;
+}
+
+
+#pragma mark - Summary and navigation
+
+- (NSString *)compareSummary {
+    if (![self secondaryViewVisible]) return NppL(@"Nothing has been compared.");
+    const CompareSummary &s = gCompare.summary;
+    if (!gCompare.mismatch) return NppL(@"The files are identical.");
+    NSMutableArray *parts = [NSMutableArray array];
+    [parts addObject:[NSString stringWithFormat:@"%ld added", (long)s.added]];
+    [parts addObject:[NSString stringWithFormat:@"%ld removed", (long)s.removed]];
+    if (s.moved) [parts addObject:[NSString stringWithFormat:@"%ld moved", (long)s.moved]];
+    [parts addObject:[NSString stringWithFormat:@"%ld changed", (long)s.changed]];
+    [parts addObject:[NSString stringWithFormat:@"%ld unchanged", (long)s.match]];
+    return [[parts componentsJoinedByString:@", "] stringByAppendingString:@"."];
+}
+
+/// The differing lines of the document in front, as the engine marked them.
 - (NSArray<NSNumber *> *)markedLines {
     NSMutableArray *lines = [NSMutableArray array];
-    for (NppDiffLine *line in [self currentDiff]) {
-        if (line.kind == NppDiffSame || line.newLine < 0) continue;
-        [lines addObject:@(line.newLine)];
+    if (![self secondaryViewVisible] || !gCompare.mismatch) return lines;
+    BindViews(self);
+    intptr_t count = getLinesCount(MAIN_VIEW);
+    for (intptr_t line = 0; line < count; ++line) {
+        line = CallScintilla(MAIN_VIEW, SCI_MARKERNEXT, line, MARKER_MASK_LINE);
+        if (line < 0) break;
+        [lines addObject:@(line)];
     }
     return lines;
 }
 
+/// jumpToNextChange of Compare.cpp, for the pane in front: the next run of
+/// marked lines in either pane, the caret put on its first line and the line
+/// centred when it is off screen; past the last difference it wraps around.
 - (BOOL)goToDiff:(NSInteger)direction {
-    NSArray *lines = [self markedLines];
-    if (!lines.count) { NppBeep(); return NO; }
-    ScintillaView *sci = self.sci;
-    NSInteger current = [sci message:SCI_LINEFROMPOSITION
-                              wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
-
-    NSNumber *target = nil;
-    if (direction > 0) {
-        for (NSNumber *l in lines) if (l.integerValue > current) { target = l; break; }
-        if (!target) target = lines.firstObject;              // wrap
-    } else {
-        for (NSNumber *l in lines.reverseObjectEnumerator) {
-            if (l.integerValue < current) { target = l; break; }
-        }
-        if (!target) target = lines.lastObject;
+    if (![self compareActive]) { NppBeep(); return NO; }
+    BindViews(self);
+    const bool down = direction > 0;
+    const int view = [self otherViewHasFocus] ? SUB_VIEW : MAIN_VIEW;
+    const int otherView = getOtherViewId(view);
+    intptr_t line = getCurrentLine(view);
+    // Past the run the caret is in, to its edge.
+    const unsigned nextMarker = down ? SCI_MARKERNEXT : SCI_MARKERPREVIOUS;
+    intptr_t from = line;
+    while (from >= 0 && from < getLinesCount(view) && isLineMarked(view, from, MARKER_MASK_LINE)) from += down ? 1 : -1;
+    intptr_t otherFrom = otherViewMatchingLine(view, MAX(0, MIN(from, getLinesCount(view) - 1)));
+    while (otherFrom >= 0 && otherFrom < getLinesCount(otherView) && isLineMarked(otherView, otherFrom, MARKER_MASK_LINE)) otherFrom += down ? 1 : -1;
+    intptr_t next = (from >= 0 && from < getLinesCount(view)) ? CallScintilla(view, nextMarker, from, MARKER_MASK_LINE) : -1;
+    intptr_t otherNext = (otherFrom >= 0 && otherFrom < getLinesCount(otherView)) ? CallScintilla(otherView, nextMarker, otherFrom, MARKER_MASK_LINE) : -1;
+    int targetView = view;
+    intptr_t target = next;
+    if (otherNext >= 0) {
+        intptr_t otherAsMine = otherViewMatchingLine(otherView, otherNext);
+        if (next < 0 || (down ? otherAsMine < next : otherAsMine > next)) { target = otherAsMine; }
     }
-    [sci message:SCI_GOTOLINE wParam:(uptr_t)target.integerValue lParam:0];
+    if (target < 0) {
+        // Wrap around, as the plugin does with WrapAround on.
+        return down ? [self goToFirstDiff] : [self goToLastDiff];
+    }
+    if (!isLineVisible(targetView, target)) centerAt(targetView, target);
+    CallScintilla(targetView, SCI_ENSUREVISIBLEENFORCEPOLICY, target, 0);
+    CallScintilla(targetView, SCI_SETEMPTYSELECTION, getLineStart(targetView, target), 0);
+    [self mirrorScrollToSecondary];
     [self refreshChrome];
     return YES;
 }
 
 - (BOOL)goToFirstDiff {
-    NSArray *lines = [self markedLines];
-    if (!lines.count) { NppBeep(); return NO; }
-    [self.sci message:SCI_GOTOLINE wParam:(uptr_t)[lines.firstObject integerValue] lParam:0];
+    if (![self compareActive]) { NppBeep(); return NO; }
+    BindViews(self);
+    intptr_t main = CallScintilla(MAIN_VIEW, SCI_MARKERNEXT, 0, MARKER_MASK_LINE);
+    intptr_t sub = CallScintilla(SUB_VIEW, SCI_MARKERNEXT, 0, MARKER_MASK_LINE);
+    intptr_t line = main;
+    if (sub >= 0) { intptr_t asMain = otherViewMatchingLine(SUB_VIEW, sub); if (line < 0 || asMain < line) line = asMain; }
+    if (line < 0) { NppBeep(); return NO; }
+    if (!isLineVisible(MAIN_VIEW, line)) centerAt(MAIN_VIEW, line);
+    CallScintilla(MAIN_VIEW, SCI_SETEMPTYSELECTION, getLineStart(MAIN_VIEW, line), 0);
+    [self mirrorScrollToSecondary];
     [self refreshChrome];
     return YES;
 }
 
 - (BOOL)goToLastDiff {
-    NSArray *lines = [self markedLines];
-    if (!lines.count) { NppBeep(); return NO; }
-    [self.sci message:SCI_GOTOLINE wParam:(uptr_t)[lines.lastObject integerValue] lParam:0];
+    if (![self compareActive]) { NppBeep(); return NO; }
+    BindViews(self);
+    intptr_t main = CallScintilla(MAIN_VIEW, SCI_MARKERPREVIOUS, getLinesCount(MAIN_VIEW) - 1, MARKER_MASK_LINE);
+    intptr_t sub = CallScintilla(SUB_VIEW, SCI_MARKERPREVIOUS, getLinesCount(SUB_VIEW) - 1, MARKER_MASK_LINE);
+    intptr_t line = main;
+    if (sub >= 0) { intptr_t asMain = otherViewMatchingLine(SUB_VIEW, sub); if (asMain > line) line = asMain; }
+    if (line < 0) { NppBeep(); return NO; }
+    if (!isLineVisible(MAIN_VIEW, line)) centerAt(MAIN_VIEW, line);
+    CallScintilla(MAIN_VIEW, SCI_SETEMPTYSELECTION, getLineStart(MAIN_VIEW, line), 0);
+    [self mirrorScrollToSecondary];
     [self refreshChrome];
     return YES;
 }

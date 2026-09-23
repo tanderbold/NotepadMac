@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="La rama necesita un nombre"/>
     <Item english="New branch name:" text="Nombre de la nueva rama:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marcar en el margen las líneas modificadas desde el último commit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="long.: $STR_REPLACE1$    líneas: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Lín.: $STR_REPLACE1$    Col.: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pos.: "/>
+    <Item english="Sel: " text="Sel.: "/>
+    <Item english="Sel" text="Sel."/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Haga clic para copiar la ruta completa"/>
+    <Item english="Copied: $STR_REPLACE$" text="Copiado: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Revertir el cambio bajo el cursor a HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="El cursor no está sobre ningún cambio desde el último commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Detectar movimientos"/>
+    <Item english="Detect Character Differences" text="Detectar diferencias de caracteres"/>
 </NativeLangExtra>

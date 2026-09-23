@@ -1,5 +1,6 @@
 #import "DockingManager.h"
 #import "SettingsCommands.h"
+#import "Localization.h"
 
 NSNotificationName const NppDockPanelVisibilityDidChangeNotification = @"NppDockPanelVisibilityDidChange";
 
@@ -208,7 +209,15 @@ static const CGFloat kHeader = 22;
     [self arrange];
 }
 
-- (NSString *)titleOf:(NSString *)identifier { return self.records[identifier].title ?: identifier; }
+/// A tab's title in the interface language: upstream names its panels in the
+/// Dialog section, and the port's own are in nativeLang-extra.
+/// After the interface language changed: the tabs and floating windows draw their titles again.
+- (void)relocalize { [self arrange]; }
+
+- (NSString *)titleOf:(NSString *)identifier {
+    NSString *title = self.records[identifier].title ?: identifier;
+    return [[NppLocalization shared] translateTitle:title];
+}
 
 - (void)registerPanel:(NSString *)identifier title:(NSString *)title view:(NSView *)view
          defaultPlace:(NppDockPlace)place {
@@ -258,6 +267,10 @@ static const CGFloat kHeader = 22;
     BOOL was = r.visible;
     r.visible = YES;
     if (r.place != NppDockFloating) self.fronts[@(r.place)] = identifier;
+    // A panel shown for the first time since the language changed was in no
+    // window when the windows were localised; its controls are done now (back
+    // to English too, when that is the language).
+    if (r.view) [[NppLocalization shared] localizeView:r.view];
     [self arrange];
     if (!was) [[NSNotificationCenter defaultCenter] postNotificationName:NppDockPanelVisibilityDidChangeNotification object:identifier];
 }
@@ -528,7 +541,7 @@ static const CGFloat kHeader = 22;
             self.floats[group] = window;
             [window setFrame:frame display:NO];
         }
-        window.title = shown.title ?: @"";
+        window.title = [self titleOf:shown.identifier];
         NppDockContainerView *holder = [[NppDockContainerView alloc] initWithFrame:[window contentRectForFrameRect:window.frame]];
         holder.place = NppDockFloating;
         holder.manager = self;

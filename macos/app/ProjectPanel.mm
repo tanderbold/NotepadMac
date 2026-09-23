@@ -378,7 +378,8 @@ static NSString *PortablePath(NSString *path) {
 
 - (void)reloadView {
     NSString *where = self.workspacePath ? self.workspacePath.lastPathComponent : @"new workspace";
-    self.title.stringValue = [NSString stringWithFormat:@"Project Panel %ld - %@%@", (long)self.number, where,
+    // "Project Panel 1" is translated as a whole (upstream names the three panels one by one).
+    self.title.stringValue = [NSString stringWithFormat:@"%@ - %@%@", NppL([NSString stringWithFormat:@"Project Panel %ld", (long)self.number]), where,
                               self.dirty ? @" *" : @""];
     [self.outline reloadData];
     [self.outline expandItem:self.root];

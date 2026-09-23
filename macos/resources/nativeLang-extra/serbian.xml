@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="Grana mora imati ime"/>
     <Item english="New branch name:" text="Ime nove grane:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: označi na margini linije izmenjene od poslednjeg commit-a"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Kliknite da kopirate punu putanju"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopirano: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Vrati izmenu kod pokazivača na HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Pokazivač nije ni na jednoj izmeni od poslednjeg commit-a"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Prepoznaj pomeranja"/>
+    <Item english="Detect Character Differences" text="Prepoznaj razlike u karakterima"/>
 </NativeLangExtra>

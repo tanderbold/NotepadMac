@@ -265,4 +265,15 @@
     <Item english="A branch needs a name" text="Kailangan ng pangalan ang branch"/>
     <Item english="New branch name:" text="Pangalan ng bagong branch:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: markahan sa margin ang mga taludtod na nabago mula sa huling commit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="haba: $STR_REPLACE1$    taludtod: $STR_REPLACE2$"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="I-click upang sipiin ang buong path"/>
+    <Item english="Copied: $STR_REPLACE$" text="Sinipi: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Ibalik sa HEAD ang Pagbabago sa Caret"/>
+    <Item english="The caret is on no change since the last commit" text="Ang caret ay wala sa anumang pagbabago mula sa huling commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Tuklasin ang mga Paglipat"/>
+    <Item english="Detect Character Differences" text="Tuklasin ang mga Pagkakaiba ng Karakter"/>
 </NativeLangExtra>

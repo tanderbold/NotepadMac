@@ -306,4 +306,19 @@
     <Item english="A branch needs a name" text="'n Tak het 'n naam nodig"/>
     <Item english="New branch name:" text="Nuwe taknaam:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: merk reëls wat sedert die laaste commit verander is in die kantlyn"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="lengte: $STR_REPLACE1$    lyne: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Lyn: $STR_REPLACE1$    Kol: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pos: "/>
+    <Item english="Sel: " text="Sel: "/>
+    <Item english="Sel" text="Sel"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klik om die volle pad te kopieer"/>
+    <Item english="Copied: $STR_REPLACE$" text="Gekopieer: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Keer verandering by die karet terug na HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Die karet is op geen verandering sedert die laaste commit nie"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Bespeur verskuiwings"/>
+    <Item english="Detect Character Differences" text="Bespeur karakterverskille"/>
 </NativeLangExtra>

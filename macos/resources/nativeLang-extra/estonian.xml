@@ -324,4 +324,18 @@
     <Item english="A branch needs a name" text="Haru vajab nime"/>
     <Item english="New branch name:" text="Uue haru nimi:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: märgi veerisel read, mida on pärast viimast commit'i muudetud"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="pikkus: $STR_REPLACE1$    ridu: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Rida: $STR_REPLACE1$    Tulp: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Valik: "/>
+    <Item english="Sel" text="Valik"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klõpsa täieliku tee kopeerimiseks"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopeeritud: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Taasta muudatus kursori juures HEAD-i seisu järgi"/>
+    <Item english="The caret is on no change since the last commit" text="Kursor ei ole pärast viimast commit'i muudetud kohal"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Tuvasta teisaldused"/>
+    <Item english="Detect Character Differences" text="Tuvasta märgierinevused"/>
 </NativeLangExtra>

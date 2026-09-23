@@ -31,4 +31,6 @@
     <!-- Git -->
     <Item english="Git Panel" text="Git апанель"/>
     <Item english="File History" text="Афаил аҭоурых"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="аура: $STR_REPLACE1$    ацәаҳәақәа: $STR_REPLACE2$"/>
 </NativeLangExtra>

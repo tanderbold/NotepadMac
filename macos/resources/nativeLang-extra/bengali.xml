@@ -326,4 +326,18 @@
     <Item english="A branch needs a name" text="ব্রাঞ্চের জন্য একটি নাম প্রয়োজন"/>
     <Item english="New branch name:" text="নতুন ব্রাঞ্চের নাম:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: সর্বশেষ কমিটের পর পরিবর্তিত লাইনগুলি মার্জিনে চিহ্নিত করুন"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="দৈর্ঘ্য: $STR_REPLACE1$    লাইন: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="লাইন: $STR_REPLACE1$    কলাম: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="নির্বাচন: "/>
+    <Item english="Sel" text="নির্বাচন"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="সম্পূর্ণ পাথ কপি করতে ক্লিক করুন"/>
+    <Item english="Copied: $STR_REPLACE$" text="কপি হয়েছে: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="ক্যারেটে থাকা পরিবর্তন HEAD-এ ফিরিয়ে আনুন"/>
+    <Item english="The caret is on no change since the last commit" text="ক্যারেটটি সর্বশেষ কমিটের পর কোনো পরিবর্তনের উপর নেই"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="সরানো লাইন সনাক্ত করুন"/>
+    <Item english="Detect Character Differences" text="অক্ষরের পার্থক্য সনাক্ত করুন"/>
 </NativeLangExtra>

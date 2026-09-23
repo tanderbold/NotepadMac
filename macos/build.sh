@@ -21,7 +21,7 @@ else
 fi
 
 CXXFLAGS=(-std=c++17 -DNDEBUG -DSCI_LEXER -O2 -fPIC -Wno-deprecated-declarations ${ARCHS[@]+"${ARCHS[@]}"})
-INCLUDES=(-I"$SCI/include" -I"$SCI/src" -I"$SCI/cocoa" -I"$LEX/include" -I"$SRC"
+INCLUDES=(-I"$SCI/include" -I"$SCI/src" -I"$SCI/cocoa" -I"$LEX/include" -I"$SRC" -I"$ROOT/macos/third_party/compareplus/shim" -I"$ROOT/macos/third_party/compareplus/Engine"
           -I"$ROOT/PowerEditor/src/uchardet"
           -I"$ROOT/macos/third_party/argon2"
           -I"$ROOT/macos/third_party/cmark"
@@ -84,6 +84,19 @@ for f in "$CMARK"/*.c; do
     clang -std=c99 -DNDEBUG -O2 -w ${ARCHS[@]+"${ARCHS[@]}"} -I "$CMARK" -c "$f" -o "$o"
 done
 
+# ComparePlus's engine (macos/third_party/compareplus, GPL): the diff
+# algorithms, moved lines, sub-line differences and alignment behind Compare,
+# with the shims that stand in for Win32, Boost.Regex and Notepad++. C++20,
+# as the engine is written.
+CPLUS="$ROOT/macos/third_party/compareplus"
+CPOBJ="$OUT/compareplusobj-${NPPMAC_ARCH:-universal}"
+mkdir -p "$CPOBJ"
+for f in "$CPLUS"/Engine/Engine.cpp "$CPLUS"/shim/NppHelpers.cpp; do
+    o="$CPOBJ/$(basename "${f%.cpp}").o"
+    [ "$o" -nt "$f" ] && [ "$o" -nt "$0" ] && [ "$o" -nt "$CPLUS/shim/NppHelpers.h" ] && continue
+    clang++ -std=c++20 -DNDEBUG -O2 -fPIC -w ${ARCHS[@]+"${ARCHS[@]}"} -I "$CPLUS/shim" -I "$CPLUS/Engine" -I "$SCI/include" -c "$f" -o "$o"
+done
+
 echo "==> libscintilla-cocoa.a"
 libtool -static -o "$OUT/libscintilla-cocoa.a" "$OBJ"/*.o 2>/dev/null
 
@@ -123,7 +136,7 @@ if [ ${#STALE[@]} -gt 0 ]; then
         clang++ $CXXFLAGS_STR $INCLUDES_STR -fobjc-arc -MMD -MF "$APPOBJ/{}.d" \
             -c "$SRC/{}.mm" -o "$APPOBJ/{}.o" || { rm -f "$APPOBJ/{}.o"; exit 255; }'
 fi
-clang++ -std=c++17 -fobjc-arc -O2 ${ARCHS[@]+"${ARCHS[@]}"} "$APPOBJ"/*.o "$UCOBJ"/*.o "$A2OBJ"/*.o "$CMOBJ"/*.o \
+clang++ -std=c++17 -fobjc-arc -O2 ${ARCHS[@]+"${ARCHS[@]}"} "$APPOBJ"/*.o "$UCOBJ"/*.o "$A2OBJ"/*.o "$CMOBJ"/*.o "$CPOBJ"/*.o \
     "$OUT/libscintilla-cocoa.a" "$LEX/bin/liblexilla.a" \
     -framework Cocoa -framework QuartzCore -framework Security -framework WebKit -framework Vision -framework CoreImage -lcurl -lxml2 -lz \
     -o "$OUT/NotepadMac"

@@ -149,6 +149,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL agentServer;
 /// MISC. > Git: the margin that marks lines changed since HEAD (GitCommands.mm). On by default.
 @property (nonatomic) BOOL gitMarginMarks;
+/// Compare (ComparePlus's options): moved lines found and marked, and the changed characters inside a changed line.
+@property (nonatomic) BOOL compareDetectMoves;
+@property (nonatomic) BOOL compareCharDiffs;
 // Search Engine: 0 DuckDuckGo, 1 Google, 2 Bing, 3 Yahoo!, 4 the custom URL.
 @property (nonatomic) NSInteger searchEngine;
 @property (nonatomic, copy) NSString *searchEngineCustom;

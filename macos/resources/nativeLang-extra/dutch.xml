@@ -326,4 +326,13 @@
     <Item english="A branch needs a name" text="Een branch heeft een naam nodig"/>
     <Item english="New branch name:" text="Naam van nieuwe branch:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: regels gewijzigd sinds de laatste commit in de kantlijn markeren"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klik om het volledige pad te kopiëren"/>
+    <Item english="Copied: $STR_REPLACE$" text="Gekopieerd: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Wijziging bij cursor terugzetten naar HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="De cursor staat niet op een wijziging sinds de laatste commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Verplaatsingen detecteren"/>
+    <Item english="Detect Character Differences" text="Tekenverschillen detecteren"/>
 </NativeLangExtra>

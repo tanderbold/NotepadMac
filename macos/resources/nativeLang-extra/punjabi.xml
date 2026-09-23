@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="ਬ੍ਰਾਂਚ ਲਈ ਨਾਂ ਚਾਹੀਦਾ ਹੈ"/>
     <Item english="New branch name:" text="ਨਵੀਂ ਬ੍ਰਾਂਚ ਦਾ ਨਾਂ:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: ਆਖਰੀ ਕਮਿਟ ਤੋਂ ਬਾਅਦ ਬਦਲੀਆਂ ਲਾਈਨਾਂ ਹਾਸ਼ੀਏ ਵਿੱਚ ਨਿਸ਼ਾਨਬੱਧ ਕਰੋ"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ਲੰਬਾਈ: $STR_REPLACE1$    ਲਾਈਨਾਂ: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="ਲਾਈਨ: $STR_REPLACE1$    ਕਾਲਮ: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="ਸਥਿਤੀ: "/>
+    <Item english="Sel: " text="ਚੋਣ: "/>
+    <Item english="Sel" text="ਚੋਣ"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="ਪੂਰਾ ਮਾਰਗ ਕਾਪੀ ਕਰਨ ਲਈ ਕਲਿੱਕ ਕਰੋ"/>
+    <Item english="Copied: $STR_REPLACE$" text="ਕਾਪੀ ਕੀਤਾ: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="ਕੈਰੇਟ 'ਤੇ ਮੌਜੂਦ ਬਦਲਾਅ HEAD 'ਤੇ ਵਾਪਸ ਕਰੋ"/>
+    <Item english="The caret is on no change since the last commit" text="ਕੈਰੇਟ ਆਖਰੀ ਕਮਿਟ ਤੋਂ ਬਾਅਦ ਕਿਸੇ ਬਦਲਾਅ 'ਤੇ ਨਹੀਂ ਹੈ"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="ਥਾਂ ਬਦਲੀਆਂ ਲਾਈਨਾਂ ਖੋਜੋ"/>
+    <Item english="Detect Character Differences" text="ਅੱਖਰਾਂ ਦੇ ਫਰਕ ਖੋਜੋ"/>
 </NativeLangExtra>

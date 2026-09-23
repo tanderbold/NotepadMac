@@ -615,9 +615,12 @@ static NSString *Ordinal(NSUInteger n) {
     NSString *appName = @"NotepadMac";
 
     // ---- Application menu
-    NSMenuItem *appItem = [[NSMenuItem alloc] init];
+    // Named, both of them: an NSMenuItem made with -init is titled "NSMenuItem",
+    // and the menu bar shows the first item's submenu title as the application's
+    // name - which the localiser would then take for an English text to keep.
+    NSMenuItem *appItem = [[NSMenuItem alloc] initWithTitle:appName action:nil keyEquivalent:@""];
     [bar addItem:appItem];
-    NSMenu *appMenu = [[NSMenu alloc] init];
+    NSMenu *appMenu = [[NSMenu alloc] initWithTitle:appName];
     [appMenu addItemWithTitle:[@"About " stringByAppendingString:appName]
                        action:@selector(showAbout:) keyEquivalent:@""];
     [appMenu addItem:[NSMenuItem separatorItem]];
@@ -1316,6 +1319,8 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Ignore Case" action:@selector(compareToggleIgnoreCase:) key:@"" flags:0 menu:compareMenu];
     [self item:@"Ignore Spaces" action:@selector(compareToggleIgnoreSpaces:) key:@"" flags:0 menu:compareMenu];
     [self item:@"Ignore Empty Lines" action:@selector(compareToggleIgnoreEmpty:) key:@"" flags:0 menu:compareMenu];
+    [self item:@"Detect Moves" action:@selector(compareToggleDetectMoves:) key:@"" flags:0 menu:compareMenu];
+    [self item:@"Detect Character Differences" action:@selector(compareToggleCharDiffs:) key:@"" flags:0 menu:compareMenu];
     [compareMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Clear Active Compare" action:@selector(compareClear:) key:@"" flags:0 menu:compareMenu];
     [self item:@"Clear All Compares" action:@selector(compareClearAll:) key:@"" flags:0 menu:compareMenu];
@@ -1345,11 +1350,13 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Git Panel" action:@selector(gitTogglePanel:) key:@"" flags:0 menu:gitMenu];
     [gitMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Compare with HEAD" action:@selector(gitCompareWithHead:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Clear Active Compare" action:@selector(compareClear:) key:@"" flags:0 menu:gitMenu];   // the way out of the comparison, beside the way in
     [self item:@"Blame" action:@selector(gitBlame:) key:@"" flags:0 menu:gitMenu];
     [self item:@"File History" action:@selector(gitFileHistory:) key:@"" flags:0 menu:gitMenu];
     [gitMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Stage File" action:@selector(gitStage:) key:@"" flags:0 menu:gitMenu];
     [self item:@"Unstage File" action:@selector(gitUnstage:) key:@"" flags:0 menu:gitMenu];
+    [self item:@"Revert Change at Caret to HEAD" action:@selector(gitRevertChange:) key:@"" flags:0 menu:gitMenu];
     [self item:@"Discard Changes in File…" action:@selector(gitDiscard:) key:@"" flags:0 menu:gitMenu];
     [self item:@"Commit…" action:@selector(gitCommit:) key:@"" flags:0 menu:gitMenu];
     [gitMenu addItem:[NSMenuItem separatorItem]];
@@ -1702,6 +1709,7 @@ static NSString *Ordinal(NSUInteger n) {
 - (void)gitStage:(id)sender { [self gitReport:[self.editor gitStageCurrent]]; }
 - (void)gitUnstage:(id)sender { [self gitReport:[self.editor gitUnstageCurrent]]; }
 - (void)gitDiscard:(id)sender { [self gitReport:[self.editor gitDiscardCurrent]]; }
+- (void)gitRevertChange:(id)sender { [self gitReport:[self.editor gitRevertChangeAtCaret]]; }
 - (void)gitCommit:(id)sender { [[NppCommitWindow shared] showForEditor:self.editor]; }
 - (void)gitSwitchBranch:(id)sender { [self gitReport:[self.editor gitCheckoutBranch:[sender representedObject]]]; }
 - (void)gitNewBranch:(id)sender {
@@ -1911,6 +1919,15 @@ static NSString *Ordinal(NSUInteger n) {
 }
 - (void)compareToggleIgnoreEmpty:(id)sender {
     self.editor.compareIgnoreEmptyLines = !self.editor.compareIgnoreEmptyLines;
+    if ([self.editor compareActive]) [self.editor compareRefreshNow];
+}
+- (void)compareToggleDetectMoves:(id)sender {
+    self.editor.compareDetectMoves = !self.editor.compareDetectMoves;
+    if ([self.editor compareActive]) [self.editor compareRefreshNow];
+}
+- (void)compareToggleCharDiffs:(id)sender {
+    self.editor.compareCharDiffs = !self.editor.compareCharDiffs;
+    if ([self.editor compareActive]) [self.editor compareRefreshNow];
 }
 
 #pragma mark - XML
@@ -2875,6 +2892,10 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
         item.state = self.editor.compareIgnoreSpaces ? NSControlStateValueOn : NSControlStateValueOff;
     } else if (a == @selector(compareToggleIgnoreEmpty:)) {
         item.state = self.editor.compareIgnoreEmptyLines ? NSControlStateValueOn : NSControlStateValueOff;
+    } else if (a == @selector(compareToggleDetectMoves:)) {
+        item.state = self.editor.compareDetectMoves ? NSControlStateValueOn : NSControlStateValueOff;
+    } else if (a == @selector(compareToggleCharDiffs:)) {
+        item.state = self.editor.compareCharDiffs ? NSControlStateValueOn : NSControlStateValueOff;
     } else if (a == @selector(pickEncoding:)) {
         item.state = [item.title isEqualToString:[self.editor encodingDisplayName]]
                      ? NSControlStateValueOn : NSControlStateValueOff;
@@ -3903,6 +3924,9 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     for (NSWindow *w in NSApp.windows) [l localizeWindow:w];
     [self.editor rebuildContextMenu];   // copies of menu titles, made anew in the language
     [[self.editor gitPanel] relocalize];   // its buttons and columns are made once
+    [[NppDockingManager shared] relocalize];   // the dock tabs draw their titles
+    [self.editor refreshChrome];           // the status bar's words are the language's
+    for (NSInteger i = 1; i <= 3; ++i) [[self.editor projectPanel:i] reloadView];   // "Project Panel 1 - file" is composed
 }
 
 - (void)windowBecameKey:(NSNotification *)note {
@@ -4754,6 +4778,12 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
         [self toggleFunctionList:nil];
         [self.editor setDocumentMapVisible:YES];
         [self.editor openFolderAsWorkspace:[self.editor containingFolderURL].path];
+    }
+    // NPPMAC_SNAPSHOT_COMPARE=<path>: the sample compared with that file, as Compare shows it.
+    if (getenv("NPPMAC_SNAPSHOT_COMPARE")) {
+        [self.editor compareWithFileAtPath:@(getenv("NPPMAC_SNAPSHOT_COMPARE"))];
+        [self.editor.sci setNeedsDisplay:YES];
+        [self.editor.sci display];
     }
     if (getenv("NPPMAC_SNAPSHOT_MAP")) {
         [self.editor setDocumentMapVisible:YES];

@@ -313,4 +313,19 @@
     <Item english="A branch needs a name" text="แบรนช์ต้องมีชื่อ"/>
     <Item english="New branch name:" text="ชื่อแบรนช์ใหม่:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: ทำเครื่องหมายบรรทัดที่เปลี่ยนแปลงตั้งแต่คอมมิตล่าสุดไว้ที่ขอบ"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ความยาว: $STR_REPLACE1$    บรรทัด: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="บรรทัด: $STR_REPLACE1$    คอลัมน์: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="ตำแหน่ง: "/>
+    <Item english="Sel: " text="เลือก: "/>
+    <Item english="Sel" text="เลือก"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="คลิกเพื่อคัดลอกพาธเต็ม"/>
+    <Item english="Copied: $STR_REPLACE$" text="คัดลอกแล้ว: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="ย้อนการเปลี่ยนแปลงที่เคอร์เซอร์กลับเป็น HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="เคอร์เซอร์ไม่ได้อยู่บนการเปลี่ยนแปลงใดตั้งแต่คอมมิตล่าสุด"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="ตรวจหาการย้าย"/>
+    <Item english="Detect Character Differences" text="ตรวจหาความแตกต่างของอักขระ"/>
 </NativeLangExtra>

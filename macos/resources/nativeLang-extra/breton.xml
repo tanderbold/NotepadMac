@@ -148,4 +148,9 @@
     <Item english="Status" text="Stad"/>
     <Item english="Git is not installed (xcode-select --install)" text="N'eo ket staliet Git (xcode-select --install)"/>
     <Item english="New branch name:" text="Anv ar skourr nevez:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="hirder: $STR_REPLACE1$    linennoù: $STR_REPLACE2$"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klikañ evit eilañ an hent klok"/>
+    <Item english="Copied: $STR_REPLACE$" text="Eilet: $STR_REPLACE$"/>
 </NativeLangExtra>

@@ -201,6 +201,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)showAutoCompletion;
 - (void)applyTheme;                               // re-apply npp styles (e.g. on appearance change)
 - (void)applyLanguage;                            // re-attach lexer, keywords and styles
+/// The same for any view: the second pane showing a text of its own (Compare) needs the lexer and styles too.
+- (void)applyLanguageOfDocument:(NppDocument *)doc toView:(ScintillaView *)sci;
+- (void)applyThemeToView:(ScintillaView *)sci forLanguage:(NSString *)langName;
 /// The editor's popup menu as contextMenu.xml describes it; without one (or
 /// when it names nothing this build has) the commands listed in Preferences.
 @property (nonatomic, copy, nullable) NSMenu *_Nullable (^editorContextMenu)(void);
@@ -214,6 +217,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)applyEditorPreferences;
 
 - (void)refreshChrome;                            // tab titles + status bar
+/// What a click on the path in the status bar does: the full path to the clipboard, "Copied" shown for a moment.
+- (void)copyPathFromStatusBar;
 - (void)setChromeVisible:(BOOL)visible;           // hides tab bar + status bar
 - (BOOL)chromeVisible;
 
@@ -227,6 +232,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (BOOL)moveCurrentToOtherView;
 /// What the second view shows, while it is shown.
 - (nullable NppDocument *)documentInSecondaryView;
+/// The view the second pane lives in, with room above it for Compare's bar.
+- (NSView *)secondaryHost;
 - (BOOL)cloneCurrentToOtherView;
 - (BOOL)syncVerticalScroll;
 - (void)setSyncVerticalScroll:(BOOL)on;

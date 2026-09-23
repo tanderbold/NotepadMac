@@ -189,4 +189,10 @@
     <Item english="A commit needs a message" text="I-commit idinga umlayezo"/>
     <Item english="A branch needs a name" text="Igatsha lidinga igama"/>
     <Item english="New branch name:" text="Igama legatsha elisha:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ubude: $STR_REPLACE1$    imigqa: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Umugqa: $STR_REPLACE1$    Ikholomu: $STR_REPLACE2$"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Chofoza ukuze ukopishe indlela egcwele"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kukopishiwe: $STR_REPLACE$"/>
 </NativeLangExtra>

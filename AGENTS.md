@@ -35,7 +35,8 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
 ```
 
 - Every `.mm` in `macos/app/` is compiled; there is no file list to update.
-  C sources of `macos/third_party/argon2` are compiled by their own block in `build.sh`.
+  C sources of `macos/third_party/argon2` are compiled by their own block in `build.sh`, as is
+  the ComparePlus engine (`macos/third_party/compareplus`, C++20, with the shims beside it).
 - Linked: Cocoa, QuartzCore, Security, WebKit, Vision, CoreImage, libcurl, libxml2, zlib; libpcre2 is loaded at run time.
 - The suite is `macos/app/Tests.mm` (one function, `NppMacRunTests`), run inside the real
   application with `NPPMAC_TEST=1`. While working on one area run only its sections
@@ -114,7 +115,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Panels and docking | `DockingManager.mm`, `NppPanel.mm`, `DocumentListPanel.mm`, `FunctionListPanel.mm`, `FunctionListCatalog.mm`, `ProjectPanel.mm`, `WorkspacePanel.mm`, `AuxPanels.mm` |
 | Preferences, shortcuts, context menu | `SettingsCommands.mm` (NPP_PREF_* macros, defaults), `SettingsPanels.mm`, `ShortcutMapper.mm`, `ContextMenuFile.mm` |
 | Localisation | `Localization.mm` (upstream `nativeLang/*.xml` by command id and by English text; the port's own texts from `resources/nativeLang-extra/`) |
-| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm`, `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker; indicator 17 - 8-16 are taken by mark styles, find mark, links and tag match), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off) |
+| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm` (ComparePlus's engine from `macos/third_party/compareplus` over the two panes; see below), `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker; indicator 17 - 8-16 are taken by mark styles, find mark, links and tag match), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off) |
 | Third-party plugins | `PluginHost.mm` (dlopen, the send() bridge, NPPM/NPPN subset); the public C interface and sample live in `macos/plugin-sdk/`. Release signing needs `macos/entitlements.plist` (library validation off) or the hardened runtime refuses the dylibs |
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
 | Mac extras | `ImageCommands.mm` (OCR paste, QR both ways - Vision + Core Image), `macos/cli/nppmac.m` (the command line tool, built into Contents/Helpers and heard over a distributed notification; `nppmac mcp` is the stdio bridge to the agent socket) |
@@ -133,6 +134,26 @@ properties per family (`fold.html`, `fold.hypertext.comment`, `fold.preprocessor
 numbers the *lexer* reads, which for the C family, Objective-C, Tcl, TypeScript, XML and the
 hypertext family are not Notepad++'s `LANG_INDEX_*` numbers. HTML, PHP, ASP and JSP are all the
 `hypertext` lexer with HTML + embedded JavaScript + PHP + ASP words and styles.
+
+### Compare (ComparePlus's engine)
+
+`macos/third_party/compareplus/Engine` and `Icons` are the plugin's own files, unchanged
+(commit 6611373); `shim/` stands in for Win32 (UTF-8 to `wchar_t` and back, lower-casing),
+Boost.Regex (the standard library's), the progress dialog (a cancel flag), Notepad++'s
+settings and helpers, and `CallScintilla`, which reaches the two panes through Scintilla's
+direct function: `BindViews` in `CompareCommands.mm` sets the pointers, MAIN_VIEW is the
+document in front, SUB_VIEW the second pane with the other text. The engine writes its
+marks straight into the panes: whole-line backgrounds on markers 0/2/3/4, symbols 10-19 in
+margin 5, the changed characters under indicator 18, all on numbers the port has free
+(`shim/NppHelpers.h`). Scintilla draws a background marker in the text only when some
+margin's mask has its bit, so margin 1's mask carries them. Alignment is the plugin's:
+blank annotations (`alignPanes`, from `alignDiffs`) put each difference at the same height
+in both panes. What is the port's own around it: the other text in the second pane with the
+document's language and theme, the bar, Escape, the comparison re-run 0.4 s after typing
+(`compareRefreshNow`, the view kept where it was), and the revert arrow (marker 9) beside
+each run of the port's own line diff (`diffBetween`, which the git margin and the agent use
+too). Not carried over: selection compare, find unique, the nav bar, patches, visual
+filters. `NPPMAC_SNAPSHOT_COMPARE=<file>` snapshots the sample compared with that file.
 
 ### Agent interface (MCP)
 

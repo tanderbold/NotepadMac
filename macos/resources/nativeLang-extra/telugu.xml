@@ -330,4 +330,18 @@
     <Item english="A branch needs a name" text="బ్రాంచ్‌కు పేరు అవసరం"/>
     <Item english="New branch name:" text="కొత్త బ్రాంచ్ పేరు:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: చివరి కమిట్ తర్వాత మారిన లైన్లను మార్జిన్‌లో మార్క్ చేయి"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="పొడవు: $STR_REPLACE1$    లైన్లు: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="లైన్: $STR_REPLACE1$    కాలమ్: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="ఎంపిక: "/>
+    <Item english="Sel" text="ఎంపిక"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="పూర్తి పాత్‌ను కాపీ చేయడానికి క్లిక్ చేయండి"/>
+    <Item english="Copied: $STR_REPLACE$" text="కాపీ చేయబడింది: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="కారెట్ వద్ద ఉన్న మార్పును HEAD స్థితికి తిరిగి తీసుకురా"/>
+    <Item english="The caret is on no change since the last commit" text="చివరి కమిట్ తర్వాత కారెట్ ఏ మార్పుపైనా లేదు"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="తరలింపులను గుర్తించు"/>
+    <Item english="Detect Character Differences" text="క్యారెక్టర్ తేడాలను గుర్తించు"/>
 </NativeLangExtra>

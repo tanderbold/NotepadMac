@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="Dal için bir ad gerekli"/>
     <Item english="New branch name:" text="Yeni dal adı:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: son commit'ten bu yana değişen satırları kenar boşluğunda işaretle"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="Uzunluk: $STR_REPLACE1$    Satır: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="St: $STR_REPLACE1$    Süt: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Poz: "/>
+    <Item english="Sel: " text="Seç: "/>
+    <Item english="Sel" text="Seç"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Tam yolu kopyalamak için tıklayın"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopyalandı: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="İmleçteki Değişikliği HEAD'e Geri Al"/>
+    <Item english="The caret is on no change since the last commit" text="İmleç, son commit'ten bu yana yapılmış bir değişikliğin üzerinde değil"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Taşımaları Algıla"/>
+    <Item english="Detect Character Differences" text="Karakter Farklarını Algıla"/>
 </NativeLangExtra>

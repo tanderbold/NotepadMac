@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="En gren må ha et navn"/>
     <Item english="New branch name:" text="Navn på ny gren:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marker linjer endret siden siste commit i margen"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="lengde: $STR_REPLACE1$    linjer: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Linje: $STR_REPLACE1$    Kol: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pos: "/>
+    <Item english="Sel: " text="Mark: "/>
+    <Item english="Sel" text="Mark"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klikk for å kopiere hele stien"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopiert: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Tilbakestill endringen ved markøren til HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Markøren står ikke på noen endring siden siste commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Oppdag flyttinger"/>
+    <Item english="Detect Character Differences" text="Oppdag tegnforskjeller"/>
 </NativeLangExtra>

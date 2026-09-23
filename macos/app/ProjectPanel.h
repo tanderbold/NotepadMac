@@ -26,6 +26,8 @@ typedef NS_ENUM(NSInteger, NppProjectNodeKind) {
 
 @interface NppProjectPanel : NSObject <NSOutlineViewDataSource, NSOutlineViewDelegate, NSMenuDelegate>
 @property (nonatomic, readonly) NSView *view;
+/// Draws the label and the tree again: after the interface language changed, among other things.
+- (void)reloadView;
 @property (nonatomic, weak, nullable) id<WorkspacePanelDelegate> delegate;
 /// 1, 2 or 3.
 @property (nonatomic, readonly) NSInteger number;

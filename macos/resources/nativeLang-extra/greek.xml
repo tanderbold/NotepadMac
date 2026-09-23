@@ -328,4 +328,19 @@
     <Item english="A branch needs a name" text="Ο κλάδος χρειάζεται όνομα"/>
     <Item english="New branch name:" text="Όνομα νέου κλάδου:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: επισήμανση στο περιθώριο των γραμμών που άλλαξαν από το τελευταίο commit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="μήκος: $STR_REPLACE1$    γραμμές: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Γρ: $STR_REPLACE1$    Στ: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Θέση: "/>
+    <Item english="Sel: " text="Επιλ: "/>
+    <Item english="Sel" text="Επιλ"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Κάντε κλικ για αντιγραφή της πλήρους διαδρομής"/>
+    <Item english="Copied: $STR_REPLACE$" text="Αντιγράφηκε: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Επαναφορά της αλλαγής στον δρομέα στο HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Ο δρομέας δεν βρίσκεται σε αλλαγή από το τελευταίο commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Ανίχνευση μετακινήσεων"/>
+    <Item english="Detect Character Differences" text="Ανίχνευση διαφορών χαρακτήρων"/>
 </NativeLangExtra>

@@ -324,4 +324,17 @@
     <Item english="A branch needs a name" text="Branĉo bezonas nomon"/>
     <Item english="New branch name:" text="Nomo de la nova branĉo:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marku en la marĝeno la liniojn ŝanĝitajn ekde la lasta commit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="longo: $STR_REPLACE1$    linioj: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Lin: $STR_REPLACE1$    Kol: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Poz: "/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klaku por kopii la plenan vojon"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopiita: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Restarigu la ŝanĝon ĉe la tajpmontrilo al HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="La tajpmontrilo estas sur neniu ŝanĝo ekde la lasta commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Rekonu movojn"/>
+    <Item english="Detect Character Differences" text="Rekonu diferencojn inter signoj"/>
 </NativeLangExtra>

@@ -47,4 +47,9 @@
     <Item english="Refresh" text="Smiren"/>
     <Item english="Status" text="Addad"/>
     <Item english="Commit message" text="Izen n commit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="teɣzi: $STR_REPLACE1$    ijerriḍen: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Ajerriḍ: $STR_REPLACE1$    Tagejdit: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Tafrayt: "/>
+    <Item english="Sel" text="Tafrayt"/>
 </NativeLangExtra>

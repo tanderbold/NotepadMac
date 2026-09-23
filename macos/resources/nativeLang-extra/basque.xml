@@ -316,4 +316,16 @@
     <Item english="A branch needs a name" text="Adar batek izen bat behar du"/>
     <Item english="New branch name:" text="Adar berriaren izena:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: markatu marjinan azken commit-etik aldatutako lerroak"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="luzera: $STR_REPLACE1$    lerroak: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pos: "/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Egin klik bide osoa kopiatzeko"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopiatuta: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Itzuli Txertatze-ikurreko Aldaketa HEAD-era"/>
+    <Item english="The caret is on no change since the last commit" text="Txertatze-ikurrean ez dago aldaketarik azken commit-etik"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Antzeman Mugimenduak"/>
+    <Item english="Detect Character Differences" text="Antzeman Karaktere Desberdintasunak"/>
 </NativeLangExtra>

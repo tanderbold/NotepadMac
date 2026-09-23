@@ -330,4 +330,18 @@
     <Item english="A branch needs a name" text="Бранч учун ном керак"/>
     <Item english="New branch name:" text="Янги бранч номи:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: охирги коммитдан кейин ўзгарган сатрларни чегара майдонида белгилаш"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="узунлик: $STR_REPLACE1$    сатрлар: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Сатр: $STR_REPLACE1$    Устун: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Белгилаш: "/>
+    <Item english="Sel" text="Белгилаш"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Тўлиқ йўлни нусхалаш учун босинг"/>
+    <Item english="Copied: $STR_REPLACE$" text="Нусха олинди: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Курсордаги ўзгаришни HEAD ҳолатига қайтариш"/>
+    <Item english="The caret is on no change since the last commit" text="Курсор турган жойда охирги коммитдан кейин ўзгариш йўқ"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Кўчиришларни аниқлаш"/>
+    <Item english="Detect Character Differences" text="Белгилар фарқини аниқлаш"/>
 </NativeLangExtra>

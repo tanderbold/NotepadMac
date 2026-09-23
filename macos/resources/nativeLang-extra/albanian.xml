@@ -311,4 +311,16 @@
     <Item english="A branch needs a name" text="Dega ka nevojë për një emër"/>
     <Item english="New branch name:" text="Emri i degës së re:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: shëno në margjinë rreshtat e ndryshuar që nga commit-i i fundit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="gjatësia: $STR_REPLACE1$    linja: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Poz: "/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Kliko për të kopjuar rrugën e plotë"/>
+    <Item english="Copied: $STR_REPLACE$" text="U kopjua: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Kthe në HEAD ndryshimin te kursori"/>
+    <Item english="The caret is on no change since the last commit" text="Kursori nuk është mbi asnjë ndryshim që nga commit-i i fundit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Zbulo lëvizjet"/>
+    <Item english="Detect Character Differences" text="Zbulo dallimet e karaktereve"/>
 </NativeLangExtra>

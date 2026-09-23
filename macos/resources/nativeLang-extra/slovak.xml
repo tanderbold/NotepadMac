@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="Vetva potrebuje názov"/>
     <Item english="New branch name:" text="Názov novej vetvy:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: označovať na okraji riadky zmenené od posledného commitu"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Kliknutím skopírujete celú cestu"/>
+    <Item english="Copied: $STR_REPLACE$" text="Skopírované: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Vrátiť zmenu pri kurzore na HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Kurzor nie je na žiadnej zmene od posledného commitu"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Zisťovať presuny"/>
+    <Item english="Detect Character Differences" text="Zisťovať rozdiely v znakoch"/>
 </NativeLangExtra>

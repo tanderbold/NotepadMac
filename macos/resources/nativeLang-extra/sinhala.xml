@@ -319,4 +319,15 @@
     <Item english="Nothing is staged to commit" text="කමිට් කිරීමට කිසිවක් ස්ටේජ් කර නැත"/>
     <Item english="A branch needs a name" text="ශාඛාවකට නමක් අවශ්‍යයි"/>
     <Item english="New branch name:" text="නව ශාඛාවේ නම:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="දිග: $STR_REPLACE1$    පේලි: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="පේලිය: $STR_REPLACE1$    තීරුව: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="තේරීම: "/>
+    <Item english="Sel" text="තේරීම"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="සම්පූර්ණ පෙත පිටපත් කිරීමට ක්ලික් කරන්න"/>
+    <Item english="Copied: $STR_REPLACE$" text="පිටපත් විය: $STR_REPLACE$"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="ගෙන ගිය පේලි හඳුනාගන්න"/>
+    <Item english="Detect Character Differences" text="අක්ෂර වෙනස්කම් හඳුනාගන්න"/>
 </NativeLangExtra>

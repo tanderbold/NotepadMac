@@ -332,4 +332,19 @@
     <Item english="A branch needs a name" text="Ветке нужно имя"/>
     <Item english="New branch name:" text="Имя новой ветки:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: отмечать на полях строки, изменённые после последнего коммита"/>
+    <!-- Status bar: upstream's own strings, which 64 of its language files leave out -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="длина: $STR_REPLACE1$    строк: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Стр: $STR_REPLACE1$    Кол: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Поз: "/>
+    <Item english="Sel: " text="Выд: "/>
+    <Item english="Sel" text="Выд"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Щёлкните, чтобы скопировать полный путь"/>
+    <Item english="Copied: $STR_REPLACE$" text="Скопировано: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Откатить изменение у курсора до HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Под курсором нет изменений с последнего коммита"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Находить перемещения"/>
+    <Item english="Detect Character Differences" text="Находить отличия в символах"/>
 </NativeLangExtra>

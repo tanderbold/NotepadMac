@@ -330,4 +330,18 @@
     <Item english="A branch needs a name" text="Тармаққа атау қажет"/>
     <Item english="New branch name:" text="Жаңа тармақ атауы:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: соңғы коммиттен кейін өзгертілген жолдарды жиекте белгілеу"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ұзындығы: $STR_REPLACE1$    жолдар: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Жол: $STR_REPLACE1$    Баған: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Бөлектеу: "/>
+    <Item english="Sel" text="Бөлектеу"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Толық жолды көшіру үшін нұқыңыз"/>
+    <Item english="Copied: $STR_REPLACE$" text="Көшірілді: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Жүгіргідегі өзгерісті HEAD-ке қайтару"/>
+    <Item english="The caret is on no change since the last commit" text="Жүгіргі тұрған жерде соңғы коммиттен кейін өзгеріс жоқ"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Жылжытуларды анықтау"/>
+    <Item english="Detect Character Differences" text="Таңбалардағы айырмашылықтарды анықтау"/>
 </NativeLangExtra>

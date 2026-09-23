@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="브랜치에는 이름이 필요합니다"/>
     <Item english="New branch name:" text="새 브랜치 이름:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: 마지막 커밋 이후 변경된 줄을 여백에 표시"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="클릭하여 전체 경로 복사"/>
+    <Item english="Copied: $STR_REPLACE$" text="복사됨: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="커서 위치의 변경 내용을 HEAD로 되돌리기"/>
+    <Item english="The caret is on no change since the last commit" text="커서 위치에 마지막 커밋 이후 변경 내용이 없습니다"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="이동 감지"/>
+    <Item english="Detect Character Differences" text="문자 차이점 감지"/>
 </NativeLangExtra>

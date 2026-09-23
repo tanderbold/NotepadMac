@@ -63,6 +63,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// HEAD - added, changed, and where lines were removed - against the text
 /// as it is now, unsaved edits included. Nothing outside a repository.
 - (void)gitRefreshMarkers;
+/// The same from what is cached about HEAD, running no git process: what the
+/// refresh after typing does, so nothing waits and the margin never blinks.
+- (void)gitRefreshMarkersCachedOnly:(BOOL)cachedOnly;
 /// The same, a moment after typing stops.
 - (void)gitScheduleMarkerRefresh;
 /// The branch and its distance from upstream for the status bar: "main",
@@ -76,6 +79,10 @@ NS_ASSUME_NONNULL_BEGIN
 // the reason is in gitLastError.
 @property (nonatomic, readonly, nullable) NSString *gitLastError;
 - (BOOL)gitCompareWithHead;              // Compare: HEAD's version beside the document
+/// The change the caret is on - a run of changed or added lines, or the place lines were
+/// taken out - put back as HEAD has it, as one undo step. NO with the reason when the caret
+/// is on no change.
+- (BOOL)gitRevertChangeAtCaret;
 - (BOOL)gitBlame;                        // a new read-only document with `git blame`
 - (BOOL)gitFileHistory;                  // a new read-only document with the file's log
 - (BOOL)gitStageCurrent;

@@ -324,4 +324,18 @@
     <Item english="A branch needs a name" text="Haara tarvitsee nimen"/>
     <Item english="New branch name:" text="Uuden haaran nimi:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: merkitse marginaaliin viimeisimmän commitin jälkeen muuttuneet rivit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="pituus: $STR_REPLACE1$    rivejä: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Rivi: $STR_REPLACE1$    Sar: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Val: "/>
+    <Item english="Sel" text="Val"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Kopioi koko polku napsauttamalla"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopioitu: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Palauta kursorin kohdalla oleva muutos HEAD:iin"/>
+    <Item english="The caret is on no change since the last commit" text="Kursori ei ole viimeisimmän commitin jälkeen muuttuneella kohdalla"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Tunnista siirrot"/>
+    <Item english="Detect Character Differences" text="Tunnista merkkierot"/>
 </NativeLangExtra>

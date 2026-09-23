@@ -55,4 +55,14 @@
     <Item english="New Branch…" text="Branca naua…"/>
     <Item english="Status" text="Estat"/>
     <Item english="New branch name:" text="Nòm dera branca naua :"/>
+    <!-- Status bar -->
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Ln : $STR_REPLACE1$    Col : $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pos : "/>
+    <Item english="Sel: " text="Sel : "/>
+    <Item english="Sel" text="Sel"/>
+    <!-- Status bar: the path field -->
+    <Item english="Copied: $STR_REPLACE$" text="Copiat : $STR_REPLACE$"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Detectar es moviments"/>
+    <Item english="Detect Character Differences" text="Detectar es diferéncies de caracters"/>
 </NativeLangExtra>

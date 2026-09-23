@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="Veja potrebuje ime"/>
     <Item english="New branch name:" text="Ime nove veje:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: v robu označi vrstice, spremenjene od zadnjega commita"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="dolžina: $STR_REPLACE1$    vrstic: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Vrstica: $STR_REPLACE1$    Stolpec: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pozicija: "/>
+    <Item english="Sel: " text="Izbor: "/>
+    <Item english="Sel" text="Izbor"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Kliknite za kopiranje celotne poti"/>
+    <Item english="Copied: $STR_REPLACE$" text="Kopirano: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Povrni spremembo pri kazalcu na HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Kazalec ni na nobeni spremembi od zadnjega commita"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Zaznaj premike"/>
+    <Item english="Detect Character Differences" text="Zaznaj razlike v znakih"/>
 </NativeLangExtra>

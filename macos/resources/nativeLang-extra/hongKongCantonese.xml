@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="Branch 要有名"/>
     <Item english="New branch name:" text="新 branch 個名："/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git：喺邊欄標示上次 commit 之後改過嘅行"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="撳一下抄低完整路徑"/>
+    <Item english="Copied: $STR_REPLACE$" text="抄低咗：$STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="將浮標處嘅修改還原返 HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="浮標所在位置由上次 commit 之後冇修改過"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="偵測移動"/>
+    <Item english="Detect Character Differences" text="偵測字元差異"/>
 </NativeLangExtra>

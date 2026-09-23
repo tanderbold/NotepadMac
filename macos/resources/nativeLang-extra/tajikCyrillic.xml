@@ -318,4 +318,19 @@
     <Item english="A branch needs a name" text="Шоха ба ном ниёз дорад"/>
     <Item english="New branch name:" text="Номи шохаи нав:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: аломатгузории сатрҳои пас аз коммити охирин тағйирёфта дар ҳошия"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="дарозӣ: $STR_REPLACE1$    сатрҳо: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Сатр: $STR_REPLACE1$    Сутун: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Мавқеъ: "/>
+    <Item english="Sel: " text="Интихоб: "/>
+    <Item english="Sel" text="Интихоб"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Барои нусхагирии масири комил клик кунед"/>
+    <Item english="Copied: $STR_REPLACE$" text="Нусхабардорӣ шуд: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Баргардонидани тағйироти назди курсор ба HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Дар ҷои курсор пас аз коммити охирин тағйирот нест"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Ташхиси интиқолҳо"/>
+    <Item english="Detect Character Differences" text="Ташхиси фарқиятҳои аломатҳо"/>
 </NativeLangExtra>

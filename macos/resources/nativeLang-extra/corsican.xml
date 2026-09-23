@@ -288,4 +288,10 @@
     <Item english="A branch needs a name" text="Ci vole un nome per a branca"/>
     <Item english="New branch name:" text="Nome di a branca nova :"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git : marcà in a margine e linee cambiate dapoi l’ultimu commit"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Cliccà per cupià u chjassu cumpletu"/>
+    <Item english="Copied: $STR_REPLACE$" text="Cupiatu : $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Rimette à HEAD u cambiamentu sottu à u cursore"/>
+    <Item english="The caret is on no change since the last commit" text="U cursore ùn hè nant’à nisun cambiamentu dapoi l’ultimu commit"/>
 </NativeLangExtra>

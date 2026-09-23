@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="Az ágnak név kell"/>
     <Item english="New branch name:" text="Az új ág neve:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: az utolsó commit óta módosított sorok jelölése a margón"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Kattintson a teljes útvonal másolásához"/>
+    <Item english="Copied: $STR_REPLACE$" text="Másolva: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="A kurzornál lévő módosítás visszaállítása a HEAD-re"/>
+    <Item english="The caret is on no change since the last commit" text="A kurzor nem áll az utolsó commit óta történt módosításon"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Áthelyezések felismerése"/>
+    <Item english="Detect Character Differences" text="Karaktereltérések felismerése"/>
 </NativeLangExtra>

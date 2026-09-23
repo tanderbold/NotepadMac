@@ -31,6 +31,8 @@
 #import "ImageCommands.h"
 #import "AgentServer.h"
 #import "GitCommands.h"
+@interface NppStatusPathField : NSTextField
+@end
 #include <sys/socket.h>
 #include <sys/un.h>
 #import "CompareCommands.h"
@@ -121,6 +123,15 @@ static BOOL NppSectionWanted(NSString *heading) {
     return NO;
 }
 
+/// The interface language the user had, put back when the process ends: the sections that
+/// walk every language would otherwise leave theirs changed if a run stopped in the middle.
+static NSString *gLanguageToRestore;
+static void NppRestoreUserLanguage(void) {
+    if (!gLanguageToRestore.length) return;
+    [[NSUserDefaults standardUserDefaults] setObject:gLanguageToRestore forKey:@"NppMac.localizationFile"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 static NSString *DocText(EditorController *ed) { return [ed.sci string] ?: @""; }
 
 static void SetDoc(EditorController *ed, NSString *text) {
@@ -157,6 +168,17 @@ int NppMacRunTests(AppDelegate *app) {
     gCovered = [NSMutableSet set];
     EditorController *ed = [app editor];
     ScintillaView *sci = ed.sci;
+    // The suite reads the interface in English and switches languages where it tests them;
+    // the user's own language is put back at the end (the CI runner has none set).
+    NSString *userLanguage = [NppPreferences shared].localizationFile;
+    if (userLanguage.length) {
+        [NppPreferences shared].localizationFile = @"";
+        [app applyLocalization];
+        // The sections that walk the languages leave the setting behind if a run ends early;
+        // this puts it back even then, so a suite run never changes the user's language.
+        gLanguageToRestore = userLanguage;
+        atexit(NppRestoreUserLanguage);
+    }
 
     if (NppSectionWanted(@"File")) { printf("\n== File ==\n");
         NSUInteger before = ed.documents.count;
@@ -2368,8 +2390,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed refreshChrome];
         NSString *english = [status.stringValue copy];
         sp.localizationFile = @"russian.xml";
-        [app applyLocalization];
-        [ed refreshChrome];
+        [app applyLocalization];                    // no refreshChrome: applying the language must redraw the bar itself
         NSString *russian = [status.stringValue copy];
         sp.localizationFile = @"german.xml";
         [app applyLocalization];
@@ -2398,6 +2419,7 @@ int NppMacRunTests(AppDelegate *app) {
         // A right-anchored pull-down grows to its translated title instead of cutting it: the
         // project panel's "Workspace".
         [ed showProjectPanel:1];
+        [[ed projectPanel:1].view setFrameSize:NSMakeSize(300, 400)];   // a panel's usual width; hidden, it may be narrower
         NSPopUpButton *workspacePull = nil;
         for (NSView *v in [ed projectPanel:1].view.subviews) if ([v isKindOfClass:[NSPopUpButton class]]) workspacePull = (NSPopUpButton *)v;
         NSMutableArray *cutPulls = [NSMutableArray array];
@@ -2410,19 +2432,75 @@ int NppMacRunTests(AppDelegate *app) {
             for (NSView *v in [ed projectPanel:1].view.subviews) {
                 if ([v isKindOfClass:[NSTextField class]] && NSIntersectsRect(NSInsetRect(v.frame, 0, 1), workspacePull.frame)) overlapsLabel = YES;
             }
-            if (need > has + 2 || overlapsLabel || NSMaxX(workspacePull.frame) > NSWidth([ed projectPanel:1].view.bounds))
+            CGFloat available = NSWidth(workspacePull.superview.bounds) - 12;   // a narrow dock: the pull-down may take all there is
+            if ((need > has + 2 && has < available - 1) || overlapsLabel || NSMaxX(workspacePull.frame) > NSWidth([ed projectPanel:1].view.bounds))
                 [cutPulls addObject:[NSString stringWithFormat:@"%@ \"%@\" needs %.0f has %.0f%@", file.length ? file : @"english", workspacePull.title, need, has, overlapsLabel ? @" (over the label)" : @""]];
         }
         if (cutPulls.count) printf("    %s\n", [[cutPulls componentsJoinedByString:@"; "] UTF8String]);
+        [ed showProjectPanel:1];   // hidden again
+        // A panel hidden while the language changed is translated when it is shown - its label, its
+        // pull-down and its tab in the dock.
+        sp.localizationFile = @"russian.xml";
+        [app applyLocalization];
         [ed showProjectPanel:1];
+        NSTextField *panelLabel = nil;
+        for (NSView *v in [ed projectPanel:1].view.subviews) if ([v isKindOfClass:[NSTextField class]]) panelLabel = (NSTextField *)v;
+        NSString *labelRu = [panelLabel.stringValue copy], *tabRu = [[NppDockingManager shared] titleOf:@"project1"], *pullRu = [workspacePull.title copy];
+        // The panel was shown with the language already Russian; now the language changes while it is
+        // shown: the dock's tab strip must redraw with the new title (it is drawn, not a control).
+        sp.localizationFile = @"german.xml";
+        [app applyLocalization];
+        NSView *containerView = [ed projectPanel:1].view.superview;
+        BOOL stripRedrawn = containerView.needsDisplay;   // arrange marks the container for display
+        NSString *tabDe = [[NppDockingManager shared] titleOf:@"project1"];
+        BOOL tabFollows = [tabDe isEqualToString:@"Projekt Tafel 1"];
+        sp.localizationFile = @"russian.xml";
+        [app applyLocalization];
+        BOOL shownTranslated = [labelRu hasPrefix:@"Проект-панель 1"] && [tabRu isEqualToString:@"Проект-панель 1"] &&
+                               [pullRu isEqualToString:NppL(@"Workspace")] && ![pullRu isEqualToString:@"Workspace"];
+        [ed showProjectPanel:1];
+        sp.localizationFile = @"";
+        [app applyLocalization];
+        [ed showProjectPanel:1];
+        BOOL shownEnglish = [panelLabel.stringValue hasPrefix:@"Project Panel 1"] && [[[NppDockingManager shared] titleOf:@"project1"] isEqualToString:@"Project Panel 1"] &&
+                            [workspacePull.title isEqualToString:@"Workspace"];
+        [ed showProjectPanel:1];
+        if (!shownTranslated || !shownEnglish) printf("    project panel: ru label [%s] tab [%s] pull-down [%s]; en label [%s] tab [%s] pull-down [%s]\n", labelRu.UTF8String, tabRu.UTF8String, pullRu.UTF8String, panelLabel.stringValue.UTF8String, [[NppDockingManager shared] titleOf:@"project1"].UTF8String, workspacePull.title.UTF8String);
         sp.localizationFile = languageWas ?: @"";
         [app applyLocalization];
         [ed.sci message:SCI_SETSEL wParam:0 lParam:0];
         SetDoc(ed, @"abc\ndef\n");
         [ed refreshChrome];
         Check(@"Localization (scripts with combining marks, pull-downs)",
-              @"after Tamil, Hindi, Korean, Thai and Bengali the Edit > Line Operations item is English again and a command by menu path runs; the project panel's Workspace pull-down fits its title in Russian, German, French, Finnish and Hungarian without covering the label",
-              stuck.count == 0 && pathAfterScripts && workspacePull != nil && cutPulls.count == 0);
+              @"after Tamil, Hindi, Korean, Thai and Bengali the Edit > Line Operations item is English again and a command by menu path runs; the project panel's Workspace pull-down fits its title in Russian, German, French, Finnish and Hungarian without covering the label; a panel shown after the language changed is translated, tab included, and back",
+              stuck.count == 0 && pathAfterScripts && workspacePull != nil && cutPulls.count == 0 && shownTranslated && shownEnglish && stripRedrawn && tabFollows);
+        // Finnish has no status-bar strings in Notepad++'s own file; the port's extra file supplies them.
+        sp.localizationFile = @"finnish.xml";
+        [app applyLocalization];
+        NSString *finnish = [status.stringValue copy];
+        sp.localizationFile = languageWas ?: @"";
+        [app applyLocalization];
+        [ed refreshChrome];
+
+        // The application menu keeps its name in every language: the menu bar shows that
+        // submenu's title as the application's name, and a nameless item would put AppKit's
+        // own "NSMenuItem" there.
+        NSMenuItem *appMenuItem = NSApp.mainMenu.itemArray.firstObject;
+        NSMutableArray *appNameWrong = [NSMutableArray array];
+        for (NSString *file in @[@"albanian.xml", @"russian.xml", @"japanese.xml", @""]) {
+            sp.localizationFile = file;
+            [app applyLocalization];
+            if (![appMenuItem.submenu.title isEqualToString:@"NotepadMac"])
+                [appNameWrong addObject:[NSString stringWithFormat:@"%@ left \"%@\"", file.length ? file : @"english", appMenuItem.submenu.title]];
+            if (![appMenuItem.submenu.itemArray.firstObject.title containsString:@"NotepadMac"])
+                [appNameWrong addObject:[NSString stringWithFormat:@"%@ About: \"%@\"", file, appMenuItem.submenu.itemArray.firstObject.title]];
+        }
+        sp.localizationFile = languageWas ?: @"";
+        [app applyLocalization];
+        if (appNameWrong.count) printf("    %s\n", [[appNameWrong componentsJoinedByString:@"; "] UTF8String]);
+        Check(@"Localization (the application menu)", @"the application's own menu is called NotepadMac in every language, and About keeps the name",
+              appNameWrong.count == 0);
+
         Check(@"IDM_VIEW_SUMMARY (status bar language)",
               @"the status bar says length/lines, Ln/Col, Sel and the EOL name in English, then in Russian and German with upstream's translations, and comes back",
               [english containsString:@"length: 8    lines: 3"] && [english containsString:@"Ln: 2    Col: 2"] && [english containsString:@"Sel: 5 | 2"] &&
@@ -2430,7 +2508,33 @@ int NppMacRunTests(AppDelegate *app) {
               [russian containsString:@"длина: 8"] && [russian containsString:@"Стр: 2"] && [russian containsString:@"Выд: 5 | 2"] &&
               [russian containsString:@"Unix (LF)"] && ![russian containsString:@"length:"] &&
               [german containsString:@"Länge: 8"] && ![german containsString:@"length:"] &&
+              [finnish containsString:@"pituus: 8    rivejä: 3"] && [finnish containsString:@"Rivi: 1"] &&
               [status.stringValue containsString:@"length: 8"] && [status.stringValue containsString:@"Pos: 1"]);
+
+        // The path in the status bar: its own field, a click copies the full path and says so for a moment.
+        NSString *clickPath = TempFile(@"t_status_click.txt", @"click\n");
+        [ed openFileAtPath:clickPath error:NULL];
+        clickPath = ed.currentDocument.path;   // as the editor holds it
+        NppStatusPathField *pathField = [ed valueForKey:@"pathField"];
+        NSString *shownPath = [pathField.stringValue copy], *tip = [pathField.toolTip copy];
+        [[NSPasteboard generalPasteboard] clearContents];
+        NSEvent *click = [NSEvent mouseEventWithType:NSEventTypeLeftMouseDown location:NSMakePoint(10, 10) modifierFlags:0 timestamp:0
+                                        windowNumber:ed.window.windowNumber context:nil eventNumber:0 clickCount:1 pressure:1];
+        [pathField mouseDown:click];
+        NSString *copied = [[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString];
+        NSString *feedback = [pathField.stringValue copy];
+        BOOL sideBySide = NSMinX([ed valueForKey:@"statusField"] ? ((NSView *)[ed valueForKey:@"statusField"]).frame : NSZeroRect) >= NSMaxX(pathField.frame);
+        NppSettleUntil(^BOOL{ return [pathField.stringValue isEqualToString:clickPath]; }, 5);
+        BOOL restored = [pathField.stringValue isEqualToString:clickPath];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        [ed newDocument];
+        [[NSPasteboard generalPasteboard] clearContents];
+        [pathField mouseDown:click];   // a new document has no path: nothing to copy
+        BOOL nothingForUnsaved = [[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString] == nil && [pathField.stringValue isEqualToString:@"(unsaved)"];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        Check(@"Status bar (click copies the path)", @"the path stands in its own field before the rest; a click puts the full path on the clipboard, shows 'Copied' with it, and the path comes back; an unsaved document has nothing to copy",
+              [shownPath isEqualToString:clickPath] && [copied isEqualToString:clickPath] && [feedback hasPrefix:@"✓ Copied: "] && [feedback hasSuffix:clickPath] &&
+              sideBySide && restored && nothingForUnsaved && [tip containsString:@"copy the full path"]);
 
         // A vertical edge, which Notepad++ can show as a line, as several
         // lines, or as a change of background.
@@ -9491,15 +9595,131 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"Compare identical", @"identical files differ nowhere",
               anyDiff == 0 && identical.count == oldLines.count);
 
+        // Two lines edited in a row are two changed lines, not one changed and one added; a
+        // third new line after them is added; two lines gone before them are removed.
+        NSArray *block = [EditorController diffBetween:@[@"a", @"x", @"y", @"b", @"c"] and:@[@"a", @"X", @"Y", @"Z", @"b"]
+                                            ignoreCase:NO ignoreSpaces:NO ignoreEmptyLines:NO];
+        NSMutableString *kinds = [NSMutableString string];
+        for (NppDiffLine *l in block) [kinds appendFormat:@"%@", l.kind == NppDiffSame ? @"=" : l.kind == NppDiffChanged ? @"C" : l.kind == NppDiffAdded ? @"A" : @"R"];
+        Check(@"Compare (blocks pair up)", @"x,y -> X,Y,Z is two changed lines and one added; c gone is one removed",
+              [kinds isEqualToString:@"=CCA=R"] && [block[1] newLine] == 1 && [block[2] newLine] == 2 && [block[1] oldLine] == 1 && [block[2] oldLine] == 2);
+
         // End to end, through the editor.
         NSError *err = nil;
-        NSString *oldPath = TempFile(@"cmp_old.txt", @"alpha\nbeta\ngamma\n");
-        NSString *newPath = TempFile(@"cmp_new.txt", @"alpha\nBETA\ngamma\ndelta\n");
+        NSString *oldPath = TempFile(@"cmp_old.txt", @"alpha\nbeta x\ngamma\n");
+        NSString *newPath = TempFile(@"cmp_new.txt", @"alpha\nbetta x\ngamma\ndelta\n");
         [ed openFileAtPath:newPath error:&err];
+        BOOL ignoreCaseWas = ed.compareIgnoreCase, ignoreSpacesWas = ed.compareIgnoreSpaces, ignoreEmptyWas = ed.compareIgnoreEmptyLines;
+        ed.compareIgnoreCase = NO; ed.compareIgnoreSpaces = NO; ed.compareIgnoreEmptyLines = NO;   // the user's own settings aside
         BOOL compared = [ed compareWithFileAtPath:oldPath];
-        Check(@"Compare run", @"comparing marks differences and shows both files",
+        // The pane with the old file is coloured like the document (its lexer and theme), both
+        // sides carry the marks (changed line 2 in both, added line 4 in the new one), and the
+        // caret was taken to the first difference.
+        [ed.sci message:SCI_COLOURISE wParam:0 lParam:-1];
+        long oldSideChanged = [ed.secondarySci message:SCI_MARKERGET wParam:1 lParam:0] & (1 << NPPMAC_MARKER_CHANGED);
+        long newSideChanged = [sci message:SCI_MARKERGET wParam:1 lParam:0] & (1 << NPPMAC_MARKER_CHANGED);
+        long newSideAdded = [sci message:SCI_MARKERGET wParam:3 lParam:0] & (1 << NPPMAC_MARKER_ADDED);
+        long backOld = [ed.secondarySci message:SCI_STYLEGETBACK wParam:STYLE_DEFAULT lParam:0];
+        long backNew = [sci message:SCI_STYLEGETBACK wParam:STYLE_DEFAULT lParam:0];
+        long fontOld = [ed.secondarySci message:SCI_STYLEGETSIZE wParam:STYLE_DEFAULT lParam:0];
+        long fontNew = [sci message:SCI_STYLEGETSIZE wParam:STYLE_DEFAULT lParam:0];
+        long caretLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS] lParam:0];
+        // Scintilla draws a background marker in the text only if some margin's mask has its bit:
+        // the first pane must have Compare's bits in one, or its marks are invisible (they were).
+        long maskWithCompare = [sci message:SCI_GETMARGINMASKN wParam:1 lParam:0] & (0xF << 2);
+        Check(@"Compare run", @"comparing marks differences on both sides, colours the old pane like the document, and lands on the first difference",
               compared && [ed compareActive] && [ed secondaryViewVisible] &&
-              [[ed compareSummary] containsString:@"changed"]);
+              [[ed compareSummary] containsString:@"changed"] &&
+              oldSideChanged && newSideChanged && newSideAdded && backOld == backNew && fontOld == fontNew && caretLine == 1 &&
+              maskWithCompare == (0xF << 2));
+
+        // The revert arrows beside the differing lines, the bar above the other pane, and what the arrow does:
+        // the run at that line goes back to the other side, one undo step, and the comparison is worked out again.
+        long arrowMask = 1 << NPPMAC_MARKER_REVERT;
+        BOOL arrowsWhereDue = ([sci message:SCI_MARKERGET wParam:1 lParam:0] & arrowMask) && ([sci message:SCI_MARKERGET wParam:3 lParam:0] & arrowMask) &&
+                              !([sci message:SCI_MARKERGET wParam:0 lParam:0] & arrowMask) && !([sci message:SCI_MARKERGET wParam:2 lParam:0] & arrowMask);
+        BOOL marginShown = [sci message:SCI_GETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0] > 0;
+        NSView *bar = [ed compareBar];
+        NSTextField *barSummary = nil;
+        for (NSView *v in bar.subviews) if ([v.identifier isEqualToString:@"compareSummary"]) barSummary = (NSTextField *)v;
+        BOOL barShown = bar.superview == [ed secondaryHost] && [barSummary.stringValue containsString:@"1 changed"];
+        BOOL revertedChanged = [ed compareRevertChangeAtLine:1] && [DocText(ed) isEqualToString:@"alpha\nbeta x\ngamma\ndelta\n"] &&
+                               [barSummary.stringValue containsString:@"0 changed"] && !([sci message:SCI_MARKERGET wParam:1 lParam:0] & arrowMask);
+        BOOL noArrowHere = ![ed compareRevertChangeAtLine:0];
+        BOOL revertedAdded = [ed compareRevertChangeAtLine:3] && [DocText(ed) isEqualToString:@"alpha\nbeta x\ngamma\n"] &&
+                             [barSummary.stringValue containsString:@"identical"];
+        [sci message:SCI_UNDO wParam:0 lParam:0];
+        [sci message:SCI_UNDO wParam:0 lParam:0];
+        BOOL undoneBoth = [DocText(ed) isEqualToString:@"alpha\nbetta x\ngamma\ndelta\n"];
+        // Typing while the comparison is on: a moment later the marks, the arrows and the summary follow.
+        [sci message:SCI_GOTOLINE wParam:2 lParam:0];
+        [sci message:SCI_APPENDTEXT wParam:8 lParam:(sptr_t)"epsilon\n"];   // a new last line
+        NppSettleUntil(^BOOL{ return ([sci message:SCI_MARKERGET wParam:4 lParam:0] & (1 << NPPMAC_MARKER_ADDED)) != 0; }, 5);
+        BOOL typedFollowed = ([sci message:SCI_MARKERGET wParam:4 lParam:0] & (1 << NPPMAC_MARKER_ADDED)) && ([sci message:SCI_MARKERGET wParam:4 lParam:0] & arrowMask) &&
+                             [barSummary.stringValue containsString:@"2 added"];
+        BOOL typedReverted = [ed compareRevertChangeAtLine:4] && [DocText(ed) isEqualToString:@"alpha\nbetta x\ngamma\n"];   // delta and epsilon are one run of added lines
+        // A removal's arrow stands on the line after it, and puts the lines back before that line.
+        [ed clearAllCompares];
+        SetDoc(ed, @"alpha\ngamma\n");
+        [ed compareWithFileAtPath:oldPath];
+        BOOL removalArrow = ([sci message:SCI_MARKERGET wParam:1 lParam:0] & arrowMask) != 0;
+        BOOL revertedRemoval = [ed compareRevertChangeAtLine:1] && [DocText(ed) isEqualToString:@"alpha\nbeta x\ngamma\n"];
+        // Escape in a pane ends the comparison, as the ✕ does: the bar and the margin go.
+        [ed.window makeFirstResponder:sci];
+        NSEvent *escape = [NSEvent keyEventWithType:NSEventTypeKeyDown location:NSZeroPoint modifierFlags:0 timestamp:0 windowNumber:ed.window.windowNumber
+                                            context:nil characters:@"\033" charactersIgnoringModifiers:@"\033" isARepeat:NO keyCode:53];
+        [NSApp sendEvent:escape];
+        BOOL escaped = ![ed compareActive] && ![ed secondaryViewVisible] && [ed compareBar].superview == nil &&
+                       [sci message:SCI_GETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0] == 0;
+        Check(@"Compare (revert arrows, bar, Escape)", @"arrows stand beside the changed and added lines only; the bar shows the summary; an arrow puts its run back to the other side, one undo step, with the summary and the arrows following; a line typed while comparing is marked a moment later and can be put back; a removal's arrow on the line after puts the lines back; Escape ends the comparison",
+              arrowsWhereDue && marginShown && barShown && revertedChanged && noArrowHere && revertedAdded && undoneBoth && typedFollowed && typedReverted && removalArrow && revertedRemoval && escaped);
+        [ed openFileAtPath:newPath error:&err];
+        SetDoc(ed, @"alpha\nbetta x\ngamma\ndelta\n");   // as the file has it; the tab was edited above
+        [ed compareWithFileAtPath:oldPath];
+
+        // The ComparePlus engine's own marks: a moved line found and marked as moved in both panes
+        // (not removed and added), the changed characters of a changed line under the indicator,
+        // blank annotations that keep both panes at the same height, and the summary counting moves.
+        [ed clearAllCompares];
+        NSString *movedOld = TempFile(@"cmp_moved_old.txt", @"int a = 1;\nint b = 2;\nint c = 3;\nint d = 4;\nint e = 5;\nint moved = 9;\nint f = 6;\n");
+        NSString *movedNew = TempFile(@"cmp_moved_new.txt", @"int moved = 9;\nint a = 1;\nint B = 2;\nint c = 3;\nint added = 0;\nint added2 = 0;\nint d = 4;\nint f = 6;\n");
+        [ed openFileAtPath:movedNew error:&err];
+        BOOL movesWas = ed.compareDetectMoves, charsWas = ed.compareCharDiffs;
+        ed.compareDetectMoves = YES; ed.compareCharDiffs = YES;
+        [ed compareWithFileAtPath:movedOld];
+        long movedMaskNew = [sci message:SCI_MARKERGET wParam:0 lParam:0] & (1 << NPPMAC_MARKER_MOVED);
+        long movedMaskOld = [ed.secondarySci message:SCI_MARKERGET wParam:5 lParam:0] & (1 << NPPMAC_MARKER_MOVED);
+        long changedNew = [sci message:SCI_MARKERGET wParam:2 lParam:0] & (1 << NPPMAC_MARKER_CHANGED);
+        long addedNew = [sci message:SCI_MARKERGET wParam:4 lParam:0] & (1 << NPPMAC_MARKER_ADDED);
+        long removedOld = [ed.secondarySci message:SCI_MARKERGET wParam:4 lParam:0] & (1 << NPPMAC_MARKER_REMOVED);
+        // "int B = 2;" against "int b = 2;": the B, and only the B, is under the changed-characters indicator (18).
+        long lineStart = [sci message:SCI_POSITIONFROMLINE wParam:2 lParam:0];
+        long onB = [sci message:SCI_INDICATORVALUEAT wParam:18 lParam:(uptr_t)(lineStart + 4)];
+        long onInt = [sci message:SCI_INDICATORVALUEAT wParam:18 lParam:(uptr_t)lineStart];
+        long onTwo = [sci message:SCI_INDICATORVALUEAT wParam:18 lParam:(uptr_t)(lineStart + 8)];
+        // Alignment: "int d = 4;" is line 7 in the new pane and line 4 in the old; with the blank
+        // annotations both stand on the same visible line.
+        long dNew = [sci message:SCI_VISIBLEFROMDOCLINE wParam:6 lParam:0], dOld = [ed.secondarySci message:SCI_VISIBLEFROMDOCLINE wParam:3 lParam:0];
+        long fNew = [sci message:SCI_VISIBLEFROMDOCLINE wParam:7 lParam:0], fOld = [ed.secondarySci message:SCI_VISIBLEFROMDOCLINE wParam:6 lParam:0];
+        NSString *movedSummary = [ed compareSummary];
+        ed.compareDetectMoves = NO;
+        [ed compareRefreshNow];
+        long movedWithoutDetection = [sci message:SCI_MARKERGET wParam:0 lParam:0] & ((1 << NPPMAC_MARKER_MOVED) | (1 << NPPMAC_MARKER_ADDED));
+        // Character differences off: the plugin still marks the differing words, so B stays marked.
+        ed.compareCharDiffs = NO;
+        [ed compareRefreshNow];
+        long onBWords = [sci message:SCI_INDICATORVALUEAT wParam:18 lParam:(uptr_t)(lineStart + 4)];
+        ed.compareDetectMoves = movesWas; ed.compareCharDiffs = charsWas;
+        [ed clearAllCompares];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        Check(@"Compare (ComparePlus engine)", @"a moved line is marked moved on both sides, a changed line's changed characters and nothing else are under the indicator, additions and the removal are marked, both panes are aligned at the same visible lines, the summary counts the move; with Detect Moves off the line is added; with character differences off the differing word is still marked",
+              movedMaskNew && movedMaskOld && changedNew && addedNew && removedOld &&
+              onB && !onInt && !onTwo && dNew == dOld && fNew == fOld &&
+              [movedSummary isEqualToString:@"2 added, 1 removed, 1 moved, 1 changed, 4 unchanged."] &&
+              movedWithoutDetection == (1 << NPPMAC_MARKER_ADDED) && onBWords);
+        [ed openFileAtPath:newPath error:&err];
+        SetDoc(ed, @"alpha\nbetta x\ngamma\ndelta\n");
+        [ed compareWithFileAtPath:oldPath];
 
         // Navigation walks the marked lines.
         [sci message:SCI_GOTOLINE wParam:0 lParam:0];
@@ -9520,6 +9740,7 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"Compare set first", @"the file set aside is the one compared against",
               viaFirst && [[ed firstToCompare] isEqualToString:oldPath]);
 
+        ed.compareIgnoreCase = ignoreCaseWas; ed.compareIgnoreSpaces = ignoreSpacesWas; ed.compareIgnoreEmptyLines = ignoreEmptyWas;
         [ed clearAllCompares];
         Check(@"Compare clear", @"clearing removes the comparison and the second pane",
               ![ed compareActive] && [ed firstToCompare] == nil && ![ed secondaryViewVisible]);
@@ -10452,6 +10673,8 @@ int NppMacRunTests(AppDelegate *app) {
             NSString *out = nil; [NppGit run:args in:repo output:&out error:NULL];
             return [out stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] ?: @"";
         };
+        BOOL cmpCaseWas = ed.compareIgnoreCase, cmpSpacesWas = ed.compareIgnoreSpaces, cmpEmptyWas = ed.compareIgnoreEmptyLines;
+        ed.compareIgnoreCase = NO; ed.compareIgnoreSpaces = NO; ed.compareIgnoreEmptyLines = NO;   // the user's own settings aside
         BOOL made = [NppGit executable] != nil && git(@[@"init", @"-q"]) &&
                     git(@[@"config", @"user.email", @"suite@example.invalid"]) && git(@[@"config", @"user.name", @"Suite Runner"]) &&
                     git(@[@"config", @"commit.gpgsign", @"false"]);
@@ -10526,8 +10749,33 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL hidden = markersOn(4) == 0 && [ed.sci message:SCI_GETMARGINWIDTHN wParam:4 lParam:0] == 0;
         gp.gitMarginMarks = marksOn;
         [ed gitRefreshMarkers];
-        Check(@"Git (markers follow typing, the setting)", @"an appended line is marked after typing stops; the MISC. setting off empties and hides the margin",
-              byTyping && hidden && markersOn(4) == (1 << 6));
+        // The refresh after typing runs no git process (a wait would spin the run loop and the
+        // margin would be drawn empty for a frame): twenty of them take well under a process spawn each.
+        NSDate *t0 = [NSDate date];
+        for (int i = 0; i < 20; ++i) [ed gitRefreshMarkersCachedOnly:YES];
+        NSTimeInterval cachedTime = -[t0 timeIntervalSinceNow];
+        BOOL stillMarked = markersOn(4) == (1 << 6) && markersOn(1) == 0;
+        Check(@"Git (markers follow typing, the setting)", @"an appended line is marked after typing stops; the MISC. setting off empties and hides the margin; the refresh after typing uses the cached HEAD and takes no process",
+              byTyping && hidden && markersOn(4) == (1 << 6) && stillMarked && cachedTime < 0.2);
+
+        // Revert the change at the caret to HEAD: a changed line, added lines, removed lines put back, each one undo step.
+        SetDoc(ed, @"one\nTWO\nthree\nfour\nfive\n");
+        [ed.sci message:SCI_GOTOLINE wParam:1 lParam:0];
+        BOOL revertedChanged = [ed gitRevertChangeAtCaret] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\nfour\nfive\n"];
+        [ed.sci message:SCI_GOTOLINE wParam:4 lParam:0];
+        BOOL revertedAdded = [ed gitRevertChangeAtCaret] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\nfour\n"];
+        [ed.sci message:SCI_UNDO wParam:0 lParam:0];
+        BOOL undoneInOne = [DocText(ed) isEqualToString:@"one\ntwo\nthree\nfour\nfive\n"];
+        SetDoc(ed, @"one\nthree\nfour\n");
+        [ed.sci message:SCI_GOTOLINE wParam:1 lParam:0];   // "three", where the margin marks the removal
+        BOOL revertedRemoved = [ed gitRevertChangeAtCaret] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\nfour\n"];
+        [ed.sci message:SCI_GOTOLINE wParam:0 lParam:0];
+        BOOL nothingHere = ![ed gitRevertChangeAtCaret] && [ed.gitLastError isEqualToString:NppL(@"The caret is on no change since the last commit")];
+        SetDoc(ed, @"one\ntwo\nthree\nfour\nfive");   // the last line without an ending, added
+        [ed.sci message:SCI_GOTOLINE wParam:4 lParam:0];
+        BOOL revertedTail = [ed gitRevertChangeAtCaret] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\nfour\n"];
+        Check(@"Git (revert change at caret)", @"a changed line, added lines (at the end too, with or without an ending) and removed lines go back to HEAD from where the caret is, one undo step each; an unchanged line says there is nothing to revert",
+              revertedChanged && revertedAdded && undoneInOne && revertedRemoved && nothingHere && revertedTail);
 
         // Compare with HEAD: HEAD's text in the second view, the changed line marked; blame and history as documents.
         SetDoc(ed, @"one\nTWO\nthree\nfour\n");
@@ -10567,8 +10815,8 @@ int NppMacRunTests(AppDelegate *app) {
                          [byPath[@"fresh.txt"] untracked] && [byPath[@"renamed.txt"] staged] && [[byPath[@"renamed.txt"] renamedFrom] isEqualToString:@"other.txt"] &&
                          [rows.firstObject.path isEqualToString:@"renamed.txt"] &&   // staged rows first, untracked last
                          [rows.lastObject.path isEqualToString:@"fresh.txt"] &&
-                         [panel.branchLabel.stringValue containsString:branch] && [panel.branchLabel.stringValue containsString:@"3 changed"] &&
-                         [panel.branchLabel.stringValue containsString:@"1 staged"];
+                         [panel.branchLabel.stringValue containsString:branch] && [panel.branchLabel.stringValue containsString:NppLMessage(@"$INT_REPLACE$ changed", nil, 3)] &&
+                         [panel.branchLabel.stringValue containsString:NppLMessage(@"$INT_REPLACE$ staged", nil, 1)];
         BOOL staged = [ed gitStageCurrent];
         [panel reload];
         for (NppGitFileStatus *r in panel.rows) byPath[r.path] = r;
@@ -10602,11 +10850,11 @@ int NppMacRunTests(AppDelegate *app) {
 
         // Commit: refused without a message or without anything staged; done, HEAD moves and the markers go.
         NSString *sha = nil;
-        BOOL noMessage = ![ed gitCommitWithMessage:@"  " stageAll:NO commit:&sha] && [ed.gitLastError containsString:@"message"];
+        BOOL noMessage = ![ed gitCommitWithMessage:@"  " stageAll:NO commit:&sha] && [ed.gitLastError isEqualToString:NppL(@"A commit needs a message")];
         git(@[@"reset", @"-q", @"HEAD"]);   // the rename back to unstaged: nothing staged
         git(@[@"mv", @"renamed.txt", @"other.txt"]);
         git(@[@"reset", @"-q", @"HEAD"]);
-        BOOL nothingStaged = ![ed gitCommitWithMessage:@"nothing" stageAll:NO commit:&sha] && [ed.gitLastError containsString:@"staged"];
+        BOOL nothingStaged = ![ed gitCommitWithMessage:@"nothing" stageAll:NO commit:&sha] && [ed.gitLastError isEqualToString:NppL(@"Nothing is staged to commit")];
         SetDoc(ed, @"one\ntwo\nthree\nfour\nfive\n");
         [ed saveCurrentDocument];
         [ed gitRefreshMarkers];
@@ -10624,13 +10872,13 @@ int NppMacRunTests(AppDelegate *app) {
         [ed saveCurrentDocument];
         NppCommitWindow *cw = [NppCommitWindow shared];
         [cw showForEditor:ed];
-        BOOL disabledEmpty = !cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:@"0 files staged"] && [cw.stagedSummary.stringValue containsString:@"1 not staged"];
+        BOOL disabledEmpty = !cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:NppLMessage(@"$INT_REPLACE$ files staged", nil, 0)] && [cw.stagedSummary.stringValue containsString:NppLMessage(@"$INT_REPLACE$ not staged", nil, 1)];
         cw.message.string = @"third commit";
         [cw textDidChange:nil];
         BOOL stillDisabled = !cw.commitButton.enabled;   // nothing staged yet
         cw.stageAll.state = NSControlStateValueOn;
         [cw optionChanged:nil];
-        BOOL enabledNow = cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:@"1 files will be staged"];
+        BOOL enabledNow = cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:NppLMessage(@"$INT_REPLACE$ files will be staged and committed", nil, 1)];
         BOOL windowCommitted = [cw commit:nil];
         NSString *third = gitOut(@[@"rev-parse", @"HEAD"]);
         Check(@"Git (commit window)", @"Commit is off with nothing staged and no message, on once the message is typed and stage-all ticked; the button commits, closes the window and the console names the commit",
@@ -10647,7 +10895,7 @@ int NppMacRunTests(AppDelegate *app) {
         NSMenuItem *ticked = nil;
         for (NSMenuItem *it in branchMenu.itemArray) if (it.state == NSControlStateValueOn) ticked = it;
         BOOL switchedBack = [ed gitCheckoutBranch:branch] && [[NppGit branchOfRepository:repo ahead:NULL behind:NULL] isEqualToString:branch];
-        BOOL badName = ![ed gitCreateBranch:@" "] && [ed.gitLastError containsString:@"name"];
+        BOOL badName = ![ed gitCreateBranch:@" "] && [ed.gitLastError isEqualToString:NppL(@"A branch needs a name")];
         git(@[@"checkout", @"-q", @"--detach"]);
         [ed gitRefreshState];
         BOOL detached = [[NppGit branchOfRepository:repo ahead:NULL behind:NULL] isEqualToString:@"HEAD"] && [[ed gitStatusBarText] containsString:@"HEAD"];
@@ -10697,7 +10945,7 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL wasAdded = [youngOut hasPrefix:@"A "];
         BOOL unstagedYoung = [ed gitUnstageCurrent];
         [NppGit run:@[@"status", @"--porcelain"] in:young output:&youngOut error:NULL];
-        BOOL noHeadCompare = ![ed gitCompareWithHead] && [ed.gitLastError containsString:@"HEAD"];
+        BOOL noHeadCompare = ![ed gitCompareWithHead] && [ed.gitLastError isEqualToString:NppL(@"The file is not in HEAD yet")];
         BOOL allNew = ({ [ed gitRefreshMarkers]; markersOn(0) == (1 << 6); });
         [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
         Check(@"Git (before the first commit)", @"a file is staged as added and unstaged back to untracked with no HEAD yet; Compare with HEAD is refused with the reason; every line is marked new",
@@ -10705,13 +10953,13 @@ int NppMacRunTests(AppDelegate *app) {
 
         // Outside a repository, every command declines and says why.
         [ed openFileAtPath:outside error:NULL];
-        BOOL declined = ![ed gitStageCurrent] && [ed.gitLastError containsString:@"not in a Git repository"] &&
-                        ![ed gitBlame] && ![ed gitFileHistory] && ![ed gitCompareWithHead] && ![ed gitCommitWithMessage:@"x" stageAll:YES commit:NULL] &&
+        BOOL declined = ![ed gitStageCurrent] && [ed.gitLastError isEqualToString:NppL(@"The file is not in a Git repository")] &&
+                        ![ed gitBlame] && ![ed gitFileHistory] && ![ed gitCompareWithHead] && ![ed gitRevertChangeAtCaret] && ![ed gitCommitWithMessage:@"x" stageAll:YES commit:NULL] &&
                         ![ed gitCheckoutBranch:@"main"] && [ed gitStatusBarText].length == 0;
         [panel reload];
-        BOOL panelSaysSo = panel.rows.count == 0 && [panel.branchLabel.stringValue containsString:@"not in a Git repository"];
+        BOOL panelSaysSo = panel.rows.count == 0 && [panel.branchLabel.stringValue isEqualToString:NppL(@"The file is not in a Git repository")];
         [cw showForEditor:ed];
-        BOOL windowSaysSo = !cw.commitButton.enabled && [cw.stagedSummary.stringValue containsString:@"not in a Git repository"];
+        BOOL windowSaysSo = !cw.commitButton.enabled && [cw.stagedSummary.stringValue isEqualToString:NppL(@"The file is not in a Git repository")];
         [cw cancel:nil];
         [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
         Check(@"Git (outside a repository)", @"stage, blame, history, compare, commit and checkout all decline with the reason; the panel and the commit window say it too",
@@ -10809,8 +11057,8 @@ int NppMacRunTests(AppDelegate *app) {
         lp.localizationFile = languageBefore ?: @"";
         [app applyLocalization];
         if (problems.count) printf("       %s\n", [[problems componentsJoinedByString:@"\n       "] UTF8String]);
-        Check(@"Git (menu, every language)", [NSString stringWithFormat:@"Plugins > Git carries its fourteen commands; in each of the %lu languages that translate it the menu item, the window title and the Commit button are translated and nothing in the window or the panel is cut off", (unsigned long)languagesWithGit.count],
-              gitItem != nil && titles.count == 14 && [titles containsObject:@"Compare with HEAD"] && [titles containsObject:@"Switch Branch"] &&
+        Check(@"Git (menu, every language)", [NSString stringWithFormat:@"Plugins > Git carries its sixteen commands; in each of the %lu languages that translate it the menu item, the window title and the Commit button are translated and nothing in the window or the panel is cut off", (unsigned long)languagesWithGit.count],
+              gitItem != nil && titles.count == 16 && [titles containsObject:@"Compare with HEAD"] && [titles containsObject:@"Switch Branch"] &&
               languagesWithGit.count >= 20 && problems.count == 0);
 
         [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc] discardChanges:YES];
@@ -10818,6 +11066,7 @@ int NppMacRunTests(AppDelegate *app) {
         ed.gitAnswersWithoutAsking = NO;
         [fm removeItemAtPath:repo error:NULL];
         [fm removeItemAtPath:young error:NULL];
+        ed.compareIgnoreCase = cmpCaseWas; ed.compareIgnoreSpaces = cmpSpacesWas; ed.compareIgnoreEmptyLines = cmpEmptyWas;
     }
 
     if (NppSectionWanted(@"Agent interface (MCP)")) { printf("\n== Agent interface (MCP) ==\n");
@@ -11271,6 +11520,11 @@ int NppMacRunTests(AppDelegate *app) {
         }
     }
 
+    if (userLanguage.length) {
+        [NppPreferences shared].localizationFile = userLanguage;
+        [app applyLocalization];
+        [[NSUserDefaults standardUserDefaults] synchronize];   // the process ends right after; the write must land
+    }
     printf("\n%d passed, %d failed\n", gPass, gFail);
     return gFail;
 }

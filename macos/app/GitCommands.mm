@@ -251,15 +251,17 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     if (objc_getAssociatedObject(self, &kGitInstalledKey)) return;
     objc_setAssociatedObject(self, &kGitInstalledKey, @YES, OBJC_ASSOCIATION_RETAIN);
     for (ScintillaView *sci in @[self.sci, self.secondarySci]) {
-        [sci message:SCI_MARKERDEFINE wParam:NPPMAC_GIT_MARKER_ADDED lParam:SC_MARK_LEFTRECT];
-        [sci message:SCI_MARKERDEFINE wParam:NPPMAC_GIT_MARKER_CHANGED lParam:SC_MARK_LEFTRECT];
+        // Full-width bars, where Change History's margin beside this one draws
+        // narrow ones, and Compare's own words for the three ideas - green for
+        // added, amber for changed, red for gone - so the git margin, the
+        // comparison and the agent's answers all say the same thing the same way.
+        [sci message:SCI_MARKERDEFINE wParam:NPPMAC_GIT_MARKER_ADDED lParam:SC_MARK_FULLRECT];
+        [sci message:SCI_MARKERDEFINE wParam:NPPMAC_GIT_MARKER_CHANGED lParam:SC_MARK_FULLRECT];
         [sci message:SCI_MARKERDEFINE wParam:NPPMAC_GIT_MARKER_REMOVED lParam:SC_MARK_SHORTARROW];
-        // The colours the Change History margin uses for the same ideas, so
-        // the two margins read alike: green for new, blue for changed, red for gone.
-        [sci message:SCI_MARKERSETBACK wParam:NPPMAC_GIT_MARKER_ADDED lParam:0x50C878];      // BGR: green
-        [sci message:SCI_MARKERSETFORE wParam:NPPMAC_GIT_MARKER_ADDED lParam:0x50C878];
-        [sci message:SCI_MARKERSETBACK wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0xE0A030];    // blue
-        [sci message:SCI_MARKERSETFORE wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0xE0A030];
+        [sci message:SCI_MARKERSETBACK wParam:NPPMAC_GIT_MARKER_ADDED lParam:0x50B050];      // BGR: green
+        [sci message:SCI_MARKERSETFORE wParam:NPPMAC_GIT_MARKER_ADDED lParam:0x50B050];
+        [sci message:SCI_MARKERSETBACK wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0x30A0E0];    // amber
+        [sci message:SCI_MARKERSETFORE wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0x30A0E0];
         [sci message:SCI_MARKERSETBACK wParam:NPPMAC_GIT_MARKER_REMOVED lParam:0x3030E0];    // red
         [sci message:SCI_MARKERSETFORE wParam:NPPMAC_GIT_MARKER_REMOVED lParam:0x3030E0];
         [sci message:SCI_SETMARGINTYPEN wParam:NPPMAC_GIT_MARGIN lParam:SC_MARGIN_SYMBOL];
@@ -302,10 +304,17 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 #pragma mark Markers
 
 /// HEAD's text of the document in front, fetched again only when HEAD moved.
-- (NSString *)gitHeadTextOfCurrentDocumentInRoot:(NSString *)root {
+/// `cachedOnly`: what is known already, with no git run - for the refresh
+/// after typing, which must not wait on a process (waiting spins the run
+/// loop, and the margin would be drawn empty in between).
+- (NSString *)gitHeadTextOfCurrentDocumentInRoot:(NSString *)root cachedOnly:(BOOL)cachedOnly {
     NppDocument *doc = self.currentDocument;
-    NSString *head = [NppGit headCommitOfRepository:root] ?: @"";
     NSString *known = objc_getAssociatedObject(doc, &kGitHeadCommitKey);
+    if (cachedOnly && known) {
+        id text = objc_getAssociatedObject(doc, &kGitHeadTextKey);
+        return text == [NSNull null] ? nil : text;
+    }
+    NSString *head = [NppGit headCommitOfRepository:root] ?: @"";
     if ([known isEqualToString:head]) {
         id text = objc_getAssociatedObject(doc, &kGitHeadTextKey);
         return text == [NSNull null] ? nil : text;
@@ -317,15 +326,21 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     return text;
 }
 
-- (void)gitRefreshMarkers {
+- (void)gitRefreshMarkers { [self gitRefreshMarkersCachedOnly:NO]; }
+
+- (void)gitRefreshMarkersCachedOnly:(BOOL)cachedOnly {
     ScintillaView *sci = self.sci;
-    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_ADDED lParam:0];
-    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0];
-    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_REMOVED lParam:0];
     NSString *root = [NppPreferences shared].gitMarginMarks ? [self gitRootOfCurrentDocument] : nil;
     [sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_GIT_MARGIN lParam:root ? 6 : 0];
-    if (!root) return;
-    NSString *head = [self gitHeadTextOfCurrentDocumentInRoot:root];
+    if (!root) {
+        [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_ADDED lParam:0];
+        [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0];
+        [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_REMOVED lParam:0];
+        return;
+    }
+    // Everything that can take time - git, the diff - comes first; the markers
+    // are then replaced in one go, with no chance of a redraw in between.
+    NSString *head = [self gitHeadTextOfCurrentDocumentInRoot:root cachedOnly:cachedOnly];
     NSArray<NSString *> *now = [EditorController linesForComparison:[self documentText]];
     NSArray<NppDiffLine *> *diff;
     if (head) {
@@ -343,6 +358,9 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     }
     BOOL removedPending = NO;
     long lines = [sci message:SCI_GETLINECOUNT];
+    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_ADDED lParam:0];
+    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_CHANGED lParam:0];
+    [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_GIT_MARKER_REMOVED lParam:0];
     for (NppDiffLine *d in diff) {
         if (d.kind == NppDiffRemoved) { removedPending = YES; continue; }
         if (d.newLine < 0 || d.newLine >= lines) continue;
@@ -363,7 +381,7 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     [pending invalidate];
     __weak EditorController *weakSelf = self;
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.6 repeats:NO block:^(NSTimer *t) {
-        [weakSelf gitRefreshMarkers];
+        [weakSelf gitRefreshMarkersCachedOnly:YES];
     }];
     objc_setAssociatedObject(self, &kGitTimerKey, timer, OBJC_ASSOCIATION_RETAIN);
 }
@@ -415,7 +433,7 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 - (BOOL)gitCompareWithHead {
     if ([self gitFailWithoutRepository]) return NO;
     NSString *root = [self gitRootOfCurrentDocument];
-    NSString *head = [self gitHeadTextOfCurrentDocumentInRoot:root];
+    NSString *head = [self gitHeadTextOfCurrentDocumentInRoot:root cachedOnly:NO];
     if (!head) { self.gitLastError = NppL(@"The file is not in HEAD yet"); NppBeep(); return NO; }
     // Compare takes a file; HEAD's text is written beside the temporary files under the document's name.
     NSString *dir = [NSTemporaryDirectory() stringByAppendingPathComponent:@"NotepadMac-git-HEAD"];
@@ -423,6 +441,63 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     NSString *path = [dir stringByAppendingPathComponent:[NSString stringWithFormat:@"HEAD %@", self.currentDocument.displayName]];
     if (![head writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:NULL]) { self.gitLastError = @"Cannot write the temporary file"; return NO; }
     return [self compareWithFileAtPath:path];
+}
+
+- (BOOL)gitRevertChangeAtCaret {
+    if ([self gitFailWithoutRepository]) return NO;
+    NSString *root = [self gitRootOfCurrentDocument];
+    NSString *head = [self gitHeadTextOfCurrentDocumentInRoot:root cachedOnly:NO];
+    if (!head) { self.gitLastError = NppL(@"The file is not in HEAD yet"); NppBeep(); return NO; }
+    ScintillaView *sci = self.sci;
+    NSArray<NSString *> *old = [EditorController linesForComparison:head];
+    NSArray<NSString *> *now = [EditorController linesForComparison:[self documentText]];
+    NSArray<NppDiffLine *> *diff = [EditorController diffBetween:old and:now ignoreCase:NO ignoreSpaces:NO ignoreEmptyLines:NO];
+    long caretLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS] lParam:0];
+    long lineCount = [sci message:SCI_GETLINECOUNT];
+
+    // The runs of the diff: each a stretch of lines that differ, with the new-side lines it
+    // covers and the old-side lines that stood there. A pure removal covers no new line; it
+    // sits before the next unchanged line, where the margin shows its mark.
+    NSInteger newFirst = -1, newLast = -1, oldFirst = -1, oldLast = -1, anchor = -1;
+    BOOL found = NO;
+    NSUInteger i = 0;
+    while (i < diff.count && !found) {
+        if (diff[i].kind == NppDiffSame) { i++; continue; }
+        newFirst = newLast = oldFirst = oldLast = -1;
+        NSUInteger j = i;
+        for (; j < diff.count && diff[j].kind != NppDiffSame; ++j) {
+            NppDiffLine *d = diff[j];
+            if (d.newLine >= 0) { if (newFirst < 0) newFirst = d.newLine; newLast = d.newLine; }
+            if (d.oldLine >= 0) { if (oldFirst < 0) oldFirst = d.oldLine; oldLast = d.oldLine; }
+        }
+        anchor = j < diff.count ? diff[j].newLine : (NSInteger)now.count - 1;
+        if (newFirst >= 0 ? (caretLine >= newFirst && caretLine <= newLast) : caretLine == anchor) found = YES;
+        i = j;
+    }
+    if (!found) { self.gitLastError = NppL(@"The caret is on no change since the last commit"); NppBeep(); return NO; }
+
+    NSString *eol = self.currentDocument.eolMode == SC_EOL_CRLF ? @"\r\n" : self.currentDocument.eolMode == SC_EOL_CR ? @"\r" : @"\n";
+    NSMutableString *replacement = [NSMutableString string];
+    for (NSInteger k = oldFirst; oldFirst >= 0 && k <= oldLast; ++k) [replacement appendFormat:@"%@%@", old[(NSUInteger)k], eol];
+    long from, to;
+    if (newFirst >= 0) {
+        from = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)newFirst lParam:0];
+        // Through the ending of the last changed line; at the very end of the text there may be none.
+        BOOL endingKept = newLast + 1 < lineCount;
+        to = endingKept ? [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)(newLast + 1) lParam:0] : [sci message:SCI_GETLENGTH wParam:0 lParam:0];
+        if (!endingKept && [replacement hasSuffix:eol]) [replacement deleteCharactersInRange:NSMakeRange(replacement.length - eol.length, eol.length)];
+    } else {
+        from = to = anchor < lineCount ? [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)anchor lParam:0] : [sci message:SCI_GETLENGTH wParam:0 lParam:0];
+    }
+    NSData *utf8 = [replacement dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+    [sci message:SCI_BEGINUNDOACTION wParam:0 lParam:0];
+    [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)from lParam:to];
+    [sci message:SCI_REPLACETARGET wParam:(uptr_t)utf8.length lParam:(sptr_t)utf8.bytes];
+    [sci message:SCI_ENDUNDOACTION wParam:0 lParam:0];
+    [sci message:SCI_GOTOPOS wParam:(uptr_t)from lParam:0];
+    [self gitRefreshMarkersCachedOnly:YES];
+    [self refreshChrome];
+    return YES;
 }
 
 - (BOOL)gitBlame {
@@ -655,7 +730,7 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
         return b;
     };
     buttons.items = @[button(@"Stage", @selector(stageSelected:)), button(@"Unstage", @selector(unstageSelected:)),
-                      button(@"Discard…", @selector(discardSelected:)), button(@"Commit…", @selector(commitPressed:)),
+                      button(@"Discard", @selector(discardSelected:)), button(@"Commit", @selector(commitPressed:)),
                       button(@"Refresh", @selector(refreshPressed:))];
     buttons.heightConstraint = [buttons.heightAnchor constraintEqualToConstant:28];
     buttons.heightConstraint.active = YES;

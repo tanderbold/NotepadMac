@@ -29,6 +29,10 @@ FOUNDATION_EXPORT NSNotificationName const NppDockPanelVisibilityDidChangeNotifi
 - (void)registerPanel:(NSString *)identifier title:(NSString *)title view:(NSView *)view
          defaultPlace:(NppDockPlace)place;
 - (BOOL)hasPanel:(NSString *)identifier;
+/// The title a panel's tab shows, in the interface language.
+- (NSString *)titleOf:(NSString *)identifier;
+/// After the interface language changed: tabs and floating windows take the new titles.
+- (void)relocalize;
 - (void)showPanel:(NSString *)identifier;
 - (void)hidePanel:(NSString *)identifier;
 - (void)togglePanel:(NSString *)identifier;

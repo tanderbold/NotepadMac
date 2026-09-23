@@ -323,4 +323,19 @@
     <Item english="A branch needs a name" text="Mae angen enw ar gangen"/>
     <Item english="New branch name:" text="Enw'r gangen newydd:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: nodi yn yr ymyl y llinellau a newidiwyd ers y commit diwethaf"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="hyd: $STR_REPLACE1$    llinellau: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Llinell: $STR_REPLACE1$    Colofn: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Lleoliad: "/>
+    <Item english="Sel: " text="Dewis: "/>
+    <Item english="Sel" text="Dewis"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Cliciwch i gopïo'r llwybr llawn"/>
+    <Item english="Copied: $STR_REPLACE$" text="Copïwyd: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Dychwelyd y Newid wrth y Lleolnod i HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Nid yw'r lleolnod ar unrhyw newid ers y commit diwethaf"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Canfod Symudiadau"/>
+    <Item english="Detect Character Differences" text="Canfod Gwahaniaethau Nodau"/>
 </NativeLangExtra>

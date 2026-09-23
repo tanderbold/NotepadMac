@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="分支需要名稱"/>
     <Item english="New branch name:" text="新分支名稱："/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git：在邊欄標記自上次提交以來變更的行"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="點擊以複製完整路徑"/>
+    <Item english="Copied: $STR_REPLACE$" text="已複製：$STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="將游標處的變更還原為 HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="游標所在處自上次提交以來沒有變更"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="偵測移動"/>
+    <Item english="Detect Character Differences" text="偵測字元差異"/>
 </NativeLangExtra>

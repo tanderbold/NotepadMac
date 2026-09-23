@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="ब्रान्चका लागि नाम आवश्यक छ"/>
     <Item english="New branch name:" text="नयाँ ब्रान्चको नाम:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: अन्तिम कमिटपछि परिवर्तन भएका लाइनहरू मार्जिनमा चिन्ह लगाउनुहोस्"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="लम्बाई: $STR_REPLACE1$    लाइनहरू: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="लाइन: $STR_REPLACE1$    स्तम्भ: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="स्थिति: "/>
+    <Item english="Sel: " text="चयन: "/>
+    <Item english="Sel" text="चयन"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="पूर्ण पथ प्रतिलिपि गर्न क्लिक गर्नुहोस्"/>
+    <Item english="Copied: $STR_REPLACE$" text="प्रतिलिपि गरियो: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="क्यारेटमा रहेको परिवर्तन HEAD मा फर्काउनुहोस्"/>
+    <Item english="The caret is on no change since the last commit" text="अन्तिम कमिटपछि क्यारेटमा कुनै परिवर्तन छैन"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="सारिएका लाइनहरू पत्ता लगाउनुहोस्"/>
+    <Item english="Detect Character Differences" text="क्यारेक्टर भिन्नता पत्ता लगाउनुहोस्"/>
 </NativeLangExtra>

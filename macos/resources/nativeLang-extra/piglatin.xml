@@ -330,4 +330,19 @@
     <Item english="A branch needs a name" text="Ayay anchbray eedsnay ayay amenay"/>
     <Item english="New branch name:" text="Ewnay anchbray amenay:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: arkmay ineslay angedchay incesay ethay astlay ommitcay inyay ethay arginmay"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="engthlay: $STR_REPLACE1$    ineslay: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Ln: $STR_REPLACE1$    Olcay: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Ospay: "/>
+    <Item english="Sel: " text="Elsay: "/>
+    <Item english="Sel" text="Elsay"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Ickclay otay opycay ethay ullfay athpay"/>
+    <Item english="Copied: $STR_REPLACE$" text="Opiedcay: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Evertray Angechay atyay Aretcay otay HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Ethay aretcay isyay onyay onay angechay incesay ethay astlay ommitcay"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Etectday Ovesmay"/>
+    <Item english="Detect Character Differences" text="Etectday Aracterchay Ifferencesday"/>
 </NativeLangExtra>

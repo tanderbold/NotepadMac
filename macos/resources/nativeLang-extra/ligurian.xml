@@ -139,4 +139,10 @@
     <Item english="Commit" text="Commit"/>
     <Item english="Commit message" text="Messaggio do commit"/>
     <Item english="New branch name:" text="Nomme do neuvo branch:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="longhessa: $STR_REPLACE1$    righe: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Riga: $STR_REPLACE1$    Col: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Pos: "/>
+    <Item english="Sel: " text="Sel: "/>
+    <Item english="Sel" text="Sel"/>
 </NativeLangExtra>

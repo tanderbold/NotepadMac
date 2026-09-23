@@ -453,7 +453,10 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             [self localizeMenu:item.submenu byItem:byItem top:NO];
         } else {
             NSNumber *identifier = [byItem objectForKey:item];
-            text = identifier ? [self commandName:identifier.intValue] : nil;
+            // "About NotepadMac" and its like are the port's own texts (nativeLang-extra):
+            // upstream's translation of the same command names the Windows application.
+            BOOL ownName = [english containsString:@"NotepadMac"];
+            text = (identifier && !ownName) ? [self commandName:identifier.intValue] : nil;
             text = text ?: [self translate:english];
         }
         item.title = Shown(item, @"title", (self.active ? text : english) ?: @"");
@@ -484,6 +487,7 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         for (NSMenuItem *item in popup.itemArray) {
             item.title = Shown(item, @"title", [self translate:Original(item, @"title", item.title)]);
         }
+        [popup synchronizeTitleAndSelectedItem];   // a pull-down shows its first item's title, kept by the cell
         if (popup.pullsDown) FitPullDown(popup);
     } else if ([view isKindOfClass:[NSSegmentedControl class]]) {
         NSSegmentedControl *s = (NSSegmentedControl *)view;

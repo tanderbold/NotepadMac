@@ -127,4 +127,8 @@
     <Item english="Commit message" text="پەیامی commit"/>
     <Item english="Git is not installed (xcode-select --install)" text="Git دانەمەزراوە (xcode-select --install)"/>
     <Item english="New branch name:" text="ناوی لقی نوێ:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="درێژی: $STR_REPLACE1$    هێلەكان: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="هەڵبژاردن: "/>
+    <Item english="Sel" text="هەڵبژاردن"/>
 </NativeLangExtra>

@@ -329,4 +329,13 @@
     <Item english="A branch needs a name" text="கிளைக்கு ஒரு பெயர் தேவை"/>
     <Item english="New branch name:" text="புதிய கிளையின் பெயர்:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: கடைசி கமிட்டுக்குப் பிறகு மாற்றப்பட்ட வரிகளை எல்லைக்கோட்டில் குறி"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="முழு பாதையை நகலெடுக்க சொடுக்கவும்"/>
+    <Item english="Copied: $STR_REPLACE$" text="நகலெடுக்கப்பட்டது: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="புகுத்துகுறியில் உள்ள மாற்றத்தை HEAD நிலைக்கு மீட்டமை"/>
+    <Item english="The caret is on no change since the last commit" text="கடைசி கமிட்டுக்குப் பிறகு புகுத்துகுறி எந்த மாற்றத்திலும் இல்லை"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="நகர்த்தல்களைக் கண்டறி"/>
+    <Item english="Detect Character Differences" text="எழுத்து வேறுபாடுகளைக் கண்டறி"/>
 </NativeLangExtra>

@@ -330,4 +330,18 @@
     <Item english="A branch needs a name" text="برانچ کے لیے نام ضروری ہے"/>
     <Item english="New branch name:" text="نئی برانچ کا نام:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: آخری کمٹ کے بعد تبدیل شدہ سطریں مارجن میں نشان زد کریں"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="لمبائی: $STR_REPLACE1$    سطریں: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="سطر: $STR_REPLACE1$    کالم: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="انتخاب: "/>
+    <Item english="Sel" text="انتخاب"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="مکمل پاتھ نقل کرنے کے لیے کلک کریں"/>
+    <Item english="Copied: $STR_REPLACE$" text="نقل ہو گیا: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="کرسر پر موجود تبدیلی HEAD پر واپس کریں"/>
+    <Item english="The caret is on no change since the last commit" text="کرسر آخری کمٹ کے بعد کسی تبدیلی پر نہیں ہے"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="منتقل شدہ سطریں شناخت کریں"/>
+    <Item english="Detect Character Differences" text="حروف کے فرق شناخت کریں"/>
 </NativeLangExtra>

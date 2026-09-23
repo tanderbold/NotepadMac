@@ -19,6 +19,7 @@
 #import "BackupAndPrint.h"
 #import "BehaviourCommands.h"
 #import "GitCommands.h"
+#import "CompareCommands.h"
 #import "TypingCommands.h"
 #import <objc/runtime.h>
 #import "TabBarView.h"
@@ -74,12 +75,24 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 }
 @end
 
+/// The status bar's first field: the file's path, which a click copies to the
+/// clipboard - the request came up because a path is what one most often
+/// wants out of the status bar, and a label cannot be selected.
+@interface NppStatusPathField : NSTextField
+@property (nonatomic, copy) void (^onClick)(void);
+@end
+@implementation NppStatusPathField
+- (void)mouseDown:(NSEvent *)event { if (self.onClick) self.onClick(); }
+- (void)resetCursorRects { if (self.onClick) [self addCursorRect:self.bounds cursor:[NSCursor pointingHandCursor]]; }
+@end
+
 @interface EditorController () <ScintillaNotificationProtocol, WorkspacePanelDelegate, NppTabBarDelegate>
 @property (nonatomic, strong) WorkspacePanel *workspace;
 @property (nonatomic, strong) NSSplitView *split;
 @property (nonatomic, strong) NSView *editorArea;
 @property (nonatomic, strong) ScintillaView *secondaryView;
 @property (nonatomic, strong) NSSplitView *editorSplit;
+@property (nonatomic, strong) NSView *secondaryHost;     // the second pane and, above it, Compare's bar
 @property (nonatomic, strong) id secondaryDelegate;
 @property (nonatomic) BOOL syncV;
 @property (nonatomic) BOOL syncH;
@@ -102,6 +115,8 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 @property (nonatomic, strong) NSView *container;
 @property (nonatomic, strong) NppTabBarView *tabBar;
 @property (nonatomic, strong) NSTextField *statusField;
+@property (nonatomic, strong) NppStatusPathField *pathField;   // the path, left of the rest
+@property (nonatomic, strong) NSTimer *copiedTimer;           // while "Copied" stands in for the path
 @property (nonatomic, strong) NSMutableArray<NppDocument *> *docs;
 @property (nonatomic) NSInteger currentIndex;
 @end
@@ -334,6 +349,12 @@ static long SciColor(NSColor *c) {
     _secondaryDelegate = [[NppSecondaryPaneDelegate alloc] init];
     ((NppSecondaryPaneDelegate *)_secondaryDelegate).owner = self;
     _secondaryView.delegate = (id<ScintillaNotificationProtocol>)_secondaryDelegate;
+    // The pane sits in a host of its own, so a bar can stand above it (Compare's).
+    _secondaryHost = [[NSView alloc] initWithFrame:editorRect];
+    _secondaryHost.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    _secondaryView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    _secondaryView.frame = _secondaryHost.bounds;
+    [_secondaryHost addSubview:_secondaryView];
 
     _editorSplit = [[NSSplitView alloc] initWithFrame:editorRect];
     _editorSplit.vertical = NO;                    // panes stacked, as Notepad++ splits
@@ -371,7 +392,20 @@ static long SciColor(NSColor *c) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dockPanelVisibilityChanged:)
                                                  name:NppDockPanelVisibilityDidChangeNotification object:nil];
 
-    _statusField = [[NSTextField alloc] initWithFrame:NSMakeRect(6, 2, NSWidth(frame) - 12, statusH - 4)];
+    _pathField = [[NppStatusPathField alloc] initWithFrame:NSMakeRect(6, 2, 200, statusH - 4)];
+    _pathField.autoresizingMask = NSViewMaxXMargin | NSViewMaxYMargin;
+    _pathField.bezeled = NO;
+    _pathField.editable = NO;
+    _pathField.selectable = NO;
+    _pathField.drawsBackground = NO;
+    _pathField.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    _pathField.font = [NSFont monospacedDigitSystemFontOfSize:11 weight:NSFontWeightRegular];
+    _pathField.textColor = [NSColor secondaryLabelColor];
+    __weak EditorController *weakSelf = self;
+    _pathField.onClick = ^{ [weakSelf copyPathFromStatusBar]; };
+    [_container addSubview:_pathField];
+
+    _statusField = [[NSTextField alloc] initWithFrame:NSMakeRect(220, 2, NSWidth(frame) - 226, statusH - 4)];
     _statusField.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin;
     _statusField.bezeled = NO;
     _statusField.editable = NO;
@@ -404,7 +438,10 @@ static long SciColor(NSColor *c) {
     // Margin 1: bookmarks. Margin 2: folding.
     [sci message:SCI_SETMARGINTYPEN wParam:1 lParam:SC_MARGIN_SYMBOL];
     [sci message:SCI_SETMARGINWIDTHN wParam:1 lParam:14];
-    [sci message:SCI_SETMARGINMASKN wParam:1 lParam:(1 << NPPMAC_BOOKMARK_MARKER)];
+    // Compare's whole-line markers (2-5, SC_MARK_BACKGROUND) are in this mask too: Scintilla
+    // draws a background marker in the text only when some margin's mask has its bit
+    // (ViewStyle::CalculateMarginWidthAndMask), and a background marker draws nothing in a margin.
+    [sci message:SCI_SETMARGINMASKN wParam:1 lParam:(1 << NPPMAC_BOOKMARK_MARKER) | (1 << 0) | (0xF << 2)];
     [sci message:SCI_SETMARGINSENSITIVEN wParam:1 lParam:1];
     [sci message:SCI_MARKERDEFINE wParam:NPPMAC_BOOKMARK_MARKER lParam:SC_MARK_BOOKMARK];
 
@@ -456,7 +493,7 @@ static long SciColor(NSColor *c) {
                        (1 << SC_MARKNUM_HISTORY_SAVED) |
                        (1 << SC_MARKNUM_HISTORY_MODIFIED) |
                        (1 << SC_MARKNUM_HISTORY_REVERTED_TO_MODIFIED);
-    [sci message:SCI_SETMARGINS wParam:5 lParam:0];   // 0-3 as upstream; 4 is the Git margin (GitCommands.mm)
+    [sci message:SCI_SETMARGINS wParam:6 lParam:0];   // 0-3 as upstream; 4 the Git margin (GitCommands.mm), 5 Compare's revert margin
     [sci message:SCI_SETMARGINTYPEN wParam:3 lParam:SC_MARGIN_SYMBOL];
     [sci message:SCI_SETMARGINMASKN wParam:3 lParam:historyMask];
     // Change History's modes (margin, text) are set by applyLook.
@@ -1907,6 +1944,25 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // A new lexer works the fold levels out again, which unfolds everything;
     // what was folded is folded again afterwards.
     NSArray *folds = [self currentFoldedLines];
+    [self applyLanguageOfDocument:doc toView:sci];
+    NppUserLanguage *udl = [[LanguageCatalog sharedCatalog] userLanguageNamed:lang.name];
+    [self applyTheme];
+    if (udl) [self applyUserLanguageStyles:udl];
+    [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    if (folds.count) [self foldLines:folds];
+    if ([self documentMapVisible]) { [self mirrorStylesToDocumentMap]; [self updateDocumentMap]; }
+    [self applyWordCharacters];
+    [self markClickableLinks];
+}
+
+/// The lexer, its properties and its word lists for a document's language,
+/// given to a view: the front view for the document in front, or the second
+/// pane for a text it shows on its own (Compare). Styles come separately
+/// (applyThemeToView:forLanguage:). A user-defined language's lexer is
+/// configured for the front view only (configureUserLexerFor:).
+- (void)applyLanguageOfDocument:(NppDocument *)doc toView:(ScintillaView *)sci {
+    if (!doc) return;
+    NppLanguage *lang = doc.language ?: [[LanguageCatalog sharedCatalog] languageNamed:@"normal"];
 
     // Notepad++'s table names "phpscript" for PHP, but setXmlLexer gives a .php file the lexer of the page
     // it is - HTML with <?php ?> in it - as it does ASP and JSP; phpscript is for PHP with no page around it.
@@ -1980,13 +2036,6 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         }
     }
 
-    [self applyTheme];
-    if (udl) [self applyUserLanguageStyles:udl];
-    [sci message:SCI_COLOURISE wParam:0 lParam:-1];
-    if (folds.count) [self foldLines:folds];
-    if ([self documentMapVisible]) { [self mirrorStylesToDocumentMap]; [self updateDocumentMap]; }
-    [self applyWordCharacters];
-    [self markClickableLinks];
 }
 
 - (void)applyTheme {
@@ -2480,9 +2529,14 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     NSString *typing = [self overtype] ? @"OVR" : @"INS";
     // The Git branch is the port's own field, after Notepad++'s, and only inside a repository.
     NSString *branch = [self gitStatusBarText];
+    if (!self.copiedTimer) {
+        self.pathField.stringValue = doc.path ?: @"(unsaved)";
+        self.pathField.toolTip = doc.path ? NppL(@"Click to copy the full path") : nil;
+    }
+    [self layoutStatusFields];
     self.statusField.stringValue = [NSString stringWithFormat:
-        @"%@    %@    %@    %@    %@    %@    %@    %@%@",
-        doc.path ?: @"(unsaved)", language, lengthLines, lnCol, selection, eol, [self encodingDisplayName], typing,
+        @"%@    %@    %@    %@    %@    %@    %@%@",
+        language, lengthLines, lnCol, selection, eol, [self encodingDisplayName], typing,
         branch.length ? [@"    " stringByAppendingString:branch] : @""];
 
     NSString *title = (doc.path && ![NppPreferences shared].titleBarFileNameOnly)
@@ -2522,10 +2576,38 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     [self.tabBar setNeedsDisplay:YES];
 }
 
+/// The path field is as wide as its text, up to half the bar; the rest follows it.
+- (void)layoutStatusFields {
+    CGFloat total = NSWidth(self.container.frame);
+    CGFloat wanted = ceil(self.pathField.cell.cellSize.width) + 4;
+    CGFloat width = MIN(wanted, MAX(80, total * 0.5));
+    self.pathField.frame = NSMakeRect(6, 2, width, NSHeight(self.pathField.frame));
+    self.statusField.frame = NSMakeRect(6 + width + 12, 2, MAX(0, total - width - 24), NSHeight(self.statusField.frame));
+}
+
+/// A click on the path in the status bar: the full path goes to the clipboard,
+/// and the field says so for a moment.
+- (void)copyPathFromStatusBar {
+    NSString *path = self.currentDocument.path;
+    if (!path) { NppBeep(); return; }
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb setString:path forType:NSPasteboardTypeString];
+    [self.copiedTimer invalidate];
+    self.pathField.stringValue = [NSString stringWithFormat:@"✓ %@", NppLMessage(@"Copied: $STR_REPLACE$", path, 0)];
+    [self layoutStatusFields];
+    __weak EditorController *weakSelf = self;
+    self.copiedTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 repeats:NO block:^(NSTimer *t) {
+        weakSelf.copiedTimer = nil;
+        [weakSelf refreshChrome];
+    }];
+}
+
 /// General > Status Bar > Hide.
 - (void)applyStatusBarVisibility {
     BOOL hidden = [NppPreferences shared].statusBarHidden || self.chromeHidden;
     self.statusField.hidden = hidden;
+    self.pathField.hidden = hidden;
     CGFloat statusH = hidden ? 0 : 22;
     self.split.frame = NSMakeRect(0, statusH, NSWidth(self.container.frame), NSHeight(self.container.frame) - statusH);
 }
@@ -2553,17 +2635,17 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 
 - (ScintillaView *)secondarySci { return self.secondaryView; }
 
-- (BOOL)secondaryViewVisible { return self.secondaryView.superview != nil; }
+- (BOOL)secondaryViewVisible { return self.secondaryHost.superview != nil; }
 - (NppDocument *)documentInSecondaryView { return [self secondaryViewVisible] ? self.secondaryDocument : nil; }
 
 - (void)setSecondaryViewVisible:(BOOL)visible {
     if (visible == [self secondaryViewVisible]) return;
     if (visible) {
-        [self.editorSplit addSubview:self.secondaryView];
+        [self.editorSplit addSubview:self.secondaryHost];
         [self.editorSplit adjustSubviews];
         [self.editorSplit setPosition:NSHeight(self.editorSplit.frame) / 2 ofDividerAtIndex:0];
     } else {
-        [self.secondaryView removeFromSuperview];
+        [self.secondaryHost removeFromSuperview];
         [self.editorSplit adjustSubviews];
     }
 }
@@ -2887,10 +2969,22 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             [self refreshChrome];
             break;
         case SCN_SAVEPOINTLEFT:    self.currentDocument.modified = YES; [self refreshChrome]; break;
+        case SCN_MARGINCLICK: {
+            long line = [self.sciView message:SCI_LINEFROMPOSITION wParam:(uptr_t)n->position lParam:0];
+            if (n->margin == 5) [self compareRevertChangeAtLine:line];          // Compare's revert margin
+            else if (n->margin == 1) {                                           // the bookmark margin, as on Windows
+                long has = [self.sciView message:SCI_MARKERGET wParam:(uptr_t)line lParam:0] & (1 << NPPMAC_BOOKMARK_MARKER);
+                [self.sciView message:has ? SCI_MARKERDELETE : SCI_MARKERADD wParam:(uptr_t)line lParam:NPPMAC_BOOKMARK_MARKER];
+            }
+            break;
+        }
         case SCN_UPDATEUI:
             [self refreshChrome];
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateDocumentMap];
-            if (n->updated & SC_UPDATE_CONTENT) [self gitScheduleMarkerRefresh];   // the git margin follows the text
+            if (n->updated & SC_UPDATE_CONTENT) {
+                [self gitScheduleMarkerRefresh];       // the git margin follows the text
+                [self compareScheduleRefresh];         // and so does a comparison that is on
+            }
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateLineNumberWidth];
             [self mirrorScrollToSecondary];
             [self updateBraceMatch];

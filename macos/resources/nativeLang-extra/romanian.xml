@@ -330,4 +330,13 @@
     <Item english="A branch needs a name" text="O ramură are nevoie de un nume"/>
     <Item english="New branch name:" text="Numele noii ramuri:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marchează în margine liniile modificate de la ultimul commit"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Clic pentru a copia calea completă"/>
+    <Item english="Copied: $STR_REPLACE$" text="Copiat: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Readu modificarea de la cursor la HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Cursorul nu se află pe nicio modificare de la ultimul commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Detectează mutările"/>
+    <Item english="Detect Character Differences" text="Detectează diferențele de caractere"/>
 </NativeLangExtra>

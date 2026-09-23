@@ -318,4 +318,18 @@
     <Item english="A branch needs a name" text="Cawangan memerlukan nama"/>
     <Item english="New branch name:" text="Nama cawangan baru:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: tandakan di margin baris yang berubah sejak commit terakhir"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="panjang: $STR_REPLACE1$    baris: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Baris: $STR_REPLACE1$    Lajur: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Pilihan: "/>
+    <Item english="Sel" text="Pilihan"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Klik untuk menyalin laluan penuh"/>
+    <Item english="Copied: $STR_REPLACE$" text="Disalin: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Kembalikan Perubahan di Karet ke HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Karet tidak berada pada perubahan sejak commit terakhir"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Kesan Pemindahan"/>
+    <Item english="Detect Character Differences" text="Kesan Perbezaan Aksara"/>
 </NativeLangExtra>

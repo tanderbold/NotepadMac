@@ -90,6 +90,8 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"compareIgnoreCase"): @NO,
         Key(@"compareIgnoreSpaces"): @NO,
         Key(@"compareIgnoreEmptyLines"): @NO,
+        Key(@"compareDetectMoves"): @YES,
+        Key(@"compareCharDiffs"): @YES,
         Key(@"jsonIndent"): @4,
         Key(@"ftpProfiles"): @[],
         Key(@"savedRunCommands"): @[],
@@ -426,6 +428,8 @@ NPP_PREF_BOOL(smartHighlightWholeWord, setSmartHighlightWholeWord, @"smartHighli
 NPP_PREF_BOOL(compareIgnoreCase, setCompareIgnoreCase, @"compareIgnoreCase")
 NPP_PREF_BOOL(compareIgnoreSpaces, setCompareIgnoreSpaces, @"compareIgnoreSpaces")
 NPP_PREF_BOOL(compareIgnoreEmptyLines, setCompareIgnoreEmptyLines, @"compareIgnoreEmptyLines")
+NPP_PREF_BOOL(compareDetectMoves, setCompareDetectMoves, @"compareDetectMoves")
+NPP_PREF_BOOL(compareCharDiffs, setCompareCharDiffs, @"compareCharDiffs")
 
 #define NPP_PREF_DOUBLE(getter, setter, key)                                      \
 - (double)getter { return [[NSUserDefaults standardUserDefaults] doubleForKey:Key(key)]; } \

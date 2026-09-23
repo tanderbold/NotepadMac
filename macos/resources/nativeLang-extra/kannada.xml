@@ -241,4 +241,16 @@
     <Item english="Committed $STR_REPLACE$" text="ಕಮಿಟೆಡ್ $STR_REPLACE$"/>
     <Item english="Discard" text="ಡಿಸ್ಕಾರ್ಡ್"/>
     <Item english="New branch name:" text="ನ್ಯೂ ಬ್ರಾಂಚ್ ನೇಮ್:"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="ಲೆಂಗ್ತ್: $STR_REPLACE1$    ಲೈನ್ಸ್: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="ಲೈನ್: $STR_REPLACE1$    ಕಾಲಮ್: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="ಪೊಸಿಶನ್: "/>
+    <Item english="Sel: " text="ಸೆಲೆಕ್ಶನ್: "/>
+    <Item english="Sel" text="ಸೆಲೆಕ್ಶನ್"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="ಕ್ಲಿಕ್ ತೋ ಕಾಪಿ ಫುಲ್ ಪಾತ್"/>
+    <Item english="Copied: $STR_REPLACE$" text="ಕಾಪೀಡ್: $STR_REPLACE$"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="ಡಿಟೆಕ್ಟ್ ಮೂವ್ಸ್"/>
+    <Item english="Detect Character Differences" text="ಡಿಟೆಕ್ಟ್ ಕ್ಯಾರಕ್ಟರ್ ಡಿಫರೆನ್ಸಸ್"/>
 </NativeLangExtra>

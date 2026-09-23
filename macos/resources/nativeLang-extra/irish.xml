@@ -299,4 +299,15 @@
     <Item english="A branch needs a name" text="Tá ainm de dhíth ar bhrainse"/>
     <Item english="New branch name:" text="Ainm an bhrainse nua:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: marcáil sa chiumhais na línte a athraíodh ón commit deireanach"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="fad: $STR_REPLACE1$    línte: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Líne: $STR_REPLACE1$    Colún: $STR_REPLACE2$"/>
+    <Item english="Sel: " text="Rogha: "/>
+    <Item english="Sel" text="Rogha"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Cliceáil chun an chonair iomlán a chóipeáil"/>
+    <Item english="Copied: $STR_REPLACE$" text="Cóipeáladh: $STR_REPLACE$"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Braith línte bogtha"/>
+    <Item english="Detect Character Differences" text="Braith difríochtaí carachtar"/>
 </NativeLangExtra>

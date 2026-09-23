@@ -328,4 +328,19 @@
     <Item english="A branch needs a name" text="Zaram nepieciešams nosaukums"/>
     <Item english="New branch name:" text="Jaunā zara nosaukums:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git: malā atzīmēt rindas, kas mainītas kopš pēdējā commit"/>
+    <!-- Status bar -->
+    <Item english="length: $STR_REPLACE1$    lines: $STR_REPLACE2$" text="garums: $STR_REPLACE1$    rindas: $STR_REPLACE2$"/>
+    <Item english="Ln: $STR_REPLACE1$    Col: $STR_REPLACE2$" text="Rinda: $STR_REPLACE1$    Sleja: $STR_REPLACE2$"/>
+    <Item english="Pos: " text="Poz: "/>
+    <Item english="Sel: " text="Izvēle: "/>
+    <Item english="Sel" text="Izvēle"/>
+    <!-- Status bar: the path field -->
+    <Item english="Click to copy the full path" text="Noklikšķiniet, lai kopētu pilno ceļu"/>
+    <Item english="Copied: $STR_REPLACE$" text="Nokopēts: $STR_REPLACE$"/>
+    <!-- Git: revert -->
+    <Item english="Revert Change at Caret to HEAD" text="Atgriezt izmaiņas pie kursora uz HEAD"/>
+    <Item english="The caret is on no change since the last commit" text="Kursors nav uz izmaiņām kopš pēdējā commit"/>
+    <!-- Compare: the ComparePlus options -->
+    <Item english="Detect Moves" text="Noteikt pārvietojumus"/>
+    <Item english="Detect Character Differences" text="Noteikt rakstzīmju atšķirības"/>
 </NativeLangExtra>

@@ -1,0 +1,419 @@
+/* diff - compute a shortest edit script (SES) given two sequences
+ * Copyright (c) 2004 Michael B. Allen <mba2000 ioplex.com>
+ *
+ * The MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/* This algorithm is basically Myers' solution to SES/LCS with
+ * the Hirschberg linear space refinement as described in the
+ * following publication:
+ *
+ *   E. Myers, "An O(ND) Difference Algorithm and Its Variations",
+ *   Algorithmica 1, 2 (1986), 251-266.
+ *   http://www.cs.arizona.edu/people/gene/PAPERS/diff.ps
+ *
+ * This is the same algorithm used by GNU diff(1).
+ */
+
+/* Modified into C++ template class MyersDiff
+ * Copyright (C) 2017-2026  Pavel Nedev <pg.nedev@gmail.com>
+ */
+
+
+#pragma once
+
+#include "diff_types.h"
+
+#include <cstdint>
+#include <cstdlib>
+#include <climits>
+
+
+template <typename Elem>
+class MyersDiff : public diff_algorithm<Elem>
+{
+public:
+	MyersDiff(ThrowIfCancelledFn cancelCheck = nullptr) : diff_algorithm<Elem>(cancelCheck) {};
+
+	virtual void run(const Elem* a, intptr_t asize, const Elem* b, intptr_t bsize, diff_results& diffs, intptr_t off);
+
+private:
+	static constexpr int		_cCancelCheckItrInterval {3000};
+	static constexpr intptr_t	_cDmax {INTPTR_MAX};
+
+	template <typename T>
+	struct varray
+	{
+	public:
+		varray() {};
+		~varray() {};
+
+		// Be very careful when using the returned T reference! It may become invalid on consecutive calls to get()
+		// because the vector memory might be reallocated!
+		T& get(size_t i)
+		{
+			if (_buf.size() <= i)
+				_buf.resize(i + 1, { 0 });
+
+			return _buf[i];
+		};
+
+		std::vector<T>& get()
+		{
+			return _buf;
+		};
+
+	private:
+		std::vector<T> _buf;
+	};
+
+	struct middle_snake {
+		intptr_t x, y, u, v;
+	};
+
+	inline intptr_t& _v(intptr_t k, intptr_t r);
+	intptr_t _find_middle_snake(intptr_t aoff, intptr_t alen, intptr_t boff, intptr_t blen, middle_snake& ms);
+	intptr_t _ses(intptr_t aoff, intptr_t alen, intptr_t boff, intptr_t blen);
+
+	int _cancelCheckCount;
+
+	const Elem* _a;
+	const Elem* _b;
+
+	diff_results* _diffs;
+
+	varray<intptr_t> _buf;
+
+	intptr_t	_as;
+	intptr_t	_ae;
+	intptr_t	_bs;
+	intptr_t	_be;
+	bool		_last_was_match;
+};
+
+
+template <typename Elem>
+void MyersDiff<Elem>::run(const Elem* a, intptr_t asize, const Elem* b, intptr_t bsize,
+	diff_results& diffs, intptr_t off)
+{
+	_cancelCheckCount = _cCancelCheckItrInterval;
+
+	_a = a;
+	_b = b;
+
+	_diffs = &diffs;
+
+	_as = off;
+	_ae = off;
+	_bs = off;
+	_be = off;
+	_last_was_match = true;
+
+	if (_ses(off, asize, off, bsize) == -1)
+		diffs.clear();
+	else if (!_last_was_match)
+		diffs.add(_as, _ae, _bs, _be);
+
+	// Wipe temporal buffer to free memory
+	_buf.get().clear();
+}
+
+
+template <typename Elem>
+inline intptr_t& MyersDiff<Elem>::_v(intptr_t k, intptr_t r)
+{
+	// Pack -N to N into 0 to 2 * N
+	const intptr_t j = (k <= 0) ? (-k * 4 + r) : (k * 4 + (r - 2));
+
+	return _buf.get(j);
+}
+
+
+template <typename Elem>
+intptr_t MyersDiff<Elem>::_find_middle_snake(
+	intptr_t aoff, intptr_t alen, intptr_t boff, intptr_t blen, middle_snake& ms)
+{
+	const intptr_t delta = alen - blen;
+	const intptr_t odd = delta & 1;
+	const intptr_t mid = (alen + blen) / 2 + odd;
+
+	_v(1, 0) = 0;
+	_v(delta - 1, 1) = alen;
+
+	for (intptr_t d = 0; d <= mid; ++d)
+	{
+		intptr_t k, x, y;
+
+		if ((2 * d - 1) >= _cDmax)
+			return _cDmax;
+
+		if (!--_cancelCheckCount)
+		{
+			diff_algorithm<Elem>::ThrowIfCancelled();
+			_cancelCheckCount = _cCancelCheckItrInterval;
+		}
+
+		for (k = d; k >= -d; k -= 2)
+		{
+			if (k == -d || (k != d && _v(k - 1, 0) < _v(k + 1, 0)))
+				x = _v(k + 1, 0);
+			else
+				x = _v(k - 1, 0) + 1;
+
+			y = x - k;
+
+			ms.x = x;
+			ms.y = y;
+
+			while (x < alen && y < blen &&  _a[aoff + x] == _b[boff + y])
+			{
+				++x;
+				++y;
+			}
+
+			_v(k, 0) = x;
+
+			if (odd && k >= (delta - (d - 1)) && k <= (delta + (d - 1)))
+			{
+				if (x >= _v(k, 1))
+				{
+					ms.u = x;
+					ms.v = y;
+					return 2 * d - 1;
+				}
+			}
+		}
+
+		for (k = d; k >= -d; k -= 2)
+		{
+			intptr_t kr = (alen - blen) + k;
+
+			if (k == d || (k != -d && _v(kr - 1, 1) < _v(kr + 1, 1)))
+			{
+				x = _v(kr - 1, 1);
+			}
+			else
+			{
+				x = _v(kr + 1, 1) - 1;
+			}
+
+			y = x - kr;
+
+			ms.u = x;
+			ms.v = y;
+
+			while (x > 0 && y > 0 &&  _a[aoff + x - 1] == _b[boff + y - 1])
+			{
+				--x;
+				--y;
+			}
+
+			_v(kr, 1) = x;
+
+			if (!odd && kr >= -d && kr <= d)
+			{
+				if (x <= _v(kr, 0))
+				{
+					ms.x = x;
+					ms.y = y;
+
+					return 2 * d;
+				}
+			}
+		}
+	}
+
+	return -1;
+}
+
+
+template <typename Elem>
+intptr_t MyersDiff<Elem>::_ses(
+	intptr_t aoff, intptr_t alen, intptr_t boff, intptr_t blen)
+{
+	middle_snake ms = { 0 };
+	intptr_t d;
+
+	if (alen == 0)
+	{
+		if (_last_was_match)
+		{
+			_as = aoff;
+			_ae = _as;
+			_bs = boff;
+			_be = _bs + blen;
+			_last_was_match = false;
+		}
+		else
+		{
+			_be += blen;
+		}
+
+		d = blen;
+	}
+	else if (blen == 0)
+	{
+		if (_last_was_match)
+		{
+			_as = aoff;
+			_ae = _as + alen;
+			_bs = boff;
+			_be = _bs;
+			_last_was_match = false;
+		}
+		else
+		{
+			_ae += alen;
+		}
+
+		d = alen;
+	}
+	else
+	{
+		// Find the middle "snake" around which we
+		// recursively solve the sub-problems.
+		d = _find_middle_snake(aoff, alen, boff, blen, ms);
+		if (d == -1)
+			return -1;
+
+		if (d >= _cDmax)
+			return _cDmax;
+
+		if (d > 1)
+		{
+			if (_ses(aoff, ms.x, boff, ms.y) == -1)
+				return -1;
+
+			aoff += ms.u;
+			boff += ms.v;
+			alen -= ms.u;
+			blen -= ms.v;
+
+			if (!_last_was_match && ms.u - ms.x > 0)
+			{
+				_diffs->add(_as, _ae, _bs, _be);
+
+				_as = aoff;
+				_ae = _as;
+				_bs = boff;
+				_be = _bs;
+				_last_was_match = true;
+			}
+
+			if (_ses(aoff, alen, boff, blen) == -1)
+				return -1;
+		}
+		else
+		{
+			intptr_t x = ms.x;
+			intptr_t u = ms.u;
+
+			/* There are only 4 base cases when the
+			 * edit distance is 1.
+			 *
+			 * alen > blen   blen > alen
+			 *
+			 *   -       |
+			 *    \       \    x != u
+			 *     \       \
+			 *
+			 *   \       \
+			 *    \       \    x == u
+			 *     -       |
+			 */
+
+			if (blen > alen)
+			{
+				if (x == u)
+				{
+					if (!_last_was_match)
+						_diffs->add(_as, _ae, _bs, _be);
+
+					_as = aoff + alen;
+					_ae = _as;
+					_bs = boff + (blen - 1);
+					_be = _bs + 1;
+					_last_was_match = false;
+				}
+				else
+				{
+					if (_last_was_match)
+					{
+						_as = aoff;
+						_ae = _as;
+						_bs = boff;
+						_be = _bs + 1;
+					}
+					else
+					{
+						_be += 1;
+						_last_was_match = true;
+					}
+
+					_diffs->add(_as, _ae, _bs, _be);
+
+					_as = aoff + alen;
+					_ae = _as;
+					_bs = _be + alen;
+					_be = _bs;
+				}
+			}
+			else
+			{
+				if (x == u)
+				{
+					if (!_last_was_match)
+						_diffs->add(_as, _ae, _bs, _be);
+
+					_as = aoff + (alen - 1);
+					_ae = _as + 1;
+					_bs = _be + blen;
+					_be = _bs;
+					_last_was_match = false;
+				}
+				else
+				{
+					if (_last_was_match)
+					{
+						_as = aoff;
+						_ae = _as + 1;
+						_bs = boff;
+						_be = _bs;
+					}
+					else
+					{
+						_ae += 1;
+						_last_was_match = true;
+					}
+
+					_diffs->add(_as, _ae, _bs, _be);
+
+					_as = aoff + 1 + blen;
+					_ae = _as;
+					_bs = _be + blen;
+					_be = _bs;
+				}
+			}
+		}
+	}
+
+	return d;
+}

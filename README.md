@@ -65,7 +65,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 
 **Built in instead of plugins** (Windows plugins are Windows binaries and cannot load)
 - JSON: format, compact, sort keys, validate, tree.
-- Compare: two files side by side with differences marked and navigation.
+- Compare, on the engine of the ComparePlus plugin: both panes aligned, changed lines with their changed characters marked, added, removed and moved lines, the symbols in the margin; the comparison follows your typing, a bar above the other pane carries the summary and the navigation, an arrow beside each difference puts it back, and Escape leaves.
 - XML tools: pretty print, linearize, validate (DTD/XSD), XPath, XSLT.
 - FTP/FTPS client panel.
 - NppExec-compatible scripting: a console, scripts, variables, its commands.
@@ -252,7 +252,8 @@ see `macos/resources/nativeLang-extra/README.md`. Code changes come with a test 
 This port stands on other people's work, used under their licences and gratefully acknowledged:
 Notepad++ by Don Ho and its contributors (GPL) - the design, the data files, the translations and
 the behaviour this application follows; Scintilla and Lexilla by Neil Hodgson and contributors;
-uchardet; the Argon2 reference implementation (CC0). "Notepad++" is the name of the original
+uchardet; the Argon2 reference implementation (CC0); the ComparePlus plugin by Jean-Sebastien Leroy
+and Pavel Nedev (GPL), whose engine is Compare here (`macos/third_party/compareplus`). "Notepad++" is the name of the original
 Windows application; the Mac application is called NotepadMac. Everything in `macos/` is
 licensed under the GPL version 3, like Notepad++ itself (see `LICENSE`; Notepad++'s own copyright
 notice is in `NOTEPAD-PLUS-PLUS-COPYING.txt`).
