@@ -79,6 +79,8 @@
 - (BOOL)performMenuCommandAtPath:(NSString *)path;
 /// Search > Go to... with the prompt's answer: a line, or @offset. NO when it is not one.
 - (BOOL)goToLineOrOffset:(NSString *)answer;
+/// The command line's folders and patterns: the files they open, in order (getMatchedFileNames).
++ (NSArray<NSString *> *)filesMatching:(NSString *)pattern inFolder:(NSString *)folder recursive:(BOOL)recursive;
 - (void)rebuildExecMenu;
 - (void)executeScriptText:(NSString *)text;
 - (void)stopScript:(id)sender;

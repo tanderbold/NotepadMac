@@ -1043,7 +1043,7 @@ int NppMacRunTests(AppDelegate *app) {
             BOOL parsedRight = [parsed[@"-n"] integerValue] == 12 && [parsed[@"-c"] integerValue] == 3 &&
                 [parsed[@"-l"] isEqualToString:@"python"] && [parsed[@"-ro"] boolValue] &&
                 [parsed[@"-nosession"] boolValue] && [parsed[@"-titleAdd="] isEqualToString:@"Here"] &&
-                [parsed[@"files"] isEqualToArray:@[@"YES", @"a.txt", @"b c.txt"]];
+                [parsed[@"files"] isEqualToArray:@[@"a.txt", @"b c.txt"]];   // "-NS... YES" is a defaults pair
             NSDictionary *notepadStyle = [app parseCommandLine:@[@"-notepadStyleCmdline", @"my", @"file.txt"]];
             BOOL oneName = [notepadStyle[@"files"] isEqualToArray:@[@"my file.txt"]];
 
@@ -1523,12 +1523,12 @@ int NppMacRunTests(AppDelegate *app) {
             [ed openFileAtPath:TempFile([NSString stringWithFormat:@"t_close%d.txt", i],
                                         [NSString stringWithFormat:@"file %d\n", i]) error:&err];
         }
-        // tabs: [new, t_close0 .. t_close4]
+        // tabs: [t_close0 .. t_close4] - the first file took the lone clean "new 1"'s place
         [ed selectDocumentAtIndex:3];
         NSString *active = ed.currentDocument.displayName;
         [ed closeAllToLeft];
         Check(@"IDM_FILE_CLOSEALL_TOLEFT", @"drops everything before the active tab, which stays active",
-              ed.documents.count == 3 && [ed.currentDocument.displayName isEqualToString:active]);
+              ed.documents.count == 2 && [ed.currentDocument.displayName isEqualToString:active]);
 
         [ed closeAllToRight];
         Check(@"IDM_FILE_CLOSEALL_TORIGHT", @"drops everything after the active tab, which stays active",
@@ -7171,15 +7171,15 @@ int NppMacRunTests(AppDelegate *app) {
         };
         for (size_t i = 0; i < sizeof(sorts)/sizeof(sorts[0]); ++i) {
             [ed sortTabsBy:sorts[i].key ascending:sorts[i].asc];
-            NSMutableArray *names = [NSMutableArray array];
-            for (NppDocument *d in ed.documents) if (d.path) [names addObject:d.displayName];
+            NSMutableArray *names = [NSMutableArray array], *languages = [NSMutableArray array];
+            for (NppDocument *d in ed.documents) if (d.path) { [names addObject:d.displayName]; [languages addObject:d.language.name ?: @""]; }
 
             BOOL ordered = YES;
             for (NSUInteger n = 1; n < names.count; ++n) {
                 NSComparisonResult r;
                 switch (sorts[i].key) {
-                    case NppTabSortType:
-                        r = [[names[n - 1] pathExtension] compare:[names[n] pathExtension]];
+                    case NppTabSortType:   // the language's name, as WindowsDlg's BufferEquivalent
+                        r = [languages[n - 1] caseInsensitiveCompare:languages[n]];
                         break;
                     case NppTabSortContentLength: {
                         NSString *a = names[n - 1], *b = names[n];
@@ -10570,6 +10570,91 @@ int NppMacRunTests(AppDelegate *app) {
             prefs.spellCheckLanguage = wasLang;
             [ed spellCheckNow];
         }
+    }
+
+    if (NppSectionWanted(@"Files as upstream")) { printf("\n== Files as upstream ==\n");
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *root = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-files-upstream"];
+        [fm removeItemAtPath:root error:NULL];
+        [fm createDirectoryAtPath:[root stringByAppendingPathComponent:@"sub/.hidden"] withIntermediateDirectories:YES attributes:nil error:NULL];
+        for (NSString *f in @[@"b.txt", @"a.txt", @"c.log", @"sub/d.txt", @"sub/.hidden/e.txt"])
+            [@"x" writeToFile:[root stringByAppendingPathComponent:f] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        NSArray *(^names)(NSArray *) = ^NSArray *(NSArray *paths) {
+            NSMutableArray *out = [NSMutableArray array];
+            for (NSString *x in paths) [out addObject:[x substringFromIndex:root.length + 1]];
+            return out;
+        };
+        Check(@"Command line (folders)", @"a folder opens every file under it, hidden folders aside, in name order",
+              [names([AppDelegate filesMatching:@"*" inFolder:root recursive:YES]) isEqual:(@[@"a.txt", @"b.txt", @"c.log", @"sub/d.txt"])]);
+        Check(@"Command line (patterns)", @"a pattern takes its folder's matches, and with -r those under it",
+              [names([AppDelegate filesMatching:@"*.txt" inFolder:root recursive:NO]) isEqual:(@[@"a.txt", @"b.txt"])] &&
+              [names([AppDelegate filesMatching:@"*.txt" inFolder:root recursive:YES]) isEqual:(@[@"a.txt", @"b.txt", @"sub/d.txt"])]);
+
+        // Untitled numbering and the lone clean tab (FileManager::nextUntitledNewNumber, loadBufferIntoView).
+        while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        [ed closeDocumentAtIndex:0 discardChanges:YES];
+        [ed newDocument]; [ed newDocument];
+        NSInteger second = -1;
+        for (NSUInteger i = 0; i < ed.documents.count; ++i) if ([ed.documents[i].displayName isEqualToString:@"new 2"]) second = (NSInteger)i;
+        if (second >= 0) [ed closeDocumentAtIndex:second discardChanges:YES];
+        [ed newDocument];
+        Check(@"IDM_FILE_NEW (numbering)", @"a new tab takes the lowest free number: after closing new 2 the next is new 2 again",
+              [ed.currentDocument.displayName isEqualToString:@"new 2"]);
+        while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        NSString *one = [root stringByAppendingPathComponent:@"a.txt"];
+        BOOL wasLoneClean = ed.documents.count == 1 && !ed.currentDocument.path && !ed.currentDocument.modified;
+        [ed openFileAtPath:one error:NULL];
+        Check(@"IDM_FILE_OPEN (lone new 1)", @"a file opened over a lone clean untitled tab takes its place",
+              wasLoneClean && ed.documents.count == 1 && [ed.currentDocument.path isEqualToString:one]);
+        NSString *other = [root stringByAppendingPathComponent:@"sub/../a.txt"];
+        NSString *priv = [one hasPrefix:@"/var/"] ? [@"/private" stringByAppendingString:one] : one;
+        NSUInteger tabs = ed.documents.count;
+        [ed openFileAtPath:other error:NULL];
+        [ed openFileAtPath:priv error:NULL];
+        Check(@"IDM_FILE_OPEN (same file)", @"the same file under another spelling (.., /private/var) comes to its tab, no second one",
+              ed.documents.count == tabs && [ed.currentDocument.path isEqualToString:one]);
+
+        // Save: nothing to save, no Save; through a symlink, the target (FileManager::saveBuffer).
+        NSMenuItem *saveItem = nil, *saveAllItem = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray) for (NSMenuItem *it in top.submenu.itemArray) {
+            if (it.action == @selector(saveDocument:)) saveItem = it;
+            if (it.action == @selector(saveAll:)) saveAllItem = it;
+        }
+        BOOL cleanOff = saveItem && ![app validateMenuItem:saveItem] && ![app validateMenuItem:saveAllItem];
+        [ed.sci message:SCI_APPENDTEXT wParam:1 lParam:(sptr_t)"y"];
+        ed.currentDocument.modified = YES;
+        BOOL dirtyOn = [app validateMenuItem:saveItem] && [app validateMenuItem:saveAllItem];
+        Check(@"IDM_FILE_SAVE (enabled)", @"Save and Save All are off with nothing modified, on after an edit", cleanOff && dirtyOn);
+        while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        [ed closeDocumentAtIndex:0 discardChanges:YES];
+        NSString *target = [root stringByAppendingPathComponent:@"target.txt"], *link = [root stringByAppendingPathComponent:@"link.txt"];
+        [@"t\n" writeToFile:target atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [fm createSymbolicLinkAtPath:link withDestinationPath:target error:NULL];
+        [ed openFileAtPath:link error:NULL];
+        [ed setDocumentText:@"changed\n"];
+        ed.currentDocument.modified = YES;
+        [ed saveCurrentDocument];
+        NSDictionary *linkAttrs = [fm attributesOfItemAtPath:link error:NULL];
+        Check(@"IDM_FILE_SAVE (symlink)", @"saving through a symlink writes the target and keeps the link",
+              [linkAttrs[NSFileType] isEqual:NSFileTypeSymbolicLink] &&
+              [[NSString stringWithContentsOfFile:target encoding:NSUTF8StringEncoding error:NULL] isEqualToString:@"changed\n"]);
+
+        // Window > Sort By: numstrcmp, full names, languages, text in memory (WindowsDlg BufferEquivalent).
+        while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        for (NSString *f in @[@"file10.txt", @"File2.txt", @"b.py"])
+            [@"x" writeToFile:[root stringByAppendingPathComponent:f] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        for (NSString *f in @[@"file10.txt", @"File2.txt", @"b.py"]) [ed openFileAtPath:[root stringByAppendingPathComponent:f] error:NULL];
+        [ed sortTabsBy:NppTabSortName ascending:YES];
+        NSMutableArray *order = [NSMutableArray array];
+        for (NppDocument *d in ed.documents) [order addObject:d.displayName];
+        Check(@"IDM_WINDOW_SORT_FN_ASC", @"names compare numbers as numbers and letters without case: File2 before file10",
+              [order indexOfObject:@"File2.txt"] < [order indexOfObject:@"file10.txt"]);
+        [ed sortTabsBy:NppTabSortType ascending:YES];
+        Check(@"IDM_WINDOW_SORT_FT_ASC", @"type is the language: normal text before python",
+              [ed.documents.lastObject.displayName isEqualToString:@"b.py"]);
+        while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        [ed closeDocumentAtIndex:0 discardChanges:YES];
+        [fm removeItemAtPath:root error:NULL];
     }
 
     if (NppSectionWanted(@"Selected numbers")) { printf("\n== Selected numbers ==\n");

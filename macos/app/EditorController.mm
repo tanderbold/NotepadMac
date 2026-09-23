@@ -619,6 +619,15 @@ static long SciColor(NSColor *c) {
 
 #pragma mark - Documents
 
+/// A path with its symlinks and "."/".." resolved, as realpath(3) gives it (NSString's own
+/// resolving turns /private/var into /var); the path as given when it no longer exists.
+NSString *NppCanonicalPath(NSString *path) {
+    if (!path.length) return path;
+    char resolved[PATH_MAX];
+    if (realpath(path.fileSystemRepresentation, resolved)) return [NSString stringWithUTF8String:resolved] ?: path;
+    return path.stringByStandardizingPath;
+}
+
 - (void)newDocument {
     NppDocument *doc = [[NppDocument alloc] init];
     doc.docPointer = [self createScintillaDocument:SC_DOCUMENTOPTION_DEFAULT];
@@ -628,8 +637,16 @@ static long SciColor(NSColor *c) {
     doc.hasBOM = NO;
     doc.eolMode = SC_EOL_LF;      // macOS default; Notepad++ uses CRLF on Windows
 
+    // FileManager::nextUntitledNewNumber: the lowest number no untitled tab has, so closing
+    // "new 2" of three makes the next one "new 2" again, never a second "new 3".
+    NSMutableIndexSet *used = [NSMutableIndexSet indexSet];
+    for (NppDocument *d in self.docs) {
+        if (d.path || ![d.displayName hasPrefix:@"new "]) continue;
+        NSInteger k = [d.displayName substringFromIndex:4].integerValue;
+        if (k > 0 && [[NSString stringWithFormat:@"new %ld", (long)k] isEqualToString:d.displayName]) [used addIndex:(NSUInteger)k];
+    }
     NSInteger n = 1;
-    for (NppDocument *d in self.docs) if (!d.path) n++;
+    while ([used containsIndex:(NSUInteger)n]) n++;
     doc.displayName = [NSString stringWithFormat:@"new %ld", (long)n];
 
     [self.docs addObject:doc];
@@ -723,9 +740,15 @@ static void RestartChangeHistory(ScintillaView *sci) {
         [self showProjectPanel:1];
         return [[self projectPanel:1] openWorkspace:path];
     }
-    // Already open? Just focus it.
+    // Already open? Just focus it - under whatever spelling it was opened (/var and /private/var,
+    // a "..", a symlinked folder): Notepad++ compares the full long path (FileManager::getBufferFromName).
+    NSString *canonical = NppCanonicalPath(path);
     for (NSUInteger i = 0; i < self.docs.count; ++i) {
-        if ([self.docs[i].path isEqualToString:path]) { [self selectDocumentAtIndex:(NSInteger)i]; return YES; }
+        NSString *other = self.docs[i].path;
+        if (other && ([other isEqualToString:path] || [NppCanonicalPath(other) isEqualToString:canonical])) {
+            [self selectDocumentAtIndex:(NSInteger)i];
+            return YES;
+        }
     }
 
     // Decided on the size on disk, before anything is read: a file too big to
@@ -743,7 +766,9 @@ static void RestartChangeHistory(ScintillaView *sci) {
         [ask addButtonWithTitle:@"Yes"];
         [ask addButtonWithTitle:@"No"];
         if ([ask runModal] != NSAlertFirstButtonReturn) {
-            if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain code:NSUserCancelledError userInfo:nil];
+            // The user said No: nothing went wrong, so no error for the caller to show
+            // (AppKit's alert for NSUserCancelledError reads "The operation was cancelled.").
+            if (error) *error = nil;
             return NO;
         }
     }
@@ -787,8 +812,13 @@ static void RestartChangeHistory(ScintillaView *sci) {
     doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL]
                                 fileModificationDate];
 
+    // loadBufferIntoView: the file takes the place of a lone clean untitled tab.
+    NppDocument *lone = self.docs.count == 1 ? self.docs.firstObject : nil;
+    if (lone && (lone.path || lone.modified || lone.isSearchResults || lone.pinned)) lone = nil;
+
     [self.docs addObject:doc];
     [self selectDocumentAtIndex:(NSInteger)self.docs.count - 1];
+    if (lone) [self closeDocumentAtIndex:(NSInteger)[self.docs indexOfObject:lone] discardChanges:YES];
 
     if (direct) [self setDocumentBytes:direct];
     else [self setDocumentText:text];
@@ -1012,11 +1042,19 @@ static void RestartChangeHistory(ScintillaView *sci) {
     return [self writeCurrentToPath:doc.path];
 }
 
+/// Notepad_plus::fileSaveAs: the panel starts in the document's own folder; an untitled one
+/// where Open would start (Preferences > Default Directory).
+- (NSURL *)saveDirectoryForDocument:(NppDocument *)doc {
+    NSString *folder = doc.path ? doc.path.stringByDeletingLastPathComponent : [self defaultOpenDirectory];
+    return folder.length ? [NSURL fileURLWithPath:folder isDirectory:YES] : nil;
+}
+
 - (BOOL)saveCurrentDocumentAs {
     NppDocument *doc = self.currentDocument;
     if (!doc) return NO;
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.nameFieldStringValue = doc.path.lastPathComponent ?: doc.displayName;
+    panel.directoryURL = [self saveDirectoryForDocument:doc];
     if ([panel runModal] != NSModalResponseOK || !panel.URL) return NO;
     NSString *path = panel.URL.path;
     for (NppDocument *other in self.docs) {
@@ -1056,7 +1094,12 @@ static void RestartChangeHistory(ScintillaView *sci) {
     NSData *data = doc.codepage
         ? [EditorController dataFromString:text codepage:doc.codepage]
         : EncodeText(text, enc, doc.hasBOM);
-    if (!data || ![data writeToFile:path options:NSDataWritingAtomic error:&err]) {
+    // FileManager::saveBuffer writes the file it opened, in place: through a symlink to the file
+    // it points at (the link stays a link), and into the same file, so its permissions, hard links
+    // and tags stay. Only a file that is not there yet is written atomically.
+    NSString *target = NppCanonicalPath(path);
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:target];
+    if (!data || ![data writeToFile:target options:(exists ? 0 : NSDataWritingAtomic) error:&err]) {
         if (!err) err = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileWriteUnknownError
                                         userInfo:@{NSLocalizedDescriptionKey:
                                             @"Cannot encode the document in the selected encoding."}];
@@ -1843,8 +1886,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         if (at != NSNotFound) {
             [self selectDocumentAtIndex:(NSInteger)at];
             [self cloneCurrentToOtherView];
+            // The caret first, without scrolling to it, then the scroll: GOTOPOS after the first
+            // visible line brought an off-screen caret back into view and undid it.
+            [self.secondaryView message:SCI_SETEMPTYSELECTION wParam:(uptr_t)[secondary[@"caret"] longValue] lParam:0];
             [self.secondaryView message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)[secondary[@"firstLine"] longValue] lParam:0];
-            [self.secondaryView message:SCI_GOTOPOS wParam:(uptr_t)[secondary[@"caret"] longValue] lParam:0];
             double share = [secondary[@"split"] doubleValue];
             if (share > 0.05 && share < 0.95) {
                 [self.editorSplit setPosition:NSHeight(self.editorSplit.frame) * share ofDividerAtIndex:0];
@@ -2695,7 +2740,8 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.tabBar.locked = p.tabBarLocked;
     self.tabBar.vertical = p.tabBarVertical;
     self.tabBar.multiLine = p.tabBarMultiLine;
-    self.tabBar.hidden = p.hideTabBar;
+    // Hidden too while the chrome is (distraction free) or the command line said -notabbar.
+    self.tabBar.hidden = p.hideTabBar || self.chromeHidden || self.tabBarHiddenForLaunch;
     self.tabBar.drawActiveBar = p.tabDrawActiveBar;
     self.tabBar.colourInactiveTabs = p.tabColourInactive;
     self.tabBar.reduced = p.tabReduced;
@@ -2776,6 +2822,15 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 }
 
 - (BOOL)chromeVisible { return !self.chromeHidden; }
+
+/// -notabbar (Notepad++'s TabBarPlus hidden for this run): the tab bar only, the status bar stays;
+/// the preference is left as it is.
+- (void)hideTabBarForLaunch {
+    self.tabBarHiddenForLaunch = YES;
+    self.tabBar.hidden = YES;
+    self.sciView.frame = NSMakeRect(0, 0, NSWidth(self.editorArea.frame), NSHeight(self.editorArea.frame));
+    [self.container setNeedsDisplay:YES];
+}
 
 #pragma mark - Second editor pane
 

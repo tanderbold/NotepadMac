@@ -1,3 +1,4 @@
+#include <fnmatch.h>
 #import "NumberSetCommands.h"
 #import "NppPanel.h"
 #import "AppDelegate.h"
@@ -62,6 +63,8 @@
 #import "ContextMenuFile.h"
 #import <objc/runtime.h>
 
+typedef NS_ENUM(NSInteger, NppSnapshotOutcome) { NppSnapshotNotUsed, NppSnapshotCovers, NppSnapshotCancelled };
+
 @interface AppDelegate () <NSWindowDelegate, NSMenuDelegate>
 @property (nonatomic, strong) NSWindow *window;
 @property (nonatomic, strong) EditorController *editor;
@@ -80,6 +83,7 @@
 @property (nonatomic) NSInteger fixedMacroItemCount;
 @property (nonatomic, strong) NppToolbar *toolbar;
 @property (nonatomic, strong) NSMenu *recentMenu;
+@property (nonatomic, copy) NSArray<NSString *> *recentMenuFiles;   // what recentMenu was built from
 @property (nonatomic, strong) NSPanel *jsonTreePanel;
 @property (nonatomic, strong) NSTextView *jsonTreeText;
 @property (nonatomic, strong) NSPanel *ftpPanel;
@@ -268,7 +272,13 @@ static NSString *Ordinal(NSUInteger n) {
             }
             if (which == 'l') { options[@"-l"] = rest; continue; }
         }
-        if ([arg hasPrefix:@"-"]) continue;       // -NSDocumentRevisionsDebugMode and its kin
+        if ([arg hasPrefix:@"-"]) {
+            // A user default for this run (NSArgumentDomain) comes as a pair - "-NppMac.agentServer YES",
+            // "-NSDocumentRevisionsDebugMode YES", "-AppleLanguages (ru)": its value is not a file.
+            BOOL defaultsKey = [arg containsString:@"."] || [arg hasPrefix:@"-NS"] || [arg hasPrefix:@"-Apple"];
+            if (defaultsKey && ![arg hasPrefix:@"-psn_"] && i + 1 < arguments.count && ![arguments[i + 1] hasPrefix:@"-"]) i++;
+            continue;
+        }
         [files addObject:arg];
     }
     options[@"files"] = files;
@@ -283,44 +293,103 @@ static NSString *Ordinal(NSUInteger n) {
     return options;
 }
 
+/// getMatchedFileNames (Notepad_plus): the files of a folder whose name matches a pattern,
+/// in name order, then those of its folders when recursive; hidden folders are left out.
++ (NSArray<NSString *> *)filesMatching:(NSString *)pattern inFolder:(NSString *)folder recursive:(BOOL)recursive {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSMutableArray<NSString *> *files = [NSMutableArray array], *folders = [NSMutableArray array];
+    NSArray<NSString *> *names = [[fm contentsOfDirectoryAtPath:folder error:NULL]
+                                  sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    for (NSString *name in names) {
+        NSString *full = [folder stringByAppendingPathComponent:name];
+        BOOL isDirectory = NO;
+        if (![fm fileExistsAtPath:full isDirectory:&isDirectory]) continue;
+        if (isDirectory) {
+            if (recursive && ![name hasPrefix:@"."]) [folders addObject:full];
+        } else if (![name isEqualToString:@".DS_Store"] && fnmatch(pattern.fileSystemRepresentation, name.fileSystemRepresentation, 0) == 0) {
+            [files addObject:full];
+        }
+    }
+    for (NSString *sub in folders) [files addObjectsFromArray:[self filesMatching:pattern inFolder:sub recursive:YES]];
+    return files;
+}
+
 - (void)applyCommandLine:(NSDictionary *)options {
     if (!options) return;
     if ([options[@"-alwaysOnTop"] boolValue] && !self.alwaysOnTop) [self toggleAlwaysOnTop:nil];
     if ([options[@"-titleAdd="] length]) self.editor.titleSuffix = options[@"-titleAdd="];
-    if ([options[@"-notabbar"] boolValue]) [self.editor setChromeVisible:NO];
+    if ([options[@"-notabbar"] boolValue]) [self.editor hideTabBarForLaunch];
 
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *cwd = fm.currentDirectoryPath;
     NSMutableArray<NppDocument *> *opened = [NSMutableArray array];
+    void (^openOne)(NSString *) = ^(NSString *file) {
+        if ([self.editor openFileAtPath:file error:NULL] && self.editor.currentDocument) {
+            [opened addObject:self.editor.currentDocument];
+        }
+    };
     for (NSString *given in options[@"files"]) {
         NSString *path = given.isAbsolutePath ? given : [cwd stringByAppendingPathComponent:given];
         path = path.stringByStandardizingPath;
         BOOL isDirectory = NO;
-        if (![fm fileExistsAtPath:path isDirectory:&isDirectory]) continue;
+        BOOL exists = [fm fileExistsAtPath:path isDirectory:&isDirectory];
         if ([options[@"-openSession"] boolValue]) {
-            [self.editor loadSessionFrom:path error:NULL];
+            if (exists) [self.editor loadSessionFrom:path error:NULL];
             continue;
         }
-        if (isDirectory) {
-            if ([options[@"-openFoldersAsWorkspace"] boolValue]) {
-                [self.editor openFolderAsWorkspace:path];
-            } else if ([options[@"-r"] boolValue]) {
-                NSUInteger taken = 0;
-                for (NSString *relative in [fm enumeratorAtPath:path]) {
-                    NSString *full = [path stringByAppendingPathComponent:relative];
-                    BOOL sub = NO;
-                    if ([fm fileExistsAtPath:full isDirectory:&sub] && !sub &&
-                        [self.editor openFileAtPath:full error:NULL] && ++taken >= 200) break;
-                    if (self.editor.currentDocument.path && [self.editor.currentDocument.path isEqualToString:full]) {
-                        [opened addObject:self.editor.currentDocument];
-                    }
+        if (exists && isDirectory && [options[@"-openFoldersAsWorkspace"] boolValue]) {
+            [self.editor openFolderAsWorkspace:path];
+            continue;
+        }
+        // Notepad_plus::doOpen: a pattern ("*.txt", "?") opens the files of its folder that match
+        // (those of the folders under it too with -r); a folder opens every file under it.
+        NSString *name = path.lastPathComponent;
+        BOOL globbing = [name rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"*?"]].location != NSNotFound;
+        if (globbing || (exists && isDirectory)) {
+            NSArray<NSString *> *files = globbing
+                ? [AppDelegate filesMatching:name inFolder:path.stringByDeletingLastPathComponent recursive:[options[@"-r"] boolValue]]
+                : [AppDelegate filesMatching:@"*" inFolder:path recursive:YES];
+            if (files.count > 200) {
+                NSAlert *ask = [[NSAlert alloc] init];
+                ask.messageText = NppL(@"Amount of files to open is too large");
+                ask.informativeText = NppLMessage(@"$INT_REPLACE$ files are about to be opened. Are you sure to open them?", nil, (NSInteger)files.count);
+                [ask addButtonWithTitle:@"Yes"];
+                [ask addButtonWithTitle:@"No"];
+                if ([ask runModal] != NSAlertFirstButtonReturn) continue;
+            }
+            for (NSString *file in files) openOne(file);
+            continue;
+        }
+        if (!exists) {
+            // doOpen: a file that is not there is offered for creation when its folder is,
+            // and the folder that is missing is named otherwise.
+            NSString *folder = path.stringByDeletingLastPathComponent;
+            BOOL folderIsThere = NO;
+            NSAlert *alert = [[NSAlert alloc] init];
+            if ([fm fileExistsAtPath:folder isDirectory:&folderIsThere] && folderIsThere) {
+                alert.messageText = NppL(@"Create new file");
+                alert.informativeText = NppLMessage(@"\"$STR_REPLACE$\" doesn't exist. Create it?", path, 0);
+                [alert addButtonWithTitle:@"Yes"];
+                [alert addButtonWithTitle:@"No"];
+                if ([alert runModal] != NSAlertFirstButtonReturn) continue;
+                if (![fm createFileAtPath:path contents:[NSData data] attributes:nil]) {
+                    NSAlert *failed = [[NSAlert alloc] init];
+                    failed.messageText = NppL(@"Create new file");
+                    failed.informativeText = NppLMessage(@"Cannot create the file \"$STR_REPLACE$\".", path, 0);
+                    [failed runModal];
+                    continue;
                 }
+                openOne(path);
+            } else {
+                alert.messageText = NppL(@"Cannot open file");
+                NSString *text = NppL(@"\"$STR_REPLACE1$\" cannot be opened:\nFolder \"$STR_REPLACE2$\" doesn't exist.");
+                alert.informativeText = [[text stringByReplacingOccurrencesOfString:@"$STR_REPLACE1$" withString:path]
+                                         stringByReplacingOccurrencesOfString:@"$STR_REPLACE2$" withString:folder];
+                [alert runModal];
             }
             continue;
         }
-        if ([self.editor openFileAtPath:path error:NULL] && self.editor.currentDocument) {
-            [opened addObject:self.editor.currentDocument];
-        }
+        openOne(path);
     }
     for (NSString *key in @[@"-qt=", @"-qf="]) {
         NSString *value = options[key];
@@ -551,7 +620,11 @@ static NSString *Ordinal(NSUInteger n) {
     if (![self.editor confirmDiscardingProjectChanges]) return NSTerminateCancel;
     // With the session snapshot on and the session restored at launch, the
     // unsaved text comes back next time, so nothing is asked - as on Windows.
-    if ([self snapshotCoversEverything]) return NSTerminateNow;
+    switch ([self snapshotCoversEverything]) {
+        case NppSnapshotCovers: return NSTerminateNow;
+        case NppSnapshotCancelled: return NSTerminateCancel;   // Cancel at a question is Cancel
+        case NppSnapshotNotUsed: break;
+    }
     return [self.editor confirmClosingDocuments:self.editor.documents] ? NSTerminateNow
                                                                          : NSTerminateCancel;
 }
@@ -560,22 +633,26 @@ static NSString *Ordinal(NSUInteger n) {
 /// backup pass keeps every unsaved document for the next launch and nothing
 /// need be asked - as on Windows. Unless a document could not be backed up
 /// (a large file, a failed write): those are asked about as usual.
-- (BOOL)snapshotCoversEverything {
+/// NotUsed: no snapshot, everything is asked about; Covers: nothing (more) to
+/// ask; Cancelled: the user cancelled at a question about an uncovered file.
+- (NppSnapshotOutcome)snapshotCoversEverything {
     NppPreferences *p = [NppPreferences shared];
-    if (!p.autosaveEnabled || !p.restoreSession || self.editor.sessionSavingDisabled) return NO;
+    if (!p.autosaveEnabled || !p.restoreSession || self.editor.sessionSavingDisabled) return NppSnapshotNotUsed;
     [self.editor runAutosavePass];
     NSMutableArray *uncovered = [NSMutableArray array];
     for (NppDocument *doc in self.editor.documents) {
         if (doc.modified && !doc.backupPath) [uncovered addObject:doc];
     }
-    return uncovered.count == 0 || [self.editor confirmClosingDocuments:uncovered];
+    if (!uncovered.count) return NppSnapshotCovers;
+    return [self.editor confirmClosingDocuments:uncovered] ? NppSnapshotCovers : NppSnapshotCancelled;
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
     if (![self.editor confirmDiscardingProjectChanges]) return NO;
-    if ([self snapshotCoversEverything]) {
-        self.closingConfirmed = YES;
-        return YES;
+    switch ([self snapshotCoversEverything]) {
+        case NppSnapshotCovers: self.closingConfirmed = YES; return YES;
+        case NppSnapshotCancelled: return NO;
+        case NppSnapshotNotUsed: break;
     }
     if (![self.editor confirmClosingDocuments:self.editor.documents]) return NO;
     // What was not saved was declined, not forgotten - and its backup goes
@@ -683,6 +760,9 @@ static NSString *Ordinal(NSUInteger n) {
     self.recentMenu = [[NSMenu alloc] initWithTitle:@"Open Recent"];
     NSMenuItem *recentItem = [fileMenu addItemWithTitle:@"Open Recent" action:nil keyEquivalent:@""];
     recentItem.submenu = self.recentMenu;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NppEditorDocumentsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentsDidChange:)
+                                                 name:NppEditorDocumentsDidChangeNotification object:nil];
     [self rebuildRecentMenu];
     [self item:@"Restore Last Closed File" action:@selector(restoreLastClosedFile:) key:@"t"
          flags:NSEventModifierFlagCommand | NSEventModifierFlagShift menu:fileMenu];
@@ -3003,6 +3083,27 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     if (a == @selector(pickLanguage:)) {
         item.state = [item.representedObject isEqualToString:self.editor.currentDocument.language.name]
                      ? NSControlStateValueOn : NSControlStateValueOff;
+    } else if (a == @selector(reloadDocument:) || a == @selector(moveToTrash:) || a == @selector(revealInFinder:) ||
+               a == @selector(openInTerminal:) || a == @selector(containingFolderAsWorkspace:) ||
+               a == @selector(openInDefaultViewer:)) {
+        // Notepad_plus::checkDocState: what needs a file on disk is off for an untitled document
+        // (IDM_FILE_RELOAD, IDM_FILE_DELETE, IDM_FILE_OPEN_FOLDER, IDM_FILE_OPEN_CMD,
+        // IDM_FILE_CONTAININGFOLDERASWORKSPACE, IDM_FILE_OPEN_DEFAULT_VIEWER).
+        return self.editor.currentDocument.path != nil;
+    } else if (a == @selector(saveDocument:)) {
+        // Notepad_plus::checkDocState / enableCommand(IDM_FILE_SAVE, isDirty): nothing to save, no
+        // Save (a new encoding or BOM counts - the bytes on disk would change).
+        NppDocument *doc = self.editor.currentDocument;
+        return doc.modified || doc.encodingChanged;
+    } else if (a == @selector(saveAll:)) {
+        for (NppDocument *doc in self.editor.documents) if (doc.modified || doc.encodingChanged) return YES;
+        return NO;
+    } else if (a == @selector(toggleMonitoring:)) {
+        // checkMenuItem(IDM_VIEW_MONITORING, buf->isMonitoringOn()) in Notepad_plus::checkDocState.
+        item.state = [self.editor monitoringEnabled] ? NSControlStateValueOn : NSControlStateValueOff;
+    } else if (a == @selector(toggleAlwaysOnTop:)) {
+        // IDM_VIEW_ALWAYSONTOP is checked while the window floats (Notepad_plus::command).
+        item.state = self.alwaysOnTop ? NSControlStateValueOn : NSControlStateValueOff;
     } else if (a == @selector(toggleWordWrap:)) {
         item.state = [self.editor.sci message:SCI_GETWRAPMODE] != SC_WRAP_NONE
                      ? NSControlStateValueOn : NSControlStateValueOff;
@@ -3063,7 +3164,14 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 }
 
 /// Rebuilt from the stored list so the display settings take effect at once.
+/// Every change of the open documents (a tab closed by any command, by an agent, by Close All)
+/// may have put a file on the recent list: the menu follows, as Notepad++'s does (addToRecentFileList).
+- (void)documentsDidChange:(NSNotification *)note {
+    if (![[self.editor recentFiles] isEqualToArray:self.recentMenuFiles ?: @[]]) [self rebuildRecentMenu];
+}
+
 - (void)rebuildRecentMenu {
+    self.recentMenuFiles = [self.editor recentFiles];
     [self.recentMenu removeAllItems];
     for (NSString *path in [self.editor recentFiles]) {
         NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:[self.editor displayNameForRecentFile:path]
@@ -3144,6 +3252,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 - (void)saveCopyAs:(id)sender {
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.nameFieldStringValue = self.editor.currentDocument.displayName;
+    panel.directoryURL = [self.editor saveDirectoryForDocument:self.editor.currentDocument];
     if ([panel runModal] != NSModalResponseOK || !panel.URL) return;
     NSError *err = nil;
     if (![self.editor saveCopyOfCurrentTo:panel.URL.path error:&err] && err) {
@@ -3223,8 +3332,9 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 - (void)printNow:(id)sender      { [self.editor printCurrentShowingPanel:NO]; }
 
 - (void)loadSession:(id)sender {
+    // Notepad_plus::fileLoadSession: "All types", the session extension of MISC. beside it -
+    // a session is Notepad++'s XML whatever its name (session.xml from Windows, .npps...).
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    panel.allowedFileTypes = @[@"json"];
     if ([panel runModal] != NSModalResponseOK || !panel.URL) return;
     NSError *err = nil;
     if (![self.editor loadSessionFrom:panel.URL.path error:&err] && err) {
@@ -3233,8 +3343,11 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 }
 
 - (void)saveSession:(id)sender {
+    // fileSaveSession: the file is XML; with a session extension set in MISC. it is the default one.
+    NSString *ext = [NppPreferences shared].sessionFileExtension ?: @"";
+    if ([ext hasPrefix:@"."]) ext = [ext substringFromIndex:1];
     NSSavePanel *panel = [NSSavePanel savePanel];
-    panel.nameFieldStringValue = @"session.json";
+    panel.nameFieldStringValue = [@"session." stringByAppendingString:ext.length ? ext : @"xml"];
     if ([panel runModal] != NSModalResponseOK || !panel.URL) return;
     NSError *err = nil;
     if (![self.editor saveSessionTo:panel.URL.path error:&err] && err) {

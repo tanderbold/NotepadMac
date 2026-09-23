@@ -6,6 +6,7 @@
 #import "UpdateChecker.h"
 #import "CryptoTools.h"
 #import "ScintillaView.h"
+#import "LanguageCatalog.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <objc/runtime.h>
 
@@ -373,40 +374,78 @@ static const char kMenuCommandKey = 0;
 
 #pragma mark - Window
 
+/// NumericStringEquivalence::numstrcmp (WindowsDlg.cpp): digits compare as numbers ("File2"
+/// before "file10"), ASCII letters without case, anything else by its code.
+static int NppNumStrCmp(NSString *a, NSString *b) {
+    NSUInteger i = 0, j = 0, la = a.length, lb = b.length;
+    for (;;) {
+        if (i >= la || j >= lb) {
+            if (i >= la && j >= lb) return 0;
+            return i >= la ? -1 : 1;
+        }
+        unichar c1 = [a characterAtIndex:i], c2 = [b characterAtIndex:j];
+        if (c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9') {
+            NSUInteger si = i, sj = j;
+            unsigned long long v1 = 0, v2 = 0;
+            while (i < la && [a characterAtIndex:i] >= '0' && [a characterAtIndex:i] <= '9') v1 = v1 * 10 + ([a characterAtIndex:i++] - '0');
+            while (j < lb && [b characterAtIndex:j] >= '0' && [b characterAtIndex:j] <= '9') v2 = v2 * 10 + ([b characterAtIndex:j++] - '0');
+            if (v1 != v2) return v1 < v2 ? -1 : 1;
+            // Equal values: the one with more digits (leading zeros) second, as (p2-str2)-(p1-str1).
+            NSInteger d = (NSInteger)(j - sj) - (NSInteger)(i - si);
+            if (d) return d < 0 ? -1 : 1;
+            continue;
+        }
+        if (c1 < 128 && c1 >= 'A' && c1 <= 'Z') c1 = c1 - 'A' + 'a';
+        if (c2 < 128 && c2 >= 'A' && c2 <= 'Z') c2 = c2 - 'A' + 'a';
+        if (c1 != c2) return c1 < c2 ? -1 : 1;
+        ++i, ++j;
+    }
+}
+
 - (void)sortTabsBy:(NppTabSort)key ascending:(BOOL)ascending {
     NSMutableArray *docs = (NSMutableArray *)self.documents;
     NppDocument *keep = self.currentDocument;
     NSFileManager *fm = [NSFileManager defaultManager];
 
-    [docs sortUsingComparator:^NSComparisonResult(NppDocument *a, NppDocument *b) {
-        NSComparisonResult r = NSOrderedSame;
+    // BufferEquivalent::compare: the column's order, and the full path name when that says
+    // nothing - for an untitled document its name, "new 1". The keys are worked out once.
+    NSMapTable<NppDocument *, id> *keys = [NSMapTable strongToStrongObjectsMapTable];
+    ScintillaView *reader = nil;
+    for (NppDocument *d in docs) {
+        id k = nil;
         switch (key) {
-            case NppTabSortName:
-                r = [a.displayName localizedStandardCompare:b.displayName];
-                break;
-            case NppTabSortPath:
-                r = [(a.path ?: @"") localizedStandardCompare:(b.path ?: @"")];
-                break;
-            case NppTabSortType:
-                r = [a.displayName.pathExtension localizedStandardCompare:b.displayName.pathExtension];
-                if (r == NSOrderedSame) r = [a.displayName localizedStandardCompare:b.displayName];
-                break;
+            case NppTabSortName: k = d.displayName ?: @""; break;
+            case NppTabSortPath: k = @""; break;
+            case NppTabSortType: k = d.language.name ?: @""; break;
             case NppTabSortContentLength: {
-                unsigned long long sa = [[fm attributesOfItemAtPath:(a.path ?: @"") error:NULL] fileSize];
-                unsigned long long sb = [[fm attributesOfItemAtPath:(b.path ?: @"") error:NULL] fileSize];
-                r = sa == sb ? NSOrderedSame : (sa < sb ? NSOrderedAscending : NSOrderedDescending);
+                // docLength: the text as it is now, not the file on disk.
+                long length = 0;
+                if (d == self.currentDocument) length = [self.sci message:SCI_GETLENGTH];
+                else if (d.docPointer) {
+                    if (!reader) reader = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
+                    [reader message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)d.docPointer];
+                    length = [reader message:SCI_GETLENGTH];
+                }
+                k = @(length);
                 break;
             }
-            case NppTabSortModifiedTime: {
-                NSDate *da = [[fm attributesOfItemAtPath:(a.path ?: @"") error:NULL] fileModificationDate];
-                NSDate *db = [[fm attributesOfItemAtPath:(b.path ?: @"") error:NULL] fileModificationDate];
-                if (!da && !db) r = NSOrderedSame;
-                else if (!da) r = NSOrderedAscending;
-                else if (!db) r = NSOrderedDescending;
-                else r = [da compare:db];
+            case NppTabSortModifiedTime:
+                k = [[fm attributesOfItemAtPath:(d.path ?: @"") error:NULL] fileModificationDate] ?: [NSDate distantPast];
                 break;
-            }
         }
+        [keys setObject:k forKey:d];
+    }
+    if (reader) [reader message:SCI_SETDOCPOINTER wParam:0 lParam:0];
+
+    NSComparisonResult (^full)(NppDocument *, NppDocument *) = ^NSComparisonResult(NppDocument *a, NppDocument *b) {
+        return (NSComparisonResult)NppNumStrCmp(a.path ?: a.displayName ?: @"", b.path ?: b.displayName ?: @"");
+    };
+    [docs sortWithOptions:NSSortStable usingComparator:^NSComparisonResult(NppDocument *a, NppDocument *b) {
+        NSComparisonResult r = NSOrderedSame;
+        id ka = [keys objectForKey:a], kb = [keys objectForKey:b];
+        if (key == NppTabSortName || key == NppTabSortType) r = (NSComparisonResult)NppNumStrCmp(ka, kb);
+        else if (key == NppTabSortContentLength || key == NppTabSortModifiedTime) r = [ka compare:kb];
+        if (r == NSOrderedSame) r = full(a, b);
         return ascending ? r : (NSComparisonResult)(-(NSInteger)r);
     }];
 
@@ -579,10 +618,14 @@ static const char kPreviousTabKey = 0;
            @"The switches Notepad++ takes are taken here too:\n"
            @"    -n<line> -c<column> -p<position>   go there in the file opened last\n"
            @"    -l<language>       set the language of the files opened\n"
+           @"    -udl=<name>        set a User Defined Language on the files opened\n"
            @"    -ro                open the files read-only\n"
+           @"    -fullReadOnly      open every file read-only\n"
+           @"    -fullReadOnlySavingForbidden   read-only, and saving refused\n"
            @"    -nosession         do not restore the last session\n"
            @"    -openSession       the files are session files to load\n"
-           @"    -r                 open every file under the folders given\n"
+           @"    -r                 a pattern (\"*.txt\") takes the files of the sub-folders too;\n"
+           @"                       a folder always opens every file under it\n"
            @"    -openFoldersAsWorkspace   open the folders as the workspace\n"
            @"    -monitor           follow the file opened last as it grows\n"
            @"    -alwaysOnTop       keep the window above the others\n"
@@ -590,6 +633,7 @@ static const char kPreviousTabKey = 0;
            @"    -titleAdd=<text>   add text to the window title\n"
            @"    -settingsDir=<dir> read and write settings there for this launch\n"
            @"    -qt=<text> -qf=<file>   open a new document holding the text\n"
+           @"    -qn=<name>         accepted (Notepad++'s easter eggs are not in this build)\n"
            @"    -notepadStyleCmdline    the rest of the line is one file name\n"
            @"    -z                 ignore the next argument\n"
            @"    -quickPrint        print the files given and quit\n"
