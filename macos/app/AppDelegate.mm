@@ -867,6 +867,17 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Recognize Text in File…" action:@selector(recognizeTextInFile:) key:@"" flags:0 menu:editMenu];
     // The selected formula's value, or the one ending at the caret, after its "=".
     [self item:@"Calculate" action:@selector(calculateFormula:) key:@"=" flags:NSEventModifierFlagCommand menu:editMenu];
+    // The context menu's Selected Numbers in the menu bar too, for a shortcut or an agent's run_command.
+    NSMenu *numbersMenu = [[NSMenu alloc] initWithTitle:@"Selected Numbers"];
+    [self item:@"Sum" action:@selector(numbersInsertSum:) key:@"" flags:0 menu:numbersMenu];
+    [self item:@"Average" action:@selector(numbersInsertAverage:) key:@"" flags:0 menu:numbersMenu];
+    [self item:@"Minimum" action:@selector(numbersInsertMinimum:) key:@"" flags:0 menu:numbersMenu];
+    [self item:@"Maximum" action:@selector(numbersInsertMaximum:) key:@"" flags:0 menu:numbersMenu];
+    [self item:@"Count" action:@selector(numbersInsertCount:) key:@"" flags:0 menu:numbersMenu];
+    [numbersMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Sort Ascending" action:@selector(numbersSortAscending:) key:@"" flags:0 menu:numbersMenu];
+    [self item:@"Sort Descending" action:@selector(numbersSortDescending:) key:@"" flags:0 menu:numbersMenu];
+    [editMenu addItemWithTitle:@"Selected Numbers" action:nil keyEquivalent:@""].submenu = numbersMenu;
 
     NSMenu *selMenu = [[NSMenu alloc] initWithTitle:@"On Selection"];
     [self item:@"Open File" action:@selector(openSelectedFile:) key:@"" flags:0 menu:selMenu];
@@ -1566,6 +1577,14 @@ static NSString *Ordinal(NSUInteger n) {
 #pragma mark Mac extras: OCR, QR, the command line
 
 - (void)calculateFormula:(id)sender { [self.editor calculateFormula]; }
+- (void)numbersInsert:(NppNumberSetValue)which { if (![self.editor insertNumberSetValue:which]) NppBeep(); }
+- (void)numbersInsertSum:(id)sender     { [self numbersInsert:NppNumberSetSum]; }
+- (void)numbersInsertAverage:(id)sender { [self numbersInsert:NppNumberSetAverage]; }
+- (void)numbersInsertMinimum:(id)sender { [self numbersInsert:NppNumberSetMinimum]; }
+- (void)numbersInsertMaximum:(id)sender { [self numbersInsert:NppNumberSetMaximum]; }
+- (void)numbersInsertCount:(id)sender   { [self numbersInsert:NppNumberSetCount]; }
+- (void)numbersSortAscending:(id)sender  { if (![self.editor sortSelectedNumbersAscending:YES]) NppBeep(); }
+- (void)numbersSortDescending:(id)sender { if (![self.editor sortSelectedNumbersAscending:NO]) NppBeep(); }
 
 - (void)pasteImageAsText:(id)sender {
     if (![self.editor pasteImageAsText]) [self reportMimeProblem:@"No text was found in the clipboard's image."];
@@ -2877,6 +2896,11 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    if (a == @selector(numbersInsertSum:) || a == @selector(numbersInsertAverage:) || a == @selector(numbersInsertMinimum:) ||
+        a == @selector(numbersInsertMaximum:) || a == @selector(numbersInsertCount:) ||
+        a == @selector(numbersSortAscending:) || a == @selector(numbersSortDescending:)) {
+        return ![self.editor.sci message:SCI_GETREADONLY] && [self.editor numberSetInSelection] != nil;
+    }
     if (a == @selector(stopScript:)) return self.runningScript != nil;
     if (a == @selector(toggleSpellCheck:)) {
         item.state = [NppPreferences shared].spellCheckEnabled ? NSControlStateValueOn : NSControlStateValueOff;

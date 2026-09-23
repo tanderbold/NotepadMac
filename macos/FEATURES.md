@@ -741,8 +741,9 @@ leans the other way:
 
 **And besides the menus:**
 
-- Selected numbers: the context menu writes a selected set of numbers' sum,
-  average, minimum, maximum or count after them and sorts them in place; Edit >
+- Selected numbers: the context menu (and Edit > Selected Numbers) writes a
+  selected set of numbers' sum, average, minimum, maximum or count after them
+  and sorts them in place; Edit >
   Calculate (Cmd+=) writes a formula's value after its "=" - the selected
   formula or the one being typed - with functions (sin, ln, log, sqrt...),
   degrees, constants and percent.

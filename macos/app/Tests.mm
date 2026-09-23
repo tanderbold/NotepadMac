@@ -10420,6 +10420,12 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"Selected numbers (Cmd+=)", @"Edit > Calculate carries Cmd+=",
               calcItem && [calcItem.keyEquivalent isEqualToString:@"="] &&
               calcItem.keyEquivalentModifierMask == NSEventModifierFlagCommand);
+        SetDoc(ed, @"3 1 2");
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        BOOL viaMenu = [app performMenuCommandAtPath:@"Edit|Selected Numbers|Sort Descending"] &&
+                       [app performMenuCommandAtPath:@"Edit|Selected Numbers|Sum"];
+        Check(@"Selected numbers (Edit menu)", @"Edit > Selected Numbers runs by menu path, as an agent's run_command does",
+              viaMenu && [DocText(ed) isEqualToString:@"3 2 1 SUM = 6"]);
         SetDoc(ed, @"plain");
         [sci message:SCI_SETSEL wParam:0 lParam:5];
         calc = [ed formulaMenuItems];
