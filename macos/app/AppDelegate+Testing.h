@@ -77,6 +77,8 @@
 - (BOOL)automaticUpdateCheckAllowed;
 /// NppExec: a menu command by its path, and the menu of saved scripts.
 - (BOOL)performMenuCommandAtPath:(NSString *)path;
+/// The command line's folders and patterns: the files they open, in order (getMatchedFileNames).
++ (NSArray<NSString *> *)filesMatching:(NSString *)pattern inFolder:(NSString *)folder recursive:(BOOL)recursive;
 - (void)rebuildExecMenu;
 - (void)executeScriptText:(NSString *)text;
 - (void)stopScript:(id)sender;

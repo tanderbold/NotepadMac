@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// NSBeep, unless MISC. > Mute all sounds is on.
 FOUNDATION_EXPORT void NppBeep(void);
+/// A path with symlinks and dots resolved (realpath), to tell whether two spellings are one file.
+FOUNDATION_EXPORT NSString *NppCanonicalPath(NSString *path);
 
 /// Posted whenever the set of open documents changes, so panels listing them
 /// can reload instead of drawing from a stale row count.
@@ -130,6 +132,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 /// first when Preferences asks for one.
 - (BOOL)writeCurrentToPath:(NSString *)path;
 - (BOOL)saveCurrentDocumentAs;
+/// Where Save As and Save a Copy As start: the document's folder, else the default directory.
+- (nullable NSURL *)saveDirectoryForDocument:(NppDocument *)doc;
 /// Save As without the panel; NO when another tab has that file.
 - (BOOL)saveCurrentDocumentAsPath:(NSString *)path;
 - (void)closeCurrentDocument;
@@ -223,6 +227,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)copyText:(NSString *)text;
 /// A message in the status bar's path field for a moment.
 - (void)flashStatus:(NSString *)message;
+/// -notabbar: the tab bar hidden for this run, the status bar kept.
+@property (nonatomic) BOOL tabBarHiddenForLaunch;
+- (void)hideTabBarForLaunch;
 - (void)setChromeVisible:(BOOL)visible;           // hides tab bar + status bar
 - (BOOL)chromeVisible;
 
