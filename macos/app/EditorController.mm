@@ -470,6 +470,24 @@ static long SciColor(NSColor *c) {
 
 /// Scintilla resets these when the document pointer changes, so they are
 /// re-applied on every switch rather than only at startup.
+/// The current line left alone, given the theme's background, or framed
+/// (ScintillaEditView::setCurrentLineHiLiting). With "None" no colour is set:
+/// in Scintilla 5 setting the caret-line colour turns the line on again.
+- (void)applyCurrentLineLookToView:(ScintillaView *)sci {
+    NppPreferences *prefs = [NppPreferences shared];
+    if (prefs.currentLineHighlightMode == 0) {
+        [sci message:SCI_SETCARETLINEVISIBLE wParam:0 lParam:0];
+        return;
+    }
+    NppStyle *caretLine = [StyleCatalog sharedCatalog].globalStyles[@"Current line background colour"];
+    if (caretLine.background) [sci message:SCI_SETCARETLINEBACK wParam:SciColor(caretLine.background) lParam:0];
+    [sci message:SCI_SETCARETLINEVISIBLE wParam:1 lParam:0];
+    [sci message:SCI_SETCARETLINEFRAME
+           wParam:prefs.currentLineHighlightMode == 2
+                  ? (uptr_t)MIN((NSInteger)6, MAX((NSInteger)1, prefs.currentLineFrameWidth)) : 0
+           lParam:0];
+}
+
 - (void)applyDocumentSettings {
     ScintillaView *sci = self.sciView;
     // From the preferences, not literals: these live in the Scintilla
@@ -549,22 +567,7 @@ static long SciColor(NSColor *c) {
                                      : SCVS_RECTANGULARSELECTION
            lParam:0];
 
-    // The current line can be left alone, given a background, or framed.
-    switch (prefs.currentLineHighlightMode) {
-        case 0:
-            [sci message:SCI_SETCARETLINEVISIBLE wParam:0 lParam:0];
-            break;
-        case 2:
-            [sci message:SCI_SETCARETLINEVISIBLE wParam:1 lParam:0];
-            [sci message:SCI_SETCARETLINEFRAME
-                   wParam:(uptr_t)MIN((NSInteger)6, MAX((NSInteger)1, prefs.currentLineFrameWidth))
-                   lParam:0];
-            break;
-        default:
-            [sci message:SCI_SETCARETLINEVISIBLE wParam:1 lParam:0];
-            [sci message:SCI_SETCARETLINEFRAME wParam:0 lParam:0];
-            break;
-    }
+    [self applyCurrentLineLookToView:sci];
 
     // Margins the user can turn off. The line number margin has its own
     // setting elsewhere; these two are the bookmark and fold margins.
@@ -2064,6 +2067,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // Courier New at size 10 is a Windows default; on macOS it reads far too small.
     int fontSize = (def.fontSize > 0) ? MAX(def.fontSize, 12) : 13;
     if ([fontName isEqualToString:@"Courier New"]) fontName = @"Menlo";
+    // Editing 1's font, when the user chose one, over the theme's.
+    NppPreferences *prefs = [NppPreferences shared];
+    if (prefs.chosenFontName) fontName = prefs.chosenFontName;
+    if (prefs.chosenFontSize > 0) fontSize = (int)prefs.chosenFontSize;
 
     [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:fontName];
     [sci message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:fontSize];
@@ -2167,8 +2174,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (badBrace) applyStyle(badBrace, STYLE_BRACEBAD);
 
     // These take the colour in wParam, so they cannot go through applyStyle.
-    NppStyle *caretLine = styles.globalStyles[@"Current line background colour"];
-    if (caretLine.background) [sci message:SCI_SETCARETLINEBACK wParam:SciColor(caretLine.background) lParam:0];
+    [self applyCurrentLineLookToView:sci];
     NppStyle *caret = styles.globalStyles[@"Caret colour"];
     if (caret.foreground) [sci message:SCI_SETCARETFORE wParam:SciColor(caret.foreground) lParam:0];
     NppStyle *sel = styles.globalStyles[@"Selected text colour"];

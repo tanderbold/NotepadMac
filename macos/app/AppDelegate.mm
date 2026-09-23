@@ -479,6 +479,12 @@ static NSString *Ordinal(NSUInteger n) {
     }
     self.pendingOpenPaths = nil;
     [self applyCommandLine:self.commandLine];
+    // New Document > "Always open a new document in addition at startup", with
+    // the session remembered, as Notepad_plus_Window::init does after the
+    // session and the command line's files: IDM_FILE_NEW.
+    if ([NppPreferences shared].openNewDocumentAtStartup && [NppPreferences shared].restoreSession) {
+        [self.editor newDocument];
+    }
 
     // Follow the system appearance while Preferences is set to do so.
     [NSApp addObserver:self forKeyPath:@"effectiveAppearance"

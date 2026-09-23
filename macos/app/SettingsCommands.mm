@@ -215,6 +215,23 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
 }
 
 NPP_PREF_OBJ(fontName, setFontName, NSString, @"fontName")
+
+/// A value set for this key by the user - in the application's preferences or
+/// on the command line - rather than the registered default.
+static id NppChosenValue(NSString *name) {
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    id v = [d volatileDomainForName:NSArgumentDomain][Key(name)];
+    NSString *domain = NSBundle.mainBundle.bundleIdentifier;
+    return v ?: (domain ? [d persistentDomainForName:domain][Key(name)] : nil);
+}
+- (nullable NSString *)chosenFontName {
+    id v = NppChosenValue(@"fontName");
+    return [v isKindOfClass:[NSString class]] && [v length] ? v : nil;
+}
+- (NSInteger)chosenFontSize {
+    id v = NppChosenValue(@"fontSize");
+    return [v respondsToSelector:@selector(integerValue)] ? MAX(0, [v integerValue]) : 0;
+}
 NPP_PREF_OBJ(defaultEncoding, setDefaultEncoding, NSString, @"defaultEncoding")
 NPP_PREF_OBJ(lightThemeName, setLightThemeName, NSString, @"lightThemeName")
 NPP_PREF_OBJ(darkThemeName, setDarkThemeName, NSString, @"darkThemeName")

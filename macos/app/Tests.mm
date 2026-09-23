@@ -1316,6 +1316,19 @@ int NppMacRunTests(AppDelegate *app) {
                   @"Tab Bar, Recent Files History, Default Directory, Searching and the rest of New "
                   @"Document, Print and Performance have controls, and Apply writes them",
                   present && applied);
+            // The port's own boxes are written by Apply too (SETTINGS-007/043/089).
+            BOOL wasDetect = p.detectLanguageFromContent, wasMarks = p.gitMarginMarks, wasAgent = p.agentServer;
+            PreferencesWindow *own = [[PreferencesWindow alloc] initWithEditor:ed];
+            NSDictionary *ownControls = [own valueForKey:@"controls"];
+            [ownControls[@"detectLanguageFromContent"] setState:wasDetect ? NSControlStateValueOff : NSControlStateValueOn];
+            [ownControls[@"gitMarginMarks"] setState:wasMarks ? NSControlStateValueOff : NSControlStateValueOn];
+            [ownControls[@"agentServer"] setState:wasAgent ? NSControlStateValueOn : NSControlStateValueOff];
+            [own apply:nil];
+            BOOL ownApplied = p.detectLanguageFromContent == !wasDetect && p.gitMarginMarks == !wasMarks;
+            p.detectLanguageFromContent = wasDetect; p.gitMarginMarks = wasMarks; p.agentServer = wasAgent;
+            [ed applyEditorPreferences];
+            Check(@"IDM_SETTING_PREFERENCE (the port's boxes)",
+                  @"Apply writes the content detection and Git margin boxes", ownApplied);
         }
 
         // A NUL byte inside a file is content, not the end of it.
@@ -2634,6 +2647,35 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_SETTING_PREFERENCE (current line)",
               @"the current line can be left plain, coloured or framed",
               plain && framed && [sv message:SCI_GETCARETLINEFRAME] == 0);
+        // "None" survives the theme being put on again (its caret-line colour turned the line back on).
+        p.currentLineHighlightMode = 0;
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        BOOL stillPlain = [sv message:SCI_GETCARETLINEVISIBLE] == 0;
+        p.currentLineHighlightMode = 1;
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        Check(@"IDM_SETTING_PREFERENCE (current line, theme)",
+              @"None stays off after the theme is applied again; Highlight comes back with it (SETTINGS-020)",
+              stillPlain && [sv message:SCI_GETCARETLINEVISIBLE] != 0);
+
+        // Editing 1's font, once chosen, wins over the theme's Default Style font (SETTINGS-018).
+        NSString *wasFont = p.fontName; NSInteger wasSize = p.fontSize;
+        BOOL hadChosenFont = p.chosenFontName != nil, hadChosenSize = p.chosenFontSize > 0;
+        p.fontName = @"Courier"; p.fontSize = 17;
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        char fontBuf[128] = {0};
+        [sv message:SCI_STYLEGETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)fontBuf];
+        BOOL chosenWins = strcmp(fontBuf, "Courier") == 0 && [sv message:SCI_STYLEGETSIZE wParam:STYLE_DEFAULT] == 17;
+        NSString *domain = NSBundle.mainBundle.bundleIdentifier;
+        if (hadChosenFont) p.fontName = wasFont; else if (domain) [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NppMac.fontName"];
+        if (hadChosenSize) p.fontSize = wasSize; else if (domain) [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NppMac.fontSize"];
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        Check(@"IDM_SETTING_PREFERENCE (font)",
+              @"a font chosen on Editing 1 is the editor's, over the theme's Default Style font",
+              chosenWins);
 
         // Margins that can be turned off, and the padding around the text.
         p.foldMarginShow = NO; p.bookmarkMarginShow = NO;

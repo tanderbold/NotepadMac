@@ -19,6 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Work the language out from what is in a file when its name does not say:
 /// a file with no extension, or a fragment pasted into an empty document.
 @property (nonatomic) BOOL detectLanguageFromContent;
+/// Editing 1's font when the user has set one (the preferences or the command
+/// line hold it), else nil / 0: the theme's Default Style font is used then,
+/// as Notepad++ uses it. A chosen font wins over the theme's.
+- (nullable NSString *)chosenFontName;
+- (NSInteger)chosenFontSize;
 @property (nonatomic) NSInteger defaultEOL;              // SC_EOL_*
 @property (nonatomic, copy) NSString *defaultEncoding;   // "UTF-8", "UTF-8-BOM", ...
 
