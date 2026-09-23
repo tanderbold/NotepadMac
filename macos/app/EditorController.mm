@@ -72,7 +72,12 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 
 @implementation NppSecondaryPaneDelegate
 - (void)notification:(SCNotification *)n {
-    if (n->nmhdr.code == SCN_UPDATEUI) [self.owner mirrorScrollFromSecondary];
+    // Only a scroll of this pane is mirrored, and a zoom only when it zooms: every
+    // SCN_UPDATEUI mirrored both ways kept the panes echoing each other (a freeze
+    // with long lines, and the other pane's zoom undoing a Zoom In).
+    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)))
+        [self.owner mirrorScrollFromSecondary];
+    if (n->nmhdr.code == SCN_ZOOM) [self.owner mirrorZoomFromSecondary];
 }
 @end
 
@@ -2230,8 +2235,17 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         case NSUTF16LittleEndianStringEncoding: return @"UTF-16 LE BOM";
         case NSUTF16BigEndianStringEncoding:    return @"UTF-16 BE BOM";
         case NSISOLatin1StringEncoding:         return @"ANSI";
-        default: return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
+        case NSUTF8StringEncoding:              if (!doc.codepage) return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
+        default: break;
     }
+    // A character set of Encoding > Character Sets goes by its menu label, as
+    // Notepad_plus::setUniModeText takes the Encode-in item's string.
+    for (int i = 0; i < kNppCharsetCount; ++i) {
+        unsigned int cp = kNppCharsets[i].codepage;
+        if (doc.codepage ? doc.codepage == cp : [EditorController encodingForCodepage:cp] == doc.encoding)
+            return @(kNppCharsets[i].label);
+    }
+    return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
 }
 
 #pragma mark - Editing commands
@@ -2560,6 +2574,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     self.window.title = title;
     self.window.representedFilename = doc.path ?: @"";
     self.window.documentEdited = doc.modified;
+    // The toolbar's Save, Undo, Cut... follow the document at once, as upstream's
+    // enableCommand does on each change; AppKit would validate them only later.
+    [self.window.toolbar validateVisibleItems];
 }
 
 /// The Tab bar page of Preferences drives the bar's layout and behaviour.
@@ -2736,38 +2753,41 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 - (BOOL)syncHorizontalScroll { return self.syncH; }
 - (void)setSyncHorizontalScroll:(BOOL)on { self.syncH = on; if (on) [self mirrorScrollToSecondary]; }
 - (BOOL)syncZoom { return self.syncZ; }
-- (void)setSyncZoom:(BOOL)on { self.syncZ = on; if (on) [self mirrorScrollToSecondary]; }
+- (void)setSyncZoom:(BOOL)on { self.syncZ = on; if (on) [self mirrorZoomToSecondary]; }
+
+/// One pane's scroll (and zoom) put on the other, where it differs: setting the
+/// same value again still sends SCN_UPDATEUI, which would echo back.
+static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL columns, BOOL zoom) {
+    if (lines) {
+        long v = [from message:SCI_GETFIRSTVISIBLELINE];
+        if ([to message:SCI_GETFIRSTVISIBLELINE] != v) [to message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)v lParam:0];
+    }
+    if (columns) {
+        long v = [from message:SCI_GETXOFFSET];
+        if ([to message:SCI_GETXOFFSET] != v) [to message:SCI_SETXOFFSET wParam:(uptr_t)v lParam:0];
+    }
+    if (zoom) {
+        long v = [from message:SCI_GETZOOM];
+        if ([to message:SCI_GETZOOM] != v) [to message:SCI_SETZOOM wParam:(uptr_t)v lParam:0];
+    }
+}
 
 - (void)mirrorScrollToSecondary {
     if (![self secondaryViewVisible]) return;
-    if (self.syncV) {
-        [self.secondaryView message:SCI_SETFIRSTVISIBLELINE
-                             wParam:(uptr_t)[self.sciView message:SCI_GETFIRSTVISIBLELINE] lParam:0];
-    }
-    if (self.syncH) {
-        [self.secondaryView message:SCI_SETXOFFSET
-                             wParam:(uptr_t)[self.sciView message:SCI_GETXOFFSET] lParam:0];
-    }
-    if (self.syncZ) {
-        [self.secondaryView message:SCI_SETZOOM
-                             wParam:(uptr_t)[self.sciView message:SCI_GETZOOM] lParam:0];
-    }
+    MirrorView(self.sciView, self.secondaryView, self.syncV, self.syncH, NO);
 }
 
 - (void)mirrorScrollFromSecondary {
     if (![self secondaryViewVisible]) return;
-    if (self.syncV) {
-        [self.sciView message:SCI_SETFIRSTVISIBLELINE
-                       wParam:(uptr_t)[self.secondaryView message:SCI_GETFIRSTVISIBLELINE] lParam:0];
-    }
-    if (self.syncH) {
-        [self.sciView message:SCI_SETXOFFSET
-                       wParam:(uptr_t)[self.secondaryView message:SCI_GETXOFFSET] lParam:0];
-    }
-    if (self.syncZ) {
-        [self.sciView message:SCI_SETZOOM
-                       wParam:(uptr_t)[self.secondaryView message:SCI_GETZOOM] lParam:0];
-    }
+    MirrorView(self.secondaryView, self.sciView, self.syncV, self.syncH, NO);
+}
+
+- (void)mirrorZoomToSecondary {
+    if ([self secondaryViewVisible] && self.syncZ) MirrorView(self.sciView, self.secondaryView, NO, NO, YES);
+}
+
+- (void)mirrorZoomFromSecondary {
+    if ([self secondaryViewVisible] && self.syncZ) MirrorView(self.secondaryView, self.sciView, NO, NO, YES);
 }
 
 #pragma mark - Document Map
@@ -3000,6 +3020,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             }
             break;
         }
+        case SCN_ZOOM:
+            [self mirrorZoomToSecondary];
+            break;
         case SCN_UPDATEUI:
             [self refreshChrome];
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateDocumentMap];
@@ -3008,7 +3031,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
                 [self compareScheduleRefresh];         // and so does a comparison that is on
             }
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateLineNumberWidth];
-            [self mirrorScrollToSecondary];
+            if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)) [self mirrorScrollToSecondary];
             [self updateBraceMatch];
             if (n->updated & SC_UPDATE_SELECTION) [self updateSmartHighlight];
             if (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT)) [self highlightMatchingTags];

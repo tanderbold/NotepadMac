@@ -4186,6 +4186,18 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_GOTO_END", @"moves it to the back",
               [ed.documents indexOfObject:jumper] == ed.documents.count - 1);
 
+        // Pinned tabs stay first: an unpinned tab stops after them (VIEW-087).
+        NppDocument *pinnedDoc = ed.documents.firstObject;
+        pinnedDoc.pinned = YES;
+        [ed moveCurrentTabToEnd:NO];
+        BOOL afterPinned = [ed.documents indexOfObject:jumper] == 1;
+        BOOL cannotPass = ![ed moveCurrentTab:NO] && [ed.documents indexOfObject:jumper] == 1;
+        pinnedDoc.pinned = NO;
+        [ed refreshChrome];
+        Check(@"IDM_VIEW_GOTO_START (pinned tabs)",
+              @"Move to Start and Move Tab Backward stop an unpinned tab after the pinned ones",
+              afterPinned && cannotPass);
+
         NSArray *colourIDs = @[@"IDM_VIEW_TAB_COLOUR_1", @"IDM_VIEW_TAB_COLOUR_2", @"IDM_VIEW_TAB_COLOUR_3",
                                @"IDM_VIEW_TAB_COLOUR_4", @"IDM_VIEW_TAB_COLOUR_5"];
         for (NSInteger c = 1; c <= 5; ++c) {
@@ -4241,6 +4253,31 @@ int NppMacRunTests(AppDelegate *app) {
                   flipped && [ed symbolVisible:syms[i].sym] == before);
         }
 
+        // Both views, the checkmark and Show All Characters (VIEW-004/005/018-023).
+        {
+            NSMenuItem *symbolItem = [[NSMenuItem alloc] initWithTitle:@"" action:NSSelectorFromString(@"toggleSymbol:") keyEquivalent:@""];
+            symbolItem.tag = NppSymbolEOL; symbolItem.target = app;
+            BOOL wasEOL = [ed symbolVisible:NppSymbolEOL];
+            [ed toggleSymbol:NppSymbolEOL];
+            [app validateMenuItem:symbolItem];
+            BOOL checkFollows = (symbolItem.state == NSControlStateValueOn) == !wasEOL;
+            ScintillaView *other = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 100, 100)];
+            [ed applySymbolsToView:other];
+            BOOL otherToo = ([other message:SCI_GETVIEWEOL] != 0) == !wasEOL;
+            [ed toggleSymbol:NppSymbolEOL];
+            Check(@"IDM_VIEW_EOL (both views, checkmark)",
+                  @"Show End of Line is kept, applied to any view and checked in the menu", checkFollows && otherToo);
+
+            BOOL allBefore = [ed symbolVisible:NppSymbolAll];
+            [ed toggleSymbol:NppSymbolAll];
+            BOOL allFlipped = [ed symbolVisible:NppSymbolWhitespace] == !allBefore && [ed symbolVisible:NppSymbolEOL] == !allBefore &&
+                              [ed symbolVisible:NppSymbolNonPrinting] == !allBefore &&
+                              [ed symbolVisible:NppSymbolControlAndUnicodeEOL] == !allBefore;
+            [ed toggleSymbol:NppSymbolAll];
+            Check(@"IDM_VIEW_ALL_CHARACTERS", @"Show All Characters turns the four invisible-character symbols on and off together",
+                  allFlipped);
+        }
+
         SetDoc(ed, @"one\ntwo\nthree\n");
         [sci message:SCI_SETSEL wParam:(uptr_t)[sci message:SCI_POSITIONFROMLINE wParam:1]
                  lParam:[sci message:SCI_GETLINEENDPOSITION wParam:1]];
@@ -4289,6 +4326,20 @@ int NppMacRunTests(AppDelegate *app) {
         [app toggleAlwaysOnTop:nil];
         Check(@"IDM_VIEW_ALWAYSONTOP", @"raises and lowers the window level",
               onTop && app.window.level == NSNormalWindowLevel);
+
+        // Post-It keeps an Always on Top from before; Distraction Free ignores Post-It (VIEW-011/012).
+        [app toggleAlwaysOnTop:nil];
+        [app togglePostIt:nil];
+        [app togglePostIt:nil];
+        BOOL keptOnTop = app.window.level == NSFloatingWindowLevel;
+        [app toggleAlwaysOnTop:nil];
+        [app toggleDistractionFree:nil];
+        [app togglePostIt:nil];
+        BOOL ignored = app.window.level == NSNormalWindowLevel && ![ed chromeVisible];
+        [app toggleDistractionFree:nil];
+        Check(@"IDM_VIEW_POSTIT (special views)",
+              @"leaving Post-It keeps Always on Top as it was; in Distraction Free Post-It does nothing",
+              keptOnTop && ignored && [ed chromeVisible]);
 
         // Toggling real full screen animates and would stall the suite.
         // Top-level bar items carry no title of their own; the submenu does.

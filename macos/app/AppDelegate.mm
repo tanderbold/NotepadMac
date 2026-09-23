@@ -86,6 +86,11 @@
 @property (nonatomic, strong) NSTableView *ftpTable;
 @property (nonatomic, strong) NSArray *ftpEntries;
 @property (nonatomic) BOOL alwaysOnTop;
+/// View > Post-It and Distraction Free Mode as the modes they are (upstream's
+/// _beforeSpecialView), and Always on Top as it was before Post-It.
+@property (nonatomic) BOOL postItOn;
+@property (nonatomic) BOOL distractionFreeOn;
+@property (nonatomic) BOOL alwaysOnTopBeforePostIt;
 @property (nonatomic, strong) NSMenu *runMenu;
 @property (nonatomic, strong) NSMenu *execMenu;
 @property (nonatomic) NSInteger fixedExecItemCount;
@@ -1037,13 +1042,18 @@ static NSString *Ordinal(NSUInteger n) {
 
     [viewMenu addItem:[NSMenuItem separatorItem]];
     NSMenu *symbolMenu = [[NSMenu alloc] initWithTitle:@"Show Symbol"];
-    NSArray *symbolTitles = @[@"Show Space and Tab", @"Show End of Line",
-                              @"Show Non-Printing Characters", @"Show Control Characters & Unicode EOL",
-                              @"Show Indent Guide", @"Show Wrap Symbol"];
-    for (NSUInteger i = 0; i < symbolTitles.count; ++i) {
-        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:symbolTitles[i]
-                                                    action:@selector(toggleSymbol:) keyEquivalent:@""];
-        mi.target = self; mi.tag = (NSInteger)i;
+    // Upstream's order (Notepad_plus.rc, Show Symbol); the tag is the NppSymbol.
+    struct { NSString *title; NppSymbol symbol; } symbols[] = {
+        {@"Show Space and Tab", NppSymbolWhitespace}, {@"Show End of Line", NppSymbolEOL},
+        {@"Show Non-Printing Characters", NppSymbolNonPrinting},
+        {@"Show Control Characters & Unicode EOL", NppSymbolControlAndUnicodeEOL},
+        {@"Show All Characters", NppSymbolAll}, {nil, NppSymbolAll},
+        {@"Show Indent Guide", NppSymbolIndentGuide}, {@"Show Wrap Symbol", NppSymbolWrap},
+    };
+    for (auto &s : symbols) {
+        if (!s.title) { [symbolMenu addItem:[NSMenuItem separatorItem]]; continue; }
+        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:s.title action:@selector(toggleSymbol:) keyEquivalent:@""];
+        mi.target = self; mi.tag = s.symbol;
         [symbolMenu addItem:mi];
     }
     [viewMenu addItemWithTitle:@"Show Symbol" action:nil keyEquivalent:@""].submenu = symbolMenu;
@@ -2900,8 +2910,52 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 #pragma mark - Menu validation
 
+/// The toolbar's buttons: an image item asks its target, and without this every
+/// button stayed enabled. The rules are upstream's for the toolbar
+/// (Notepad_plus::checkDocState, checkClipboard, checkMacroState); the rest are
+/// the matching menu items'.
+- (BOOL)validateToolbarItem:(NSToolbarItem *)item {
+    SEL a = item.action;
+    if (a == @selector(saveDocument:)) return self.editor.currentDocument.modified;
+    if (a == NSSelectorFromString(@"saveAll:")) {
+        for (NppDocument *d in self.editor.documents) if (d.modified) return YES;
+        return NO;
+    }
+    if (a == @selector(cutText:) || a == @selector(copyText:)) {
+        if ([NppPreferences shared].lineCopyCutWithoutSelection) return YES;   // left as it is, as upstream does
+        return [self.editor.sci message:SCI_GETSELECTIONEMPTY] == 0;
+    }
+    BOOL recording = [self.editor recordingMacro];
+    if (a == @selector(macroStart:)) return !recording;
+    if (a == @selector(macroStop:)) return recording;
+    if (a == @selector(macroPlay:) || a == @selector(macroSave:))
+        return !recording && [self.editor recordedStepCount] > 0;
+    NSMenuItem *probe = [[NSMenuItem alloc] initWithTitle:@"" action:a keyEquivalent:@""];
+    probe.tag = item.tag;
+    return [self validateMenuItem:probe];
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // The View toggles carry their state as a checkmark (Notepad++ checks each with checkMenuItem).
+    NSControlStateValue (^mark)(BOOL) = ^NSControlStateValue(BOOL b) { return b ? NSControlStateValueOn : NSControlStateValueOff; };
+    NppDockingManager *dock = [NppDockingManager shared];
+    if (a == @selector(toggleSymbol:)) item.state = mark([self.editor symbolVisible:(NppSymbol)item.tag]);
+    else if (a == @selector(toggleAlwaysOnTop:)) item.state = mark(self.alwaysOnTop);
+    else if (a == @selector(togglePostIt:)) item.state = mark(self.postItOn);
+    else if (a == @selector(toggleDistractionFree:)) item.state = mark(self.distractionFreeOn);
+    else if (a == @selector(toggleSyncV:)) item.state = mark([self.editor syncVerticalScroll]);
+    else if (a == @selector(toggleSyncH:)) item.state = mark([self.editor syncHorizontalScroll]);
+    else if (a == @selector(toggleSyncZoom:)) item.state = mark([self.editor syncZoom]);
+    else if (a == @selector(toggleDocumentMap:)) item.state = mark([self.editor documentMapVisible]);
+    else if (a == @selector(toggleDocumentList:)) item.state = mark(self.docList.visible);
+    else if (a == @selector(toggleFunctionList:)) item.state = mark(self.funcList.visible);
+    else if (a == @selector(toggleFileBrowser:)) item.state = mark([self.editor workspaceVisible]);
+    else if (a == @selector(toggleProjectPanel:))
+        item.state = mark([dock isPanelVisible:[NSString stringWithFormat:@"project%ld", (long)item.tag]]);
+    else if (a == @selector(toggleMonitoring:)) item.state = mark([self.editor monitoringEnabled]);
+    else if (a == @selector(textRTL:)) item.state = mark([self.editor textDirectionIsRTL]);
+    else if (a == @selector(textLTR:)) item.state = mark(![self.editor textDirectionIsRTL]);
     // Tab Bar > "Enable pin tab feature" off: Pin Tab is not offered (NppNotification's
     // tab menu: enableItem(IDM_PINTAB, isTabPinEnabled)), in the File menu nor the tab menu.
     if (a == @selector(togglePin:)) return [NppPreferences shared].tabPinFeatureEnabled;
@@ -3496,15 +3550,22 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 - (void)toggleFullScreenMode:(id)sender { [self.window toggleFullScreen:nil]; }
 
 - (void)togglePostIt:(id)sender {
-    // Notepad++'s Post-It is a chrome-less always-on-top window.
-    BOOL entering = [self.editor chromeVisible];
+    // Notepad++'s Post-It is a chrome-less always-on-top window
+    // (Notepad_plus::postItToggle); Distraction Free ignores it (IDM_VIEW_POSTIT).
+    if (self.distractionFreeOn) return;
+    BOOL entering = !self.postItOn;
+    if (entering) self.alwaysOnTopBeforePostIt = self.alwaysOnTop;
+    self.postItOn = entering;
     [self.editor setChromeVisible:!entering];
-    self.window.level = entering ? NSFloatingWindowLevel : NSNormalWindowLevel;
-    self.alwaysOnTop = entering;
+    // Leaving puts Always on Top back as it was before.
+    self.alwaysOnTop = entering || self.alwaysOnTopBeforePostIt;
+    self.window.level = self.alwaysOnTop ? NSFloatingWindowLevel : NSNormalWindowLevel;
 }
 
 - (void)toggleDistractionFree:(id)sender {
-    [self.editor setChromeVisible:![self.editor chromeVisible]];
+    if (self.postItOn) return;
+    self.distractionFreeOn = !self.distractionFreeOn;
+    [self.editor setChromeVisible:!self.distractionFreeOn];
 }
 
 - (void)toggleFileBrowser:(id)sender {

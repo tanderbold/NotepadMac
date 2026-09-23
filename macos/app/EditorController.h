@@ -247,6 +247,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)setSyncZoom:(BOOL)on;
 - (void)mirrorScrollToSecondary;
 - (void)mirrorScrollFromSecondary;
+/// Synchronize Zoom: a pane's zoom put on the other, on its SCN_ZOOM only.
+- (void)mirrorZoomToSecondary;
+- (void)mirrorZoomFromSecondary;
 - (BOOL)openCurrentInNewInstanceMoving:(BOOL)closeHere;
 
 // Document Map: a shrunken read-only view of the same buffer.

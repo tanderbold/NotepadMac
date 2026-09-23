@@ -1,4 +1,5 @@
 #import "EditorLook.h"
+#import "ViewCommands.h"
 #import "SettingsCommands.h"
 #import "StyleCatalog.h"
 #import "ScintillaView.h"
@@ -40,7 +41,8 @@ static long Abgr(NSColor *colour, long fallback) {
               lParam:0];
         [sci message:SCI_SETMARGINWIDTHN wParam:3 lParam:p.changeHistoryMargin ? 6 : 0];
         [self applyFoldMarkersTo:sci];
-        [self applySymbolRepresentationsTo:sci];
+        // Show Symbol, the same on both views (whitespace, EOL, guides, wrap, representations).
+        [self applySymbolsToView:sci];
     }
     [self updateLineNumberWidth];
 }

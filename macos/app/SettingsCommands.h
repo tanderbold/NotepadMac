@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL wordWrap;
 @property (nonatomic) BOOL showWhitespace;
 @property (nonatomic) BOOL showIndentGuides;
+/// View > Show Symbol > Show End of Line and Show Wrap Symbol, kept as Notepad++ keeps them.
+@property (nonatomic) BOOL showEOL;
+@property (nonatomic) BOOL showWrapSymbol;
 @property (nonatomic) BOOL restoreSession;
 /// Work the language out from what is in a file when its name does not say:
 /// a file with no extension, or a fragment pasted into an empty document.

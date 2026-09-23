@@ -7,6 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, NppSymbol) {
     NppSymbolWhitespace, NppSymbolEOL, NppSymbolNonPrinting,
     NppSymbolControlAndUnicodeEOL, NppSymbolIndentGuide, NppSymbolWrap,
+    /// Show All Characters: space and tab, line ends, non-printing and control characters together.
+    NppSymbolAll,
 };
 
 typedef NS_ENUM(NSInteger, NppWindowMode) {
@@ -32,6 +34,10 @@ typedef NS_ENUM(NSInteger, NppWindowMode) {
 // Symbols
 - (BOOL)symbolVisible:(NppSymbol)symbol;
 - (void)toggleSymbol:(NppSymbol)symbol;
+/// The Show Symbol settings on one view - whitespace, line ends, indent guides,
+/// wrap symbol and the invisible characters - so both views and every later
+/// document show the same (Notepad++ keeps them per application, for both views).
+- (void)applySymbolsToView:(ScintillaView *)sci;
 
 // Lines
 - (BOOL)hideSelectedLines;
