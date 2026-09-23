@@ -787,7 +787,7 @@ static const char kOlderResultsKey = 0;
     return YES;
 }
 
-- (NSUInteger)markCharactersInRangeFrom:(unichar)from to:(unichar)to {
+- (NSUInteger)markCharactersInRangeFrom:(uint32_t)from to:(uint32_t)to {
     ScintillaView *sci = self.sci;
     int ind = IndicatorFor(NPPMAC_STYLE_COUNT);
     [self ensureIndicatorConfigured:ind];
@@ -828,26 +828,46 @@ static const char kOlderResultsKey = 0;
                lParam:0];
 }
 
+// Notepad_plus::changedHistoryGoTo: saved changes count too, the block of
+// changed lines the caret is in is stepped over, and the search wraps round.
 - (BOOL)goToNextChange:(BOOL)forward {
     ScintillaView *sci = self.sci;
-    long mask = (1 << SC_MARKNUM_HISTORY_MODIFIED) |
-                (1 << SC_MARKNUM_HISTORY_REVERTED_TO_ORIGIN) |
+    long mask = (1 << SC_MARKNUM_HISTORY_REVERTED_TO_ORIGIN) |
+                (1 << SC_MARKNUM_HISTORY_SAVED) |
+                (1 << SC_MARKNUM_HISTORY_MODIFIED) |
                 (1 << SC_MARKNUM_HISTORY_REVERTED_TO_MODIFIED);
-    long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
+    long current = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     long total = [sci message:SCI_GETLINECOUNT];
-
     // Change-history markers are derived per line rather than stored in the
-    // marker list, so SCI_MARKERNEXT does not see them -- scan with MARKERGET.
-    for (long probe = line + (forward ? 1 : -1); probe >= 0 && probe < total;
-         probe += (forward ? 1 : -1)) {
-        if ([sci message:SCI_MARKERGET wParam:(uptr_t)probe] & mask) {
-            [sci message:SCI_GOTOLINE wParam:(uptr_t)probe lParam:0];
-            [self refreshChrome];
-            return YES;
+    // marker list, so they are read with MARKERGET line by line.
+    BOOL (^changed)(long) = ^BOOL(long l) { return ([sci message:SCI_MARKERGET wParam:(uptr_t)l] & mask) != 0; };
+    long (^previous)(long) = ^long(long from) {   // SCI_MARKERPREVIOUS
+        for (long l = from; l >= 0; --l) if (changed(l)) return l;
+        return -1;
+    };
+    long line = -1, block = current;
+    if (forward) {
+        // From the caret's own line: it may be unchanged with the next one changed.
+        for (long l = current; l < total; ++l) {
+            if (!changed(l)) continue;
+            if (l != block) { line = l; break; }
+            block++;   // still the caret's block
         }
+        if (line == -1)   // wrap round
+            for (long l = 0; l < current + 1 && l < total; ++l) if (changed(l)) { line = l; break; }
+    } else {
+        while (true) {
+            line = previous(block);
+            if (line == -1 || line != block) break;
+            block--;
+        }
+        if (line == -1) line = previous(total - 1);   // wrap round
     }
-    NppBeep();
-    return NO;
+    if (line == -1) { NppBeep(); return NO; }
+    [sci message:SCI_ENSUREVISIBLEENFORCEPOLICY wParam:(uptr_t)line];
+    [sci message:SCI_GOTOLINE wParam:(uptr_t)line lParam:0];
+    [self refreshChrome];
+    return YES;
 }
 
 - (void)clearChangeHistory {

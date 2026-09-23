@@ -273,7 +273,6 @@ static NSDictionary<NSString *, NSString *> *PortRenamedCommands(void) {
         @"Edit/Line Operations/Sort Lines Lex. Ignoring Case Descending": @"IDM_EDIT_SORTLINES_LEXICO_CASE_INSENS_DESCENDING",
         @"Edit/On Selection/Open Containing Folder in Finder": @"IDM_EDIT_OPENINFOLDER",
         @"Edit/On Selection/Redact Selection": @"IDM_EDIT_REDACT_SELECTION",
-        @"Search/Go to Line…": @"IDM_SEARCH_GOTOLINE",
         @"View/Zoom In": @"IDM_VIEW_ZOOMIN", @"View/Zoom Out": @"IDM_VIEW_ZOOMOUT",
         @"View/Actual Size": @"IDM_VIEW_ZOOMRESTORE", @"View/Show Whitespace": @"IDM_VIEW_TAB_SPACE",
         @"View/Synchronize Zoom Across Views": @"IDM_VIEW_ZOOM_SYNC",

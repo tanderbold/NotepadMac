@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Incremental / volatile search helpers
 - (BOOL)findNextOccurrenceOfSelection:(BOOL)forward extendSelection:(BOOL)extend;
-- (NSUInteger)markCharactersInRangeFrom:(unichar)from to:(unichar)to;
+- (NSUInteger)markCharactersInRangeFrom:(uint32_t)from to:(uint32_t)to;
 
 // Change history
 - (void)enableChangeHistory:(BOOL)on;

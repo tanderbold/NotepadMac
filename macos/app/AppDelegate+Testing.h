@@ -77,6 +77,8 @@
 - (BOOL)automaticUpdateCheckAllowed;
 /// NppExec: a menu command by its path, and the menu of saved scripts.
 - (BOOL)performMenuCommandAtPath:(NSString *)path;
+/// Search > Go to... with the prompt's answer: a line, or @offset. NO when it is not one.
+- (BOOL)goToLineOrOffset:(NSString *)answer;
 - (void)rebuildExecMenu;
 - (void)executeScriptText:(NSString *)text;
 - (void)stopScript:(id)sender;

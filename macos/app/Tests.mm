@@ -3585,6 +3585,29 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL redacted = [ed redactSelectionWithBlock:YES];
         Check(@"IDM_EDIT_REDACT_SELECTION", @"replaces the selection with blocks",
               redacted && [DocText(ed) hasPrefix:@"\u2588\u2588\u2588\u2588\u2588\u2588"]);
+        SetDoc(ed, @"é👍 ok");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[@"é👍" lengthOfBytesUsingEncoding:NSUTF8StringEncoding]];
+        [ed redactSelectionWithBlock:YES];
+        Check(@"IDM_EDIT_REDACT_SELECTION", @"one block per character, as SCI_COUNTCHARACTERS counts (👍 is one)",
+              [DocText(ed) isEqualToString:@"██ ok"]);
+        SetDoc(ed, @"keep me\n");
+        [sci message:SCI_SETREADONLY wParam:1 lParam:0];
+        [sci message:SCI_SELECTALL];
+        [app performMenuCommandAtPath:@"Edit|Convert Case to|UPPERCASE"];
+        [ed convertEOLTo:SC_EOL_CRLF];
+        Check(@"IDM_EDIT_TOGGLEREADONLY", @"a read-only document is not changed by Convert Case or an EOL conversion",
+              [DocText(ed) isEqualToString:@"keep me\n"] && [sci message:SCI_GETEOLMODE] != SC_EOL_CRLF);
+        NSMenuItem *roItem = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+            for (NSMenuItem *it in top.submenu.itemArray)
+                for (NSMenuItem *sub in it.submenu.itemArray)
+                    if (sub.action == @selector(toggleReadOnly:)) roItem = sub;
+        [(id<NSMenuItemValidation>)app validateMenuItem:roItem];
+        BOOL shownOn = roItem.state == NSControlStateValueOn;
+        [sci message:SCI_SETREADONLY wParam:0 lParam:0];
+        [(id<NSMenuItemValidation>)app validateMenuItem:roItem];
+        Check(@"IDM_EDIT_TOGGLEREADONLY", @"Read-Only on Current Document is checked while the document is read-only",
+              roItem && shownOn && roItem.state == NSControlStateValueOff);
 
         ed.searchEngineTemplate = @"https://example.invalid/?q=%@";
         Check(@"IDM_EDIT_CHANGESEARCHENGINE", @"remembers the chosen engine",
@@ -3763,6 +3786,24 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_SEARCH_GOTOLINE", @"moves the caret to the line",
               [sci message:SCI_LINEFROMPOSITION
                        wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]] == 3);
+        SetDoc(ed, @"abc 123\nfoo(bar)\nline3\n");
+        [app goToLineOrOffset:@"@23"];
+        Check(@"IDM_SEARCH_GOTOLINE", @"@<length> puts the caret at the end, not one before (GoToLineDlg snaps with AFTER(BEFORE))",
+              [sci message:SCI_GETCURRENTPOS] == 23);
+        SetDoc(ed, @"a\nb\nc\nd");
+        Check(@"IDM_SEARCH_GOTOLINE", @"a line past the end goes to the last line, as SCI_GOTOLINE clamps",
+              [app goToLineOrOffset:@"99"] && [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]] == 3);
+        SetDoc(ed, @"a\nb\nc\n");
+        [sci message:SCI_GOTOLINE wParam:1 lParam:0];
+        [ed toggleBookmark];
+        [sci message:SCI_GOTOLINE wParam:0 lParam:0];
+        BOOL bookmarksCleared = [app performMenuCommandAtPath:@"Search|Bookmark|Clear All Bookmarks"];
+        [ed nextBookmark];
+        Check(@"IDM_SEARCH_CLEAR_BOOKMARKS", @"Search > Bookmark > Clear All Bookmarks is in the menu and clears them",
+              bookmarksCleared && [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]] == 0);
+        SetDoc(ed, @"a \U0001F600 b\n");
+        Check(@"IDM_SEARCH_FINDCHARINRANGE", @"a range past U+FFFF marks a character outside the BMP",
+              [ed markCharactersInRangeFrom:128 to:0x10FFFF] == 1);
 
         SetDoc(ed, @"a\nb\nc\nd\n");
         [sci message:SCI_GOTOLINE wParam:1 lParam:0];
@@ -4033,6 +4074,29 @@ int NppMacRunTests(AppDelegate *app) {
         [sci message:SCI_GOTOLINE wParam:0 lParam:0];
         Check(@"IDM_SEARCH_CLEAR_CHANGE_HISTORY", @"history is discarded",
               ![ed goToNextChange:YES]);
+
+        // Notepad_plus::changedHistoryGoTo: saved changes count, the caret's block is
+        // stepped over, and the search wraps. A file just opened has no changes at all.
+        NSError *histErr = nil;
+        [ed openFileAtPath:TempFile(@"t_history.txt", @"l1\nl2\nl3\nl4\nl5\nl6\nl7\nl8\n") error:&histErr];
+        long opened = 0;
+        for (long l = 0; l < 8; ++l) opened |= [sci message:SCI_MARKERGET wParam:(uptr_t)l] & historyMask;
+        Check(@"IDM_SEARCH_CHANGED_NEXT", @"a file just opened carries no change-history marks", opened == 0);
+        for (long l : {1L, 2L, 5L}) {
+            [sci message:SCI_GOTOLINE wParam:(uptr_t)l lParam:0];
+            [sci setStringProperty:SCI_INSERTTEXT parameter:[sci message:SCI_GETCURRENTPOS] value:@"X"];
+        }
+        auto caretLine = ^long { return [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]]; };
+        [sci message:SCI_GOTOLINE wParam:1 lParam:0];
+        [ed goToNextChange:YES];
+        long skipped = caretLine();
+        [ed goToNextChange:YES];
+        long wrapped = caretLine();
+        [sci message:SCI_GOTOLINE wParam:0 lParam:0];
+        [ed goToNextChange:NO];
+        Check(@"IDM_SEARCH_CHANGED_NEXT", @"steps over the caret's block of changes and wraps round",
+              skipped == 5 && wrapped == 1 && caretLine() == 5);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
     }
 
     if (NppSectionWanted(@"View")) { printf("\n== View ==\n");

@@ -309,7 +309,6 @@ static const char kBeginEndAnchorKey = 0;
     if (selections < 1) return NO;
     // Notepad++ offers a full block or a bullet; █ and ●.
     NSString *mark = solidBlock ? @"█" : @"●";
-    NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
 
     BOOL any = NO;
     [sci message:SCI_BEGINUNDOACTION];
@@ -317,9 +316,11 @@ static const char kBeginEndAnchorKey = 0;
         long a = [sci message:SCI_GETSELECTIONNSTART wParam:(uptr_t)i];
         long b = [sci message:SCI_GETSELECTIONNEND wParam:(uptr_t)i];
         if (b <= a) continue;
-        NSUInteger chars = SliceBytes(doc, a, b).length;
+        // One mark per character, as IDM_EDIT_REDACT_SELECTION counts them
+        // (SCI_COUNTCHARACTERS): 👍 is one character, two UTF-16 units.
+        long chars = [sci message:SCI_COUNTCHARACTERS wParam:(uptr_t)a lParam:b];
         NSMutableString *replacement = [NSMutableString string];
-        for (NSUInteger c = 0; c < chars; ++c) [replacement appendString:mark];
+        for (long c = 0; c < chars; ++c) [replacement appendString:mark];
         [sci message:SCI_SETTARGETSTART wParam:(uptr_t)a lParam:0];
         [sci message:SCI_SETTARGETEND wParam:(uptr_t)b lParam:0];
         [sci setStringProperty:SCI_REPLACETARGET parameter:Utf8Len(replacement) value:replacement];

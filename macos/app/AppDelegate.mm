@@ -900,7 +900,7 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Replace…"   action:@selector(showReplace:) key:@"f"
          flags:NSEventModifierFlagCommand | NSEventModifierFlagOption menu:searchMenu];
     [searchMenu addItem:[NSMenuItem separatorItem]];
-    [self item:@"Go to Line…" action:@selector(goToLine:) key:@"l" flags:NSEventModifierFlagCommand menu:searchMenu];
+    [self item:@"Go to…" action:@selector(goToLine:) key:@"l" flags:NSEventModifierFlagCommand menu:searchMenu];
     [searchMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Toggle Bookmark" action:@selector(toggleBookmark:) key:@"b" flags:NSEventModifierFlagCommand menu:searchMenu];
     [self item:@"Next Bookmark" action:@selector(nextBookmark:) key:@"b"
@@ -976,6 +976,8 @@ static NSString *Ordinal(NSUInteger n) {
 
     // --- bookmark line operations
     NSMenu *bmMenu = [[NSMenu alloc] initWithTitle:@"Bookmark"];
+    // Notepad_plus.rc: Clear All Bookmarks leads the Bookmark submenu (IDM_SEARCH_CLEAR_BOOKMARKS).
+    [self item:@"Clear All Bookmarks" action:@selector(clearBookmarks:) key:@"" flags:0 menu:bmMenu];
     [self item:@"Cut Bookmarked Lines" action:@selector(cutMarkedLines:) key:@"" flags:0 menu:bmMenu];
     [self item:@"Copy Bookmarked Lines" action:@selector(copyMarkedLines:) key:@"" flags:0 menu:bmMenu];
     [self item:@"Paste to (Replace) Bookmarked Lines" action:@selector(pasteMarkedLines:) key:@"" flags:0 menu:bmMenu];
@@ -2896,6 +2898,11 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // checkMenuItem(IDM_EDIT_TOGGLEREADONLY / IDM_EDIT_CHAR_PANEL, ...) as Notepad++ keeps them.
+    if (a == @selector(toggleReadOnly:))
+        item.state = [self.editor isReadOnly] ? NSControlStateValueOn : NSControlStateValueOff;
+    if (a == @selector(toggleCharacterPanel:))
+        item.state = self.charPanel.visible ? NSControlStateValueOn : NSControlStateValueOff;
     if (a == @selector(numbersInsertSum:) || a == @selector(numbersInsertAverage:) || a == @selector(numbersInsertMinimum:) ||
         a == @selector(numbersInsertMaximum:) || a == @selector(numbersInsertCount:) ||
         a == @selector(numbersSortAscending:) || a == @selector(numbersSortDescending:)) {
@@ -3605,7 +3612,10 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     if (!from.length) return;
     NSString *to = [self promptForString:@"…to (decimal code point)" default:@"65535"];
     if (!to.length) return;
-    NSUInteger n = [self.editor markCharactersInRangeFrom:(unichar)from.intValue to:(unichar)to.intValue];
+    // Code points, not UTF-16 units: a bound above U+FFFF (an emoji) stays what was typed.
+    long long lo = from.longLongValue, hi = to.longLongValue;
+    if (lo < 0 || hi < lo || hi > 0x10FFFF) { NppBeep(); return; }
+    NSUInteger n = [self.editor markCharactersInRangeFrom:(uint32_t)lo to:(uint32_t)hi];
     NSAlert *done = [[NSAlert alloc] init];
     done.messageText = [NSString stringWithFormat:@"%lu character%@ marked", (unsigned long)n, n == 1 ? @"" : @"s"];
     [done runModal];
@@ -4755,20 +4765,34 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
         [NSString stringWithFormat:@"Go to line (1 to %ld), or @offset (0 to %ld)", lines, length]
                                 default:@""];
     if (!s.length) return;
+    if (![self goToLineOrOffset:s]) NppBeep();
+}
+
+- (BOOL)goToLineOrOffset:(NSString *)s {
+    ScintillaView *sci = self.editor.sci;
+    long lines = [sci message:SCI_GETLINECOUNT];
+    long length = [sci message:SCI_GETLENGTH];
     // An offset, as the Windows dialog's second radio button: written with a
-    // leading @ here. Out of range is refused, not clamped.
+    // leading @ here. As GoToLineDlg::run_dlgProc (IDOK) does it: an offset is
+    // snapped with POSITIONAFTER(POSITIONBEFORE(offset)) - never inside a
+    // character or a CRLF, and the end stays the end - and a line past the end
+    // goes to the last line (SCI_GOTOLINE clamps).
     if ([s hasPrefix:@"@"]) {
         long offset = [s substringFromIndex:1].integerValue;
-        if (offset < 0 || offset > length) { NppBeep(); return; }
-        // Never inside a character or a CRLF.
-        offset = [sci message:SCI_POSITIONBEFORE wParam:(uptr_t)[sci message:SCI_POSITIONAFTER wParam:(uptr_t)offset]];
+        if (offset < 0) return NO;
+        if (offset > length) offset = length;
+        if (offset > 0) offset = [sci message:SCI_POSITIONAFTER wParam:(uptr_t)[sci message:SCI_POSITIONBEFORE wParam:(uptr_t)offset]];
+        [sci message:SCI_ENSUREVISIBLE wParam:(uptr_t)[sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)offset]];
         [sci message:SCI_GOTOPOS wParam:(uptr_t)offset lParam:0];
     } else {
         long line = s.integerValue;
-        if (line < 1 || line > lines) { NppBeep(); return; }
+        if (line < 1) return NO;
+        if (line > lines) line = lines;
+        [sci message:SCI_ENSUREVISIBLE wParam:(uptr_t)(line - 1)];
         [sci message:SCI_GOTOLINE wParam:(uptr_t)(line - 1) lParam:0];
     }
     [self.editor refreshChrome];
+    return YES;
 }
 
 #pragma mark - Test suite

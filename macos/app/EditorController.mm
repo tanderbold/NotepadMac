@@ -679,6 +679,19 @@ static long SciColor(NSColor *c) {
     if (readOnly) [sci message:SCI_SETREADONLY wParam:1 lParam:0];
 }
 
+/// The file's own text is where change history starts, not a change: with
+/// history on while it was loaded, every line was marked as a saved change
+/// (the margin striped a file just opened, Go to Next Change stopped on every
+/// line). Notepad++ loads a buffer before history is turned on for it; here
+/// the history is turned off and on again once the text is in and the undo
+/// buffer is empty, which is when Scintilla lets the mode change.
+static void RestartChangeHistory(ScintillaView *sci) {
+    long mode = [sci message:SCI_GETCHANGEHISTORY];
+    if (!mode) return;
+    [sci message:SCI_SETCHANGEHISTORY wParam:SC_CHANGE_HISTORY_DISABLED];
+    [sci message:SCI_SETCHANGEHISTORY wParam:(uptr_t)mode];
+}
+
 - (void)setDocumentText:(NSString *)text {
     NSData *utf8 = [text dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
     // A read-only document takes no text; the flag is lifted for the
@@ -776,6 +789,7 @@ static long SciColor(NSColor *c) {
     [self.sciView message:SCI_SETSAVEPOINT wParam:0 lParam:0];
     [self.sciView message:SCI_GOTOPOS wParam:0 lParam:0];
     [self.sciView message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
+    RestartChangeHistory(self.sciView);
     doc.modified = NO;
 
     [self applyLanguage];
@@ -1258,6 +1272,7 @@ static BOOL gCheckingFilesOnDisk;
     [self.sciView message:SCI_SETEOLMODE wParam:(uptr_t)doc.eolMode lParam:0];
     [self.sciView message:SCI_SETSAVEPOINT wParam:0 lParam:0];
     [self.sciView message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
+    RestartChangeHistory(self.sciView);
     [self.sciView message:SCI_GOTOPOS
                    wParam:(uptr_t)MIN(caret, [self.sciView message:SCI_GETLENGTH]) lParam:0];
     [self.sciView message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstLine lParam:0];
@@ -2211,6 +2226,8 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 - (void)convertEOLTo:(int)eolMode {
     NppDocument *doc = self.currentDocument;
     if (!doc) return;
+    // IDM_FORMAT_TODOS/TOUNIX/TOMAC: a read-only buffer keeps its format.
+    if ([self.sciView message:SCI_GETREADONLY]) return;
     [self.sciView message:SCI_SETEOLMODE wParam:(uptr_t)eolMode lParam:0];
     [self.sciView message:SCI_CONVERTEOLS wParam:(uptr_t)eolMode lParam:0];
     doc.eolMode = eolMode;

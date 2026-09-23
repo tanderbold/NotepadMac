@@ -64,6 +64,9 @@ static NSString *LineEnding(NSString *line) {
 /// Replaces the whole document in one undo step, restoring the caret line.
 - (void)replaceDocumentText:(NSString *)text keepingLine:(long)line {
     ScintillaView *sci = self.sci;
+    // An edit, not a reload: a read-only document is left alone, as Scintilla
+    // leaves it alone for Notepad++'s commands (setDocumentText lifts the flag).
+    if ([sci message:SCI_GETREADONLY]) { NppBeep(); return; }
     [sci message:SCI_BEGINUNDOACTION];
     [self setDocumentText:text];
     [sci message:SCI_ENDUNDOACTION];
@@ -144,6 +147,7 @@ static NSString *LineEnding(NSString *line) {
 /// Rewrites the selected characters, or the whole document when nothing is selected.
 - (void)transformSelectedText:(NSString *(^)(NSString *selected))transform {
     ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETREADONLY]) { NppBeep(); return; }
     long selStart = [sci message:SCI_GETSELECTIONSTART];
     long selEnd   = [sci message:SCI_GETSELECTIONEND];
     NSString *whole = self.documentText;
