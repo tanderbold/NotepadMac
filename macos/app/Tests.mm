@@ -378,6 +378,20 @@ int NppMacRunTests(AppDelegate *app) {
             BOOL lookaheadReplaced = [[ed documentText] isEqualToString:@"Xbar foobar"] &&
                                      [ed.sci message:SCI_GETSELECTIONSTART] == 5;
 
+            // "Replace: Don't move to the following occurrence": the caret stays after
+            // the replaced text (processReplace, _replaceStopsWithoutFindingNext).
+            NppPreferences *rp = [NppPreferences shared];
+            BOOL wasStay = rp.replaceStaysOnOccurrence;
+            rp.replaceStaysOnOccurrence = YES;
+            [ed setDocumentText:@"cat cat cat"];
+            [ed.sci message:SCI_SETSEL wParam:0 lParam:3];
+            NppFindSpec *cat = [NppFindSpec specFor:@"cat" mode:NppSearchNormal options:NppFindWrap];
+            cat.replacement = @"dog";
+            [ed replaceCurrentThenFindNext:cat];
+            BOOL stayed = [[ed documentText] isEqualToString:@"dog cat cat"] &&
+                          [ed.sci message:SCI_GETSELECTIONSTART] == 3 && [ed.sci message:SCI_GETSELECTIONEND] == 3;
+            rp.replaceStaysOnOccurrence = wasStay;
+
             [ed setDocumentText:@"a\nb"];
             NppFindSpec *dot = [NppFindSpec specFor:@"a.b" mode:NppSearchRegex options:0];
             NSUInteger without = [ed countMatches:dot];
@@ -403,6 +417,9 @@ int NppMacRunTests(AppDelegate *app) {
             Check(@"IDM_SEARCH_REPLACE (a lookahead survives Replace)",
                   @"Replace on a match of foo(?=bar) replaces it and moves to the next",
                   lookaheadReplaced);
+            Check(@"IDM_SEARCH_REPLACE (don't move on)",
+                  @"with Replace: Don't move to the following occurrence, the caret stays after the replacement",
+                  stayed);
             Check(@"IDM_SEARCH_FIND (. matches newline is a choice)",
                   @"'.' does not cross a line ending unless the box is ticked",
                   dotStays);

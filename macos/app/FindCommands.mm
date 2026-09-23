@@ -1,4 +1,5 @@
 #import "FindCommands.h"
+#import "SettingsCommands.h"
 #import "ToolsCommands.h"
 #import "BoostFormat.h"
 #import "SearchCommands.h"
@@ -377,6 +378,10 @@
             [sci setStringProperty:SCI_REPLACETARGET
                          parameter:(long)[text lengthOfBytesUsingEncoding:NSUTF8StringEncoding] value:text];
             [sci message:SCI_GOTOPOS wParam:(uptr_t)(from + (long)[text lengthOfBytesUsingEncoding:NSUTF8StringEncoding])];
+            // Searching > "Replace: Don't move to the following occurrence": the caret
+            // stays after the replacement (FindReplaceDlg::processReplace,
+            // _replaceStopsWithoutFindingNext).
+            if ([NppPreferences shared].replaceStaysOnOccurrence) return YES;
         }
     }
     return [self findNext:spec];

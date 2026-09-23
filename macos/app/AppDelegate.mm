@@ -2902,6 +2902,9 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // Tab Bar > "Enable pin tab feature" off: Pin Tab is not offered (NppNotification's
+    // tab menu: enableItem(IDM_PINTAB, isTabPinEnabled)), in the File menu nor the tab menu.
+    if (a == @selector(togglePin:)) return [NppPreferences shared].tabPinFeatureEnabled;
     if (a == @selector(numbersInsertSum:) || a == @selector(numbersInsertAverage:) || a == @selector(numbersInsertMinimum:) ||
         a == @selector(numbersInsertMaximum:) || a == @selector(numbersInsertCount:) ||
         a == @selector(numbersSortAscending:) || a == @selector(numbersSortDescending:)) {
