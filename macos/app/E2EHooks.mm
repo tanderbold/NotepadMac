@@ -279,25 +279,69 @@ static void E2EPrepareprint(NSPrintOperation *op) {
     op.showsPrintPanel = NO;
     op.showsProgressPanel = NO;
 }
-@implementation NSPrintOperation (NppE2E)
-- (BOOL)e2e_runOperation {
-    E2EPrepareprint(self);
-    // Belt and braces: under the suite nothing but a save-to-file job may run.
-    if (![self.printInfo.jobDisposition isEqualToString:NSPrintSaveJob] || !self.printInfo.dictionary[NSPrintJobSavingURL]) {
-        NSLog(@"e2e: refused a print job that would reach a printer");
-        return NO;
-    }
-    return [self e2e_runOperation];
+/// Every class that runs print operations itself - NSPrintOperation and the
+/// concrete subclass AppKit hands out, which overrides -runOperation, so a
+/// hook on the base class alone never sees a real job - is hooked on its own:
+/// the job is made a save to a PDF, and one that is still not is refused.
+static const char kE2EPrintPrepared = 0;
+static void E2EPrepareOnce(NSPrintOperation *op) {
+    if (objc_getAssociatedObject(op, &kE2EPrintPrepared)) return;   // [super runOperation] from a subclass
+    objc_setAssociatedObject(op, &kE2EPrintPrepared, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    E2EPrepareprint(op);
 }
-- (void)e2e_runOperationModalForWindow:(NSWindow *)w delegate:(id)d didRunSelector:(SEL)sel contextInfo:(void *)ctx {
-    E2EPrepareprint(self);
-    BOOL ok = [self e2e_runOperation];
-    if (d && sel) {
-        void (*send)(id, SEL, NSPrintOperation *, BOOL, void *) = (void (*)(id, SEL, NSPrintOperation *, BOOL, void *))objc_msgSend;
-        send(d, sel, self, ok, ctx);
-    }
+static void E2EHookPrintClass(Class cls) {
+    Method run = class_getInstanceMethod(cls, @selector(runOperation));
+    if (!run) return;
+    IMP original = method_getImplementation(run);
+    const char *types = method_getTypeEncoding(run);
+    IMP hook = imp_implementationWithBlock(^BOOL(NSPrintOperation *op) {
+        E2EPrepareOnce(op);
+        // Belt and braces: under the suite nothing but a save-to-file job may run.
+        if (![op.printInfo.jobDisposition isEqualToString:NSPrintSaveJob] || !op.printInfo.dictionary[NSPrintJobSavingURL]) {
+            NSLog(@"e2e: refused a print job that would reach a printer");
+            return NO;
+        }
+        return ((BOOL (*)(id, SEL))original)(op, @selector(runOperation));
+    });
+    class_replaceMethod(cls, @selector(runOperation), hook, types);
+    // The sheet variant runs the (hooked) job at once and tells the delegate, without a sheet.
+    Method modal = class_getInstanceMethod(cls, @selector(runOperationModalForWindow:delegate:didRunSelector:contextInfo:));
+    if (!modal) return;
+    IMP modalHook = imp_implementationWithBlock(^(NSPrintOperation *op, NSWindow *w, id d, SEL sel, void *ctx) {
+        BOOL ok = [op runOperation];
+        if (d && sel) {
+            void (*send)(id, SEL, NSPrintOperation *, BOOL, void *) = (void (*)(id, SEL, NSPrintOperation *, BOOL, void *))objc_msgSend;
+            send(d, sel, op, ok, ctx);
+        }
+    });
+    class_replaceMethod(cls, @selector(runOperationModalForWindow:delegate:didRunSelector:contextInfo:), modalHook,
+                        method_getTypeEncoding(modal));
 }
-@end
+static BOOL E2EDefinesOwn(Class cls, SEL sel) {
+    unsigned n = 0;
+    Method *methods = class_copyMethodList(cls, &n);
+    BOOL own = NO;
+    for (unsigned i = 0; i < n && !own; ++i) own = method_getName(methods[i]) == sel;
+    free(methods);
+    return own;
+}
+static void E2EHookPrinting(void) {
+    E2EHookPrintClass([NSPrintOperation class]);
+    int count = objc_getClassList(NULL, 0);
+    Class *classes = (Class *)malloc(sizeof(Class) * (size_t)count);
+    count = objc_getClassList(classes, count);
+    for (int i = 0; i < count; ++i) {
+        Class c = classes[i];
+        if (c == [NSPrintOperation class]) continue;
+        // class_getSuperclass walk: -isSubclassOfClass: would message classes that may not want it yet.
+        BOOL printer = NO;
+        for (Class k = class_getSuperclass(c); k && !printer; k = class_getSuperclass(k)) printer = k == [NSPrintOperation class];
+        if (printer && (E2EDefinesOwn(c, @selector(runOperation)) ||
+                        E2EDefinesOwn(c, @selector(runOperationModalForWindow:delegate:didRunSelector:contextInfo:))))
+            E2EHookPrintClass(c);
+    }
+    free(classes);
+}
 
 // The clipboard, private to this process's run.
 @implementation NSPasteboard (NppE2E)
@@ -344,8 +388,7 @@ void NppE2EInstall(void) {
         E2ESwap([NSWorkspace class], @selector(activateFileViewerSelectingURLs:), @selector(e2e_activateFileViewerSelectingURLs:), NO);
         E2ESwap([NSWorkspace class], @selector(selectFile:inFileViewerRootedAtPath:), @selector(e2e_selectFile:inFileViewerRootedAtPath:), NO);
         E2ESwap([NSWorkspace class], @selector(openFile:), @selector(e2e_openFile:), NO);
-        E2ESwap([NSPrintOperation class], @selector(runOperation), @selector(e2e_runOperation), NO);
-        E2ESwap([NSPrintOperation class], @selector(runOperationModalForWindow:delegate:didRunSelector:contextInfo:), @selector(e2e_runOperationModalForWindow:delegate:didRunSelector:contextInfo:), NO);
+        E2EHookPrinting();
         NSString *release = NSProcessInfo.processInfo.environment[@"NPPMAC_E2E_RELEASE_URL"];
         if (release.length) NppUpdateChecker.latestReleaseURLOverride = [release hasPrefix:@"/"] ? [NSURL fileURLWithPath:release] : [NSURL URLWithString:release];
         E2ESwap([NSEvent class], @selector(modifierFlags), @selector(e2e_modifierFlags), YES);
