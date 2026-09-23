@@ -568,7 +568,10 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
 
 #pragma mark - Editor side
 
+void NppE2ECountBeep(BOOL muted);   // E2EHooks.mm: counts for the end-to-end suite, nothing otherwise
+
 void NppBeep(void) {
+    NppE2ECountBeep([NppPreferences shared].muteSounds);
     if (![NppPreferences shared].muteSounds) NSBeep();
 }
 

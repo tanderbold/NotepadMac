@@ -184,6 +184,10 @@ int NppMacRunTests(AppDelegate *app) {
         NSUInteger before = ed.documents.count;
         [app newDocument:nil];
         Check(@"IDM_FILE_NEW", @"adds a tab", ed.documents.count == before + 1);
+        // makeFirstResponder: does not ask acceptsFirstResponder, so focusing
+        // the ScintillaView wrapper "succeeds" and then no key reaches the text.
+        Check(@"IDM_FILE_NEW (focus)", @"the new tab's text view has the keyboard focus, not its wrapper",
+              app.window.firstResponder == ed.sci.content);
 
         NSString *p = TempFile(@"t_open.py", @"# hi\nx = 1\n");
         NSError *err = nil;

@@ -137,6 +137,12 @@ static NSDictionary *DocumentProp(void) {
 
 #pragma mark - The server
 
+BOOL NppE2EEnabled(void);   // E2EHooks.mm
+
+@interface NppAgentServer (E2E)
+- (void)registerE2ETools;
+@end
+
 @interface NppAgentServer ()
 @property (nonatomic) int listenFD;
 @property (nonatomic, strong) dispatch_source_t acceptSource;
@@ -173,6 +179,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
     _queue = dispatch_queue_create("org.notepad-plus-plus.mac.agent", DISPATCH_QUEUE_CONCURRENT);
     _handlers = [NSMutableDictionary dictionary];
     [self registerTools];
+    [self registerE2ETools];   // only under NPPMAC_E2E=1 (E2EHooks.mm)
     return self;
 }
 
@@ -223,6 +230,10 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
     dispatch_source_set_event_handler(source, ^{
         int client = accept(fd, NULL, NULL);
         if (client < 0) return;
+        // A client that goes away before its answer is written must cost a
+        // failed write, not a SIGPIPE that kills the whole editor.
+        int one = 1;
+        setsockopt(client, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof one);
         dispatch_async(weakSelf.queue, ^{ [weakSelf serveClient:client]; });
     });
     dispatch_source_set_cancel_handler(source, ^{ close(fd); });
@@ -258,7 +269,21 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
             id message = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
             __block NSDictionary *reply = nil;
             if ([message isKindOfClass:[NSDictionary class]]) {
-                dispatch_sync(dispatch_get_main_queue(), ^{ reply = [self handleMessage:message]; });
+                if (NppE2EEnabled()) {
+                    // Under the end-to-end suite a request is also served while
+                    // a modal runs (the main queue is busy with it then, a run
+                    // loop block in the common modes is not), so a test can
+                    // drive an open alert from a second connection.
+                    dispatch_semaphore_t done = dispatch_semaphore_create(0);
+                    CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopCommonModes, ^{
+                        reply = [self handleMessage:message];
+                        dispatch_semaphore_signal(done);
+                    });
+                    CFRunLoopWakeUp(CFRunLoopGetMain());
+                    dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
+                } else {
+                    dispatch_sync(dispatch_get_main_queue(), ^{ reply = [self handleMessage:message]; });
+                }
             } else {
                 reply = @{@"jsonrpc": @"2.0", @"id": [NSNull null],
                           @"error": @{@"code": @-32700, @"message": @"Parse error"}};
@@ -630,7 +655,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
             Msg(sci, SCI_GOTOPOS, (uptr_t)from);
         }
         Msg(sci, SCI_VERTICALCENTRECARET);
-        [ed.window makeFirstResponder:sci];
+        [ed.window makeFirstResponder:sci.content];   // the text view itself takes keys, not its wrapper
         if (BoolParam(args, @"activate_app", NO)) [NSApp activateIgnoringOtherApps:YES];
         return @{@"document": [weakSelf infoOf:doc],
                  @"start": Place(sci, Msg(sci, SCI_GETSELECTIONSTART)),

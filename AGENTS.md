@@ -155,6 +155,18 @@ each run of the port's own line diff (`diffBetween`, which the git margin and th
 too). Not carried over: selection compare, find unique, the nav bar, patches, visual
 filters. `NPPMAC_SNAPSHOT_COMPARE=<file>` snapshots the sample compared with that file.
 
+### End-to-end hooks (`E2EHooks.mm`)
+
+A separate black-box suite (`../npp-tests`, not in this repository) drives a copy of the
+built application under its own bundle id over the agent socket. With `NPPMAC_E2E=1`, and
+only then, the agent server registers `e2e_*` tools (Scintilla messages, menu state, windows
+and their controls, clicks and keys through AppKit's own routing, snapshots, preferences,
+a private clipboard), NSAlert and open/save panels take queued answers, NSWorkspace opens
+and printing are logged instead of performed, and requests are served in the run loop's
+common modes so a modal can be driven from a second connection. `nppmac` talks to the
+application it ships in (its bundle id + `.cli`), so the copy never reaches the user's
+instance. Without the variable nothing of this exists; keep it that way.
+
 ### Agent interface (MCP)
 
 `AgentServer.mm` is the application speaking MCP itself: JSON-RPC 2.0, one message per line,

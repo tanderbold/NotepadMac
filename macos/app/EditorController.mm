@@ -843,7 +843,10 @@ static long SciColor(NSColor *c) {
     // Folds come back once the lexer has worked out the fold levels.
     if (switching && doc.foldedLines.count) [self foldLines:doc.foldedLines];
     [self refreshChrome];
-    [self.window makeFirstResponder:self.sciView];
+    // The content view, not the ScintillaView around it: makeFirstResponder:
+    // does not ask acceptsFirstResponder, and the wrapper would hold the
+    // focus without taking a key.
+    [self.window makeFirstResponder:self.sciView.content];
     [[NSNotificationCenter defaultCenter] postNotificationName:NppBufferActivatedNotification object:self];
 }
 
@@ -2656,7 +2659,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     BOOL primaryFocused = !(first == self.secondaryView ||
                             [first isKindOfClass:[NSView class]] &&
                             [(NSView *)first isDescendantOf:self.secondaryView]);
-    [self.window makeFirstResponder:primaryFocused ? self.secondaryView : self.sciView];
+    [self.window makeFirstResponder:primaryFocused ? self.secondaryView.content : self.sciView.content];
 }
 
 - (BOOL)otherViewHasFocus {

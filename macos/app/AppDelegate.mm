@@ -486,13 +486,15 @@ static NSString *Ordinal(NSUInteger n) {
     [self.editor refreshChrome];
 
     [self.window makeKeyAndOrderFront:nil];
-    [self.window makeFirstResponder:self.editor.sci];
+    [self.window makeFirstResponder:self.editor.sci.content];
     [NSApp activateIgnoringOtherApps:YES];
 
-    // The nppmac command line tool speaks over this.
+    // The nppmac command line tool speaks over this: the bundle's own id with
+    // ".cli", so a copy under another id (the end-to-end suite's) hears only
+    // the nppmac inside it.
     [[NSDistributedNotificationCenter defaultCenter]
         addObserver:self selector:@selector(cliRequest:)
-               name:@"org.notepad-plus-plus.mac.cli" object:nil];
+               name:[(NSBundle.mainBundle.bundleIdentifier ?: @"org.notepad-plus-plus.mac") stringByAppendingString:@".cli"] object:nil];
 
     // Third-party plugins, once everything they may call is up.
     NppPluginHost *host = [NppPluginHost shared];
@@ -1602,6 +1604,9 @@ static NSString *Ordinal(NSUInteger n) {
     NSString *helper = [[NSBundle mainBundle].bundlePath
                         stringByAppendingPathComponent:@"Contents/Helpers/nppmac"];
     NSString *link = @"/usr/local/bin/nppmac";
+    // The end-to-end suite installs into a folder of its own, never the real one.
+    NSString *e2eDir = NSProcessInfo.processInfo.environment[@"NPPMAC_E2E_CLI_DIR"];
+    if (getenv("NPPMAC_E2E") && e2eDir.length) link = [e2eDir stringByAppendingPathComponent:@"nppmac"];
     NSFileManager *fm = [NSFileManager defaultManager];
     NSError *error = nil;
     [fm removeItemAtPath:link error:NULL];

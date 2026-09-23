@@ -16,8 +16,33 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-static NSString *const kBundleID = @"org.notepad-plus-plus.mac";
-static NSString *const kNotification = @"org.notepad-plus-plus.mac.cli";
+static NSString *const kDefaultBundleID = @"org.notepad-plus-plus.mac";
+
+/* The application this tool ships in (Contents/Helpers/nppmac, reached
+ * through the /usr/local/bin symlink too), or nil when it runs on its own. */
+static NSURL *enclosingApplication(void) {
+    NSString *mine = NSProcessInfo.processInfo.arguments.firstObject;
+    if (!mine.isAbsolutePath) {
+        /* Found through PATH: where the shell found it. */
+        for (NSString *dir in [NSProcessInfo.processInfo.environment[@"PATH"] componentsSeparatedByString:@":"]) {
+            NSString *candidate = [dir stringByAppendingPathComponent:mine];
+            if ([[NSFileManager defaultManager] isExecutableFileAtPath:candidate]) { mine = candidate; break; }
+        }
+    }
+    NSString *bundle = mine.stringByResolvingSymlinksInPath
+                           .stringByDeletingLastPathComponent   /* Helpers  */
+                           .stringByDeletingLastPathComponent   /* Contents */
+                           .stringByDeletingLastPathComponent;  /* .app     */
+    return [bundle hasSuffix:@".app"] ? [NSURL fileURLWithPath:bundle] : nil;
+}
+
+/* That application's bundle id - a copy under another id (the end-to-end
+ * suite's) is then driven by its own nppmac only - or the usual one. */
+static NSString *bundleID(void) {
+    NSURL *app = enclosingApplication();
+    NSString *identifier = app ? [NSBundle bundleWithURL:app].bundleIdentifier : nil;
+    return identifier.length ? identifier : kDefaultBundleID;
+}
 
 static void usage(void) {
     fprintf(stderr, "usage: nppmac [+N] [file|folder ...] [-]\n"
@@ -136,17 +161,9 @@ static int serveMCP(void) {
 }
 
 static NSURL *applicationURL(void) {
-    NSURL *app = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:kBundleID];
-    if (!app) {
-        /* Not registered with Launch Services: fall back to the bundle
-         * this very tool ships in (Contents/Helpers/nppmac). */
-        NSString *mine = NSProcessInfo.processInfo.arguments.firstObject.stringByStandardizingPath;
-        NSString *bundle = mine.stringByDeletingLastPathComponent   /* Helpers  */
-                               .stringByDeletingLastPathComponent   /* Contents */
-                               .stringByDeletingLastPathComponent;  /* .app     */
-        if ([bundle hasSuffix:@".app"]) app = [NSURL fileURLWithPath:bundle];
-    }
-    return app;
+    /* The bundle this very tool ships in first; Launch Services for a copy
+     * of the tool that lives on its own. */
+    return enclosingApplication() ?: [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:kDefaultBundleID];
 }
 
 int main(int argc, const char *argv[]) {
@@ -203,7 +220,7 @@ int main(int argc, const char *argv[]) {
          * it to have finished launching, up to ten seconds. */
         for (int tick = 0; tick < 100; ++tick) {
             NSArray<NSRunningApplication *> *running =
-                [NSRunningApplication runningApplicationsWithBundleIdentifier:kBundleID];
+                [NSRunningApplication runningApplicationsWithBundleIdentifier:bundleID()];
             if (running.count && running.firstObject.finishedLaunching) break;
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
         }
@@ -211,7 +228,7 @@ int main(int argc, const char *argv[]) {
 
         if (files.count) {
             [[NSDistributedNotificationCenter defaultCenter]
-                postNotificationName:kNotification object:nil
+                postNotificationName:[bundleID() stringByAppendingString:@".cli"] object:nil
                             userInfo:@{@"files": files} deliverImmediately:YES];
         }
     }
