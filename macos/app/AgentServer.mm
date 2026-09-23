@@ -48,6 +48,24 @@ static NSError *Fail(NSString *format, ...) {
     return [NSError errorWithDomain:kErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey: text}];
 }
 
+/// A tool's answer made safe for NSJSONSerialization, which raises (and so
+/// takes the application down) on NaN, infinities and non-JSON objects.
+static id JSONSafe(id value) {
+    if (!value || value == [NSNull null] || [value isKindOfClass:[NSString class]]) return value ?: [NSNull null];
+    if ([value isKindOfClass:[NSNumber class]]) return isfinite([value doubleValue]) ? value : [NSNull null];
+    if ([value isKindOfClass:[NSArray class]]) {
+        NSMutableArray *a = [NSMutableArray arrayWithCapacity:[value count]];
+        for (id v in value) [a addObject:JSONSafe(v)];
+        return a;
+    }
+    if ([value isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:[value count]];
+        for (id k in value) d[[k description]] = JSONSafe(value[k]);
+        return d;
+    }
+    return [value description];
+}
+
 #pragma mark - Scintilla helpers
 
 static long Msg(ScintillaView *sci, unsigned int message, uptr_t w = 0, sptr_t l = 0) {
@@ -289,7 +307,16 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
                           @"error": @{@"code": @-32700, @"message": @"Parse error"}};
             }
             if (!reply) continue;
-            NSMutableData *out = [[NSJSONSerialization dataWithJSONObject:reply options:0 error:NULL] mutableCopy];
+            NSMutableData *out = nil;
+            @try {
+                out = [[NSJSONSerialization dataWithJSONObject:reply options:0 error:NULL] mutableCopy];
+            } @catch (NSException *e) {
+                NSLog(@"agent: reply not encodable as JSON: %@", e.reason);
+                id identifier = [reply[@"id"] isKindOfClass:[NSString class]] || [reply[@"id"] isKindOfClass:[NSNumber class]] ? reply[@"id"] : [NSNull null];
+                out = [[NSJSONSerialization dataWithJSONObject:@{@"jsonrpc": @"2.0", @"id": identifier,
+                                                                 @"error": @{@"code": @-32603, @"message": @"Internal error: the answer could not be encoded"}}
+                                                       options:0 error:NULL] mutableCopy];
+            }
             if (!out) continue;
             [out appendBytes:"\n" length:1];
             const char *bytes = (const char *)out.bytes;
@@ -355,6 +382,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
             result = @{@"content": @[@{@"type": @"text", @"text": error.localizedDescription ?: @"failed"}],
                        @"isError": @YES};
         } else {
+            answer = JSONSafe(answer);
             NSData *json = [NSJSONSerialization dataWithJSONObject:answer
                                                            options:NSJSONWritingPrettyPrinted | NSJSONWritingSortedKeys
                                                              error:NULL];

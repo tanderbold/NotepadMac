@@ -280,7 +280,15 @@ static void E2EPrepareprint(NSPrintOperation *op) {
     op.showsProgressPanel = NO;
 }
 @implementation NSPrintOperation (NppE2E)
-- (BOOL)e2e_runOperation { E2EPrepareprint(self); return [self e2e_runOperation]; }
+- (BOOL)e2e_runOperation {
+    E2EPrepareprint(self);
+    // Belt and braces: under the suite nothing but a save-to-file job may run.
+    if (![self.printInfo.jobDisposition isEqualToString:NSPrintSaveJob] || !self.printInfo.dictionary[NSPrintJobSavingURL]) {
+        NSLog(@"e2e: refused a print job that would reach a printer");
+        return NO;
+    }
+    return [self e2e_runOperation];
+}
 - (void)e2e_runOperationModalForWindow:(NSWindow *)w delegate:(id)d didRunSelector:(SEL)sel contextInfo:(void *)ctx {
     E2EPrepareprint(self);
     BOOL ok = [self e2e_runOperation];
@@ -319,6 +327,8 @@ static void E2ESwap(Class cls, SEL original, SEL replacement, BOOL classMethod) 
 
 void NppE2EInstall(void) {
     if (!NppE2EEnabled()) return;
+    // No printer at all for the suite's copy: the shared print info saves to a file from the start.
+    [NSPrintInfo sharedPrintInfo].jobDisposition = NSPrintSaveJob;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         E2ESwap([NSAlert class], @selector(runModal), @selector(e2e_runModal), NO);
