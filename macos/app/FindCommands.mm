@@ -136,6 +136,10 @@
 
 /// Turns the spec into one PCRE pattern, so normal, extended and regular
 /// expression searching all go down the same path.
+- (BOOL)patternIsValid:(NppFindSpec *)spec {
+    return !spec.what.length || [self regexFor:spec] != nil;
+}
+
 - (nullable NppRegex *)regexFor:(NppFindSpec *)spec {
     if (!spec.what.length) return nil;
 

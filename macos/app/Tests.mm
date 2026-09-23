@@ -378,6 +378,10 @@ int NppMacRunTests(AppDelegate *app) {
             BOOL lookaheadReplaced = [[ed documentText] isEqualToString:@"Xbar foobar"] &&
                                      [ed.sci message:SCI_GETSELECTIONSTART] == 5;
 
+            Check(@"IDM_SEARCH_FIND", @"a pattern the engine refuses is invalid (the dialog says so), a literal \"(\" is not",
+                  ![ed patternIsValid:[NppFindSpec specFor:@"(" mode:NppSearchRegex options:0]] &&
+                  ![ed patternIsValid:[NppFindSpec specFor:@"a{2,1}" mode:NppSearchRegex options:0]] &&
+                  [ed patternIsValid:[NppFindSpec specFor:@"(" mode:NppSearchNormal options:0]]);
             [ed setDocumentText:@"a\nb"];
             NppFindSpec *dot = [NppFindSpec specFor:@"a.b" mode:NppSearchRegex options:0];
             NSUInteger without = [ed countMatches:dot];
@@ -6916,6 +6920,23 @@ int NppMacRunTests(AppDelegate *app) {
 
     if (NppSectionWanted(@"Macro")) { printf("\n== Macro ==\n");
         SetDoc(ed, @"");
+        // checkMacroState: Start / Stop / Playback follow the recording.
+        NSMenuItem *startItem = nil, *stopItem = nil, *playItem = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+            for (NSMenuItem *it in top.submenu.itemArray) {
+                if (it.action == NSSelectorFromString(@"macroStart:")) startItem = it;
+                if (it.action == NSSelectorFromString(@"macroStop:")) stopItem = it;
+                if (it.action == NSSelectorFromString(@"macroPlay:")) playItem = it;
+            }
+        id<NSMenuItemValidation> validator = (id<NSMenuItemValidation>)app;
+        BOOL idleState = [validator validateMenuItem:startItem] && ![validator validateMenuItem:stopItem] &&
+                         ([ed recordedStepCount] > 0) == [validator validateMenuItem:playItem];
+        [ed startRecordingMacro];
+        BOOL recordingState = ![validator validateMenuItem:startItem] && [validator validateMenuItem:stopItem] &&
+                              ![validator validateMenuItem:playItem];
+        [ed stopRecordingMacro];
+        Check(@"IDM_MACRO_STARTRECORDINGMACRO", @"Start, Stop and Playback are enabled as the recording state says",
+              startItem && stopItem && playItem && idleState && recordingState);
         [ed startRecordingMacro];
         BOOL recording = [ed recordingMacro];
         // Drive a couple of recordable actions through Scintilla.

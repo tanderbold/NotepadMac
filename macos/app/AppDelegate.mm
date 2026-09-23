@@ -2898,6 +2898,16 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // Notepad_plus::checkMacroState: the Macro menu follows the recording.
+    if (a == @selector(macroStart:) || a == @selector(macroStop:) || a == @selector(macroPlay:) ||
+        a == @selector(macroSave:) || a == @selector(macroRunMultiple:)) {
+        BOOL recording = [self.editor recordingMacro];
+        BOOL recorded = [self.editor recordedStepCount] > 0;
+        if (a == @selector(macroStart:)) return !recording;
+        if (a == @selector(macroStop:)) return recording;
+        if (a == @selector(macroPlay:) || a == @selector(macroSave:)) return recorded && !recording;
+        return (recorded && !recording) || [self.editor savedMacroNames].count > 0;
+    }
     // checkMenuItem(IDM_EDIT_TOGGLEREADONLY / IDM_EDIT_CHAR_PANEL, ...) as Notepad++ keeps them.
     if (a == @selector(toggleReadOnly:))
         item.state = [self.editor isReadOnly] ? NSControlStateValueOn : NSControlStateValueOff;
@@ -3659,14 +3669,15 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 /// Finds, and says in the dialog's status line when the search went round the
 /// end of the document, as both commands do upstream.
 - (void)find:(NppFindSpec *)spec forward:(BOOL)forward {
-    long before = [self.editor.sci message:SCI_GETSELECTIONSTART];
+    // Where the search starts: after the selection going down, before it going up.
+    long before = [self.editor.sci message:forward ? SCI_GETSELECTIONEND : SCI_GETSELECTIONSTART];
     if (![self.editor findNext:spec]) {
         self.findStatus.stringValue = NppLMessage(@"Find: Can't find the text \"$STR_REPLACE$\"", spec.what, 0);
         NppBeep();
         return;
     }
     long after = [self.editor.sci message:SCI_GETSELECTIONSTART];
-    BOOL wrapped = forward ? after <= before : after >= before;
+    BOOL wrapped = forward ? after < before : after >= before;
     self.findStatus.stringValue = !wrapped ? @""
         : NppL(forward ? @"Find: Reached document end, first occurrence from the top found."
                        : @"Find: Reached document beginning, first occurrence from the bottom found.");
@@ -4461,16 +4472,27 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     self.dotNewlineBox.enabled = regex;
 }
 
+/// FindReplaceDlg: a pattern the engine refuses is "Find: Invalid regular
+/// expression" (find-status-invalid-re), not "not found" or "0 replaced".
+- (BOOL)refusedInvalidPattern:(NppFindSpec *)spec {
+    if ([self.editor patternIsValid:spec]) return NO;
+    self.findStatus.stringValue = NppL(@"Find: Invalid regular expression");
+    NppBeep();   // setStatusbarMessage(..., FSNotFound)
+    return YES;
+}
+
 - (void)findPanelNext:(id)sender {
     [self rememberFindFields:NO files:NO];
     NppFindSpec *spec = [self currentFindSpec];
+    if ([self refusedInvalidPattern:spec]) return;
     [self.editor beginRecordableMenuCommand];
-    self.findStatus.stringValue = [self.editor findNext:spec] ? @"" : NppLMessage(@"Find: Can't find the text \"$STR_REPLACE$\"", spec.what, 0);
+    [self find:spec forward:!(spec.options & NppFindBackward)];
     [self.editor recordFindCommand:1 spec:spec markFlags:0 global:NO];
 }
 
 - (void)findPanelCount:(id)sender {
     [self rememberFindFields:NO files:NO];
+    if ([self refusedInvalidPattern:[self currentFindSpec]]) return;
     [self.editor beginRecordableMenuCommand];
     NSUInteger n = [self.editor countMatches:[self currentFindSpec]];
     [self.editor recordFindCommand:1614 spec:[self currentFindSpec] markFlags:0 global:YES];
@@ -4480,6 +4502,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 - (void)findPanelReplace:(id)sender {
     [self rememberFindFields:YES files:NO];
     NppFindSpec *spec = [self currentFindSpec];
+    if ([self refusedInvalidPattern:spec]) return;
     [self.editor beginRecordableMenuCommand];
     self.findStatus.stringValue = [self.editor replaceCurrentThenFindNext:spec] ? @"" : NppL(@"Replace: no occurrence was found");
     [self.editor recordFindCommand:1608 spec:spec markFlags:0 global:NO];
@@ -4487,6 +4510,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 
 - (void)findPanelReplaceAll:(id)sender {
     [self rememberFindFields:YES files:NO];
+    if ([self refusedInvalidPattern:[self currentFindSpec]]) return;
     [self.editor beginRecordableMenuCommand];
     NSUInteger n = [self.editor replaceAll:[self currentFindSpec]];
     [self.editor recordFindCommand:1609 spec:[self currentFindSpec] markFlags:0 global:NO];

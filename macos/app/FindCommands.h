@@ -44,6 +44,9 @@ typedef NS_OPTIONS(NSInteger, NppFindOptions) {
 + (NSString *)convertExtendedToString:(NSString *)query;
 
 /// Finds and selects the next match, returning whether there was one.
+/// NO for a regular expression the engine refuses (a lone "(", "a{2,1}"): the
+/// dialog then says so rather than "not found" (find-status-invalid-re).
+- (BOOL)patternIsValid:(NppFindSpec *)spec;
 - (BOOL)findNext:(NppFindSpec *)spec;
 /// How many matches the document holds.
 - (NSUInteger)countMatches:(NppFindSpec *)spec;
