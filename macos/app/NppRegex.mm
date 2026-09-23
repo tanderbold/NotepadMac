@@ -21,6 +21,9 @@ typedef int (*npp_pcre2_substring_number_from_name)(const void *code, const uint
 static const uint32_t kDotAll = 0x00000020u;
 static const uint32_t kMultiline = 0x00000400u;
 static const uint32_t kUTF = 0x00080000u;
+/// PCRE2_UCP: \w, \b, \d and the POSIX classes know every script, as Boost's do in
+/// Notepad++ (wide characters) - "café" is a word, \w matches "я".
+static const uint32_t kUCP = 0x00020000u;
 
 static npp_pcre2_compile gCompile;
 static npp_pcre2_match_data_create_from_pattern gMatchDataCreate;
@@ -83,7 +86,7 @@ static void *CompilePattern(NSString *pattern, NSString **errorOut) {
     // The same options upstream searches with: SCFIND_REGEXP_DOTMATCHESNL, and
     // '^' anchored per line. See functionParser.cpp.
     void *code = gCompile((const uint8_t *)bytes.bytes, bytes.length,
-                          kMultiline | kDotAll | kUTF, &errorCode, &errorOffset, NULL);
+                          kMultiline | kDotAll | kUTF | kUCP, &errorCode, &errorOffset, NULL);
     if (!code && errorOut) {
         uint8_t message[256] = {0};
         if (gErrorMessage) gErrorMessage(errorCode, message, sizeof message);

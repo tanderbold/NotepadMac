@@ -42,6 +42,8 @@ typedef NS_OPTIONS(NSInteger, NppMatchFlags) {
 // Paste special
 - (BOOL)pasteAsHTML;
 - (BOOL)pasteAsRTF;
+/// The selection's bytes in hexadecimal ("61 00 62"); nil with nothing selected.
+- (nullable NSString *)hexOfSelection;
 - (BOOL)copySelectionAsBinary;
 - (BOOL)cutSelectionAsBinary;
 - (BOOL)pasteBinary;

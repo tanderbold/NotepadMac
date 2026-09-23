@@ -389,13 +389,16 @@ static const char kSearchEngineKey = 0;
 
 /// Notepad++'s binary clipboard keeps the raw bytes; here they travel as hex
 /// pairs, which survives the text-only pasteboard without losing anything.
-- (NSString *)hexOfSelection {
+- (nullable NSString *)hexOfSelection {
     ScintillaView *sci = self.sci;
     long a = [sci message:SCI_GETSELECTIONSTART], b = [sci message:SCI_GETSELECTIONEND];
     if (b <= a) return nil;
-    NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    if ((NSUInteger)b > doc.length) return nil;
-    NSData *slice = [doc subdataWithRange:NSMakeRange((NSUInteger)a, (NSUInteger)(b - a))];
+    // The selection's bytes as Scintilla holds them, as IDM_EDIT_COPY_BINARY reads
+    // them (SCI_GETSELTEXT): [sci string] ends at a NUL, so a selection past one came back nil.
+    NSMutableData *slice = [NSMutableData dataWithLength:(NSUInteger)(b - a) + 1];
+    struct { struct { long cpMin, cpMax; } chrg; char *lpstrText; } tr = {{a, b}, (char *)slice.mutableBytes};
+    [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+    slice.length = (NSUInteger)(b - a);
     const unsigned char *bytes = (const unsigned char *)slice.bytes;
     NSMutableString *hex = [NSMutableString stringWithCapacity:slice.length * 3];
     for (NSUInteger i = 0; i < slice.length; ++i) {
@@ -432,10 +435,15 @@ static const char kSearchEngineKey = 0;
         [bytes appendBytes:&b length:1];
     }
     if (!bytes.length) { NppBeep(); return NO; }
-    NSString *text = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding]
-                  ?: [[NSString alloc] initWithData:bytes encoding:NSISOLatin1StringEncoding];
-    if (!text) { NppBeep(); return NO; }
-    [self insertStringAtCaret:text];
+    // The bytes as they are, by length (IDM_EDIT_PASTE_BINARY adds them with SCI_ADDTEXT's
+    // counterpart): a string would end at a NUL byte and drop the rest.
+    ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETREADONLY]) { NppBeep(); return NO; }
+    [sci message:SCI_BEGINUNDOACTION];
+    [sci message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)""];
+    [sci message:SCI_ADDTEXT wParam:bytes.length lParam:(sptr_t)bytes.bytes];
+    [sci message:SCI_ENDUNDOACTION];
+    [self refreshChrome];
     return YES;
 }
 

@@ -2213,6 +2213,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 - (void)setEncoding:(NSStringEncoding)enc withBOM:(BOOL)bom {
     NppDocument *doc = self.currentDocument;
     if (!doc) return;
+    // The encoding it already has: nothing to change, nothing to save (Notepad++
+    // leaves the buffer alone when the unicode mode is the same).
+    if (!doc.codepage && doc.encoding == enc && doc.hasBOM == bom) return;
     doc.encoding = enc;
     doc.hasBOM = bom;
     // Changing the encoding changes the bytes on disk, so the document is
@@ -2236,6 +2239,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 
 - (NSString *)encodingDisplayName {
     NppDocument *doc = self.currentDocument;
+    // A character set is named by its menu label, as setUniModeText takes the menu string.
+    int charset = [self currentCharsetIndex];
+    if (charset >= 0) return @(kNppCharsets[charset].label);
     // These strings match the Encoding menu labels used by Notepad++.
     switch (doc.encoding) {
         case NSUTF16LittleEndianStringEncoding: return @"UTF-16 LE BOM";
@@ -2243,6 +2249,90 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         case NSISOLatin1StringEncoding:         return @"ANSI";
         default: return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
     }
+}
+
+/// EncodingMapper's table (PowerEditor/src/EncodingMapper.cpp, `encodings`): the
+/// names a detected character set goes by, per Windows code page - how
+/// Notepad++ turns uchardet's answer into the code page it shows.
+static const struct { unsigned int codepage; const char *aliases; } kEncodingAliases[] = {
+    {1250, "windows-1250"},
+    {1251, "windows-1251"},
+    {1252, "windows-1252"},
+    {1253, "windows-1253"},
+    {1254, "windows-1254"},
+    {1255, "windows-1255"},
+    {1256, "windows-1256"},
+    {1257, "windows-1257"},
+    {1258, "windows-1258"},
+    {28591, "latin1 ISO_8859-1 ISO-8859-1 CP819 IBM819 csISOLatin1 iso-ir-100 l1"},
+    {28592, "latin2 ISO_8859-2 ISO-8859-2 csISOLatin2 iso-ir-101 l2"},
+    {28593, "latin3 ISO_8859-3 ISO-8859-3 csISOLatin3 iso-ir-109 l3"},
+    {28594, "latin4 ISO_8859-4 ISO-8859-4 csISOLatin4 iso-ir-110 l4"},
+    {28595, "cyrillic ISO_8859-5 ISO-8859-5 csISOLatinCyrillic iso-ir-144"},
+    {28596, "arabic ISO_8859-6 ISO-8859-6 csISOLatinArabic iso-ir-127 ASMO-708 ECMA-114"},
+    {28597, "greek ISO_8859-7 ISO-8859-7 csISOLatinGreek greek8 iso-ir-126 ELOT_928 ECMA-118"},
+    {28598, "hebrew ISO_8859-8 ISO-8859-8 csISOLatinHebrew iso-ir-138"},
+    {28599, "latin5 ISO_8859-9 ISO-8859-9 csISOLatin5 iso-ir-148 l5"},
+    {28603, "ISO_8859-13 ISO-8859-13"},
+    {28604, "iso-celtic latin8 ISO_8859-14 ISO-8859-14 18 iso-ir-199"},
+    {28605, "Latin-9 ISO_8859-15 ISO-8859-15"},
+    {437, "IBM437 cp437 437 csPC8CodePage437"},
+    {720, "IBM720 cp720 oem720 720"},
+    {737, "IBM737 cp737 oem737 737"},
+    {775, "IBM775 cp775 oem775 775"},
+    {850, "IBM850 cp850 oem850 850"},
+    {852, "IBM852 cp852 oem852 852"},
+    {855, "IBM855 cp855 oem855 855 csIBM855"},
+    {857, "IBM857 cp857 oem857 857"},
+    {858, "IBM858 cp858 oem858 858"},
+    {860, "IBM860 cp860 oem860 860"},
+    {861, "IBM861 cp861 oem861 861"},
+    {862, "IBM862 cp862 oem862 862"},
+    {863, "IBM863 cp863 oem863 863"},
+    {865, "IBM865 cp865 oem865 865"},
+    {866, "IBM866 cp866 oem866 866"},
+    {869, "IBM869 cp869 oem869 869"},
+    {950, "big5 csBig5"},
+    {936, "gb2312 gbk csGB2312 gb18030"},
+    {932, "Shift_JIS MS_Kanji csShiftJIS csWindows31J"},
+    {949, "windows-949 korean"},
+    {51949, "euc-kr csEUCKR"},
+    {874, "tis-620"},
+    {10007, "x-mac-cyrillic xmaccyrillic"},
+    {21866, "koi8_u"},
+    {20866, "koi8_r csKOI8R"},
+};
+
+/// The Windows code page an encoding is, by its IANA name among the aliases above.
+static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
+    CFStringRef iana = CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(encoding));
+    if (!iana) return 0;
+    NSString *name = (__bridge NSString *)iana;
+    for (const auto &row : kEncodingAliases)
+        for (NSString *alias in [@(row.aliases) componentsSeparatedByString:@" "])
+            if ([alias caseInsensitiveCompare:name] == NSOrderedSame) return row.codepage;
+    return 0;
+}
+
+/// The row of kNppCharsets the document is held in: its code page, or for a set
+/// found on opening, the one whose encoding it was read with; -1 for Unicode and ANSI.
+- (int)currentCharsetIndex {
+    NppDocument *doc = self.currentDocument;
+    if (!doc) return -1;
+    for (int i = 0; i < kNppCharsetCount; ++i)
+        if (doc.codepage && kNppCharsets[i].codepage == doc.codepage) return i;
+    if (doc.codepage || doc.encoding == NSUTF8StringEncoding || doc.encoding == NSISOLatin1StringEncoding ||
+        doc.encoding == NSUTF16LittleEndianStringEncoding || doc.encoding == NSUTF16BigEndianStringEncoding ||
+        doc.encoding == NSUnicodeStringEncoding || doc.encoding == 0) return -1;
+    // A set found on opening is held as an NSStringEncoding; its Windows code page names the row
+    // (the detector's Shift-JIS and the menu's are different constants for the same set).
+    unsigned int windows = CodepageOfEncoding(doc.encoding);
+    if (!windows) windows = (unsigned int)CFStringConvertEncodingToWindowsCodepage(CFStringConvertNSStringEncodingToEncoding(doc.encoding));
+    for (int i = 0; i < kNppCharsetCount; ++i) {
+        if (windows && kNppCharsets[i].codepage == windows) return i;
+        if ([EditorController encodingForCodepage:kNppCharsets[i].codepage] == doc.encoding) return i;
+    }
+    return -1;
 }
 
 #pragma mark - Editing commands

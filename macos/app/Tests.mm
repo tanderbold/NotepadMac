@@ -378,6 +378,11 @@ int NppMacRunTests(AppDelegate *app) {
             BOOL lookaheadReplaced = [[ed documentText] isEqualToString:@"Xbar foobar"] &&
                                      [ed.sci message:SCI_GETSELECTIONSTART] == 5;
 
+            [ed setDocumentText:@"café cafés яблоко\n"];
+            NSUInteger wholeCafe = [ed countMatches:[NppFindSpec specFor:@"café" mode:NppSearchNormal options:NppFindWholeWord | NppFindMatchCase]];
+            NSUInteger cyrillicWords = [ed countMatches:[NppFindSpec specFor:@"\\b\\w+\\b" mode:NppSearchRegex options:0]];
+            Check(@"IDM_SEARCH_FIND", @"whole word and \\w, \\b know every script, as Boost's do (PCRE2_UCP)",
+                  wholeCafe == 1 && cyrillicWords == 3);
             Check(@"IDM_SEARCH_FIND", @"a pattern the engine refuses is invalid (the dialog says so), a literal \"(\" is not",
                   ![ed patternIsValid:[NppFindSpec specFor:@"(" mode:NppSearchRegex options:0]] &&
                   ![ed patternIsValid:[NppFindSpec specFor:@"a{2,1}" mode:NppSearchRegex options:0]] &&
@@ -1382,6 +1387,21 @@ int NppMacRunTests(AppDelegate *app) {
                   @"a document read as Windows-1251 is still Windows-1251 after "
                   @"Reload, and still reads correctly",
                   reloaded && keeps);
+            // setUniModeText names a character set by its menu label, and the menu checks it.
+            NSMenuItem *win1251 = nil, *koi8 = nil;
+            for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+                for (NSMenuItem *it in top.submenu.itemArray)
+                    for (NSMenuItem *group in it.submenu.itemArray)
+                        for (NSMenuItem *cs in group.submenu.itemArray) {
+                            if (cs.action != NSSelectorFromString(@"encodeInCharset:")) continue;
+                            if ([cs.title isEqualToString:@"Windows-1251"]) win1251 = cs;
+                            if ([cs.title isEqualToString:@"KOI8-R"]) koi8 = cs;
+                        }
+            [(id<NSMenuItemValidation>)app validateMenuItem:win1251];
+            [(id<NSMenuItemValidation>)app validateMenuItem:koi8];
+            Check(@"IDM_FORMAT_WIN_1251", @"the status bar names the character set and the menu checks it",
+                  [[ed encodingDisplayName] isEqualToString:@"Windows-1251"] && win1251 && koi8 &&
+                  win1251.state == NSControlStateValueOn && koi8.state == NSControlStateValueOff);
             ed.scriptedCloseAnswer = NSAlertSecondButtonReturn;
             [ed closeCurrentDocument];
             ed.scriptedCloseAnswer = 0;
@@ -3626,6 +3646,13 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL redacted = [ed redactSelectionWithBlock:YES];
         Check(@"IDM_EDIT_REDACT_SELECTION", @"replaces the selection with blocks",
               redacted && [DocText(ed) hasPrefix:@"\u2588\u2588\u2588\u2588\u2588\u2588"]);
+        {
+            const char withNul[] = {'a', 0, 'b'};
+            [sci message:SCI_CLEARALL];
+            [sci message:SCI_ADDTEXT wParam:3 lParam:(sptr_t)withNul];
+            [sci message:SCI_SETSEL wParam:0 lParam:3];
+            Check(@"IDM_EDIT_COPY_BINARY", @"a selection holding a NUL byte is copied too", [[ed hexOfSelection] isEqualToString:@"61 00 62"]);
+        }
         SetDoc(ed, @"é👍 ok");
         [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[@"é👍" lengthOfBytesUsingEncoding:NSUTF8StringEncoding]];
         [ed redactSelectionWithBlock:YES];

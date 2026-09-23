@@ -187,6 +187,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)setEncoding:(NSStringEncoding)enc withBOM:(BOOL)bom;   // re-saves in this encoding
 - (void)convertEOLTo:(int)eolMode;
 - (NSString *)encodingDisplayName;
+/// The kNppCharsets row the current document is held in, -1 for Unicode and ANSI.
+- (int)currentCharsetIndex;
 
 // Editing commands
 - (void)toggleLineComment;

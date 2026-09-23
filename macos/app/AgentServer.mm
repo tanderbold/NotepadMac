@@ -682,6 +682,9 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         } else {
             Msg(sci, SCI_GOTOPOS, (uptr_t)from);
         }
+        // Up and Down go from this column now, not from where the caret was last put by hand
+        // (SCI_GOTOPOS / SCI_SETSEL keep Scintilla's remembered x).
+        Msg(sci, SCI_CHOOSECARETX);
         Msg(sci, SCI_VERTICALCENTRECARET);
         [ed.window makeFirstResponder:sci.content];   // the text view itself takes keys, not its wrapper
         if (BoolParam(args, @"activate_app", NO)) [NSApp activateIgnoringOtherApps:YES];

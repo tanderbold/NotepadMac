@@ -2951,6 +2951,9 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
         item.state = self.editor.compareDetectMoves ? NSControlStateValueOn : NSControlStateValueOff;
     } else if (a == @selector(compareToggleCharDiffs:)) {
         item.state = self.editor.compareCharDiffs ? NSControlStateValueOn : NSControlStateValueOff;
+    } else if (a == @selector(encodeInCharset:)) {
+        // checkMenuItem on the character set the document is held in (Notepad_plus::checkUnicodeMenuItems).
+        item.state = item.tag == [self.editor currentCharsetIndex] ? NSControlStateValueOn : NSControlStateValueOff;
     } else if (a == @selector(pickEncoding:)) {
         item.state = [item.title isEqualToString:[self.editor encodingDisplayName]]
                      ? NSControlStateValueOn : NSControlStateValueOff;
