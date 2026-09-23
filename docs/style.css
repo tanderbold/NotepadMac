@@ -57,3 +57,17 @@
   .faq h2 { font-size: 1.15rem; margin: 32px 0 8px; }
   .faq p { margin: 0 0 12px; }
   .back { color: var(--muted); font-size: 0.95rem; margin: 0 0 24px; }
+  .guide h2 { font-size: 1.35rem; margin: 40px 0 10px; }
+  .guide h3 { font-size: 1.05rem; margin: 24px 0 6px; }
+  .guide p, .guide ul { margin: 0 0 12px; }
+  .guide li { margin: 0 0 4px; }
+  .guide :not(pre) > code { background: var(--code-bg); border-radius: 4px; padding: 1px 5px; }
+  .guide kbd {
+    font: 0.9em -apple-system, BlinkMacSystemFont, sans-serif; border: 1px solid var(--border);
+    border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--card);
+  }
+  .table-wrap { overflow-x: auto; margin: 8px 0 16px; }
+  .guide table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+  .guide th, .guide td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  .guide th { color: var(--muted); font-weight: 600; }
+  .guide td code { white-space: nowrap; }

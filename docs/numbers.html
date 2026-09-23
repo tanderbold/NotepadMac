@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Numbers and formulas — NotepadMac, Notepad++ for macOS</title>
+<meta name="description" content="Sum, average, minimum, maximum and count of selected numbers, sorting them in place, and Calculate (Cmd+=): a formula's value written after its equals sign, with sin, cos, ln, log, roots, degrees and percent. How it works in NotepadMac, with a full reference.">
+<meta property="og:title" content="Numbers and formulas — NotepadMac">
+<meta property="og:description" content="Select numbers for their sum or average, or type 2 + 3 * 4 = and press Cmd+= for the answer. With functions, degrees and percent.">
+<meta property="og:image" content="https://tanderbold.github.io/NotepadMac/screenshot-editor.png">
+<meta property="og:url" content="https://tanderbold.github.io/NotepadMac/numbers.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="canonical" href="https://tanderbold.github.io/NotepadMac/numbers.html">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Numbers and formulas in NotepadMac",
+ "description": "Sum, average, minimum, maximum and count of selected numbers, sorting them in place, and Calculate (Cmd+=), which writes a formula's value after its equals sign.",
+ "url": "https://tanderbold.github.io/NotepadMac/numbers.html",
+ "about": { "@type": "SoftwareApplication", "name": "NotepadMac", "operatingSystem": "macOS 11+", "url": "https://tanderbold.github.io/NotepadMac/" },
+ "inLanguage": "en"
+}
+</script>
+</head>
+<body>
+<main class="guide">
+  <p class="back"><a href="./">NotepadMac</a> › Numbers and formulas</p>
+  <h1>Numbers and formulas</h1>
+  <p class="tagline">Add up a column, sort a list of numbers, or work out a formula where you typed it — without leaving the text.</p>
+
+  <h2 id="selected-numbers">Selected numbers</h2>
+  <p>Select some numbers and right-click: the menu starts with <b>Selected Numbers</b>. The same commands are in <b>Edit › Selected Numbers</b>, where the Shortcut Mapper can give them keys.</p>
+  <ul>
+    <li><b>Sum</b>, <b>Average</b>, <b>Minimum</b>, <b>Maximum</b>, <b>Count</b> write the value after the numbers, labelled <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>, <code>COUNT</code>.</li>
+    <li><b>Sort Ascending</b>, <b>Sort Descending</b> put the numbers in order where they stand.</li>
+  </ul>
+
+  <h3>What counts as a set of numbers</h3>
+  <p>At least two numbers, and nothing else but separators between them: blanks, line breaks, commas or semicolons — one comma or semicolon between two numbers at most. All of these are sets:</p>
+<pre><code>30, 4, 100, 7.5, 12
+3 1 2 10 -4
+15; 8; 42
+15
+8
+42</code></pre>
+  <p>A column selection (hold <kbd>⌥</kbd> while dragging) works too: only the selected column is read, whatever is beside it. Numbers may carry a sign (<code>-4</code>, <code>+4</code>, <code>−4</code>), decimals (<code>7.5</code>, <code>.5</code>) and an exponent (<code>1e3</code>). A selection with a word in it is not a set, and the menu does not offer these commands.</p>
+  <p><b>Decimal comma.</b> A comma is read as a decimal comma when blanks or semicolons separate the numbers and every number is digits with at most one comma inside: <code>1,5 2,25 3</code> is three numbers, and the results are written with a comma too (<code>SUM = 6,75</code>). Otherwise commas separate: <code>1,2,3</code> is three numbers.</p>
+
+  <h3>Where the result goes</h3>
+  <div class="table-wrap"><table>
+    <tr><th>The numbers are</th><th>Selected</th><th>After Sum</th></tr>
+    <tr><td>on one line</td><td><code>30, 4, 100</code></td><td><code>30, 4, 100 SUM = 134</code></td></tr>
+    <tr><td>one per line, or a column</td><td><code>15⏎8⏎42</code></td><td>a new line under them: <code>SUM = 65</code></td></tr>
+  </table></div>
+  <p>The caret ends after the value, and one <kbd>⌘Z</kbd> takes it away again. The average is rounded to ten decimal places (<code>AVG = 21.6666666667</code>); the minimum and maximum are written as they are in the text (<code>MIN = -1.50</code>).</p>
+
+  <h3>Sorting</h3>
+  <p>Sorting moves the numbers, not the text around them: every separator, line break and indent stays where it was, and each number keeps its own spelling.</p>
+<pre><code>x = [30, 4, 100];      Sort Ascending on "30, 4, 100"  →  x = [4, 30, 100];
+  2.50 1e0 -3          →  -3 1e0 2.50</code></pre>
+  <p>In a column selection only the column is sorted; the rest of each line stays. Equal numbers keep their order. A sort is one undo step, and the numbers stay selected, so the other direction is one click away.</p>
+
+  <h2 id="calculate">Calculate</h2>
+  <p>Type a formula with an equals sign and press <kbd>⌘=</kbd> (<b>Edit › Calculate</b>): the value is written after the <code>=</code>.</p>
+<pre><code>2 + 3 * 4 =          ⌘=  →  2 + 3 * 4 = 14
+total: 2^10 - 24 =   ⌘=  →  total: 2^10 - 24 = 1000
+sin 30° + cos 60° =  ⌘=  →  sin 30° + cos 60° = 1
+2+3                  ⌘=  →  2+3=5</code></pre>
+  <ul>
+    <li><b>Without a selection</b>, the formula is the one that ends at the caret on its line; text before it (<code>total:</code>) is left alone. With no <code>=</code> typed yet, it is added.</li>
+    <li><b>With a selection</b>, the selected formula is calculated. Right-click offers <b>Calculate</b> too; it is enabled only when the selection is a formula.</li>
+    <li><b>A value already after the <code>=</code></b> is replaced, so a formula can be changed and calculated again.</li>
+    <li>The value is spaced like the formula: <code>2 + 3 =</code> gets <code> 5</code>, <code>2+3=</code> gets <code>5</code>.</li>
+    <li>In <code>x = 2^8</code> the <code>=</code> is an assignment: the formula is <code>2^8</code>, and <kbd>⌘=</kbd> gives <code>x = 2^8=256</code>.</li>
+    <li>A formula without a value — <code>1/0 =</code>, <code>ln(-1) =</code> — is left as it is; the Mac beeps and the status bar says why (<i>Division by zero</i>, <i>Cannot calculate</i>).</li>
+  </ul>
+
+  <h2 id="formula-reference">Formula reference</h2>
+  <h3>Operations</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Write</th><th>Means</th><th>Example</th></tr>
+    <tr><td><code>+ -</code> (also <code>−</code>)</td><td>add, subtract</td><td><code>7 - 2 = 5</code></td></tr>
+    <tr><td><code>* × · /  ÷ :</code></td><td>multiply, divide</td><td><code>6 × 7 = 42</code>, <code>10 : 4 = 2.5</code></td></tr>
+    <tr><td><code>^</code> or <code>**</code>, <code>²</code> <code>³</code></td><td>power, right to left</td><td><code>2^3^2 = 512</code>, <code>3² + 4² = 25</code></td></tr>
+    <tr><td><code>mod</code></td><td>remainder</td><td><code>17 mod 5 = 2</code></td></tr>
+    <tr><td><code>!</code></td><td>factorial (whole numbers, up to about 100!)</td><td><code>5! = 120</code></td></tr>
+    <tr><td><code>%</code></td><td>percent, as a calculator has it</td><td><code>200 + 15% = 230</code>, <code>200 - 10% = 180</code>, <code>200 * 15% = 30</code>, <code>50% = 0.5</code></td></tr>
+    <tr><td><code>( )</code></td><td>grouping</td><td><code>(2 + 3) * 4 = 20</code></td></tr>
+    <tr><td><code>°</code></td><td>degrees (turned into radians)</td><td><code>sin 30° = 0.5</code></td></tr>
+    <tr><td><code>√</code></td><td>square root</td><td><code>√(9 + 7) = 4</code></td></tr>
+  </table></div>
+  <p>Order: parentheses, then postfix <code>! ° % ² ³</code>, then powers, then the sign (<code>-2^2 = -4</code>), then multiplication and division, then addition and subtraction. The <code>*</code> may be left out before a parenthesis, a function or a constant: <code>2π</code>, <code>3sin(90°)</code>, <code>2(3 + 4)</code>.</p>
+
+  <h3>Functions</h3>
+  <p>A function takes its argument in parentheses or without them: <code>sin(30°)</code> and <code>sin 30°</code> are the same. Angles are in radians unless marked with <code>°</code>. Names are not case-sensitive.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Group</th><th>Functions</th></tr>
+    <tr><td>Trigonometric</td><td><code>sin cos tan</code> (<code>tg</code>) <code>cot</code> (<code>ctg</code>) <code>sec csc</code> (<code>cosec</code>)</td></tr>
+    <tr><td>Inverse</td><td><code>asin</code> (<code>arcsin</code>) <code>acos</code> (<code>arccos</code>) <code>atan</code> (<code>arctg</code>, <code>arctan</code>) <code>acot</code> (<code>arcctg</code>)</td></tr>
+    <tr><td>Hyperbolic</td><td><code>sinh</code> (<code>sh</code>) <code>cosh</code> (<code>ch</code>) <code>tanh</code> (<code>th</code>) <code>coth</code> (<code>cth</code>) <code>asinh acosh atanh</code></td></tr>
+    <tr><td>Powers and logarithms</td><td><code>sqrt cbrt exp</code>, <code>ln</code> (natural), <code>log</code> and <code>lg</code> (base 10), <code>log2</code>, <code>log(x; base)</code>, <code>root(x; n)</code>, <code>pow(x; y)</code></td></tr>
+    <tr><td>Rounding and sign</td><td><code>abs floor ceil round trunc sign</code> (<code>sgn</code>)</td></tr>
+    <tr><td>Angles</td><td><code>deg</code> (radians to degrees), <code>rad</code> (degrees to radians)</td></tr>
+    <tr><td>Several numbers</td><td><code>min(…) max(…) gcd(…)</code> (<code>НОД</code>) <code>lcm(…)</code> (<code>НОК</code>)</td></tr>
+  </table></div>
+  <p>Arguments are separated by <code>;</code>, or by <code>,</code> when the decimal separator is a point: <code>log(81; 3) = 4</code>, <code>max(1, 9, 3) = 9</code>. <code>root(-8; 3) = -2</code>: an odd root of a negative number is real.</p>
+
+  <h3>Constants</h3>
+  <p><code>pi</code> or <code>π</code>, <code>e</code>, <code>tau</code> or <code>τ</code> (2π), <code>phi</code> or <code>φ</code> (the golden ratio). <code>1e3</code> is a number (1000); <code>2e</code> is 2 times e.</p>
+
+  <h3>Precision</h3>
+  <p>Addition, subtraction, multiplication, division and whole powers are done in decimal, so <code>0.1 + 0.2 = 0.3</code> and <code>1/3*3 = 1</code>. The functions are worked out in double precision. The result is rounded to ten decimal places, which also turns <code>sin(180°)</code> into <code>0</code>. A formula with a decimal comma and no point (<code>1,5 + 2 =</code>) gets its answer with a comma (<code>3,5</code>).</p>
+
+  <h2 id="for-ai-agents-mcp">For AI agents (MCP)</h2>
+  <p>With NotepadMac's MCP server turned on (Preferences › MISC.), an agent reaches these commands through two tools: <code>go_to</code> puts the caret or the selection in place, and <code>run_command</code> runs the menu command by its path.</p>
+<pre><code>go_to        {"line": 12, "column": 1, "end_line": 12}          select line 12
+run_command  {"command": "Edit|Selected Numbers|Sum"}           writes " SUM = …" after it
+run_command  {"command": "Edit|Selected Numbers|Sort Ascending"}
+go_to        {"line": 20, "column": 12}                         caret after "2 + 3 * 4 ="
+run_command  {"command": "Edit|Calculate"}                      writes " 14" after the "="
+get_document {"first_line": 20, "last_line": 20}                read the result back</code></pre>
+  <p>The menu paths are the English ones whatever language the interface is in. The edit is one undo step for the user, like any other command. See <a href="https://github.com/tanderbold/NotepadMac#working-with-ai-agents-mcp">Working with AI agents</a> for turning the server on.</p>
+
+  <p class="links">
+    <a href="./">Home</a>
+    <a href="faq.html">FAQ</a>
+    <a href="https://github.com/tanderbold/NotepadMac">Source on GitHub</a>
+    <a href="https://github.com/tanderbold/NotepadMac/releases">Releases</a>
+  </p>
+</main>
+<footer>
+  An independent, unofficial port; not made, released or supported by the Notepad++ project.
+  Notepad++ is by Don Ho. NotepadMac is licensed under the GPL, the same licence as Notepad++.
+</footer>
+</body>
+</html>
