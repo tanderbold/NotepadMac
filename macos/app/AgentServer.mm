@@ -289,14 +289,19 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
             if ([message isKindOfClass:[NSDictionary class]]) {
                 if (NppE2EEnabled()) {
                     // Under the end-to-end suite a request is also served while
-                    // a modal runs (the main queue is busy with it then, a run
-                    // loop block in the common modes is not), so a test can
-                    // drive an open alert from a second connection.
+                    // a modal runs (the main queue is busy with it then), so a
+                    // test can drive an open alert from a second connection.
+                    // A timer in the common modes, not a run loop block: when a
+                    // request's own block opened the modal, the modal's run loop
+                    // runs inside that block, and CFRunLoop does not run the
+                    // queued blocks again until it returns - every later request
+                    // waited for the alert. Timers fire in the nested loop.
                     dispatch_semaphore_t done = dispatch_semaphore_create(0);
-                    CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopCommonModes, ^{
+                    NSTimer *serve = [NSTimer timerWithTimeInterval:0 repeats:NO block:^(NSTimer *t) {
                         reply = [self handleMessage:message];
                         dispatch_semaphore_signal(done);
-                    });
+                    }];
+                    [[NSRunLoop mainRunLoop] addTimer:serve forMode:NSRunLoopCommonModes];
                     CFRunLoopWakeUp(CFRunLoopGetMain());
                     dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
                 } else {
