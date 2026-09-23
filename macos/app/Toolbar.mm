@@ -33,7 +33,7 @@ static NppToolbarSpec gSpecs[] = {
     {@"IDM_VIEW_SYNSCROLLV",             @"Sync Vertical",   @"toggleSyncV:",        0},
     {@"IDM_VIEW_SYNSCROLLH",             @"Sync Horizontal", @"toggleSyncH:",        0},
     {@"IDM_VIEW_WRAP",                   @"Word Wrap",    @"toggleWordWrap:",        0},
-    {@"IDM_VIEW_ALL_CHARACTERS",         @"All Characters", @"toggleWhitespace:",    0},
+    {@"IDM_VIEW_ALL_CHARACTERS",         @"All Characters", @"toggleSymbol:",        6},   // NppSymbolAll
     // Indent guide is one of the Show Symbol entries, which are told apart by
     // their tag rather than by having a selector each.
     {@"IDM_VIEW_INDENT_GUIDE",           @"Indent Guide", @"toggleSymbol:",          4},

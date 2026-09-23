@@ -1,4 +1,5 @@
 #import "SettingsCommands.h"
+#import "ViewCommands.h"
 #import "AgentServer.h"
 #import "GitCommands.h"
 #import "UserLanguages.h"
@@ -31,6 +32,7 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"wordWrap"):        @NO,
         Key(@"showWhitespace"):  @NO,
         Key(@"showIndentGuides"):@YES,
+        Key(@"showEOL"): @NO, Key(@"showWrapSymbol"): @NO,
         Key(@"restoreSession"):  @NO,
         Key(@"detectLanguageFromContent"): @YES,
         Key(@"defaultEOL"):      @(SC_EOL_LF),
@@ -215,6 +217,23 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
 }
 
 NPP_PREF_OBJ(fontName, setFontName, NSString, @"fontName")
+
+/// A value set for this key by the user - in the application's preferences or
+/// on the command line - rather than the registered default.
+static id NppChosenValue(NSString *name) {
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    id v = [d volatileDomainForName:NSArgumentDomain][Key(name)];
+    NSString *domain = NSBundle.mainBundle.bundleIdentifier;
+    return v ?: (domain ? [d persistentDomainForName:domain][Key(name)] : nil);
+}
+- (nullable NSString *)chosenFontName {
+    id v = NppChosenValue(@"fontName");
+    return [v isKindOfClass:[NSString class]] && [v length] ? v : nil;
+}
+- (NSInteger)chosenFontSize {
+    id v = NppChosenValue(@"fontSize");
+    return [v respondsToSelector:@selector(integerValue)] ? MAX(0, [v integerValue]) : 0;
+}
 NPP_PREF_OBJ(defaultEncoding, setDefaultEncoding, NSString, @"defaultEncoding")
 NPP_PREF_OBJ(lightThemeName, setLightThemeName, NSString, @"lightThemeName")
 NPP_PREF_OBJ(darkThemeName, setDarkThemeName, NSString, @"darkThemeName")
@@ -369,6 +388,8 @@ NPP_PREF_BOOL(useSpaces, setUseSpaces, @"useSpaces")
 NPP_PREF_BOOL(wordWrap, setWordWrap, @"wordWrap")
 NPP_PREF_BOOL(showWhitespace, setShowWhitespace, @"showWhitespace")
 NPP_PREF_BOOL(showIndentGuides, setShowIndentGuides, @"showIndentGuides")
+NPP_PREF_BOOL(showEOL, setShowEOL, @"showEOL")
+NPP_PREF_BOOL(showWrapSymbol, setShowWrapSymbol, @"showWrapSymbol")
 NPP_PREF_BOOL(restoreSession, setRestoreSession, @"restoreSession")
 NPP_PREF_BOOL(detectLanguageFromContent, setDetectLanguageFromContent, @"detectLanguageFromContent")
 NPP_PREF_BOOL(showToolbar, setShowToolbar, @"showToolbar")
@@ -546,10 +567,8 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
     [sci message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:self.fontSize];
     [editor applyDocumentSettings];
     [sci message:SCI_SETWRAPMODE wParam:(uptr_t)(self.wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE) lParam:0];
-    [sci message:SCI_SETVIEWWS
-           wParam:(uptr_t)(self.showWhitespace ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE) lParam:0];
-    [sci message:SCI_SETINDENTATIONGUIDES
-           wParam:(uptr_t)(self.showIndentGuides ? SC_IV_LOOKBOTH : SC_IV_NONE) lParam:0];
+    [editor applySymbolsToView:sci];
+    if (editor.secondarySci) [editor applySymbolsToView:editor.secondarySci];
     [editor refreshChrome];
     // The agent interface listens while MISC. says so, and not otherwise.
     [NppAgentServer shared].editor = editor;

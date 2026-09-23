@@ -72,7 +72,12 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 
 @implementation NppSecondaryPaneDelegate
 - (void)notification:(SCNotification *)n {
-    if (n->nmhdr.code == SCN_UPDATEUI) [self.owner mirrorScrollFromSecondary];
+    // Only a scroll of this pane is mirrored, and a zoom only when it zooms: every
+    // SCN_UPDATEUI mirrored both ways kept the panes echoing each other (a freeze
+    // with long lines, and the other pane's zoom undoing a Zoom In).
+    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)))
+        [self.owner mirrorScrollFromSecondary];
+    if (n->nmhdr.code == SCN_ZOOM) [self.owner mirrorZoomFromSecondary];
 }
 @end
 
@@ -470,6 +475,24 @@ static long SciColor(NSColor *c) {
 
 /// Scintilla resets these when the document pointer changes, so they are
 /// re-applied on every switch rather than only at startup.
+/// The current line left alone, given the theme's background, or framed
+/// (ScintillaEditView::setCurrentLineHiLiting). With "None" no colour is set:
+/// in Scintilla 5 setting the caret-line colour turns the line on again.
+- (void)applyCurrentLineLookToView:(ScintillaView *)sci {
+    NppPreferences *prefs = [NppPreferences shared];
+    if (prefs.currentLineHighlightMode == 0) {
+        [sci message:SCI_SETCARETLINEVISIBLE wParam:0 lParam:0];
+        return;
+    }
+    NppStyle *caretLine = [StyleCatalog sharedCatalog].globalStyles[@"Current line background colour"];
+    if (caretLine.background) [sci message:SCI_SETCARETLINEBACK wParam:SciColor(caretLine.background) lParam:0];
+    [sci message:SCI_SETCARETLINEVISIBLE wParam:1 lParam:0];
+    [sci message:SCI_SETCARETLINEFRAME
+           wParam:prefs.currentLineHighlightMode == 2
+                  ? (uptr_t)MIN((NSInteger)6, MAX((NSInteger)1, prefs.currentLineFrameWidth)) : 0
+           lParam:0];
+}
+
 - (void)applyDocumentSettings {
     ScintillaView *sci = self.sciView;
     // From the preferences, not literals: these live in the Scintilla
@@ -549,22 +572,7 @@ static long SciColor(NSColor *c) {
                                      : SCVS_RECTANGULARSELECTION
            lParam:0];
 
-    // The current line can be left alone, given a background, or framed.
-    switch (prefs.currentLineHighlightMode) {
-        case 0:
-            [sci message:SCI_SETCARETLINEVISIBLE wParam:0 lParam:0];
-            break;
-        case 2:
-            [sci message:SCI_SETCARETLINEVISIBLE wParam:1 lParam:0];
-            [sci message:SCI_SETCARETLINEFRAME
-                   wParam:(uptr_t)MIN((NSInteger)6, MAX((NSInteger)1, prefs.currentLineFrameWidth))
-                   lParam:0];
-            break;
-        default:
-            [sci message:SCI_SETCARETLINEVISIBLE wParam:1 lParam:0];
-            [sci message:SCI_SETCARETLINEFRAME wParam:0 lParam:0];
-            break;
-    }
+    [self applyCurrentLineLookToView:sci];
 
     // Margins the user can turn off. The line number margin has its own
     // setting elsewhere; these two are the bookmark and fold margins.
@@ -2079,6 +2087,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // Courier New at size 10 is a Windows default; on macOS it reads far too small.
     int fontSize = (def.fontSize > 0) ? MAX(def.fontSize, 12) : 13;
     if ([fontName isEqualToString:@"Courier New"]) fontName = @"Menlo";
+    // Editing 1's font, when the user chose one, over the theme's.
+    NppPreferences *prefs = [NppPreferences shared];
+    if (prefs.chosenFontName) fontName = prefs.chosenFontName;
+    if (prefs.chosenFontSize > 0) fontSize = (int)prefs.chosenFontSize;
 
     [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:fontName];
     [sci message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:fontSize];
@@ -2182,8 +2194,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (badBrace) applyStyle(badBrace, STYLE_BRACEBAD);
 
     // These take the colour in wParam, so they cannot go through applyStyle.
-    NppStyle *caretLine = styles.globalStyles[@"Current line background colour"];
-    if (caretLine.background) [sci message:SCI_SETCARETLINEBACK wParam:SciColor(caretLine.background) lParam:0];
+    [self applyCurrentLineLookToView:sci];
     NppStyle *caret = styles.globalStyles[@"Caret colour"];
     if (caret.foreground) [sci message:SCI_SETCARETFORE wParam:SciColor(caret.foreground) lParam:0];
     NppStyle *sel = styles.globalStyles[@"Selected text colour"];
@@ -2247,8 +2258,17 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         case NSUTF16LittleEndianStringEncoding: return @"UTF-16 LE BOM";
         case NSUTF16BigEndianStringEncoding:    return @"UTF-16 BE BOM";
         case NSISOLatin1StringEncoding:         return @"ANSI";
-        default: return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
+        case NSUTF8StringEncoding:              if (!doc.codepage) return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
+        default: break;
     }
+    // A character set of Encoding > Character Sets goes by its menu label, as
+    // Notepad_plus::setUniModeText takes the Encode-in item's string.
+    for (int i = 0; i < kNppCharsetCount; ++i) {
+        unsigned int cp = kNppCharsets[i].codepage;
+        if (doc.codepage ? doc.codepage == cp : [EditorController encodingForCodepage:cp] == doc.encoding)
+            return @(kNppCharsets[i].label);
+    }
+    return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
 }
 
 /// EncodingMapper's table (PowerEditor/src/EncodingMapper.cpp, `encodings`): the
@@ -2661,6 +2681,9 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.window.title = title;
     self.window.representedFilename = doc.path ?: @"";
     self.window.documentEdited = doc.modified;
+    // The toolbar's Save, Undo, Cut... follow the document at once, as upstream's
+    // enableCommand does on each change; AppKit would validate them only later.
+    [self.window.toolbar validateVisibleItems];
 }
 
 /// The Tab bar page of Preferences drives the bar's layout and behaviour.
@@ -2837,38 +2860,41 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 - (BOOL)syncHorizontalScroll { return self.syncH; }
 - (void)setSyncHorizontalScroll:(BOOL)on { self.syncH = on; if (on) [self mirrorScrollToSecondary]; }
 - (BOOL)syncZoom { return self.syncZ; }
-- (void)setSyncZoom:(BOOL)on { self.syncZ = on; if (on) [self mirrorScrollToSecondary]; }
+- (void)setSyncZoom:(BOOL)on { self.syncZ = on; if (on) [self mirrorZoomToSecondary]; }
+
+/// One pane's scroll (and zoom) put on the other, where it differs: setting the
+/// same value again still sends SCN_UPDATEUI, which would echo back.
+static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL columns, BOOL zoom) {
+    if (lines) {
+        long v = [from message:SCI_GETFIRSTVISIBLELINE];
+        if ([to message:SCI_GETFIRSTVISIBLELINE] != v) [to message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)v lParam:0];
+    }
+    if (columns) {
+        long v = [from message:SCI_GETXOFFSET];
+        if ([to message:SCI_GETXOFFSET] != v) [to message:SCI_SETXOFFSET wParam:(uptr_t)v lParam:0];
+    }
+    if (zoom) {
+        long v = [from message:SCI_GETZOOM];
+        if ([to message:SCI_GETZOOM] != v) [to message:SCI_SETZOOM wParam:(uptr_t)v lParam:0];
+    }
+}
 
 - (void)mirrorScrollToSecondary {
     if (![self secondaryViewVisible]) return;
-    if (self.syncV) {
-        [self.secondaryView message:SCI_SETFIRSTVISIBLELINE
-                             wParam:(uptr_t)[self.sciView message:SCI_GETFIRSTVISIBLELINE] lParam:0];
-    }
-    if (self.syncH) {
-        [self.secondaryView message:SCI_SETXOFFSET
-                             wParam:(uptr_t)[self.sciView message:SCI_GETXOFFSET] lParam:0];
-    }
-    if (self.syncZ) {
-        [self.secondaryView message:SCI_SETZOOM
-                             wParam:(uptr_t)[self.sciView message:SCI_GETZOOM] lParam:0];
-    }
+    MirrorView(self.sciView, self.secondaryView, self.syncV, self.syncH, NO);
 }
 
 - (void)mirrorScrollFromSecondary {
     if (![self secondaryViewVisible]) return;
-    if (self.syncV) {
-        [self.sciView message:SCI_SETFIRSTVISIBLELINE
-                       wParam:(uptr_t)[self.secondaryView message:SCI_GETFIRSTVISIBLELINE] lParam:0];
-    }
-    if (self.syncH) {
-        [self.sciView message:SCI_SETXOFFSET
-                       wParam:(uptr_t)[self.secondaryView message:SCI_GETXOFFSET] lParam:0];
-    }
-    if (self.syncZ) {
-        [self.sciView message:SCI_SETZOOM
-                       wParam:(uptr_t)[self.secondaryView message:SCI_GETZOOM] lParam:0];
-    }
+    MirrorView(self.secondaryView, self.sciView, self.syncV, self.syncH, NO);
+}
+
+- (void)mirrorZoomToSecondary {
+    if ([self secondaryViewVisible] && self.syncZ) MirrorView(self.sciView, self.secondaryView, NO, NO, YES);
+}
+
+- (void)mirrorZoomFromSecondary {
+    if ([self secondaryViewVisible] && self.syncZ) MirrorView(self.secondaryView, self.sciView, NO, NO, YES);
 }
 
 #pragma mark - Document Map
@@ -3101,6 +3127,9 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
             }
             break;
         }
+        case SCN_ZOOM:
+            [self mirrorZoomToSecondary];
+            break;
         case SCN_UPDATEUI:
             [self refreshChrome];
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateDocumentMap];
@@ -3109,7 +3138,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
                 [self compareScheduleRefresh];         // and so does a comparison that is on
             }
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateLineNumberWidth];
-            [self mirrorScrollToSecondary];
+            if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)) [self mirrorScrollToSecondary];
             [self updateBraceMatch];
             if (n->updated & SC_UPDATE_SELECTION) [self updateSmartHighlight];
             if (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT)) [self highlightMatchingTags];

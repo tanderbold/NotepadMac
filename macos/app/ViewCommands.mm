@@ -33,11 +33,21 @@
     [self selectDocumentAtIndex:(cur - 1 + n) % n];
 }
 
+/// The run of tabs a document may move within: pinned tabs stay first, as a group
+/// of their own, and an unpinned tab never goes in among them (Notepad++'s
+/// tab bar keeps the pinned tabs on the left).
+- (NSRange)tabRunOfDocument:(NppDocument *)doc {
+    NSUInteger pinned = 0;
+    for (NppDocument *d in self.documents) { if (!d.pinned) break; ++pinned; }
+    return doc.pinned ? NSMakeRange(0, pinned) : NSMakeRange(pinned, self.documents.count - pinned);
+}
+
 - (BOOL)moveCurrentTab:(BOOL)forward {
     NSMutableArray *docs = (NSMutableArray *)self.documents;
     NSInteger from = [docs indexOfObject:self.currentDocument];
     NSInteger to = from + (forward ? 1 : -1);
-    if (from == NSNotFound || to < 0 || to >= (NSInteger)docs.count) { NppBeep(); return NO; }
+    NSRange run = [self tabRunOfDocument:self.currentDocument];
+    if (from == NSNotFound || to < (NSInteger)run.location || to >= (NSInteger)NSMaxRange(run)) { NppBeep(); return NO; }
     [docs exchangeObjectAtIndex:(NSUInteger)from withObjectAtIndex:(NSUInteger)to];
     [self selectDocumentAtIndex:to];
     return YES;
@@ -48,8 +58,9 @@
     NppDocument *doc = self.currentDocument;
     NSInteger from = [docs indexOfObject:doc];
     if (from == NSNotFound) return;
+    NSRange run = [self tabRunOfDocument:doc];
     [docs removeObjectAtIndex:(NSUInteger)from];
-    NSInteger to = end ? (NSInteger)docs.count : 0;
+    NSInteger to = end ? (NSInteger)NSMaxRange(run) - 1 : (NSInteger)run.location;
     [docs insertObject:doc atIndex:(NSUInteger)to];
     [self selectDocumentAtIndex:to];
 }
@@ -91,45 +102,42 @@
         case NppSymbolControlAndUnicodeEOL: return [NppPreferences shared].ccUniEolShow;
         case NppSymbolIndentGuide: return [sci message:SCI_GETINDENTATIONGUIDES] != SC_IV_NONE;
         case NppSymbolWrap:        return [sci message:SCI_GETWRAPVISUALFLAGS] != SC_WRAPVISUALFLAG_NONE;
+        case NppSymbolAll:
+            return [self symbolVisible:NppSymbolWhitespace] && [self symbolVisible:NppSymbolEOL] &&
+                   [self symbolVisible:NppSymbolNonPrinting] && [self symbolVisible:NppSymbolControlAndUnicodeEOL];
     }
     return NO;
 }
 
+- (void)applySymbolsToView:(ScintillaView *)sci {
+    NppPreferences *p = [NppPreferences shared];
+    [sci message:SCI_SETVIEWWS wParam:(uptr_t)(p.showWhitespace ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE) lParam:0];
+    [sci message:SCI_SETVIEWEOL wParam:p.showEOL ? 1 : 0 lParam:0];
+    [sci message:SCI_SETINDENTATIONGUIDES wParam:(uptr_t)(p.showIndentGuides ? SC_IV_LOOKBOTH : SC_IV_NONE) lParam:0];
+    [sci message:SCI_SETWRAPVISUALFLAGS
+           wParam:(uptr_t)(p.showWrapSymbol ? SC_WRAPVISUALFLAG_END : SC_WRAPVISUALFLAG_NONE) lParam:0];
+    [self applySymbolRepresentationsTo:sci];
+}
+
 - (void)toggleSymbol:(NppSymbol)symbol {
-    ScintillaView *sci = self.sci;
+    // The preference first, so that nothing applied later puts the old state
+    // back, then both views (Notepad_plus::command IDM_VIEW_* sets both).
+    NppPreferences *p = [NppPreferences shared];
     BOOL on = [self symbolVisible:symbol];
     switch (symbol) {
-        case NppSymbolWhitespace:
-            // The preference, so that nothing applied later puts it back.
-            [NppPreferences shared].showWhitespace = !on;
-            [sci message:SCI_SETVIEWWS wParam:(uptr_t)(on ? SCWS_INVISIBLE : SCWS_VISIBLEALWAYS) lParam:0];
-            if (self.secondarySci) {
-                [self.secondarySci message:SCI_SETVIEWWS
-                                    wParam:(uptr_t)(on ? SCWS_INVISIBLE : SCWS_VISIBLEALWAYS) lParam:0];
-            }
-            break;
-        case NppSymbolEOL:
-            [sci message:SCI_SETVIEWEOL wParam:(uptr_t)(on ? 0 : 1) lParam:0];
-            break;
-        case NppSymbolNonPrinting:
-            // Representations of the invisible characters, as showNpc sets them.
-            [NppPreferences shared].npcShow = !on;
-            [self applySymbolRepresentationsTo:sci];
-            if (self.secondarySci) [self applySymbolRepresentationsTo:self.secondarySci];
-            break;
-        case NppSymbolControlAndUnicodeEOL:
-            [NppPreferences shared].ccUniEolShow = !on;
-            [self applySymbolRepresentationsTo:sci];
-            if (self.secondarySci) [self applySymbolRepresentationsTo:self.secondarySci];
-            break;
-        case NppSymbolIndentGuide:
-            [sci message:SCI_SETINDENTATIONGUIDES wParam:(uptr_t)(on ? SC_IV_NONE : SC_IV_LOOKBOTH) lParam:0];
-            break;
-        case NppSymbolWrap:
-            [sci message:SCI_SETWRAPVISUALFLAGS
-                   wParam:(uptr_t)(on ? SC_WRAPVISUALFLAG_NONE : SC_WRAPVISUALFLAG_END) lParam:0];
+        case NppSymbolWhitespace:           p.showWhitespace = !on; break;
+        case NppSymbolEOL:                  p.showEOL = !on; break;
+        case NppSymbolNonPrinting:          p.npcShow = !on; break;
+        case NppSymbolControlAndUnicodeEOL: p.ccUniEolShow = !on; break;
+        case NppSymbolIndentGuide:          p.showIndentGuides = !on; break;
+        case NppSymbolWrap:                 p.showWrapSymbol = !on; break;
+        case NppSymbolAll:
+            // IDM_VIEW_ALL_CHARACTERS: the four invisible-character symbols together.
+            p.showWhitespace = p.showEOL = p.npcShow = p.ccUniEolShow = !on;
             break;
     }
+    [self applySymbolsToView:self.sci];
+    if (self.secondarySci) [self applySymbolsToView:self.secondarySci];
     [self refreshChrome];
 }
 

@@ -1024,6 +1024,10 @@ static CGFloat NeededWidth(NSControl *control) {
     p.defaultLanguage = text(@"defaultLanguage");
     p.openNewDocumentAtStartup = on(@"openNewDocumentAtStartup");
     p.untitledFromFirstLine = on(@"untitledFromFirstLine");
+    // The port's own boxes on New Document and MISC.: Apply stores them like the rest.
+    if (self.controls[@"detectLanguageFromContent"]) p.detectLanguageFromContent = on(@"detectLanguageFromContent");
+    if (self.controls[@"gitMarginMarks"]) p.gitMarginMarks = on(@"gitMarginMarks");
+    if (self.controls[@"agentServer"]) p.agentServer = on(@"agentServer");
     p.printHeaderMiddle = text(@"printHeaderMiddle");
     p.printFooterLeft = text(@"printFooterLeft");
     p.printFooterRight = text(@"printFooterRight");
@@ -1065,8 +1069,12 @@ static CGFloat NeededWidth(NSControl *control) {
     p.compareIgnoreSpaces = on(@"compareIgnoreSpaces");
     p.compareIgnoreEmptyLines = on(@"compareIgnoreEmptyLines");
     p.linksFullBox = on(@"linksFullBox");
-    p.fontName = [self.controls[@"fontName"] stringValue];
-    p.fontSize = [[self.controls[@"fontSize"] stringValue] integerValue];
+    // Stored only when changed: a stored font is the user's choice, which then
+    // wins over the theme's Default Style font (see -chosenFontName).
+    NSString *fontName = [self.controls[@"fontName"] stringValue];
+    NSInteger fontSize = [[self.controls[@"fontSize"] stringValue] integerValue];
+    if (fontName && ![fontName isEqualToString:p.fontName ?: @""]) p.fontName = fontName;
+    if (fontSize > 0 && fontSize != p.fontSize) p.fontSize = fontSize;
     p.tabWidth = MAX(1, [[self.controls[@"tabWidth"] stringValue] integerValue]);
     p.useSpaces = [self.controls[@"useSpaces"] state] == NSControlStateValueOn;
     p.wordWrap = [self.controls[@"wordWrap"] state] == NSControlStateValueOn;

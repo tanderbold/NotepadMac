@@ -387,6 +387,20 @@ int NppMacRunTests(AppDelegate *app) {
                   ![ed patternIsValid:[NppFindSpec specFor:@"(" mode:NppSearchRegex options:0]] &&
                   ![ed patternIsValid:[NppFindSpec specFor:@"a{2,1}" mode:NppSearchRegex options:0]] &&
                   [ed patternIsValid:[NppFindSpec specFor:@"(" mode:NppSearchNormal options:0]]);
+            // "Replace: Don't move to the following occurrence": the caret stays after
+            // the replaced text (processReplace, _replaceStopsWithoutFindingNext).
+            NppPreferences *rp = [NppPreferences shared];
+            BOOL wasStay = rp.replaceStaysOnOccurrence;
+            rp.replaceStaysOnOccurrence = YES;
+            [ed setDocumentText:@"cat cat cat"];
+            [ed.sci message:SCI_SETSEL wParam:0 lParam:3];
+            NppFindSpec *cat = [NppFindSpec specFor:@"cat" mode:NppSearchNormal options:NppFindWrap];
+            cat.replacement = @"dog";
+            [ed replaceCurrentThenFindNext:cat];
+            BOOL stayed = [[ed documentText] isEqualToString:@"dog cat cat"] &&
+                          [ed.sci message:SCI_GETSELECTIONSTART] == 3 && [ed.sci message:SCI_GETSELECTIONEND] == 3;
+            rp.replaceStaysOnOccurrence = wasStay;
+
             [ed setDocumentText:@"a\nb"];
             NppFindSpec *dot = [NppFindSpec specFor:@"a.b" mode:NppSearchRegex options:0];
             NSUInteger without = [ed countMatches:dot];
@@ -412,6 +426,9 @@ int NppMacRunTests(AppDelegate *app) {
             Check(@"IDM_SEARCH_REPLACE (a lookahead survives Replace)",
                   @"Replace on a match of foo(?=bar) replaces it and moves to the next",
                   lookaheadReplaced);
+            Check(@"IDM_SEARCH_REPLACE (don't move on)",
+                  @"with Replace: Don't move to the following occurrence, the caret stays after the replacement",
+                  stayed);
             Check(@"IDM_SEARCH_FIND (. matches newline is a choice)",
                   @"'.' does not cross a line ending unless the box is ticked",
                   dotStays);
@@ -1329,6 +1346,19 @@ int NppMacRunTests(AppDelegate *app) {
                   @"Tab Bar, Recent Files History, Default Directory, Searching and the rest of New "
                   @"Document, Print and Performance have controls, and Apply writes them",
                   present && applied);
+            // The port's own boxes are written by Apply too (SETTINGS-007/043/089).
+            BOOL wasDetect = p.detectLanguageFromContent, wasMarks = p.gitMarginMarks, wasAgent = p.agentServer;
+            PreferencesWindow *own = [[PreferencesWindow alloc] initWithEditor:ed];
+            NSDictionary *ownControls = [own valueForKey:@"controls"];
+            [ownControls[@"detectLanguageFromContent"] setState:wasDetect ? NSControlStateValueOff : NSControlStateValueOn];
+            [ownControls[@"gitMarginMarks"] setState:wasMarks ? NSControlStateValueOff : NSControlStateValueOn];
+            [ownControls[@"agentServer"] setState:wasAgent ? NSControlStateValueOn : NSControlStateValueOff];
+            [own apply:nil];
+            BOOL ownApplied = p.detectLanguageFromContent == !wasDetect && p.gitMarginMarks == !wasMarks;
+            p.detectLanguageFromContent = wasDetect; p.gitMarginMarks = wasMarks; p.agentServer = wasAgent;
+            [ed applyEditorPreferences];
+            Check(@"IDM_SETTING_PREFERENCE (the port's boxes)",
+                  @"Apply writes the content detection and Git margin boxes", ownApplied);
         }
 
         // A NUL byte inside a file is content, not the end of it.
@@ -2662,6 +2692,35 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_SETTING_PREFERENCE (current line)",
               @"the current line can be left plain, coloured or framed",
               plain && framed && [sv message:SCI_GETCARETLINEFRAME] == 0);
+        // "None" survives the theme being put on again (its caret-line colour turned the line back on).
+        p.currentLineHighlightMode = 0;
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        BOOL stillPlain = [sv message:SCI_GETCARETLINEVISIBLE] == 0;
+        p.currentLineHighlightMode = 1;
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        Check(@"IDM_SETTING_PREFERENCE (current line, theme)",
+              @"None stays off after the theme is applied again; Highlight comes back with it (SETTINGS-020)",
+              stillPlain && [sv message:SCI_GETCARETLINEVISIBLE] != 0);
+
+        // Editing 1's font, once chosen, wins over the theme's Default Style font (SETTINGS-018).
+        NSString *wasFont = p.fontName; NSInteger wasSize = p.fontSize;
+        BOOL hadChosenFont = p.chosenFontName != nil, hadChosenSize = p.chosenFontSize > 0;
+        p.fontName = @"Courier"; p.fontSize = 17;
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        char fontBuf[128] = {0};
+        [sv message:SCI_STYLEGETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)fontBuf];
+        BOOL chosenWins = strcmp(fontBuf, "Courier") == 0 && [sv message:SCI_STYLEGETSIZE wParam:STYLE_DEFAULT] == 17;
+        NSString *domain = NSBundle.mainBundle.bundleIdentifier;
+        if (hadChosenFont) p.fontName = wasFont; else if (domain) [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NppMac.fontName"];
+        if (hadChosenSize) p.fontSize = wasSize; else if (domain) [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NppMac.fontSize"];
+        [ed applyEditorPreferences];
+        [ed applyTheme];
+        Check(@"IDM_SETTING_PREFERENCE (font)",
+              @"a font chosen on Editing 1 is the editor's, over the theme's Default Style font",
+              chosenWins);
 
         // Margins that can be turned off, and the padding around the text.
         p.foldMarginShow = NO; p.bookmarkMarginShow = NO;
@@ -4259,6 +4318,18 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_GOTO_END", @"moves it to the back",
               [ed.documents indexOfObject:jumper] == ed.documents.count - 1);
 
+        // Pinned tabs stay first: an unpinned tab stops after them (VIEW-087).
+        NppDocument *pinnedDoc = ed.documents.firstObject;
+        pinnedDoc.pinned = YES;
+        [ed moveCurrentTabToEnd:NO];
+        BOOL afterPinned = [ed.documents indexOfObject:jumper] == 1;
+        BOOL cannotPass = ![ed moveCurrentTab:NO] && [ed.documents indexOfObject:jumper] == 1;
+        pinnedDoc.pinned = NO;
+        [ed refreshChrome];
+        Check(@"IDM_VIEW_GOTO_START (pinned tabs)",
+              @"Move to Start and Move Tab Backward stop an unpinned tab after the pinned ones",
+              afterPinned && cannotPass);
+
         NSArray *colourIDs = @[@"IDM_VIEW_TAB_COLOUR_1", @"IDM_VIEW_TAB_COLOUR_2", @"IDM_VIEW_TAB_COLOUR_3",
                                @"IDM_VIEW_TAB_COLOUR_4", @"IDM_VIEW_TAB_COLOUR_5"];
         for (NSInteger c = 1; c <= 5; ++c) {
@@ -4314,6 +4385,31 @@ int NppMacRunTests(AppDelegate *app) {
                   flipped && [ed symbolVisible:syms[i].sym] == before);
         }
 
+        // Both views, the checkmark and Show All Characters (VIEW-004/005/018-023).
+        {
+            NSMenuItem *symbolItem = [[NSMenuItem alloc] initWithTitle:@"" action:NSSelectorFromString(@"toggleSymbol:") keyEquivalent:@""];
+            symbolItem.tag = NppSymbolEOL; symbolItem.target = app;
+            BOOL wasEOL = [ed symbolVisible:NppSymbolEOL];
+            [ed toggleSymbol:NppSymbolEOL];
+            [app validateMenuItem:symbolItem];
+            BOOL checkFollows = (symbolItem.state == NSControlStateValueOn) == !wasEOL;
+            ScintillaView *other = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 100, 100)];
+            [ed applySymbolsToView:other];
+            BOOL otherToo = ([other message:SCI_GETVIEWEOL] != 0) == !wasEOL;
+            [ed toggleSymbol:NppSymbolEOL];
+            Check(@"IDM_VIEW_EOL (both views, checkmark)",
+                  @"Show End of Line is kept, applied to any view and checked in the menu", checkFollows && otherToo);
+
+            BOOL allBefore = [ed symbolVisible:NppSymbolAll];
+            [ed toggleSymbol:NppSymbolAll];
+            BOOL allFlipped = [ed symbolVisible:NppSymbolWhitespace] == !allBefore && [ed symbolVisible:NppSymbolEOL] == !allBefore &&
+                              [ed symbolVisible:NppSymbolNonPrinting] == !allBefore &&
+                              [ed symbolVisible:NppSymbolControlAndUnicodeEOL] == !allBefore;
+            [ed toggleSymbol:NppSymbolAll];
+            Check(@"IDM_VIEW_ALL_CHARACTERS", @"Show All Characters turns the four invisible-character symbols on and off together",
+                  allFlipped);
+        }
+
         SetDoc(ed, @"one\ntwo\nthree\n");
         [sci message:SCI_SETSEL wParam:(uptr_t)[sci message:SCI_POSITIONFROMLINE wParam:1]
                  lParam:[sci message:SCI_GETLINEENDPOSITION wParam:1]];
@@ -4362,6 +4458,20 @@ int NppMacRunTests(AppDelegate *app) {
         [app toggleAlwaysOnTop:nil];
         Check(@"IDM_VIEW_ALWAYSONTOP", @"raises and lowers the window level",
               onTop && app.window.level == NSNormalWindowLevel);
+
+        // Post-It keeps an Always on Top from before; Distraction Free ignores Post-It (VIEW-011/012).
+        [app toggleAlwaysOnTop:nil];
+        [app togglePostIt:nil];
+        [app togglePostIt:nil];
+        BOOL keptOnTop = app.window.level == NSFloatingWindowLevel;
+        [app toggleAlwaysOnTop:nil];
+        [app toggleDistractionFree:nil];
+        [app togglePostIt:nil];
+        BOOL ignored = app.window.level == NSNormalWindowLevel && ![ed chromeVisible];
+        [app toggleDistractionFree:nil];
+        Check(@"IDM_VIEW_POSTIT (special views)",
+              @"leaving Post-It keeps Always on Top as it was; in Distraction Free Post-It does nothing",
+              keptOnTop && ignored && [ed chromeVisible]);
 
         // Toggling real full screen animates and would stall the suite.
         // Top-level bar items carry no title of their own; the submenu does.
