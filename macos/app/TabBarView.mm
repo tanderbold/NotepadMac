@@ -22,6 +22,7 @@ static const CGFloat kPadding = 8;
     if (!(self = [super initWithFrame:frame])) return nil;
     _tabFrames = [NSMutableArray array];
     _selectedIndex = 0;
+    _inFocusedView = YES;
     _hoverIndex = -1;
     _dragIndex = -1;
     _showCloseButtons = YES;
@@ -175,7 +176,7 @@ static NSColor *TabColour(NSInteger colour) {
         NSRectFillUsingOperation(tab, NSCompositingOperationSourceOver);
         // Draw a colored bar on active tab: the focused or unfocused colour.
         if (active && self.drawActiveBar) {
-            NSColor *bar = self.window.isKeyWindow ? (self.activeBarColour ?: [NSColor systemOrangeColor])
+            NSColor *bar = self.window.isKeyWindow && self.inFocusedView ? (self.activeBarColour ?: [NSColor systemOrangeColor])
                                                    : (self.activeBarUnfocusedColour ?: [NSColor systemOrangeColor]);
             [bar setFill];
             NSRectFill(NSMakeRect(NSMinX(tab), self.isFlipped ? NSMinY(tab) : NSMaxY(tab) - 3, NSWidth(tab), 3));

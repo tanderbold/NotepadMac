@@ -908,12 +908,14 @@ int NppMacRunTests(AppDelegate *app) {
             [ed setDocumentText:@"shown\n"];
             [ed cloneCurrentToOtherView];
             [ed newDocument];
+            void *closedPointer = shown.docPointer;
             [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:shown] discardChanges:YES];
-            BOOL movedOff = (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == ed.currentDocument.docPointer;
+            // Its last tab gone, the second view goes too (upstream hides a view left with no tabs).
+            BOOL movedOff = (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] != closedPointer && ![ed secondaryViewVisible];
             [ed setSecondaryViewVisible:NO];
             [ed closeDocumentAtIndex:ed.documents.count - 1 discardChanges:YES];
             Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (the pane survives a close)",
-                  @"closing the cloned document points the other pane at the document in front", movedOff);
+                  @"closing the cloned document takes the other pane off it; the view with no tabs left is hidden", movedOff);
         }
 
         // The caret belongs to the document: it is where it was when the tab
@@ -4814,10 +4816,10 @@ int NppMacRunTests(AppDelegate *app) {
         [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
                   discardChanges:YES];
 
-        NSUInteger before = ed.documents.count;
+        NSUInteger before = ed.mainViewDocuments.count, open = ed.documents.count;
         [ed moveCurrentToOtherView];
-        Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW", @"the tab leaves the primary pane",
-              ed.documents.count == before - 1);
+        Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW", @"the tab leaves the primary pane, the document stays open",
+              ed.mainViewDocuments.count == before - 1 && ed.documents.count == open);
 
         [ed focusOtherView];
         BOOL onOther = [ed otherViewHasFocus];
@@ -4825,7 +4827,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed.secondarySci message:SCI_APPENDTEXT wParam:3 lParam:(sptr_t)"\n\n\n"];
         [ed.secondarySci message:SCI_DOCUMENTEND];
         long subLine = [ed.secondarySci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[ed.secondarySci message:SCI_GETCURRENTPOS]] + 1;
-        [ed.sci message:SCI_DOCUMENTSTART];
+        [ed.mainSci message:SCI_DOCUMENTSTART];
         [ed refreshChrome];
         NSTextField *statusText = [ed valueForKey:@"statusField"];
         BOOL follows = subLine > 1 && [statusText.stringValue containsString:[NSString stringWithFormat:@"Ln: %ld ", subLine]];
@@ -4866,6 +4868,214 @@ int NppMacRunTests(AppDelegate *app) {
         [ed setSyncZoom:NO];
         [sci message:SCI_SETZOOM wParam:0 lParam:0];
         [ed setSecondaryViewVisible:NO];
+
+        // Each view has its tab list, as upstream's _mainDocTab and _subDocTab.
+        {
+            [ed closeAllDocuments];
+            NSString *pa = TempFile(@"t_views_a.txt", @"aaa\n"), *pb = TempFile(@"t_views_b.txt", @"bbb\n"),
+                     *pc = TempFile(@"t_views_c.txt", @"ccc\n");
+            for (NSString *p in @[pa, pb, pc]) [ed openFileAtPath:p error:&err];
+            NppDocument *da = ed.documents[0], *db = ed.documents[1], *dc = ed.documents[2];
+            NSArray *(^paths)(NSArray<NppDocument *> *) = ^NSArray *(NSArray<NppDocument *> *list) { return [list valueForKey:@"path"]; };
+            NppTabBarView *mainBar = [ed valueForKey:@"tabBar"], *subBar = [ed valueForKey:@"subTabBar"];
+            [ed selectDocumentAtIndex:1];
+            [ed.sci message:SCI_APPENDTEXT wParam:1 lParam:(sptr_t)"!"];
+            BOOL moved = [ed moveCurrentToOtherView];
+            Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (own tabs)",
+                  @"Move to Other View takes the tab into the second view's tabs, unsaved changes and all; the main view shows a neighbour",
+                  moved && [paths(ed.mainViewDocuments) isEqualToArray:(@[pa, pc])] && [ed.subViewDocuments isEqualToArray:@[db]] &&
+                  [ed.documents containsObject:db] && db.modified && db.secondViewOnly &&
+                  mainBar.items.count == 2 && subBar.items.count == 1 && !subBar.hidden &&
+                  (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == db.docPointer &&
+                  [[ed.secondarySci string] isEqualToString:@"bbb\n!"] && ed.currentDocument != db);
+
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:dc]];
+            [ed cloneCurrentToOtherView];
+            BOOL cloned = [ed.subViewDocuments isEqualToArray:(@[db, dc])] && [ed.mainViewDocuments containsObject:dc] &&
+                          [ed documentInSecondaryView] == dc && subBar.selectedIndex == 1;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:da]];
+            Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (own tabs)",
+                  @"Clone shows the document in both views' tabs; each view keeps its own document in front",
+                  cloned && ed.currentDocument == da && [ed documentInSecondaryView] == dc);
+
+            // Session: both views' tabs, as upstream's mainView and subView File entries.
+            NSString *sess = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_views_session.xml"];
+            [ed saveSessionTo:sess error:NULL];
+            NSString *xml = [NSString stringWithContentsOfFile:sess encoding:NSUTF8StringEncoding error:NULL] ?: @"";
+            NSRange subAt = [xml rangeOfString:@"<subView"], mainAt = [xml rangeOfString:@"<mainView"];
+            NSString *subPart = subAt.location != NSNotFound ? [xml substringFromIndex:subAt.location] : @"";
+            NSString *mainPart = mainAt.location != NSNotFound && subAt.location != NSNotFound
+                ? [xml substringWithRange:NSMakeRange(mainAt.location, subAt.location - mainAt.location)] : @"";
+            BOOL written = [subPart containsString:pb] && [subPart containsString:pc] && [subPart containsString:@"activeIndex=\"1\""] &&
+                           [mainPart containsString:pa] && [mainPart containsString:pc] && ![mainPart containsString:pb];
+
+            // Per view closing: the clone's main tab goes without the document; its last tab closes it.
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:dc]];
+            [ed closeCurrentDocument];
+            BOOL mainTabOnly = ![ed.mainViewDocuments containsObject:dc] && [ed.documents containsObject:dc] &&
+                               [ed.subViewDocuments containsObject:dc];
+            [(id<NppTabBarDelegate>)ed tabBar:subBar didRequestCloseIndex:(NSInteger)[ed.subViewDocuments indexOfObject:dc]];
+            Check(@"IDM_FILE_CLOSE (per view)",
+                  @"closing a clone's tab in one view leaves it open in the other; closing its last tab closes it",
+                  mainTabOnly && ![ed.documents containsObject:dc] && [ed.subViewDocuments isEqualToArray:@[db]] &&
+                  [ed documentInSecondaryView] == db);
+
+            // Compare borrows the pane, not the view's document.
+            [ed compareCurrentWithText:@"zzz\n"];
+            BOOL comparing = [[ed.secondarySci string] isEqualToString:@"zzz\n"];
+            [ed clearActiveCompare];
+            Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (compare)",
+                  @"a comparison shows its text in the second pane and gives the view its tab back, untouched",
+                  comparing && [ed secondaryViewVisible] && [ed documentInSecondaryView] == db &&
+                  [[ed.secondarySci string] isEqualToString:@"bbb\n!"] && !subBar.hidden);
+
+            // From the second view: Move to Other View brings the tab back, and the emptied view goes.
+            [ed.window makeFirstResponder:ed.secondarySci.content];
+            BOOL focused = [ed otherViewHasFocus];
+            [ed moveCurrentToOtherView];
+            Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (from the second view)",
+                  @"the second view's tab goes back to the main view's tabs; the view with none left is hidden",
+                  focused && ([ed.mainViewDocuments containsObject:db] && !db.secondViewOnly && ed.subViewDocuments.count == 0 &&
+                               ![ed secondaryViewVisible] && ed.currentDocument == db));
+
+            [ed closeAllDocuments];
+            BOOL loaded = [ed loadSessionFrom:sess error:NULL];
+            NppDocument *(^named)(NSString *) = ^NppDocument *(NSString *p) {
+                for (NppDocument *d in ed.documents) if ([d.path isEqualToString:p]) return d;
+                return nil;
+            };
+            NppDocument *lb = named(pb), *lc = named(pc);
+            Check(@"IDM_FILE_LOADSESSION (both views)",
+                  @"a session keeps each view's tabs: the moved file comes back in the second view only, the clone in both",
+                  written && loaded && lb && lc && lb.secondViewOnly && [ed.subViewDocuments isEqualToArray:(@[lb, lc])] &&
+                  [ed.mainViewDocuments containsObject:lc] && ![ed.mainViewDocuments containsObject:lb] &&
+                  [ed documentInSecondaryView] == lc && lb.modified == NO);
+            [ed setSecondaryViewVisible:NO];
+            BOOL gaveBack = [ed.mainViewDocuments containsObject:lb] && !lb.secondViewOnly;
+            Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (view hidden)", @"hiding the second view gives its documents back to the main view's tabs", gaveBack);
+            [ed closeAllDocuments];
+        }
+
+        // The focused view is the one commands act on, as upstream's _pEditView and _pDocTab
+        // follow the focus: its document is edited, saved, converted and shown in the chrome.
+        {
+            [ed closeAllDocuments];
+            NSString *pa = TempFile(@"t_focus_a.txt", @"alpha\n"), *pb = TempFile(@"t_focus_b.txt", @"beta\n");
+            [ed openFileAtPath:pa error:&err];
+            [ed openFileAtPath:pb error:&err];
+            NppDocument *da = nil, *db = nil;
+            for (NppDocument *d in ed.documents) { if ([d.path isEqualToString:pa]) da = d; if ([d.path isEqualToString:pb]) db = d; }
+            NppTabBarView *mainBar = [ed valueForKey:@"tabBar"], *subBar = [ed valueForKey:@"subTabBar"];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:db]];
+            [ed moveCurrentToOtherView];                                   // b only in the second view, a in the main one
+            [ed.window makeFirstResponder:ed.secondarySci.content];
+            BOOL follows = [ed secondaryViewIsActive] && ed.sci == ed.secondarySci && ed.otherSci == ed.mainSci &&
+                           ed.currentDocument == db && [ed mainCurrentDocument] == da;
+            Check(@"IDM_VIEW_SWITCHTO_OTHER_VIEW (active view)",
+                  @"with the focus in the second view, the editor and the document commands work on are that view's",
+                  follows);
+
+            // Edit: typing there marks its document modified (its own savepoint notification), not the other.
+            [ed.sci message:SCI_DOCUMENTEND];
+            [ed.sci message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)"x"];
+            [ed refreshChrome];
+            BOOL title = [ed.window.title containsString:@"t_focus_b.txt"];
+            BOOL statusFollows = subBar.inFocusedView && !mainBar.inFocusedView;
+            Check(@"IDM_EDIT (focused view)",
+                  @"an edit in the second view changes and marks its document; the window title and the active tab indicator follow that view",
+                  db.modified && !da.modified && [[ed.secondarySci string] isEqualToString:@"beta\nx"] &&
+                  [[ed.mainSci string] isEqualToString:@"alpha\n"] && title && statusFollows);
+
+            // Encoding / Format: EOL conversion; Language: the lexer of the second view's document.
+            [ed convertEOLTo:SC_EOL_CRLF];
+            [ed setLanguageNamed:@"python"];
+            [ed toggleBookmark];
+            long bookmarked = [ed.secondarySci message:SCI_MARKERGET wParam:(uptr_t)[ed.secondarySci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[ed.secondarySci message:SCI_GETCURRENTPOS]]] & (1 << 1);
+            Check(@"IDM_FORMAT_TODOS (focused view)",
+                  @"EOL conversion, the language and a bookmark go to the second view's document, the main view's stays as it was",
+                  [[ed.secondarySci string] isEqualToString:@"beta\r\nx"] && db.eolMode == SC_EOL_CRLF &&
+                  [[ed.mainSci string] isEqualToString:@"alpha\n"] && da.eolMode != SC_EOL_CRLF &&
+                  [db.language.name isEqualToString:@"python"] && ![da.language.name isEqualToString:@"python"] &&
+                  bookmarked != 0 && [ed.mainSci message:SCI_MARKERNEXT wParam:0 lParam:(1 << 1)] == -1);
+
+            // File: Save writes the second view's document.
+            [ed saveCurrentDocument];
+            NSString *onDisk = [NSString stringWithContentsOfFile:pb encoding:NSUTF8StringEncoding error:NULL];
+            NSString *otherOnDisk = [NSString stringWithContentsOfFile:pa encoding:NSUTF8StringEncoding error:NULL];
+            Check(@"IDM_FILE_SAVE (focused view)",
+                  @"Save writes the focused second view's document and clears its modified mark",
+                  [onDisk isEqualToString:@"beta\r\nx"] && [otherOnDisk isEqualToString:@"alpha\n"] && !db.modified);
+
+            // Search: Find acts in the focused view.
+            [ed.sci message:SCI_GOTOPOS wParam:0 lParam:0];
+            [ed.sci message:SCI_SETTARGETSTART wParam:0 lParam:0];
+            [ed.sci message:SCI_SETTARGETEND wParam:(uptr_t)[ed.sci message:SCI_GETLENGTH] lParam:0];
+            long found = [ed.sci message:SCI_SEARCHINTARGET wParam:3 lParam:(sptr_t)"eta"];
+            Check(@"IDM_SEARCH_FIND (focused view)", @"the second view's text is what a search in it sees", found == 1);
+
+            // Tabs: Ctrl+Tab goes through the focused view's tabs; a main-view tab brings the focus back.
+            [ed.window makeFirstResponder:ed.mainSci.content];
+            [ed cloneCurrentToOtherView];                                  // a in both views
+            [ed.window makeFirstResponder:ed.secondarySci.content];
+            NppDocument *subFront = [ed documentInSecondaryView];
+            [ed goToNextTab];
+            BOOL cycled = [ed documentInSecondaryView] != subFront && [ed secondaryViewIsActive] && [ed mainCurrentDocument] == da;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:da]];
+            Check(@"IDM_VIEW_TAB_NEXT (focused view)",
+                  @"Next Tab goes through the second view's tabs while it has the focus; choosing a main-view tab gives the main view the focus",
+                  cycled && ![ed otherViewHasFocus] && ed.currentDocument == da && ed.sci == ed.mainSci);
+
+            // The second view's tab bar follows the Tab Bar preferences as the main one does.
+            NppPreferences *tp = [NppPreferences shared];
+            BOOL wasVertical = tp.tabBarVertical, wasMulti = tp.tabBarMultiLine, wasReduced = tp.tabReduced, wasClose = tp.tabShowCloseButton;
+            tp.tabBarVertical = YES; tp.tabReduced = YES; tp.tabShowCloseButton = NO;
+            [ed applyTabBarPreferences];
+            NSView *host = [ed secondaryHost];
+            BOOL vertical = subBar.vertical && subBar.reduced && !subBar.showCloseButtons &&
+                            NSHeight(subBar.frame) == NSHeight(host.bounds) && NSMinX(ed.secondarySci.frame) >= NSWidth(subBar.frame) - 0.5 &&
+                            NSWidth(subBar.frame) > 40;
+            tp.tabBarVertical = NO; tp.tabBarMultiLine = YES;
+            [ed applyTabBarPreferences];
+            BOOL multi = subBar.multiLine && !subBar.vertical && NSMaxY(ed.secondarySci.frame) <= NSMinY(subBar.frame) + 0.5;
+            tp.tabBarVertical = wasVertical; tp.tabBarMultiLine = wasMulti; tp.tabReduced = wasReduced; tp.tabShowCloseButton = wasClose;
+            [ed applyTabBarPreferences];
+            Check(@"IDM_SETTING_PREFERENCE (second view's tab bar)",
+                  @"the second view's tab bar is vertical, multi-line, reduced and without close buttons when the preferences say so",
+                  vertical && multi);
+
+            // Session: an untitled document only in the second view comes back there, from its backup.
+            [ed newDocument];
+            SetDoc(ed, @"only in the second view\n");
+            ed.currentDocument.modified = YES;
+            NppDocument *untitled = ed.currentDocument;
+            NSString *untitledName = untitled.displayName;
+            [ed moveCurrentToOtherView];
+            [ed runAutosavePass];
+            NSString *sess = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_focus_session.xml"];
+            [ed saveSessionTo:sess error:NULL];
+            NSString *xml = [NSString stringWithContentsOfFile:sess encoding:NSUTF8StringEncoding error:NULL] ?: @"";
+            NSRange subAt = [xml rangeOfString:@"<subView"];
+            NSString *subPart = subAt.location != NSNotFound ? [xml substringFromIndex:subAt.location] : @"";
+            NSString *mainPart = subAt.location != NSNotFound ? [xml substringToIndex:subAt.location] : xml;
+            NSString *backup = untitled.backupPath;
+            BOOL written = untitled.secondViewOnly && backup.length && [subPart containsString:backup] && ![mainPart containsString:backup];
+            untitled.backupPath = nil;                                     // closed as a crash would leave it
+            [ed closeAllDocuments];
+            [ed loadSessionFrom:sess error:NULL];
+            NppDocument *back = nil;
+            for (NppDocument *d in ed.documents) if (!d.path && [d.backupPath isEqualToString:backup ?: @"-"]) back = d;
+            BOOL restored = back && back.secondViewOnly && [ed.subViewDocuments containsObject:back] &&
+                            ![ed.mainViewDocuments containsObject:back] && [back.displayName isEqualToString:untitledName] && back.modified &&
+                            (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == back.docPointer &&
+                            [[ed.secondarySci string] isEqualToString:@"only in the second view\n"];
+            Check(@"IDM_FILE_LOADSESSION (untitled in the second view)",
+                  @"an untitled document only in the second view is written in subView with its backup and comes back in that view",
+                  written && restored);
+            if (backup) [[NSFileManager defaultManager] removeItemAtPath:backup error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:sess error:NULL];
+            [ed setSecondaryViewVisible:NO];
+            [ed closeAllDocuments];
+        }
 
         // Spawning real app instances from a test would litter the session.
         [ed newDocument];
@@ -11252,6 +11462,41 @@ int NppMacRunTests(AppDelegate *app) {
         if (wasFont) [ud setObject:wasFont forKey:@"NppMac.fontName"]; else [ud removeObjectForKey:@"NppMac.fontName"];
         [ed applyLanguage];
         SetDoc(ed, @"");
+    }
+
+    if (NppSectionWanted(@"Tab bar layout")) { printf("\n== Tab bar layout ==\n");
+        // TabBarPlus with TCS_VERTICAL: a column of tabs left of the panes; Multi-line: as many rows as needed.
+        NppPreferences *tp = [NppPreferences shared];
+        BOOL wasVertical = tp.tabBarVertical, wasMulti = tp.tabBarMultiLine, wasHidden = tp.hideTabBar;
+        tp.hideTabBar = NO;
+        NSView *bar = [ed valueForKey:@"tabBar"], *panes = [ed valueForKey:@"editorSplit"], *area = [ed valueForKey:@"editorArea"];
+        tp.tabBarVertical = YES;
+        [ed applyTabBarPreferences];
+        BOOL side = NSHeight(bar.frame) > NSWidth(bar.frame) && NSMaxX(bar.frame) <= NSMinX(panes.frame) + 0.5 &&
+                    NSHeight(panes.frame) == NSHeight(area.bounds);
+        tp.tabBarVertical = NO;
+        [ed applyTabBarPreferences];
+        BOOL strip = NSWidth(bar.frame) == NSWidth(area.bounds) && NSHeight(bar.frame) == 28 &&
+                     NSMaxY(panes.frame) <= NSMinY(bar.frame) + 0.5 && NSMinX(panes.frame) == 0;
+        Check(@"IDM_SETTING_PREFERENCE (tab bar vertical)",
+              @"Vertical puts the tab bar in a column left of the panes, and back in the strip above them",
+              side && strip);
+        NSMutableArray<NSString *> *made = [NSMutableArray array];
+        for (int i = 0; i < 14; ++i) { [ed newDocument]; [made addObject:ed.currentDocument.displayName ?: @""]; }
+        tp.tabBarMultiLine = YES;
+        [ed applyTabBarPreferences];
+        [ed refreshChrome];
+        BOOL rows = NSHeight(bar.frame) > 28 && NSMaxY(panes.frame) <= NSMinY(bar.frame) + 0.5;
+        tp.tabBarMultiLine = wasMulti;
+        [ed applyTabBarPreferences];
+        Check(@"IDM_SETTING_PREFERENCE (tab bar multi-line)", @"Multi-line makes the strip as tall as its rows; the panes give it the room",
+              rows && NSHeight(bar.frame) == 28);
+        for (NSInteger i = (NSInteger)ed.documents.count - 1; i >= 0; --i) {
+            if ([made containsObject:ed.documents[(NSUInteger)i].displayName ?: @""] && !ed.documents[(NSUInteger)i].path)
+                [ed closeDocumentAtIndex:i discardChanges:YES];
+        }
+        tp.tabBarVertical = wasVertical; tp.hideTabBar = wasHidden;
+        [ed applyTabBarPreferences];
     }
 
     if (NppSectionWanted(@"Selected numbers")) { printf("\n== Selected numbers ==\n");

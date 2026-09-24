@@ -176,7 +176,10 @@ static const char kAutosaveTimerKey = 0;
     // modified document goes to its own file in the backup folder, and the
     // document's own file is never touched. The session lists the backups,
     // so the text comes back after a crash or a quit.
-    NSInteger restore = [self.documents indexOfObject:self.currentDocument];
+    // Each document is brought to the main view's front in turn; the focus goes back to the view
+    // that had it.
+    NSInteger restore = [self.documents indexOfObject:[self mainCurrentDocument]];
+    BOOL secondFocused = [self otherViewHasFocus] && [self documentInSecondaryView];
     NppDocument *previous = [self previousTab];
     NSUInteger written = 0;
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -213,6 +216,7 @@ static const char kAutosaveTimerKey = 0;
         if (data && [data writeToFile:d.backupPath options:NSDataWritingAtomic error:NULL]) written++;
     }
     if (restore != NSNotFound) [self selectDocumentAtIndex:restore];
+    if (secondFocused) [self.window makeFirstResponder:self.secondarySci.content];
     [self rememberPreviousTab:previous];
     if (!self.sessionSavingDisabled) [self saveSessionTo:[self defaultSessionPath] error:NULL];
     return written;

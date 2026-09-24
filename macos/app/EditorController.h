@@ -43,6 +43,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 @property (nonatomic) BOOL isSearchResults;
 @property (nonatomic) BOOL pinned;                 // survives Close All but Pinned
 @property (nonatomic) NSInteger tabColour;         // 0 = none, 1..5 as in Notepad++
+/// In the second view's tabs only, not the main view's (moved there): such documents come
+/// after the main view's in `documents`, which lists every open document.
+@property (nonatomic) BOOL secondViewOnly;
 /// Set when the language was chosen from the menu rather than worked out from
 /// the file name. Renaming then leaves it alone, as Notepad++ does.
 @property (nonatomic) BOOL languageChosenByUser;
@@ -77,10 +80,17 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 @end
 
 @interface EditorController : NSObject <NppTabBarDelegate>
+/// The focused view (upstream's _pEditView): the main view unless the second one has the focus.
 @property (nonatomic, readonly) ScintillaView *sci;
+/// The main view, whichever has the focus; otherSci is the view that is not the focused one.
+@property (nonatomic, readonly) ScintillaView *mainSci;
+@property (nonatomic, readonly) ScintillaView *otherSci;
 @property (nonatomic, readonly) NSView *view;           // tab bar + editor + status bar
 @property (nonatomic, readonly) NSArray<NppDocument *> *documents;
 @property (nonatomic, readonly, nullable) NppDocument *currentDocument;
+/// The main view's document in front, whichever view has the focus (currentDocument is the
+/// focused view's, as upstream's _pEditView): tabs, session and main-view settings use this.
+- (nullable NppDocument *)mainCurrentDocument;
 @property (nonatomic, weak, nullable) NSWindow *window;
 /// Added to the window title, as -titleAdd= on the command line asks.
 @property (nonatomic, copy, nullable) NSString *titleSuffix;
@@ -242,16 +252,32 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 /// -notabbar: the tab bar hidden for this run, the status bar kept.
 @property (nonatomic) BOOL tabBarHiddenForLaunch;
 - (void)hideTabBarForLaunch;
+/// The tab bar above the panes (rows as Multi-line needs) or down their left (Vertical); hidden, none.
+- (void)layoutEditorArea;
 - (void)setChromeVisible:(BOOL)visible;           // hides tab bar + status bar
 - (BOOL)chromeVisible;
 
-// Second editor pane. Notepad++ calls these "views"; here the primary pane
-// owns the tab bar and the secondary one shows a moved or cloned document.
+// Second editor pane. Notepad++ calls these "views": each has its tab list, as upstream's
+// _mainDocTab/_subDocTab. `documents` is every open document, the main view's tabs first
+// (documents[0..mainViewDocuments.count)), then those only in the second view.
 @property (nonatomic, readonly) ScintillaView *secondarySci;
+- (NSArray<NppDocument *> *)mainViewDocuments;
+/// The second view's tabs, in order: documents moved there and clones of main-view ones.
+- (NSArray<NppDocument *> *)subViewDocuments;
+/// Brings a document of the second view's tabs to front in that view.
+- (void)showDocumentInSecondaryView:(NppDocument *)doc;
 - (BOOL)secondaryViewVisible;
+/// Hiding it gives its moved documents back to the main view's tabs: nothing is closed.
 - (void)setSecondaryViewVisible:(BOOL)visible;
+/// Compare's text in the second pane: a Scintilla document of its own over the view's tabs,
+/// which come back when the comparison ends (the view hides if it had none).
+- (void)beginSecondaryScratch;
+- (void)endSecondaryScratch;
+- (void)layoutSecondaryHost;
 - (void)focusOtherView;
 - (BOOL)otherViewHasFocus;
+/// The second view has the focus and one of its tabs' documents in it: commands act on that.
+- (BOOL)secondaryViewIsActive;
 - (BOOL)moveCurrentToOtherView;
 /// What the second view shows, while it is shown.
 - (nullable NppDocument *)documentInSecondaryView;

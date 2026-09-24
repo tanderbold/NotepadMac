@@ -3557,7 +3557,7 @@ static BOOL NppForwardToFieldEditor(SEL action, id sender) {
 
 - (NSArray<ScintillaView *> *)bothViews {
     ScintillaView *second = self.editor.secondarySci;
-    return second ? @[self.editor.sci, second] : @[self.editor.sci];
+    return second ? @[self.editor.mainSci, second] : @[self.editor.mainSci];
 }
 
 - (void)toggleOvertype:(id)sender { [self.editor toggleOvertype]; }
@@ -4181,19 +4181,9 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     return self.switcherOrder[(NSUInteger)row].displayName;
 }
 
-- (void)nextTab:(id)sender {
-    NSInteger n = (NSInteger)self.editor.documents.count;
-    if (n < 2) return;
-    NSInteger cur = [self.editor.documents indexOfObject:self.editor.currentDocument];
-    [self.editor selectDocumentAtIndex:(cur + 1) % n];
-}
-
-- (void)previousTab:(id)sender {
-    NSInteger n = (NSInteger)self.editor.documents.count;
-    if (n < 2) return;
-    NSInteger cur = [self.editor.documents indexOfObject:self.editor.currentDocument];
-    [self.editor selectDocumentAtIndex:(cur - 1 + n) % n];
-}
+// The focused view's tabs, as upstream's IDM_VIEW_TAB_NEXT / _PREV on _pDocTab.
+- (void)nextTab:(id)sender { [self.editor goToNextTab]; }
+- (void)previousTab:(id)sender { [self.editor goToPreviousTab]; }
 
 #pragma mark - Search
 

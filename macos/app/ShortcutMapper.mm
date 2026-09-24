@@ -602,7 +602,7 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
     }
     command.combo = combo;
     [self applyToMenus];
-    [self applyScintillaKeysTo:self.editor.sci];
+    [self applyScintillaKeysTo:self.editor.mainSci];
     if (self.editor.secondarySci) [self applyScintillaKeysTo:self.editor.secondarySci];
     [self save];
 }
@@ -796,7 +796,7 @@ static void AddComboAttributes(NSXMLElement *e, NppKeyCombo *combo) {
         }
     }
     [self applyToMenus];
-    [self applyScintillaKeysTo:self.editor.sci];
+    [self applyScintillaKeysTo:self.editor.mainSci];
     if (self.editor.secondarySci) [self applyScintillaKeysTo:self.editor.secondarySci];
 }
 

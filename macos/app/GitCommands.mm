@@ -250,7 +250,7 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 - (void)gitInstall {
     if (objc_getAssociatedObject(self, &kGitInstalledKey)) return;
     objc_setAssociatedObject(self, &kGitInstalledKey, @YES, OBJC_ASSOCIATION_RETAIN);
-    for (ScintillaView *sci in @[self.sci, self.secondarySci]) {
+    for (ScintillaView *sci in @[self.mainSci, self.secondarySci]) {
         // Full-width bars, where Change History's margin beside this one draws
         // narrow ones, and Compare's own words for the three ideas - green for
         // added, amber for changed, red for gone - so the git margin, the

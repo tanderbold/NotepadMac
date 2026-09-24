@@ -47,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// From the theme: Active tab focused / unfocused indicator, Active tab text, Inactive tabs.
 @property (nonatomic, strong, nullable) NSColor *activeBarColour, *activeBarUnfocusedColour, *activeTextColour;
 @property (nonatomic, strong, nullable) NSColor *inactiveTextColour, *inactiveBackColour;
+/// The bar of the view with the focus (NPPM_INTERNAL_ISFOCUSEDTAB): its active tab's bar is in the
+/// focused colour, the other view's in the unfocused one. YES unless told otherwise.
+@property (nonatomic) BOOL inFocusedView;
 /// The label a tab shows, shortened to the limit.
 - (NSString *)displayTitleAtIndex:(NSInteger)index;
 

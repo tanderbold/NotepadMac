@@ -29,7 +29,7 @@ from the Windows menu resource, see [macos/FEATURES.md](macos/FEATURES.md)), and
 the way they do on Windows - the port is written against Notepad++'s own sources.
 
 **Editing**
-- Tabs, two views side by side (move or clone a document to the other view), drag and pin tabs, tab colours.
+- Tabs, two views side by side, each with its own tabs (move or clone a document to the other view), drag and pin tabs, tab colours, a vertical tab bar.
 - Multi-selection and column mode, Column Editor, Begin/End Select, line operations (sort seven ways, remove duplicates, join, split, move), case conversions, trim and tab/space conversion, comment toggling, date/time insertion.
 - Auto-completion of words, functions and paths with parameter hints; auto-close of brackets, quotes and HTML tags; smart highlighting; brace and XML-tag matching.
 - Bookmarks with line operations, five mark styles, Change History, code folding, hidden lines.
