@@ -8356,6 +8356,21 @@ int NppMacRunTests(AppDelegate *app) {
             [[unreachable componentsJoinedByString:@", "] UTF8String]);
     }
 
+    if (NppSectionWanted(@"Block Comment key")) { printf("\n== Block Comment key ==\n");
+        NSMenuItem *block = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+            for (NSMenuItem *it in top.submenu.itemArray) {
+                if (it.action == NSSelectorFromString(@"toggleBlockComment:")) block = it;
+                for (NSMenuItem *sub in it.submenu.itemArray)
+                    if (sub.action == NSSelectorFromString(@"toggleBlockComment:")) block = sub;
+            }
+        Check(@"IDM_EDIT_STREAM_COMMENT (key)",
+              @"Block Comment is Option+Cmd+/: Shift+Cmd+/ is Cmd+?, which macOS keeps for the Help menu's search",
+              block && [block.keyEquivalent isEqualToString:@"/"] &&
+              (block.keyEquivalentModifierMask & NSEventModifierFlagDeviceIndependentFlagsMask) ==
+                  (NSEventModifierFlagCommand | NSEventModifierFlagOption));
+    }
+
     if (NppSectionWanted(@"New document defaults")) { printf("\n== New document defaults ==\n");
         // The registered default, whatever the user set: NewDocDefaultSettings::_addNewDocumentOnStartup.
         NSDictionary *registered = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
