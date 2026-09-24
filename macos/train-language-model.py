@@ -36,6 +36,7 @@ Needs numpy. Nothing else outside the standard library.
 import argparse
 import collections
 import hashlib
+import json
 import math
 import os
 import random
@@ -162,6 +163,9 @@ OTHER_NAMES = {
     "bbc basic": "freebasic", "objective c": "objc", "free pascal": "pascal",
     "delphi": "pascal", "batch file": "batch", "windows batch file": "batch",
     "f sharp": "fsharp", "python 3": "python", "python 2": "python",
+    # Linguist's "JSON with Comments" is JSONC, which Notepad++ opens with its json5
+    # lexer (langs.model.xml: json5 ext="json5 jsonc").
+    "json with comments": "json5",
 }
 
 
@@ -188,12 +192,38 @@ def read_sample(path):
     return raw
 
 
+JSON_COMMENT = re.compile(rb"(^|\n)[ \t]*//|/\*")
+
+
+def is_json(raw):
+    """A file labelled JSON is kept only if it is JSON: a tsconfig.json or a
+    .vscode/settings.json with comments or trailing commas is JSONC (what Notepad++'s
+    json5 lexer is for), and teaching the model that JSON has comments is what made
+    it take JSON5 for JSON. A file cut at READ_BYTES cannot be parsed whole: it is
+    kept unless it has comments."""
+    if len(raw) >= READ_BYTES:
+        return not JSON_COMMENT.search(raw)
+    try:
+        json.loads(raw.decode("utf-8-sig"))
+        return True
+    except (ValueError, UnicodeDecodeError):
+        return False
+
+
 class Sample:
     __slots__ = ("language", "raw", "path", "source", "group")
 
     def __init__(self, language, raw, path, source, group):
         self.language = SAME_LANGUAGE.get(language, language)
-        self.raw, self.path, self.source, self.group = raw, path, source, group
+        # A file of the checkout goes by its path in the repository: the split and the
+        # order hash these, and the same checkout elsewhere (a worktree) must train
+        # the same model.
+        self.raw, self.path, self.source, self.group = raw, in_repository(path), source, in_repository(group)
+
+
+def in_repository(path):
+    full = os.path.abspath(path)
+    return os.path.relpath(full, ROOT) if full.startswith(ROOT + os.sep) else path
 
 
 def gather(by_extension, names, linguist, rosetta, repos=None):
@@ -344,7 +374,7 @@ def gather(by_extension, names, linguist, rosetta, repos=None):
             if raw:
                 samples.append(Sample(language, raw, path, "repo", path))
 
-    return samples
+    return [sample for sample in samples if sample.language != "json" or is_json(sample.raw)]
 
 
 def generated_hex(known, files=12):
@@ -436,7 +466,9 @@ def choose(samples):
             continue
         composition[language] = collections.Counter(s.source for s in chosen)
         for sample in chosen:
-            held = stable_hash("split:" + sample.group) % 1000 < HOLDOUT * 1000
+            # The samples written for the application (language-samples) are few and
+            # made to show each language as it is: always learnt from, never held back.
+            held = sample.source != "samples" and stable_hash("split:" + sample.group) % 1000 < HOLDOUT * 1000
             (test if held else train).append(sample)
     return train, test, composition
 

@@ -5401,6 +5401,21 @@ int NppMacRunTests(AppDelegate *app) {
                   @"examples, and one language is offered alone only past the level fitted for that",
                   !addedWrong.count && aloneIsSure && modelLanguages.count >= 80);
 
+            // JSON with comments and trailing commas is JSON5 (the json5 lexer is for it), not
+            // JSON: texts the trainer never saw, where JSON is not even offered; plain JSON stays JSON.
+            NSString *jsonc = @"{\n    // the editor as I like it\n    \"editor.fontSize\": 13,\n    \"editor.rulers\": [80, 120],\n"
+                              @"    /* keep the tabs */\n    \"files.trimTrailingWhitespace\": true,\n"
+                              @"    \"search.exclude\": {\n        \"**/build\": true,\n    },\n}\n";
+            NSString *plainJson = @"{\n  \"name\": \"viewer\",\n  \"version\": \"2.1.0\",\n  \"private\": true,\n  \"scripts\": {\n"
+                                  @"    \"build\": \"tsc -p .\",\n    \"test\": \"jest\"\n  },\n"
+                                  @"  \"dependencies\": {\n    \"left-pad\": \"^1.3.0\"\n  }\n}\n";
+            BOOL jsoncIsJson5 = [[trained guessesForText:jsonc].firstObject.name isEqualToString:@"json5"] &&
+                                ![[trained languagesOfferedForText:jsonc] containsObject:@"json"];
+            BOOL jsonIsJson = [[trained guessesForText:plainJson].firstObject.name isEqualToString:@"json"];
+            Check(@"IDM_LANG_DETECT (JSON5)",
+                  @"JSON with comments and trailing commas is taken for JSON5, not offered as JSON, and plain JSON stays JSON",
+                  jsoncIsJson5 && jsonIsJson);
+
             // A short piece of C-shaped code: what is offered is a choice of
             // no more than ten with C in it, whether C alone or a list. A
             // single answer that is not C, or a list without it, is the
