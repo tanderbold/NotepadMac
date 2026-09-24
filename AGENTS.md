@@ -276,3 +276,6 @@ case wrong, report it; do not special-case it.
   numbers below, commit the `.bin` with the script.
 - Current numbers (held-out, first choice right): whole files 92.6%, 40 lines 90.8%, 20 lines 89.4%,
   10 lines 86.4%, 5 lines 81.7%, quoting 61.5%. JSON5/JSONC files (34 held out) 79%, JSON 98%.
+  A list is offered for 18% of whole files, 34% of 10-line pieces. The rule's measure is flat near
+  its best (rules 0.002 apart differed twofold in how often they ask), so of the rules within
+  `NPP_FIT_TOLERANCE` of the best the trainer takes the one that asks least.

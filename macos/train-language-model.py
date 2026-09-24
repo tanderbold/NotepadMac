@@ -825,6 +825,7 @@ def contains(order, size, labels):
 # a miss is the wrong language applied or none at all. One miss is taken to be
 # as bad as six or seven lists.
 LIST_COST = setting("NPP_LIST_COST", 0.15, float)
+FIT_TOLERANCE = setting("NPP_FIT_TOLERANCE", 0.002, float)   # a fifth of a point of the measure
 TEMPERATURES = np.geomspace(0.05, 10.0, 40)
 HALVES = (0.0, 25.0, 50.0, 100.0, 200.0, 400.0, 800.0, 1600.0)
 # Walked so that each step only lengthens the sets.
@@ -839,7 +840,7 @@ def fit_rule(scores, evidence, labels, weights):
     does. Fitting the scale by likelihood first and the level after gives a
     rule that is sure where it is wrong; this fits the rule itself."""
     total = float(weights.sum())
-    best = None
+    candidates = []
     for half in HALVES:
         for temperature in TEMPERATURES:
             order, sorted_p = sorted_probabilities(scores, evidence, temperature, half)
@@ -848,10 +849,13 @@ def fit_rule(scores, evidence, labels, weights):
                 size = set_sizes(sorted_p, coverage)
                 inside = float((weights * ((rank < size) & (size <= MOST_TO_OFFER))).sum()) / total
                 listed = float((weights * ((size > 1) & (size <= MOST_TO_OFFER))).sum()) / total
-                value = inside - LIST_COST * listed
-                if best is None or value > best[0]:
-                    best = (value, float(temperature), float(half), float(coverage))
-    _, temperature, half, coverage = best
+                candidates.append((inside - LIST_COST * listed, listed, float(temperature), float(half), float(coverage)))
+    # The measure is flat near its best: rules a hair apart in value can ask the user
+    # twice as often, and which one wins then turns on which files happen to be held
+    # out. Of the rules within FIT_TOLERANCE of the best, the one that asks least.
+    best_value = max(c[0] for c in candidates)
+    _, _, temperature, half, coverage = min((c for c in candidates if c[0] >= best_value - FIT_TOLERANCE),
+                                            key=lambda c: (c[1], -c[0]))
     # Then how sure one language has to be to be applied alone, by the same
     # measure: a wrong language applied is a miss, a short list is a list.
     single = coverage

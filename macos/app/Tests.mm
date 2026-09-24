@@ -9757,6 +9757,12 @@ int NppMacRunTests(AppDelegate *app) {
             [[NppLocalization shared] localizeWindow:mapperWindow];
             pushScan(mapperWindow.contentView, [file stringByAppendingString:@" Shortcut Mapper"]);
             [mapper toggle];
+            NppUserLanguageDialog *udl = [[NppUserLanguageDialog alloc] initWithEditor:ed];
+            [udl toggle];
+            NSWindow *udlWindow = [udl valueForKey:@"panel"];
+            [[NppLocalization shared] localizeWindow:udlWindow];
+            pushScan(udlWindow.contentView, [file stringByAppendingString:@" User Defined Language"]);
+            [udl toggle];
             PreferencesWindow *pages = [[PreferencesWindow alloc] initWithEditor:ed];
             [pages toggle];
             NSWindow *pagesWindow = [pages valueForKey:@"panel"];
@@ -9771,7 +9777,7 @@ int NppMacRunTests(AppDelegate *app) {
         [app applyLocalization];
         if (cutButtons.count) printf("    cut or covered buttons:\n        %s\n", [cutButtons componentsJoinedByString:@"\n        "].UTF8String);
         Check(@"Localization (buttons fit)",
-              @"in German, Hungarian, Finnish, French, Japanese and Russian every push button of Find, the Style Configurator, the Shortcut Mapper and Preferences fits its title and covers no other",
+              @"in German, Hungarian, Finnish, French, Japanese and Russian every push button of Find, the Style Configurator, the Shortcut Mapper, User Defined Language and Preferences fits its title and covers no other",
               cutButtons.count == 0);
 
         // The Summary as upstream writes it, by <MiscStrings> id (IDM_VIEW_SUMMARY).
