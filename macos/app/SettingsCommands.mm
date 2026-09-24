@@ -572,7 +572,7 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
         [editor applyLanguage];
     }
     ScintillaView *sci = editor.sci;
-    [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:self.fontName];
+    [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:NppAvailableFontName(self.fontName)];
     [sci message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:self.fontSize];
     [editor applyDocumentSettings];
     [sci message:SCI_SETWRAPMODE wParam:(uptr_t)(self.wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE) lParam:0];
@@ -597,6 +597,25 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
 #pragma mark - Editor side
 
 void NppE2ECountBeep(BOOL muted);   // E2EHooks.mm: counts for the end-to-end suite, nothing otherwise
+
+NSString *NppAvailableFontName(NSString *name) {
+    static NSMutableDictionary<NSString *, NSString *> *resolved;
+    static NSString *monospaced;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        resolved = [NSMutableDictionary dictionary];
+        monospaced = [NSFont monospacedSystemFontOfSize:12 weight:NSFontWeightRegular].fontName;
+    });
+    if (!name.length) return monospaced;
+    NSString *known = resolved[name];
+    if (known) return known;
+    // A face name (Menlo, Courier New) or a family the font manager lists.
+    BOOL installed = [NSFont fontWithName:name size:12] != nil ||
+                     [[NSFontManager sharedFontManager] availableMembersOfFontFamily:name].count > 0;
+    NSString *use = installed ? name : monospaced;
+    resolved[name] = use;
+    return use;
+}
 
 void NppBeep(void) {
     NppE2ECountBeep([NppPreferences shared].muteSounds);

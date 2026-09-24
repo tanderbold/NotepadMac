@@ -10679,6 +10679,32 @@ int NppMacRunTests(AppDelegate *app) {
         [fm removeItemAtPath:root error:NULL];
     }
 
+    if (NppSectionWanted(@"Font fallback")) { printf("\n== Font fallback ==\n");
+        // A font the Mac lacks (Consolas, which only Microsoft Office brings) gives the system's
+        // monospaced font; Core Text alone would answer Helvetica, whose columns do not line up.
+        NSString *mono = [NSFont monospacedSystemFontOfSize:12 weight:NSFontWeightRegular].fontName;
+        Check(@"Font fallback", @"a missing font name gives the system's monospaced font, an installed one is kept",
+              [NppAvailableFontName(@"NoSuchFontNppMac") isEqualToString:mono] &&
+              [NppAvailableFontName(@"Menlo") isEqualToString:@"Menlo"] &&
+              [NppAvailableFontName(@"Courier New") isEqualToString:@"Courier New"]);
+
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        id wasFont = [ud objectForKey:@"NppMac.fontName"];
+        [NppPreferences shared].fontName = @"NoSuchFontNppMac";
+        SetDoc(ed, @"iiiiiiii\nWWWWWWWW\n");
+        [ed applyLanguage];
+        char face[256] = {0};
+        [sci message:SCI_STYLEGETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)face];
+        long line2 = [sci message:SCI_POSITIONFROMLINE wParam:1];
+        long narrow = [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:8];
+        long wide = [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:line2 + 8];
+        Check(@"Font fallback", @"with the chosen font missing the editor is set in the monospaced font and columns line up",
+              [@(face) isEqualToString:mono] && narrow == wide && narrow > 0);
+        if (wasFont) [ud setObject:wasFont forKey:@"NppMac.fontName"]; else [ud removeObjectForKey:@"NppMac.fontName"];
+        [ed applyLanguage];
+        SetDoc(ed, @"");
+    }
+
     if (NppSectionWanted(@"Selected numbers")) { printf("\n== Selected numbers ==\n");
         NppNumberSet *list = [NppNumberSet setFromPieces:@[@"10, 20.5, -3"]];
         Check(@"Selected numbers", @"sum, average, minimum, maximum and count of a comma list",
