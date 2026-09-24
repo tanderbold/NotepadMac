@@ -6,6 +6,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// A control given this identifier keeps its texts as they are (names in their own language).
+FOUNDATION_EXPORT NSString *const NppUntranslatedIdentifier;
+
 @interface NppLocalization : NSObject
 + (instancetype)shared;
 /// The translations there are: file name -> the language's own name.
@@ -30,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)message:(NSString *)english string:(nullable NSString *)string number:(NSInteger)number;
 /// A window's controls and title.
 - (void)localizeWindow:(NSWindow *)window;
+/// A window title that changes after the window was localized (the Find window's tabs):
+/// the English text kept as the original, the translation shown.
+- (void)setTitle:(NSString *)english ofWindow:(NSWindow *)window;
 - (void)localizeView:(NSView *)view;
 @end
 

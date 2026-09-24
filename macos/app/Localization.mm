@@ -1,3 +1,4 @@
+#import "CommandIDs.h"
 #import "Localization.h"
 #import <objc/runtime.h>
 
@@ -198,6 +199,21 @@ static void FitTitledControl(NSControl *c) {
     frame.size.width = MAX(NSWidth(frame), MIN(needed, limit - NSMinX(frame)));
     c.frame = frame;
 }
+
+/// Whether the port names a command as upstream's menu does (menu label, "&",
+/// "..." and a shortcut in brackets aside).
+static BOOL SameLabel(NSString *english, int identifier) {
+    for (int i = 0; i < kNppMenuCommandIDCount; ++i) {
+        if (kNppMenuCommandIDs[i].identifier != identifier) continue;
+        NSString *label = @(kNppMenuCommandIDs[i].label);
+        NSRange bracket = [label rangeOfString:@" ("];
+        if (bracket.location != NSNotFound && [label hasSuffix:@")"]) label = [label substringToIndex:bracket.location];
+        if ([Normalised(label) isEqualToString:Normalised(english)]) return YES;
+    }
+    return NO;
+}
+
+NSString *const NppUntranslatedIdentifier = @"NppUntranslated";
 
 @implementation NppLocalization
 
@@ -456,7 +472,15 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             // "About NotepadMac" and its like are the port's own texts (nativeLang-extra):
             // upstream's translation of the same command names the Windows application.
             BOOL ownName = [english containsString:@"NotepadMac"];
+            // The port's own wording for a command wins over upstream's translation of
+            // upstream's wording: "Move to Trash" is nativeLang-extra's, not the text
+            // upstream translates for "Move to Recycle Bin". An item of the port's own
+            // (no command id: Selected Numbers > Count) is nativeLang-extra's first too,
+            // before an upstream text that merely has the same English.
+            NSString *extra = self.extraStrings[Normalised(english)];
+            if (extra && (!identifier || !SameLabel(english, identifier.intValue))) ownName = YES;
             text = (identifier && !ownName) ? [self commandName:identifier.intValue] : nil;
+            if (!text && extra && ownName) text = [self translate:english hit:extra];
             text = text ?: [self translate:english];
         }
         item.title = Shown(item, @"title", (self.active ? text : english) ?: @"");
@@ -472,6 +496,14 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
     if (window.contentView) [self localizeView:window.contentView];
 }
 
+- (void)setTitle:(NSString *)english ofWindow:(NSWindow *)window {
+    if (!window) return;
+    NSMutableDictionary *d = [Originals() objectForKey:window];
+    if (!d) { d = [NSMutableDictionary dictionary]; [Originals() setObject:d forKey:window]; }
+    d[@"title"] = english;
+    window.title = Shown(window, @"title", [self translateTitle:english]);
+}
+
 - (void)localizeView:(NSView *)view {
     if ([view isKindOfClass:[NSButton class]] && ![view isKindOfClass:[NSPopUpButton class]]) {
         // (A pop-up's setTitle: selects or adds an item; its items are done below.)
@@ -482,7 +514,9 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             else if (b.bezelStyle == NSBezelStyleRounded) FitPushButton(b);
         }
     }
-    if ([view isKindOfClass:[NSPopUpButton class]]) {
+    if ([view.identifier isEqualToString:NppUntranslatedIdentifier]) {
+        // left as it is
+    } else if ([view isKindOfClass:[NSPopUpButton class]]) {
         NSPopUpButton *popup = (NSPopUpButton *)view;
         for (NSMenuItem *item in popup.itemArray) {
             item.title = Shown(item, @"title", [self translate:Original(item, @"title", item.title)]);
