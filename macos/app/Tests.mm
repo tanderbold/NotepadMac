@@ -8356,6 +8356,12 @@ int NppMacRunTests(AppDelegate *app) {
             [[unreachable componentsJoinedByString:@", "] UTF8String]);
     }
 
+    if (NppSectionWanted(@"Window tabbing")) { printf("\n== Window tabbing ==\n");
+        Check(@"Window menu (window tabbing)",
+              @"AppKit's window tabs are off, so the Window menu has no Show Next Tab (Ctrl+Tab) or Merge All Windows of its own",
+              !NSWindow.allowsAutomaticWindowTabbing);
+    }
+
     if (NppSectionWanted(@"Block Comment key")) { printf("\n== Block Comment key ==\n");
         NSMenuItem *block = nil;
         for (NSMenuItem *top in NSApp.mainMenu.itemArray)

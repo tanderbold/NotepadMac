@@ -459,6 +459,10 @@ static NSString *Ordinal(NSUInteger n) {
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)note {
+    // Documents are tabs of the editor, not tabbed windows: without this AppKit adds its own
+    // Show Next Tab (Ctrl+Tab, which is Notepad++'s), Move Tab to New Window and Merge All
+    // Windows to the Window menu.
+    NSWindow.allowsAutomaticWindowTabbing = NO;
     // The command line comes first: -settingsDir= decides where everything
     // below reads its settings from.
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
