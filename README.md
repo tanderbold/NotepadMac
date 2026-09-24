@@ -36,7 +36,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - Macros: record, play, run many times, save with a shortcut - including menu commands and searches, in the Windows `shortcuts.xml` format.
 - Clipboard History, Character Panel, paste as HTML / RTF / binary.
 - **[Selected numbers](https://tanderbold.github.io/NotepadMac/numbers.html)**: select a set of numbers - `3, 1, 2`, `3 1 2`, one per line, or a column - and Selected Numbers (context menu, or Edit > Selected Numbers) writes their sum, average, minimum, maximum or count after them (`30, 4, 100 SUM = 134`; under them for numbers one per line) and sorts them either way in place, each number keeping its own spelling and every separator staying where it was. Decimal arithmetic (0.1 + 0.2 is 0.3); a decimal comma (`1,5 2,25`) is understood.
-- **[Calculate](https://tanderbold.github.io/NotepadMac/numbers.html#calculate)** (Edit menu, ⌘=, and the context menu): a formula's value written after its `=` - the selected formula, or the one just typed (`2 + 3 =` ⌘= gives `2 + 3 = 5`; without the `=` it is added). `+ - * / : ^`, `mod`, `n!`, percent as a calculator has it (`200 + 15%` is 230), and functions: `sin cos tan cot` and their inverses and hyperbolics, `sqrt cbrt exp ln log lg log2`, `log(x; base)`, `root(x; n)`, `abs floor ceil round`, `min max gcd lcm`; `pi`, `e`; `°` for degrees (`sin 30° = 0.5`). Decimal arithmetic, ten decimal places.
+- **[Calculate](https://tanderbold.github.io/NotepadMac/numbers.html#calculate)** (Edit menu, ⌘=, and the context menu): a formula's value written after its `=` - the selected formula, or the one just typed (`2 + 3 =` ⌘= gives `2 + 3 = 5`; without the `=` it is added). `+ - * / : ^`, `mod`, `n!`, percent as a calculator has it (`200 + 15%` is 230), and functions: `sin cos tan cot` and their inverses and hyperbolics, `sqrt cbrt exp ln log lg log2`, `log(x; base)`, `root(x; n)`, `abs floor ceil round`, `min max gcd lcm`; `pi`, `e`; `°` for degrees (`sin 30° = 0.5`). Decimal arithmetic, ten decimal places. ⌘= is Calculate's; Zoom In is ⌘+ (⇧⌘=), ⌘-scroll or a pinch.
 
 **Languages**
 - Syntax highlighting and folding for about 90 languages, from Notepad++'s own `langs.model.xml` and `stylers.model.xml`; all upstream themes; the Style Configurator.
@@ -98,6 +98,7 @@ on Windows — a small C interface, Scintilla messages and all. See
   instead of the Recycle Bin, the system menu bar and dark appearance, ⌘ shortcuts.
 - Settings that only make sense on Windows are left out (tray icon, DirectWrite modes, hiding the
   menu bar, custom dark-mode tones).
+- A font a theme names but the Mac lacks - Consolas, the Windows default, comes only with Microsoft Office - is shown in the system's monospaced font (SF Mono), so columns still line up; the setting keeps the name.
 - Docked panels can be moved between four sides, tabbed and floated, but not nested as freely as on Windows.
 - Texts that only the Mac version has are translated by machine and not yet reviewed by native speakers.
 

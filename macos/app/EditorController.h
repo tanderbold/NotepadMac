@@ -12,6 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// NSBeep, unless MISC. > Mute all sounds is on.
 FOUNDATION_EXPORT void NppBeep(void);
+
+/// The font Scintilla is given for a style's font name: the name itself when
+/// the Mac has that font, else the system's monospaced font (SF Mono). A theme
+/// from Windows names Consolas, which only Microsoft Office brings; Core Text
+/// would otherwise hand back Helvetica, a proportional face, and the columns
+/// of a text would no longer line up. The name stored in the settings is left
+/// as the user or the theme wrote it.
+FOUNDATION_EXPORT NSString *NppAvailableFontName(NSString *name);
 /// A path with symlinks and dots resolved (realpath), to tell whether two spellings are one file.
 FOUNDATION_EXPORT NSString *NppCanonicalPath(NSString *path);
 

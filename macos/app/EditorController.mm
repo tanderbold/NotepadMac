@@ -2147,7 +2147,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (prefs.chosenFontName) fontName = prefs.chosenFontName;
     if (prefs.chosenFontSize > 0) fontSize = (int)prefs.chosenFontSize;
 
-    [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:fontName];
+    [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:NppAvailableFontName(fontName)];
     [sci message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:fontSize];
     if (def.foreground) [sci message:SCI_STYLESETFORE wParam:STYLE_DEFAULT lParam:SciColor(def.foreground)];
     if (def.background) [sci message:SCI_STYLESETBACK wParam:STYLE_DEFAULT lParam:SciColor(def.background)];
@@ -2164,7 +2164,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             [sci message:SCI_STYLESETBACK wParam:(uptr_t)styleID lParam:SciColor(go.background)];
         if ([goFlags[@"font"] boolValue] && go.fontName.length) {
             NSString *face = [go.fontName isEqualToString:@"Courier New"] ? @"Menlo" : go.fontName;
-            [sci setStringProperty:SCI_STYLESETFONT parameter:styleID value:face];
+            [sci setStringProperty:SCI_STYLESETFONT parameter:styleID value:NppAvailableFontName(face)];
         }
         if ([goFlags[@"fontSize"] boolValue] && go.fontSize > 0)
             [sci message:SCI_STYLESETSIZE wParam:(uptr_t)styleID lParam:go.fontSize];
@@ -2184,7 +2184,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         if (s.fontStyle & 1) [sci message:SCI_STYLESETBOLD wParam:styleID lParam:1];
         if (s.fontStyle & 2) [sci message:SCI_STYLESETITALIC wParam:styleID lParam:1];
         if (s.fontStyle & 4) [sci message:SCI_STYLESETUNDERLINE wParam:styleID lParam:1];
-        if (s.fontName.length) [sci setStringProperty:SCI_STYLESETFONT parameter:styleID value:s.fontName];
+        if (s.fontName.length) [sci setStringProperty:SCI_STYLESETFONT parameter:styleID value:NppAvailableFontName(s.fontName)];
         if (s.fontSize > 0) [sci message:SCI_STYLESETSIZE wParam:(uptr_t)styleID lParam:s.fontSize];
     };
 
@@ -2229,7 +2229,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         if (attrs[@"underline"]) [sci message:SCI_STYLESETUNDERLINE wParam:(uptr_t)styleID
                                         lParam:[attrs[@"underline"] boolValue] ? 1 : 0];
         if ([attrs[@"font"] length]) {
-            [sci setStringProperty:SCI_STYLESETFONT parameter:styleID value:attrs[@"font"]];
+            [sci setStringProperty:SCI_STYLESETFONT parameter:styleID value:NppAvailableFontName(attrs[@"font"])];
         }
         if ([attrs[@"size"] intValue] > 0) {
             [sci message:SCI_STYLESETSIZE wParam:(uptr_t)styleID lParam:[attrs[@"size"] intValue]];

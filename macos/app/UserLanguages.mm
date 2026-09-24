@@ -697,7 +697,7 @@ static long SciColourOf(NSColor *c) {
         if (fontStyle & 1) [sci message:SCI_STYLESETBOLD wParam:id lParam:1];
         if (fontStyle & 2) [sci message:SCI_STYLESETITALIC wParam:id lParam:1];
         if (fontStyle & 4) [sci message:SCI_STYLESETUNDERLINE wParam:id lParam:1];
-        if ([attrs[@"fontName"] length]) [sci setStringProperty:SCI_STYLESETFONT parameter:(long)id value:attrs[@"fontName"]];
+        if ([attrs[@"fontName"] length]) [sci setStringProperty:SCI_STYLESETFONT parameter:(long)id value:NppAvailableFontName(attrs[@"fontName"])];
         if ([attrs[@"fontSize"] intValue] > 0) [sci message:SCI_STYLESETSIZE wParam:id lParam:[attrs[@"fontSize"] intValue]];
     }
 }

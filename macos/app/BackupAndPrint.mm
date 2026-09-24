@@ -282,7 +282,7 @@ static const char kAutosaveTimerKey = 0;
     NppPrintView *page = [[NppPrintView alloc] initWithFrame:NSMakeRect(0, 0, 540, 720)];
     page.editor = self;
     page.string = [self textForPrinting];
-    page.font = [NSFont fontWithName:p.fontName ?: @"Menlo" size:MAX(6, p.fontSize - 2)]
+    page.font = [NSFont fontWithName:NppAvailableFontName(p.fontName ?: @"Menlo") size:MAX(6, p.fontSize - 2)]
              ?: [NSFont userFixedPitchFontOfSize:10];
 
     // Colour mode. The editor's own colours are not carried into the print view,
