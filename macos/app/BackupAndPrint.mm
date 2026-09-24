@@ -289,8 +289,8 @@ static NSColor *InvertedLight(NSColor *c) {
 
 /// The document as the lexer styles it, in the print colour mode - what
 /// upstream's Printer gets from SCI_SETPRINTCOLOURMODE + SCI_FORMATRANGEFULL:
-/// every style's colours, bold, italic and underline; line numbers in the line
-/// number style when "Print line number" is on.
+/// every style's colours, bold, italic and underline; line numbers when "Print
+/// line number" is on.
 - (NSAttributedString *)styledTextForPrintingWithFont:(NSFont *)base mode:(NSInteger)mode {
     ScintillaView *sci = self.sci;
     NSData *bytes = [[self documentText] dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
@@ -347,7 +347,9 @@ static NSColor *InvertedLight(NSColor *c) {
         if (atLineStart && numbers) {
             flush();
             NSString *n = [NSString stringWithFormat:@"%*ld  ", width, line + 1];
-            [out appendAttributedString:[[NSAttributedString alloc] initWithString:n attributes:attributesOf(STYLE_LINENUMBER)]];
+            // In the style of the text it numbers: one run with it, "1  text" when read back.
+            int numberStyle = (ch == '\n' || ch == '\r') ? STYLE_DEFAULT : style;
+            [out appendAttributedString:[[NSAttributedString alloc] initWithString:n attributes:attributesOf(numberStyle)]];
         }
         atLineStart = NO;
         if (style != runStyle) { flush(); runStyle = style; }
@@ -357,7 +359,7 @@ static NSColor *InvertedLight(NSColor *c) {
     flush();
     if (!len && numbers) {
         [out appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%*d  ", width, 1]
-                                                                    attributes:attributesOf(STYLE_LINENUMBER)]];
+                                                                    attributes:attributesOf(STYLE_DEFAULT)]];
     }
     return out;
 }
