@@ -795,11 +795,12 @@ static BOOL E2EPressKey(NSString *spec, NSWindow *window, NSError **error) {
     NSEvent *up = [NSEvent keyEventWithType:NSEventTypeKeyUp location:NSZeroPoint modifierFlags:flags
                                   timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:window.windowNumber
                                     context:nil characters:chars charactersIgnoringModifiers:plain isARepeat:NO keyCode:code];
-    // A Shift chord of Command or Control: built as the keyboard's own event, from the key
-    // code, which is how AppKit tells shift+cmd+p (Print Now) from cmd+p (Print). An
-    // event made by keyEventWithType: with Shift matches a menu's unshifted key first.
+    // A chord of Command or Control: built as the keyboard's own event, from the key code,
+    // which is how AppKit tells shift+cmd+p (Print Now) from cmd+p (Print). An event made
+    // by keyEventWithType: matches a menu key whatever its Shift - cmd+g lands on Find
+    // Previous (shift+cmd+g) and shift+cmd+p on Print.
     BOOL knownCode = code != 0 || [plain isEqualToString:@"a"] || (named && key.length > 1);
-    if ((flags & NSEventModifierFlagShift) && (flags & (NSEventModifierFlagCommand | NSEventModifierFlagControl)) && knownCode) {
+    if ((flags & (NSEventModifierFlagCommand | NSEventModifierFlagControl)) && knownCode) {
         CGEventFlags cg = 0;
         if (flags & NSEventModifierFlagCommand) cg |= kCGEventFlagMaskCommand;
         if (flags & NSEventModifierFlagShift) cg |= kCGEventFlagMaskShift;
@@ -1608,11 +1609,9 @@ static id E2ETarget(NSString *name, NSError **error) {
                 long y = [sci message:SCI_POINTYFROMPOSITION wParam:0 lParam:pos] + [sci message:SCI_TEXTHEIGHT wParam:(uptr_t)line lParam:0] / 2;
                 // SCI_POINTXFROMPOSITION counts the margins in, but on Cocoa they are a ruler
                 // beside the content view: in the content view the text starts at 0.
-                if (!point[@"x"] && !point[@"margin"]) {
-                    long margins = 0, count = [sci message:SCI_GETMARGINS];
-                    for (long k = 0; k < count; ++k) margins += [sci message:SCI_GETMARGINWIDTHN wParam:(uptr_t)k lParam:0];
-                    x -= margins;
-                }
+                long margins = 0, count = [sci message:SCI_GETMARGINS];
+                for (long k = 0; k < count; ++k) margins += [sci message:SCI_GETMARGINWIDTHN wParam:(uptr_t)k lParam:0];
+                x -= margins;
                 NSPoint inContent = NSMakePoint(x + 1, y);   // Scintilla's client coordinates are the content view's visible rect
                 NSRect visible = v.visibleRect;
                 args = [args mutableCopy];
