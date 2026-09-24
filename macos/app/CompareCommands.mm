@@ -14,6 +14,7 @@
 #import "SettingsCommands.h"
 #import "ScintillaView.h"
 #import <objc/runtime.h>
+#include <vector>
 #include "Engine.h"
 #include "NppHelpers.h"
 
@@ -93,47 +94,54 @@ static NSString *NormalisedLine(NSString *line, BOOL ignoreCase, BOOL ignoreSpac
         [bIndex addObject:@(i)];
     }
 
-    NSInteger n = (NSInteger)a.count, m = (NSInteger)b.count;
-    NSInteger max = n + m;
-    NSMutableArray<NSArray<NSNumber *> *> *trace = [NSMutableArray array];
-
-    // v is indexed by diagonal k, offset by max so k can be negative.
-    NSMutableArray<NSNumber *> *v = [NSMutableArray arrayWithCapacity:(NSUInteger)(2 * max + 1)];
-    for (NSInteger i = 0; i <= 2 * max; ++i) [v addObject:@0];
-
-    BOOL reachedEnd = NO;
-    for (NSInteger d = 0; d <= max && !reachedEnd; ++d) {
-        [trace addObject:[v copy]];
-        for (NSInteger k = -d; k <= d; k += 2) {
-            NSInteger x;
-            if (k == -d || (k != d && [v[(NSUInteger)(k - 1 + max)] integerValue] <
-                                      [v[(NSUInteger)(k + 1 + max)] integerValue])) {
-                x = [v[(NSUInteger)(k + 1 + max)] integerValue];
-            } else {
-                x = [v[(NSUInteger)(k - 1 + max)] integerValue] + 1;
-            }
-            NSInteger y = x - k;
-            while (x < n && y < m && [a[(NSUInteger)x] isEqualToString:b[(NSUInteger)y]]) { x++; y++; }
-            v[(NSUInteger)(k + max)] = @(x);
+    // Myers' O((N+M)D) difference, on whole numbers standing for the lines: a
+    // line is hashed and compared once, and each step d keeps only its own 2d+1
+    // diagonals (the trace was a full copy of all 2(N+M)+1 per step, as boxed
+    // numbers - a minute and gigabytes for a big file with a few changes).
+    const long n = (long)a.count, m = (long)b.count;
+    std::vector<int> ai((size_t)n), bi((size_t)m);
+    {
+        NSMutableDictionary<NSString *, NSNumber *> *ids = [NSMutableDictionary dictionary];
+        int next = 0;
+        auto idOf = [&](NSString *line) -> int {
+            NSNumber *known = ids[line];
+            if (known) return known.intValue;
+            ids[line] = @(next);
+            return next++;
+        };
+        for (long i = 0; i < n; ++i) ai[(size_t)i] = idOf(a[(NSUInteger)i]);
+        for (long i = 0; i < m; ++i) bi[(size_t)i] = idOf(b[(NSUInteger)i]);
+    }
+    const long max = n + m;
+    std::vector<long> v((size_t)(2 * max + 1), 0);
+    std::vector<std::vector<long>> trace;   // trace[d][k + d]: v before step d, diagonals -d..d
+    for (long d = 0; d <= max; ++d) {
+        std::vector<long> snapshot((size_t)(2 * d + 1));
+        for (long k = -d; k <= d; ++k) snapshot[(size_t)(k + d)] = v[(size_t)(k + max)];
+        trace.push_back(std::move(snapshot));
+        BOOL reachedEnd = NO;
+        for (long k = -d; k <= d; k += 2) {
+            long x;
+            if (k == -d || (k != d && v[(size_t)(k - 1 + max)] < v[(size_t)(k + 1 + max)])) x = v[(size_t)(k + 1 + max)];
+            else x = v[(size_t)(k - 1 + max)] + 1;
+            long y = x - k;
+            while (x < n && y < m && ai[(size_t)x] == bi[(size_t)y]) { x++; y++; }
+            v[(size_t)(k + max)] = x;
             if (x >= n && y >= m) { reachedEnd = YES; break; }
         }
+        if (reachedEnd) break;
     }
 
     // Walk the trace backwards to recover the path.
     NSMutableArray<NppDiffLine *> *reversed = [NSMutableArray array];
-    NSInteger x = n, y = m;
-    for (NSInteger d = (NSInteger)trace.count - 1; d >= 0 && (x > 0 || y > 0); --d) {
-        NSArray<NSNumber *> *vd = trace[(NSUInteger)d];
-        NSInteger k = x - y;
-        NSInteger prevK;
-        if (k == -d || (k != d && [vd[(NSUInteger)(k - 1 + max)] integerValue] <
-                                  [vd[(NSUInteger)(k + 1 + max)] integerValue])) {
-            prevK = k + 1;
-        } else {
-            prevK = k - 1;
-        }
-        NSInteger prevX = [vd[(NSUInteger)(prevK + max)] integerValue];
-        NSInteger prevY = prevX - prevK;
+    long x = n, y = m;
+    for (long d = (long)trace.size() - 1; d >= 0 && (x > 0 || y > 0); --d) {
+        const std::vector<long> &vd = trace[(size_t)d];
+        auto at = [&](long k) -> long { return (k < -d || k > d) ? 0 : vd[(size_t)(k + d)]; };
+        long k = x - y;
+        long prevK = (k == -d || (k != d && at(k - 1) < at(k + 1))) ? k + 1 : k - 1;
+        long prevX = at(prevK);
+        long prevY = prevX - prevK;
 
         while (x > prevX && y > prevY) {
             NppDiffLine *line = [[NppDiffLine alloc] init];
