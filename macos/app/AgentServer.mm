@@ -155,7 +155,7 @@ static BOOL LineRange(NSDictionary *args, long lines, long *first, long *last, N
     *first = LongParam(args, @"first_line", 1);
     *last = LongParam(args, @"last_line", lines);
     if (*first < 1) *first = 1;
-    if (*first > lines) { if (error) *error = Fail(@"first_line %ld is past the end (the document has %ld lines)", *first, lines); return NO; }
+    if (*first > lines) { if (error) *error = Fail(@"first_line %ld is outside the document (1..%ld)", *first, lines); return NO; }
     if (*last > lines) *last = lines;
     if (*last < *first) *last = *first;
     return YES;
@@ -256,7 +256,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
     mode_t was = umask(0177);   // the socket is made 0600: the user's processes only
     int bound = bind(fd, (struct sockaddr *)&addr, sizeof addr);
     umask(was);
-    if (bound != 0 || listen(fd, 8) != 0) {
+    if (bound != 0 || listen(fd, SOMAXCONN) != 0) {
         NSLog(@"Agent interface: cannot listen on %@: %s", path, strerror(errno));
         close(fd);
         return NO;
@@ -477,9 +477,10 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         if (!ed.currentDocument && error) *error = Fail(@"No document is open");
         return ed.currentDocument;
     }
-    // Indexes are those list_documents gives: the Search results tab is not
-    // a document an agent reads or edits.
-    NSArray<NppDocument *> *docs = self.documents;
+    // Indexes are the tabs' places, as list_documents gives them; the Search
+    // results tab keeps its place (a gap in the list) but is not a document an
+    // agent reads or edits.
+    NSArray<NppDocument *> *docs = ed.documents;
     BOOL digits = [spec isKindOfClass:[NSString class]] && [(NSString *)spec rangeOfCharacterFromSet:
                      [NSCharacterSet.decimalDigitCharacterSet invertedSet]].location == NSNotFound;
     if (digits) {
@@ -490,6 +491,10 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         NSInteger index = [spec integerValue];
         if (index < 0 || index >= (NSInteger)docs.count) {
             if (error) *error = Fail(@"No document at index %ld (list_documents shows %lu)", (long)index, (unsigned long)docs.count);
+            return nil;
+        }
+        if (docs[(NSUInteger)index].isSearchResults) {
+            if (error) *error = Fail(@"No document at index %ld (it is the Search results tab)", (long)index);
             return nil;
         }
         return docs[(NSUInteger)index];
@@ -540,7 +545,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
 - (NSDictionary *)infoOf:(NppDocument *)doc {
     EditorController *ed = self.editor;
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    info[@"index"] = @([self.documents indexOfObjectIdenticalTo:doc]);
+    info[@"index"] = @([self.editor.documents indexOfObjectIdenticalTo:doc]);
     info[@"title"] = doc.displayName ?: @"";
     info[@"path"] = doc.path ?: [NSNull null];
     info[@"language"] = doc.language.name ?: @"normal";
@@ -629,13 +634,13 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         ScintillaView *sci = ed.sci;
         long start = Msg(sci, SCI_GETSELECTIONSTART), end = Msg(sci, SCI_GETSELECTIONEND);
         long caret = Msg(sci, SCI_GETCURRENTPOS);
-        // Several selections (a column block, multi-editing): each one's text,
-        // top to bottom, and together one per line - what Copy would give -
-        // not the whole stretch from the first to the last.
+        // A column block: each row's text, top to bottom, and together one per
+        // line - what Copy gives - not the whole stretch from the first row to the
+        // last. Several ordinary selections: the main one, the others counted.
         long count = Msg(sci, SCI_GETSELECTIONS);
         NSString *text = TextBetween(sci, start, end);
         NSMutableArray *parts = nil;
-        if (count > 1) {
+        if (count > 1 && Msg(sci, SCI_SELECTIONISRECTANGLE)) {
             NSMutableArray *ranges = [NSMutableArray array];
             for (long i = 0; i < count; ++i) {
                 [ranges addObject:@[@(Msg(sci, SCI_GETSELECTIONNSTART, (uptr_t)i)), @(Msg(sci, SCI_GETSELECTIONNEND, (uptr_t)i))]];
@@ -740,7 +745,11 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         if (doc != ed.currentDocument) [ed selectDocumentAtIndex:(NSInteger)index];
         ScintillaView *sci = ed.sci;
         long lines = Msg(sci, SCI_GETLINECOUNT);
-        long line = LongParam(args, @"line", 1);
+        // line is required and a number: an agent that sends none, or "2", has a bug
+        // it should hear about, not a caret silently put on line 1.
+        id given = Param(args, @"line");
+        if (![given isKindOfClass:[NSNumber class]]) { *error = Fail(@"go_to needs line, a number (1..%ld)", lines); return nil; }
+        long line = [given longValue];
         if (line < 1 || line > lines) { *error = Fail(@"Line %ld is outside 1..%ld", line, lines); return nil; }
         long from = PositionOfLineColumn(sci, line - 1, LongParam(args, @"column", 1));
         long endLine = LongParam(args, @"end_line", 0);
