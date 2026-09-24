@@ -2415,45 +2415,82 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     return out;
 }
 
-- (void)toggleLineComment {
+- (void)toggleLineComment { [self lineComment:NO]; }
+- (void)setLineComment     { [self lineComment:YES]; }
+
+/// Notepad_plus::doBlockComment: IDM_EDIT_BLOCK_COMMENT toggles (comments unless
+/// every non-blank line already is), IDM_EDIT_BLOCK_COMMENT_SET always adds one
+/// level. A language with no line comment but a stream comment (HTML, XML) gets
+/// each line wrapped in it (EDIT-056). The selection follows the text, so a
+/// second toggle covers the same lines (EDIT-052).
+- (void)lineComment:(BOOL)alwaysAdd {
     NppDocument *doc = self.currentDocument;
     NSString *token = doc.language.commentLine;
-    if (!token.length) { NppBeep(); return; }
+    NSString *open = doc.language.commentStart, *close = doc.language.commentEnd;
+    BOOL wrap = !token.length;
+    if (wrap && (!open.length || !close.length)) { NppBeep(); return; }
+    NSString *prefix = wrap ? [open stringByAppendingString:@" "] : [token stringByAppendingString:@" "];
+    NSString *suffix = wrap ? [@" " stringByAppendingString:close] : @"";
 
     ScintillaView *sci = self.sciView;
-    long selStart = [sci message:SCI_GETSELECTIONSTART];
-    long selEnd   = [sci message:SCI_GETSELECTIONEND];
+    long anchor = [sci message:SCI_GETANCHOR], caret = [sci message:SCI_GETCURRENTPOS];
+    long selStart = MIN(anchor, caret), selEnd = MAX(anchor, caret);
     long firstLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
     long lastLine  = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
     if (lastLine > firstLine && selEnd == [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)lastLine]) {
         lastLine--;   // a trailing selection edge at column 0 does not include that line
     }
+    NSString *(^lineText)(long) = ^NSString *(long ln) {
+        long a = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)ln];
+        long b = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)ln];
+        return [self textAt:a length:b - a];
+    };
+    BOOL (^commented)(NSString *) = ^BOOL(NSString *t) {
+        return wrap ? ([t hasPrefix:open] && [t hasSuffix:close] && t.length >= open.length + close.length)
+                    : [t hasPrefix:token];
+    };
 
-    // Comment unless every non-blank line is already commented -- Notepad++'s rule.
-    BOOL allCommented = YES;
-    for (long ln = firstLine; ln <= lastLine; ++ln) {
-        long indent = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)ln];
-        long end = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)ln];
-        if (indent >= end) continue;                       // blank line: ignore
-        if (![[self textAt:indent length:(long)token.length] isEqualToString:token]) {
-            allCommented = NO; break;
+    BOOL remove = NO;
+    if (!alwaysAdd) {
+        remove = YES;
+        for (long ln = firstLine; ln <= lastLine && remove; ++ln) {
+            NSString *t = lineText(ln);
+            if (t.length && !commented(t)) remove = NO;
         }
     }
 
+    long startDelta = 0, totalDelta = 0;
     [sci message:SCI_BEGINUNDOACTION];
     for (long ln = lastLine; ln >= firstLine; --ln) {      // bottom-up keeps positions valid
         long indent = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)ln];
         long end = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)ln];
         if (indent >= end) continue;
-        if (allCommented) {
-            long extra = [[self textAt:indent + (long)token.length length:1] isEqualToString:@" "] ? 1 : 0;
-            [sci message:SCI_DELETERANGE wParam:(uptr_t)indent lParam:(long)token.length + extra];
+        long before = [sci message:SCI_GETLENGTH];
+        if (remove) {
+            NSString *t = lineText(ln);
+            if (wrap) {
+                long tail = (long)close.length + ([t hasSuffix:suffix] ? 1 : 0);
+                [sci message:SCI_DELETERANGE wParam:(uptr_t)(end - tail) lParam:tail];
+                long head = (long)open.length + ([t hasPrefix:prefix] ? 1 : 0);
+                [sci message:SCI_DELETERANGE wParam:(uptr_t)indent lParam:head];
+            } else {
+                long head = (long)token.length + ([t hasPrefix:prefix] ? 1 : 0);
+                [sci message:SCI_DELETERANGE wParam:(uptr_t)indent lParam:head];
+            }
         } else {
-            [sci setStringProperty:SCI_INSERTTEXT parameter:indent
-                             value:[token stringByAppendingString:@" "]];
+            if (suffix.length) [sci setStringProperty:SCI_INSERTTEXT parameter:end value:suffix];
+            [sci setStringProperty:SCI_INSERTTEXT parameter:indent value:prefix];
         }
+        long delta = [sci message:SCI_GETLENGTH] - before;
+        totalDelta += delta;
+        if (ln == firstLine && selStart > indent) startDelta = delta;
     }
     [sci message:SCI_ENDUNDOACTION];
+    if (selEnd > selStart) {
+        long newStart = MAX(0, selStart + startDelta), newEnd = MAX(newStart, selEnd + totalDelta);
+        if (anchor <= caret) [sci message:SCI_SETSEL wParam:(uptr_t)newStart lParam:newEnd];
+        else [sci message:SCI_SETSEL wParam:(uptr_t)newEnd lParam:newStart];
+    }
     [self refreshChrome];
 }
 
@@ -3230,6 +3267,10 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
             // of the click, and switching the document under it leaves it
             // finishing the click on the file just opened, which puts the caret
             // back wherever the pointer happened to be.
+            if (n->modifiers == SCMOD_CTRL && !self.currentDocument.isSearchResults) {
+                [self selectBetweenDelimitersAt:(long)n->position];   // Cmd+double-click
+                break;
+            }
             {
                 dispatch_async(dispatch_get_main_queue(), ^{ [self openSearchResultAtCaret]; });
             }

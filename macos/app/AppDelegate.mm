@@ -895,6 +895,7 @@ static NSString *Ordinal(NSUInteger n) {
     // --- Comment/Uncomment
     NSMenu *commentMenu = [[NSMenu alloc] initWithTitle:@"Comment/Uncomment"];
     [self item:@"Toggle Single Line Comment" action:@selector(toggleLineComment:) key:@"" flags:0 menu:commentMenu];
+    [self item:@"Single Line Comment" action:@selector(setLineComment:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Single Line Uncomment" action:@selector(uncommentLines:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Block Comment" action:@selector(streamComment:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Block Uncomment" action:@selector(streamUncomment:) key:@"" flags:0 menu:commentMenu];
@@ -3038,6 +3039,15 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // Notepad_plus::command IDM_EDIT_BEGINENDSELECT: the started one is checked and the
+    // other kind is greyed out until the selection is ended (EDIT-018).
+    if (a == @selector(beginEndSelect:) || a == @selector(beginEndSelectColumn:)) {
+        BOOL active = [self.editor beginEndSelectActive];
+        BOOL column = active && [self.editor beginEndSelectColumnModeStarted];
+        BOOL mine = a == @selector(beginEndSelectColumn:) ? column : (active && !column);
+        item.state = mine ? NSControlStateValueOn : NSControlStateValueOff;
+        return !active || mine;
+    }
     // enableConvertMenuItems: the conversion to the format the document has is greyed out.
     if (a == @selector(eolCRLF:)) return self.editor.currentDocument.eolMode != SC_EOL_CRLF;
     if (a == @selector(eolLF:))   return self.editor.currentDocument.eolMode != SC_EOL_LF;
@@ -3510,6 +3520,7 @@ static BOOL NppForwardToFieldEditor(SEL action, id sender) {
 #pragma mark - Comment / completion
 
 - (void)toggleLineComment:(id)sender  { [self.editor toggleLineComment]; }
+- (void)setLineComment:(id)sender     { [self.editor setLineComment]; }
 - (void)toggleBlockComment:(id)sender { [self.editor toggleBlockComment]; }
 - (void)showAutoComplete:(id)sender   { [self.editor showAutoCompletion]; }
 - (void)functionCompletion:(id)sender { [self.editor showCompletion:NppCompletionKindFunctions autoInsert:NO]; }

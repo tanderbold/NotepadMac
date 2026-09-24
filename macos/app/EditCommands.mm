@@ -876,6 +876,28 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
 
 - (void)uncommentLines {
     NSString *token = self.currentDocument.language.commentLine;
+    NSString *open = self.currentDocument.language.commentStart, *close = self.currentDocument.language.commentEnd;
+    if (!token.length && open.length && close.length) {
+        // No line comment (HTML, XML): each line's own stream comment comes off, as
+        // doBlockComment's uncomment does for such a language (EDIT-056).
+        [self transformSelectedLines:^NSArray *(NSArray *bodies) {
+            NSMutableArray *out = [NSMutableArray array];
+            for (NSString *line in bodies) {
+                NSUInteger i = 0;
+                while (i < line.length &&
+                       [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[line characterAtIndex:i]]) i++;
+                NSString *indent = [line substringToIndex:i], *rest = [line substringFromIndex:i];
+                if ([rest hasPrefix:open] && [rest hasSuffix:close] && rest.length >= open.length + close.length) {
+                    rest = [rest substringWithRange:NSMakeRange(open.length, rest.length - open.length - close.length)];
+                    if ([rest hasPrefix:@" "]) rest = [rest substringFromIndex:1];
+                    if ([rest hasSuffix:@" "]) rest = [rest substringToIndex:rest.length - 1];
+                }
+                [out addObject:[indent stringByAppendingString:rest]];
+            }
+            return out;
+        }];
+        return;
+    }
     if (!token.length) { NppBeep(); return; }
     [self transformSelectedLines:^NSArray *(NSArray *bodies) {
         NSMutableArray *out = [NSMutableArray array];

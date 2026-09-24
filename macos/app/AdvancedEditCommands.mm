@@ -137,6 +137,13 @@ static const char kBeginEndAnchorKey = 0;
     return objc_getAssociatedObject(self, &kBeginEndAnchorKey) != nil;
 }
 
+static const char kBeginEndColumnKey = 0;
+
+/// Which kind was started: YES column mode, NO normal; meaningful while active.
+- (BOOL)beginEndSelectColumnModeStarted {
+    return [objc_getAssociatedObject(self, &kBeginEndColumnKey) boolValue];
+}
+
 /// First call drops an anchor, second extends the selection to the caret --
 /// Notepad++'s Begin/End Select, in normal or column mode.
 - (BOOL)beginEndSelectColumnMode:(BOOL)columnMode {
@@ -146,6 +153,7 @@ static const char kBeginEndAnchorKey = 0;
 
     if (!anchor) {
         objc_setAssociatedObject(self, &kBeginEndAnchorKey, @(caret), OBJC_ASSOCIATION_RETAIN);
+        objc_setAssociatedObject(self, &kBeginEndColumnKey, @(columnMode), OBJC_ASSOCIATION_RETAIN);
         return NO;                       // anchor dropped, selection not made yet
     }
     objc_setAssociatedObject(self, &kBeginEndAnchorKey, nil, OBJC_ASSOCIATION_RETAIN);
