@@ -8205,6 +8205,18 @@ int NppMacRunTests(AppDelegate *app) {
               @"every button carries its own icon taken from the Notepad++ sources",
               withIcons == 32 && distinct >= 30);
 
+        // Notepad_plus::checkMacroState reaches every button, those in the overflow of a narrow
+        // window too: with nothing recorded, Stop Recording and Play are greyed out.
+        NSToolbarItem *stopItem = nil, *playItem = nil;
+        for (NSToolbarItem *item in app.window.toolbar.items) {
+            if (item.action == @selector(macroStop:)) stopItem = item;
+            if (item.action == @selector(macroPlay:)) playItem = item;
+        }
+        stopItem.enabled = YES; playItem.enabled = YES;   // as a button no validation has reached is
+        [ed refreshChrome];
+        Check(@"IDM_MACRO_STOPRECORDINGMACRO (toolbar)", @"every button follows the state, visible or in the overflow",
+              stopItem && playItem && !stopItem.isEnabled && (playItem.isEnabled == ([ed recordedStepCount] > 0)));
+
         // The icons come in a light and a dark set; both have to be present,
         // and they have to differ, or one theme is silently using the other's.
         NSString *lightPath = [[NSBundle mainBundle] pathForResource:@"save_off" ofType:@"png"

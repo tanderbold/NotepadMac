@@ -1167,7 +1167,8 @@ static id E2ETarget(NSString *name, NSError **error) {
         E2EWalk(root, @"0", [args[@"include_hidden"] boolValue], controls);
         NSMutableDictionary *out = [@{@"window": E2EWindowInfo(w), @"controls": controls} mutableCopy];
         if (w.toolbar) {
-            [w.toolbar validateVisibleItems];   // as the user would see it after the next event
+            // As the user would see it after the next event - the overflow's items included.
+            for (NSToolbarItem *i in w.toolbar.items) [i validate];
             NSMutableArray *items = [NSMutableArray array];
             for (NSToolbarItem *i in w.toolbar.items) {
                 [items addObject:@{@"id": i.itemIdentifier ?: @"", @"label": i.label ?: @"", @"tooltip": i.toolTip ?: @"",

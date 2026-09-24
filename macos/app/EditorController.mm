@@ -2783,8 +2783,9 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.window.representedFilename = doc.path ?: @"";
     self.window.documentEdited = doc.modified;
     // The toolbar's Save, Undo, Cut... follow the document at once, as upstream's
-    // enableCommand does on each change; AppKit would validate them only later.
-    [self.window.toolbar validateVisibleItems];
+    // enableCommand does on each change; AppKit would validate them only later, and the
+    // buttons in the overflow (a narrow window) only when that menu opens.
+    for (NSToolbarItem *item in self.window.toolbar.items) [item validate];
 }
 
 /// The Tab bar page of Preferences drives the bar's layout and behaviour.
