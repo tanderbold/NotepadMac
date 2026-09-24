@@ -8368,6 +8368,32 @@ int NppMacRunTests(AppDelegate *app) {
               @"the colour mode reaches the printed page",
               op != nil && inverted && !plainPage.drawsBackground &&
               [plainPage.textColor isEqual:[NSColor blackColor]]);
+
+        // Styled output, as upstream's SCI_FORMATRANGEFULL: each style's colour and
+        // bold, line numbers in their own style; the editor's styles are left whole.
+        SetDoc(ed, @"// note\nint x;\n");
+        [ed setLanguageNamed:@"cpp"];
+        [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+        long commentFore = [sci message:SCI_STYLEGETFORE wParam:SCE_C_COMMENTLINE];
+        long wordBold = [sci message:SCI_STYLEGETBOLD wParam:SCE_C_WORD];
+        p.printColourMode = NppPrintWYSIWYG;
+        p.printLineNumbers = YES;
+        NSTextStorage *styled = ((NSTextView *)[ed printOperationShowingPanel:NO].view).textStorage;
+        p.printLineNumbers = NO;
+        NSRange noteAt = [styled.string rangeOfString:@"// note"];
+        NSRange intAt = [styled.string rangeOfString:@"int"];
+        NSColor *noteColour = noteAt.length ? [[styled attribute:NSForegroundColorAttributeName atIndex:noteAt.location
+                                                 effectiveRange:NULL] colorUsingColorSpace:[NSColorSpace sRGBColorSpace]] : nil;
+        NSFont *intFont = intAt.length ? [styled attribute:NSFontAttributeName atIndex:intAt.location effectiveRange:NULL] : nil;
+        BOOL intBold = (intFont.fontDescriptor.symbolicTraits & NSFontDescriptorTraitBold) != 0;
+        long printedFore = noteColour ? (lround(noteColour.redComponent * 255) | lround(noteColour.greenComponent * 255) << 8 |
+                                         lround(noteColour.blueComponent * 255) << 16) : -1;
+        Check(@"IDM_FILE_PRINT (styled)",
+              @"the print keeps each style's colour and bold, with numbered lines, and leaves the editor's styles whole",
+              [styled.string hasPrefix:@"1  // note"] && [styled.string containsString:@"2  int x;"] &&
+              printedFore == commentFore && intBold == (wordBold != 0) &&
+              [sci message:SCI_STYLEGETFORE wParam:SCE_C_COMMENTLINE] == commentFore &&
+              [sci message:SCI_TEXTWIDTH wParam:STYLE_LINENUMBER lParam:(sptr_t)"_999"] > 0);
         p.printColourMode = 2;
     }
 
