@@ -51,10 +51,23 @@ static NSString *HexColour(long bgr) {
     RunStyle base = [self styleNumber:STYLE_DEFAULT];
 
     NSMutableString *body = [NSMutableString string];
+    // The text is UTF-8 bytes: a run's bytes are gathered and decoded whole, so a
+    // character of several bytes (Я) stays one character (NppExport writes UTF-8 too).
+    NSMutableData *pending = [NSMutableData data];
+    void (^flush)(void) = ^{
+        if (!pending.length) return;
+        NSString *chunk = [[NSString alloc] initWithData:pending encoding:NSUTF8StringEncoding]
+                       ?: [[NSString alloc] initWithData:pending encoding:NSISOLatin1StringEncoding];
+        [body appendString:chunk ?: @""];
+        pending.length = 0;
+    };
     int runStyle = -1;
     for (NSUInteger i = 0; i + 1 < styled.length && i / 2 < range.length; i += 2) {
         int style = bytes[i + 1];
-        if (style != runStyle) {
+        // A style change inside a multi-byte character would split it: it waits for the character's end.
+        BOOL continuation = (bytes[i] & 0xC0) == 0x80;
+        if (style != runStyle && !continuation) {
+            flush();
             if (runStyle >= 0) [body appendString:@"</span>"];
             RunStyle s = [self styleNumber:style];
             NSMutableString *css = [NSMutableString string];
@@ -69,11 +82,12 @@ static NSString *HexColour(long bgr) {
             runStyle = style;
         }
         uint8_t c = bytes[i];
-        if (c == '&') [body appendString:@"&amp;"];
-        else if (c == '<') [body appendString:@"&lt;"];
-        else if (c == '>') [body appendString:@"&gt;"];
-        else [body appendFormat:@"%c", c];
+        if (c == '&') [pending appendBytes:"&amp;" length:5];
+        else if (c == '<') [pending appendBytes:"&lt;" length:4];
+        else if (c == '>') [pending appendBytes:"&gt;" length:4];
+        else [pending appendBytes:&c length:1];
     }
+    flush();
     if (runStyle >= 0) [body appendString:@"</span>"];
 
     long tabs = [self.sci message:SCI_GETTABWIDTH wParam:0 lParam:0];

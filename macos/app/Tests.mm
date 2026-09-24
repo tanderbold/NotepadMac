@@ -9848,6 +9848,30 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"JSON tree", @"nested paths are reported",
               [paths containsObject:@"top.inner[0]"] && [paths containsObject:@"top.inner[1]"] &&
               [paths containsObject:@"top.inner"]);
+
+        // JSON Viewer's Format keeps the members in the document's order and writes "key": value.
+        p.jsonIndent = 2;
+        SetDoc(ed, @"{\"zeta\":1,\"alpha\":2,\"mid\":{\"y\":1,\"x\":2},\"l\":[],\"o\":{}}");
+        [ed formatJSONDocument];
+        NSString *kept = DocText(ed);
+        Check(@"JSON format (order)", @"members keep their order, \"key\": value, empty {} and []",
+              [kept isEqualToString:@"{\n  \"zeta\": 1,\n  \"alpha\": 2,\n  \"mid\": {\n    \"y\": 1,\n    \"x\": 2\n  },\n  \"l\": [],\n  \"o\": {}\n}"]);
+        SetDoc(ed, @"{\"n\": 1.50, \"s\": \"a\\/b \\u00e9 \\ud83d\\ude00\\n\", \"t\": true}");
+        [ed compactJSONDocument];
+        Check(@"JSON compact (as written)", @"numbers as written, escapes decoded, / not escaped",
+              [DocText(ed) isEqualToString:@"{\"n\":1.50,\"s\":\"a/b é 😀\\n\",\"t\":true}"]);
+        // RFC 8259, as JSON Viewer: a trailing comma is not JSON, though NSJSONSerialization takes it.
+        SetDoc(ed, @"{\"a\":1,}");
+        NppJsonError *trailing = [ed validateJSONDocument];
+        SetDoc(ed, @"[1,2,]");
+        NppJsonError *trailingItem = [ed validateJSONDocument];
+        Check(@"JSON validate (trailing comma)", @"a trailing comma is invalid, at its line and column",
+              trailing && trailing.line == 0 && trailing.column == 7 && trailingItem && trailingItem.column == 5);
+        SetDoc(ed, @"{\"t\":true,\"f\":false,\"n\":null,\"x\":-0.5e3}");
+        NSMutableArray *leaves = [NSMutableArray array];
+        for (NSDictionary *node in [ed jsonTree]) [leaves addObject:[NSString stringWithFormat:@"%@ = %@", node[@"path"], node[@"value"]]];
+        Check(@"JSON tree (literals)", @"true, false, null and numbers as written, keys sorted",
+              [leaves isEqualToArray:@[@"{} = {4}", @"f = false", @"n = null", @"t = true", @"x = -0.5e3"]]);
     }
 
     if (NppSectionWanted(@"Compare")) { printf("\n== Compare ==\n");
@@ -10497,6 +10521,8 @@ int NppMacRunTests(AppDelegate *app) {
               [html containsString:@"<pre style="] &&
               [html containsString:@"&lt;&gt;&amp;"] &&
               [html containsString:@"</span>"] && colourCount > 2);
+        Check(@"Export to HTML (UTF-8)", @"non-ASCII text stays itself, not one character per byte",
+              [html containsString:@"# Я"] && ![html containsString:@"Ð"]);
 
         NSData *rtfData = [ed exportRTFInRange:whole];
         NSString *rtf = [[NSString alloc] initWithData:rtfData encoding:NSASCIIStringEncoding];
@@ -10569,6 +10595,12 @@ int NppMacRunTests(AppDelegate *app) {
             Check(@"Spell check styles", @"in code only comments and strings are checked, identifiers are left alone",
                   ![sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:1] &&
                   [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:13]);
+            [ed openFileAtPath:TempFile(@"t_spell2.py", @"s = 'speling'\nt = \"\"\"speling\"\"\"\n") error:&err];
+            [ed spellCheckNow];
+            Check(@"Spell check styles (Python)", @"single- and triple-quoted Python strings are checked too",
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:6] &&
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:21]);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
 
             NSArray<NSMenuItem *> *offers = [ed spellingMenuItemsForPosition:13];
             BOOL hasIgnore = NO, hasLearn = NO;

@@ -26,7 +26,11 @@ static NSInteger gSpellDocumentTag;
     NSMutableSet *allowed = [NSMutableSet set];
     for (NppStyle *style in [[StyleCatalog sharedCatalog] stylesForLexerName:lang.name] ?: @[]) {
         NSString *name = style.name.uppercaseString;
-        if ([name containsString:@"COMMENT"] || [name containsString:@"STRING"])
+        // Strings go by several names: Python's single-quoted ones are CHARACTER, its
+        // triple-quoted ones TRIPLE / TRIPLE DOUBLE (and their F variants) - all of them
+        // strings DSpellCheck checks (SciUtils: the lexer's string and comment styles).
+        if ([name containsString:@"COMMENT"] || [name containsString:@"STRING"] ||
+            [name containsString:@"CHARACTER"] || [name containsString:@"TRIPLE"])
             [allowed addObject:@(style.styleID)];
     }
     return allowed;
