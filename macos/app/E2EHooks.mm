@@ -795,12 +795,13 @@ static BOOL E2EPressKey(NSString *spec, NSWindow *window, NSError **error) {
     NSEvent *up = [NSEvent keyEventWithType:NSEventTypeKeyUp location:NSZeroPoint modifierFlags:flags
                                   timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:window.windowNumber
                                     context:nil characters:chars charactersIgnoringModifiers:plain isARepeat:NO keyCode:code];
-    // A chord of Command or Control: built as the keyboard's own event, from the key code,
-    // which is how AppKit tells shift+cmd+p (Print Now) from cmd+p (Print). An event made
-    // by keyEventWithType: matches a menu key whatever its Shift - cmd+g lands on Find
-    // Previous (shift+cmd+g) and shift+cmd+p on Print.
-    BOOL knownCode = code != 0 || [plain isEqualToString:@"a"] || (named && key.length > 1);
-    if ((flags & (NSEventModifierFlagCommand | NSEventModifierFlagControl)) && knownCode) {
+    // A chord of Command or Control on a character key: built as the keyboard's own event,
+    // from the key code, which is how AppKit tells shift+cmd+p (Print Now) from cmd+p
+    // (Print). An event made by keyEventWithType: matches a menu key whatever its Shift -
+    // cmd+g lands on Find Previous (shift+cmd+g) and shift+cmd+p on Print. Named keys
+    // (arrows, space, F-keys) keep the event above, which their shortcuts already match.
+    BOOL characterKey = key.length == 1 && !(named && key.length > 1) && (code != 0 || [plain isEqualToString:@"a"]);
+    if ((flags & (NSEventModifierFlagCommand | NSEventModifierFlagControl)) && characterKey) {
         CGEventFlags cg = 0;
         if (flags & NSEventModifierFlagCommand) cg |= kCGEventFlagMaskCommand;
         if (flags & NSEventModifierFlagShift) cg |= kCGEventFlagMaskShift;

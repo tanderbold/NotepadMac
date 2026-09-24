@@ -602,11 +602,18 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
             }
         }
         if (!decided) return;
-        // The old key goes first and the modifiers before the new key: set under the old
-        // modifiers, "h" would be Cmd+H, Hide's, and be refused.
-        item.keyEquivalent = @"";
-        item.keyEquivalentModifierMask = combo ? combo.modifiers : 0;
-        item.keyEquivalent = combo.key ?: @"";
+        // Only a key that changes is set again (AppKit would refuse the same key back where
+        // another item shares it, as Block Comment and Help do), the old key first and the
+        // modifiers before the new one: set under the old modifiers, "h" would be Cmd+H,
+        // Hide's, and be refused.
+        NSString *want = combo.key ?: @"";
+        NSEventModifierFlags mask = combo ? combo.modifiers : 0;
+        if (![item.keyEquivalent isEqualToString:want] ||
+            (want.length && (item.keyEquivalentModifierMask & NSEventModifierFlagDeviceIndependentFlagsMask) != mask)) {
+            item.keyEquivalent = @"";
+            item.keyEquivalentModifierMask = mask;
+            item.keyEquivalent = want;
+        }
         if (user && combo) [userSet addObject:item];
         if (user && combo && !item.keyEquivalent.length) [refused addObject:@[item, combo]];
     }];
