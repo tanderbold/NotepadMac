@@ -131,7 +131,7 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"autoInsertDoubleQuote"): @NO,
         Key(@"autoInsertCloseTag"): @NO,
         Key(@"defaultLanguage"): @"",
-        Key(@"openNewDocumentAtStartup"): @YES,
+        Key(@"openNewDocumentAtStartup"): @NO,   // NewDocDefaultSettings::_addNewDocumentOnStartup
         Key(@"untitledFromFirstLine"): @NO,
         Key(@"hideTabBar"): @NO,
         Key(@"tabDoubleClickCloses"): @NO,

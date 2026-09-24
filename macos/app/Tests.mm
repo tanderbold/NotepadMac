@@ -7798,6 +7798,14 @@ int NppMacRunTests(AppDelegate *app) {
             [[unreachable componentsJoinedByString:@", "] UTF8String]);
     }
 
+    if (NppSectionWanted(@"New document defaults")) { printf("\n== New document defaults ==\n");
+        // The registered default, whatever the user set: NewDocDefaultSettings::_addNewDocumentOnStartup.
+        NSDictionary *registered = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+        Check(@"IDM_SETTING_PREFERENCE (new document at startup)",
+              @"\"Always open a new document in addition at startup\" is off by default, as upstream",
+              [registered[@"NppMac.openNewDocumentAtStartup"] isEqual:@NO]);
+    }
+
     if (NppSectionWanted(@"Appearance: themes")) { printf("\n== Appearance: themes ==\n");
         NppPreferences *p = [NppPreferences shared];
         NSArray *themes = [StyleCatalog availableThemeNames];
