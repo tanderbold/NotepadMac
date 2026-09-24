@@ -11,6 +11,10 @@
 @property (nonatomic, strong) NSTableView *table;
 @property (nonatomic, weak) EditorController *editor;
 @property (nonatomic, strong) NSArray<NSDictionary *> *entries;   // name + line
+/// What the list was parsed for: the document, its language and whether it had unsaved changes.
+@property (nonatomic, weak) id parsedDocument;
+@property (nonatomic, copy) NSString *parsedLanguage;
+@property (nonatomic) BOOL parsedModified;
 @end
 
 @implementation FunctionListPanel
@@ -65,6 +69,11 @@ static NSString *PatternForLanguage(NSString *lang) {
     _table.delegate = self;
     _table.target = self;
     _table.doubleAction = @selector(rowActivated:);
+    // Parsed again when another document comes to the front, its language changes or it is saved
+    // (Notepad_plus::notifyBufferActivated, BufferChangeLanguage, doSave) - not on every keystroke.
+    __weak FunctionListPanel *weakSelf = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:NppEditorDocumentsDidChangeNotification object:nil queue:nil
+                                                  usingBlock:^(NSNotification *note) { [weakSelf followEditor]; }];
 
     NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:frame];
     scroll.hasVerticalScroller = YES;
@@ -76,7 +85,19 @@ static NSString *PatternForLanguage(NSString *lang) {
 
 - (BOOL)visible { return [[NppDockingManager shared] isPanelVisible:@"functionList"]; }
 
+- (void)followEditor {
+    if (![self visible]) return;
+    NppDocument *doc = self.editor.currentDocument;
+    NSString *lang = doc.language.name ?: @"";
+    BOOL saved = self.parsedModified && !doc.modified && doc == self.parsedDocument;
+    if (doc != self.parsedDocument || ![lang isEqualToString:self.parsedLanguage ?: @""] || saved) [self reload];
+    else self.parsedModified = doc.modified;
+}
+
 - (void)reload {
+    self.parsedDocument = self.editor.currentDocument;
+    self.parsedLanguage = self.editor.currentDocument.language.name ?: @"";
+    self.parsedModified = self.editor.currentDocument.modified;
     NSString *text = [self.editor.sci string] ?: @"";
     NSString *lang = self.editor.currentDocument.language.name;
 

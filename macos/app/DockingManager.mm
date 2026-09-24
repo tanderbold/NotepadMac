@@ -591,9 +591,16 @@ static const CGFloat kHeader = 22;
 #pragma mark Remembering
 
 - (void)saveLayout {
-    NSMutableDictionary *places = [NSMutableDictionary dictionary], *docked = [NSMutableDictionary dictionary];
-    NSMutableDictionary *floating = [NSMutableDictionary dictionary], *sizes = [NSMutableDictionary dictionary];
-    NSMutableDictionary *groupsOut = [NSMutableDictionary dictionary];
+    // What is stored of panels not made yet this run (the Function List is registered when it is first
+    // shown) is kept: saved at launch without them, their places were lost.
+    NSDictionary *stored = [NppPreferences shared].dockLayout;
+    NSMutableDictionary *(^kept)(NSString *) = ^NSMutableDictionary *(NSString *key) {
+        id d = stored[key];
+        return [d isKindOfClass:[NSDictionary class]] ? [d mutableCopy] : [NSMutableDictionary dictionary];
+    };
+    NSMutableDictionary *places = kept(@"places"), *docked = kept(@"docked");
+    NSMutableDictionary *floating = kept(@"floating"), *sizes = [NSMutableDictionary dictionary];
+    NSMutableDictionary *groupsOut = kept(@"groups");
     for (NSString *ident in self.order) {
         NppDockPanelRecord *r = self.records[ident];
         places[ident] = @(r.place);

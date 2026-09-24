@@ -4843,6 +4843,27 @@ int NppMacRunTests(AppDelegate *app) {
               names.count >= 2 &&
               [[names componentsJoinedByString:@" "] containsString:@"alpha"] &&
               [[names componentsJoinedByString:@" "] containsString:@"beta"]);
+        {
+            // Shown, the list follows the editor: parsed again on a language change (and on a switch or a
+            // save), not on every keystroke.
+            [fl toggle];
+            SetDoc(ed, @"def alpha(x):\n    return x\n\ndef gamma():\n    pass\n");
+            [ed refreshChrome];
+            NSString *(^listed)(void) = ^NSString *{
+                NSMutableArray *n = [NSMutableArray array];
+                for (NSDictionary *e in [fl valueForKey:@"entries"]) [n addObject:e[@"name"]];
+                return [n componentsJoinedByString:@" "];
+            };
+            BOOL notWhileTyping = ![listed() containsString:@"gamma"];
+            [ed setLanguageNamed:@"cpp"];
+            [ed refreshChrome];
+            [ed setLanguageNamed:@"python"];
+            [ed refreshChrome];
+            BOOL afterLanguage = [listed() containsString:@"gamma"];
+            [fl toggle];
+            Check(@"IDM_VIEW_FUNC_LIST (follows the editor)", @"the shown list is parsed again when the language changes, not while typing",
+                  notWhileTyping && afterLanguage);
+        }
 
         // The definitions come from Notepad++'s own functionList parsers.
         FunctionListCatalog *cat = [FunctionListCatalog sharedCatalog];
@@ -9139,6 +9160,18 @@ int NppMacRunTests(AppDelegate *app) {
     if (NppSectionWanted(@"Docking")) { printf("\n== Docking ==\n");
         NppDockingManager *dock = [NppDockingManager shared];
         NSDictionary *layoutBefore = [NppPreferences shared].dockLayout;
+        {
+            // A panel not made yet this run keeps its stored place when the layout is saved again.
+            NSMutableDictionary *withGhost = [layoutBefore mutableCopy] ?: [NSMutableDictionary dictionary];
+            NSMutableDictionary *ghostPlaces = [withGhost[@"places"] mutableCopy] ?: [NSMutableDictionary dictionary];
+            ghostPlaces[@"t_unmade_panel"] = @(NppDockBottom);
+            withGhost[@"places"] = ghostPlaces;
+            [NppPreferences shared].dockLayout = withGhost;
+            [dock performSelector:NSSelectorFromString(@"saveLayout")];
+            Check(@"Docking (layout kept)", @"saving the layout keeps the place of a panel not made yet this run",
+                  [[NppPreferences shared].dockLayout[@"places"][@"t_unmade_panel"] integerValue] == NppDockBottom);
+            [NppPreferences shared].dockLayout = layoutBefore;
+        }
         // The default places are upstream's, and shown panels share a dock as tabs.
         [app toggleDocumentList:nil];
         [ed setDocumentMapVisible:YES];
