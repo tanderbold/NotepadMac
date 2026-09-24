@@ -612,7 +612,15 @@ static NSColor *ColourOf(NSString *hex, NSColor *fallback) {
     [alert beginSheetModalForWindow:self.panel completionHandler:nil];
 }
 
+/// UserDefineDialog's IDC_ADD_BUTTON / IDC_SAVEAS_BUTTON: a name another user
+/// language has is refused ("This name is used by another language"), never
+/// written over - that would empty the language that has it.
+- (BOOL)userLanguageNameTaken:(NSString *)name {
+    return [[LanguageCatalog sharedCatalog] userLanguageNamed:name] != nil;
+}
+
 - (BOOL)createLanguageNamed:(NSString *)name {
+    if ([self userLanguageNameTaken:name]) return NO;
     [self commit];
     NppUserLanguage *udl = [NppUserLanguage emptyLanguageNamed:name];
     if (![[LanguageCatalog sharedCatalog] saveUserLanguage:udl directory:[self directory]]) return NO;
@@ -623,6 +631,7 @@ static NSColor *ColourOf(NSString *hex, NSColor *fallback) {
 
 - (BOOL)saveCurrentAs:(NSString *)name {
     if (!self.current) return NO;
+    if ([self userLanguageNameTaken:name]) return NO;
     [self commit];
     if (![[LanguageCatalog sharedCatalog] saveUserLanguage:self.current asName:name directory:[self directory]]) return NO;
     [self refillPicker];
