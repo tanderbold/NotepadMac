@@ -806,6 +806,29 @@ static BOOL E2EPressKey(NSString *spec, NSWindow *window, NSError **error) {
     NSEvent *up = [NSEvent keyEventWithType:NSEventTypeKeyUp location:NSZeroPoint modifierFlags:flags
                                   timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:window.windowNumber
                                     context:nil characters:chars charactersIgnoringModifiers:plain isARepeat:NO keyCode:code];
+    // A chord of Command or Control on a character key: built as the keyboard's own event,
+    // from the key code, which is how AppKit tells shift+cmd+p (Print Now) from cmd+p
+    // (Print). An event made by keyEventWithType: matches a menu key whatever its Shift -
+    // cmd+g lands on Find Previous (shift+cmd+g) and shift+cmd+p on Print. Named keys
+    // (arrows, space, F-keys) keep the event above, which their shortcuts already match.
+    BOOL characterKey = key.length == 1 && !(named && key.length > 1) && (code != 0 || [plain isEqualToString:@"a"]);
+    if ((flags & (NSEventModifierFlagCommand | NSEventModifierFlagControl)) && characterKey) {
+        CGEventFlags cg = 0;
+        if (flags & NSEventModifierFlagCommand) cg |= kCGEventFlagMaskCommand;
+        if (flags & NSEventModifierFlagShift) cg |= kCGEventFlagMaskShift;
+        if (flags & NSEventModifierFlagOption) cg |= kCGEventFlagMaskAlternate;
+        if (flags & NSEventModifierFlagControl) cg |= kCGEventFlagMaskControl;
+        if (flags & NSEventModifierFlagFunction) cg |= kCGEventFlagMaskSecondaryFn;
+        CGEventRef d = CGEventCreateKeyboardEvent(NULL, code, true), u = CGEventCreateKeyboardEvent(NULL, code, false);
+        if (d && u) {
+            CGEventSetFlags(d, cg);
+            CGEventSetFlags(u, cg);
+            NSEvent *cgDown = [NSEvent eventWithCGEvent:d], *cgUp = [NSEvent eventWithCGEvent:u];
+            if (cgDown && cgUp) { down = cgDown; up = cgUp; }
+        }
+        if (d) CFRelease(d);
+        if (u) CFRelease(u);
+    }
     BOOL chord = (flags & (NSEventModifierFlagCommand | NSEventModifierFlagControl | NSEventModifierFlagFunction)) != 0 ||
                  ((flags & NSEventModifierFlagOption) && code != 0);
     BOOL handled = NO;
@@ -1319,8 +1342,10 @@ static id E2ETarget(NSString *name, NSError **error) {
             // click: two mouse downs and ups in the row's middle.
             [t scrollRowToVisible:row];
             NSRect rect = [t rectOfRow:row];
-            if (args[@"column"]) {
-                NSInteger column = [args[@"column"] integerValue];
+            // The column comes with the target (app.act(..., path=, column=)) or beside it.
+            id columnArg = args[@"column"] ?: ([args[@"target"] isKindOfClass:[NSDictionary class]] ? args[@"target"][@"column"] : nil);
+            if (columnArg) {
+                NSInteger column = [columnArg integerValue];
                 [t scrollColumnToVisible:column];
                 rect = NSIntersectionRect(rect, [t rectOfColumn:column]);
             }
@@ -1596,6 +1621,11 @@ static id E2ETarget(NSString *name, NSError **error) {
                     x = left + [sci message:SCI_GETMARGINWIDTHN wParam:(uptr_t)m lParam:0] / 2;
                 }
                 long y = [sci message:SCI_POINTYFROMPOSITION wParam:0 lParam:pos] + [sci message:SCI_TEXTHEIGHT wParam:(uptr_t)line lParam:0] / 2;
+                // SCI_POINTXFROMPOSITION counts the margins in, but on Cocoa they are a ruler
+                // beside the content view: in the content view the text starts at 0.
+                long margins = 0, count = [sci message:SCI_GETMARGINS];
+                for (long k = 0; k < count; ++k) margins += [sci message:SCI_GETMARGINWIDTHN wParam:(uptr_t)k lParam:0];
+                x -= margins;
                 NSPoint inContent = NSMakePoint(x + 1, y);   // Scintilla's client coordinates are the content view's visible rect
                 NSRect visible = v.visibleRect;
                 args = [args mutableCopy];

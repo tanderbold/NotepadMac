@@ -41,8 +41,9 @@
     NSInteger page = op.currentPage;
     NSInteger total = op.pageRange.length ?: 1;
 
-    NSFont *font = [NSFont fontWithName:p.printHeaderFontName ?: @"Helvetica"
-                                   size:MAX(6, p.printHeaderFontSize)]
+    // "Header font (blank for the editor's)": no name is the editor's font.
+    NSString *headerName = p.printHeaderFontName.length ? p.printHeaderFontName : (p.fontName ?: @"Menlo");
+    NSFont *font = [NSFont fontWithName:NppAvailableFontName(headerName) size:MAX(6, p.printHeaderFontSize)]
                 ?: [NSFont systemFontOfSize:9];
     NSFontManager *fm = [NSFontManager sharedFontManager];
     if (p.printHeaderBold)   font = [fm convertFont:font toHaveTrait:NSBoldFontMask];
@@ -278,37 +279,127 @@ static const char kAutosaveTimerKey = 0;
     return [numbered componentsJoinedByString:@"\n"];
 }
 
+/// A Scintilla colour (0xBBGGRR) as sRGB.
+static NSColor *PrintColour(long bgr) {
+    return [NSColor colorWithSRGBRed:(bgr & 0xff) / 255.0 green:((bgr >> 8) & 0xff) / 255.0
+                                blue:((bgr >> 16) & 0xff) / 255.0 alpha:1];
+}
+
+/// Scintilla's SC_PRINT_INVERTLIGHT: light colours come out dark and dark light.
+static NSColor *InvertedLight(NSColor *c) {
+    NSColor *rgb = [c colorUsingColorSpace:[NSColorSpace sRGBColorSpace]] ?: c;
+    return [NSColor colorWithSRGBRed:1 - rgb.redComponent green:1 - rgb.greenComponent blue:1 - rgb.blueComponent alpha:1];
+}
+
+/// The document as the lexer styles it, in the print colour mode - what
+/// upstream's Printer gets from SCI_SETPRINTCOLOURMODE + SCI_FORMATRANGEFULL:
+/// every style's colours, bold, italic and underline; line numbers when "Print
+/// line number" is on.
+- (NSAttributedString *)styledTextForPrintingWithFont:(NSFont *)base mode:(NSInteger)mode {
+    ScintillaView *sci = self.sci;
+    NSData *bytes = [[self documentText] dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+    long len = MIN((long)bytes.length, (long)[sci message:SCI_GETLENGTH]);
+    const unsigned char *text = (const unsigned char *)bytes.bytes;
+    NSMutableDictionary<NSNumber *, NSDictionary *> *cache = [NSMutableDictionary dictionary];
+    NSColor *defaultBack = PrintColour([sci message:SCI_STYLEGETBACK wParam:STYLE_DEFAULT]);
+    NSDictionary *(^attributesOf)(int) = ^NSDictionary *(int style) {
+        style = MAX(0, MIN(style, STYLE_MAX));
+        NSDictionary *hit = cache[@(style)];
+        if (hit) return hit;
+        // The family's own bold and italic faces (Courier-Bold, Menlo-Italic...).
+        NSFont *font = base;
+        NSFontManager *fm = [NSFontManager sharedFontManager];
+        if ([sci message:SCI_STYLEGETBOLD wParam:(uptr_t)style]) font = [fm convertFont:font toHaveTrait:NSBoldFontMask];
+        if ([sci message:SCI_STYLEGETITALIC wParam:(uptr_t)style]) font = [fm convertFont:font toHaveTrait:NSItalicFontMask];
+        NSMutableDictionary *a = [@{NSFontAttributeName: font} mutableCopy];
+        NSColor *fore = PrintColour([sci message:SCI_STYLEGETFORE wParam:(uptr_t)style]);
+        NSColor *back = PrintColour([sci message:SCI_STYLEGETBACK wParam:(uptr_t)style]);
+        switch (mode) {
+            case NppPrintBlackOnWhite: fore = [NSColor blackColor]; back = nil; break;
+            case NppPrintNoBackground: back = nil; break;
+            case NppPrintInvert: fore = InvertedLight(fore); back = InvertedLight(back); break;
+            default: break;
+        }
+        a[NSForegroundColorAttributeName] = fore;
+        // A run's own background, where it differs from the page's.
+        NSColor *page = mode == NppPrintInvert ? InvertedLight(defaultBack) : defaultBack;
+        if (back && ![back isEqual:page]) a[NSBackgroundColorAttributeName] = back;
+        if ([sci message:SCI_STYLEGETUNDERLINE wParam:(uptr_t)style]) a[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
+        cache[@(style)] = a;
+        return a;
+    };
+
+    NSMutableAttributedString *out = [[NSMutableAttributedString alloc] init];
+    BOOL numbers = [NppPreferences shared].printLineNumbers;
+    long lines = [sci message:SCI_GETLINECOUNT];
+    int width = (int)[@(lines) stringValue].length;
+    long line = 0;
+    BOOL atLineStart = YES;
+    NSMutableData *run = [NSMutableData data];
+    // __block: flush reads the run's current style (a copy would stay -1, and a style
+    // getter given -1 would make Scintilla drop every style it holds).
+    __block int runStyle = -1;
+    void (^flush)(void) = ^{
+        if (!run.length) return;
+        NSString *t = [[NSString alloc] initWithData:run encoding:NSUTF8StringEncoding] ?: @"";
+        [out appendAttributedString:[[NSAttributedString alloc] initWithString:t attributes:attributesOf(runStyle)]];
+        run.length = 0;
+    };
+    for (long i = 0; i < len; ++i) {
+        unsigned char ch = text[i];
+        int style = (int)[sci message:SCI_GETSTYLEINDEXAT wParam:(uptr_t)i];
+        if (atLineStart && numbers) {
+            flush();
+            NSString *n = [NSString stringWithFormat:@"%*ld  ", width, line + 1];
+            // In the style of the text it numbers: one run with it, "1  text" when read back.
+            int numberStyle = (ch == '\n' || ch == '\r') ? STYLE_DEFAULT : style;
+            [out appendAttributedString:[[NSAttributedString alloc] initWithString:n attributes:attributesOf(numberStyle)]];
+        }
+        atLineStart = NO;
+        if (style != runStyle) { flush(); runStyle = style; }
+        [run appendBytes:&ch length:1];
+        if (ch == '\n') { flush(); atLineStart = YES; ++line; }
+    }
+    flush();
+    if (!len && numbers) {
+        [out appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%*d  ", width, 1]
+                                                                    attributes:attributesOf(STYLE_DEFAULT)]];
+    }
+    return out;
+}
+
 - (NSPrintOperation *)printOperationShowingPanel:(BOOL)showPanel {
     NppDocument *doc = self.currentDocument;
     if (!doc) return nil;
     NppPreferences *p = [NppPreferences shared];
+    NSFont *font = [NSFont fontWithName:NppAvailableFontName(p.fontName ?: @"Menlo") size:MAX(6, p.fontSize - 2)]
+                ?: [NSFont userFixedPitchFontOfSize:10];
+    NSAttributedString *styled = [self styledTextForPrintingWithFont:font mode:p.printColourMode];
 
     NppPrintView *page = [[NppPrintView alloc] initWithFrame:NSMakeRect(0, 0, 540, 720)];
     page.editor = self;
-    page.string = [self textForPrinting];
-    page.font = [NSFont fontWithName:NppAvailableFontName(p.fontName ?: @"Menlo") size:MAX(6, p.fontSize - 2)]
-             ?: [NSFont userFixedPitchFontOfSize:10];
+    page.font = font;
 
-    // Colour mode. The editor's own colours are not carried into the print view,
-    // so these are applied to the page as a whole.
+    // Colour mode (Scintilla's SC_PRINT_*): the page's own background here, each
+    // style's colours in the text.
+    NSColor *defaultBack = PrintColour([self.sci message:SCI_STYLEGETBACK wParam:STYLE_DEFAULT]);
     switch (p.printColourMode) {
         case NppPrintInvert:
-            page.textColor = [NSColor whiteColor];
             page.backgroundColor = [NSColor blackColor];
             page.drawsBackground = YES;
             break;
         case NppPrintWYSIWYG:
-        case NppPrintNoBackground:
-            page.textColor = [NSColor textColor];
-            page.drawsBackground = (p.printColourMode == NppPrintWYSIWYG);
+            page.backgroundColor = defaultBack;
+            page.drawsBackground = YES;
             break;
+        case NppPrintNoBackground:
         case NppPrintBlackOnWhite:
         default:
-            page.textColor = [NSColor blackColor];
             page.backgroundColor = [NSColor whiteColor];
             page.drawsBackground = NO;
             break;
     }
+    [page.textStorage setAttributedString:styled];
 
     NSPrintOperation *op = [NSPrintOperation printOperationWithView:page
                                                           printInfo:[self printInfoFromPreferences]];

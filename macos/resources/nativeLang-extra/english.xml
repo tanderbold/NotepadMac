@@ -363,4 +363,6 @@
     <Item english="Calculate" text="Calculate"/>
     <Item english="Division by zero" text="Division by zero"/>
     <Item english="Cannot calculate" text="Cannot calculate"/>
+    <!-- Confirm Replace All (Searching) -->
+    <Item english="Are you sure you want to replace all occurrences in the current document?" text="Are you sure you want to replace all occurrences in the current document?"/>
 </NativeLangExtra>

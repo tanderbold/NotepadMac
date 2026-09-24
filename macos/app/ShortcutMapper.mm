@@ -88,8 +88,15 @@ void NppSetMenuKey(NSMenuItem *item, NSString *key, NSEventModifierFlags modifie
         NSString *shifted = (c >= 'a' && c <= 'z') ? k.uppercaseString : ShiftedCharacters()[k];
         if (shifted) { k = shifted; m &= ~NSEventModifierFlagShift; }
     }
+    NSEventModifierFlags mask = k.length ? m : 0;
+    // Only a key that changes is set again: AppKit refuses the same key back where another
+    // item shares it (Block Comment and Help). The old key goes first and the modifiers
+    // before the new key: set under the old modifiers, "h" would be Cmd+H, Hide's, and be refused.
+    if ([item.keyEquivalent isEqualToString:k] &&
+        (!k.length || (item.keyEquivalentModifierMask & NSEventModifierFlagDeviceIndependentFlagsMask) == mask)) return;
+    item.keyEquivalent = @"";
+    item.keyEquivalentModifierMask = mask;
     item.keyEquivalent = k;
-    item.keyEquivalentModifierMask = k.length ? m : 0;
 }
 
 NSString *NppMenuItemKey(NSMenuItem *item, NSEventModifierFlags *modifiers) {
@@ -624,23 +631,28 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
 #pragma mark Applying
 
 - (void)applyToMenus {
+    // AppKit refuses a key equivalent another item of the menu bar already has. A key the
+    // user gave (shortcuts.xml, the Shortcut Mapper) takes it from the default that has it -
+    // Ctrl+Alt+H from Windows over Hide Others - once the walk is done.
+    NSMutableArray<NSArray *> *refused = [NSMutableArray array];
+    NSHashTable<NSMenuItem *> *userSet = [NSHashTable weakObjectsHashTable];
     [self walkMenu:NSApp.mainMenu path:@[] block:^(NSMenuItem *item, NSArray<NSString *> *path) {
         NppKeyCombo *combo = nil;
-        BOOL decided = NO;
+        BOOL decided = NO, user = NO;
         if (item.action == NSSelectorFromString(@"playSavedMacro:")) {
             id c = self.macroCombos[item.representedObject ?: item.title];
             combo = [c isKindOfClass:[NppKeyCombo class]] ? c : nil;
-            decided = YES;
+            decided = user = YES;
         } else if (item.action == NSSelectorFromString(@"runSavedCommand:")) {
             id c = self.runCombos[NppEnglishTitle(item)];
             combo = [c isKindOfClass:[NppKeyCombo class]] ? c : nil;
-            decided = YES;
+            decided = user = YES;
         } else if (!IsListedElsewhere(item)) {
             NSString *key = MenuKey(item, path);
             id over = self.menuOverrides[key];
             if (over) {
                 combo = [over isKindOfClass:[NppKeyCombo class]] ? over : nil;
-                decided = YES;
+                decided = user = YES;
             } else if (self.menuDefaults[key]) {
                 id def = self.menuDefaults[key];
                 combo = [def isKindOfClass:[NppKeyCombo class]] ? def : nil;
@@ -649,7 +661,23 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
         }
         if (!decided) return;
         NppSetMenuKey(item, combo.key ?: @"", combo ? combo.modifiers : 0);
+        if (user && combo) [userSet addObject:item];
+        if (user && combo && !item.keyEquivalent.length) [refused addObject:@[item, combo]];
     }];
+    for (NSArray *r in refused) {
+        NSMenuItem *item = r[0];
+        NppKeyCombo *combo = r[1];
+        __block NSMenuItem *holder = nil;
+        [self walkMenu:NSApp.mainMenu path:@[] block:^(NSMenuItem *other, NSArray<NSString *> *path) {
+            NSEventModifierFlags otherMods = 0;
+            NSString *otherKey = NppMenuItemKey(other, &otherMods);   // as the combo names it, Shift and all
+            if (other != item && otherKey.length && [otherKey isEqualToString:combo.key] &&
+                (otherMods & NSEventModifierFlagDeviceIndependentFlagsMask) == combo.modifiers) holder = other;
+        }];
+        if (!holder || [userSet containsObject:holder]) continue;   // two keys the user gave: the first keeps it
+        NppSetMenuKey(holder, @"", 0);
+        NppSetMenuKey(item, combo.key, combo.modifiers);
+    }
 }
 
 - (void)applyScintillaKeysTo:(id)view {

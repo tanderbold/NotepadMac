@@ -8160,6 +8160,45 @@ int NppMacRunTests(AppDelegate *app) {
                   readWindows && scintillaKey && kept);
         }
 
+        // A Run command's key reaches its menu item even where a default has it: Ctrl+Alt+H
+        // from Windows is Cmd+Opt+H, Hide Others' - the key the user gave wins.
+        {
+            NSMenuItem *(^itemTitled)(NSString *) = ^NSMenuItem *(NSString *title) {
+                __block NSMenuItem *found = nil;
+                __block void (^walk)(NSMenu *);
+                void (^walker)(NSMenu *) = ^(NSMenu *m) {
+                    for (NSMenuItem *i in m.itemArray) {
+                        if ([i.title isEqualToString:title]) found = i;
+                        if (i.submenu) walk(i.submenu);
+                    }
+                };
+                walk = walker;
+                walker(NSApp.mainMenu);
+                walk = nil;
+                return found;
+            };
+            [ed saveCommand:[NppSavedCommand commandWithName:@"Key test" command:@"echo k"]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NppSavedCommandsDidChange" object:nil];
+            NppShortcutCommand *keyed = nil;
+            for (NppShortcutCommand *c in [app.shortcutStore commandsInCategory:NppShortcutRunCommand])
+                if ([c.name isEqualToString:@"Key test"]) keyed = c;
+            NppKeyCombo *ctrlAltH = [NppKeyCombo comboWithWindowsCtrl:YES alt:YES shift:NO macControl:NO virtualKey:72];
+            [app.shortcutStore setCombo:ctrlAltH forCommand:keyed];
+            [app.shortcutStore applyToMenus];
+            NSMenuItem *run = itemTitled(@"Key test"), *hideOthers = itemTitled(@"Hide Others");
+            BOOL taken = [run.keyEquivalent isEqualToString:@"h"] &&
+                         (run.keyEquivalentModifierMask & NSEventModifierFlagDeviceIndependentFlagsMask) ==
+                             (NSEventModifierFlagCommand | NSEventModifierFlagOption) &&
+                         hideOthers && hideOthers.keyEquivalent.length == 0;
+            [app.shortcutStore setCombo:nil forCommand:keyed];
+            [ed removeSavedCommandNamed:@"Key test"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NppSavedCommandsDidChange" object:nil];
+            [app.shortcutStore applyToMenus];
+            Check(@"IDM_SETTING_SHORTCUT_MAPPER (a key a default has)",
+                  @"a Run command's Cmd+Opt+H is on its item, taken from Hide Others, which gets it back after",
+                  taken && [itemTitled(@"Hide Others").keyEquivalent isEqualToString:@"h"]);
+        }
+
         // Recording: a menu command that upstream records by its id is one
         // step of type 2, and what it sent to Scintilla meanwhile is not recorded again.
         {
@@ -8721,6 +8760,35 @@ int NppMacRunTests(AppDelegate *app) {
               @"the colour mode reaches the printed page",
               op != nil && inverted && !plainPage.drawsBackground &&
               [plainPage.textColor isEqual:[NSColor blackColor]]);
+
+        // Styled output, as upstream's SCI_FORMATRANGEFULL: each style's colour and
+        // bold, line numbers in their own style; the editor's styles are left whole.
+        SetDoc(ed, @"// note\nint x;\n");
+        [ed setLanguageNamed:@"cpp"];
+        [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+        long commentFore = [sci message:SCI_STYLEGETFORE wParam:SCE_C_COMMENTLINE];
+        long wordBold = [sci message:SCI_STYLEGETBOLD wParam:(uptr_t)[sci message:SCI_GETSTYLEAT wParam:8]];   // "int"
+        p.printColourMode = NppPrintWYSIWYG;
+        p.printLineNumbers = YES;
+        NSString *fontWas = p.fontName;
+        p.fontName = @"Menlo";                       // a family with a bold face
+        NSTextStorage *styled = ((NSTextView *)[ed printOperationShowingPanel:NO].view).textStorage;
+        p.printLineNumbers = NO;
+        p.fontName = fontWas;
+        NSRange noteAt = [styled.string rangeOfString:@"// note"];
+        NSRange intAt = [styled.string rangeOfString:@"int"];
+        NSColor *noteColour = noteAt.length ? [[styled attribute:NSForegroundColorAttributeName atIndex:noteAt.location
+                                                 effectiveRange:NULL] colorUsingColorSpace:[NSColorSpace sRGBColorSpace]] : nil;
+        NSFont *intFont = intAt.length ? [styled attribute:NSFontAttributeName atIndex:intAt.location effectiveRange:NULL] : nil;
+        BOOL intBold = (intFont.fontDescriptor.symbolicTraits & NSFontDescriptorTraitBold) != 0;
+        long printedFore = noteColour ? (lround(noteColour.redComponent * 255) | lround(noteColour.greenComponent * 255) << 8 |
+                                         lround(noteColour.blueComponent * 255) << 16) : -1;
+        Check(@"IDM_FILE_PRINT (styled)",
+              @"the print keeps each style's colour and bold, with numbered lines, and leaves the editor's styles whole",
+              [styled.string hasPrefix:@"1  // note"] && [styled.string containsString:@"2  int x;"] &&
+              printedFore == commentFore && intBold == (wordBold != 0) &&
+              [sci message:SCI_STYLEGETFORE wParam:SCE_C_COMMENTLINE] == commentFore &&
+              [sci message:SCI_TEXTWIDTH wParam:STYLE_LINENUMBER lParam:(sptr_t)"_999"] > 0);
         p.printColourMode = 2;
     }
 
@@ -8836,6 +8904,30 @@ int NppMacRunTests(AppDelegate *app) {
               brackets && [sci message:SCI_GETSELECTIONSTART] == 4 &&
               [sci message:SCI_GETSELECTIONEND] == 6);
         p.delimiterOpen = @"("; p.delimiterClose = @")";
+
+        // A right click outside the selection puts the caret where it was made - on the
+        // character under it, the margins beside the text counted as Scintilla counts them.
+        SetDoc(ed, @"abc def\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:3];
+        // Where "d" is in the content view: the margins are a ruler beside it, so the text
+        // starts at its left edge, a character is as wide as Scintilla measures it.
+        NSRect shown = sci.content.visibleRect;
+        long charWidth = [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:6] - [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:5];
+        NSPoint local = NSMakePoint(shown.origin.x + 5 * charWidth + charWidth / 2,
+                                    shown.origin.y + [sci message:SCI_POINTYFROMPOSITION wParam:0 lParam:5] + 2);
+        NSPoint inWindow = [sci.content convertPoint:local toView:nil];
+        BOOL wasKept = p.rightClickKeepsSelection;
+        p.rightClickKeepsSelection = NO;
+        [ed contextClickAtWindowPoint:inWindow window:sci.window];
+        BOOL moved = [sci message:SCI_GETSELECTIONSTART] == 5 && [sci message:SCI_GETSELECTIONEND] == 5;
+        [sci message:SCI_SETSEL wParam:0 lParam:3];
+        p.rightClickKeepsSelection = YES;
+        [ed contextClickAtWindowPoint:inWindow window:sci.window];
+        BOOL kept = [sci message:SCI_GETSELECTIONSTART] == 0 && [sci message:SCI_GETSELECTIONEND] == 3;
+        p.rightClickKeepsSelection = wasKept;
+        Check(@"IDM_SETTING_PREFERENCE (right click)",
+              @"a right click on \"def\" moves the caret there, or keeps the selection when asked to",
+              moved && kept);
     }
 
     if (NppSectionWanted(@"Instances, panels, settings folder")) { printf("\n== Instances, panels, settings folder ==\n");

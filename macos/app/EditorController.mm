@@ -1659,20 +1659,10 @@ static BOOL gCheckingFilesOnDisk;
     }
 }
 
+/// File > Print, Print Now and -quickPrint all print with the Print preferences
+/// (upstream's Printer: margins, line numbers, header and footer, colour mode).
 - (NSPrintOperation *)printOperationForCurrentShowingPanel:(BOOL)showPanel {
-    NppDocument *doc = self.currentDocument;
-    if (!doc) return nil;
-    NSTextView *page = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 540, 720)];
-    page.string = [self documentText];
-    page.font = [NSFont fontWithName:@"Menlo" size:10] ?: [NSFont userFixedPitchFontOfSize:10];
-
-    NSPrintInfo *info = [NSPrintInfo sharedPrintInfo];
-    info.horizontalPagination = NSPrintingPaginationModeFit;
-    NSPrintOperation *op = [NSPrintOperation printOperationWithView:page printInfo:info];
-    op.showsPrintPanel = showPanel;
-    op.showsProgressPanel = showPanel;
-    op.jobTitle = doc.displayName;
-    return op;
+    return [self printOperationShowingPanel:showPanel];
 }
 
 - (BOOL)printCurrentShowingPanel:(BOOL)showPanel {

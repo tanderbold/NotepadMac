@@ -830,8 +830,10 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Duplicate Line" action:@selector(duplicateLine:) key:@"d" flags:NSEventModifierFlagCommand menu:editMenu];
     [editMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Toggle Line Comment" action:@selector(toggleLineComment:) key:@"/" flags:NSEventModifierFlagCommand menu:editMenu];
+    // Option+Cmd+/, not upstream's Ctrl+Shift+Q (Shift+Cmd+Q is the system's Log Out) nor
+    // Shift+Cmd+/ (it is Cmd+?, which macOS keeps for the Help menu's search and takes off the item).
     [self item:@"Block Comment" action:@selector(toggleBlockComment:) key:@"/"
-         flags:NSEventModifierFlagCommand | NSEventModifierFlagShift menu:editMenu];
+         flags:NSEventModifierFlagCommand | NSEventModifierFlagOption menu:editMenu];
     [self item:@"Delete" action:@selector(deleteSelection:) key:@"" flags:0 menu:editMenu];
     [editMenu addItem:[NSMenuItem separatorItem]];
     [editMenu addItem:[NSMenuItem separatorItem]];
@@ -4878,6 +4880,16 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 - (void)findPanelReplaceAll:(id)sender {
     [self rememberFindFields:YES files:NO];
     if ([self refusedInvalidPattern:[self currentFindSpec]]) return;
+    // Searching > "Confirm Replace All" (the port's own box, beside upstream's for all
+    // opened documents): asks as that one does, in the document's words.
+    if (!getenv("NPPMAC_TEST") && [NppPreferences shared].confirmReplaceAll) {
+        NSAlert *confirm = [[NSAlert alloc] init];
+        confirm.messageText = @"Replace All";
+        confirm.informativeText = @"Are you sure you want to replace all occurrences in the current document?";
+        [confirm addButtonWithTitle:@"Replace"];
+        [confirm addButtonWithTitle:@"Cancel"];
+        if ([confirm runModal] != NSAlertFirstButtonReturn) return;
+    }
     [self.editor beginRecordableMenuCommand];
     NSUInteger n = [self.editor replaceAll:[self currentFindSpec]];
     [self.editor recordFindCommand:1609 spec:[self currentFindSpec] markFlags:0 global:NO];
