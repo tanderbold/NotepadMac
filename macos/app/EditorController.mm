@@ -78,6 +78,8 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
     if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)))
         [self.owner mirrorScrollFromSecondary];
     if (n->nmhdr.code == SCN_ZOOM) [self.owner mirrorZoomFromSecondary];
+    // The caret or the selection moved in this pane: the status bar says so (it follows the focused view).
+    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT))) [self.owner refreshChrome];
 }
 @end
 
@@ -363,7 +365,7 @@ static long SciColor(NSColor *c) {
     [_secondaryHost addSubview:_secondaryView];
 
     _editorSplit = [[NSSplitView alloc] initWithFrame:editorRect];
-    _editorSplit.vertical = NO;                    // panes stacked, as Notepad++ splits
+    _editorSplit.vertical = YES;                   // side by side: NppGUI::_splitterPos = POS_VERTICAL
     _editorSplit.dividerStyle = NSSplitViewDividerStyleThin;
     _editorSplit.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [_editorSplit addSubview:_sciView];
@@ -420,6 +422,10 @@ static long SciColor(NSColor *c) {
     _statusField.font = [NSFont monospacedDigitSystemFontOfSize:11 weight:NSFontWeightRegular];
     _statusField.textColor = [NSColor secondaryLabelColor];
     [_container addSubview:_statusField];
+    // The fields share the bar again whenever the window changes size (StatusBar::adjustParts on WM_SIZE).
+    _container.postsFrameChangedNotifications = YES;
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSViewFrameDidChangeNotification object:_container
+                                                       queue:nil usingBlock:^(NSNotification *note) { [weakSelf layoutStatusFields]; }];
 
     [self configureEditorChrome];
     [self newDocument];
@@ -1652,9 +1658,9 @@ static BOOL gCheckingFilesOnDisk;
         session[@"secondary"] = @{@"path": self.secondaryDocument.path,
                                   @"firstLine": @([self.secondaryView message:SCI_GETFIRSTVISIBLELINE]),
                                   @"caret": @([self.secondaryView message:SCI_GETCURRENTPOS]),
-                                  // Where the divider stands, as a share of the height.
-                                  @"split": @(NSHeight(self.editorSplit.frame) > 0
-                                      ? NSHeight(self.sciView.frame) / NSHeight(self.editorSplit.frame) : 0.5)};
+                                  // Where the divider stands, as a share of the split.
+                                  @"split": @([self splitExtent] > 0
+                                      ? [self paneExtent:self.sciView] / [self splitExtent] : 0.5)};
     }
     // Folder as Workspace's roots, as upstream's FileBrowser section.
     if ([self workspaceVisible] && [self workspaceRootPaths].count) session[@"workspaceRoots"] = [self workspaceRootPaths];
@@ -1892,7 +1898,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             [self.secondaryView message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)[secondary[@"firstLine"] longValue] lParam:0];
             double share = [secondary[@"split"] doubleValue];
             if (share > 0.05 && share < 0.95) {
-                [self.editorSplit setPosition:NSHeight(self.editorSplit.frame) * share ofDividerAtIndex:0];
+                [self.editorSplit setPosition:[self splitExtent] * share ofDividerAtIndex:0];
             }
             NSUInteger back = front ? [self.docs indexOfObjectIdenticalTo:front] : NSNotFound;
             if (back != NSNotFound) [self selectDocumentAtIndex:(NSInteger)back];
@@ -2513,7 +2519,11 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 }
 
 - (void)foldAll:(BOOL)fold {
-    [self.sciView message:SCI_FOLDALL wParam:(uptr_t)(fold ? SC_FOLDACTION_CONTRACT : SC_FOLDACTION_EXPAND) lParam:0];
+    // Every level, not only the outermost (ScintillaEditView::foldAll): Unfold Level N after
+    // Fold All then opens just that level's headers.
+    [self.sciView message:SCI_FOLDALL
+                   wParam:(uptr_t)((fold ? SC_FOLDACTION_CONTRACT : SC_FOLDACTION_EXPAND) | SC_FOLDACTION_CONTRACT_EVERY_LEVEL)
+                   lParam:0];
 }
 
 - (void)toggleFoldAtCursor {
@@ -2655,7 +2665,8 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     [self applyTabBarPreferences];
 
     NppDocument *doc = self.currentDocument;
-    ScintillaView *sci = self.sciView;
+    // The view with the focus, as upstream's status bar follows _pEditView.
+    ScintillaView *sci = [self secondaryViewVisible] && [self otherViewHasFocus] ? self.secondaryView : self.sciView;
     long pos = [sci message:SCI_GETCURRENTPOS];
     long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)pos] + 1;
     long col = [sci message:SCI_GETCOLUMN wParam:(uptr_t)pos] + 1;
@@ -2760,9 +2771,10 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     [self.tabBar setNeedsDisplay:YES];
     // A hidden tab bar gives its room to the editor, a shown one takes it back
     // (TabBarPlus::display / Notepad_plus::hideTabBar resize the edit view).
+    // The split holding the panes is what gets the room: the panes inside it keep their divider.
     CGFloat tabH = self.tabBar.hidden ? 0 : NSHeight(self.tabBar.frame);
     NSRect edit = NSMakeRect(0, 0, NSWidth(self.editorArea.frame), NSHeight(self.editorArea.frame) - tabH);
-    if (!NSEqualRects(self.sciView.frame, edit)) self.sciView.frame = edit;
+    if (!NSEqualRects(self.editorSplit.frame, edit)) self.editorSplit.frame = edit;
 }
 
 /// The path field is as wide as its text, up to half the bar; the rest follows it.
@@ -2842,6 +2854,10 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 - (ScintillaView *)secondarySci { return self.secondaryView; }
 
 - (BOOL)secondaryViewVisible { return self.secondaryHost.superview != nil; }
+
+/// The split's length along its divider's travel, and a pane's: widths for views side by side.
+- (CGFloat)splitExtent { return self.editorSplit.vertical ? NSWidth(self.editorSplit.frame) : NSHeight(self.editorSplit.frame); }
+- (CGFloat)paneExtent:(NSView *)pane { return self.editorSplit.vertical ? NSWidth(pane.frame) : NSHeight(pane.frame); }
 - (NppDocument *)documentInSecondaryView { return [self secondaryViewVisible] ? self.secondaryDocument : nil; }
 
 - (void)setSecondaryViewVisible:(BOOL)visible {
@@ -2849,7 +2865,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     if (visible) {
         [self.editorSplit addSubview:self.secondaryHost];
         [self.editorSplit adjustSubviews];
-        [self.editorSplit setPosition:NSHeight(self.editorSplit.frame) / 2 ofDividerAtIndex:0];
+        [self.editorSplit setPosition:[self splitExtent] / 2 ofDividerAtIndex:0];
     } else {
         [self.secondaryHost removeFromSuperview];
         [self.editorSplit adjustSubviews];

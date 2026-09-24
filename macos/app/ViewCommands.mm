@@ -156,7 +156,9 @@
 
 - (void)showAllHiddenLines {
     ScintillaView *sci = self.sci;
-    [sci message:SCI_SHOWLINES wParam:0 lParam:[sci message:SCI_GETLINECOUNT]];
+    // The last line is inclusive: Scintilla refuses a range that ends past the document
+    // (ContractionState::SetVisible), and nothing was shown again.
+    [sci message:SCI_SHOWLINES wParam:0 lParam:[sci message:SCI_GETLINECOUNT] - 1];
     [self refreshChrome];
 }
 

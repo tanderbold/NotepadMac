@@ -1,3 +1,4 @@
+#import "Localization.h"
 #import "StyleConfigurator.h"
 #import "NppPanel.h"
 #import "SettingsCommands.h"
@@ -250,6 +251,9 @@ static NSTextView *KeywordView(NSRect frame, NSView *parent, BOOL editable) {
     save.frame = NSMakeRect(NSWidth(frame) - 130, 14, 110, 30);
     save.keyEquivalent = @"\r";
     [content addSubview:save];
+    // Upstream's "&&" is Windows' escaped ampersand: the localiser shows "Save & Close" (or the
+    // translation), in English too, and keeps the English text to look it up again.
+    [[NppLocalization shared] localizeView:save];
 
     _panel.contentView = content;
 }

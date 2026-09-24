@@ -1026,7 +1026,8 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Go to Matching Brace" action:@selector(goToMatchingBrace:) key:@"m" flags:NSEventModifierFlagCommand menu:searchMenu];
     [self item:@"Select All In-between {} [] or ()" action:@selector(selectBetweenBraces:) key:@"m"
          flags:NSEventModifierFlagCommand | NSEventModifierFlagShift menu:searchMenu];
-    [self item:@"Mark…" action:@selector(markTerm:) key:@"" flags:0 menu:searchMenu];
+    // The Find dialog on its Mark tab, as IDM_SEARCH_MARK opens it (FindReplaceDlg MARK_DLG).
+    [self item:@"Mark…" action:@selector(showMarkTab:) key:@"" flags:0 menu:searchMenu];
     [self item:@"Find characters in range…" action:@selector(findCharsInRange:) key:@"" flags:0 menu:searchMenu];
 
     // --- marker style submenus, five styles plus the Find Mark style
@@ -3070,7 +3071,13 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     else if (a == @selector(textLTR:)) item.state = mark(![self.editor textDirectionIsRTL]);
     // Tab Bar > "Enable pin tab feature" off: Pin Tab is not offered (NppNotification's
     // tab menu: enableItem(IDM_PINTAB, isTabPinEnabled)), in the File menu nor the tab menu.
-    if (a == @selector(togglePin:)) return [NppPreferences shared].tabPinFeatureEnabled;
+    if (a == @selector(togglePin:)) {
+        // A pinned tab offers "Unpin Tab" (NppNotification: the IDM_PINTAB item renamed by the buffer's state).
+        BOOL on = [NppPreferences shared].tabPinFeatureEnabled;
+        NSString *title = NppL(on && self.editor.currentDocument.pinned ? @"Unpin Tab" : @"Pin Tab");
+        if (![item.title isEqualToString:title]) item.title = title;
+        return on;
+    }
     if (a == @selector(numbersInsertSum:) || a == @selector(numbersInsertAverage:) || a == @selector(numbersInsertMinimum:) ||
         a == @selector(numbersInsertMaximum:) || a == @selector(numbersInsertCount:) ||
         a == @selector(numbersSortAscending:) || a == @selector(numbersSortDescending:)) {
@@ -4301,7 +4308,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     self.replaceField = [self findCombo:NSMakeRect(110, 294, 480, 26) history:prefs.replaceHistory in:content];
     // Swaps the two fields, as the button between them on Windows does.
     NSButton *swap = [NSButton buttonWithTitle:@"⇅" target:self action:@selector(findPanelSwap:)];
-    swap.frame = NSMakeRect(596, 308, 36, 26);
+    swap.frame = NSMakeRect(594, 308, 44, 26);   // a rounded bezel keeps ~24 pt of margins: 44 leaves the glyph its room
     swap.toolTip = @"Swap Find with Replace";
     [content addSubview:swap];
     [self.replaceViews addObjectsFromArray:@[replaceLabel, self.replaceField, swap]];

@@ -138,6 +138,8 @@ static NSString *PatternForLanguage(NSString *lang) {
     if (row < 0 || row >= (NSInteger)self.entries.count) return;
     long line = [self.entries[(NSUInteger)row][@"line"] longValue];
     [self.editor.sci message:SCI_GOTOLINE wParam:(uptr_t)line lParam:0];
+    // Typing goes on in the editor (NM_DBLCLK posts SCEN_SETFOCUS to the edit view).
+    [self.editor.sci.window makeFirstResponder:self.editor.sci.content];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tv { return (NSInteger)self.entries.count; }

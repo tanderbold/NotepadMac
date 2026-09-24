@@ -2574,6 +2574,19 @@ int NppMacRunTests(AppDelegate *app) {
               [finnish containsString:@"pituus: 8    rivejä: 3"] && [finnish containsString:@"Rivi: 1"] &&
               [status.stringValue containsString:@"length: 8"] && [status.stringValue containsString:@"Pos: 1"]);
 
+        {
+            // A narrower window: the path field gets at most half the bar again, not the width it had.
+            NSView *box = [ed valueForKey:@"container"];
+            NSTextField *pf = [ed valueForKey:@"pathField"];
+            NSRect was = box.frame;
+            pf.stringValue = [@"" stringByPaddingToLength:300 withString:@"/deep" startingAtIndex:0];
+            [ed performSelector:NSSelectorFromString(@"layoutStatusFields")];
+            [box setFrameSize:NSMakeSize(640, NSHeight(was))];
+            BOOL halved = NSWidth(pf.frame) <= 320 + 1;
+            [box setFrameSize:was.size];
+            [ed refreshChrome];
+            Check(@"Status bar (window size)", @"the path field takes at most half the bar after the window is resized", halved);
+        }
         // The path in the status bar: its own field, a click copies the full path and says so for a moment.
         NSString *clickPath = TempFile(@"t_status_click.txt", @"click\n");
         [ed openFileAtPath:clickPath error:NULL];
@@ -3928,6 +3941,12 @@ int NppMacRunTests(AppDelegate *app) {
         [ed nextBookmark];
         Check(@"IDM_SEARCH_CLEAR_BOOKMARKS", @"Search > Bookmark > Clear All Bookmarks is in the menu and clears them",
               bookmarksCleared && [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]] == 0);
+        BOOL markRan = [app performMenuCommandAtPath:@"Search|Mark…"];
+        NSPanel *markPanel = [app valueForKey:@"findPanel"];
+        NSSegmentedControl *markTabs = [app valueForKey:@"findTabs"];
+        Check(@"IDM_SEARCH_MARK", @"Search > Mark… opens the Find dialog on its Mark tab, as upstream",
+              markRan && markPanel.isVisible && markTabs.selectedSegment == 4);
+        [markPanel orderOut:nil];
         SetDoc(ed, @"a \U0001F600 b\n");
         Check(@"IDM_SEARCH_FINDCHARINRANGE", @"a range past U+FFFF marks a character outside the BMP",
               [ed markCharactersInRangeFrom:128 to:0x10FFFF] == 1);
@@ -4260,6 +4279,16 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL unfolded = [sci message:SCI_GETLINEVISIBLE wParam:1] != 0;
         Check(@"IDM_VIEW_FOLDALL", @"collapses every fold", folded);
         Check(@"IDM_VIEW_UNFOLDALL", @"expands every fold", unfolded);
+        SetDoc(ed, @"int f() {\n  if (a) {\n    b;\n  }\n}\n");
+        [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+        [ed foldAll:YES];
+        BOOL innerFolded = [sci message:SCI_GETFOLDEXPANDED wParam:1] == 0;
+        [ed unfoldToLevel:1];
+        Check(@"IDM_VIEW_FOLDALL", @"folds every level, so Unfold Level 1 opens only the outer block",
+              innerFolded && [sci message:SCI_GETFOLDEXPANDED wParam:0] && ![sci message:SCI_GETFOLDEXPANDED wParam:1]);
+        [ed foldAll:NO];
+        SetDoc(ed, @"int f() {\n  int x;\n  return x;\n}\n");   // the text the checks below use
+        [sci message:SCI_COLOURISE wParam:0 lParam:-1];
 
         [sci message:SCI_GOTOLINE wParam:1 lParam:0];
         [ed foldCurrent:YES];
@@ -4417,6 +4446,8 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_HIDELINES", @"hides the selected lines",
               hidden && [sci message:SCI_GETLINEVISIBLE wParam:1] == 0);
         [ed showAllHiddenLines];
+        Check(@"IDM_VIEW_UNHIDELINES", @"Show All Hidden Lines shows them again",
+              [sci message:SCI_GETLINEVISIBLE wParam:1] != 0);
 
         [ed setTextDirectionRTL:YES];
         BOOL rtl = [ed textDirectionIsRTL];
@@ -4615,6 +4646,10 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW", @"second pane shows the same buffer",
               cloned && [ed secondaryViewVisible] &&
               (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == sharedDoc);
+        NSRect mainPane = ed.sci.frame, subPane = [ed.secondarySci convertRect:ed.secondarySci.bounds toView:ed.sci.superview];
+        Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW", @"the two views stand side by side, as Notepad++ splits them (POS_VERTICAL)",
+              NSMinX(subPane) >= NSMaxX(mainPane) && NSWidth(mainPane) > 0 && NSWidth(subPane) > 0 &&
+              fabs(NSHeight(mainPane) - NSHeight(subPane)) < 30);
 
         // Style definitions are per view, so the second pane needs its own
         // set (defineDocType styles each view on Windows). Before that, a
@@ -4644,9 +4679,19 @@ int NppMacRunTests(AppDelegate *app) {
 
         [ed focusOtherView];
         BOOL onOther = [ed otherViewHasFocus];
+        // The status bar follows the focused view: its caret line, not the main view's.
+        [ed.secondarySci message:SCI_APPENDTEXT wParam:3 lParam:(sptr_t)"\n\n\n"];
+        [ed.secondarySci message:SCI_DOCUMENTEND];
+        long subLine = [ed.secondarySci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[ed.secondarySci message:SCI_GETCURRENTPOS]] + 1;
+        [ed.sci message:SCI_DOCUMENTSTART];
+        [ed refreshChrome];
+        NSTextField *statusText = [ed valueForKey:@"statusField"];
+        BOOL follows = subLine > 1 && [statusText.stringValue containsString:[NSString stringWithFormat:@"Ln: %ld ", subLine]];
         [ed focusOtherView];
         Check(@"IDM_VIEW_SWITCHTO_OTHER_VIEW", @"focus moves between panes and back",
               onOther && ![ed otherViewHasFocus]);
+        Check(@"IDM_VIEW_SWITCHTO_OTHER_VIEW (status bar)", @"the status bar shows the focused view's caret",
+              follows);
 
         // Synchronised scrolling and zoom
         // Long enough that SCI_SETFIRSTVISIBLELINE is not clamped back to 0.
@@ -7424,6 +7469,11 @@ int NppMacRunTests(AppDelegate *app) {
             StyleConfiguratorWindow *conf = [[StyleConfiguratorWindow alloc] initWithEditor:ed];
             [conf show];
             BOOL opened = conf.visible && [conf selectLanguage:@"cpp"] && [conf selectStyleNamed:@"COMMENT LINE"];
+            NSButton *saveClose = nil;
+            for (NSView *v in [[conf valueForKey:@"panel"] contentView].subviews)
+                if ([v isKindOfClass:[NSButton class]] && [((NSButton *)v).title containsString:@"Close"]) saveClose = (NSButton *)v;
+            Check(@"IDM_LANGSTYLE_CONFIG_DLG", @"the button reads \"Save & Close\", not upstream's escaped \"&&\"",
+                  [NppLocalization shared].active || [saveClose.title isEqualToString:@"Save & Close"]);
             [conf setValue:@"FF0000" ofAttribute:@"fgColor"];
             BOOL previewed = [sci message:SCI_STYLEGETFORE wParam:SCE_C_COMMENTLINE] == 0x0000FF && conf.dirty;
             // A font from the system's font panel: family, size, bold and italic in one.
@@ -9206,7 +9256,9 @@ int NppMacRunTests(AppDelegate *app) {
         NSArray *roots = [ed workspaceRootPaths];
         NSString *sessionPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_depth_session.json"];
         NSSplitView *viewSplit = [ed valueForKey:@"editorSplit"];
-        [viewSplit setPosition:NSHeight(viewSplit.frame) * 0.3 ofDividerAtIndex:0];
+        // Along the split's own axis: the views stand side by side, so the divider moves across.
+        CGFloat (^extent)(NSView *) = ^CGFloat(NSView *v) { return viewSplit.vertical ? NSWidth(v.frame) : NSHeight(v.frame); };
+        [viewSplit setPosition:extent(viewSplit) * 0.3 ofDividerAtIndex:0];
         [ed saveSessionTo:sessionPath error:NULL];
         [ed setReadOnly:NO];
         [ed setSecondaryViewVisible:NO];
@@ -9220,7 +9272,7 @@ int NppMacRunTests(AppDelegate *app) {
         if (at != NSNotFound) [ed selectDocumentAtIndex:(NSInteger)at];
         BOOL foldBack = at != NSNotFound && [sci message:SCI_GETFOLDEXPANDED wParam:3] == 0;
         BOOL readOnlyBack = [ed isReadOnly] && ed.currentDocument.userReadOnly;
-        double shareBack = NSHeight(ed.sci.frame) / MAX(1, NSHeight(viewSplit.frame));
+        double shareBack = extent(ed.sci) / MAX(1, extent(viewSplit));
         printf("    session: the views' divider came back at %.2f\n", shareBack);
         BOOL secondBack = fabs(shareBack - 0.3) < 0.05 && [ed secondaryViewVisible] &&
             (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == ed.currentDocument.docPointer;
@@ -9260,10 +9312,12 @@ int NppMacRunTests(AppDelegate *app) {
         NSString *winSession = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_windows_session.xml"];
         [fromWindows writeToFile:winSession atomically:YES encoding:NSUTF8StringEncoding error:NULL];
         NSUInteger docsBeforeWin = ed.documents.count;
+        // A lone clean untitled tab gives its place to the file opened over it (FILE-007, loadBufferIntoView).
+        BOOL loneClean = docsBeforeWin == 1 && !ed.documents[0].path && !ed.documents[0].modified;
         BOOL loadedWin = [ed loadSessionFrom:winSession error:NULL];
         NppDocument *fromWin = ed.currentDocument;
         BOOL windowsLoaded = loadedWin && [fromWin.path isEqualToString:foldFile] && fromWin.pinned && fromWin.userReadOnly &&
-                             fromWin.tabColour == 3 && ed.documents.count == docsBeforeWin + 1 &&
+                             fromWin.tabColour == 3 && ed.documents.count == docsBeforeWin + (loneClean ? 0 : 1) &&
                              [ed.sci message:SCI_MARKERGET wParam:1] & (1 << 1);
         if (fromWin.pinned) [ed togglePinCurrent];
         [ed setReadOnly:NO];
