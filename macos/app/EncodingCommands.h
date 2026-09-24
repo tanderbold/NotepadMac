@@ -25,8 +25,16 @@ extern const int kNppCharsetCount;
 + (nullable NSString *)stringFromData:(NSData *)data codepage:(unsigned int)codepage;
 + (nullable NSData *)dataFromString:(NSString *)string codepage:(unsigned int)codepage;
 
-/// "Encode in X": keep the bytes, read them again through another charset.
+/// "Encode in X": keep the bytes, read them again through another charset -
+/// the file's bytes when nothing has changed since it was read (Notepad++
+/// reloads it), else the document's bytes as they stand. Not undoable: the undo
+/// history goes, as with Notepad++'s reload.
 - (BOOL)reinterpretAsCodepage:(unsigned int)codepage;
+/// Encoding > ANSI / UTF-8 / UTF-8-BOM / UTF-16 (IDM_FORMAT_ANSI...AS_UTF_8): on a
+/// document in a character set, the file read again in that form; across ANSI and
+/// Unicode, the same bytes read the other way; between Unicode forms, only the
+/// form Save writes. NO when it already is in that form.
+- (BOOL)encodeInEncoding:(NSStringEncoding)enc withBOM:(BOOL)bom;
 /// "Convert to X": keep the text, write it out in another charset.
 - (BOOL)convertToCodepage:(unsigned int)codepage;
 

@@ -2,6 +2,7 @@
 //
 // A meta-test cross-checks this file against macos/implemented.txt, so a
 // command cannot be declared implemented without a test covering it.
+#import "CharsetDetection.h"
 #import "NumberSetCommands.h"
 #import "Tests.h"
 #import "AppDelegate.h"
@@ -5990,6 +5991,43 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL reinterpreted = [ed reinterpretAsCodepage:1251];
         Check(@"IDM_FORMAT_WIN_1251", @"Encode in Windows-1251 recovers Cyrillic text",
               reinterpreted && [DocText(ed) isEqualToString:cyr]);
+    }
+
+    if (NppSectionWanted(@"Encoding: encode in as upstream")) { printf("\n== Encoding: encode in as upstream ==\n");
+        // IDM_FORMAT_ANSI / AS_UTF_8 across ANSI and Unicode: the same bytes read the other way,
+        // and a UTF-8 file read as ANSI and back is as it was - nothing to save.
+        NSString *cafe = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_encin_cafe.txt"];
+        [[NSData dataWithBytes:"caf\xc3\xa9\n" length:6] writeToFile:cafe atomically:YES];
+        [ed openFileAtPath:cafe error:NULL];
+        BOOL toAnsi = [ed encodeInEncoding:NSISOLatin1StringEncoding withBOM:NO];
+        BOOL ansiText = [DocText(ed) isEqualToString:@"cafÃ©\n"] && !ed.currentDocument.modified;
+        BOOL toUtf8 = [ed encodeInEncoding:NSUTF8StringEncoding withBOM:NO];
+        BOOL utf8Text = [DocText(ed) isEqualToString:@"café\n"] && !ed.currentDocument.modified;
+        Check(@"IDM_FORMAT_ANSI", @"ANSI and UTF-8 read the file's bytes again, as Notepad++ does, and leave nothing to save",
+              toAnsi && ansiText && toUtf8 && utf8Text);
+
+        // A character set: the file is read again (fileReload) - not modified, no undo left -
+        // and Convert to afterwards leaves the set, so Save writes the new form.
+        NSString *koi = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_encin_koi8.txt"];
+        NSData *koiBytes = [@"Привет\n" dataUsingEncoding:[EditorController encodingForCodepage:20866]];
+        [koiBytes writeToFile:koi atomically:YES];
+        [ed openFileAtPath:koi error:NULL];
+        BOOL reread = [ed reinterpretAsCodepage:20866];
+        BOOL clean = [DocText(ed) isEqualToString:@"Привет\n"] && !ed.currentDocument.modified &&
+                     ![sci message:SCI_CANUNDO];
+        Check(@"IDM_FORMAT_KOI8R_CYRILLIC", @"Encode in a character set reads the file again: not modified, nothing to undo",
+              reread && clean);
+        [ed setEncoding:NSUTF8StringEncoding withBOM:NO];
+        Check(@"IDM_FORMAT_CONV2_AS_UTF_8 (from a set)", @"Convert to UTF-8 on a document in a character set leaves the set",
+              ed.currentDocument.codepage == 0 && ed.currentDocument.encoding == NSUTF8StringEncoding && ed.currentDocument.modified);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
+
+        // Windows-1251 is told from Mac Cyrillic by which reading gives the modern alphabet's letters.
+        NSData *ru = [@"Привет, мир! Это проверка кодировки текста.\n"
+                      dataUsingEncoding:[EditorController encodingForCodepage:1251]];
+        NSStringEncoding guessed = [NppCharsetDetection encodingGuessedForData:ru];
+        Check(@"IDM_FORMAT_WIN_1251 (detected)", @"Russian text in Windows-1251 is detected as Windows-1251, not Mac Cyrillic",
+              guessed == [EditorController encodingForCodepage:1251]);
     }
 
     if (NppSectionWanted(@"Encoding: convert to")) { printf("\n== Encoding: convert to ==\n");

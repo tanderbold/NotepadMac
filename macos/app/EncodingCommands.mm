@@ -155,28 +155,136 @@ static NSData *EncodeWithTable(NSString *text, const uint16_t *high) {
     return [string dataUsingEncoding:enc allowLossyConversion:YES];
 }
 
+/// The document's bytes as they are now: its file's as last read or saved when
+/// nothing has changed since (what Notepad++'s fileReload reads again), else the
+/// text written back in the encoding it is held in.
+- (NSData *)currentBytesPreferringFile:(BOOL *)fromFile {
+    NppDocument *doc = self.currentDocument;
+    if (fromFile) *fromFile = NO;
+    if (doc.path && !doc.modified && !doc.encodingChanged) {
+        NSData *onDisk = [NSData dataWithContentsOfFile:doc.path];
+        if (onDisk) { if (fromFile) *fromFile = YES; return onDisk; }
+    }
+    NSString *text = [self documentText];
+    if (doc.codepage) return [EditorController dataFromString:text codepage:doc.codepage];
+    return [text dataUsingEncoding:doc.encoding ?: NSUTF8StringEncoding allowLossyConversion:YES] ?: [NSData data];
+}
+
+/// UTF-8 as a decoder that never gives up: a byte that is not UTF-8 reads as U+FFFD.
+static NSString *LossyUTF8(NSData *bytes) {
+    NSString *strict = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding];
+    if (strict) return strict;
+    NSString *converted = nil;
+    BOOL lossy = NO;
+    [NSString stringEncodingForData:bytes
+                    encodingOptions:@{NSStringEncodingDetectionSuggestedEncodingsKey: @[@(NSUTF8StringEncoding)],
+                                      NSStringEncodingDetectionUseOnlySuggestedEncodingsKey: @YES,
+                                      NSStringEncodingDetectionAllowLossyKey: @YES}
+                    convertedString:&converted usedLossyConversion:&lossy];
+    return converted ?: @"";
+}
+
+/// Bytes read in a Unicode form or ANSI, a leading BOM of that form dropped.
+static NSString *DecodeUnicodeForm(NSData *bytes, NSStringEncoding enc) {
+    const uint8_t *b = (const uint8_t *)bytes.bytes;
+    NSUInteger n = bytes.length;
+    if (enc == NSUTF8StringEncoding) {
+        if (n >= 3 && b[0] == 0xEF && b[1] == 0xBB && b[2] == 0xBF) bytes = [bytes subdataWithRange:NSMakeRange(3, n - 3)];
+        return LossyUTF8(bytes);
+    }
+    if (enc == NSUTF16LittleEndianStringEncoding || enc == NSUTF16BigEndianStringEncoding) {
+        BOOL le = enc == NSUTF16LittleEndianStringEncoding;
+        if (n >= 2 && ((le && b[0] == 0xFF && b[1] == 0xFE) || (!le && b[0] == 0xFE && b[1] == 0xFF)))
+            bytes = [bytes subdataWithRange:NSMakeRange(2, n - 2)];
+        if (bytes.length & 1) bytes = [bytes subdataWithRange:NSMakeRange(0, bytes.length - 1)];
+        return [[NSString alloc] initWithData:bytes encoding:enc] ?: @"";
+    }
+    return [[NSString alloc] initWithData:bytes encoding:enc] ?: LossyUTF8(bytes);
+}
+
+/// A reading of the same bytes put in the document: not an edit the user can
+/// undo (Notepad++ reloads the file, or only changes the code page Scintilla
+/// shows the bytes in), so the undo history - positions in the old reading - goes.
+- (void)putReading:(NSString *)text modified:(BOOL)modified {
+    ScintillaView *sci = self.sci;
+    long caret = [sci message:SCI_GETCURRENTPOS];
+    long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)caret];
+    [sci message:SCI_SETUNDOCOLLECTION wParam:0 lParam:0];
+    [self setDocumentText:text];
+    [sci message:SCI_EMPTYUNDOBUFFER];
+    [sci message:SCI_SETUNDOCOLLECTION wParam:1 lParam:0];
+    [sci message:SCI_GOTOLINE wParam:(uptr_t)MIN(line, [sci message:SCI_GETLINECOUNT] - 1)];
+    if (!modified) [sci message:SCI_SETSAVEPOINT];
+    self.currentDocument.modified = modified;
+}
+
 - (BOOL)reinterpretAsCodepage:(unsigned int)codepage {
     if (![EditorController supportsCodepage:codepage]) { NppBeep(); return NO; }
     NSStringEncoding target = [EditorController encodingForCodepage:codepage];
 
+    // IDM_FORMAT_WIN_1250...: the file is read again in the character set
+    // (fileReload with detection off); a document with no file, or one changed
+    // since (the menu asks to save it first), is read from its bytes as they stand.
     NppDocument *doc = self.currentDocument;
-    NSString *text = [self documentText];
-    // Recover the bytes as they stand, then read them through the new charset.
-    NSData *bytes = doc.codepage
-        ? [EditorController dataFromString:text codepage:doc.codepage]
-        : [text dataUsingEncoding:doc.encoding ?: NSUTF8StringEncoding allowLossyConversion:YES];
+    BOOL fromFile = NO;
+    NSData *bytes = [self currentBytesPreferringFile:&fromFile];
     NSString *reread = [EditorController stringFromData:bytes codepage:codepage];
     if (!reread) { NppBeep(); return NO; }
 
-    [self.sci message:SCI_BEGINUNDOACTION];
-    [self setDocumentText:reread];
-    [self.sci message:SCI_ENDUNDOACTION];
+    BOOL stillModified = !fromFile && doc.modified;
     doc.encoding = target ?: NSUTF8StringEncoding;
     doc.codepage = codepage;
     doc.hasBOM = NO;
-    doc.encodingChanged = YES;      // undo may reach the savepoint; the code page still differs
-    doc.modified = YES;
+    doc.encodingChanged = stillModified;
+    [self putReading:reread modified:stillModified];
     [self refreshChrome];
+    return YES;
+}
+
+- (BOOL)encodeInEncoding:(NSStringEncoding)enc withBOM:(BOOL)bom {
+    NppDocument *doc = self.currentDocument;
+    if (!doc) return NO;
+    BOOL wasCharset = [self currentCharsetIndex] >= 0;
+    BOOL wasAnsi = !wasCharset && doc.encoding == NSISOLatin1StringEncoding;
+    BOOL toAnsi = enc == NSISOLatin1StringEncoding;
+
+    if (wasCharset) {
+        // Notepad_plus IDM_FORMAT_ANSI...AS_UTF_8 with an encoding set: the
+        // character set is dropped and the file read again in the chosen form.
+        BOOL fromFile = NO;
+        NSData *bytes = [self currentBytesPreferringFile:&fromFile];
+        NSString *reread = DecodeUnicodeForm(bytes, enc);
+        BOOL stillModified = !fromFile && doc.modified;
+        doc.codepage = 0;
+        doc.encoding = enc;
+        doc.hasBOM = bom;
+        doc.encodingChanged = stillModified;
+        [self putReading:reread modified:stillModified];
+        [self refreshChrome];
+        return YES;
+    }
+    if (doc.encoding == enc && doc.hasBOM == bom) return NO;
+    if (wasAnsi != toAnsi) {
+        // Across ANSI and Unicode Notepad++ keeps the bytes and changes the code
+        // page Scintilla reads them in: the same bytes read the other way.
+        NSString *text = [self documentText];
+        NSData *bytes = wasAnsi ? ([text dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] ?: [NSData data])
+                                : ([text dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data]);
+        NSString *reread = toAnsi ? ([[NSString alloc] initWithData:bytes encoding:NSISOLatin1StringEncoding] ?: @"") : LossyUTF8(bytes);
+        // shouldBeDirty: ANSI from UTF-8 without BOM, and UTF-8 without BOM from
+        // ANSI, write the very bytes the file has; anything else changes them.
+        BOOL shouldBeDirty = toAnsi ? !(doc.encoding == NSUTF8StringEncoding && !doc.hasBOM)
+                                    : !(enc == NSUTF8StringEncoding && !bom);
+        BOOL modified = doc.modified || shouldBeDirty;
+        doc.encoding = enc;
+        doc.hasBOM = bom;
+        doc.encodingChanged = shouldBeDirty || doc.encodingChanged;
+        [self putReading:reread modified:modified];
+        [self refreshChrome];
+        return YES;
+    }
+    // Between the Unicode forms the text is the same; only what Save writes changes.
+    [self setEncoding:enc withBOM:bom];
     return YES;
 }
 
@@ -200,6 +308,8 @@ static NSData *EncodeWithTable(NSString *text, const uint16_t *high) {
         if ([alert runModal] != NSAlertFirstButtonReturn) return NO;
     }
     [self setEncoding:target withBOM:NO];
+    self.currentDocument.codepage = codepage;   // setEncoding leaves the old set; this is the new one
+    [self refreshChrome];
     return YES;
 }
 

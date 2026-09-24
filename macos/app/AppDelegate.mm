@@ -3983,11 +3983,40 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     };
     NSInteger i = sender.tag;
     if (i < 0 || i >= (NSInteger)(sizeof(table)/sizeof(table[0]))) return;
-    [self.editor setEncoding:table[i].enc withBOM:table[i].bom];
+    // A document in a character set is read again from its file: Notepad++ asks first.
+    if ([self.editor currentCharsetIndex] >= 0 && ![self confirmEncodingReread]) return;
+    [self.editor encodeInEncoding:table[i].enc withBOM:table[i].bom];
+}
+
+/// Notepad_plus::command IDM_FORMAT_* before a re-read: a modified document is
+/// saved first or left alone ("Save Current Modification"), and one with an undo
+/// history is told it loses it ("Lose Undo Ability Warning"). NO: leave it be.
+- (BOOL)confirmEncodingReread {
+    NSString *text = NppL(@"You should save the current modification.\nAll the saved modifications cannot be undone.\n\nContinue?");
+    if (self.editor.currentDocument.modified) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = NppL(@"Save Current Modification");
+        alert.informativeText = text;
+        [alert addButtonWithTitle:NppL(@"Yes")];
+        [alert addButtonWithTitle:NppL(@"No")];
+        if ([alert runModal] != NSAlertFirstButtonReturn) return NO;
+        if (![self.editor saveCurrentDocument] || self.editor.currentDocument.modified) return NO;
+        [self.editor.sci message:SCI_EMPTYUNDOBUFFER];
+    }
+    if ([self.editor.sci message:SCI_CANUNDO]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = NppL(@"Lose Undo Ability Warning");
+        alert.informativeText = text;
+        [alert addButtonWithTitle:NppL(@"Yes")];
+        [alert addButtonWithTitle:NppL(@"No")];
+        if ([alert runModal] != NSAlertFirstButtonReturn) return NO;
+    }
+    return YES;
 }
 
 - (void)encodeInCharset:(NSMenuItem *)sender {
     if (sender.tag < 0 || sender.tag >= kNppCharsetCount) return;
+    if (![self confirmEncodingReread]) return;
     if (![self.editor reinterpretAsCodepage:kNppCharsets[sender.tag].codepage]) {
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = [NSString stringWithFormat:@"Cannot read this document as %@.",
@@ -3996,7 +4025,11 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     }
 }
 
-- (void)convertToANSI:(id)sender    { [self.editor setEncoding:NSISOLatin1StringEncoding withBOM:NO]; }
+- (void)convertToANSI:(id)sender {
+    // IDM_FORMAT_CONV2_ANSI: a document in a character set is left as it is.
+    if ([self.editor currentCharsetIndex] >= 0) return;
+    [self.editor setEncoding:NSISOLatin1StringEncoding withBOM:NO];
+}
 - (void)convertToUTF8:(id)sender    { [self.editor setEncoding:NSUTF8StringEncoding withBOM:NO]; }
 - (void)convertToUTF8BOM:(id)sender { [self.editor setEncoding:NSUTF8StringEncoding withBOM:YES]; }
 - (void)convertToUTF16BE:(id)sender { [self.editor setEncoding:NSUTF16BigEndianStringEncoding withBOM:YES]; }

@@ -2284,6 +2284,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (!doc.codepage && doc.encoding == enc && doc.hasBOM == bom) return;
     doc.encoding = enc;
     doc.hasBOM = bom;
+    // IDM_FORMAT_CONV2_*: a document in a character set leaves it (setEncoding(-1)),
+    // so Save writes the new form, not the old code page (ENCODING-024).
+    doc.codepage = 0;
     // Changing the encoding changes the bytes on disk, so the document is
     // dirty - and stays dirty however far the text is undone, which is why
     // the savepoint is left where it was.
