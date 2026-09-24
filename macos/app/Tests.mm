@@ -1890,7 +1890,27 @@ int NppMacRunTests(AppDelegate *app) {
               probeRan && searchStillRunning);
         Check(@"IDM_SEARCH_FINDINFILES (progress)",
               @"the search says how many files it has been through as it goes",
-              progressCalls > 1 && lastScanned > 0 && lastScanned <= 400 && foundHits == 400 * 60);
+              progressCalls >= 1 && lastScanned > 0 && lastScanned <= 400 && foundHits == 400 * 60);
+        // Every one of the 400 files has hits: one report per file would keep the
+        // main thread re-rendering the results for the whole search (SEARCH-068).
+        Check(@"IDM_SEARCH_FINDINFILES (progress)",
+              @"progress comes a few times a second, not once per file with a hit",
+              progressCalls < 100);
+
+        // An empty Find what: the completion comes after the call has returned, so
+        // the caller, which stores the search as running, sees it end (SEARCH-063).
+        __block BOOL emptyDone = NO;
+        [ed findInFilesInBackground:[NppFindSpec specFor:@"" mode:NppSearchNormal options:NppFindNone]
+                             folder:root filters:nil recursive:YES includeHidden:NO progress:nil
+                         completion:^(NSUInteger hits, NSString *report, BOOL stopped) { emptyDone = YES; }];
+        BOOL emptyDoneAtOnce = emptyDone;
+        deadline = [NSDate dateWithTimeIntervalSinceNow:5];
+        while (!emptyDone && [deadline timeIntervalSinceNow] > 0) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+        }
+        Check(@"IDM_SEARCH_FINDINFILES (empty)",
+              @"a search with nothing to find ends after the call returns, never inside it",
+              !emptyDoneAtOnce && emptyDone);
 
         // Stopping it. The walk looks at the flag before each file, so a search
         // called off before it starts visits nothing at all.
