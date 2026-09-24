@@ -192,14 +192,31 @@ static NSString *NormalisedLine(NSString *line, BOOL ignoreCase, BOOL ignoreSpac
 #pragma mark - State
 
 static const char kFirstToCompareKey = 0;
+static const char kFirstDocumentKey = 0;
+static const char kComparedDocumentKey = 0;
 static const char kCurrentDiffKey = 0;
 
 - (NSString *)firstToCompare { return objc_getAssociatedObject(self, &kFirstToCompareKey); }
 
+/// ComparePlus's Set as First marks a buffer, not a file: an untitled document can be
+/// first, and what is compared is its text as it is then, unsaved changes included.
 - (void)setFirstToCompare {
-    NSString *path = self.currentDocument.path;
-    if (!path) { NppBeep(); return; }
-    objc_setAssociatedObject(self, &kFirstToCompareKey, path, OBJC_ASSOCIATION_COPY);
+    NppDocument *doc = self.currentDocument;
+    if (!doc) { NppBeep(); return; }
+    objc_setAssociatedObject(self, &kFirstToCompareKey, doc.path ?: doc.displayName, OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(self, &kFirstDocumentKey, doc, OBJC_ASSOCIATION_RETAIN);
+}
+
+/// The text of an open document, read through a view of its own (as the agent server
+/// does) so the tab in front is not touched.
+- (NSString *)textOfOpenDocument:(NppDocument *)doc {
+    if (doc == self.currentDocument) return [self documentText];
+    static ScintillaView *reader;
+    if (!reader) reader = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
+    [reader message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)doc.docPointer];
+    NSString *text = [reader string] ?: @"";
+    [reader message:SCI_SETDOCPOINTER wParam:0 lParam:0];
+    return text;
 }
 
 /// The line-by-line difference of the last comparison, in the four kinds the
@@ -212,15 +229,15 @@ static const char kCurrentDiffKey = 0;
 - (BOOL)compareActive { return gCompare.mismatch && [self secondaryViewVisible]; }
 
 - (BOOL)compareIgnoreCase { return [NppPreferences shared].compareIgnoreCase; }
-- (void)setCompareIgnoreCase:(BOOL)v { [NppPreferences shared].compareIgnoreCase = v; }
+- (void)setCompareIgnoreCase:(BOOL)v { [NppPreferences shared].compareIgnoreCase = v; [self compareRefreshNow]; }
 - (BOOL)compareIgnoreSpaces { return [NppPreferences shared].compareIgnoreSpaces; }
-- (void)setCompareIgnoreSpaces:(BOOL)v { [NppPreferences shared].compareIgnoreSpaces = v; }
+- (void)setCompareIgnoreSpaces:(BOOL)v { [NppPreferences shared].compareIgnoreSpaces = v; [self compareRefreshNow]; }
 - (BOOL)compareIgnoreEmptyLines { return [NppPreferences shared].compareIgnoreEmptyLines; }
-- (void)setCompareIgnoreEmptyLines:(BOOL)v { [NppPreferences shared].compareIgnoreEmptyLines = v; }
+- (void)setCompareIgnoreEmptyLines:(BOOL)v { [NppPreferences shared].compareIgnoreEmptyLines = v; [self compareRefreshNow]; }
 - (BOOL)compareDetectMoves { return [NppPreferences shared].compareDetectMoves; }
-- (void)setCompareDetectMoves:(BOOL)v { [NppPreferences shared].compareDetectMoves = v; }
+- (void)setCompareDetectMoves:(BOOL)v { [NppPreferences shared].compareDetectMoves = v; [self compareRefreshNow]; }
 - (BOOL)compareCharDiffs { return [NppPreferences shared].compareCharDiffs; }
-- (void)setCompareCharDiffs:(BOOL)v { [NppPreferences shared].compareCharDiffs = v; }
+- (void)setCompareCharDiffs:(BOOL)v { [NppPreferences shared].compareCharDiffs = v; [self compareRefreshNow]; }
 
 #pragma mark - The revert arrow
 
@@ -413,6 +430,7 @@ static const char kCurrentDiffKey = 0;
     [self setSyncVerticalScroll:YES];
     [self defineRevertMarker];
 
+    objc_setAssociatedObject(self, &kComparedDocumentKey, doc, OBJC_ASSOCIATION_ASSIGN);
     BOOL mismatch = [self runEngine];
     NSArray *diff = [EditorController diffBetween:[EditorController linesForComparison:normalised] and:[self linesOfCurrentDocument]
                                        ignoreCase:self.compareIgnoreCase ignoreSpaces:self.compareIgnoreSpaces
@@ -435,8 +453,14 @@ static const char kCurrentDiffKey = 0;
 }
 
 - (BOOL)compareWithFirst {
+    NppDocument *firstDoc = objc_getAssociatedObject(self, &kFirstDocumentKey);
+    if (firstDoc && [self.documents indexOfObjectIdenticalTo:firstDoc] != NSNotFound) {
+        if (firstDoc == self.currentDocument) { NppBeep(); return NO; }   // a document against itself
+        return [self compareCurrentWithText:[self textOfOpenDocument:firstDoc]];
+    }
+    // The first one has been closed since: its file, if it had one.
     NSString *first = [self firstToCompare];
-    if (!first) { NppBeep(); return NO; }
+    if (!first || ![[NSFileManager defaultManager] fileExistsAtPath:first]) { NppBeep(); return NO; }
     return [self compareWithFileAtPath:first];
 }
 
@@ -453,14 +477,27 @@ static const char kCurrentDiffKey = 0;
     gCompare.mismatch = false;
     gCompare.summary.clear();
     objc_setAssociatedObject(self, &kCurrentDiffKey, nil, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &kComparedDocumentKey, nil, OBJC_ASSOCIATION_ASSIGN);
     [self setCompareBarShown:NO];
     [self setSyncVerticalScroll:NO];
     [self setSecondaryViewVisible:NO];
     [self refreshChrome];
 }
 
+/// A document being closed: the comparison it is in ends with it (ComparePlus clears a
+/// pair when one of its files closes), rather than staying over the next tab.
+- (void)compareDocumentWillClose:(NppDocument *)doc {
+    if (doc && objc_getAssociatedObject(self, &kComparedDocumentKey) == doc && [self compareBar].superview)
+        [self clearActiveCompare];
+    if (objc_getAssociatedObject(self, &kFirstDocumentKey) == doc) {
+        // The first one stays chosen by its file, if it has one.
+        objc_setAssociatedObject(self, &kFirstDocumentKey, nil, OBJC_ASSOCIATION_RETAIN);
+    }
+}
+
 - (void)clearAllCompares {
     objc_setAssociatedObject(self, &kFirstToCompareKey, nil, OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(self, &kFirstDocumentKey, nil, OBJC_ASSOCIATION_RETAIN);
     [self clearActiveCompare];
 }
 
@@ -541,7 +578,8 @@ static const char kCompareTimerKey = 0;
             __weak EditorController *weakSelf = self;
             monitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskKeyDown handler:^NSEvent *(NSEvent *event) {
                 EditorController *me = weakSelf;
-                if (!me || event.keyCode != 53 || ![me compareActive]) return event;
+                // Identical texts too: the comparison is on screen as long as its bar is.
+                if (!me || event.keyCode != 53 || ![me compareBar].superview) return event;
                 NSResponder *first = event.window.firstResponder;
                 BOOL inPane = [first isKindOfClass:[NSView class]] &&
                     ([(NSView *)first isDescendantOf:me.sci] || [(NSView *)first isDescendantOf:me.secondaryHost]);
@@ -696,6 +734,10 @@ static const char kCompareTimerKey = 0;
     intptr_t target = next;
     if (otherNext >= 0) {
         intptr_t otherAsMine = otherViewMatchingLine(otherView, otherNext);
+        // Lines only the other pane has sit under the blank annotation after this pane's
+        // line otherAsMine: going down, the stop is the line after that gap, or the caret
+        // would stay where it is.
+        if (down && otherAsMine <= line) otherAsMine = MIN(otherAsMine + 1, getLinesCount(view) - 1);
         if (next < 0 || (down ? otherAsMine < next : otherAsMine > next)) { target = otherAsMine; }
     }
     if (target < 0) {

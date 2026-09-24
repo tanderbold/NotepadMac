@@ -10061,6 +10061,48 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"Compare set first", @"the file set aside is the one compared against",
               viaFirst && [[ed firstToCompare] isEqualToString:oldPath]);
 
+        // ComparePlus compares buffers: the first one's unsaved text, not its file.
+        [ed clearAllCompares];
+        [ed openFileAtPath:oldPath error:&err];
+        NSString *savedOld = DocText(ed);
+        SetDoc(ed, @"unsaved first\n");
+        [ed setFirstToCompare];
+        [ed openFileAtPath:newPath error:&err];
+        [ed compareWithFirst];
+        Check(@"Compare set first (unsaved)", @"the first document's text as it is now, not as saved",
+              [[ed.secondarySci string] isEqualToString:@"unsaved first\n"]);
+        [ed clearAllCompares];
+        [ed openFileAtPath:oldPath error:&err];
+        SetDoc(ed, savedOld);
+
+        // The options re-run a comparison on screen, identical results included.
+        ed.compareIgnoreCase = NO; ed.compareIgnoreSpaces = NO; ed.compareIgnoreEmptyLines = NO;
+        [ed openFileAtPath:newPath error:&err];
+        SetDoc(ed, @"alpha\n");
+        [ed compareCurrentWithText:@"ALPHA\n"];
+        BOOL differs = [ed compareActive];
+        ed.compareIgnoreCase = YES;
+        BOOL sameNow = ![ed compareActive];
+        ed.compareIgnoreCase = NO;
+        Check(@"Compare options re-run", @"Ignore Case makes it identical at once, and off brings the difference back",
+              differs && sameNow && [ed compareActive]);
+
+        // Next Difference stops at a removal only the other pane shows (jumpToNextChange).
+        SetDoc(ed, @"a\nc\nd\nX\n");
+        [ed compareCurrentWithText:@"a\nb\nc\nd\n"];
+        [sci message:SCI_GOTOLINE wParam:0 lParam:0];
+        [ed goToDiff:1];
+        long stop1 = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
+        [ed goToDiff:1];
+        long stop2 = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
+        Check(@"Compare navigation (removal)", @"the removal is a stop of its own, then the addition",
+              stop1 == 1 && stop2 == 3);
+
+        // Closing the compared document ends the comparison.
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
+        Check(@"Compare ends with its document", @"closing the compared document takes the comparison away",
+              ![ed secondaryViewVisible] && ![ed compareActive]);
+
         ed.compareIgnoreCase = ignoreCaseWas; ed.compareIgnoreSpaces = ignoreSpacesWas; ed.compareIgnoreEmptyLines = ignoreEmptyWas;
         [ed clearAllCompares];
         Check(@"Compare clear", @"clearing removes the comparison and the second pane",
