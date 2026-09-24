@@ -9,6 +9,8 @@
 /// What the port says and Windows does not (its own panels and settings),
 /// from macos/resources/nativeLang-extra/<the same file name>.
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraStrings;
+/// <MiscStrings> texts by their element name (summary-nbchar...), as the file has them.
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *miscStrings;
 /// The same by the English text exactly: "Execute NppExec Script…" and "Execute NppExec Script"
 /// are one key once normalised, and each has its own words.
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraExact;
@@ -395,6 +397,7 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
     self.englishMenuIds = [NSMutableDictionary dictionary];
     self.strings = [NSMutableDictionary dictionary];
     self.titles = [NSMutableDictionary dictionary];
+    self.miscStrings = [NSMutableDictionary dictionary];
     self.languageFile = nil;
     if (!fileName.length || [fileName isEqualToString:@"english.xml"]) return YES;
     NSString *dir = [NppLocalization directory];
@@ -412,6 +415,12 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
     for (NSString *key in ordered) {
         NSString *text = native[key];
         NSString *en = english[key];
+        // <MiscStrings><summary-nbchar value="..."/>: looked up by id, as upstream's
+        // getLocalizedStrFromID does, with its spaces and colons as the translator set them.
+        if ([key hasPrefix:@"/Native-Langue/MiscStrings/"] && [key hasSuffix:@"@value"]) {
+            NSString *ident = [key substringWithRange:NSMakeRange(27, key.length - 27 - 6)];
+            if (text.length) self.miscStrings[ident] = text;
+        }
         // Menu commands by id, menus and submenus by their upstream ids.
         NSRange cmd = [key rangeOfString:@"/Commands/Item[id="];
         if ([key hasPrefix:@"/Native-Langue/Menu/"] && cmd.location != NSNotFound && [key hasSuffix:@"@name"]) {
@@ -459,6 +468,9 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
 }
 
 - (NSString *)commandName:(int)identifier { return self.commands[@(identifier)]; }
+- (NSString *)stringWithID:(NSString *)identifier default:(NSString *)english {
+    return (self.active ? self.miscStrings[identifier] : nil) ?: english;
+}
 - (NSString *)tabCommandName:(int)identifier { return self.tabCommands[@(identifier)]; }
 
 - (NSString *)translate:(NSString *)english {

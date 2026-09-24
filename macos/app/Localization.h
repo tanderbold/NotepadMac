@@ -27,6 +27,10 @@ FOUNDATION_EXPORT void NppFlowButtonRows(NSView *parent);
 /// The bundled folder of nativeLang files; the port's own texts are in "nativeLang-extra" beside it.
 + (NSString *)directory;
 - (nullable NSString *)commandName:(int)identifier;
+/// A <MiscStrings> text by its id ("summary-nbchar"), spaces and punctuation as the
+/// translation has them; `english` when the interface is English or the file lacks it
+/// (NativeLangSpeaker::getLocalizedStrFromID).
+- (NSString *)stringWithID:(NSString *)identifier default:(NSString *)english;
 /// The tab context menu's own wording for a command, when the file has one.
 - (nullable NSString *)tabCommandName:(int)identifier;
 /// The translation of an English string, or the string itself.

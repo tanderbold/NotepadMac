@@ -67,6 +67,7 @@
 - (NSMenu *)buildTabContextMenu;
 - (void)rebuildLanguageMenu;
 - (void)applyLocalization;
+- (NSString *)summaryText;           // the Summary's text, as View > Summary shows it
 - (void)switchDocumentForward:(BOOL)forward;
 - (void)endDocumentSwitch;
 - (BOOL)documentSwitcherShown;

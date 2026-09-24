@@ -9759,6 +9759,14 @@ int NppMacRunTests(AppDelegate *app) {
               @"in German, Hungarian, Finnish, French, Japanese and Russian every push button of Find, the Style Configurator, the Shortcut Mapper and Preferences fits its title and covers no other",
               cutButtons.count == 0);
 
+        // The Summary as upstream writes it, by <MiscStrings> id (IDM_VIEW_SUMMARY).
+        NSString *summary = [app summaryText];
+        NSString *summaryTitle = [[NppLocalization shared] stringWithID:@"summary" default:@"Summary"];
+        Check(@"IDM_VIEW_SUMMARY (translated)",
+              @"the Summary's title and labels are the translation's summary strings, as upstream shows them",
+              [summaryTitle isEqualToString:@"Информация о Файле"] && [summary containsString:@"Символов (без окончания строки) :  "] &&
+              [summary containsString:@"Строк :  "] && ![summary containsString:@"Characters"]);
+
         // The port's own texts in every language that has them: each file beside
         // a nativeLang file loads with it, and what it does not translate stays English.
         NSString *extraDir = [[[NppLocalization directory] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"nativeLang-extra"];

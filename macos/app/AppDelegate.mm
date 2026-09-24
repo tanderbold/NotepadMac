@@ -3724,13 +3724,43 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 - (void)hideLines:(id)sender        { [self.editor hideSelectedLines]; }
 - (void)showHiddenLines:(id)sender  { [self.editor showAllHiddenLines]; }
 
-- (void)showSummary:(id)sender {
+/// IDM_VIEW_SUMMARY as Notepad++ writes it: the file's path and times when it
+/// has a file, then characters (line endings left out), words, lines, length
+/// and the selection, numbers commafied, every label the translation's
+/// <MiscStrings> summary-* text, the title its "summary".
+- (NSString *)summaryText {
     NSDictionary *s = [self.editor documentSummary];
+    NppLocalization *l = [NppLocalization shared];
+    NSNumberFormatter *commafy = [[NSNumberFormatter alloc] init];
+    commafy.numberStyle = NSNumberFormatterDecimalStyle;           // commafyInt: the user's grouping
+    NSString *(^n)(NSString *) = ^NSString *(NSString *key) { return [commafy stringFromNumber:s[key]] ?: @"0"; };
+    NSMutableString *out = [NSMutableString string];
+    NSString *path = self.editor.currentDocument.path;
+    if (path.length) {
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
+        NSDateFormatter *when = [[NSDateFormatter alloc] init];   // GetDateFormat + GetTimeFormat, the user's locale
+        when.dateStyle = NSDateFormatterShortStyle;
+        when.timeStyle = NSDateFormatterMediumStyle;
+        [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-filepath" default:@"Full file path: "], path];
+        [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-filecreatetime" default:@"Created: "],
+            attrs.fileCreationDate ? [when stringFromDate:attrs.fileCreationDate] : @""];
+        [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-filemodifytime" default:@"Modified: "],
+            attrs.fileModificationDate ? [when stringFromDate:attrs.fileModificationDate] : @""];
+    }
+    [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-nbchar" default:@"Characters (without line endings): "], n(@"charactersWithoutEOL")];
+    [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-nbword" default:@"Words: "], n(@"words")];
+    [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-nbline" default:@"Lines: "], n(@"lines")];
+    [out appendFormat:@"%@%@\n", [l stringWithID:@"summary-nbbyte" default:@"Document length: "], n(@"bytes")];
+    [out appendFormat:@"%@%@%@%@%@%@", n(@"selectedCharacters"), [l stringWithID:@"summary-nbsel1" default:@" selected characters ("],
+        n(@"selectedBytes"), [l stringWithID:@"summary-nbsel2" default:@" bytes) in "],
+        n(@"selectedRanges"), [l stringWithID:@"summary-nbrange" default:@" ranges"]];
+    return out;
+}
+
+- (void)showSummary:(id)sender {
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Summary";
-    alert.informativeText = [NSString stringWithFormat:
-        @"Characters: %@\nBytes: %@\nWords: %@\nLines: %@\nSelected bytes: %@",
-        s[@"characters"], s[@"bytes"], s[@"words"], s[@"lines"], s[@"selected"]];
+    alert.messageText = [[NppLocalization shared] stringWithID:@"summary" default:@"Summary"];
+    alert.informativeText = [self summaryText];
     [alert runModal];
 }
 
