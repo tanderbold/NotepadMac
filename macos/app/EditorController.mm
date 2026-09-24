@@ -2758,6 +2758,11 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.tabBar.inactiveTextColour = dark ? [NSColor secondaryLabelColor] : g[@"Inactive tabs"].foreground;
     self.tabBar.inactiveBackColour = dark ? nil : g[@"Inactive tabs"].background;
     [self.tabBar setNeedsDisplay:YES];
+    // A hidden tab bar gives its room to the editor, a shown one takes it back
+    // (TabBarPlus::display / Notepad_plus::hideTabBar resize the edit view).
+    CGFloat tabH = self.tabBar.hidden ? 0 : NSHeight(self.tabBar.frame);
+    NSRect edit = NSMakeRect(0, 0, NSWidth(self.editorArea.frame), NSHeight(self.editorArea.frame) - tabH);
+    if (!NSEqualRects(self.sciView.frame, edit)) self.sciView.frame = edit;
 }
 
 /// The path field is as wide as its text, up to half the bar; the rest follows it.

@@ -7828,6 +7828,17 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_SETTING_PREFERENCE (appearance)",
               @"light, dark and follow-the-system each pick the right theme",
               forcesDark && forcesLight && follows);
+        p.appearanceMode = 1;
+        [p applyToEditor:ed];
+        BOOL chromeLight = [NSApp.appearance.name isEqualToString:NSAppearanceNameAqua];
+        p.appearanceMode = 2;
+        [p applyToEditor:ed];
+        BOOL chromeDark = [NSApp.appearance.name isEqualToString:NSAppearanceNameDarkAqua];
+        p.appearanceMode = 0;
+        [p applyToEditor:ed];
+        Check(@"IDM_SETTING_PREFERENCE (appearance)",
+              @"Light and Dark dress the whole interface, following the system leaves it to the system",
+              chromeLight && chromeDark && NSApp.appearance == nil);
 
         // An imported theme must show up in the picker alongside the bundled ones.
         NSString *custom = TempFile(@"TestTheme.xml",
@@ -9727,13 +9738,16 @@ int NppMacRunTests(AppDelegate *app) {
               [ed.documents[2].displayName isEqualToString:movedName] &&
               ed.currentDocument == ed.documents[2]);
 
+        CGFloat shownH = NSHeight(ed.sci.frame);
         p.hideTabBar = YES;
         [ed applyTabBarPreferences];
         BOOL hidden = bar.isHidden;
+        CGFloat hiddenH = NSHeight(ed.sci.frame);
         p.hideTabBar = NO;
         [ed applyTabBarPreferences];
         Check(@"IDM_SETTING_PREFERENCE (hide tab bar)",
-              @"the bar can be hidden and shown", hidden && !bar.isHidden);
+              @"the bar can be hidden and shown, and the editor takes its room meanwhile",
+              hidden && !bar.isHidden && hiddenH == shownH + NSHeight(bar.frame) && NSHeight(ed.sci.frame) == shownH);
 
         p.tabBarLocked = YES;
         [ed applyTabBarPreferences];

@@ -556,6 +556,15 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
 }
 
 - (void)applyToEditor:(EditorController *)editor {
+    // Light or Dark chosen in Preferences is the whole interface's, not only the
+    // editor theme's (NppDarkMode::setDarkMode dresses menus, tabs and dialogs
+    // too); following the system leaves the appearance to it. Set first, so
+    // systemIsDark reads the system again once "follow" is back.
+    NSAppearanceName chrome = self.appearanceMode == 1 ? NSAppearanceNameAqua
+                            : self.appearanceMode == 2 ? NSAppearanceNameDarkAqua : nil;
+    if (!(NSApp.appearance == nil && chrome == nil) && ![NSApp.appearance.name isEqualToString:chrome]) {
+        NSApp.appearance = chrome ? [NSAppearance appearanceNamed:chrome] : nil;
+    }
     // The theme decides the colours, so it is loaded before the styles are set.
     NSString *wanted = [self effectiveThemeName];
     if (![[StyleCatalog sharedCatalog].themeName isEqualToString:wanted]) {
