@@ -26,20 +26,36 @@ static NSStringEncoding EncodingNamed(NSString *name) {
     return cf == kCFStringEncodingInvalidId ? 0 : CFStringConvertEncodingToNSStringEncoding(cf);
 }
 
-/// How much like text the bytes read in an encoding: the share of the
-/// non-ASCII characters that are letters. The right Cyrillic code page
-/// turns nearly all of them into letters; the wrong one turns the capitals
-/// and the punctuation into symbols.
+/// How much like Cyrillic text the bytes read in an encoding: the share of the
+/// non-ASCII characters that are letters of the modern alphabets (Russian,
+/// Ukrainian, Belarusian: U+0410-U+044F with Ё, Ґ, Є, І, Ї, Ў). The right code page
+/// turns nearly all of them into such letters; a wrong one turns the capitals
+/// and the punctuation into symbols or into rarer letters - Windows-1251 read as
+/// Mac Cyrillic makes "П" "ѕ" and "Э" "Ё" - which is why a plain "is a letter"
+/// share could not tell the two apart.
+static BOOL CommonCyrillicLetter(unichar c) {
+    if (c >= 0x0410 && c <= 0x044F) return YES;
+    switch (c) {
+        case 0x0401: case 0x0451:   // Ё ё
+        case 0x0490: case 0x0491:   // Ґ ґ
+        case 0x0404: case 0x0454:   // Є є
+        case 0x0406: case 0x0456:   // І і
+        case 0x0407: case 0x0457:   // Ї ї
+        case 0x040E: case 0x045E:   // Ў ў
+            return YES;
+    }
+    return NO;
+}
+
 static double LetterShare(NSData *data, NSStringEncoding encoding) {
     NSString *text = [[NSString alloc] initWithData:data encoding:encoding];
     if (!text) return -1;
-    NSCharacterSet *letters = [NSCharacterSet letterCharacterSet];
     NSUInteger nonAscii = 0, lettersSeen = 0;
     for (NSUInteger i = 0; i < text.length; ++i) {
         unichar c = [text characterAtIndex:i];
         if (c < 128) continue;
         nonAscii++;
-        if ([letters characterIsMember:c]) lettersSeen++;
+        if (CommonCyrillicLetter(c)) lettersSeen++;
     }
     return nonAscii ? (double)lettersSeen / (double)nonAscii : 0;
 }
@@ -60,7 +76,7 @@ static double LetterShare(NSData *data, NSStringEncoding encoding) {
     if (!cyrillic) return guessed;
     NSStringEncoding best = guessed;
     double bestShare = LetterShare(data, guessed);
-    for (NSString *candidate in @[@"windows-1251", @"KOI8-R", @"ISO-8859-5", @"IBM866"]) {
+    for (NSString *candidate in @[@"windows-1251", @"KOI8-R", @"KOI8-U", @"ISO-8859-5", @"IBM866", @"x-mac-cyrillic"]) {
         NSStringEncoding encoding = EncodingNamed(candidate);
         if (!encoding || encoding == guessed) continue;
         double share = LetterShare(data, encoding);
