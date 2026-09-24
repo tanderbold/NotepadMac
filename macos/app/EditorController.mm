@@ -1257,6 +1257,7 @@ static BOOL gCheckingFilesOnDisk;
     if (index < 0 || index >= (NSInteger)self.docs.count) return;
     NppDocument *doc = self.docs[index];
     if (!discard && doc.modified) return;
+    [self compareDocumentWillClose:doc];
     NppDocument *inFront = self.currentDocument;
     // A closed document is no longer watched.
     if (doc.monitoring || doc.monitorSource) [self stopMonitoringDocument:doc];

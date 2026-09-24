@@ -7293,6 +7293,22 @@ int NppMacRunTests(AppDelegate *app) {
         NSString *report = [ed validateShortcutsFile];
         Check(@"IDM_EXECUTE_VALIDATE_SHORTCUTSXML", @"reports on the menu shortcuts",
               [report containsString:@"shortcuts"]);
+        Check(@"IDM_EXECUTE_VALIDATE_SHORTCUTSXML (clean)", @"a clean profile has no duplicates (the hidden alternate Full Screen is not one)",
+              [report containsString:@"no duplicates"]);
+        Check(@"IDM_EXECUTE_VALIDATE_SHORTCUTSXML (menu)", @"the command has its menu item, by id",
+              [app.shortcutStore menuItemsByIdentifier][@49001] != nil);
+
+        // The command line reaches the shell as written: é precomposed, not e + U+0301.
+        NSString *bytes = [ed runCommandLine:@"printf %s 'é' | od -An -tx1 | tr -d ' \\n'" intoConsole:NO].output;
+        Check(@"IDM_EXECUTE (UTF-8)", @"a non-ASCII command reaches the shell precomposed (NFC)",
+              [bytes isEqualToString:@"c3a9"]);
+
+        // A document line with backquotes stays text inside `...` (it used to run).
+        SetDoc(ed, @"x`printf INJ`y\n");
+        [sci message:SCI_GOTOPOS wParam:0 lParam:0];
+        NSString *quoted = [ed runCommandLine:@"printf %s \"`printf %s $(CURRENT_LINESTR)`\"" intoConsole:NO].output;
+        Check(@"IDM_EXECUTE (backquotes)", @"$(CURRENT_LINESTR) inside backquotes is text, not a command",
+              [quoted isEqualToString:@"x`printf INJ`y"]);
 
         NSString *dbg = [ed debugInfo];
         BOOL fields = YES;
@@ -9937,6 +9953,30 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"JSON tree", @"nested paths are reported",
               [paths containsObject:@"top.inner[0]"] && [paths containsObject:@"top.inner[1]"] &&
               [paths containsObject:@"top.inner"]);
+
+        // JSON Viewer's Format keeps the members in the document's order and writes "key": value.
+        p.jsonIndent = 2;
+        SetDoc(ed, @"{\"zeta\":1,\"alpha\":2,\"mid\":{\"y\":1,\"x\":2},\"l\":[],\"o\":{}}");
+        [ed formatJSONDocument];
+        NSString *kept = DocText(ed);
+        Check(@"JSON format (order)", @"members keep their order, \"key\": value, empty {} and []",
+              [kept isEqualToString:@"{\n  \"zeta\": 1,\n  \"alpha\": 2,\n  \"mid\": {\n    \"y\": 1,\n    \"x\": 2\n  },\n  \"l\": [],\n  \"o\": {}\n}"]);
+        SetDoc(ed, @"{\"n\": 1.50, \"s\": \"a\\/b \\u00e9 \\ud83d\\ude00\\n\", \"t\": true}");
+        [ed compactJSONDocument];
+        Check(@"JSON compact (as written)", @"numbers as written, escapes decoded, / not escaped",
+              [DocText(ed) isEqualToString:@"{\"n\":1.50,\"s\":\"a/b é 😀\\n\",\"t\":true}"]);
+        // RFC 8259, as JSON Viewer: a trailing comma is not JSON, though NSJSONSerialization takes it.
+        SetDoc(ed, @"{\"a\":1,}");
+        NppJsonError *trailing = [ed validateJSONDocument];
+        SetDoc(ed, @"[1,2,]");
+        NppJsonError *trailingItem = [ed validateJSONDocument];
+        Check(@"JSON validate (trailing comma)", @"a trailing comma is invalid, at its line and column",
+              trailing && trailing.line == 0 && trailing.column == 7 && trailingItem && trailingItem.column == 5);
+        SetDoc(ed, @"{\"t\":true,\"f\":false,\"n\":null,\"x\":-0.5e3}");
+        NSMutableArray *leaves = [NSMutableArray array];
+        for (NSDictionary *node in [ed jsonTree]) [leaves addObject:[NSString stringWithFormat:@"%@ = %@", node[@"path"], node[@"value"]]];
+        Check(@"JSON tree (literals)", @"true, false, null and numbers as written, keys sorted",
+              [leaves isEqualToArray:@[@"{} = {4}", @"f = false", @"n = null", @"t = true", @"x = -0.5e3"]]);
     }
 
     if (NppSectionWanted(@"Compare")) { printf("\n== Compare ==\n");
@@ -10126,6 +10166,48 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"Compare set first", @"the file set aside is the one compared against",
               viaFirst && [[ed firstToCompare] isEqualToString:oldPath]);
 
+        // ComparePlus compares buffers: the first one's unsaved text, not its file.
+        [ed clearAllCompares];
+        [ed openFileAtPath:oldPath error:&err];
+        NSString *savedOld = DocText(ed);
+        SetDoc(ed, @"unsaved first\n");
+        [ed setFirstToCompare];
+        [ed openFileAtPath:newPath error:&err];
+        [ed compareWithFirst];
+        Check(@"Compare set first (unsaved)", @"the first document's text as it is now, not as saved",
+              [[ed.secondarySci string] isEqualToString:@"unsaved first\n"]);
+        [ed clearAllCompares];
+        [ed openFileAtPath:oldPath error:&err];
+        SetDoc(ed, savedOld);
+
+        // The options re-run a comparison on screen, identical results included.
+        ed.compareIgnoreCase = NO; ed.compareIgnoreSpaces = NO; ed.compareIgnoreEmptyLines = NO;
+        [ed openFileAtPath:newPath error:&err];
+        SetDoc(ed, @"alpha\n");
+        [ed compareCurrentWithText:@"ALPHA\n"];
+        BOOL differs = [ed compareActive];
+        ed.compareIgnoreCase = YES;
+        BOOL sameNow = ![ed compareActive];
+        ed.compareIgnoreCase = NO;
+        Check(@"Compare options re-run", @"Ignore Case makes it identical at once, and off brings the difference back",
+              differs && sameNow && [ed compareActive]);
+
+        // Next Difference stops at a removal only the other pane shows (jumpToNextChange).
+        SetDoc(ed, @"a\nc\nd\nX\n");
+        [ed compareCurrentWithText:@"a\nb\nc\nd\n"];
+        [sci message:SCI_GOTOLINE wParam:0 lParam:0];
+        [ed goToDiff:1];
+        long stop1 = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
+        [ed goToDiff:1];
+        long stop2 = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
+        Check(@"Compare navigation (removal)", @"the removal is a stop of its own, then the addition",
+              stop1 == 1 && stop2 == 3);
+
+        // Closing the compared document ends the comparison.
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
+        Check(@"Compare ends with its document", @"closing the compared document takes the comparison away",
+              ![ed secondaryViewVisible] && ![ed compareActive]);
+
         ed.compareIgnoreCase = ignoreCaseWas; ed.compareIgnoreSpaces = ignoreSpacesWas; ed.compareIgnoreEmptyLines = ignoreEmptyWas;
         [ed clearAllCompares];
         Check(@"Compare clear", @"clearing removes the comparison and the second pane",
@@ -10234,6 +10316,37 @@ int NppMacRunTests(AppDelegate *app) {
             BOOL descended = [ed ftpChangeDirectory:@"sub"];
             Check(@"FTP directories", @"changing directory follows the server",
                   descended && [[ed ftpCurrentDirectory] hasSuffix:@"sub"]);
+
+            // NppFTP uploads the file as Save writes it: a UTF-8-BOM document keeps its EF BB BF.
+            [ed openRemoteFileAtPath:@"/greeting.txt"];
+            ed.currentDocument.encoding = NSUTF8StringEncoding;
+            ed.currentDocument.hasBOM = YES;
+            SetDoc(ed, @"bom here\n");
+            [ed uploadCurrentDocument];
+            NSData *bomBytes = [NSData dataWithContentsOfFile:[root stringByAppendingPathComponent:@"greeting.txt"]];
+            Check(@"FTP upload (BOM)", @"a UTF-8-BOM document is uploaded with its BOM",
+                  bomBytes.length > 3 && memcmp(bomBytes.bytes, "\xEF\xBB\xBF" "bom here\n", 12) == 0);
+            ed.currentDocument.hasBOM = NO;
+
+            // A failed Connect says why, in the transfer's own words.
+            NppFtpProfile *dead = [[NppFtpProfile alloc] init];
+            dead.name = @"test-dead"; dead.host = @"127.0.0.1"; dead.port = 1; dead.username = @"tester";
+            BOOL deadOK = [ed connectToFtpProfile:dead password:@""];
+            NSString *why = [ed ftpConnectError];
+            Check(@"FTP connect error", @"a refused connection keeps curl's reason for the alert",
+                  !deadOK && why.length > 0 && [why.lowercaseString containsString:@"connect"]);
+
+            // SFTP to a port that does not speak SSH gives up (ConnectTimeout) instead of hanging.
+            NppFtpProfile *notSSH = [[NppFtpProfile alloc] init];
+            notSSH.name = @"test-sftp"; notSSH.host = @"127.0.0.1"; notSSH.port = port; notSSH.username = @"tester";
+            notSSH.protocol = NppFtpSFTP;
+            NSDate *sftpStart = [NSDate date];
+            BOOL sftpOK = [ed connectToFtpProfile:notSSH password:@""];
+            NSTimeInterval sftpTook = -sftpStart.timeIntervalSinceNow;
+            Check(@"FTP sftp timeout", @"SFTP against a non-SSH port fails within the connect timeout",
+                  !sftpOK && sftpTook < 25 && [ed ftpConnectError].length > 0);
+            if (sftpTook >= 25) printf("    sftp took %.1fs\n", sftpTook);
+            [ed connectToFtpProfile:profile password:@"secret"];
 
             [ed disconnectFtp];
             Check(@"FTP disconnect", @"disconnecting drops the connection",
@@ -10586,6 +10699,8 @@ int NppMacRunTests(AppDelegate *app) {
               [html containsString:@"<pre style="] &&
               [html containsString:@"&lt;&gt;&amp;"] &&
               [html containsString:@"</span>"] && colourCount > 2);
+        Check(@"Export to HTML (UTF-8)", @"non-ASCII text stays itself, not one character per byte",
+              [html containsString:@"# Я"] && ![html containsString:@"Ð"]);
 
         NSData *rtfData = [ed exportRTFInRange:whole];
         NSString *rtf = [[NSString alloc] initWithData:rtfData encoding:NSASCIIStringEncoding];
@@ -10658,6 +10773,12 @@ int NppMacRunTests(AppDelegate *app) {
             Check(@"Spell check styles", @"in code only comments and strings are checked, identifiers are left alone",
                   ![sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:1] &&
                   [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:13]);
+            [ed openFileAtPath:TempFile(@"t_spell2.py", @"s = 'speling'\nt = \"\"\"speling\"\"\"\n") error:&err];
+            [ed spellCheckNow];
+            Check(@"Spell check styles (Python)", @"single- and triple-quoted Python strings are checked too",
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:6] &&
+                  [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:21]);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
 
             NSArray<NSMenuItem *> *offers = [ed spellingMenuItemsForPosition:13];
             BOOL hasIgnore = NO, hasLearn = NO;

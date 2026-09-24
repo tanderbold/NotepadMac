@@ -1199,13 +1199,20 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
             @"hunks": hunks, @"truncated": @(truncated)}];
         if (BoolParam(args, @"show", NO)) {
             if (!docs[0] || !docs[1]) { out[@"shown"] = @NO; out[@"note"] = @"Only documents or files can be shown; texts are compared here only."; return out; }
-            ed.compareIgnoreCase = ignoreCase;
-            ed.compareIgnoreSpaces = ignoreSpaces;
-            ed.compareIgnoreEmptyLines = ignoreEmpty;
+            // The agent's options apply to this comparison; the user's own Compare settings
+            // are put back afterwards (they are preferences, the agent's call is not).
+            NppPreferences *prefs = [NppPreferences shared];
+            BOOL userCase = prefs.compareIgnoreCase, userSpaces = prefs.compareIgnoreSpaces, userEmpty = prefs.compareIgnoreEmptyLines;
+            prefs.compareIgnoreCase = ignoreCase;
+            prefs.compareIgnoreSpaces = ignoreSpaces;
+            prefs.compareIgnoreEmptyLines = ignoreEmpty;
             [weakSelf withDocumentInFront:docs[0] do:^(ScintillaView *sci) { [ed setFirstToCompare]; }];
             [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:docs[1]]];
             out[@"shown"] = @([ed compareWithFirst]);
             out[@"summary"] = [ed compareSummary] ?: @"";
+            prefs.compareIgnoreCase = userCase;
+            prefs.compareIgnoreSpaces = userSpaces;
+            prefs.compareIgnoreEmptyLines = userEmpty;
         }
         return out;
     }];

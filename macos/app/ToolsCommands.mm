@@ -524,13 +524,21 @@ static const char kPreviousTabKey = 0;
         [queue removeObjectAtIndex:0];
         if (item.submenu) [queue addObjectsFromArray:item.submenu.itemArray];
         if (!item.keyEquivalent.length) continue;
+        // A hidden item that stands in for a visible one (the alternate Toggle Full
+        // Screen) is the same command under the same key, not a second one.
+        if (item.isHidden) continue;
         counted++;
         NSString *key = [NSString stringWithFormat:@"%lu-%@",
                          (unsigned long)item.keyEquivalentModifierMask, item.keyEquivalent];
-        NSString *existing = seen[key];
+        NSMenuItem *existing = seen[key];
+        // The same command twice (an alternate item) is not a clash; two saved macros or
+        // Run commands share the action and differ by what they carry.
+        if (existing && existing.action == item.action && existing.tag == item.tag &&
+            (existing.representedObject == item.representedObject || [existing.representedObject isEqual:item.representedObject]) &&
+            [existing.title isEqualToString:item.title]) continue;
         if (existing) [clashes addObject:[NSString stringWithFormat:@"%@ clashes with %@ (%@)",
-                                          item.title, existing, item.keyEquivalent]];
-        else seen[key] = item.title;
+                                          item.title, existing.title, item.keyEquivalent]];
+        else seen[key] = item;
     }
     if (!clashes.count) {
         return [NSString stringWithFormat:@"%lu shortcuts, no duplicates.", (unsigned long)counted];

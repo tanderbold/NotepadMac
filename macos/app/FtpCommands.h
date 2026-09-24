@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)disconnectFtp;
 - (BOOL)ftpConnected;
 - (nullable NppFtpClient *)ftpClient;
+/// Why the last Connect failed (the transfer's own message); nil after a success.
+- (nullable NSString *)ftpConnectError;
 - (nullable NSString *)ftpCurrentDirectory;
 - (nullable NSArray<NppFtpEntry *> *)ftpListCurrentDirectory;
 - (BOOL)ftpChangeDirectory:(NSString *)path;

@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, NppDiffKind) {
 - (BOOL)compareWithFirst;
 - (BOOL)compareWithFileAtPath:(NSString *)path;
 - (void)clearActiveCompare;
+/// The editor is closing this document: a comparison it is in ends.
+- (void)compareDocumentWillClose:(NppDocument *)doc;
 - (void)clearAllCompares;
 - (BOOL)compareActive;
 
