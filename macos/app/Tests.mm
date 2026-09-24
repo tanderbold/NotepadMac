@@ -7819,6 +7819,45 @@ int NppMacRunTests(AppDelegate *app) {
                   readWindows && scintillaKey && kept);
         }
 
+        // A Run command's key reaches its menu item even where a default has it: Ctrl+Alt+H
+        // from Windows is Cmd+Opt+H, Hide Others' - the key the user gave wins.
+        {
+            NSMenuItem *(^itemTitled)(NSString *) = ^NSMenuItem *(NSString *title) {
+                __block NSMenuItem *found = nil;
+                __block void (^walk)(NSMenu *);
+                void (^walker)(NSMenu *) = ^(NSMenu *m) {
+                    for (NSMenuItem *i in m.itemArray) {
+                        if ([i.title isEqualToString:title]) found = i;
+                        if (i.submenu) walk(i.submenu);
+                    }
+                };
+                walk = walker;
+                walker(NSApp.mainMenu);
+                walk = nil;
+                return found;
+            };
+            [ed saveCommand:[NppSavedCommand commandWithName:@"Key test" command:@"echo k"]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NppSavedCommandsDidChange" object:nil];
+            NppShortcutCommand *keyed = nil;
+            for (NppShortcutCommand *c in [app.shortcutStore commandsInCategory:NppShortcutRunCommand])
+                if ([c.name isEqualToString:@"Key test"]) keyed = c;
+            NppKeyCombo *ctrlAltH = [NppKeyCombo comboWithWindowsCtrl:YES alt:YES shift:NO macControl:NO virtualKey:72];
+            [app.shortcutStore setCombo:ctrlAltH forCommand:keyed];
+            [app.shortcutStore applyToMenus];
+            NSMenuItem *run = itemTitled(@"Key test"), *hideOthers = itemTitled(@"Hide Others");
+            BOOL taken = [run.keyEquivalent isEqualToString:@"h"] &&
+                         (run.keyEquivalentModifierMask & NSEventModifierFlagDeviceIndependentFlagsMask) ==
+                             (NSEventModifierFlagCommand | NSEventModifierFlagOption) &&
+                         hideOthers && hideOthers.keyEquivalent.length == 0;
+            [app.shortcutStore setCombo:nil forCommand:keyed];
+            [ed removeSavedCommandNamed:@"Key test"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NppSavedCommandsDidChange" object:nil];
+            [app.shortcutStore applyToMenus];
+            Check(@"IDM_SETTING_SHORTCUT_MAPPER (a key a default has)",
+                  @"a Run command's Cmd+Opt+H is on its item, taken from Hide Others, which gets it back after",
+                  taken && [itemTitled(@"Hide Others").keyEquivalent isEqualToString:@"h"]);
+        }
+
         // Recording: a menu command that upstream records by its id is one
         // step of type 2, and what it sent to Scintilla meanwhile is not recorded again.
         {
