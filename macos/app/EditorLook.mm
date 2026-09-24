@@ -15,7 +15,7 @@ static long Abgr(NSColor *colour, long fallback) {
 @implementation EditorController (Look)
 
 - (NSArray<ScintillaView *> *)lookViews {
-    NSMutableArray *views = [NSMutableArray arrayWithObject:self.sci];
+    NSMutableArray *views = [NSMutableArray arrayWithObject:self.mainSci];
     if (self.secondarySci) [views addObject:self.secondarySci];
     return views;
 }

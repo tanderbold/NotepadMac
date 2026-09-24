@@ -9,29 +9,47 @@
 
 #pragma mark - Tabs
 
+/// The focused view's tabs (upstream's _pDocTab): the second view's while it has the focus, else
+/// the main view's (the front of documents; the second view's own come after them).
+- (NSArray<NppDocument *> *)focusedViewTabs {
+    return [self secondaryViewIsActive] ? self.subViewDocuments : self.mainViewDocuments;
+}
+
+- (void)selectFocusedViewTab:(NSInteger)index {
+    NSArray<NppDocument *> *tabs = [self focusedViewTabs];
+    if (index < 0 || index >= (NSInteger)tabs.count) return;
+    if ([self secondaryViewIsActive]) {
+        [self showDocumentInSecondaryView:tabs[(NSUInteger)index]];
+        [self.window makeFirstResponder:self.secondarySci.content];
+    } else {
+        [self selectDocumentAtIndex:index];
+    }
+}
+
 - (BOOL)selectTabNumber:(NSInteger)oneBased {
     NSInteger idx = oneBased - 1;
-    if (idx < 0 || idx >= (NSInteger)self.mainViewDocuments.count) { NppBeep(); return NO; }
-    [self selectDocumentAtIndex:idx];
+    if (idx < 0 || idx >= (NSInteger)[self focusedViewTabs].count) { NppBeep(); return NO; }
+    [self selectFocusedViewTab:idx];
     return YES;
 }
 
-- (void)goToFirstTab { [self selectDocumentAtIndex:0]; }
-// The main view's tabs: the second view's own come after them in documents.
-- (void)goToLastTab  { [self selectDocumentAtIndex:(NSInteger)self.mainViewDocuments.count - 1]; }
+- (void)goToFirstTab { [self selectFocusedViewTab:0]; }
+- (void)goToLastTab  { [self selectFocusedViewTab:(NSInteger)[self focusedViewTabs].count - 1]; }
 
 - (void)goToNextTab {
-    NSInteger n = (NSInteger)self.mainViewDocuments.count;
+    NSArray<NppDocument *> *tabs = [self focusedViewTabs];
+    NSInteger n = (NSInteger)tabs.count;
     if (n < 2) return;
-    NSInteger cur = [self.documents indexOfObject:self.currentDocument];
-    [self selectDocumentAtIndex:(cur + 1) % n];
+    NSInteger cur = (NSInteger)[tabs indexOfObjectIdenticalTo:self.currentDocument];
+    [self selectFocusedViewTab:(cur + 1) % n];
 }
 
 - (void)goToPreviousTab {
-    NSInteger n = (NSInteger)self.mainViewDocuments.count;
+    NSArray<NppDocument *> *tabs = [self focusedViewTabs];
+    NSInteger n = (NSInteger)tabs.count;
     if (n < 2) return;
-    NSInteger cur = [self.documents indexOfObject:self.currentDocument];
-    [self selectDocumentAtIndex:(cur - 1 + n) % n];
+    NSInteger cur = (NSInteger)[tabs indexOfObjectIdenticalTo:self.currentDocument];
+    [self selectFocusedViewTab:(cur - 1 + n) % n];
 }
 
 /// The run of tabs a document may move within: pinned tabs stay first, as a group
@@ -45,6 +63,14 @@
 }
 
 - (BOOL)moveCurrentTab:(BOOL)forward {
+    if ([self secondaryViewIsActive]) {                    // within the second view's tabs
+        NSArray<NppDocument *> *tabs = self.subViewDocuments;
+        NSInteger from = (NSInteger)[tabs indexOfObjectIdenticalTo:self.currentDocument], to = from + (forward ? 1 : -1);
+        if (from == NSNotFound || to < 0 || to >= (NSInteger)tabs.count) { NppBeep(); return NO; }
+        [(id<NppTabBarDelegate>)self tabBar:[self valueForKey:@"subTabBar"] didMoveIndex:from toIndex:to];
+        [self.window makeFirstResponder:self.secondarySci.content];
+        return YES;
+    }
     NSMutableArray *docs = (NSMutableArray *)self.documents;
     NSInteger from = [docs indexOfObject:self.currentDocument];
     NSInteger to = from + (forward ? 1 : -1);
@@ -138,7 +164,7 @@
             p.showWhitespace = p.showEOL = p.npcShow = p.ccUniEolShow = !on;
             break;
     }
-    [self applySymbolsToView:self.sci];
+    [self applySymbolsToView:self.mainSci];
     if (self.secondarySci) [self applySymbolsToView:self.secondarySci];
     [self refreshChrome];
 }

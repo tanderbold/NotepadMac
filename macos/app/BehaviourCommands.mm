@@ -344,7 +344,7 @@ static BOOL UrlLooksReal(NSString *candidate) {
 
 - (void)contextClickAtWindowPoint:(NSPoint)point window:(NSWindow *)window {
     if ([NppPreferences shared].rightClickKeepsSelection) return;
-    for (ScintillaView *sci in @[self.sci, self.secondarySci ?: self.sci]) {
+    for (ScintillaView *sci in @[self.mainSci, self.secondarySci ?: self.mainSci]) {
         NSView *content = sci.content;
         if (content.window != window) continue;
         NSPoint local = [content convertPoint:point fromView:nil];
@@ -403,7 +403,7 @@ static BOOL UrlLooksReal(NSString *candidate) {
 /// (SETTINGS-055); upstream's SmartHighlighter only marks the other view while
 /// the option is on, and each pass starts by clearing it.
 - (void)clearSmartHighlightInOtherView {
-    ScintillaView *other = self.secondarySci;
+    ScintillaView *other = self.otherSci;
     if (!other) return;
     [other message:SCI_SETINDICATORCURRENT wParam:(uptr_t)NPPMAC_SMART_INDICATOR];
     [other message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[other message:SCI_GETLENGTH]];
@@ -412,7 +412,7 @@ static BOOL UrlLooksReal(NSString *candidate) {
 /// "Highlight another view": the same word marked in the second view, in
 /// the same indicator and look.
 - (NSUInteger)smartHighlightOtherViewMatchCase:(BOOL)matchCase wholeWord:(BOOL)wholeWord {
-    ScintillaView *sci = self.sci, *other = self.secondarySci;
+    ScintillaView *sci = self.sci, *other = self.otherSci;
     int indicator = NPPMAC_SMART_INDICATOR;
     long a = [sci message:SCI_GETSELECTIONSTART], b = [sci message:SCI_GETSELECTIONEND];
     NSData *mine = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];

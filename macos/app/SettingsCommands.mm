@@ -571,7 +571,7 @@ NPP_PREF_DOUBLE(printMarginBottom, setPrintMarginBottom, @"printMarginBottom")
         [StyleCatalog loadThemeNamed:wanted];
         [editor applyLanguage];
     }
-    ScintillaView *sci = editor.sci;
+    ScintillaView *sci = editor.mainSci;
     [sci setStringProperty:SCI_STYLESETFONT parameter:STYLE_DEFAULT value:NppAvailableFontName(self.fontName)];
     [sci message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:self.fontSize];
     [editor applyDocumentSettings];

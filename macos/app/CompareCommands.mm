@@ -37,8 +37,8 @@ ActiveCompare gCompare;
 /// The engine reaches the panes through Scintilla's direct function: the
 /// document in front is MAIN_VIEW, the other text SUB_VIEW.
 static void BindViews(EditorController *ed) {
-    sciFunc = (SciFnDirect)[ed.sci message:SCI_GETDIRECTFUNCTION wParam:0 lParam:0];
-    sciPtr[MAIN_VIEW] = [ed.sci message:SCI_GETDIRECTPOINTER wParam:0 lParam:0];
+    sciFunc = (SciFnDirect)[ed.mainSci message:SCI_GETDIRECTFUNCTION wParam:0 lParam:0];
+    sciPtr[MAIN_VIEW] = [ed.mainSci message:SCI_GETDIRECTPOINTER wParam:0 lParam:0];
     sciPtr[SUB_VIEW] = [ed.secondarySci message:SCI_GETDIRECTPOINTER wParam:0 lParam:0];
     marginNum = NPPMAC_COMPARE_MARGIN;
     nppBookmarkMarker = 1 << 1;
@@ -209,7 +209,7 @@ static const char kCurrentDiffKey = 0;
 /// ComparePlus's Set as First marks a buffer, not a file: an untitled document can be
 /// first, and what is compared is its text as it is then, unsaved changes included.
 - (void)setFirstToCompare {
-    NppDocument *doc = self.currentDocument;
+    NppDocument *doc = [self mainCurrentDocument];
     if (!doc) { NppBeep(); return; }
     objc_setAssociatedObject(self, &kFirstToCompareKey, doc.path ?: doc.displayName, OBJC_ASSOCIATION_COPY);
     objc_setAssociatedObject(self, &kFirstDocumentKey, doc, OBJC_ASSOCIATION_RETAIN);
@@ -218,7 +218,7 @@ static const char kCurrentDiffKey = 0;
 /// The text of an open document, read through a view of its own (as the agent server
 /// does) so the tab in front is not touched.
 - (NSString *)textOfOpenDocument:(NppDocument *)doc {
-    if (doc == self.currentDocument) return [self documentText];
+    if (doc == [self mainCurrentDocument]) return [self documentText];
     static ScintillaView *reader;
     if (!reader) reader = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
     [reader message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)doc.docPointer];
@@ -251,7 +251,7 @@ static const char kCurrentDiffKey = 0;
 
 /// The system's "undo" symbol as a marker image, in the label colour, once per appearance.
 - (void)defineRevertMarker {
-    ScintillaView *sci = self.sci;
+    ScintillaView *sci = self.mainSci;
     const int side = 14;
     NSImage *symbol = [NSImage imageWithSystemSymbolName:@"arrow.uturn.backward" accessibilityDescription:nil];
     NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:side pixelsHigh:side bitsPerSample:8
@@ -288,7 +288,7 @@ static const char kCurrentDiffKey = 0;
 /// An arrow beside every run of the line diff: on its changed and added lines, and on the
 /// line after lines that were taken out.
 - (void)placeRevertArrows:(NSArray<NppDiffLine *> *)diff {
-    ScintillaView *sci = self.sci;
+    ScintillaView *sci = self.mainSci;
     [sci message:SCI_MARKERDELETEALL wParam:NPPMAC_MARKER_REVERT lParam:0];
     long lineCount = [sci message:SCI_GETLINECOUNT wParam:0 lParam:0];
     BOOL removedPending = NO;
@@ -422,7 +422,7 @@ static const char kCurrentDiffKey = 0;
 /// line diff is kept for the revert and the callers that want it, the bar
 /// comes up, and the first difference is put on screen.
 - (BOOL)compareCurrentWithText:(NSString *)other {
-    if (!self.currentDocument) { NppBeep(); return NO; }
+    if (![self mainCurrentDocument]) { NppBeep(); return NO; }
     gCompare.otherText = other.UTF8String ?: "";
     NSString *normalised = [[other stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"] stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
     // The text in a document of the pane's own, over the second view's tabs, never in one of them
@@ -432,11 +432,11 @@ static const char kCurrentDiffKey = 0;
     [self.secondarySci setString:normalised];
     [self.secondarySci message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
     [self.secondarySci message:SCI_SETREADONLY wParam:1 lParam:0];
-    NppDocument *doc = self.currentDocument;
+    NppDocument *doc = [self mainCurrentDocument];
     [self applyLanguageOfDocument:doc toView:self.secondarySci];
     [self applyThemeToView:self.secondarySci forLanguage:doc.language.name ?: @"normal"];
     [self.secondarySci message:SCI_COLOURISE wParam:0 lParam:-1];
-    [self.sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    [self.mainSci message:SCI_COLOURISE wParam:0 lParam:-1];
     [self setSyncVerticalScroll:YES];
     [self defineRevertMarker];
 
@@ -465,7 +465,7 @@ static const char kCurrentDiffKey = 0;
 - (BOOL)compareWithFirst {
     NppDocument *firstDoc = objc_getAssociatedObject(self, &kFirstDocumentKey);
     if (firstDoc && [self.documents indexOfObjectIdenticalTo:firstDoc] != NSNotFound) {
-        if (firstDoc == self.currentDocument) { NppBeep(); return NO; }   // a document against itself
+        if (firstDoc == [self mainCurrentDocument]) { NppBeep(); return NO; }   // a document against itself
         return [self compareCurrentWithText:[self textOfOpenDocument:firstDoc]];
     }
     // The first one has been closed since: its file, if it had one.
@@ -482,8 +482,8 @@ static const char kCurrentDiffKey = 0;
         setNormalView(MAIN_VIEW);
         setNormalView(SUB_VIEW);
     }
-    [self.sci message:SCI_MARKERDELETEALL wParam:NPPMAC_MARKER_REVERT lParam:0];
-    [self.sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0];
+    [self.mainSci message:SCI_MARKERDELETEALL wParam:NPPMAC_MARKER_REVERT lParam:0];
+    [self.mainSci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0];
     gCompare.mismatch = false;
     gCompare.summary.clear();
     objc_setAssociatedObject(self, &kCurrentDiffKey, nil, OBJC_ASSOCIATION_RETAIN);
@@ -592,7 +592,7 @@ static const char kCompareTimerKey = 0;
                 if (!me || event.keyCode != 53 || ![me compareBar].superview) return event;
                 NSResponder *first = event.window.firstResponder;
                 BOOL inPane = [first isKindOfClass:[NSView class]] &&
-                    ([(NSView *)first isDescendantOf:me.sci] || [(NSView *)first isDescendantOf:me.secondaryHost]);
+                    ([(NSView *)first isDescendantOf:me.mainSci] || [(NSView *)first isDescendantOf:me.secondaryHost]);
                 if (!inPane) return event;
                 [me clearActiveCompare];
                 return nil;
@@ -622,7 +622,7 @@ static const char kCompareTimerKey = 0;
                                  ignoreEmptyLines:self.compareIgnoreEmptyLines];
     objc_setAssociatedObject(self, &kCurrentDiffKey, mismatch ? diff : @[], OBJC_ASSOCIATION_RETAIN);
     [self placeRevertArrows:mismatch ? diff : @[]];
-    if (!mismatch) [self.sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0];
+    if (!mismatch) [self.mainSci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_COMPARE_MARGIN lParam:0];
     CallScintilla(MAIN_VIEW, SCI_SETFIRSTVISIBLELINE, getVisibleFromDocLine(MAIN_VIEW, firstLine) - offset, 0);
     [self mirrorScrollToSecondary];
     [self updateCompareBar];
@@ -643,7 +643,7 @@ static const char kCompareTimerKey = 0;
 - (BOOL)compareRevertChangeAtLine:(long)line {
     NSArray<NppDiffLine *> *diff = [self currentDiff];
     if (!diff.count) { NppBeep(); return NO; }
-    ScintillaView *sci = self.sci;
+    ScintillaView *sci = self.mainSci;
     NSArray<NSString *> *old = [EditorController linesForComparison:[self.secondarySci string] ?: @""];
     NSArray<NSString *> *now = [self linesOfCurrentDocument];
     long lineCount = [sci message:SCI_GETLINECOUNT wParam:0 lParam:0];
@@ -669,7 +669,7 @@ static const char kCompareTimerKey = 0;
     }
     if (!found) { NppBeep(); return NO; }
 
-    NSString *eol = self.currentDocument.eolMode == SC_EOL_CRLF ? @"\r\n" : self.currentDocument.eolMode == SC_EOL_CR ? @"\r" : @"\n";
+    NSString *eol = [self mainCurrentDocument].eolMode == SC_EOL_CRLF ? @"\r\n" : [self mainCurrentDocument].eolMode == SC_EOL_CR ? @"\r" : @"\n";
     NSMutableString *replacement = [NSMutableString string];
     for (NSInteger k = oldFirst; oldFirst >= 0 && k <= oldLast; ++k) [replacement appendFormat:@"%@%@", old[(NSUInteger)k], eol];
     long from, to;

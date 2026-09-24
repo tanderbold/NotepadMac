@@ -4749,7 +4749,7 @@ int NppMacRunTests(AppDelegate *app) {
         [ed.secondarySci message:SCI_APPENDTEXT wParam:3 lParam:(sptr_t)"\n\n\n"];
         [ed.secondarySci message:SCI_DOCUMENTEND];
         long subLine = [ed.secondarySci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[ed.secondarySci message:SCI_GETCURRENTPOS]] + 1;
-        [ed.sci message:SCI_DOCUMENTSTART];
+        [ed.mainSci message:SCI_DOCUMENTSTART];
         [ed refreshChrome];
         NSTextField *statusText = [ed valueForKey:@"statusField"];
         BOOL follows = subLine > 1 && [statusText.stringValue containsString:[NSString stringWithFormat:@"Ln: %ld ", subLine]];
@@ -4875,6 +4875,127 @@ int NppMacRunTests(AppDelegate *app) {
             [ed setSecondaryViewVisible:NO];
             BOOL gaveBack = [ed.mainViewDocuments containsObject:lb] && !lb.secondViewOnly;
             Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (view hidden)", @"hiding the second view gives its documents back to the main view's tabs", gaveBack);
+            [ed closeAllDocuments];
+        }
+
+        // The focused view is the one commands act on, as upstream's _pEditView and _pDocTab
+        // follow the focus: its document is edited, saved, converted and shown in the chrome.
+        {
+            [ed closeAllDocuments];
+            NSString *pa = TempFile(@"t_focus_a.txt", @"alpha\n"), *pb = TempFile(@"t_focus_b.txt", @"beta\n");
+            [ed openFileAtPath:pa error:&err];
+            [ed openFileAtPath:pb error:&err];
+            NppDocument *da = nil, *db = nil;
+            for (NppDocument *d in ed.documents) { if ([d.path isEqualToString:pa]) da = d; if ([d.path isEqualToString:pb]) db = d; }
+            NppTabBarView *mainBar = [ed valueForKey:@"tabBar"], *subBar = [ed valueForKey:@"subTabBar"];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:db]];
+            [ed moveCurrentToOtherView];                                   // b only in the second view, a in the main one
+            [ed.window makeFirstResponder:ed.secondarySci.content];
+            BOOL follows = [ed secondaryViewIsActive] && ed.sci == ed.secondarySci && ed.otherSci == ed.mainSci &&
+                           ed.currentDocument == db && [ed mainCurrentDocument] == da;
+            Check(@"IDM_VIEW_SWITCHTO_OTHER_VIEW (active view)",
+                  @"with the focus in the second view, the editor and the document commands work on are that view's",
+                  follows);
+
+            // Edit: typing there marks its document modified (its own savepoint notification), not the other.
+            [ed.sci message:SCI_DOCUMENTEND];
+            [ed.sci message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)"x"];
+            [ed refreshChrome];
+            BOOL title = [ed.window.title containsString:@"t_focus_b.txt"];
+            BOOL statusFollows = subBar.inFocusedView && !mainBar.inFocusedView;
+            Check(@"IDM_EDIT (focused view)",
+                  @"an edit in the second view changes and marks its document; the window title and the active tab indicator follow that view",
+                  db.modified && !da.modified && [[ed.secondarySci string] isEqualToString:@"beta\nx"] &&
+                  [[ed.mainSci string] isEqualToString:@"alpha\n"] && title && statusFollows);
+
+            // Encoding / Format: EOL conversion; Language: the lexer of the second view's document.
+            [ed convertEOLTo:SC_EOL_CRLF];
+            [ed setLanguageNamed:@"python"];
+            [ed toggleBookmark];
+            long bookmarked = [ed.secondarySci message:SCI_MARKERGET wParam:(uptr_t)[ed.secondarySci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[ed.secondarySci message:SCI_GETCURRENTPOS]]] & (1 << 1);
+            Check(@"IDM_FORMAT_TODOS (focused view)",
+                  @"EOL conversion, the language and a bookmark go to the second view's document, the main view's stays as it was",
+                  [[ed.secondarySci string] isEqualToString:@"beta\r\nx"] && db.eolMode == SC_EOL_CRLF &&
+                  [[ed.mainSci string] isEqualToString:@"alpha\n"] && da.eolMode != SC_EOL_CRLF &&
+                  [db.language.name isEqualToString:@"python"] && ![da.language.name isEqualToString:@"python"] &&
+                  bookmarked != 0 && [ed.mainSci message:SCI_MARKERNEXT wParam:0 lParam:(1 << 1)] == -1);
+
+            // File: Save writes the second view's document.
+            [ed saveCurrentDocument];
+            NSString *onDisk = [NSString stringWithContentsOfFile:pb encoding:NSUTF8StringEncoding error:NULL];
+            NSString *otherOnDisk = [NSString stringWithContentsOfFile:pa encoding:NSUTF8StringEncoding error:NULL];
+            Check(@"IDM_FILE_SAVE (focused view)",
+                  @"Save writes the focused second view's document and clears its modified mark",
+                  [onDisk isEqualToString:@"beta\r\nx"] && [otherOnDisk isEqualToString:@"alpha\n"] && !db.modified);
+
+            // Search: Find acts in the focused view.
+            [ed.sci message:SCI_GOTOPOS wParam:0 lParam:0];
+            [ed.sci message:SCI_SETTARGETSTART wParam:0 lParam:0];
+            [ed.sci message:SCI_SETTARGETEND wParam:(uptr_t)[ed.sci message:SCI_GETLENGTH] lParam:0];
+            long found = [ed.sci message:SCI_SEARCHINTARGET wParam:3 lParam:(sptr_t)"eta"];
+            Check(@"IDM_SEARCH_FIND (focused view)", @"the second view's text is what a search in it sees", found == 1);
+
+            // Tabs: Ctrl+Tab goes through the focused view's tabs; a main-view tab brings the focus back.
+            [ed.window makeFirstResponder:ed.mainSci.content];
+            [ed cloneCurrentToOtherView];                                  // a in both views
+            [ed.window makeFirstResponder:ed.secondarySci.content];
+            NppDocument *subFront = [ed documentInSecondaryView];
+            [ed goToNextTab];
+            BOOL cycled = [ed documentInSecondaryView] != subFront && [ed secondaryViewIsActive] && [ed mainCurrentDocument] == da;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:da]];
+            Check(@"IDM_VIEW_TAB_NEXT (focused view)",
+                  @"Next Tab goes through the second view's tabs while it has the focus; choosing a main-view tab gives the main view the focus",
+                  cycled && ![ed otherViewHasFocus] && ed.currentDocument == da && ed.sci == ed.mainSci);
+
+            // The second view's tab bar follows the Tab Bar preferences as the main one does.
+            NppPreferences *tp = [NppPreferences shared];
+            BOOL wasVertical = tp.tabBarVertical, wasMulti = tp.tabBarMultiLine, wasReduced = tp.tabReduced, wasClose = tp.tabShowCloseButton;
+            tp.tabBarVertical = YES; tp.tabReduced = YES; tp.tabShowCloseButton = NO;
+            [ed applyTabBarPreferences];
+            NSView *host = [ed secondaryHost];
+            BOOL vertical = subBar.vertical && subBar.reduced && !subBar.showCloseButtons &&
+                            NSHeight(subBar.frame) == NSHeight(host.bounds) && NSMinX(ed.secondarySci.frame) >= NSWidth(subBar.frame) - 0.5 &&
+                            NSWidth(subBar.frame) > 40;
+            tp.tabBarVertical = NO; tp.tabBarMultiLine = YES;
+            [ed applyTabBarPreferences];
+            BOOL multi = subBar.multiLine && !subBar.vertical && NSMaxY(ed.secondarySci.frame) <= NSMinY(subBar.frame) + 0.5;
+            tp.tabBarVertical = wasVertical; tp.tabBarMultiLine = wasMulti; tp.tabReduced = wasReduced; tp.tabShowCloseButton = wasClose;
+            [ed applyTabBarPreferences];
+            Check(@"IDM_SETTING_PREFERENCE (second view's tab bar)",
+                  @"the second view's tab bar is vertical, multi-line, reduced and without close buttons when the preferences say so",
+                  vertical && multi);
+
+            // Session: an untitled document only in the second view comes back there, from its backup.
+            [ed newDocument];
+            SetDoc(ed, @"only in the second view\n");
+            ed.currentDocument.modified = YES;
+            NppDocument *untitled = ed.currentDocument;
+            NSString *untitledName = untitled.displayName;
+            [ed moveCurrentToOtherView];
+            [ed runAutosavePass];
+            NSString *sess = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_focus_session.xml"];
+            [ed saveSessionTo:sess error:NULL];
+            NSString *xml = [NSString stringWithContentsOfFile:sess encoding:NSUTF8StringEncoding error:NULL] ?: @"";
+            NSRange subAt = [xml rangeOfString:@"<subView"];
+            NSString *subPart = subAt.location != NSNotFound ? [xml substringFromIndex:subAt.location] : @"";
+            NSString *mainPart = subAt.location != NSNotFound ? [xml substringToIndex:subAt.location] : xml;
+            NSString *backup = untitled.backupPath;
+            BOOL written = untitled.secondViewOnly && backup.length && [subPart containsString:backup] && ![mainPart containsString:backup];
+            untitled.backupPath = nil;                                     // closed as a crash would leave it
+            [ed closeAllDocuments];
+            [ed loadSessionFrom:sess error:NULL];
+            NppDocument *back = nil;
+            for (NppDocument *d in ed.documents) if (!d.path && [d.backupPath isEqualToString:backup ?: @"-"]) back = d;
+            BOOL restored = back && back.secondViewOnly && [ed.subViewDocuments containsObject:back] &&
+                            ![ed.mainViewDocuments containsObject:back] && [back.displayName isEqualToString:untitledName] && back.modified &&
+                            (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == back.docPointer &&
+                            [[ed.secondarySci string] isEqualToString:@"only in the second view\n"];
+            Check(@"IDM_FILE_LOADSESSION (untitled in the second view)",
+                  @"an untitled document only in the second view is written in subView with its backup and comes back in that view",
+                  written && restored);
+            if (backup) [[NSFileManager defaultManager] removeItemAtPath:backup error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:sess error:NULL];
+            [ed setSecondaryViewVisible:NO];
             [ed closeAllDocuments];
         }
 

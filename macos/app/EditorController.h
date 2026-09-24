@@ -80,10 +80,17 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 @end
 
 @interface EditorController : NSObject <NppTabBarDelegate>
+/// The focused view (upstream's _pEditView): the main view unless the second one has the focus.
 @property (nonatomic, readonly) ScintillaView *sci;
+/// The main view, whichever has the focus; otherSci is the view that is not the focused one.
+@property (nonatomic, readonly) ScintillaView *mainSci;
+@property (nonatomic, readonly) ScintillaView *otherSci;
 @property (nonatomic, readonly) NSView *view;           // tab bar + editor + status bar
 @property (nonatomic, readonly) NSArray<NppDocument *> *documents;
 @property (nonatomic, readonly, nullable) NppDocument *currentDocument;
+/// The main view's document in front, whichever view has the focus (currentDocument is the
+/// focused view's, as upstream's _pEditView): tabs, session and main-view settings use this.
+- (nullable NppDocument *)mainCurrentDocument;
 @property (nonatomic, weak, nullable) NSWindow *window;
 /// Added to the window title, as -titleAdd= on the command line asks.
 @property (nonatomic, copy, nullable) NSString *titleSuffix;
@@ -269,6 +276,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)layoutSecondaryHost;
 - (void)focusOtherView;
 - (BOOL)otherViewHasFocus;
+/// The second view has the focus and one of its tabs' documents in it: commands act on that.
+- (BOOL)secondaryViewIsActive;
 - (BOOL)moveCurrentToOtherView;
 /// What the second view shows, while it is shown.
 - (nullable NppDocument *)documentInSecondaryView;

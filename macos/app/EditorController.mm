@@ -70,18 +70,14 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 @property (nonatomic, weak) EditorController *owner;
 @end
 
-@implementation NppSecondaryPaneDelegate
-- (void)notification:(SCNotification *)n {
-    // Only a scroll of this pane is mirrored, and a zoom only when it zooms: every
-    // SCN_UPDATEUI mirrored both ways kept the panes echoing each other (a freeze
-    // with long lines, and the other pane's zoom undoing a Zoom In).
-    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)))
-        [self.owner mirrorScrollFromSecondary];
-    if (n->nmhdr.code == SCN_ZOOM) [self.owner mirrorZoomFromSecondary];
-    // The caret or the selection moved in this pane: the status bar says so (it follows the focused view).
-    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT))) [self.owner refreshChrome];
-}
+@interface EditorController ()
+- (void)secondaryNotification:(SCNotification *)n;
 @end
+
+@implementation NppSecondaryPaneDelegate
+- (void)notification:(SCNotification *)n { [self.owner secondaryNotification:n]; }
+@end
+
 
 /// The status bar's first field: the file's path, which a click copies to the
 /// clipboard - the request came up because a path is what one most often
@@ -102,6 +98,11 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 @property (nonatomic, strong) NSSplitView *editorSplit;
 @property (nonatomic, strong) NSView *secondaryHost;     // the second pane and, above it, Compare's bar
 @property (nonatomic, strong) id secondaryDelegate;
+/// 0: the view with the focus is active; 1: the main view; 2: the second view (while its
+/// notification is handled): see -activeIsSecondary.
+@property (nonatomic) NSInteger forcedView;
+/// Which view was active when the focus last moved (-activeViewChanged).
+@property (nonatomic) BOOL lastActiveWasSecondary;
 @property (nonatomic) BOOL syncV;
 @property (nonatomic) BOOL syncH;
 @property (nonatomic) BOOL syncZ;
@@ -451,7 +452,17 @@ static long SciColor(NSColor *c) {
     return self;
 }
 
-- (ScintillaView *)sci { return self.sciView; }
+/// upstream's _pEditView: the view with the focus - or, while a view's own notification is
+/// handled or a main-view operation runs, the view that is forced (forcedView 1 main, 2 second).
+- (BOOL)activeIsSecondary {
+    if (self.forcedView == 1) return NO;
+    if (self.forcedView == 2) return self.secondaryDocument != nil && !self.secondaryScratch;
+    return [self secondaryViewIsActive];
+}
+
+- (ScintillaView *)sci { return [self activeIsSecondary] ? self.secondaryView : self.sciView; }
+- (ScintillaView *)mainSci { return self.sciView; }
+- (ScintillaView *)otherSci { return [self activeIsSecondary] ? self.sciView : self.secondaryView; }
 - (NSView *)view { return self.container; }
 - (NSArray<NppDocument *> *)documents { return self.docs; }
 
@@ -468,15 +479,23 @@ static long SciColor(NSColor *c) {
 /// A new tab of the main view: at the end of its tabs, before the second view's documents.
 - (NSInteger)addMainViewDocument:(NppDocument *)doc {
     NSInteger at = [self mainTabCount];
-    NppDocument *inFront = self.currentDocument;
+    NppDocument *inFront = [self mainCurrentDocument];
     [self.docs insertObject:doc atIndex:(NSUInteger)at];
     if (inFront) self.currentIndex = (NSInteger)[self.docs indexOfObjectIdenticalTo:inFront];
     return at;
 }
 
-- (NppDocument *)currentDocument {
+/// The main view's document in front (upstream's _mainDocTab current buffer): what its tabs,
+/// session and settings go by, whichever view has the focus.
+- (NppDocument *)mainCurrentDocument {
     if (self.currentIndex < 0 || self.currentIndex >= (NSInteger)self.docs.count) return nil;
     return self.docs[self.currentIndex];
+}
+
+/// The document of the view with the focus (upstream's _pEditView->getCurrentBuffer()):
+/// every command works on this one.
+- (NppDocument *)currentDocument {
+    return [self activeIsSecondary] ? self.secondaryDocument : [self mainCurrentDocument];
 }
 
 #pragma mark - Editor chrome
@@ -544,7 +563,7 @@ static long SciColor(NSColor *c) {
     NppPreferences *prefs = [NppPreferences shared];
     // The language's own indent settings when it has some, as upstream's
     // per-language Indent Settings.
-    NSString *lang = self.currentDocument.language.name;
+    NSString *lang = [self mainCurrentDocument].language.name;
     NSInteger width = [prefs tabWidthForLanguage:lang];
     [sci message:SCI_SETTABWIDTH wParam:(uptr_t)width lParam:0];
     [sci message:SCI_SETINDENT wParam:(uptr_t)width lParam:0];
@@ -649,11 +668,11 @@ static long SciColor(NSColor *c) {
 #pragma mark - Typing mode
 
 - (BOOL)overtype {
-    return [self.sciView message:SCI_GETOVERTYPE] != 0;
+    return [self.sci message:SCI_GETOVERTYPE] != 0;
 }
 
 - (void)setOvertype:(BOOL)on {
-    [self.sciView message:SCI_SETOVERTYPE wParam:on ? 1 : 0 lParam:0];
+    [self.sci message:SCI_SETOVERTYPE wParam:on ? 1 : 0 lParam:0];
     [self refreshChrome];
 }
 
@@ -700,13 +719,13 @@ NSString *NppCanonicalPath(NSString *path) {
 #pragma mark - The text, by length
 
 - (NSString *)documentText {
-    long length = [self.sciView message:SCI_GETLENGTH wParam:0 lParam:0];
+    long length = [self.sci message:SCI_GETLENGTH wParam:0 lParam:0];
     if (length <= 0) return @"";
     std::string buffer((size_t)length + 1, '\0');
-    [self.sciView message:SCI_GETTEXT wParam:(uptr_t)(length + 1) lParam:(sptr_t)&buffer[0]];
+    [self.sci message:SCI_GETTEXT wParam:(uptr_t)(length + 1) lParam:(sptr_t)&buffer[0]];
     NSString *text = [[NSString alloc] initWithBytes:buffer.data() length:(NSUInteger)length
                                             encoding:NSUTF8StringEncoding];
-    return text ?: ([self.sciView string] ?: @"");
+    return text ?: ([self.sci string] ?: @"");
 }
 
 + (NSString *)textOfFileAtPath:(NSString *)path encoding:(NSStringEncoding *)encoding hasBOM:(BOOL *)hasBOM {
@@ -764,11 +783,11 @@ static void RestartChangeHistory(ScintillaView *sci) {
     NSData *utf8 = [text dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
     // A read-only document takes no text; the flag is lifted for the
     // replacement (a reload, a reread in another code page) and put back.
-    BOOL readOnly = [self.sciView message:SCI_GETREADONLY wParam:0 lParam:0] != 0;
-    if (readOnly) [self.sciView message:SCI_SETREADONLY wParam:0 lParam:0];
-    [self.sciView message:SCI_CLEARALL wParam:0 lParam:0];
-    [self.sciView message:SCI_ADDTEXT wParam:(uptr_t)utf8.length lParam:(sptr_t)utf8.bytes];
-    if (readOnly) [self.sciView message:SCI_SETREADONLY wParam:1 lParam:0];
+    BOOL readOnly = [self.sci message:SCI_GETREADONLY wParam:0 lParam:0] != 0;
+    if (readOnly) [self.sci message:SCI_SETREADONLY wParam:0 lParam:0];
+    [self.sci message:SCI_CLEARALL wParam:0 lParam:0];
+    [self.sci message:SCI_ADDTEXT wParam:(uptr_t)utf8.length lParam:(sptr_t)utf8.bytes];
+    if (readOnly) [self.sci message:SCI_SETREADONLY wParam:1 lParam:0];
 }
 
 - (BOOL)openFileAtPath:(NSString *)path error:(NSError **)error {
@@ -890,6 +909,10 @@ static void RestartChangeHistory(ScintillaView *sci) {
 
 - (void)selectDocumentAtIndex:(NSInteger)index {
     if (index < 0 || index >= (NSInteger)self.docs.count) return;
+    // A main-view tab: the main view is the one worked on, and gets the focus at the end
+    // (upstream's switchEditViewTo(MAIN_VIEW) before activating a buffer there).
+    NSInteger forced = self.forcedView;
+    self.forcedView = 1;
     dispatch_async(dispatch_get_main_queue(), ^{ [self catchUpMonitoredDocument]; });
     if (!self.mru) self.mru = [NSMutableArray array];
     [self.mru removeObjectIdenticalTo:self.docs[(NSUInteger)index]];
@@ -942,6 +965,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     // does not ask acceptsFirstResponder, and the wrapper would hold the
     // focus without taking a key.
     [self.window makeFirstResponder:self.sciView.content];
+    self.forcedView = forced;
     [[NSNotificationCenter defaultCenter] postNotificationName:NppBufferActivatedNotification object:self];
 }
 
@@ -954,16 +978,18 @@ static void RestartChangeHistory(ScintillaView *sci) {
     return (void *)[scratch message:SCI_CREATEDOCUMENT wParam:0 lParam:options];
 }
 
-- (NSArray<NSNumber *> *)currentFoldedLines {
+- (NSArray<NSNumber *> *)currentFoldedLines { return [self foldedLinesInView:self.sci]; }
+
+- (NSArray<NSNumber *> *)foldedLinesInView:(ScintillaView *)sci {
     NSMutableArray *lines = [NSMutableArray array];
     long line = -1;
-    while ((line = [self.sciView message:SCI_CONTRACTEDFOLDNEXT wParam:(uptr_t)(line + 1)]) >= 0) {
+    while ((line = [sci message:SCI_CONTRACTEDFOLDNEXT wParam:(uptr_t)(line + 1)]) >= 0) {
         [lines addObject:@(line)];
     }
     return lines;
 }
 
-- (void)foldLines:(NSArray<NSNumber *> *)lines { [self foldLines:lines inView:self.sciView]; }
+- (void)foldLines:(NSArray<NSNumber *> *)lines { [self foldLines:lines inView:self.sci]; }
 
 - (void)foldLines:(NSArray<NSNumber *> *)lines inView:(ScintillaView *)sci {
     [sci message:SCI_COLOURISE wParam:0 lParam:-1];
@@ -995,13 +1021,13 @@ static void RestartChangeHistory(ScintillaView *sci) {
     if (bar == self.subTabBar) return;
     NppPreferences *p = [NppPreferences shared];
     NppDocument *doc = (index >= 0 && index < (NSInteger)self.documents.count) ? self.documents[(NSUInteger)index] : nil;
-    BOOL other = doc && doc != self.currentDocument;
+    BOOL other = doc && doc != [self mainCurrentDocument];
     if (p.docPeekOnTab) {
         if (other) [self showPeekerForDocument:doc underRect:[bar convertRect:[bar frameOfTabAtIndex:index] toView:nil]];
         else [self hideDocumentPeeker];
     }
     if (p.docPeekOnMap && [self documentMapVisible]) {
-        NppDocument *shown = other ? doc : self.currentDocument;
+        NppDocument *shown = other ? doc : [self mainCurrentDocument];
         [self.docMapView message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)shown.docPointer];
         if (other) [self.docMapView message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)MAX(0, doc.firstVisibleLine) lParam:0];
         else [self updateDocumentMap];
@@ -1110,7 +1136,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     if (from < 0 || to < 0 || from >= mainCount || to >= mainCount) return;
     NppDocument *moving = docs[(NSUInteger)from];
     if (moving.pinned != ((NppDocument *)docs[(NSUInteger)to]).pinned) return;   // the pinned run stays whole
-    NppDocument *inFront = self.currentDocument;
+    NppDocument *inFront = [self mainCurrentDocument];
     [docs removeObjectAtIndex:(NSUInteger)from];
     [docs insertObject:moving atIndex:(NSUInteger)to];
     // The indexes moved, the documents did not: the one in front keeps its
@@ -1193,7 +1219,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
         [[NSAlert alertWithError:err] runModal];
         return NO;
     }
-    [self.sciView message:SCI_SETSAVEPOINT wParam:0 lParam:0];
+    [self.sci message:SCI_SETSAVEPOINT wParam:0 lParam:0];
     self.currentDocument.modified = NO;
     self.currentDocument.encodingChanged = NO;
     self.currentDocument.fileModificationDate =
@@ -1371,8 +1397,8 @@ static BOOL gCheckingFilesOnDisk;
         [self setSecondaryViewVisible:NO];
         return;
     }
-    BOOL wasFront = self.currentDocument == doc;
-    NppDocument *inFront = self.currentDocument;
+    BOOL wasFront = [self mainCurrentDocument] == doc;
+    NppDocument *inFront = [self mainCurrentDocument];
     [self.docs removeObjectAtIndex:(NSUInteger)idx];
     doc.secondViewOnly = YES;
     [self.docs addObject:doc];
@@ -1391,7 +1417,7 @@ static BOOL gCheckingFilesOnDisk;
 - (void)moveSecondaryDocumentToMainView:(NppDocument *)doc keepInSecondary:(BOOL)keep {
     if (![self.subDocs containsObject:doc]) return;
     if (doc.secondViewOnly) {
-        NppDocument *inFront = self.currentDocument;
+        NppDocument *inFront = [self mainCurrentDocument];
         [self.docs removeObjectIdenticalTo:doc];
         doc.secondViewOnly = NO;
         [self.docs insertObject:doc atIndex:(NSUInteger)[self mainTabCount]];
@@ -1409,7 +1435,7 @@ static BOOL gCheckingFilesOnDisk;
     NppDocument *doc = self.docs[index];
     if (!discard && doc.modified) return;
     [self compareDocumentWillClose:doc];
-    NppDocument *inFront = self.currentDocument;
+    NppDocument *inFront = [self mainCurrentDocument];
     // A closed document is no longer watched.
     if (doc.monitoring || doc.monitorSource) [self stopMonitoringDocument:doc];
 
@@ -1472,8 +1498,8 @@ static BOOL gCheckingFilesOnDisk;
                                   : DecodeText(data, &enc, &bom);
     if (!text) return NO;
 
-    long caret = [self.sciView message:SCI_GETCURRENTPOS];
-    long firstLine = [self.sciView message:SCI_GETFIRSTVISIBLELINE];
+    long caret = [self.sci message:SCI_GETCURRENTPOS];
+    long firstLine = [self.sci message:SCI_GETFIRSTVISIBLELINE];
     [self setDocumentText:text];
     if (!doc.codepage) {
         doc.encoding = enc;
@@ -1481,13 +1507,13 @@ static BOOL gCheckingFilesOnDisk;
     }
     doc.encodingChanged = NO;
     doc.eolMode = DetectEOL(text);
-    [self.sciView message:SCI_SETEOLMODE wParam:(uptr_t)doc.eolMode lParam:0];
-    [self.sciView message:SCI_SETSAVEPOINT wParam:0 lParam:0];
-    [self.sciView message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
-    RestartChangeHistory(self.sciView);
-    [self.sciView message:SCI_GOTOPOS
-                   wParam:(uptr_t)MIN(caret, [self.sciView message:SCI_GETLENGTH]) lParam:0];
-    [self.sciView message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstLine lParam:0];
+    [self.sci message:SCI_SETEOLMODE wParam:(uptr_t)doc.eolMode lParam:0];
+    [self.sci message:SCI_SETSAVEPOINT wParam:0 lParam:0];
+    [self.sci message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
+    RestartChangeHistory(self.sci);
+    [self.sci message:SCI_GOTOPOS
+                   wParam:(uptr_t)MIN(caret, [self.sci message:SCI_GETLENGTH]) lParam:0];
+    [self.sci message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstLine lParam:0];
     doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:doc.path error:NULL]
                                 fileModificationDate];
     [self dropBackupOfDocument:doc];
@@ -1509,6 +1535,7 @@ static BOOL gCheckingFilesOnDisk;
 
 - (NSUInteger)saveAllDocuments {
     NSInteger restore = self.currentIndex;
+    BOOL secondFocused = [self secondaryViewIsActive];
     NSUInteger saved = 0;
     for (NSInteger i = 0; i < (NSInteger)self.docs.count; ++i) {
         NppDocument *d = self.docs[i];
@@ -1519,6 +1546,7 @@ static BOOL gCheckingFilesOnDisk;
         if (d.path ? [self writeCurrentToPath:d.path] : [self saveCurrentDocumentAs]) saved++;
     }
     [self selectDocumentAtIndex:restore];
+    if (secondFocused) [self.window makeFirstResponder:self.secondaryView.content];
     return saved;
 }
 
@@ -1554,7 +1582,7 @@ static BOOL gCheckingFilesOnDisk;
     if (![[NSFileManager defaultManager] trashItemAtURL:[NSURL fileURLWithPath:doc.path]
                                        resultingItemURL:nil error:error]) return NO;
     NSString *gone = doc.path;
-    [self closeDocumentAtIndex:self.currentIndex discardChanges:YES];
+    [self closeDocumentAtIndex:(NSInteger)[self.docs indexOfObjectIdenticalTo:doc] discardChanges:YES];   // the focused view's document, wherever its tabs are
     [self forgetRecentFile:gone];             // as Windows takes a deleted file off the list
     return YES;
 }
@@ -1566,8 +1594,8 @@ static BOOL gCheckingFilesOnDisk;
 }
 
 - (void)closeAllButCurrent {
-    if (![self confirmClosingDocuments:[self.docs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NppDocument *d, NSDictionary *b) { return d != self.currentDocument; }]]]) return;
-    NppDocument *keep = self.currentDocument;
+    if (![self confirmClosingDocuments:[self.docs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NppDocument *d, NSDictionary *b) { return d != [self mainCurrentDocument]; }]]]) return;
+    NppDocument *keep = [self mainCurrentDocument];
     for (NSInteger i = (NSInteger)self.docs.count - 1; i >= 0; --i) {
         if (self.docs[i] != keep) [self closeDocumentAtIndex:i discardChanges:YES];
     }
@@ -1576,7 +1604,7 @@ static BOOL gCheckingFilesOnDisk;
 
 - (void)closeAllToLeft {
     if (![self confirmClosingDocuments:[self.docs subarrayWithRange:NSMakeRange(0, (NSUInteger)MAX(0, self.currentIndex))]]) return;
-    NppDocument *keep = self.currentDocument;
+    NppDocument *keep = [self mainCurrentDocument];
     for (NSInteger i = self.currentIndex - 1; i >= 0; --i) {
         [self closeDocumentAtIndex:i discardChanges:YES];
     }
@@ -1587,7 +1615,7 @@ static BOOL gCheckingFilesOnDisk;
     // The main view's tabs to the right (fileCloseAllToRight works in the current view).
     NSInteger mainCount = [self mainTabCount];
     if (![self confirmClosingDocuments:(self.currentIndex + 1 < mainCount ? [self.docs subarrayWithRange:NSMakeRange((NSUInteger)self.currentIndex + 1, (NSUInteger)(mainCount - self.currentIndex - 1))] : @[])]) return;
-    NppDocument *keep = self.currentDocument;
+    NppDocument *keep = [self mainCurrentDocument];
     // closeDocumentAtIndex: moves currentIndex, so the bound is captured first.
     NSInteger from = self.currentIndex;
     for (NSInteger i = mainCount - 1; i > from; --i) {
@@ -1611,7 +1639,7 @@ static BOOL gCheckingFilesOnDisk;
 }
 
 - (void)togglePinCurrent {
-    NppDocument *doc = self.currentDocument;
+    NppDocument *doc = [self mainCurrentDocument];
     if (!doc) return;
     doc.pinned = !doc.pinned;
     // Pinned tabs sit at the left, as on Windows: pinning moves the tab to the
@@ -1755,7 +1783,7 @@ static BOOL gCheckingFilesOnDisk;
 - (NSMutableDictionary *)sessionEntryForDocument:(NppDocument *)d {
     NSMutableDictionary *entry = [NSMutableDictionary dictionary];
     entry[@"language"] = d.language.name ?: @"normal";
-    BOOL front = d == self.currentDocument;
+    BOOL front = d == [self mainCurrentDocument];
     entry[@"caret"] = @(front ? [self.sciView message:SCI_GETCURRENTPOS] : d.caretPosition);
     entry[@"anchor"] = @(front ? [self.sciView message:SCI_GETANCHOR] : d.anchorPosition);
     entry[@"firstLine"] = @(front ? [self.sciView message:SCI_GETFIRSTVISIBLELINE] : d.firstVisibleLine);
@@ -1763,7 +1791,7 @@ static BOOL gCheckingFilesOnDisk;
     entry[@"tabColour"] = @(d.tabColour);
     entry[@"monitoring"] = @(d.monitoring);
     entry[@"userReadOnly"] = @(d.userReadOnly);
-    NSArray *folds = front ? [self currentFoldedLines] : d.foldedLines;
+    NSArray *folds = front ? [self foldedLinesInView:self.sciView] : d.foldedLines;
     if (folds.count) entry[@"folds"] = folds;
     entry[@"encoding"] = @(d.encoding);
     entry[@"bom"] = @(d.hasBOM);
@@ -1802,6 +1830,7 @@ static BOOL gCheckingFilesOnDisk;
         } else if (entry[@"backup"]) {
             // An untitled document survives only through its backup.
             entry[@"name"] = d.displayName ?: @"";
+            if (d.secondViewOnly) entry[@"subOnly"] = @YES;   // written in subView only
             [unsaved addObject:entry];
         }
     }
@@ -1809,16 +1838,18 @@ static BOOL gCheckingFilesOnDisk;
     // tabs that are not in the list, and the tabs open before the load.
     NSMutableDictionary *session = [@{@"version": @2,
                               @"current": @(MAX(0, self.currentIndex)),
-                              @"currentPath": self.currentDocument.path ?: @"",
+                              @"currentPath": [self mainCurrentDocument].path ?: @"",
                               @"files": files,
                               @"unsaved": unsaved} mutableCopy];
     // The second view's tabs, as upstream's subView File entries; where its view stands in each
     // is the view's own (the one in front read live, the others as they were left).
     NSMutableArray *subFiles = [NSMutableArray array];
     for (NppDocument *d in [self documentInSecondaryView] ? self.subDocs : @[]) {
-        if (!d.path) continue;
         NSMutableDictionary *entry = [self sessionEntryForDocument:d];
-        entry[@"path"] = d.path;
+        // An untitled one by its tab's name and its backup (upstream's subView File with backupFilePath).
+        if (d.path) entry[@"path"] = d.path;
+        else if (entry[@"backup"]) entry[@"name"] = d.displayName ?: @"";
+        else continue;
         NSArray<NSNumber *> *place = [self.subPositions objectForKey:d];
         if (d == self.secondaryDocument) {
             place = @[@([self.secondaryView message:SCI_GETCURRENTPOS]), @([self.secondaryView message:SCI_GETANCHOR]),
@@ -1829,8 +1860,9 @@ static BOOL gCheckingFilesOnDisk;
     }
     if (subFiles.count) session[@"subFiles"] = subFiles;
     // The second view and what it shows, as upstream's subView.
-    if ([self documentInSecondaryView].path) {
-        session[@"secondary"] = @{@"path": self.secondaryDocument.path,
+    NSString *secondaryBackup = [self sessionEntryForDocument:self.secondaryDocument][@"backup"];
+    if ([self documentInSecondaryView].path || ([self documentInSecondaryView] && secondaryBackup)) {
+        session[@"secondary"] = @{(self.secondaryDocument.path ? @"path" : @"backup"): self.secondaryDocument.path ?: secondaryBackup,
                                   @"firstLine": @([self.secondaryView message:SCI_GETFIRSTVISIBLELINE]),
                                   @"caret": @([self.secondaryView message:SCI_GETCURRENTPOS]),
                                   // Where the divider stands, as a share of the split.
@@ -1918,7 +1950,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         index++;
     }
     // Untitled documents: by their tab's name, with the backup that holds their text.
-    for (NSDictionary *u in session[@"unsaved"]) [main addChild:[self sessionFileElement:u name:u[@"name"]]];
+    for (NSDictionary *u in session[@"unsaved"]) {
+        if (![u[@"subOnly"] boolValue]) [main addChild:[self sessionFileElement:u name:u[@"name"]]];
+    }
     [main addAttribute:[NSXMLNode attributeWithName:@"activeIndex" stringValue:@(active).stringValue]];
     NSArray *subFiles = [session[@"subFiles"] isKindOfClass:[NSArray class]] ? session[@"subFiles"] : nil;
     if (!subFiles.count && secondary) {
@@ -1928,8 +1962,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // Every tab of the second view, as upstream writes subView (Session::_subViewFiles).
     NSInteger subActive = 0;
     for (NSDictionary *f in subFiles) {
-        if (secondary && [f[@"path"] isEqualToString:secondary[@"path"] ?: @""]) subActive = (NSInteger)[subFiles indexOfObjectIdenticalTo:f];
-        [sub addChild:[self sessionFileElement:f name:f[@"path"]]];
+        if (secondary && (f[@"path"] ? [f[@"path"] isEqualToString:secondary[@"path"] ?: @""]
+                                     : [f[@"backup"] isEqualToString:secondary[@"backup"] ?: @""]))
+            subActive = (NSInteger)[subFiles indexOfObjectIdenticalTo:f];
+        [sub addChild:[self sessionFileElement:f name:f[@"path"] ?: f[@"name"]]];
     }
     [sub addAttribute:[NSXMLNode attributeWithName:@"activeIndex" stringValue:@(subActive).stringValue]];
     if (secondary) {
@@ -2004,10 +2040,31 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (subActive < 0 || subActive >= (NSInteger)subEntries.count) subActive = 0;
     NSMutableArray *subFiles = [NSMutableArray array];
     NSMutableArray *mainPaths = [[files valueForKey:@"path"] mutableCopy];
+    NSArray *mainBackups = [unsaved valueForKey:@"backup"];
+    NSDictionary *(^secondaryOf)(NSDictionary *) = ^NSDictionary *(NSDictionary *e) {
+        NSMutableDictionary *s = [@{@"firstLine": e[@"firstLine"] ?: @0, @"caret": e[@"caret"] ?: @0,
+                                    @"split": @([sub attributeForName:@"macSplit"].stringValue.doubleValue ?: 0.5)} mutableCopy];
+        if (e[@"path"]) s[@"path"] = e[@"path"]; else s[@"backup"] = e[@"backup"];
+        return s;
+    };
     for (NSXMLElement *second in subEntries) {
-        NSString *secondPath = [second attributeForName:@"filename"].stringValue;
-        if (!secondPath.isAbsolutePath) continue;
+        NSString *secondPath = [second attributeForName:@"filename"].stringValue ?: @"";
         NSMutableDictionary *e = [entryOf(second) mutableCopy];
+        if (!secondPath.isAbsolutePath) {
+            // An untitled tab of the second view, in its backup: a clone of a main-view one (the same
+            // backup), or one only there.
+            BOOL windowsPath = [secondPath hasPrefix:@"\\"] || (secondPath.length > 2 && [secondPath characterAtIndex:1] == ':');
+            if (windowsPath || !e[@"backup"]) continue;
+            e[@"name"] = secondPath;
+            if (![mainBackups containsObject:e[@"backup"]]) {
+                NSMutableDictionary *asUnsaved = [e mutableCopy];
+                asUnsaved[@"subOnly"] = @YES;
+                [unsaved addObject:asUnsaved];
+            }
+            [subFiles addObject:e];
+            if (second == subEntries[(NSUInteger)subActive]) session[@"secondary"] = secondaryOf(e);
+            continue;
+        }
         e[@"path"] = secondPath;
         if (![mainPaths containsObject:secondPath]) {
             NSMutableDictionary *asFile = [e mutableCopy];
@@ -2015,17 +2072,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             [files addObject:asFile];
         }
         [subFiles addObject:e];
-        if (second == subEntries[(NSUInteger)subActive]) {
-            session[@"secondary"] = @{@"path": secondPath, @"firstLine": e[@"firstLine"], @"caret": e[@"caret"],
-                                      @"split": @([sub attributeForName:@"macSplit"].stringValue.doubleValue ?: 0.5)};
-        }
+        if (second == subEntries[(NSUInteger)subActive]) session[@"secondary"] = secondaryOf(e);
     }
     if (subFiles.count) session[@"subFiles"] = subFiles;
-    if (subFiles.count && !session[@"secondary"]) {
-        NSDictionary *e = subFiles.firstObject;
-        session[@"secondary"] = @{@"path": e[@"path"], @"firstLine": e[@"firstLine"], @"caret": e[@"caret"],
-                                  @"split": @([sub attributeForName:@"macSplit"].stringValue.doubleValue ?: 0.5)};
-    }
+    if (subFiles.count && !session[@"secondary"]) session[@"secondary"] = secondaryOf(subFiles.firstObject);
     NSMutableArray *roots = [NSMutableArray array];
     for (NSXMLElement *r in [[node elementsForName:@"FileBrowser"].firstObject elementsForName:@"root"]) {
         NSString *folder = [r attributeForName:@"foldername"].stringValue;
@@ -2058,6 +2108,8 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     }
     // Untitled documents come back from their backups, still modified.
     NSArray *unsaved = session[@"unsaved"];
+    NSMutableDictionary<NSString *, NppDocument *> *byBackup = [NSMutableDictionary dictionary];
+    NSMutableArray<NppDocument *> *subOnlyDocs = [NSMutableArray array];
     if ([unsaved isKindOfClass:[NSArray class]]) {
         for (NSDictionary *u in unsaved) {
             NSString *backup = [u isKindOfClass:[NSDictionary class]] ? u[@"backup"] : nil;
@@ -2065,9 +2117,11 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             if (!data) continue;
             [self newDocument];
             NSString *name = u[@"name"];
-            if ([name isKindOfClass:[NSString class]] && name.length) self.currentDocument.displayName = name;
+            if ([name isKindOfClass:[NSString class]] && name.length) [self mainCurrentDocument].displayName = name;
             [self applySessionEntry:u];
-            [self restoreBackupData:data forDocument:self.currentDocument atPath:backup];
+            [self restoreBackupData:data forDocument:[self mainCurrentDocument] atPath:backup];
+            if ([self mainCurrentDocument]) byBackup[backup] = [self mainCurrentDocument];
+            if ([u[@"subOnly"] boolValue] && [self mainCurrentDocument]) [subOnlyDocs addObject:[self mainCurrentDocument]];
         }
     }
     NSString *currentPath = session[@"currentPath"];
@@ -2092,20 +2146,25 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     NSMutableSet *subOnly = [NSMutableSet set];
     for (NSDictionary *f in files) if ([f isKindOfClass:[NSDictionary class]] && [f[@"subOnly"] boolValue] && f[@"path"]) [subOnly addObject:f[@"path"]];
     for (NSDictionary *f in subFiles) {
-        NppDocument *d = [f isKindOfClass:[NSDictionary class]] && [f[@"path"] isKindOfClass:[NSString class]] ? openDoc(f[@"path"]) : nil;
+        if (![f isKindOfClass:[NSDictionary class]]) continue;
+        NppDocument *d = [f[@"path"] isKindOfClass:[NSString class]] ? openDoc(f[@"path"])
+                       : [f[@"backup"] isKindOfClass:[NSString class]] ? byBackup[f[@"backup"]] : nil;
         if (!d || [self.subDocs containsObject:d]) continue;
         [self.subDocs addObject:d];
         [self.subPositions setObject:@[f[@"caret"] ?: @0, f[@"anchor"] ?: f[@"caret"] ?: @0, f[@"firstLine"] ?: @0] forKey:d];
     }
     for (NppDocument *d in [self.subDocs copy]) {
-        if ([subOnly containsObject:d.path] && !d.secondViewOnly && [self mainTabCount] > 1) [self detachFromMainView:d];
+        BOOL only = d.path ? [subOnly containsObject:d.path] : [subOnlyDocs containsObject:d];
+        if (only && !d.secondViewOnly && [self mainTabCount] > 1) [self detachFromMainView:d];
     }
     // The second view comes back showing what it showed, and where.
     NSDictionary *secondary = session[@"secondary"];
-    if ([secondary isKindOfClass:[NSDictionary class]] && [secondary[@"path"] isKindOfClass:[NSString class]]) {
-        NppDocument *front = self.currentDocument;
+    if ([secondary isKindOfClass:[NSDictionary class]] &&
+        ([secondary[@"path"] isKindOfClass:[NSString class]] || [secondary[@"backup"] isKindOfClass:[NSString class]])) {
+        NppDocument *front = [self mainCurrentDocument];
+        NppDocument *byItsBackup = [secondary[@"backup"] isKindOfClass:[NSString class]] ? byBackup[secondary[@"backup"]] : nil;
         NSUInteger at = [self.docs indexOfObjectPassingTest:^BOOL(NppDocument *d, NSUInteger i, BOOL *stop) {
-            return [d.path isEqualToString:secondary[@"path"]];
+            return byItsBackup ? d == byItsBackup : [d.path isEqualToString:secondary[@"path"]];
         }];
         if (at != NSNotFound) {
             NppDocument *shown = self.docs[at];
@@ -2142,7 +2201,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 
 /// Puts back what the session kept of a document, once it is in front.
 - (void)applySessionEntry:(NSDictionary *)f {
-    NppDocument *doc = self.currentDocument;
+    NppDocument *doc = [self mainCurrentDocument];
     NSString *lang = f[@"language"];
     if ([lang isKindOfClass:[NSString class]] && lang.length) [self setLanguageNamed:lang];
     if ([f[@"codepage"] isKindOfClass:[NSNumber class]] && [f[@"codepage"] unsignedIntValue] && doc.path) {
@@ -2241,7 +2300,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     NppDocument *doc = self.currentDocument;
     if (!doc) return;
     NppLanguage *lang = doc.language ?: [[LanguageCatalog sharedCatalog] languageNamed:@"normal"];
-    ScintillaView *sci = self.sciView;
+    // The focused view's document (the lexer is the Scintilla document's, so a clone in the other
+    // view has it too; applyTheme styles each view for its own document).
+    ScintillaView *sci = self.sci;
     // A new lexer works the fold levels out again, which unfolds everything;
     // what was folded is folded again afterwards.
     NSArray *folds = [self currentFoldedLines];
@@ -2340,7 +2401,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 }
 
 - (void)applyTheme {
-    NppDocument *doc = self.currentDocument;
+    NppDocument *doc = [self mainCurrentDocument];
     [self applyThemeToView:self.sciView forLanguage:doc.language.name ?: @"normal"];
     // Style definitions live in the view, not in the shared document, so the
     // other pane needs its own set - for the language of the document *it*
@@ -2515,9 +2576,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     NppDocument *doc = self.currentDocument;
     if (!doc) return;
     // IDM_FORMAT_TODOS/TOUNIX/TOMAC: a read-only buffer keeps its format.
-    if ([self.sciView message:SCI_GETREADONLY]) return;
-    [self.sciView message:SCI_SETEOLMODE wParam:(uptr_t)eolMode lParam:0];
-    [self.sciView message:SCI_CONVERTEOLS wParam:(uptr_t)eolMode lParam:0];
+    if ([self.sci message:SCI_GETREADONLY]) return;
+    [self.sci message:SCI_SETEOLMODE wParam:(uptr_t)eolMode lParam:0];
+    [self.sci message:SCI_CONVERTEOLS wParam:(uptr_t)eolMode lParam:0];
     doc.eolMode = eolMode;
     [self refreshChrome];
 }
@@ -2636,9 +2697,9 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 - (NSString *)textAt:(long)pos length:(long)len {
     if (len <= 0) return @"";
     NSMutableString *out = [NSMutableString stringWithCapacity:(NSUInteger)len];
-    long docLen = [self.sciView message:SCI_GETLENGTH];
+    long docLen = [self.sci message:SCI_GETLENGTH];
     for (long i = 0; i < len && pos + i < docLen; ++i) {
-        [out appendFormat:@"%c", (char)[self.sciView message:SCI_GETCHARAT wParam:(uptr_t)(pos + i)]];
+        [out appendFormat:@"%c", (char)[self.sci message:SCI_GETCHARAT wParam:(uptr_t)(pos + i)]];
     }
     return out;
 }
@@ -2660,7 +2721,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     NSString *prefix = wrap ? [open stringByAppendingString:@" "] : [token stringByAppendingString:@" "];
     NSString *suffix = wrap ? [@" " stringByAppendingString:close] : @"";
 
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long anchor = [sci message:SCI_GETANCHOR], caret = [sci message:SCI_GETCURRENTPOS];
     long selStart = MIN(anchor, caret), selEnd = MAX(anchor, caret);
     long firstLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
@@ -2727,7 +2788,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     NSString *open = doc.language.commentStart, *close = doc.language.commentEnd;
     if (!open.length || !close.length) { NppBeep(); return; }
 
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long selStart = [sci message:SCI_GETSELECTIONSTART];
     long selEnd   = [sci message:SCI_GETSELECTIONEND];
     if (selEnd == selStart) { NppBeep(); return; }
@@ -2742,7 +2803,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 }
 
 - (void)toggleBookmark {
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     long markers = [sci message:SCI_MARKERGET wParam:(uptr_t)line];
     if (markers & (1 << NPPMAC_BOOKMARK_MARKER)) {
@@ -2753,7 +2814,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 }
 
 - (void)nextBookmark {
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     long found = [sci message:SCI_MARKERNEXT wParam:(uptr_t)(line + 1) lParam:(1 << NPPMAC_BOOKMARK_MARKER)];
     if (found < 0) found = [sci message:SCI_MARKERNEXT wParam:0 lParam:(1 << NPPMAC_BOOKMARK_MARKER)];
@@ -2763,7 +2824,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 }
 
 - (void)previousBookmark {
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     long found = [sci message:SCI_MARKERPREVIOUS wParam:(uptr_t)(line - 1) lParam:(1 << NPPMAC_BOOKMARK_MARKER)];
     if (found < 0) {
@@ -2776,25 +2837,25 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 }
 
 - (void)clearBookmarks {
-    [self.sciView message:SCI_MARKERDELETEALL wParam:NPPMAC_BOOKMARK_MARKER lParam:0];
+    [self.sci message:SCI_MARKERDELETEALL wParam:NPPMAC_BOOKMARK_MARKER lParam:0];
 }
 
 - (void)foldAll:(BOOL)fold {
     // Every level, not only the outermost (ScintillaEditView::foldAll): Unfold Level N after
     // Fold All then opens just that level's headers.
-    [self.sciView message:SCI_FOLDALL
+    [self.sci message:SCI_FOLDALL
                    wParam:(uptr_t)((fold ? SC_FOLDACTION_CONTRACT : SC_FOLDACTION_EXPAND) | SC_FOLDACTION_CONTRACT_EVERY_LEVEL)
                    lParam:0];
 }
 
 - (void)toggleFoldAtCursor {
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     [sci message:SCI_TOGGLEFOLD wParam:(uptr_t)line lParam:0];
 }
 
 - (void)foldCurrent:(BOOL)fold {
-    ScintillaView *sci = self.sciView;
+    ScintillaView *sci = self.sci;
     long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     // Act on the enclosing fold point, which is what "current level" means.
     // A fold point itself, or the one the line is inside (foldCurrentPos).
@@ -2897,7 +2958,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 - (void)resultsUnfoldAll:(id)sender { [self foldAllSearchResults:NO]; }
 - (void)resultsCopyLines:(id)sender { [self copySearchResultLines]; }
 - (void)resultsCopyPaths:(id)sender { [self copySearchResultPaths]; }
-- (void)resultsSelectAll:(id)sender { [self.sci message:SCI_SELECTALL]; }
+- (void)resultsSelectAll:(id)sender { [self.sciView message:SCI_SELECTALL]; }
 - (void)resultsClearAll:(id)sender  { [self clearSearchResults]; }
 - (void)resultsDeleteSearch:(id)sender { [self deleteSearchResultAtCaret]; }
 - (void)resultsOpenPaths:(id)sender { [self openSearchResultPaths]; }
@@ -2907,7 +2968,16 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 
 #pragma mark - Chrome refresh
 
+/// The tabs, the status bar, the title and the panels, for the view with the focus - not for the
+/// view whose notification asked for it (a clone edited in one view refreshes from the other).
 - (void)refreshChrome {
+    NSInteger forced = self.forcedView;
+    self.forcedView = 0;
+    [self refreshChromeOfFocusedView];
+    self.forcedView = forced;
+}
+
+- (void)refreshChromeOfFocusedView {
     [[NSNotificationCenter defaultCenter]
         postNotificationName:NppEditorDocumentsDidChangeNotification object:self];
     // Each view's bar lists its own tabs (upstream's _mainDocTab and _subDocTab).
@@ -2932,6 +3002,9 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     for (NppDocument *d in self.subDocs) [subItems addObject:itemOf(d)];
     self.subTabBar.items = subItems;
     self.subTabBar.selectedIndex = self.secondaryDocument ? (NSInteger)[self.subDocs indexOfObjectIdenticalTo:self.secondaryDocument] : -1;
+    BOOL secondActive = [self secondaryViewIsActive];
+    self.tabBar.inFocusedView = !secondActive;
+    self.subTabBar.inFocusedView = secondActive;
     [self applyTabBarPreferences];
 
     NppDocument *doc = self.currentDocument;
@@ -3040,7 +3113,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.tabBar.inactiveBackColour = dark ? nil : g[@"Inactive tabs"].background;
     [self.tabBar setNeedsDisplay:YES];
     // The second view's bar looks and behaves as the main one (a strip over its pane).
-    for (NSString *key in @[@"showCloseButtons", @"closeButtonsOnInactiveTabs", @"doubleClickCloses", @"locked", @"drawActiveBar",
+    for (NSString *key in @[@"vertical", @"multiLine", @"showCloseButtons", @"closeButtonsOnInactiveTabs", @"doubleClickCloses", @"locked", @"drawActiveBar",
                             @"colourInactiveTabs", @"reduced", @"maxLabelLength", @"activeBarColour", @"activeBarUnfocusedColour",
                             @"activeTextColour", @"inactiveTextColour", @"inactiveBackColour"]) {
         [self.subTabBar setValue:[self.tabBar valueForKey:key] forKey:key];
@@ -3201,10 +3274,25 @@ static const CGFloat kVerticalTabBarWidth = 160;
     NSView *host = self.secondaryHost;
     if (self.compareBar.superview == host) { self.subTabBar.hidden = YES; return; }   // Compare lays the host out
     BOOL bar = self.subDocs.count && !self.secondaryScratch && !self.tabBar.hidden;
-    self.subTabBar.hidden = !bar;
-    CGFloat h = bar ? 28 : 0;
-    if (bar) self.subTabBar.frame = NSMakeRect(0, NSHeight(host.bounds) - h, NSWidth(host.bounds), h);
-    NSRect pane = NSMakeRect(0, 0, NSWidth(host.bounds), NSHeight(host.bounds) - h);
+    NppTabBarView *sub = self.subTabBar;
+    sub.hidden = !bar;
+    NSRect all = host.bounds, pane = all;
+    // Laid out as the main view's bar (layoutEditorArea): beside its pane when vertical, over it
+    // in as many rows as Multi-line needs otherwise (upstream's _subDocTab takes the same styles).
+    if (bar && sub.vertical) {
+        CGFloat w = MIN(kVerticalTabBarWidth, MAX(0, NSWidth(all) / 2));
+        sub.autoresizingMask = NSViewHeightSizable | NSViewMaxXMargin;
+        NSRect f = NSMakeRect(0, 0, w, NSHeight(all));
+        if (!NSEqualRects(sub.frame, f)) sub.frame = f;
+        pane = NSMakeRect(w, 0, NSWidth(all) - w, NSHeight(all));
+    } else if (bar) {
+        sub.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
+        if (NSWidth(sub.frame) != NSWidth(all)) [sub setFrameSize:NSMakeSize(NSWidth(all), NSHeight(sub.frame))];
+        CGFloat h = sub.multiLine ? MAX(28, [sub requiredThickness] + 2) : 28;
+        NSRect f = NSMakeRect(0, NSHeight(all) - h, NSWidth(all), h);
+        if (!NSEqualRects(sub.frame, f)) sub.frame = f;
+        pane = NSMakeRect(0, 0, NSWidth(all), NSHeight(all) - h);
+    }
     if (!NSEqualRects(self.secondaryView.frame, pane)) self.secondaryView.frame = pane;
 }
 
@@ -3394,6 +3482,26 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
 
 - (BOOL)documentMapVisible { return [[NppDockingManager shared] isPanelVisible:@"documentMap"]; }
 
+/// The view the Document Map shows, and its document: the focused one (upstream's map follows
+/// _pEditView), whichever view's notification is being handled.
+- (ScintillaView *)mapSourceView { return [self secondaryViewIsActive] ? self.secondaryView : self.sciView; }
+- (NppDocument *)mapSourceDocument { return [self secondaryViewIsActive] ? self.secondaryDocument : [self mainCurrentDocument]; }
+
+/// The focus went to the other view (SCN_FOCUSIN of the view that took it): the title, the status
+/// bar, the map and the panels follow that view's document, as NPPN_BUFFERACTIVATED does upstream.
+- (void)activeViewChanged {
+    BOOL second = [self secondaryViewIsActive];
+    if (self.lastActiveWasSecondary == second) return;
+    self.lastActiveWasSecondary = second;
+    if ([self documentMapVisible]) {
+        [self.docMapView message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)[self mapSourceDocument].docPointer];
+        [self mirrorStylesToDocumentMap];
+        [self updateDocumentMap];
+    }
+    [self refreshChrome];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppBufferActivatedNotification object:self];
+}
+
 - (void)setDocumentMapVisible:(BOOL)visible {
     if (visible == [self documentMapVisible]) return;
     if (!visible) {
@@ -3421,7 +3529,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
                                                      name:NSViewFrameDidChangeNotification object:self.docMapHost];
     }
     [self.docMapView message:SCI_SETDOCPOINTER wParam:0
-                      lParam:(sptr_t)self.currentDocument.docPointer];
+                      lParam:(sptr_t)[self mapSourceDocument].docPointer];
     NppDockingManager *dock = [NppDockingManager shared];
     if (![dock hasPanel:@"documentMap"]) {
         [dock registerPanel:@"documentMap" title:@"Document Map" view:self.docMapHost defaultPlace:NppDockRight];
@@ -3432,7 +3540,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
         self.docMapZone.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         __weak __typeof(self) weakSelf = self;
         self.docMapZone.scrollTo = ^(CGFloat y) { [weakSelf scrollFromDocumentMapAtY:y]; };
-        self.docMapZone.wheel = ^(NSEvent *e) { [weakSelf.sciView scrollWheel:e]; };
+        self.docMapZone.wheel = ^(NSEvent *e) { [[weakSelf mapSourceView] scrollWheel:e]; };
     }
     self.docMapZone.frame = self.docMapView.bounds;
     [self.docMapView addSubview:self.docMapZone positioned:NSWindowAbove relativeTo:nil];
@@ -3444,7 +3552,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
 /// Makes the map look like the editor: the same colours per style (the
 /// styling itself is in the shared document) and the same wrapping.
 - (void)mirrorStylesToDocumentMap {
-    ScintillaView *map = self.docMapView, *sci = self.sciView;
+    ScintillaView *map = self.docMapView, *sci = [self mapSourceView];
     if (!map) return;
     for (int st = 0; st <= STYLE_MAX; ++st) {
         [map message:SCI_STYLESETFORE wParam:(uptr_t)st lParam:[sci message:SCI_STYLEGETFORE wParam:(uptr_t)st]];
@@ -3463,7 +3571,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
 /// The map is as wide as its panel; wrapped, it is as wide as the editor's
 /// text is in the map's own small characters, so both wrap at the same words.
 - (void)layoutDocumentMap {
-    ScintillaView *map = self.docMapView, *sci = self.sciView;
+    ScintillaView *map = self.docMapView, *sci = [self mapSourceView];
     if (!map || !self.docMapHost) return;
     CGFloat width = NSWidth(self.docMapHost.bounds);
     if ([sci message:SCI_GETWRAPMODE] != SC_WRAP_NONE) {
@@ -3508,7 +3616,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
 - (void)updateDocumentMap {
     if (![self documentMapVisible]) return;
     [self layoutDocumentMap];
-    ScintillaView *map = self.docMapView, *sci = self.sciView;
+    ScintillaView *map = self.docMapView, *sci = [self mapSourceView];
     long first = [sci message:SCI_GETFIRSTVISIBLELINE];
     long onScreen = [sci message:SCI_LINESONSCREEN];
     long total = [sci message:SCI_GETLINECOUNT];
@@ -3538,7 +3646,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
 
 /// A click or drag at `y` in the map centres the editor on that line.
 - (void)scrollFromDocumentMapAtY:(CGFloat)y {
-    ScintillaView *map = self.docMapView, *sci = self.sciView;
+    ScintillaView *map = self.docMapView, *sci = [self mapSourceView];
     long height = MAX(1, [map message:SCI_TEXTHEIGHT wParam:0]);
     long mapVisible = [map message:SCI_GETFIRSTVISIBLELINE] + (long)(y / (CGFloat)height);
     long docLine = [map message:SCI_DOCLINEFROMVISIBLE wParam:(uptr_t)MAX(0, mapVisible)];
@@ -3598,13 +3706,43 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
                        withApplicationAtURL:bundle
                               configuration:config
                           completionHandler:nil];
-    if (closeHere) [self closeDocumentAtIndex:self.currentIndex discardChanges:YES];
+    if (closeHere) [self closeDocumentAtIndex:(NSInteger)[self.docs indexOfObjectIdenticalTo:doc] discardChanges:YES];   // the focused view's document, wherever its tabs are
     return YES;
 }
 
 #pragma mark - ScintillaNotificationProtocol
 
+/// The second view's notifications. With a document of its tabs in it they are handled as the
+/// main view's are, for that view and its document (upstream's one Scintilla notification
+/// handler for both views): the modified flag, typing aids, margins, the chrome.
+- (void)secondaryNotification:(SCNotification *)n {
+    if (self.secondaryDocument && !self.secondaryScratch) {
+        NSInteger forced = self.forcedView;
+        self.forcedView = 2;
+        [self handleNotification:n fromSecondary:YES];
+        self.forcedView = forced;
+        return;
+    }
+    // Compare's own text:
+    // Only a scroll of this pane is mirrored, and a zoom only when it zooms: every
+    // SCN_UPDATEUI mirrored both ways kept the panes echoing each other (a freeze
+    // with long lines, and the other pane's zoom undoing a Zoom In).
+    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)))
+        [self mirrorScrollFromSecondary];
+    if (n->nmhdr.code == SCN_ZOOM) [self mirrorZoomFromSecondary];
+    // The caret or the selection moved in this pane: the status bar says so (it follows the focused view).
+    if (n->nmhdr.code == SCN_UPDATEUI && (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT))) [self refreshChrome];
+}
+
 - (void)notification:(SCNotification *)n {
+    NSInteger forced = self.forcedView;
+    self.forcedView = 1;
+    [self handleNotification:n fromSecondary:NO];
+    self.forcedView = forced;
+}
+
+/// A view's notification, with -sci and -currentDocument that view's (forcedView).
+- (void)handleNotification:(SCNotification *)n fromSecondary:(BOOL)fromSecondary {
     switch (n->nmhdr.code) {
         case SCN_SAVEPOINTREACHED:
             self.currentDocument.modified = self.currentDocument.encodingChanged;
@@ -3612,16 +3750,24 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
             break;
         case SCN_SAVEPOINTLEFT:    self.currentDocument.modified = YES; [self refreshChrome]; break;
         case SCN_MARGINCLICK: {
-            long line = [self.sciView message:SCI_LINEFROMPOSITION wParam:(uptr_t)n->position lParam:0];
-            if (n->margin == 5) [self compareRevertChangeAtLine:line];          // Compare's revert margin
+            long line = [self.sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)n->position lParam:0];
+            if (n->margin == 5 && !fromSecondary) [self compareRevertChangeAtLine:line];   // Compare's revert margin
             else if (n->margin == 1) {                                           // the bookmark margin, as on Windows
-                long has = [self.sciView message:SCI_MARKERGET wParam:(uptr_t)line lParam:0] & (1 << NPPMAC_BOOKMARK_MARKER);
-                [self.sciView message:has ? SCI_MARKERDELETE : SCI_MARKERADD wParam:(uptr_t)line lParam:NPPMAC_BOOKMARK_MARKER];
+                long has = [self.sci message:SCI_MARKERGET wParam:(uptr_t)line lParam:0] & (1 << NPPMAC_BOOKMARK_MARKER);
+                [self.sci message:has ? SCI_MARKERDELETE : SCI_MARKERADD wParam:(uptr_t)line lParam:NPPMAC_BOOKMARK_MARKER];
             }
             break;
         }
         case SCN_ZOOM:
-            [self mirrorZoomToSecondary];
+            if (fromSecondary) [self mirrorZoomFromSecondary];
+            else [self mirrorZoomToSecondary];
+            break;
+        case SCN_FOCUSIN:
+            // The other view may have taken the focus: the chrome, the map and the panels follow its
+            // document (upstream's NPPN_BUFFERACTIVATED on switchEditViewTo), once the window has it.
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{ [self activeViewChanged]; });
+            }
             break;
         case SCN_UPDATEUI:
             [self refreshChrome];
@@ -3631,7 +3777,12 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
                 [self compareScheduleRefresh];         // and so does a comparison that is on
             }
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateLineNumberWidth];
-            if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)) [self mirrorScrollToSecondary];
+            // Only a scroll of this pane is mirrored: every SCN_UPDATEUI mirrored both ways kept the
+            // panes echoing each other (a freeze with long lines).
+            if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_H_SCROLL)) {
+                if (fromSecondary) [self mirrorScrollFromSecondary];
+                else [self mirrorScrollToSecondary];
+            }
             [self updateBraceMatch];
             if (n->updated & SC_UPDATE_SELECTION) [self updateSmartHighlight];
             if (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT)) [self highlightMatchingTags];
