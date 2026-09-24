@@ -326,18 +326,17 @@ static BOOL UrlLooksReal(NSString *candidate) {
         [sci message:SCI_BRACEBADLIGHT wParam:(uptr_t)-1 lParam:0];
         return;
     }
+    // findMatchingBracePos: the character before the caret first, then the one after.
     long pos = [sci message:SCI_GETCURRENTPOS];
-    long candidate = pos;
-    long match = [sci message:SCI_BRACEMATCH wParam:(uptr_t)candidate lParam:0];
-    if (match < 0 && pos > 0) {
-        candidate = pos - 1;
-        match = [sci message:SCI_BRACEMATCH wParam:(uptr_t)candidate lParam:0];
-    }
-    if (match < 0) {
-        [sci message:SCI_BRACEBADLIGHT wParam:(uptr_t)-1 lParam:0];
-        return;
-    }
-    [sci message:SCI_BRACEHIGHLIGHT wParam:(uptr_t)candidate lParam:match];
+    long length = [sci message:SCI_GETLENGTH];
+    long brace = -1;
+    auto isBrace = [](long c) { return c > 0 && strchr("[](){}", (int)c) != NULL; };
+    if (length > 0 && pos > 0 && isBrace([sci message:SCI_GETCHARAT wParam:(uptr_t)(pos - 1) lParam:0])) brace = pos - 1;
+    if (length > 0 && brace < 0 && isBrace([sci message:SCI_GETCHARAT wParam:(uptr_t)pos lParam:0])) brace = pos;
+    long match = brace >= 0 ? [sci message:SCI_BRACEMATCH wParam:(uptr_t)brace lParam:0] : -1;
+    // braceMatch: a brace without its partner is shown in the bad-brace style.
+    if (brace >= 0 && match < 0) [sci message:SCI_BRACEBADLIGHT wParam:(uptr_t)brace lParam:0];
+    else [sci message:SCI_BRACEHIGHLIGHT wParam:(uptr_t)brace lParam:match];
 }
 
 #pragma mark - Right click and the selection
