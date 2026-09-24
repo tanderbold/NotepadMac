@@ -158,8 +158,11 @@ static const char kLastCompletionKey = 0;
     [sci message:SCI_AUTOCSETIGNORECASE wParam:ignoreCase ? 1 : 0 lParam:0];
     [sci message:SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR
           wParam:ignoreCase ? SC_CASEINSENSITIVEBEHAVIOUR_IGNORECASE : SC_CASEINSENSITIVEBEHAVIOUR_RESPECTCASE lParam:0];
-    // Whether Tab or Enter accepts the choice.
-    [sci setStringProperty:SCI_AUTOCSETFILLUPS parameter:0 value:p.autoCompleteUseTab ? @"\t" : @""];
+    // Tab and Enter are Scintilla's own completion keys; "Insert Selection: TAB"
+    // off is handled at SCN_AUTOCSELECTION, as upstream does (a fill-up "\t" only
+    // added a Tab after the word and left Tab completing anyway).
+    [sci setStringProperty:SCI_AUTOCSETFILLUPS parameter:0 value:@""];
+    (void)p;
     [sci setStringProperty:SCI_AUTOCSHOW parameter:caret - start value:[list componentsJoinedByString:@"\n"]];
     objc_setAssociatedObject(self, &kLastCompletionKey, list, OBJC_ASSOCIATION_RETAIN);
     return YES;

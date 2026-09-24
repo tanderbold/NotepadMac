@@ -505,6 +505,14 @@ static NSString *Ordinal(NSUInteger n) {
     // Imported themes join the bundled ones in the Preferences picker.
     [StyleCatalog setImportedThemesDirectory:
         [[self.editor supportDirectory] stringByAppendingPathComponent:@"themes"]];
+    // The theme was loaded before the settings folder was known, from the bundle only:
+    // loaded again, it is the user's saved copy (stylers.xml, themes/) when there is
+    // one - Notepad++ reads the user's stylers.xml at start (SETTINGS-094).
+    NSString *loadedTheme = [StyleCatalog sharedCatalog].themeName;
+    if (loadedTheme.length) {
+        [StyleCatalog loadThemeNamed:loadedTheme];
+        [self.editor applyLanguage];
+    }
 
     __weak __typeof(self) weakApp = self;
     self.editor.tabContextMenu = ^NSMenu *{ return [weakApp buildTabContextMenu]; };
@@ -3856,7 +3864,13 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     if (self.matchCaseBox.state == NSControlStateValueOn) options |= NppFindMatchCase;
     if (self.wholeWordBox.state == NSControlStateValueOn) options |= NppFindWholeWord;
     if (self.wrapBox.state == NSControlStateValueOn) options |= NppFindWrap;
-    [self find:[NppFindSpec specFor:term mode:NppSearchNormal options:options] forward:forward];
+    NppFindSpec *spec = [NppFindSpec specFor:term mode:NppSearchNormal options:options];
+    // IDM_SEARCH_SETANDFINDNEXT puts the word in the Find field, so it is the
+    // search Find Next / Find Previous go on with (SEARCH-101).
+    NppFindSpec *kept = [NppFindSpec specFor:term mode:NppSearchNormal options:options & ~NppFindBackward];
+    self.lastFindSpec = kept;
+    self.lastSearchTerm = term;
+    [self find:spec forward:forward];
 }
 
 /// IDM_SEARCH_VOLATILE_FINDNEXT: the selection only, any case, any word,

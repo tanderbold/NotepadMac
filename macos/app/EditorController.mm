@@ -2301,8 +2301,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (charset >= 0) return @(kNppCharsets[charset].label);
     // These strings match the Encoding menu labels used by Notepad++.
     switch (doc.encoding) {
-        case NSUTF16LittleEndianStringEncoding: return @"UTF-16 LE BOM";
-        case NSUTF16BigEndianStringEncoding:    return @"UTF-16 BE BOM";
+        // setUniModeText: without a BOM the file is "UTF-16 Little/Big Endian" (ENCODING-028).
+        case NSUTF16LittleEndianStringEncoding: return doc.hasBOM ? @"UTF-16 LE BOM" : @"UTF-16 Little Endian";
+        case NSUTF16BigEndianStringEncoding:    return doc.hasBOM ? @"UTF-16 BE BOM" : @"UTF-16 Big Endian";
         case NSISOLatin1StringEncoding:         return @"ANSI";
         case NSUTF8StringEncoding:              if (!doc.codepage) return doc.hasBOM ? @"UTF-8-BOM" : @"UTF-8";
         default: break;
@@ -3207,6 +3208,14 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
             break;
         case SCN_CHARADDED:
             [self handleCharacterAdded:n->ch];
+            break;
+        case SCN_AUTOCSELECTION:
+            // NppNotification's SCN_AUTOCSELECTION: with "Insert Selection: TAB" off, Tab
+            // closes the list and is a Tab (SETTINGS-064).
+            if (n->listCompletionMethod == SC_AC_TAB && ![NppPreferences shared].autoCompleteUseTab) {
+                [self.sci message:SCI_AUTOCCANCEL];
+                [self.sci message:SCI_TAB];
+            }
             break;
         case SCN_CALLTIPCLICK:
             [self callTipClicked:(long)n->position];

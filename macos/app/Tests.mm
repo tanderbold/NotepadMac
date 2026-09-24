@@ -3498,6 +3498,25 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_EDIT_INS_TAB", @"indents the line by one level", indented);
         Check(@"IDM_EDIT_RMV_TAB", @"removes that level again", unindented);
 
+        // A multi-line selection keeps its lines selected, so Decrease twice goes back (EDIT-026).
+        indentPrefs.useSpaces = NO; indentPrefs.tabWidth = 4; [ed applyDocumentSettings];
+        SetDoc(ed, @"a\n  b\nc\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        [ed changeIndent:YES]; [ed changeIndent:NO]; [ed changeIndent:NO];
+        BOOL multiBack = [DocText(ed) isEqualToString:@"a\nb\nc\n"];
+        indentPrefs.useSpaces = spacesWas; indentPrefs.tabWidth = widthWas; [ed applyDocumentSettings];
+        Check(@"IDM_EDIT_RMV_TAB", @"a multi-line selection stays selected: indent then unindent twice restores it", multiBack);
+
+        // Skip Current & Go to Next moves on (EDIT-092).
+        SetDoc(ed, @"foo foo foo");
+        [sci message:SCI_SETSEL wParam:0 lParam:3];
+        [sci message:SCI_ADDSELECTION wParam:7 lParam:4];
+        [ed skipCurrentMultiSelection];
+        long skN = [sci message:SCI_GETSELECTIONS];
+        long s0 = [sci message:SCI_GETSELECTIONNSTART wParam:0], s1 = [sci message:SCI_GETSELECTIONNSTART wParam:skN - 1];
+        Check(@"IDM_EDIT_MULTISELECTSSKIP", @"the current occurrence is dropped and the next one taken",
+              skN == 2 && s0 == 0 && s1 == 8);
+
         SetDoc(ed, @"delete me\n");
         [sci message:SCI_SETSEL wParam:0 lParam:7];
         [ed deleteSelection];
