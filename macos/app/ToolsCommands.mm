@@ -531,7 +531,11 @@ static const char kPreviousTabKey = 0;
         NSString *key = [NSString stringWithFormat:@"%lu-%@",
                          (unsigned long)item.keyEquivalentModifierMask, item.keyEquivalent];
         NSMenuItem *existing = seen[key];
-        if (existing && existing.action == item.action && existing.tag == item.tag) continue;
+        // The same command twice (an alternate item) is not a clash; two saved macros or
+        // Run commands share the action and differ by what they carry.
+        if (existing && existing.action == item.action && existing.tag == item.tag &&
+            (existing.representedObject == item.representedObject || [existing.representedObject isEqual:item.representedObject]) &&
+            [existing.title isEqualToString:item.title]) continue;
         if (existing) [clashes addObject:[NSString stringWithFormat:@"%@ clashes with %@ (%@)",
                                           item.title, existing.title, item.keyEquivalent]];
         else seen[key] = item;
