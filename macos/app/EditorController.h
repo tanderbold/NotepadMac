@@ -245,6 +245,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)setChromeVisible:(BOOL)visible;           // hides tab bar + status bar
 - (BOOL)chromeVisible;
 
+/// The tab bar above the panes (rows as Multi-line needs) or down their left (Vertical); hidden, none.
+- (void)layoutEditorArea;
 // Second editor pane. Notepad++ calls these "views"; here the primary pane
 // owns the tab bar and the secondary one shows a moved or cloned document.
 @property (nonatomic, readonly) ScintillaView *secondarySci;

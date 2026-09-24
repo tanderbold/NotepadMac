@@ -441,6 +441,10 @@ static long SciColor(NSColor *c) {
     if (self.currentIndex < 0 || self.currentIndex >= (NSInteger)self.docs.count) return nil;
     return self.docs[self.currentIndex];
 }
+    // The window resized: Multi-line's rows and a side bar's column are worked out again.
+    _editorArea.postsFrameChangedNotifications = YES;
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSViewFrameDidChangeNotification object:_editorArea
+                                                       queue:nil usingBlock:^(NSNotification *note) { [weakSelf layoutEditorArea]; }];
 
 #pragma mark - Editor chrome
 
@@ -2732,6 +2736,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     };
     // "Sel: " and "Pos: " end in a space the loader trims.
     NSString *(^label)(NSString *) = ^NSString *(NSString *english) {
+    if (self.tabBar.multiLine && !self.tabBar.vertical) [self layoutEditorArea];   // the rows follow the tabs
         NSString *t = NppL(english);
         return [t hasSuffix:@" "] || [t hasSuffix:@":"] == NO ? t : [t stringByAppendingString:@" "];
     };
@@ -2811,11 +2816,38 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.tabBar.inactiveTextColour = dark ? [NSColor secondaryLabelColor] : g[@"Inactive tabs"].foreground;
     self.tabBar.inactiveBackColour = dark ? nil : g[@"Inactive tabs"].background;
     [self.tabBar setNeedsDisplay:YES];
-    // A hidden tab bar gives its room to the editor, a shown one takes it back
-    // (TabBarPlus::display / Notepad_plus::hideTabBar resize the edit view).
-    // The split holding the panes is what gets the room: the panes inside it keep their divider.
-    CGFloat tabH = self.tabBar.hidden ? 0 : NSHeight(self.tabBar.frame);
-    NSRect edit = NSMakeRect(0, 0, NSWidth(self.editorArea.frame), NSHeight(self.editorArea.frame) - tabH);
+    [self layoutEditorArea];
+}
+
+/// Width of the tab bar when it stands down the side (Tab Bar > Vertical).
+static const CGFloat kVerticalTabBarWidth = 160;
+
+/// The tab bar's place and the editor's room: a strip above the panes, as many
+/// rows high as Multi-line needs, or a column at their left when Vertical
+/// (TabBarPlus with TCS_VERTICAL; Notepad_plus::getMainClientRect resizes the
+/// edit views beside it). A hidden bar gives all its room (Notepad_plus::hideTabBar).
+/// The split holding the panes is what gets the room: the panes inside it keep their divider.
+- (void)layoutEditorArea {
+    NSRect area = self.editorArea.bounds;
+    NSRect edit = area;
+    NppTabBarView *bar = self.tabBar;
+    if (!bar.hidden) {
+        if (bar.vertical) {
+            CGFloat w = MIN(kVerticalTabBarWidth, MAX(0, NSWidth(area) / 2));
+            bar.autoresizingMask = NSViewHeightSizable | NSViewMaxXMargin;
+            NSRect f = NSMakeRect(0, 0, w, NSHeight(area));
+            if (!NSEqualRects(bar.frame, f)) bar.frame = f;
+            edit = NSMakeRect(w, 0, NSWidth(area) - w, NSHeight(area));
+        } else {
+            bar.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
+            // The width first: how many rows Multi-line takes follows from it.
+            if (NSWidth(bar.frame) != NSWidth(area)) [bar setFrameSize:NSMakeSize(NSWidth(area), NSHeight(bar.frame))];
+            CGFloat h = bar.multiLine ? MAX(28, [bar requiredThickness] + 2) : 28;
+            NSRect f = NSMakeRect(0, NSHeight(area) - h, NSWidth(area), h);
+            if (!NSEqualRects(bar.frame, f)) bar.frame = f;
+            edit = NSMakeRect(0, 0, NSWidth(area), NSHeight(area) - h);
+        }
+    }
     if (!NSEqualRects(self.editorSplit.frame, edit)) self.editorSplit.frame = edit;
 }
 
@@ -2869,13 +2901,10 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.chromeHidden = !visible;
     self.tabBar.hidden = !visible || [NppPreferences shared].hideTabBar;
     self.statusField.hidden = !visible || [NppPreferences shared].statusBarHidden;
-    NSRect upper = self.split.frame;
-    CGFloat tabH = visible ? 28 : 0, statusH = self.statusField.hidden ? 0 : 22;
+    CGFloat statusH = self.statusField.hidden ? 0 : 22;
     self.split.frame = NSMakeRect(0, statusH, NSWidth(self.container.frame),
                                   NSHeight(self.container.frame) - statusH);
-    self.sciView.frame = NSMakeRect(0, 0, NSWidth(self.editorArea.frame),
-                                    NSHeight(self.editorArea.frame) - tabH);
-    (void)upper;
+    [self layoutEditorArea];
     [self applyEditorPreferences];
     [self.container setNeedsDisplay:YES];
 }
@@ -2887,7 +2916,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
 - (void)hideTabBarForLaunch {
     self.tabBarHiddenForLaunch = YES;
     self.tabBar.hidden = YES;
-    self.sciView.frame = NSMakeRect(0, 0, NSWidth(self.editorArea.frame), NSHeight(self.editorArea.frame));
+    [self layoutEditorArea];
     [self.container setNeedsDisplay:YES];
 }
 

@@ -11037,6 +11037,41 @@ int NppMacRunTests(AppDelegate *app) {
         SetDoc(ed, @"");
     }
 
+    if (NppSectionWanted(@"Tab bar layout")) { printf("\n== Tab bar layout ==\n");
+        // TabBarPlus with TCS_VERTICAL: a column of tabs left of the panes; Multi-line: as many rows as needed.
+        NppPreferences *tp = [NppPreferences shared];
+        BOOL wasVertical = tp.tabBarVertical, wasMulti = tp.tabBarMultiLine, wasHidden = tp.hideTabBar;
+        tp.hideTabBar = NO;
+        NSView *bar = [ed valueForKey:@"tabBar"], *panes = [ed valueForKey:@"editorSplit"], *area = [ed valueForKey:@"editorArea"];
+        tp.tabBarVertical = YES;
+        [ed applyTabBarPreferences];
+        BOOL side = NSHeight(bar.frame) > NSWidth(bar.frame) && NSMaxX(bar.frame) <= NSMinX(panes.frame) + 0.5 &&
+                    NSHeight(panes.frame) == NSHeight(area.bounds);
+        tp.tabBarVertical = NO;
+        [ed applyTabBarPreferences];
+        BOOL strip = NSWidth(bar.frame) == NSWidth(area.bounds) && NSHeight(bar.frame) == 28 &&
+                     NSMaxY(panes.frame) <= NSMinY(bar.frame) + 0.5 && NSMinX(panes.frame) == 0;
+        Check(@"IDM_SETTING_PREFERENCE (tab bar vertical)",
+              @"Vertical puts the tab bar in a column left of the panes, and back in the strip above them",
+              side && strip);
+        NSMutableArray<NSString *> *made = [NSMutableArray array];
+        for (int i = 0; i < 14; ++i) { [ed newDocument]; [made addObject:ed.currentDocument.displayName ?: @""]; }
+        tp.tabBarMultiLine = YES;
+        [ed applyTabBarPreferences];
+        [ed refreshChrome];
+        BOOL rows = NSHeight(bar.frame) > 28 && NSMaxY(panes.frame) <= NSMinY(bar.frame) + 0.5;
+        tp.tabBarMultiLine = wasMulti;
+        [ed applyTabBarPreferences];
+        Check(@"IDM_SETTING_PREFERENCE (tab bar multi-line)", @"Multi-line makes the strip as tall as its rows; the panes give it the room",
+              rows && NSHeight(bar.frame) == 28);
+        for (NSInteger i = (NSInteger)ed.documents.count - 1; i >= 0; --i) {
+            if ([made containsObject:ed.documents[(NSUInteger)i].displayName ?: @""] && !ed.documents[(NSUInteger)i].path)
+                [ed closeDocumentAtIndex:i discardChanges:YES];
+        }
+        tp.tabBarVertical = wasVertical; tp.hideTabBar = wasHidden;
+        [ed applyTabBarPreferences];
+    }
+
     if (NppSectionWanted(@"Selected numbers")) { printf("\n== Selected numbers ==\n");
         NppNumberSet *list = [NppNumberSet setFromPieces:@[@"10, 20.5, -3"]];
         Check(@"Selected numbers", @"sum, average, minimum, maximum and count of a comma list",
