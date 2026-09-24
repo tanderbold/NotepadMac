@@ -2455,16 +2455,20 @@ static const NSInteger kUserLanguageItemTag = 0x55444C;
         if (item.tag == kUserLanguageItemTag) [menu removeItem:item];
     }
     NSArray<NppLanguage *> *user = [LanguageCatalog sharedCatalog].userLanguages;
+    // Notepad_plus::initMenu (udlpos): the user's languages go before the last item, "User-Defined".
+    NSMenuItem *plainUser = nil;
+    for (NSMenuItem *item in menu.itemArray) if ([item.representedObject isEqual:@"udf"]) plainUser = item;
+    NSInteger at = plainUser ? [menu indexOfItem:plainUser] : menu.numberOfItems;
     if (!user.count) return;
     NSMenuItem *separator = [NSMenuItem separatorItem];
     separator.tag = kUserLanguageItemTag;
-    [menu addItem:separator];
+    [menu insertItem:separator atIndex:at++];
     for (NppLanguage *lang in user) {
         NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:lang.name action:@selector(pickLanguage:) keyEquivalent:@""];
         mi.target = self;
         mi.representedObject = lang.name;
         mi.tag = kUserLanguageItemTag;
-        [menu addItem:mi];
+        [menu insertItem:mi atIndex:at++];
     }
 }
 

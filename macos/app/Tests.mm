@@ -4621,9 +4621,8 @@ int NppMacRunTests(AppDelegate *app) {
               ps.isHidden && ps.action == menuIDs[@41020].action && ps.menu == menuIDs[@41020].menu);
         Check(@"IDM_DROPLIST_LIST", @"a hidden item showing the Windows… list",
               drop.isHidden && drop.action == NSSelectorFromString(@"showWindowsList:"));
-        Check(@"IDM_LANG_USER", @"\"User-Defined\" follows the User Defined Language submenu",
-              [udlItem.title isEqualToString:@"User-Defined"] && !udlItem.isHidden &&
-              [udlItem.menu indexOfItem:udlItem] > 0 && [udlItem.menu itemAtIndex:[udlItem.menu indexOfItem:udlItem] - 1].submenu != nil);
+        Check(@"IDM_LANG_USER", @"\"User-Defined\" ends the Language menu, after the user's own languages",
+              [udlItem.title isEqualToString:@"User-Defined"] && !udlItem.isHidden && udlItem.menu.itemArray.lastObject == udlItem);
 
         // A shifted key is set as AppKit matches it - the shifted character, no Shift in the
         // mask - so Cmd+G never reaches the item that has Shift+Cmd+G.
