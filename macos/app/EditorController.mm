@@ -3268,7 +3268,11 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
             // finishing the click on the file just opened, which puts the caret
             // back wherever the pointer happened to be.
             if (n->modifiers == SCMOD_CTRL && !self.currentDocument.isSearchResults) {
-                [self selectBetweenDelimitersAt:(long)n->position];   // Cmd+double-click
+                // Cmd+double-click. After Scintilla has finished the click, which
+                // selects the word under it once the notification returns.
+                long at = (long)n->position;
+                if (at < 0) at = [self.sci message:SCI_GETCURRENTPOS];
+                dispatch_async(dispatch_get_main_queue(), ^{ [self selectBetweenDelimitersAt:at]; });
                 break;
             }
             {
