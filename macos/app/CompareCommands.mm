@@ -425,7 +425,9 @@ static const char kCurrentDiffKey = 0;
     if (!self.currentDocument) { NppBeep(); return NO; }
     gCompare.otherText = other.UTF8String ?: "";
     NSString *normalised = [[other stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"] stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
-    [self setSecondaryViewVisible:YES];
+    // The text in a document of the pane's own, over the second view's tabs, never in one of them
+    // (ComparePlus opens the other file in the other view; its tabs are left as they are).
+    [self beginSecondaryScratch];
     [self.secondarySci message:SCI_SETREADONLY wParam:0 lParam:0];
     [self.secondarySci setString:normalised];
     [self.secondarySci message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
@@ -488,7 +490,7 @@ static const char kCurrentDiffKey = 0;
     objc_setAssociatedObject(self, &kComparedDocumentKey, nil, OBJC_ASSOCIATION_ASSIGN);
     [self setCompareBarShown:NO];
     [self setSyncVerticalScroll:NO];
-    [self setSecondaryViewVisible:NO];
+    [self endSecondaryScratch];   // the view's own tabs come back; with none, it goes
     [self refreshChrome];
 }
 
@@ -599,7 +601,7 @@ static const char kCompareTimerKey = 0;
         }
     } else {
         [bar removeFromSuperview];
-        self.secondarySci.frame = host.bounds;
+        [self layoutSecondaryHost];
         id monitor = objc_getAssociatedObject(self, &kCompareEscapeKey);
         if (monitor) { [NSEvent removeMonitor:monitor]; objc_setAssociatedObject(self, &kCompareEscapeKey, nil, OBJC_ASSOCIATION_RETAIN); }
     }

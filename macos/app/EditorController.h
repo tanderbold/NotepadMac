@@ -43,6 +43,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 @property (nonatomic) BOOL isSearchResults;
 @property (nonatomic) BOOL pinned;                 // survives Close All but Pinned
 @property (nonatomic) NSInteger tabColour;         // 0 = none, 1..5 as in Notepad++
+/// In the second view's tabs only, not the main view's (moved there): such documents come
+/// after the main view's in `documents`, which lists every open document.
+@property (nonatomic) BOOL secondViewOnly;
 /// Set when the language was chosen from the menu rather than worked out from
 /// the file name. Renaming then leaves it alone, as Notepad++ does.
 @property (nonatomic) BOOL languageChosenByUser;
@@ -242,16 +245,28 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 /// -notabbar: the tab bar hidden for this run, the status bar kept.
 @property (nonatomic) BOOL tabBarHiddenForLaunch;
 - (void)hideTabBarForLaunch;
+/// The tab bar above the panes (rows as Multi-line needs) or down their left (Vertical); hidden, none.
+- (void)layoutEditorArea;
 - (void)setChromeVisible:(BOOL)visible;           // hides tab bar + status bar
 - (BOOL)chromeVisible;
 
-/// The tab bar above the panes (rows as Multi-line needs) or down their left (Vertical); hidden, none.
-- (void)layoutEditorArea;
-// Second editor pane. Notepad++ calls these "views"; here the primary pane
-// owns the tab bar and the secondary one shows a moved or cloned document.
+// Second editor pane. Notepad++ calls these "views": each has its tab list, as upstream's
+// _mainDocTab/_subDocTab. `documents` is every open document, the main view's tabs first
+// (documents[0..mainViewDocuments.count)), then those only in the second view.
 @property (nonatomic, readonly) ScintillaView *secondarySci;
+- (NSArray<NppDocument *> *)mainViewDocuments;
+/// The second view's tabs, in order: documents moved there and clones of main-view ones.
+- (NSArray<NppDocument *> *)subViewDocuments;
+/// Brings a document of the second view's tabs to front in that view.
+- (void)showDocumentInSecondaryView:(NppDocument *)doc;
 - (BOOL)secondaryViewVisible;
+/// Hiding it gives its moved documents back to the main view's tabs: nothing is closed.
 - (void)setSecondaryViewVisible:(BOOL)visible;
+/// Compare's text in the second pane: a Scintilla document of its own over the view's tabs,
+/// which come back when the comparison ends (the view hides if it had none).
+- (void)beginSecondaryScratch;
+- (void)endSecondaryScratch;
+- (void)layoutSecondaryHost;
 - (void)focusOtherView;
 - (BOOL)otherViewHasFocus;
 - (BOOL)moveCurrentToOtherView;

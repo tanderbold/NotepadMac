@@ -441,6 +441,8 @@ static int NppNumStrCmp(NSString *a, NSString *b) {
         return (NSComparisonResult)NppNumStrCmp(a.path ?: a.displayName ?: @"", b.path ?: b.displayName ?: @"");
     };
     [docs sortWithOptions:NSSortStable usingComparator:^NSComparisonResult(NppDocument *a, NppDocument *b) {
+        // The main view's tabs are sorted; the second view's own documents stay after them.
+        if (a.secondViewOnly != b.secondViewOnly) return a.secondViewOnly ? NSOrderedDescending : NSOrderedAscending;
         NSComparisonResult r = NSOrderedSame;
         id ka = [keys objectForKey:a], kb = [keys objectForKey:b];
         if (key == NppTabSortName || key == NppTabSortType) r = (NSComparisonResult)NppNumStrCmp(ka, kb);

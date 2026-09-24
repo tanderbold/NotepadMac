@@ -11,23 +11,24 @@
 
 - (BOOL)selectTabNumber:(NSInteger)oneBased {
     NSInteger idx = oneBased - 1;
-    if (idx < 0 || idx >= (NSInteger)self.documents.count) { NppBeep(); return NO; }
+    if (idx < 0 || idx >= (NSInteger)self.mainViewDocuments.count) { NppBeep(); return NO; }
     [self selectDocumentAtIndex:idx];
     return YES;
 }
 
 - (void)goToFirstTab { [self selectDocumentAtIndex:0]; }
-- (void)goToLastTab  { [self selectDocumentAtIndex:(NSInteger)self.documents.count - 1]; }
+// The main view's tabs: the second view's own come after them in documents.
+- (void)goToLastTab  { [self selectDocumentAtIndex:(NSInteger)self.mainViewDocuments.count - 1]; }
 
 - (void)goToNextTab {
-    NSInteger n = (NSInteger)self.documents.count;
+    NSInteger n = (NSInteger)self.mainViewDocuments.count;
     if (n < 2) return;
     NSInteger cur = [self.documents indexOfObject:self.currentDocument];
     [self selectDocumentAtIndex:(cur + 1) % n];
 }
 
 - (void)goToPreviousTab {
-    NSInteger n = (NSInteger)self.documents.count;
+    NSInteger n = (NSInteger)self.mainViewDocuments.count;
     if (n < 2) return;
     NSInteger cur = [self.documents indexOfObject:self.currentDocument];
     [self selectDocumentAtIndex:(cur - 1 + n) % n];
@@ -37,9 +38,10 @@
 /// of their own, and an unpinned tab never goes in among them (Notepad++'s
 /// tab bar keeps the pinned tabs on the left).
 - (NSRange)tabRunOfDocument:(NppDocument *)doc {
-    NSUInteger pinned = 0;
-    for (NppDocument *d in self.documents) { if (!d.pinned) break; ++pinned; }
-    return doc.pinned ? NSMakeRange(0, pinned) : NSMakeRange(pinned, self.documents.count - pinned);
+    NSUInteger pinned = 0, tabs = self.mainViewDocuments.count;   // the main view's tabs
+    for (NppDocument *d in self.mainViewDocuments) { if (!d.pinned) break; ++pinned; }
+    if (doc.secondViewOnly) return NSMakeRange(0, 0);
+    return doc.pinned ? NSMakeRange(0, pinned) : NSMakeRange(pinned, tabs - pinned);
 }
 
 - (BOOL)moveCurrentTab:(BOOL)forward {
@@ -57,8 +59,8 @@
     NSMutableArray *docs = (NSMutableArray *)self.documents;
     NppDocument *doc = self.currentDocument;
     NSInteger from = [docs indexOfObject:doc];
-    if (from == NSNotFound) return;
     NSRange run = [self tabRunOfDocument:doc];
+    if (from == NSNotFound || !run.length) return;
     [docs removeObjectAtIndex:(NSUInteger)from];
     NSInteger to = end ? (NSInteger)NSMaxRange(run) - 1 : (NSInteger)run.location;
     [docs insertObject:doc atIndex:(NSUInteger)to];

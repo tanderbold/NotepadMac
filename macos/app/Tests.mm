@@ -907,12 +907,14 @@ int NppMacRunTests(AppDelegate *app) {
             [ed setDocumentText:@"shown\n"];
             [ed cloneCurrentToOtherView];
             [ed newDocument];
+            void *closedPointer = shown.docPointer;
             [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:shown] discardChanges:YES];
-            BOOL movedOff = (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == ed.currentDocument.docPointer;
+            // Its last tab gone, the second view goes too (upstream hides a view left with no tabs).
+            BOOL movedOff = (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] != closedPointer && ![ed secondaryViewVisible];
             [ed setSecondaryViewVisible:NO];
             [ed closeDocumentAtIndex:ed.documents.count - 1 discardChanges:YES];
             Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (the pane survives a close)",
-                  @"closing the cloned document points the other pane at the document in front", movedOff);
+                  @"closing the cloned document takes the other pane off it; the view with no tabs left is hidden", movedOff);
         }
 
         // The caret belongs to the document: it is where it was when the tab
@@ -4736,10 +4738,10 @@ int NppMacRunTests(AppDelegate *app) {
         [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument]
                   discardChanges:YES];
 
-        NSUInteger before = ed.documents.count;
+        NSUInteger before = ed.mainViewDocuments.count, open = ed.documents.count;
         [ed moveCurrentToOtherView];
-        Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW", @"the tab leaves the primary pane",
-              ed.documents.count == before - 1);
+        Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW", @"the tab leaves the primary pane, the document stays open",
+              ed.mainViewDocuments.count == before - 1 && ed.documents.count == open);
 
         [ed focusOtherView];
         BOOL onOther = [ed otherViewHasFocus];
@@ -4788,6 +4790,93 @@ int NppMacRunTests(AppDelegate *app) {
         [ed setSyncZoom:NO];
         [sci message:SCI_SETZOOM wParam:0 lParam:0];
         [ed setSecondaryViewVisible:NO];
+
+        // Each view has its tab list, as upstream's _mainDocTab and _subDocTab.
+        {
+            [ed closeAllDocuments];
+            NSString *pa = TempFile(@"t_views_a.txt", @"aaa\n"), *pb = TempFile(@"t_views_b.txt", @"bbb\n"),
+                     *pc = TempFile(@"t_views_c.txt", @"ccc\n");
+            for (NSString *p in @[pa, pb, pc]) [ed openFileAtPath:p error:&err];
+            NppDocument *da = ed.documents[0], *db = ed.documents[1], *dc = ed.documents[2];
+            NSArray *(^paths)(NSArray<NppDocument *> *) = ^NSArray *(NSArray<NppDocument *> *list) { return [list valueForKey:@"path"]; };
+            NppTabBarView *mainBar = [ed valueForKey:@"tabBar"], *subBar = [ed valueForKey:@"subTabBar"];
+            [ed selectDocumentAtIndex:1];
+            [ed.sci message:SCI_APPENDTEXT wParam:1 lParam:(sptr_t)"!"];
+            BOOL moved = [ed moveCurrentToOtherView];
+            Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (own tabs)",
+                  @"Move to Other View takes the tab into the second view's tabs, unsaved changes and all; the main view shows a neighbour",
+                  moved && [paths(ed.mainViewDocuments) isEqualToArray:(@[pa, pc])] && [ed.subViewDocuments isEqualToArray:@[db]] &&
+                  [ed.documents containsObject:db] && db.modified && db.secondViewOnly &&
+                  mainBar.items.count == 2 && subBar.items.count == 1 && !subBar.hidden &&
+                  (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == db.docPointer &&
+                  [[ed.secondarySci string] isEqualToString:@"bbb\n!"] && ed.currentDocument != db);
+
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:dc]];
+            [ed cloneCurrentToOtherView];
+            BOOL cloned = [ed.subViewDocuments isEqualToArray:(@[db, dc])] && [ed.mainViewDocuments containsObject:dc] &&
+                          [ed documentInSecondaryView] == dc && subBar.selectedIndex == 1;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:da]];
+            Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (own tabs)",
+                  @"Clone shows the document in both views' tabs; each view keeps its own document in front",
+                  cloned && ed.currentDocument == da && [ed documentInSecondaryView] == dc);
+
+            // Session: both views' tabs, as upstream's mainView and subView File entries.
+            NSString *sess = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_views_session.xml"];
+            [ed saveSessionTo:sess error:NULL];
+            NSString *xml = [NSString stringWithContentsOfFile:sess encoding:NSUTF8StringEncoding error:NULL] ?: @"";
+            NSRange subAt = [xml rangeOfString:@"<subView"], mainAt = [xml rangeOfString:@"<mainView"];
+            NSString *subPart = subAt.location != NSNotFound ? [xml substringFromIndex:subAt.location] : @"";
+            NSString *mainPart = mainAt.location != NSNotFound && subAt.location != NSNotFound
+                ? [xml substringWithRange:NSMakeRange(mainAt.location, subAt.location - mainAt.location)] : @"";
+            BOOL written = [subPart containsString:pb] && [subPart containsString:pc] && [subPart containsString:@"activeIndex=\"1\""] &&
+                           [mainPart containsString:pa] && [mainPart containsString:pc] && ![mainPart containsString:pb];
+
+            // Per view closing: the clone's main tab goes without the document; its last tab closes it.
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:dc]];
+            [ed closeCurrentDocument];
+            BOOL mainTabOnly = ![ed.mainViewDocuments containsObject:dc] && [ed.documents containsObject:dc] &&
+                               [ed.subViewDocuments containsObject:dc];
+            [(id<NppTabBarDelegate>)ed tabBar:subBar didRequestCloseIndex:(NSInteger)[ed.subViewDocuments indexOfObject:dc]];
+            Check(@"IDM_FILE_CLOSE (per view)",
+                  @"closing a clone's tab in one view leaves it open in the other; closing its last tab closes it",
+                  mainTabOnly && ![ed.documents containsObject:dc] && [ed.subViewDocuments isEqualToArray:@[db]] &&
+                  [ed documentInSecondaryView] == db);
+
+            // Compare borrows the pane, not the view's document.
+            [ed compareCurrentWithText:@"zzz\n"];
+            BOOL comparing = [[ed.secondarySci string] isEqualToString:@"zzz\n"];
+            [ed clearActiveCompare];
+            Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (compare)",
+                  @"a comparison shows its text in the second pane and gives the view its tab back, untouched",
+                  comparing && [ed secondaryViewVisible] && [ed documentInSecondaryView] == db &&
+                  [[ed.secondarySci string] isEqualToString:@"bbb\n!"] && !subBar.hidden);
+
+            // From the second view: Move to Other View brings the tab back, and the emptied view goes.
+            [ed.window makeFirstResponder:ed.secondarySci.content];
+            BOOL focused = [ed otherViewHasFocus];
+            [ed moveCurrentToOtherView];
+            Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (from the second view)",
+                  @"the second view's tab goes back to the main view's tabs; the view with none left is hidden",
+                  focused && ([ed.mainViewDocuments containsObject:db] && !db.secondViewOnly && ed.subViewDocuments.count == 0 &&
+                               ![ed secondaryViewVisible] && ed.currentDocument == db));
+
+            [ed closeAllDocuments];
+            BOOL loaded = [ed loadSessionFrom:sess error:NULL];
+            NppDocument *(^named)(NSString *) = ^NppDocument *(NSString *p) {
+                for (NppDocument *d in ed.documents) if ([d.path isEqualToString:p]) return d;
+                return nil;
+            };
+            NppDocument *lb = named(pb), *lc = named(pc);
+            Check(@"IDM_FILE_LOADSESSION (both views)",
+                  @"a session keeps each view's tabs: the moved file comes back in the second view only, the clone in both",
+                  written && loaded && lb && lc && lb.secondViewOnly && [ed.subViewDocuments isEqualToArray:(@[lb, lc])] &&
+                  [ed.mainViewDocuments containsObject:lc] && ![ed.mainViewDocuments containsObject:lb] &&
+                  [ed documentInSecondaryView] == lc && lb.modified == NO);
+            [ed setSecondaryViewVisible:NO];
+            BOOL gaveBack = [ed.mainViewDocuments containsObject:lb] && !lb.secondViewOnly;
+            Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (view hidden)", @"hiding the second view gives its documents back to the main view's tabs", gaveBack);
+            [ed closeAllDocuments];
+        }
 
         // Spawning real app instances from a test would litter the session.
         [ed newDocument];

@@ -4089,14 +4089,14 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 }
 
 - (void)nextTab:(id)sender {
-    NSInteger n = (NSInteger)self.editor.documents.count;
+    NSInteger n = (NSInteger)self.editor.mainViewDocuments.count;   // the main view's tabs
     if (n < 2) return;
     NSInteger cur = [self.editor.documents indexOfObject:self.editor.currentDocument];
     [self.editor selectDocumentAtIndex:(cur + 1) % n];
 }
 
 - (void)previousTab:(id)sender {
-    NSInteger n = (NSInteger)self.editor.documents.count;
+    NSInteger n = (NSInteger)self.editor.mainViewDocuments.count;
     if (n < 2) return;
     NSInteger cur = [self.editor.documents indexOfObject:self.editor.currentDocument];
     [self.editor selectDocumentAtIndex:(cur - 1 + n) % n];

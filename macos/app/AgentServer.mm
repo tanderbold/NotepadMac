@@ -560,6 +560,9 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
                             ![[NSFileManager defaultManager] isWritableFileAtPath:doc.path]));
     if (doc.pinned) info[@"pinned"] = @YES;
     if ([ed documentInSecondaryView] == doc) info[@"in_second_view"] = @YES;
+    // Whose tabs it is in: the main view's, the second view's (moved there), or both (cloned).
+    BOOL inSub = [[ed subViewDocuments] containsObject:doc];
+    info[@"view"] = doc.secondViewOnly ? @"sub" : inSub ? @"both" : @"main";
     [self readDocument:doc using:^(ScintillaView *sci) {
         info[@"lines"] = @(Msg(sci, SCI_GETLINECOUNT));
         info[@"bytes"] = @(Msg(sci, SCI_GETLENGTH));
