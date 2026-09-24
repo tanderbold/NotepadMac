@@ -1,4 +1,3 @@
-#import "CommandIDs.h"
 #import "Localization.h"
 #import <objc/runtime.h>
 
@@ -198,19 +197,6 @@ static void FitTitledControl(NSControl *c) {
     }
     frame.size.width = MAX(NSWidth(frame), MIN(needed, limit - NSMinX(frame)));
     c.frame = frame;
-}
-
-/// Whether the port names a command as upstream's menu does (menu label, "&",
-/// "..." and a shortcut in brackets aside).
-static BOOL SameLabel(NSString *english, int identifier) {
-    for (int i = 0; i < kNppMenuCommandIDCount; ++i) {
-        if (kNppMenuCommandIDs[i].identifier != identifier) continue;
-        NSString *label = @(kNppMenuCommandIDs[i].label);
-        NSRange bracket = [label rangeOfString:@" ("];
-        if (bracket.location != NSNotFound && [label hasSuffix:@")"]) label = [label substringToIndex:bracket.location];
-        if ([Normalised(label) isEqualToString:Normalised(english)]) return YES;
-    }
-    return NO;
 }
 
 NSString *const NppUntranslatedIdentifier = @"NppUntranslated";
@@ -473,12 +459,12 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             // upstream's translation of the same command names the Windows application.
             BOOL ownName = [english containsString:@"NotepadMac"];
             // The port's own wording for a command wins over upstream's translation of
-            // upstream's wording: "Move to Trash" is nativeLang-extra's, not the text
-            // upstream translates for "Move to Recycle Bin". An item of the port's own
-            // (no command id: Selected Numbers > Count) is nativeLang-extra's first too,
-            // before an upstream text that merely has the same English.
+            // upstream's wording: nativeLang-extra has an entry only for a text the port
+            // words itself ("Move to Trash", not "Move to Recycle Bin"; "…" set as a Mac
+            // sets it) or has on its own (Selected Numbers > Count), and it is that
+            // file's translator who chose the words.
             NSString *extra = self.extraStrings[Normalised(english)];
-            if (extra && (!identifier || !SameLabel(english, identifier.intValue))) ownName = YES;
+            if (extra) ownName = YES;
             text = (identifier && !ownName) ? [self commandName:identifier.intValue] : nil;
             if (!text && extra && ownName) text = [self translate:english hit:extra];
             text = text ?: [self translate:english];
