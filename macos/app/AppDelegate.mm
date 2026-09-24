@@ -4711,6 +4711,9 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     NSMutableSet *all = [NSMutableSet set];
     for (NSArray *group in perTab) [all addObjectsFromArray:group];
     for (NSView *view in all) view.hidden = ![shown containsObject:view];
+    // The tabs' buttons share their places: the ones now shown take the width their
+    // words need, their row moved so that none covers another (German "Nächstes finden").
+    NppFlowButtonRows(self.findPanel.contentView);
 
     // FindReplaceDlg::updateCombos... the title follows the tab in the interface language
     // (the translation's <Find titleFind= titleReplace= titleFindInFiles= ... titleMark=>).

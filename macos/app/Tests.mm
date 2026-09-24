@@ -9699,6 +9699,66 @@ int NppMacRunTests(AppDelegate *app) {
         if (cutElsewhere.count) printf("    cut texts (ru):\n        %s\n", [cutElsewhere componentsJoinedByString:@"\n        "].UTF8String);
         names = names && !cutElsewhere.count;
 
+        // Push buttons too, in long-word and CJK languages (L10N-015): each is as wide
+        // as its words, and a row moved to make room covers nothing else in it.
+        NSMutableArray<NSString *> *cutButtons = [NSMutableArray array];
+        __block void (^pushScan)(NSView *, NSString *) = nil;
+        void (^__block __weak weakPushScan)(NSView *, NSString *);
+        pushScan = ^(NSView *v, NSString *where) {
+            if (v.hidden) return;
+            NSMutableArray<NSButton *> *row = [NSMutableArray array];
+            for (NSView *sub in v.subviews) {
+                if (sub.hidden || ![sub isKindOfClass:[NSButton class]] || [sub isKindOfClass:[NSPopUpButton class]]) continue;
+                NSButton *b = (NSButton *)sub;
+                if (!b.title.length || (((NSButtonCell *)b.cell).showsStateBy & NSContentsCellMask) || !b.isBordered || NSHeight(b.frame) < 24) continue;
+                if (b.cell.cellSize.width > NSWidth(b.frame) + 1.5)
+                    [cutButtons addObject:[NSString stringWithFormat:@"%@: \"%@\" needs %.0f of %.0f", where, b.title, b.cell.cellSize.width, NSWidth(b.frame)]];
+                for (NSButton *other in row)
+                    if (NSIntersectsRect(NSInsetRect(other.frame, 1, 1), NSInsetRect(b.frame, 1, 1)))
+                        [cutButtons addObject:[NSString stringWithFormat:@"%@: \"%@\" covers \"%@\"", where, b.title, other.title]];
+                [row addObject:b];
+            }
+            for (NSView *sub in v.subviews) weakPushScan(sub, where);
+        };
+        weakPushScan = pushScan;
+        for (NSString *file in @[@"german.xml", @"hungarian.xml", @"finnish.xml", @"french.xml", @"japanese.xml", @"russian.xml"]) {
+            lp.localizationFile = file;
+            [app applyLocalization];
+            for (NSInteger tab = 0; tab < findTabsToScan.segmentCount; ++tab) {
+                [app openFindPanelOnTab:tab];
+                [[NppLocalization shared] localizeWindow:findDialog];
+                pushScan(findDialog.contentView, [NSString stringWithFormat:@"%@ Find tab %ld", file, (long)tab]);
+            }
+            [findDialog orderOut:nil];
+            StyleConfiguratorWindow *style = [[StyleConfiguratorWindow alloc] initWithEditor:ed];
+            [style show];
+            NSWindow *styleWindow = [style valueForKey:@"panel"];
+            [[NppLocalization shared] localizeWindow:styleWindow];
+            pushScan(styleWindow.contentView, [file stringByAppendingString:@" Style Configurator"]);
+            [style cancel:nil];
+            NppShortcutMapper *mapper = [[NppShortcutMapper alloc] initWithStore:app.shortcutStore editor:ed];
+            [mapper toggle];
+            NSWindow *mapperWindow = [mapper valueForKey:@"panel"];
+            [[NppLocalization shared] localizeWindow:mapperWindow];
+            pushScan(mapperWindow.contentView, [file stringByAppendingString:@" Shortcut Mapper"]);
+            [mapper toggle];
+            PreferencesWindow *pages = [[PreferencesWindow alloc] initWithEditor:ed];
+            [pages toggle];
+            NSWindow *pagesWindow = [pages valueForKey:@"panel"];
+            for (NSUInteger page = 0; page < [pages categoryNames].count; ++page) {
+                [pages showPageAtIndex:(NSInteger)page];
+                [[NppLocalization shared] localizeWindow:pagesWindow];
+                pushScan(pagesWindow.contentView, [NSString stringWithFormat:@"%@ Preferences page %lu", file, (unsigned long)page]);
+            }
+            [pages toggle];
+        }
+        lp.localizationFile = @"russian.xml";
+        [app applyLocalization];
+        if (cutButtons.count) printf("    cut or covered buttons:\n        %s\n", [cutButtons componentsJoinedByString:@"\n        "].UTF8String);
+        Check(@"Localization (buttons fit)",
+              @"in German, Hungarian, Finnish, French, Japanese and Russian every push button of Find, the Style Configurator, the Shortcut Mapper and Preferences fits its title and covers no other",
+              cutButtons.count == 0);
+
         // The port's own texts in every language that has them: each file beside
         // a nativeLang file loads with it, and what it does not translate stays English.
         NSString *extraDir = [[[NppLocalization directory] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"nativeLang-extra"];
