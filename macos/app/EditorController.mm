@@ -2043,6 +2043,14 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     NSString *lexerID = [lang.name isEqualToString:@"php"] ? @"hypertext" : (lang.lexerID ?: @"");
     void *lexer = CreateLexer(lexerID.UTF8String);
     [sci message:SCI_SETILEXER wParam:0 lParam:(sptr_t)lexer];
+    // No lexer (Normal Text: CreateLexer("null") is nil): nothing restyles the text, so
+    // the old language's style bytes and fold levels would stay (defineDocType for
+    // L_TEXT sets the null lexer, and Scintilla resets the styling with it).
+    if (!lexer) {
+        [sci message:SCI_CLEARDOCUMENTSTYLE];
+        long lines = [sci message:SCI_GETLINECOUNT];
+        for (long l = 0; l < lines; ++l) [sci message:SCI_SETFOLDLEVEL wParam:(uptr_t)l lParam:SC_FOLDLEVELBASE];
+    }
     [sci setLexerProperty:@"fold" value:@"1"];
     [sci setLexerProperty:@"fold.compact" value:@"0"];
     [sci setLexerProperty:@"fold.comment" value:@"1"];
