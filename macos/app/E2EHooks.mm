@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+#import "Localization.h"
 #import "BehaviourCommands.h"
 #import "AgentServer.h"
 #import "AppDelegate+Testing.h"
@@ -836,7 +837,8 @@ static NSMenuItem *E2EMenuItemAtPath(NSMenu *menu, NSString *path) {
 
 static NSDictionary *E2EMenuItemInfo(NSMenuItem *item) {
     [item.menu update];
-    NSMutableDictionary *d = [@{@"title": item.title ?: @"", @"enabled": @(item.isEnabled), @"checked": @(item.state == NSControlStateValueOn),
+    NSMutableDictionary *d = [@{@"title": item.title ?: @"", @"english": NppEnglishTitle(item) ?: @"",
+                                @"enabled": @(item.isEnabled), @"checked": @(item.state == NSControlStateValueOn),
                                 @"state": @(item.state), @"hidden": @(item.isHidden), @"tag": @(item.tag)} mutableCopy];
     if (item.keyEquivalent.length) {
         NSMutableString *k = [NSMutableString string];
