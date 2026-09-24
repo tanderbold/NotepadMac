@@ -196,6 +196,8 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 
 // Editing commands
 - (void)toggleLineComment;
+/// IDM_EDIT_BLOCK_COMMENT_SET: one more comment level on every selected line.
+- (void)setLineComment;
 - (void)toggleBlockComment;
 - (void)toggleBookmark;
 - (void)nextBookmark;

@@ -505,6 +505,14 @@ static NSString *Ordinal(NSUInteger n) {
     // Imported themes join the bundled ones in the Preferences picker.
     [StyleCatalog setImportedThemesDirectory:
         [[self.editor supportDirectory] stringByAppendingPathComponent:@"themes"]];
+    // The theme was loaded before the settings folder was known, from the bundle only:
+    // loaded again, it is the user's saved copy (stylers.xml, themes/) when there is
+    // one - Notepad++ reads the user's stylers.xml at start (SETTINGS-094).
+    NSString *loadedTheme = [StyleCatalog sharedCatalog].themeName;
+    if (loadedTheme.length) {
+        [StyleCatalog loadThemeNamed:loadedTheme];
+        [self.editor applyLanguage];
+    }
 
     __weak __typeof(self) weakApp = self;
     self.editor.tabContextMenu = ^NSMenu *{ return [weakApp buildTabContextMenu]; };
@@ -887,6 +895,7 @@ static NSString *Ordinal(NSUInteger n) {
     // --- Comment/Uncomment
     NSMenu *commentMenu = [[NSMenu alloc] initWithTitle:@"Comment/Uncomment"];
     [self item:@"Toggle Single Line Comment" action:@selector(toggleLineComment:) key:@"" flags:0 menu:commentMenu];
+    [self item:@"Single Line Comment" action:@selector(setLineComment:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Single Line Uncomment" action:@selector(uncommentLines:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Block Comment" action:@selector(streamComment:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Block Uncomment" action:@selector(streamUncomment:) key:@"" flags:0 menu:commentMenu];
@@ -3052,6 +3061,15 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item {
     SEL a = item.action;
+    // Notepad_plus::command IDM_EDIT_BEGINENDSELECT: the started one is checked and the
+    // other kind is greyed out until the selection is ended (EDIT-018).
+    if (a == @selector(beginEndSelect:) || a == @selector(beginEndSelectColumn:)) {
+        BOOL active = [self.editor beginEndSelectActive];
+        BOOL column = active && [self.editor beginEndSelectColumnModeStarted];
+        BOOL mine = a == @selector(beginEndSelectColumn:) ? column : (active && !column);
+        item.state = mine ? NSControlStateValueOn : NSControlStateValueOff;
+        return !active || mine;
+    }
     // enableConvertMenuItems: the conversion to the format the document has is greyed out.
     if (a == @selector(eolCRLF:)) return self.editor.currentDocument.eolMode != SC_EOL_CRLF;
     if (a == @selector(eolLF:))   return self.editor.currentDocument.eolMode != SC_EOL_LF;
@@ -3419,11 +3437,9 @@ static BOOL NppForwardToFieldEditor(SEL action, id sender) {
     if (NppForwardToFieldEditor(@selector(cut:), sender)) return;
     ScintillaView *sci = self.editor.sci;
     BOOL empty = [sci message:SCI_GETSELECTIONEMPTY] != 0;
-    if (empty && [NppPreferences shared].lineCopyCutWithoutSelection) {
-        [sci message:SCI_LINECUT];
-        return;
-    }
-    [sci message:SCI_CUT];
+    if (empty && [NppPreferences shared].lineCopyCutWithoutSelection) [sci message:SCI_LINECUT];
+    else [sci message:SCI_CUT];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppPasteboardWrittenNotification object:self];
 }
 
 - (void)copyText:(id)sender {
@@ -3433,9 +3449,10 @@ static BOOL NppForwardToFieldEditor(SEL action, id sender) {
     if (empty && [NppPreferences shared].lineCopyCutWithoutSelection) {
         // COPYALLOWLINE is the message that means "the line, with its ending".
         [sci message:SCI_COPYALLOWLINE];
-        return;
+    } else {
+        [sci message:SCI_COPY];
     }
-    [sci message:SCI_COPY];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppPasteboardWrittenNotification object:self];
 }
 - (void)pasteText:(id)sender {
     if (NppForwardToFieldEditor(@selector(paste:), sender)) return;
@@ -3531,6 +3548,7 @@ static BOOL NppForwardToFieldEditor(SEL action, id sender) {
 #pragma mark - Comment / completion
 
 - (void)toggleLineComment:(id)sender  { [self.editor toggleLineComment]; }
+- (void)setLineComment:(id)sender     { [self.editor setLineComment]; }
 - (void)toggleBlockComment:(id)sender { [self.editor toggleBlockComment]; }
 - (void)showAutoComplete:(id)sender   { [self.editor showAutoCompletion]; }
 - (void)functionCompletion:(id)sender { [self.editor showCompletion:NppCompletionKindFunctions autoInsert:NO]; }
@@ -3885,7 +3903,13 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     if (self.matchCaseBox.state == NSControlStateValueOn) options |= NppFindMatchCase;
     if (self.wholeWordBox.state == NSControlStateValueOn) options |= NppFindWholeWord;
     if (self.wrapBox.state == NSControlStateValueOn) options |= NppFindWrap;
-    [self find:[NppFindSpec specFor:term mode:NppSearchNormal options:options] forward:forward];
+    NppFindSpec *spec = [NppFindSpec specFor:term mode:NppSearchNormal options:options];
+    // IDM_SEARCH_SETANDFINDNEXT puts the word in the Find field, so it is the
+    // search Find Next / Find Previous go on with (SEARCH-101).
+    NppFindSpec *kept = [NppFindSpec specFor:term mode:NppSearchNormal options:options & ~NppFindBackward];
+    self.lastFindSpec = kept;
+    self.lastSearchTerm = term;
+    [self find:spec forward:forward];
 }
 
 /// IDM_SEARCH_VOLATILE_FINDNEXT: the selection only, any case, any word,
@@ -4379,6 +4403,12 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 
     self.matchCaseBox   = [self findCheckbox:@"Match case"      at:NSMakePoint(285, 158) in:content];
     self.wholeWordBox   = [self findCheckbox:@"Match whole word only" at:NSMakePoint(285, 136) in:content];
+    // Smart highlighting "Use Find dialog settings" reads the boxes as they are, not as the
+    // last search left them (upstream asks FindReplaceDlg for the checkbox state): SETTINGS-054.
+    for (NSButton *box in @[self.matchCaseBox, self.wholeWordBox]) {
+        box.target = self;
+        box.action = @selector(findOptionBoxChanged:);
+    }
     self.wrapBox        = [self findCheckbox:@"Wrap around"     at:NSMakePoint(285, 114) in:content];
     self.backwardBox    = [self findCheckbox:@"Backward direction" at:NSMakePoint(475, 158) in:content];
     self.inSelectionBox = [self findCheckbox:@"In selection"    at:NSMakePoint(475, 136) in:content];
@@ -4553,12 +4583,30 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 
 /// In selection means nothing without a selection, so it is greyed out
 /// then; a selection big enough ticks it, as Notepad++ does at 1024 characters.
+/// FindReplaceDlg's WM_ACTIVATE: "In selection" is offered for one plain
+/// selection, and with a threshold other than 0 it is ticked exactly when the
+/// selection has that many characters - both ways, so a short selection after a
+/// long one clears it (SETTINGS-077). 0 leaves the box as the user set it.
+- (void)findOptionBoxChanged:(id)sender {
+    NppPreferences *fp = [NppPreferences shared];
+    fp.findMatchCase = self.matchCaseBox.state == NSControlStateValueOn;
+    fp.findWholeWord = self.wholeWordBox.state == NSControlStateValueOn;
+    if (fp.smartHighlightUseFindSettings) [self.editor updateSmartHighlight];
+}
+
 - (void)updateInSelectionAvailability {
     ScintillaView *sci = self.editor.sci;
-    long length = [sci message:SCI_GETSELECTIONEND] - [sci message:SCI_GETSELECTIONSTART];
-    self.inSelectionBox.enabled = length > 0;
-    if (length <= 0) self.inSelectionBox.state = NSControlStateValueOff;
-    else if (length >= MAX(1, [NppPreferences shared].inSelectionThreshold)) self.inSelectionBox.state = NSControlStateValueOn;
+    long start = [sci message:SCI_GETSELECTIONSTART], end = [sci message:SCI_GETSELECTIONEND];
+    long characters = end > start ? [sci message:SCI_COUNTCHARACTERS wParam:(uptr_t)start lParam:end] : 0;
+    BOOL enabled = characters != 0 && [sci message:SCI_GETSELECTIONMODE] != SC_SEL_RECTANGLE &&
+                   [sci message:SCI_GETSELECTIONS] <= 1;
+    self.inSelectionBox.enabled = enabled;
+    NSInteger threshold = [NppPreferences shared].inSelectionThreshold;
+    if (threshold != 0) {
+        self.inSelectionBox.state = enabled && characters >= threshold ? NSControlStateValueOn : NSControlStateValueOff;
+    } else if (!enabled) {
+        self.inSelectionBox.state = NSControlStateValueOff;
+    }
 }
 
 - (void)findPanelFocusChanged:(NSNotification *)note {

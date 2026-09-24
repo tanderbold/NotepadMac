@@ -1686,7 +1686,32 @@ int NppMacRunTests(AppDelegate *app) {
         [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
         [ed toggleLineComment];
         BOOL restored = [DocText(ed) isEqualToString:@"int a;\nint b;\n"];
-        Check(@"IDM_EDIT_BLOCK_COMMENT_SET", @"line comment toggles both ways", commented && restored);
+        Check(@"IDM_EDIT_BLOCK_COMMENT", @"line comment toggles both ways", commented && restored);
+
+        // The selection follows the text: toggling twice without reselecting restores (EDIT-052).
+        SetDoc(ed, @"int a;\n  int b;\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed toggleLineComment];
+        [ed toggleLineComment];
+        Check(@"IDM_EDIT_BLOCK_COMMENT", @"the lines stay selected, so a second toggle takes the comments off",
+              [DocText(ed) isEqualToString:@"int a;\n  int b;\n"]);
+        // Single Line Comment always adds a level (EDIT-054).
+        SetDoc(ed, @"// a\nb\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed setLineComment];
+        Check(@"IDM_EDIT_BLOCK_COMMENT_SET", @"adds a comment level to every line, commented or not",
+              [DocText(ed) isEqualToString:@"// // a\n// b\n"]);
+        // A language with only a stream comment wraps each line (EDIT-056).
+        [ed setLanguageNamed:@"html"];
+        SetDoc(ed, @"<p>hi</p>\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed toggleLineComment];
+        BOOL wrappedHtml = [DocText(ed) isEqualToString:@"<!-- <p>hi</p> -->\n"];
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed uncommentLines];
+        Check(@"IDM_EDIT_BLOCK_COMMENT", @"HTML lines are wrapped in <!-- --> and unwrapped again",
+              wrappedHtml && [DocText(ed) isEqualToString:@"<p>hi</p>\n"]);
+        [ed setLanguageNamed:@"cpp"];
 
         SetDoc(ed, @"value\n");
         [sci message:SCI_SETSEL wParam:0 lParam:5];
@@ -1890,7 +1915,27 @@ int NppMacRunTests(AppDelegate *app) {
               probeRan && searchStillRunning);
         Check(@"IDM_SEARCH_FINDINFILES (progress)",
               @"the search says how many files it has been through as it goes",
-              progressCalls > 1 && lastScanned > 0 && lastScanned <= 400 && foundHits == 400 * 60);
+              progressCalls >= 1 && lastScanned > 0 && lastScanned <= 400 && foundHits == 400 * 60);
+        // Every one of the 400 files has hits: one report per file would keep the
+        // main thread re-rendering the results for the whole search (SEARCH-068).
+        Check(@"IDM_SEARCH_FINDINFILES (progress)",
+              @"progress comes a few times a second, not once per file with a hit",
+              progressCalls < 100);
+
+        // An empty Find what: the completion comes after the call has returned, so
+        // the caller, which stores the search as running, sees it end (SEARCH-063).
+        __block BOOL emptyDone = NO;
+        [ed findInFilesInBackground:[NppFindSpec specFor:@"" mode:NppSearchNormal options:NppFindNone]
+                             folder:root filters:nil recursive:YES includeHidden:NO progress:nil
+                         completion:^(NSUInteger hits, NSString *report, BOOL stopped) { emptyDone = YES; }];
+        BOOL emptyDoneAtOnce = emptyDone;
+        deadline = [NSDate dateWithTimeIntervalSinceNow:5];
+        while (!emptyDone && [deadline timeIntervalSinceNow] > 0) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+        }
+        Check(@"IDM_SEARCH_FINDINFILES (empty)",
+              @"a search with nothing to find ends after the call returns, never inside it",
+              !emptyDoneAtOnce && emptyDone);
 
         // Stopping it. The walk looks at the flag before each file, so a search
         // called off before it starts visits nothing at all.
@@ -3490,6 +3535,25 @@ int NppMacRunTests(AppDelegate *app) {
         [ed applyDocumentSettings];
         Check(@"IDM_EDIT_INS_TAB", @"indents the line by one level", indented);
         Check(@"IDM_EDIT_RMV_TAB", @"removes that level again", unindented);
+
+        // A multi-line selection keeps its lines selected, so Decrease twice goes back (EDIT-026).
+        indentPrefs.useSpaces = NO; indentPrefs.tabWidth = 4; [ed applyDocumentSettings];
+        SetDoc(ed, @"a\n  b\nc\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:5];
+        [ed changeIndent:YES]; [ed changeIndent:NO]; [ed changeIndent:NO];
+        BOOL multiBack = [DocText(ed) isEqualToString:@"a\nb\nc\n"];
+        indentPrefs.useSpaces = spacesWas; indentPrefs.tabWidth = widthWas; [ed applyDocumentSettings];
+        Check(@"IDM_EDIT_RMV_TAB", @"a multi-line selection stays selected: indent then unindent twice restores it", multiBack);
+
+        // Skip Current & Go to Next moves on (EDIT-092).
+        SetDoc(ed, @"foo foo foo");
+        [sci message:SCI_SETSEL wParam:0 lParam:3];
+        [sci message:SCI_ADDSELECTION wParam:7 lParam:4];
+        [ed skipCurrentMultiSelection];
+        long skN = [sci message:SCI_GETSELECTIONS];
+        long s0 = [sci message:SCI_GETSELECTIONNSTART wParam:0], s1 = [sci message:SCI_GETSELECTIONNSTART wParam:skN - 1];
+        Check(@"IDM_EDIT_MULTISELECTSSKIP", @"the current occurrence is dropped and the next one taken",
+              skN == 2 && s0 == 0 && s1 == 8);
 
         SetDoc(ed, @"delete me\n");
         [sci message:SCI_SETSEL wParam:0 lParam:7];
@@ -8963,8 +9027,8 @@ int NppMacRunTests(AppDelegate *app) {
         ScintillaView *other = ed.secondarySci;
         NSUInteger inOther = 0;
         for (long pos = 0; pos < [other message:SCI_GETLENGTH]; ++pos) {
-            if ([other message:SCI_INDICATORVALUEAT wParam:NPPMAC_STYLE_FIRST_INDICATOR + 4 lParam:pos] &&
-                (pos == 0 || ![other message:SCI_INDICATORVALUEAT wParam:NPPMAC_STYLE_FIRST_INDICATOR + 4 lParam:pos - 1])) inOther++;
+            if ([other message:SCI_INDICATORVALUEAT wParam:NPPMAC_SMART_INDICATOR lParam:pos] &&
+                (pos == 0 || ![other message:SCI_INDICATORVALUEAT wParam:NPPMAC_SMART_INDICATOR lParam:pos - 1])) inOther++;
         }
         hp.smartHighlightOtherView = NO;
         [ed setSecondaryViewVisible:NO];

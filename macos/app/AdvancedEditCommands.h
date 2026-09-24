@@ -22,6 +22,8 @@ typedef NS_OPTIONS(NSInteger, NppMatchFlags) {
 // Begin/End select (sticky anchor)
 - (BOOL)beginEndSelectColumnMode:(BOOL)columnMode;
 - (BOOL)beginEndSelectActive;
+/// While active: YES when it was started in column mode.
+- (BOOL)beginEndSelectColumnModeStarted;
 
 // Column editor
 - (BOOL)columnInsertText:(NSString *)text;

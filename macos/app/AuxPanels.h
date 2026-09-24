@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Keeps what has been on the pasteboard; double-click pastes an entry back.
+/// Posted by the editor after each of its own writes to the pasteboard (copy,
+/// cut, the copy commands): Clipboard History takes every one, as upstream's
+/// clipboard listener does, where a poll could miss one of two quick copies.
+FOUNDATION_EXPORT NSString *const NppPasteboardWrittenNotification;
+
 @interface ClipboardHistoryPanel : NSObject
 - (instancetype)initWithEditor:(EditorController *)editor;
 - (void)toggle;

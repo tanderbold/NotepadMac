@@ -1,3 +1,4 @@
+#import "AuxPanels.h"
 #import "EditCommands.h"
 #import "LanguageCatalog.h"
 #import "ScintillaView.h"
@@ -763,21 +764,37 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
 
 /// Notepad++'s Increase/Decrease Line Indent shifts whole lines. SCI_TAB would
 /// instead replace a within-line selection with a tab character.
+/// IDM_EDIT_INS_TAB / IDM_EDIT_RMV_TAB: a multiple or multi-line selection is
+/// Scintilla's Tab / Shift+Tab, which keeps the whole lines selected (setting
+/// each line's indentation left the selection's end at a line start, so a
+/// second Decrease missed a line: EDIT-026); a caret or a one-line selection
+/// moves that line by a tab width and the selection with it (setLineIndent).
 - (void)changeIndent:(BOOL)increase {
     ScintillaView *sci = self.sci;
-    long first = 0, last = 0;
-    [self selectedFirstLine:&first lastLine:&last];
-    long width = [sci message:SCI_GETINDENT];
-    if (width <= 0) width = [sci message:SCI_GETTABWIDTH];
-    if (width <= 0) width = 4;
-
-    [sci message:SCI_BEGINUNDOACTION];
-    for (long line = first; line <= last; ++line) {
-        long indent = [sci message:SCI_GETLINEINDENTATION wParam:(uptr_t)line];
-        long target = increase ? indent + width : MAX(0, indent - width);
-        [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)line lParam:target];
+    long selStart = [sci message:SCI_GETSELECTIONSTART], selEnd = [sci message:SCI_GETSELECTIONEND];
+    long line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    long endLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+    if ([sci message:SCI_GETSELECTIONS] > 1 || line != endLine) {
+        [sci message:increase ? SCI_TAB : SCI_BACKTAB];
+        [self refreshChrome];
+        return;
     }
-    [sci message:SCI_ENDUNDOACTION];
+    long delta = [sci message:SCI_GETTABWIDTH];
+    if (delta <= 0) delta = 4;
+    long current = [sci message:SCI_GETLINEINDENTATION wParam:(uptr_t)line];
+    long target = MAX(0, current + (increase ? delta : -delta));
+    long before = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)line];
+    [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)line lParam:target];
+    long after = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)line];
+    long diff = after - before, lo = selStart, hi = selEnd;
+    if (after > before) {
+        if (lo >= before) lo += diff;
+        if (hi >= before) hi += diff;
+    } else if (after < before) {
+        if (lo >= after) lo = lo >= before ? lo + diff : after;
+        if (hi >= after) hi = hi >= before ? hi + diff : after;
+    }
+    [sci message:SCI_SETSEL wParam:(uptr_t)lo lParam:hi];
     [self refreshChrome];
 }
 
@@ -792,6 +809,7 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     [pb clearContents];
     [pb setString:string ?: @"" forType:NSPasteboardTypeString];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NppPasteboardWrittenNotification object:self];
 }
 
 - (NSString *)allDocumentNames {
@@ -858,6 +876,28 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
 
 - (void)uncommentLines {
     NSString *token = self.currentDocument.language.commentLine;
+    NSString *open = self.currentDocument.language.commentStart, *close = self.currentDocument.language.commentEnd;
+    if (!token.length && open.length && close.length) {
+        // No line comment (HTML, XML): each line's own stream comment comes off, as
+        // doBlockComment's uncomment does for such a language (EDIT-056).
+        [self transformSelectedLines:^NSArray *(NSArray *bodies) {
+            NSMutableArray *out = [NSMutableArray array];
+            for (NSString *line in bodies) {
+                NSUInteger i = 0;
+                while (i < line.length &&
+                       [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[line characterAtIndex:i]]) i++;
+                NSString *indent = [line substringToIndex:i], *rest = [line substringFromIndex:i];
+                if ([rest hasPrefix:open] && [rest hasSuffix:close] && rest.length >= open.length + close.length) {
+                    rest = [rest substringWithRange:NSMakeRange(open.length, rest.length - open.length - close.length)];
+                    if ([rest hasPrefix:@" "]) rest = [rest substringFromIndex:1];
+                    if ([rest hasSuffix:@" "]) rest = [rest substringToIndex:rest.length - 1];
+                }
+                [out addObject:[indent stringByAppendingString:rest]];
+            }
+            return out;
+        }];
+        return;
+    }
     if (!token.length) { NppBeep(); return; }
     [self transformSelectedLines:^NSArray *(NSArray *bodies) {
         NSMutableArray *out = [NSMutableArray array];

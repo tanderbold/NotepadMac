@@ -1,4 +1,6 @@
 #import "FindCommands.h"
+#include <atomic>
+#include <memory>
 #import "SettingsCommands.h"
 #import "ToolsCommands.h"
 #import "BoostFormat.h"
@@ -647,22 +649,34 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
     NppFileSearch *search = [[NppFileSearch alloc] init];
     NppRegex *regex = [self regexFor:spec];
     if (!spec.what.length || !regex) {
-        if (completion) completion(0, @"", NO);
+        // After the caller has taken the search back: called at once, the
+        // completion's "search over" came before the caller stored the search
+        // as running, and the Find window believed one ran for good (SEARCH-063).
+        if (completion) dispatch_async(dispatch_get_main_queue(), ^{ completion(0, @"", NO); });
         return search;
     }
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         NSMutableString *report = [NSMutableString stringWithFormat:@"Search \"%@\" (%@)\n\n", spec.what, title];
         __block NSUInteger hits = 0, matchedFiles = 0;
+        // Progress at most four times a second, and never a second one queued
+        // behind the first: sent for every file with a hit, each with the
+        // whole report so far, the main thread spent the search re-rendering
+        // the results and the window (Stop included) froze (SEARCH-067/068).
+        // Upstream's FindInFiles progress window is refreshed the same way,
+        // on a timer, not per file.
+        __block CFAbsoluteTime lastPost = 0;
+        std::shared_ptr<std::atomic<bool>> pending = std::make_shared<std::atomic<bool>>(false);
         walk(search, ^(NSString *path, NSString *contents, NSUInteger scanned) {
             NSUInteger inFile = [self appendMatchesOf:regex inFile:path contents:contents search:search to:report];
             if (inFile) { matchedFiles++; hits += inFile; }
-            // Often enough to be worth watching, seldom enough that the search
-            // is not spent redrawing.
-            if (progress && (inFile || scanned % 50 == 0)) {
+            CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+            if (progress && now - lastPost >= 0.25 && !pending->exchange(true)) {
+                lastPost = now;
                 NSString *snapshot = [report copy];
                 NSUInteger hitsSoFar = hits;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (!search.cancelled) progress(scanned, hitsSoFar, snapshot);
+                    pending->store(false);
                 });
             }
         });
@@ -687,7 +701,7 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
                                   progress:(void (^)(NSUInteger, NSUInteger, NSString *))progress
                                 completion:(void (^)(NSUInteger, NSString *, BOOL))completion {
     if (!folder.length) {
-        if (completion) completion(0, @"", NO);
+        if (completion) dispatch_async(dispatch_get_main_queue(), ^{ completion(0, @"", NO); });
         return [[NppFileSearch alloc] init];
     }
     return [self searchInBackground:spec title:folder
@@ -726,16 +740,19 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
     NppFileSearch *search = [[NppFileSearch alloc] init];
     NppRegex *regex = [self regexFor:spec];
     if (!spec.what.length || !regex) {
-        if (completion) completion(0, 0, NO);
+        if (completion) dispatch_async(dispatch_get_main_queue(), ^{ completion(0, 0, NO); });
         return search;
     }
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         __block NSUInteger replaced = 0, touched = 0;
+        __block CFAbsoluteTime lastPost = 0;
         walk(search, ^(NSString *path, NSString *contents, NSUInteger scanned) {
             NSUInteger inFile = [self replaceEveryMatch:spec regex:regex inFileAtPath:path
                                                contents:contents cancelledBy:search];
             if (inFile) { replaced += inFile; touched++; }
-            if (progress && (inFile || scanned % 50 == 0)) {
+            CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+            if (progress && now - lastPost >= 0.25) {
+                lastPost = now;
                 NSUInteger replacedSoFar = replaced;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (!search.cancelled) progress(scanned, replacedSoFar);
@@ -759,7 +776,7 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
                                      progress:(void (^)(NSUInteger, NSUInteger))progress
                                    completion:(void (^)(NSUInteger, NSUInteger, BOOL))completion {
     if (!folder.length) {
-        if (completion) completion(0, 0, NO);
+        if (completion) dispatch_async(dispatch_get_main_queue(), ^{ completion(0, 0, NO); });
         return [[NppFileSearch alloc] init];
     }
     return [self replaceInBackground:spec walk:^(NppFileSearch *search, void (^visit)(NSString *, NSString *, NSUInteger)) {

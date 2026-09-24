@@ -272,7 +272,7 @@ static NSDictionary<NSString *, NSString *> *PortRenamedCommands(void) {
         @"Edit/Duplicate Line": @"IDM_EDIT_DUP_LINE", @"Edit/Toggle Line Comment": @"IDM_EDIT_BLOCK_COMMENT",
         @"Edit/Line Operations/Sort Lines Lex. Ignoring Case Ascending": @"IDM_EDIT_SORTLINES_LEXICO_CASE_INSENS_ASCENDING",
         @"Edit/Line Operations/Sort Lines Lex. Ignoring Case Descending": @"IDM_EDIT_SORTLINES_LEXICO_CASE_INSENS_DESCENDING",
-        @"Edit/On Selection/Open Containing Folder in Finder": @"IDM_EDIT_OPENINFOLDER",
+        @"Edit/On Selection/Open Containing Folder in Finder": @"IDM_EDIT_OPENSELECTEDFILEFOLDERINEXPLORER",   // Explorer on Windows (EDIT-083)
         @"Edit/On Selection/Redact Selection": @"IDM_EDIT_REDACT_SELECTION",
         @"View/Zoom In": @"IDM_VIEW_ZOOMIN", @"View/Zoom Out": @"IDM_VIEW_ZOOMOUT",
         @"View/Actual Size": @"IDM_VIEW_ZOOMRESTORE", @"View/Show Whitespace": @"IDM_VIEW_TAB_SPACE",
@@ -674,6 +674,7 @@ static void AddComboAttributes(NSXMLElement *e, NppKeyCombo *combo) {
         NSString *key = [s attributeForName:@"path"].stringValue;
         if (key.length) self.menuOverrides[key] = ComboFromElement(s) ?: [NSNull null];
     }
+    __block BOOL imported = NO;
     for (NSXMLElement *m in [[root elementsForName:@"Macros"].firstObject elementsForName:@"Macro"]) {
         NSString *name = [m attributeForName:@"name"].stringValue;
         if (!name.length) continue;
@@ -694,7 +695,7 @@ static void AddComboAttributes(NSXMLElement *e, NppKeyCombo *combo) {
                 else if (type == 1 && text.length) step[@"text"] = text;
                 [steps addObject:step];
             }
-            if (steps.count) [self.editor storeSavedMacro:steps named:name];
+            if (steps.count) { [self.editor storeSavedMacro:steps named:name]; imported = YES; }
         }
     }
     for (NSXMLElement *c in [[root elementsForName:@"UserDefinedCommands"].firstObject elementsForName:@"Command"]) {
@@ -709,7 +710,15 @@ static void AddComboAttributes(NSXMLElement *e, NppKeyCombo *combo) {
             saved.name = name;
             saved.command = c.stringValue;
             [self.editor saveCommand:saved];
+            imported = YES;
         }
+    }
+    // The Macro and Run menus were built before this file was read: a macro or a
+    // command taken over from it shows at once, not from the next launch (SETTINGS-106).
+    if (imported) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NppSavedCommandsDidChange" object:self];
+        });
     }
     self.keptPluginCommands = [[root elementsForName:@"PluginCommands"].firstObject copy];
     for (NSXMLElement *k in [[root elementsForName:@"ScintillaKeys"].firstObject elementsForName:@"ScintKey"]) {
