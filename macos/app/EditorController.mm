@@ -423,6 +423,7 @@ static long SciColor(NSColor *c) {
 
     [self configureEditorChrome];
     [self newDocument];
+    [self installContextClickMonitor];
     return self;
 }
 
@@ -2642,7 +2643,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     NSMutableArray *tabItems = [NSMutableArray arrayWithCapacity:self.docs.count];
     for (NppDocument *d in self.docs) {
         NppTabItem *item = [[NppTabItem alloc] init];
-        item.title = (d == self.currentDocument) ? [self untitledNameForDocument:d] : d.displayName;
+        item.title = [self untitledNameForDocument:d];
         item.modified = d.modified;
         item.pinned = d.pinned;
         item.colour = d.tabColour;

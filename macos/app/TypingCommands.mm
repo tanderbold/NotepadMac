@@ -548,17 +548,26 @@ static BOOL LanguageAlwaysBraces(NSString *name) {
     if (p.defaultLanguage.length) [self setLanguageNamed:p.defaultLanguage];
 }
 
+static const char kFirstLineNameKey = 0;
+
+/// Notepad++ renames an untitled tab after its first line as the text changes
+/// (Notepad_plus::updateTitle / the buffer's tab name), so the name stays on the
+/// tab when another one comes to the front. The text is read from the view for
+/// the document in front and the name kept with the document; a tab behind shows
+/// the name it had when it was last in front (SETTINGS-045).
 - (NSString *)untitledNameForDocument:(NppDocument *)doc {
     NppPreferences *p = [NppPreferences shared];
     if (!p.untitledFromFirstLine || doc.path) return doc.displayName;
+    if (doc != self.currentDocument) return objc_getAssociatedObject(doc, &kFirstLineNameKey) ?: doc.displayName;
 
     NSString *text = [self.sci string] ?: @"";
     NSString *firstLine = [[text componentsSeparatedByCharactersInSet:
         [NSCharacterSet newlineCharacterSet]] firstObject] ?: @"";
     firstLine = [firstLine stringByTrimmingCharactersInSet:
         [NSCharacterSet whitespaceCharacterSet]];
-    if (!firstLine.length) return doc.displayName;
-    return firstLine.length > 32 ? [firstLine substringToIndex:32] : firstLine;
+    NSString *name = !firstLine.length ? nil : firstLine.length > 32 ? [firstLine substringToIndex:32] : firstLine;
+    objc_setAssociatedObject(doc, &kFirstLineNameKey, name, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    return name ?: doc.displayName;
 }
 
 #pragma mark - Recent files

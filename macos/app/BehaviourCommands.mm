@@ -340,6 +340,39 @@ static BOOL UrlLooksReal(NSString *candidate) {
     [sci message:SCI_BRACEHIGHLIGHT wParam:(uptr_t)candidate lParam:match];
 }
 
+#pragma mark - Right click and the selection
+
+- (void)contextClickAtWindowPoint:(NSPoint)point window:(NSWindow *)window {
+    if ([NppPreferences shared].rightClickKeepsSelection) return;
+    for (ScintillaView *sci in @[self.sci, self.secondarySci ?: self.sci]) {
+        NSView *content = sci.content;
+        if (content.window != window) continue;
+        NSPoint local = [content convertPoint:point fromView:nil];
+        if (!NSPointInRect(local, content.visibleRect)) continue;
+        // Scintilla's client coordinates: the visible part's origin is 0,0 (ScintillaCocoa::ConvertPoint).
+        long x = (long)(local.x - content.visibleRect.origin.x), y = (long)(local.y - content.visibleRect.origin.y);
+        // Upstream lets a click in the margins through.
+        long marginX = [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:0] + [sci message:SCI_GETXOFFSET];
+        if (x < marginX) return;
+        long pos = [sci message:SCI_POSITIONFROMPOINT wParam:(uptr_t)x lParam:y];
+        long start = [sci message:SCI_GETSELECTIONSTART], end = [sci message:SCI_GETSELECTIONEND];
+        if (pos >= start && pos < end) return;   // inside the selection: kept, as Scintilla keeps it
+        [sci message:SCI_SETEMPTYSELECTION wParam:(uptr_t)pos];
+        return;
+    }
+}
+
+- (void)installContextClickMonitor {
+    __weak EditorController *weakSelf = self;
+    [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskRightMouseDown | NSEventMaskLeftMouseDown
+                                          handler:^NSEvent *(NSEvent *event) {
+        BOOL context = event.type == NSEventTypeRightMouseDown ||
+                       (event.modifierFlags & NSEventModifierFlagControl);
+        if (context && event.window) [weakSelf contextClickAtWindowPoint:event.locationInWindow window:event.window];
+        return event;
+    }];
+}
+
 #pragma mark - Smart highlighting
 
 - (NSUInteger)updateSmartHighlight {
@@ -347,6 +380,7 @@ static BOOL UrlLooksReal(NSString *candidate) {
     // Style 4 is reserved for this, as Notepad++ reserves a Smart Highlighting style.
     NSInteger style = 4;
     [self clearStyle:style];
+    [self clearSmartHighlightInOtherView];
     if (![NppPreferences shared].smartHighlightEnabled ||
         ![self featureAllowed:@"smartHighlight"]) return 0;
 
@@ -363,6 +397,16 @@ static BOOL UrlLooksReal(NSString *candidate) {
     NSUInteger count = [self markAllOccurrencesOfSelection:style matchCase:matchCase wholeWord:wholeWord];
     if (p.smartHighlightOtherView && self.secondarySci) [self smartHighlightOtherViewMatchCase:matchCase wholeWord:wholeWord];
     return count;
+}
+
+/// "Highlight another view" off (or turned off): what it marked there goes
+/// (SETTINGS-055); upstream's SmartHighlighter only marks the other view while
+/// the option is on, and each pass starts by clearing it.
+- (void)clearSmartHighlightInOtherView {
+    ScintillaView *other = self.secondarySci;
+    if (!other) return;
+    [other message:SCI_SETINDICATORCURRENT wParam:(uptr_t)(NPPMAC_STYLE_FIRST_INDICATOR + 4)];
+    [other message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[other message:SCI_GETLENGTH]];
 }
 
 /// "Highlight another view": the same word marked in the second view, in

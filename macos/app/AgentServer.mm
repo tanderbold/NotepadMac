@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #import "AgentServer.h"
+#import "TypingCommands.h"
 #import "AppDelegate+Testing.h"
 #import "ScintillaView.h"
 #include "SciLexer.h"
@@ -505,7 +506,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
     EditorController *ed = self.editor;
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
     info[@"index"] = @([ed.documents indexOfObjectIdenticalTo:doc]);
-    info[@"title"] = doc.displayName ?: @"";
+    info[@"title"] = [self.editor untitledNameForDocument:doc] ?: @"";   // the tab's title, a first-line name included
     info[@"path"] = doc.path ?: [NSNull null];
     info[@"language"] = doc.language.name ?: @"normal";
     info[@"language_title"] = [LanguageCatalog menuTitleForLanguage:doc.language.name ?: @"normal"];

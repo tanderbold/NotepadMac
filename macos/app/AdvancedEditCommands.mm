@@ -115,14 +115,18 @@ static NSString *SliceBytes(NSData *data, long start, long end) {
     return YES;
 }
 
+/// IDM_EDIT_MULTISELECTSSKIP: the next occurrence is added first, then the one
+/// before it - the one being skipped - is dropped. Dropped first, the "next"
+/// was worked out from the selection before it, which is the one just dropped,
+/// so the command never moved on (EDIT-092).
 - (BOOL)skipCurrentMultiSelection {
     ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETSELECTIONS] < 1) { NppBeep(); return NO; }
+    if (![self multiSelectNextOccurrence:NppMatchNone]) return NO;
     long n = [sci message:SCI_GETSELECTIONS];
-    if (n < 1) { NppBeep(); return NO; }
-    // Drop the selection the caret is on, then take the one after it.
-    long main = [sci message:SCI_GETMAINSELECTION];
-    if (n > 1) [sci message:SCI_DROPSELECTIONN wParam:(uptr_t)main lParam:0];
-    return [self multiSelectNextOccurrence:NppMatchNone];
+    if (n > 1) [sci message:SCI_DROPSELECTIONN wParam:(uptr_t)(n - 2) lParam:0];
+    [self refreshChrome];
+    return YES;
 }
 
 #pragma mark - Begin/End select

@@ -188,6 +188,8 @@ static NSString *const kControlNames[33] = {
 @property (nonatomic) NSInteger lastChangeCount;
 @end
 
+NSString *const NppPasteboardWrittenNotification = @"NppPasteboardWritten";
+
 @implementation ClipboardHistoryPanel
 
 - (instancetype)initWithEditor:(EditorController *)editor {
@@ -220,10 +222,19 @@ static NSString *const kControlNames[33] = {
     scroll.documentView = _table;
     scroll.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [[NppDockingManager shared] registerPanel:@"clipboardHistory" title:@"Clipboard History" view:scroll defaultPlace:NppDockRight];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pasteboardWritten:)
+                                                 name:NppPasteboardWrittenNotification object:nil];
     return self;
 }
 
-- (void)dealloc { [_poller invalidate]; }
+- (void)pasteboardWritten:(NSNotification *)note {
+    if (self.visible) [self capturePasteboard];
+}
+
+- (void)dealloc {
+    [_poller invalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (BOOL)visible { return [[NppDockingManager shared] isPanelVisible:@"clipboardHistory"]; }
 - (NSArray<NSString *> *)entries { return self.items; }

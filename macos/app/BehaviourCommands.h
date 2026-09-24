@@ -9,6 +9,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EditorController (BehaviourCommands)
 
+/// A right (or control-) click at a point of a window: in an editor's text,
+/// outside its selection, it puts the caret there, as Scintilla does on Windows
+/// before the context menu - unless "Keep selection when right-click outside of
+/// selection" is ticked (ScintillaEditView's WM_RBUTTONDOWN). The editor's event
+/// monitor calls it for real clicks; the e2e hook for the clicks it makes.
+- (void)contextClickAtWindowPoint:(NSPoint)point window:(NSWindow *)window;
+/// Installs the monitor above; once, from the editor's set-up.
+- (void)installContextClickMonitor;
+
 // Large file restriction
 /// YES when the current document is over the configured size and the
 /// restrictions apply to it.

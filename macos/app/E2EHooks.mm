@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+#import "BehaviourCommands.h"
 #import "AgentServer.h"
 #import "AppDelegate+Testing.h"
 #import "EditorController.h"
@@ -1580,6 +1581,9 @@ static id E2ETarget(NSString *name, NSError **error) {
         }
         BOOL right = [args[@"button"] isEqual:@"right"];
         if (right) {
+            // What the editor's event monitor does for a real right click (menuForEvent: below
+            // does not pass it): the caret moves unless the selection is to be kept.
+            [app.editor contextClickAtWindowPoint:inWindow window:w];
             NSEvent *e = [NSEvent mouseEventWithType:NSEventTypeRightMouseDown location:inWindow modifierFlags:flags
                                            timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:w.windowNumber
                                              context:nil eventNumber:0 clickCount:1 pressure:1];
