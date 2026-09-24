@@ -2018,9 +2018,16 @@ int NppMacRunTests(AppDelegate *app) {
         [ed foldAllSearchResults:YES];
         BOOL folded = ![rs message:SCI_GETFOLDEXPANDED wParam:0];
         [ed foldAllSearchResults:NO];
+        // The tab coming to the front again sets its (null) lexer again; its fold levels stay.
+        [ed applyLanguage];
+        [ed foldAllSearchResults:YES];
+        BOOL foldedAgain = ([rs message:SCI_GETFOLDLEVEL wParam:0] & SC_FOLDLEVELHEADERFLAG) &&
+            ![rs message:SCI_GETFOLDEXPANDED wParam:0];
+        [ed foldAllSearchResults:NO];
         Check(@"IDM_SEARCH_FINDINFILES (results stack and fold)",
-              @"a new search goes on top of the older ones, which fold away; fold and unfold all work",
-              stacked && unfolded && folded);
+              @"a new search goes on top of the older ones, which fold away; fold and unfold all work, "
+              @"also after the tab's language is set again",
+              stacked && unfolded && folded && foldedAgain);
 
         // Select the older search's lines and copy them.
         [rs message:SCI_SETSEL wParam:(uptr_t)[rs message:SCI_POSITIONFROMLINE wParam:4]

@@ -2320,10 +2320,12 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // it is - HTML with <?php ?> in it - as it does ASP and JSP; phpscript is for PHP with no page around it.
     NSString *lexerID = [lang.name isEqualToString:@"php"] ? @"hypertext" : (lang.lexerID ?: @"");
     void *lexer = CreateLexer(lexerID.UTF8String);
-    [sci message:SCI_SETILEXER wParam:0 lParam:(sptr_t)lexer];
     // The null lexer colours nothing and leaves the fold levels alone, so what the language
-    // before it styled and folded would stay; plain text has neither.
-    if ([lexerID isEqualToString:@"null"]) [sci message:SCI_CLEARDOCUMENTSTYLE];
+    // before it styled and folded would stay; plain text has neither. Only when a language
+    // lexer goes: a document that had none keeps its levels (the results tab sets its own).
+    BOOL hadLexer = [sci message:SCI_GETLEXER] > SCLEX_NULL;
+    [sci message:SCI_SETILEXER wParam:0 lParam:(sptr_t)lexer];
+    if ([lexerID isEqualToString:@"null"] && hadLexer) [sci message:SCI_CLEARDOCUMENTSTYLE];
     [sci setLexerProperty:@"fold" value:@"1"];
     [sci setLexerProperty:@"fold.compact" value:@"0"];
     [sci setLexerProperty:@"fold.comment" value:@"1"];
