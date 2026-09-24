@@ -152,7 +152,7 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"findFillWithSelection"): @YES,
         Key(@"findSelectWordUnderCaret"): @YES,
         Key(@"replaceStaysOnOccurrence"): @NO,
-        Key(@"confirmReplaceAll"): @YES,
+        Key(@"confirmReplaceAll"): @NO,    // off: Replace All does not ask, as upstream's does not
         Key(@"smartHighlightMatchCase"): @NO,
         Key(@"smartHighlightWholeWord"): @YES,
         Key(@"lightThemeName"):  @"Default",
