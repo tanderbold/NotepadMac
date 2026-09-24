@@ -620,9 +620,13 @@ static const CGFloat kHeader = 22;
                                            @"fronts": fronts, @"groups": groupsOut};
 }
 
-/// A divider dragged: the container's new size is kept.
+/// A divider dragged: the container's new size is kept. The window resized is not that: the
+/// docks keep their size then and the editor takes the difference (splitView:shouldAdjustSizeOfSubview:).
 - (void)splitViewDidResizeSubviews:(NSNotification *)note {
-    if (self.arranging) return;
+    NSEventType event = NSApp.currentEvent.type;
+    BOOL dragged = note.userInfo[@"NSSplitViewDividerIndex"] &&
+        (event == NSEventTypeLeftMouseDragged || event == NSEventTypeLeftMouseDown || event == NSEventTypeLeftMouseUp);
+    if (self.arranging || !dragged) return;
     for (NSNumber *placeKey in @[@(NppDockLeft), @(NppDockRight), @(NppDockTop), @(NppDockBottom)]) {
         NppDockContainerView *c = self.containers[placeKey];
         if (!c.superview || c.hidden) continue;
@@ -634,6 +638,11 @@ static const CGFloat kHeader = 22;
 }
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview { return NO; }
+
+/// As Notepad++'s docks: a window made wider or narrower changes the editor, not the panels.
+- (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)view {
+    return ![self.containers.allValues containsObject:(NppDockContainerView *)view];
+}
 
 - (BOOL)windowShouldClose:(NSWindow *)window {
     for (NSString *group in [self.floats.allKeys copy]) {

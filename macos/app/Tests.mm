@@ -9785,6 +9785,13 @@ int NppMacRunTests(AppDelegate *app) {
                         listView.window.isVisible;
         [dock movePanel:@"functionList" to:(NppDockPlace)-1];      // back to where it was docked
         BOOL back = [dock placeOfPanel:@"functionList"] == NppDockRight && listView.window == app.window;
+        // The window made wider and back: the docks keep their size, the editor takes the difference.
+        NSRect frameBefore = app.window.frame;
+        CGFloat rightBefore = [dock sizeOfPlace:NppDockRight];
+        [app.window setFrame:NSInsetRect(frameBefore, -80, 0) display:YES];
+        [app.window setFrame:frameBefore display:YES];
+        BOOL keptOnResize = fabs([dock sizeOfPlace:NppDockRight] - rightBefore) < 1 &&
+            fabs([[NppPreferences shared].dockLayout[@"sizes"][@(NppDockRight).stringValue] doubleValue] - rightBefore) < 1;
         // Dropping: the edges of the window dock, the middle and outside float.
         NSRect w = app.window.frame;
         BOOL drops = [dock placeForDropAtScreenPoint:NSMakePoint(NSMinX(w) + 10, NSMidY(w))] == NppDockLeft &&
@@ -9823,7 +9830,8 @@ int NppMacRunTests(AppDelegate *app) {
         NSRect leftStrip = [dock previewRectForPanel:@"functionList" atScreenPoint:NSMakePoint(NSMinX(w) + 10, NSMidY(w))];
         NSRect bottomStrip = [dock previewRectForPanel:@"functionList" atScreenPoint:NSMakePoint(NSMidX(w), NSMinY(w) + 10)];
         NSRect afloat = [dock previewRectForPanel:@"functionList" atScreenPoint:NSMakePoint(NSMaxX(w) + 500, NSMidY(w))];
-        drops = drops && NSMinX(leftStrip) <= NSMinX(w) + 2 && NSWidth(leftStrip) < NSWidth(w) / 2 && NSHeight(leftStrip) > NSHeight(w) / 2 &&
+        drops = drops && NSMinX(leftStrip) <= NSMinX(w) + 2 && NSWidth(leftStrip) < NSWidth(w) &&
+                fabs(NSWidth(leftStrip) - ([dock sizeOfPlace:NppDockLeft] ?: 220)) < 1 && NSHeight(leftStrip) > NSHeight(w) / 2 &&
                 NSWidth(bottomStrip) > NSWidth(w) / 2 && NSHeight(bottomStrip) < NSHeight(w) / 2 && NSMinY(bottomStrip) < NSMidY(w) &&
                 NSMinX(afloat) > NSMaxX(w);
         // What was moved is remembered.
@@ -9838,6 +9846,9 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_DOCLIST (docking)",
               @"panels dock where upstream puts them, share a dock as tabs, move between docks and floating, and are remembered",
               defaults && tabbed && bottom && floating && back && drops && remembered && allHidden);
+        Check(@"IDM_VIEW_DOCLIST (window resized)",
+              @"a window made wider and back leaves the docks' sizes, shown and stored, as they were (only a divider dragged changes them)",
+              keptOnResize);
     }
 
     if (NppSectionWanted(@"Session depth")) { printf("\n== Session depth ==\n");
