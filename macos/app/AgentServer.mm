@@ -254,6 +254,10 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
 
     int fd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (fd < 0) return NO;
+    // Accepted sockets inherit it: no moment between accept and the client's own
+    // setsockopt in which a write to a client that hung up raises SIGPIPE (AGENT-013).
+    int noSigpipe = 1;
+    setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &noSigpipe, sizeof noSigpipe);
     mode_t was = umask(0177);   // the socket is made 0600: the user's processes only
     int bound = bind(fd, (struct sockaddr *)&addr, sizeof addr);
     umask(was);
