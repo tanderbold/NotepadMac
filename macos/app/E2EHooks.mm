@@ -660,6 +660,19 @@ static NSView *E2EFindControl(NSWindow *w, NSDictionary *target, NSError **error
         if (index-- > 0) continue;
         return E2EViewAtPath(w, d[@"path"]);
     }
+    // A plain view asked for by its class alone (a dock container, the document map's zone):
+    // not a control, so not in the walk above - looked for among all the views, in order.
+    Class wanted = cls ? NSClassFromString(cls) : nil;
+    if (wanted && !identifier && !tip && !placeholder && !want) {
+        NSMutableArray<NSView *> *queue = [NSMutableArray arrayWithObject:root];
+        while (queue.count) {
+            NSView *v = queue.firstObject;
+            [queue removeObjectAtIndex:0];
+            if (v.isHidden && ![target[@"include_hidden"] boolValue]) continue;
+            if ([v isKindOfClass:wanted] && index-- <= 0) return v;
+            [queue addObjectsFromArray:v.subviews];
+        }
+    }
     if (error) *error = E2EFail(@"No control matching %@ in %@", target, w.title);
     return nil;
 }
@@ -1037,7 +1050,10 @@ static id E2ETarget(NSString *name, NSError **error) {
             sptr_t length = [sci message:message wParam:w lParam:0];
             if (length < 0) length = 0;
             NSMutableData *buffer = [NSMutableData dataWithLength:(NSUInteger)length + 2];
-            [sci message:message wParam:w ? w : 0 lParam:(sptr_t)buffer.mutableBytes];
+            // SCI_GETTEXT and SCI_GETCURLINE take the buffer's size in wParam: asked with 0 (the
+            // length query) they would copy nothing on the second call.
+            if (!w && (message == SCI_GETTEXT || message == SCI_GETCURLINE)) w = (uptr_t)length + 1;
+            [sci message:message wParam:w lParam:(sptr_t)buffer.mutableBytes];
             NSString *s = [[NSString alloc] initWithBytes:buffer.bytes length:strnlen((const char *)buffer.bytes, (size_t)length + 1) encoding:NSUTF8StringEncoding] ?: @"";
             return @{@"result": @(length), @"text": s};
         }
@@ -1287,7 +1303,15 @@ static id E2ETarget(NSString *name, NSError **error) {
             // click: two mouse downs and ups in the row's middle.
             [t scrollRowToVisible:row];
             NSRect rect = [t rectOfRow:row];
-            if (args[@"column"]) rect = NSIntersectionRect(rect, [t rectOfColumn:[args[@"column"] integerValue]]);
+            if (args[@"column"]) {
+                NSInteger column = [args[@"column"] integerValue];
+                [t scrollColumnToVisible:column];
+                rect = NSIntersectionRect(rect, [t rectOfColumn:column]);
+            }
+            // The part of the row on screen: a table wider than its panel (a narrow dock) has its
+            // middle out of sight, and a click there lands on whatever is beside the panel.
+            NSRect shown = NSIntersectionRect(rect, t.visibleRect);
+            if (!NSIsEmptyRect(shown)) rect = shown;
             NSPoint p = [t convertPoint:NSMakePoint(NSMidX(rect), NSMidY(rect)) toView:nil];
             gE2EForcedKeyWindow = w;
             for (NSInteger c = 1; c <= 2; ++c) E2EClickAt(w, p, 0, c, nil);
