@@ -777,9 +777,20 @@ static BOOL E2EPressKey(NSString *spec, NSWindow *window, NSError **error) {
         code = [named[1] unsignedShortValue];
         if ([key.lowercaseString hasPrefix:@"f"] || [@[@"up", @"down", @"left", @"right", @"home", @"end", @"pageup", @"pagedown", @"forwarddelete"] containsObject:key.lowercaseString]) flags |= NSEventModifierFlagFunction;
     } else if (key.length == 1) {
+        // "}" is Shift+] on the keyboard: the key code of ], with Shift.
+        for (NSString *base in @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"0", @"-", @"=", @"[", @"]",
+                                 @"\\", @";", @"'", @",", @".", @"/", @"`"]) {
+            if ([NppShiftedCharacter(base) isEqualToString:key]) { key = base; flags |= NSEventModifierFlagShift; break; }
+        }
         plain = key.lowercaseString;
-        chars = (flags & NSEventModifierFlagShift) ? key.uppercaseString : key;
-        if ([key isEqualToString:key.uppercaseString] && ![key isEqualToString:key.lowercaseString]) { flags |= NSEventModifierFlagShift; chars = key; }
+        chars = key;
+        if ([key isEqualToString:key.uppercaseString] && ![key isEqualToString:key.lowercaseString]) flags |= NSEventModifierFlagShift;
+        // As a keyboard sends it: with Shift, charactersIgnoringModifiers is the shifted
+        // character ("G", "}" for Shift+]) - only Shift survives that property.
+        if (flags & NSEventModifierFlagShift) {
+            NSString *shifted = NppShiftedCharacter(plain);
+            if (shifted) plain = chars = shifted;
+        }
         code = E2EKeyCodeForCharacter([key characterAtIndex:0]);
         if (flags & NSEventModifierFlagControl) {
             unichar c = [plain characterAtIndex:0];
@@ -840,14 +851,15 @@ static NSDictionary *E2EMenuItemInfo(NSMenuItem *item) {
     NSMutableDictionary *d = [@{@"title": item.title ?: @"", @"english": NppEnglishTitle(item) ?: @"",
                                 @"enabled": @(item.isEnabled), @"checked": @(item.state == NSControlStateValueOn),
                                 @"state": @(item.state), @"hidden": @(item.isHidden), @"tag": @(item.tag)} mutableCopy];
-    if (item.keyEquivalent.length) {
+    NSEventModifierFlags m = 0;
+    NSString *plainKey = NppMenuItemKey(item, &m);   // "g" with Shift, however AppKit spells it
+    if (plainKey.length) {
         NSMutableString *k = [NSMutableString string];
-        NSEventModifierFlags m = item.keyEquivalentModifierMask;
         if (m & NSEventModifierFlagControl) [k appendString:@"ctrl+"];
         if (m & NSEventModifierFlagOption) [k appendString:@"alt+"];
         if (m & NSEventModifierFlagShift) [k appendString:@"shift+"];
         if (m & NSEventModifierFlagCommand) [k appendString:@"cmd+"];
-        [k appendString:item.keyEquivalent];
+        [k appendString:plainKey];
         d[@"key"] = k;
     }
     if (item.submenu) d[@"submenu_items"] = @(item.submenu.numberOfItems);
@@ -1155,7 +1167,8 @@ static id E2ETarget(NSString *name, NSError **error) {
         E2EWalk(root, @"0", [args[@"include_hidden"] boolValue], controls);
         NSMutableDictionary *out = [@{@"window": E2EWindowInfo(w), @"controls": controls} mutableCopy];
         if (w.toolbar) {
-            [w.toolbar validateVisibleItems];   // as the user would see it after the next event
+            // As the user would see it after the next event - the overflow's items included.
+            for (NSToolbarItem *i in w.toolbar.items) [i validate];
             NSMutableArray *items = [NSMutableArray array];
             for (NSToolbarItem *i in w.toolbar.items) {
                 [items addObject:@{@"id": i.itemIdentifier ?: @"", @"label": i.label ?: @"", @"tooltip": i.toolTip ?: @"",

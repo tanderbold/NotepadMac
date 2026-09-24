@@ -464,7 +464,10 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         NSString *text = nil;
         if (item.submenu) {
             NSString *englishMenu = Original(item.submenu, @"title", item.submenu.title) ?: @"";
-            NSString *ident = self.englishMenuIds[Normalised(english)] ?: self.englishMenuIds[Normalised(englishMenu)];
+            // A submenu the port names otherwise ("Project Panels" for english.xml's "Project")
+            // carries its subMenuId as the item's identifier.
+            NSString *ident = (item.identifier.length && self.menuNames[item.identifier]) ? item.identifier
+                            : (self.englishMenuIds[Normalised(english)] ?: self.englishMenuIds[Normalised(englishMenu)]);
             // The application menu keeps its name.
             if (top && menu.itemArray.firstObject == item) text = english;
             else if (ident) text = self.menuNames[ident];

@@ -9,6 +9,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// A key and its modifiers.
+/// A menu item's key equivalent set in AppKit's own convention: Shift with a
+/// letter is the upper-case letter, Shift with punctuation is the shifted
+/// character ("}" for Shift+]), and Shift is then left out of the mask. AppKit
+/// matches the key case-sensitively that way, so a plain Cmd+G never reaches
+/// the item of Shift+Cmd+G (written as "g" + Shift, it did whenever no item
+/// held Cmd+G itself), and a real Shift+Cmd+] press - "}" - finds Next Tab.
+FOUNDATION_EXPORT void NppSetMenuKey(NSMenuItem *item, NSString *key, NSEventModifierFlags modifiers);
+/// The key and modifiers as the port keeps them (a lower-case letter or the
+/// unshifted character, with Shift), whichever way the item has them.
+FOUNDATION_EXPORT NSString *NppMenuItemKey(NSMenuItem *item, NSEventModifierFlags *modifiers);
+/// What Shift makes of a key on a US keyboard ("G" for g, "}" for ]); nil for others.
+FOUNDATION_EXPORT NSString *_Nullable NppShiftedCharacter(NSString *key);
+
 @interface NppKeyCombo : NSObject <NSCopying>
 /// Command, Option, Shift and Control only.
 @property (nonatomic) NSEventModifierFlags modifiers;
