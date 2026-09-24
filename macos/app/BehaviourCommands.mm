@@ -349,8 +349,12 @@ static BOOL UrlLooksReal(NSString *candidate) {
         if (content.window != window) continue;
         NSPoint local = [content convertPoint:point fromView:nil];
         if (!NSPointInRect(local, content.visibleRect)) continue;
-        // Scintilla's client coordinates: the visible part's origin is 0,0 (ScintillaCocoa::ConvertPoint).
-        long x = (long)(local.x - content.visibleRect.origin.x), y = (long)(local.y - content.visibleRect.origin.y);
+        // Scintilla's client coordinates: the visible part's origin is 0,0 (ScintillaCocoa::ConvertPoint),
+        // and the margins, a ruler beside the text on Cocoa, count before it in what
+        // SCI_POSITIONFROMPOINT takes.
+        long margins = 0, count = [sci message:SCI_GETMARGINS];
+        for (long k = 0; k < count; ++k) margins += [sci message:SCI_GETMARGINWIDTHN wParam:(uptr_t)k lParam:0];
+        long x = (long)(local.x - content.visibleRect.origin.x) + margins, y = (long)(local.y - content.visibleRect.origin.y);
         // Upstream lets a click in the margins through.
         long marginX = [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:0] + [sci message:SCI_GETXOFFSET];
         if (x < marginX) return;

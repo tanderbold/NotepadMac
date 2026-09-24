@@ -8427,6 +8427,10 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL intBold = (intFont.fontDescriptor.symbolicTraits & NSFontDescriptorTraitBold) != 0;
         long printedFore = noteColour ? (lround(noteColour.redComponent * 255) | lround(noteColour.greenComponent * 255) << 8 |
                                          lround(noteColour.blueComponent * 255) << 16) : -1;
+        if (!([styled.string hasPrefix:@"1  // note"] && printedFore == commentFore && intBold == (wordBold != 0)))
+            printf("    styled: %s | fore %lx want %lx | bold %d want %ld\n",
+                   [styled.string substringToIndex:MIN((NSUInteger)30, styled.string.length)].UTF8String,
+                   printedFore, commentFore, intBold, wordBold);
         Check(@"IDM_FILE_PRINT (styled)",
               @"the print keeps each style's colour and bold, with numbered lines, and leaves the editor's styles whole",
               [styled.string hasPrefix:@"1  // note"] && [styled.string containsString:@"2  int x;"] &&
@@ -8548,6 +8552,30 @@ int NppMacRunTests(AppDelegate *app) {
               brackets && [sci message:SCI_GETSELECTIONSTART] == 4 &&
               [sci message:SCI_GETSELECTIONEND] == 6);
         p.delimiterOpen = @"("; p.delimiterClose = @")";
+
+        // A right click outside the selection puts the caret where it was made - on the
+        // character under it, the margins beside the text counted as Scintilla counts them.
+        SetDoc(ed, @"abc def\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:3];
+        // Where "d" is in the content view: the margins are a ruler beside it, so the text
+        // starts at its left edge, a character is as wide as Scintilla measures it.
+        NSRect shown = sci.content.visibleRect;
+        long charWidth = [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:6] - [sci message:SCI_POINTXFROMPOSITION wParam:0 lParam:5];
+        NSPoint local = NSMakePoint(shown.origin.x + 5 * charWidth + charWidth / 2,
+                                    shown.origin.y + [sci message:SCI_POINTYFROMPOSITION wParam:0 lParam:5] + 2);
+        NSPoint inWindow = [sci.content convertPoint:local toView:nil];
+        BOOL wasKept = p.rightClickKeepsSelection;
+        p.rightClickKeepsSelection = NO;
+        [ed contextClickAtWindowPoint:inWindow window:sci.window];
+        BOOL moved = [sci message:SCI_GETSELECTIONSTART] == 5 && [sci message:SCI_GETSELECTIONEND] == 5;
+        [sci message:SCI_SETSEL wParam:0 lParam:3];
+        p.rightClickKeepsSelection = YES;
+        [ed contextClickAtWindowPoint:inWindow window:sci.window];
+        BOOL kept = [sci message:SCI_GETSELECTIONSTART] == 0 && [sci message:SCI_GETSELECTIONEND] == 3;
+        p.rightClickKeepsSelection = wasKept;
+        Check(@"IDM_SETTING_PREFERENCE (right click)",
+              @"a right click on \"def\" moves the caret there, or keeps the selection when asked to",
+              moved && kept);
     }
 
     if (NppSectionWanted(@"Instances, panels, settings folder")) { printf("\n== Instances, panels, settings folder ==\n");
