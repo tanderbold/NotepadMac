@@ -9,6 +9,8 @@
 /// What the port says and Windows does not (its own panels and settings),
 /// from macos/resources/nativeLang-extra/<the same file name>.
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraStrings;
+/// <MiscStrings> texts by their element name (summary-nbchar...), as the file has them.
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *miscStrings;
 /// The same by the English text exactly: "Execute NppExec Script…" and "Execute NppExec Script"
 /// are one key once normalised, and each has its own words.
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraExact;
@@ -132,26 +134,101 @@ static BOOL SameLabel(NSString *english, int identifier) {
     return NO;
 }
 
-/// A push button keeps its English width, or grows to its translated title
-/// when the room beside it is free; otherwise the title is cut on one line.
+/// A push button's English frame, as first laid out: widths and gaps are
+/// measured from it whatever language the window was shown in before.
+static NSRect FirstFrame(NSView *v) {
+    return NSRectFromString(FirstSeen(v, @"frame", NSStringFromRect(v.frame)));
+}
+
+/// A push button takes the width its translated title needs, never less than
+/// its English width, on one line; NppFlowButtonRows then moves its row so that
+/// nothing overlaps (upstream's dialogs size each button to its text too).
 static void FitPushButton(NSButton *b) {
-    NSString *w = FirstSeen(b, @"width", [NSString stringWithFormat:@"%g", b.frame.size.width]);
+    NSRect english = FirstFrame(b);
     NSRect frame = b.frame;
-    frame.size.width = w.doubleValue;
-    CGFloat wanted = ceil(b.cell.cellSize.width);
     b.cell.lineBreakMode = NSLineBreakByTruncatingTail;
     b.cell.usesSingleLineMode = YES;
-    if (wanted > frame.size.width) {
-        NSRect grown = frame;
-        grown.size.width = wanted;
-        BOOL free = !b.superview || NSMaxX(grown) <= NSWidth(b.superview.bounds);
-        for (NSView *other in b.superview.subviews) {
-            if (other == b || other.hidden != b.hidden || !free) continue;   // views of one tab
-            if (NSIntersectsRect(NSInsetRect(other.frame, 1, 1), grown) && !NSIntersectsRect(other.frame, frame)) free = NO;
-        }
-        if (free) frame = grown;
-    }
+    frame.size.width = MAX(NSWidth(english), ceil(b.cell.cellSize.width));
     b.frame = frame;
+}
+
+/// A bordered push button: a hand-made one is rounded; +buttonWithTitle: on
+/// macOS 14 and later gives the automatic bezel (0), a push bezel at the
+/// regular height (24 pt and more) - a smaller one is a tool button, left alone.
+static BOOL HasPushBezel(NSButton *b) {
+    return b.isBordered && (b.bezelStyle == NSBezelStyleRounded || (b.bezelStyle == (NSBezelStyle)0 && NSHeight(b.frame) >= 24));
+}
+
+static BOOL IsPushButton(NSView *v) {
+    if (![v isKindOfClass:[NSButton class]] || [v isKindOfClass:[NSPopUpButton class]]) return NO;
+    NSButton *b = (NSButton *)v;
+    if (!b.title.length || (((NSButtonCell *)b.cell).showsStateBy & NSContentsCellMask)) return NO;
+    return HasPushBezel(b) && b.translatesAutoresizingMaskIntoConstraints;
+}
+
+void NppFlowButtonRows(NSView *parent) {
+    if (!parent) return;
+    NSMutableArray<NSButton *> *buttons = [NSMutableArray array];
+    for (NSView *v in parent.subviews) if (!v.hidden && IsPushButton(v)) [buttons addObject:(NSButton *)v];
+    if (!buttons.count) return;
+    CGFloat width = NSWidth(parent.bounds);
+    // Rows: buttons whose middles are within half a button of each other.
+    [buttons sortUsingComparator:^NSComparisonResult(NSButton *a, NSButton *b) {
+        return [@(NSMidY(a.frame)) compare:@(NSMidY(b.frame))];
+    }];
+    NSMutableArray<NSMutableArray<NSButton *> *> *rows = [NSMutableArray array];
+    for (NSButton *b in buttons) {
+        NSMutableArray *row = rows.lastObject;
+        if (row && fabs(NSMidY([row.lastObject frame]) - NSMidY(b.frame)) < NSHeight(b.frame) / 2) [row addObject:b];
+        else [rows addObject:[NSMutableArray arrayWithObject:b]];
+    }
+    CGFloat overflow = 0;
+    for (NSMutableArray<NSButton *> *row in rows) {
+        [row sortUsingComparator:^NSComparisonResult(NSButton *a, NSButton *b) {
+            return [@(NSMinX(FirstFrame(a))) compare:@(NSMinX(FirstFrame(b)))];
+        }];
+        // The right cluster: the buttons chained (gaps up to 24 pt) to the one
+        // nearest the right edge, when that one sits by the edge (Cancel, Save & Close).
+        NSUInteger split = row.count;
+        NSRect lastEnglish = FirstFrame(row.lastObject);
+        CGFloat englishWidth = NSRectFromString(FirstSeen(parent, @"bounds", NSStringFromRect(parent.bounds))).size.width;
+        if (englishWidth - NSMaxX(lastEnglish) <= 40) {
+            split = row.count - 1;
+            while (split > 0 && NSMinX(FirstFrame(row[split])) - NSMaxX(FirstFrame(row[split - 1])) <= 24) --split;
+        }
+        // Left part: from its English x, rightwards, keeping the English gaps.
+        CGFloat x = split ? NSMinX(FirstFrame(row[0])) : 0, leftEnd = 0;
+        for (NSUInteger i = 0; i < split; ++i) {
+            if (i) x += MAX(2, NSMinX(FirstFrame(row[i])) - NSMaxX(FirstFrame(row[i - 1])));
+            NSRect f = row[i].frame; f.origin.x = x; row[i].frame = f;
+            x = leftEnd = NSMaxX(f);
+        }
+        // Right part: from its English right margin, leftwards.
+        CGFloat rightStart = width;
+        if (split < row.count) {
+            CGFloat right = width - (englishWidth - NSMaxX(FirstFrame(row.lastObject)));
+            for (NSUInteger i = row.count; i > split; --i) {
+                NSButton *b = row[i - 1];
+                if (i < row.count) right -= MAX(2, NSMinX(FirstFrame(row[i])) - NSMaxX(FirstFrame(b)));
+                NSRect f = b.frame; f.origin.x = right - NSWidth(f); b.frame = f;
+                right = rightStart = NSMinX(f);
+            }
+        }
+        CGFloat need = split < row.count ? (leftEnd + 8 - rightStart) : (leftEnd + 8 - width);
+        if (split == row.count && split) need = leftEnd + 8 - width;
+        if (split < row.count && !split) need = 8 - rightStart;
+        overflow = MAX(overflow, need);
+    }
+    // A row that no longer fits widens the window it is the content of.
+    NSWindow *window = parent.window;
+    if (overflow > 0.5 && window && window.contentView == parent && !objc_getAssociatedObject(parent, "nppFlowing")) {
+        NSSize size = window.contentView.frame.size;
+        size.width += ceil(overflow);
+        objc_setAssociatedObject(parent, "nppFlowing", @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [window setContentSize:size];
+        NppFlowButtonRows(parent);
+        objc_setAssociatedObject(parent, "nppFlowing", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
 }
 
 /// A pull-down shows its first item as its title, and a title that does not
@@ -320,6 +397,7 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
     self.englishMenuIds = [NSMutableDictionary dictionary];
     self.strings = [NSMutableDictionary dictionary];
     self.titles = [NSMutableDictionary dictionary];
+    self.miscStrings = [NSMutableDictionary dictionary];
     self.languageFile = nil;
     if (!fileName.length || [fileName isEqualToString:@"english.xml"]) return YES;
     NSString *dir = [NppLocalization directory];
@@ -337,6 +415,12 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
     for (NSString *key in ordered) {
         NSString *text = native[key];
         NSString *en = english[key];
+        // <MiscStrings><summary-nbchar value="..."/>: looked up by id, as upstream's
+        // getLocalizedStrFromID does, with its spaces and colons as the translator set them.
+        if ([key hasPrefix:@"/Native-Langue/MiscStrings/"] && [key hasSuffix:@"@value"]) {
+            NSString *ident = [key substringWithRange:NSMakeRange(27, key.length - 27 - 6)];
+            if (text.length) self.miscStrings[ident] = text;
+        }
         // Menu commands by id, menus and submenus by their upstream ids.
         NSRange cmd = [key rangeOfString:@"/Commands/Item[id="];
         if ([key hasPrefix:@"/Native-Langue/Menu/"] && cmd.location != NSNotFound && [key hasSuffix:@"@name"]) {
@@ -384,6 +468,9 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
 }
 
 - (NSString *)commandName:(int)identifier { return self.commands[@(identifier)]; }
+- (NSString *)stringWithID:(NSString *)identifier default:(NSString *)english {
+    return (self.active ? self.miscStrings[identifier] : nil) ?: english;
+}
 - (NSString *)tabCommandName:(int)identifier { return self.tabCommands[@(identifier)]; }
 
 - (NSString *)translate:(NSString *)english {
@@ -520,7 +607,7 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         if (b.title.length) {
             b.title = Shown(b, @"title", [self translate:Original(b, @"title", b.title)]);
             if (((NSButtonCell *)b.cell).showsStateBy & NSContentsCellMask) FitTitledControl(b);
-            else if (b.bezelStyle == NSBezelStyleRounded) FitPushButton(b);
+            else if (HasPushBezel(b)) FitPushButton(b);
         }
     }
     if ([view.identifier isEqualToString:NppUntranslatedIdentifier]) {
@@ -560,6 +647,8 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         if (b.title.length) b.title = Shown(b, @"title", [self translate:Original(b, @"title", b.title)]);
     }
     for (NSView *sub in view.subviews) [self localizeView:sub];
+    // Its buttons fitted to their words, a row moves so that none covers another.
+    NppFlowButtonRows(view);
 }
 
 @end

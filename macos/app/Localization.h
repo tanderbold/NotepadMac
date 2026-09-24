@@ -8,6 +8,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// A control given this identifier keeps its texts as they are (names in their own language).
 FOUNDATION_EXPORT NSString *const NppUntranslatedIdentifier;
+/// Lays out the rows of push buttons in a view after their titles changed:
+/// each button as wide as its words (at least its English width); a row by the
+/// right edge keeps its right margin, the others their left x, the English gaps
+/// kept; a window whose content no longer fits grows. Hidden buttons are left
+/// out: call it again when a tab shows other ones.
+FOUNDATION_EXPORT void NppFlowButtonRows(NSView *parent);
 
 @interface NppLocalization : NSObject
 + (instancetype)shared;
@@ -21,6 +27,10 @@ FOUNDATION_EXPORT NSString *const NppUntranslatedIdentifier;
 /// The bundled folder of nativeLang files; the port's own texts are in "nativeLang-extra" beside it.
 + (NSString *)directory;
 - (nullable NSString *)commandName:(int)identifier;
+/// A <MiscStrings> text by its id ("summary-nbchar"), spaces and punctuation as the
+/// translation has them; `english` when the interface is English or the file lacks it
+/// (NativeLangSpeaker::getLocalizedStrFromID).
+- (NSString *)stringWithID:(NSString *)identifier default:(NSString *)english;
 /// The tab context menu's own wording for a command, when the file has one.
 - (nullable NSString *)tabCommandName:(int)identifier;
 /// The translation of an English string, or the string itself.

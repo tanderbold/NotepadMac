@@ -258,8 +258,12 @@ case wrong, report it; do not special-case it.
   - also read: Lexilla's lexer examples, the function-list corpus, this repository, written samples
     in `macos/resources/language-samples/<language>/`, generated Intel HEX / S-record / Tektronix.
   - Files are labelled by extension as Notepad++ would open them (`Makefile`, `CMakeLists.txt` by
-    name; `.tex` as LaTeX or TeX by its head). At most 120 files per project per language. The
-    train/held-out split is by project folder (Rosetta: by task).
+    name; `.tex` as LaTeX or TeX by its head; Linguist's "JSON with Comments" as JSON5, the lexer
+    Notepad++ has for it). A file labelled JSON that is not JSON (a `tsconfig.json` with comments or
+    trailing commas) is left out: it taught the model that JSON has comments. At most 120 files per
+    project per language. The train/held-out split is by project folder (Rosetta: by task), hashed
+    on the path inside the repository for files of the checkout, so a worktree trains the same
+    model; the written samples are always learnt from, never held back.
 - Train (needs `numpy`, about four minutes):
   `python3 macos/train-language-model.py --linguist ../linguist --rosetta ../rosetta --repos ../repos --report > train.log`
   It writes `macos/resources/language-model.bin` and prints, on held-out files, accuracy by fragment
@@ -270,5 +274,8 @@ case wrong, report it; do not special-case it.
 - After retraining: rebuild, run the suite (`IDM_LANG_DETECT …` checks, among them "a file of each
   language": at least 36 of the 41 corpus files offered their own language), update the table and
   numbers below, commit the `.bin` with the script.
-- Current numbers (held-out, first choice right): whole files 92.3%, 40 lines 90.9%, 20 lines 89.4%,
-  10 lines 86.7%, 5 lines 81.8%, quoting 61.3%.
+- Current numbers (held-out, first choice right): whole files 92.6%, 40 lines 90.8%, 20 lines 89.4%,
+  10 lines 86.4%, 5 lines 81.7%, quoting 61.5%. JSON5/JSONC files (34 held out) 79%, JSON 98%.
+  A list is offered for 18% of whole files, 34% of 10-line pieces. The rule's measure is flat near
+  its best (rules 0.002 apart differed twofold in how often they ask), so of the rules within
+  `NPP_FIT_TOLERANCE` of the best the trainer takes the one that asks least.

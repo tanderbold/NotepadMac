@@ -36,6 +36,7 @@ Needs numpy. Nothing else outside the standard library.
 import argparse
 import collections
 import hashlib
+import json
 import math
 import os
 import random
@@ -162,6 +163,9 @@ OTHER_NAMES = {
     "bbc basic": "freebasic", "objective c": "objc", "free pascal": "pascal",
     "delphi": "pascal", "batch file": "batch", "windows batch file": "batch",
     "f sharp": "fsharp", "python 3": "python", "python 2": "python",
+    # Linguist's "JSON with Comments" is JSONC, which Notepad++ opens with its json5
+    # lexer (langs.model.xml: json5 ext="json5 jsonc").
+    "json with comments": "json5",
 }
 
 
@@ -188,12 +192,38 @@ def read_sample(path):
     return raw
 
 
+JSON_COMMENT = re.compile(rb"(^|\n)[ \t]*//|/\*")
+
+
+def is_json(raw):
+    """A file labelled JSON is kept only if it is JSON: a tsconfig.json or a
+    .vscode/settings.json with comments or trailing commas is JSONC (what Notepad++'s
+    json5 lexer is for), and teaching the model that JSON has comments is what made
+    it take JSON5 for JSON. A file cut at READ_BYTES cannot be parsed whole: it is
+    kept unless it has comments."""
+    if len(raw) >= READ_BYTES:
+        return not JSON_COMMENT.search(raw)
+    try:
+        json.loads(raw.decode("utf-8-sig"))
+        return True
+    except (ValueError, UnicodeDecodeError):
+        return False
+
+
 class Sample:
     __slots__ = ("language", "raw", "path", "source", "group")
 
     def __init__(self, language, raw, path, source, group):
         self.language = SAME_LANGUAGE.get(language, language)
-        self.raw, self.path, self.source, self.group = raw, path, source, group
+        # A file of the checkout goes by its path in the repository: the split and the
+        # order hash these, and the same checkout elsewhere (a worktree) must train
+        # the same model.
+        self.raw, self.path, self.source, self.group = raw, in_repository(path), source, in_repository(group)
+
+
+def in_repository(path):
+    full = os.path.abspath(path)
+    return os.path.relpath(full, ROOT) if full.startswith(ROOT + os.sep) else path
 
 
 def gather(by_extension, names, linguist, rosetta, repos=None):
@@ -344,7 +374,7 @@ def gather(by_extension, names, linguist, rosetta, repos=None):
             if raw:
                 samples.append(Sample(language, raw, path, "repo", path))
 
-    return samples
+    return [sample for sample in samples if sample.language != "json" or is_json(sample.raw)]
 
 
 def generated_hex(known, files=12):
@@ -436,7 +466,9 @@ def choose(samples):
             continue
         composition[language] = collections.Counter(s.source for s in chosen)
         for sample in chosen:
-            held = stable_hash("split:" + sample.group) % 1000 < HOLDOUT * 1000
+            # The samples written for the application (language-samples) are few and
+            # made to show each language as it is: always learnt from, never held back.
+            held = sample.source != "samples" and stable_hash("split:" + sample.group) % 1000 < HOLDOUT * 1000
             (test if held else train).append(sample)
     return train, test, composition
 
@@ -793,6 +825,7 @@ def contains(order, size, labels):
 # a miss is the wrong language applied or none at all. One miss is taken to be
 # as bad as six or seven lists.
 LIST_COST = setting("NPP_LIST_COST", 0.15, float)
+FIT_TOLERANCE = setting("NPP_FIT_TOLERANCE", 0.002, float)   # a fifth of a point of the measure
 TEMPERATURES = np.geomspace(0.05, 10.0, 40)
 HALVES = (0.0, 25.0, 50.0, 100.0, 200.0, 400.0, 800.0, 1600.0)
 # Walked so that each step only lengthens the sets.
@@ -807,7 +840,7 @@ def fit_rule(scores, evidence, labels, weights):
     does. Fitting the scale by likelihood first and the level after gives a
     rule that is sure where it is wrong; this fits the rule itself."""
     total = float(weights.sum())
-    best = None
+    candidates = []
     for half in HALVES:
         for temperature in TEMPERATURES:
             order, sorted_p = sorted_probabilities(scores, evidence, temperature, half)
@@ -816,10 +849,13 @@ def fit_rule(scores, evidence, labels, weights):
                 size = set_sizes(sorted_p, coverage)
                 inside = float((weights * ((rank < size) & (size <= MOST_TO_OFFER))).sum()) / total
                 listed = float((weights * ((size > 1) & (size <= MOST_TO_OFFER))).sum()) / total
-                value = inside - LIST_COST * listed
-                if best is None or value > best[0]:
-                    best = (value, float(temperature), float(half), float(coverage))
-    _, temperature, half, coverage = best
+                candidates.append((inside - LIST_COST * listed, listed, float(temperature), float(half), float(coverage)))
+    # The measure is flat near its best: rules a hair apart in value can ask the user
+    # twice as often, and which one wins then turns on which files happen to be held
+    # out. Of the rules within FIT_TOLERANCE of the best, the one that asks least.
+    best_value = max(c[0] for c in candidates)
+    _, _, temperature, half, coverage = min((c for c in candidates if c[0] >= best_value - FIT_TOLERANCE),
+                                            key=lambda c: (c[1], -c[0]))
     # Then how sure one language has to be to be applied alone, by the same
     # measure: a wrong language applied is a miss, a short list is a list.
     single = coverage

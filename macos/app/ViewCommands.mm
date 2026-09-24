@@ -190,11 +190,32 @@
         if ([scanner scanUpToCharactersFromSet:sep intoString:NULL]) words++;
         [scanner scanCharactersFromSet:sep intoString:NULL];
     }
+    // Notepad_plus::getCurrentDocCharCount: characters, line endings left out;
+    // getSelectedCharNumber / getSelectedBytes / getSelectedAreas over every selection.
+    long length = [sci message:SCI_GETLENGTH];
+    long eolChars = 0;
+    for (NSUInteger i = 0; i < text.length; ++i) {
+        unichar c = [text characterAtIndex:i];
+        if (c == '\r' || c == '\n') ++eolChars;
+    }
+    long characters = [sci message:SCI_COUNTCHARACTERS wParam:0 lParam:length] - eolChars;
+    long selections = [sci message:SCI_GETSELECTIONS], selChars = 0, selBytes = 0, ranges = 0;
+    for (long i = 0; i < selections; ++i) {
+        long a = [sci message:SCI_GETSELECTIONNSTART wParam:(uptr_t)i], b = [sci message:SCI_GETSELECTIONNEND wParam:(uptr_t)i];
+        if (b <= a) continue;
+        ++ranges;
+        selBytes += b - a;
+        selChars += [sci message:SCI_COUNTCHARACTERS wParam:(uptr_t)a lParam:b];
+    }
     return @{@"characters": @(text.length),
-             @"bytes":      @([sci message:SCI_GETLENGTH]),
+             @"bytes":      @(length),
              @"lines":      @([sci message:SCI_GETLINECOUNT]),
              @"words":      @(words),
-             @"selected":   @([sci message:SCI_GETSELECTIONEND] - [sci message:SCI_GETSELECTIONSTART])};
+             @"selected":   @([sci message:SCI_GETSELECTIONEND] - [sci message:SCI_GETSELECTIONSTART]),
+             @"charactersWithoutEOL": @(MAX(0L, characters)),
+             @"selectedCharacters": @(selChars),
+             @"selectedBytes": @(selBytes),
+             @"selectedRanges": @(ranges)};
 }
 
 #pragma mark - External viewers
