@@ -464,6 +464,9 @@ static CGFloat NeededWidth(NSControl *control) {
     y = [self addPopup:@"Localization" key:@"localizationFile" items:names
               selected:chosen == NSNotFound ? 0 : (NSInteger)chosen to:v atY:y];
     self.localizationFiles = files;
+    // The translations are listed by the names they give themselves, as Notepad++'s
+    // Preferences list them; the interface language does not translate them.
+    ((NSPopUpButton *)self.controls[@"localizationFile"]).identifier = NppUntranslatedIdentifier;
     y = [self addCheckbox:@"Remember current session for next launch" key:@"restoreSession"
                        on:p.restoreSession to:v atY:y];
     y = [self addCheckbox:@"Remember which panels were open" key:@"rememberPanelState"

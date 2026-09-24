@@ -1009,6 +1009,12 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 - (void)refreshSummary {
     EditorController *ed = self.editor;
     NSString *root = [ed gitRootOfCurrentDocument];
+    if (!root) {
+        // Nothing to commit here, however much of a message is typed: the window keeps saying why.
+        self.stagedSummary.stringValue = [NppGit executable] ? NppL(@"The file is not in a Git repository") : NppL(@"Git is not installed (xcode-select --install)");
+        self.commitButton.enabled = NO;
+        return;
+    }
     NSUInteger staged = 0, changed = 0;
     NSMutableArray *names = [NSMutableArray array];
     for (NppGitFileStatus *s in root ? [NppGit statusOfRepository:root] : @[]) {
@@ -1033,12 +1039,7 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     [self build];
     self.problem.stringValue = @"";
     self.lastCommit = nil;
-    if (![editor gitRootOfCurrentDocument]) {
-        self.stagedSummary.stringValue = [NppGit executable] ? NppL(@"The file is not in a Git repository") : NppL(@"Git is not installed (xcode-select --install)");
-        self.commitButton.enabled = NO;
-    } else {
-        [self refreshSummary];
-    }
+    [self refreshSummary];
     [self.panel center];
     [self.panel makeKeyAndOrderFront:nil];
     [self.panel makeFirstResponder:self.message];

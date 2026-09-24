@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Parses langs.model.xml from the app bundle. Never nil; empty if the file is missing.
 /// The title upstream's Language menu gives a language ("C++", "None (Normal Text)").
 + (NSString *)menuTitleForLanguage:(NSString *)name;
+/// NO for a language upstream keeps out of the Language menu (Embedded JS, the
+/// search results, External): it is a language of the lexers, not one to pick.
++ (BOOL)languageHasMenuEntry:(NSString *)name;
 + (instancetype)sharedCatalog;
 @property (nonatomic, readonly) NSArray<NppLanguage *> *allLanguages;
 @property (nonatomic, readonly) NSString *sourcePath;

@@ -69,7 +69,7 @@ static const NppLangLexer kNppLangLexers[] = {
     {"jsp", "hypertext", "IDM_LANG_JSP"},
     {"coffeescript", "coffeescript", "IDM_LANG_COFFEESCRIPT"},
     {"json", "json", "IDM_LANG_JSON"},
-    {"javascript.js", "cpp", ""},
+    {"javascript.js", "cpp", "IDM_LANG_JS"},
     {"fortran77", "f77", "IDM_LANG_FORTRAN_77"},
     {"baanc", "baan", "IDM_LANG_BAANC"},
     {"srec", "srec", "IDM_LANG_SREC"},

@@ -8,6 +8,9 @@
 /// What the port says and Windows does not (its own panels and settings),
 /// from macos/resources/nativeLang-extra/<the same file name>.
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraStrings;
+/// The same by the English text exactly: "Execute NppExec Script…" and "Execute NppExec Script"
+/// are one key once normalised, and each has its own words.
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraExact;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *menuNames;      // menuId / subMenuId -> text
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *englishMenuIds;  // english name -> menuId / subMenuId
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *strings;        // normalised english -> text
@@ -199,6 +202,8 @@ static void FitTitledControl(NSControl *c) {
     c.frame = frame;
 }
 
+NSString *const NppUntranslatedIdentifier = @"NppUntranslated";
+
 @implementation NppLocalization
 
 + (instancetype)shared {
@@ -351,13 +356,14 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         }
     }
     self.extraStrings = [NSMutableDictionary dictionary];
+    self.extraExact = [NSMutableDictionary dictionary];
     NSString *extraPath = [[[dir stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"nativeLang-extra"]
                            stringByAppendingPathComponent:fileName];
     NSData *extraData = [NSData dataWithContentsOfFile:extraPath];
     NSXMLDocument *extra = extraData ? [[NSXMLDocument alloc] initWithData:extraData options:0 error:NULL] : nil;
     for (NSXMLElement *item in [extra.rootElement elementsForName:@"Item"]) {
         NSString *en = [item attributeForName:@"english"].stringValue, *text = [item attributeForName:@"text"].stringValue;
-        if (en.length && text.length) self.extraStrings[Normalised(en)] = text;
+        if (en.length && text.length) { self.extraStrings[Normalised(en)] = text; self.extraExact[en] = text; }
     }
     self.languageFile = fileName;
     return YES;
@@ -456,7 +462,15 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             // "About NotepadMac" and its like are the port's own texts (nativeLang-extra):
             // upstream's translation of the same command names the Windows application.
             BOOL ownName = [english containsString:@"NotepadMac"];
+            // The port's own wording for a command wins over upstream's translation of
+            // upstream's wording: nativeLang-extra has an entry only for a text the port
+            // words itself ("Move to Trash", not "Move to Recycle Bin"; "…" set as a Mac
+            // sets it) or has on its own (Selected Numbers > Count), and it is that
+            // file's translator who chose the words.
+            NSString *extra = self.extraExact[english] ?: self.extraStrings[Normalised(english)];
+            if (extra) ownName = YES;
             text = (identifier && !ownName) ? [self commandName:identifier.intValue] : nil;
+            if (!text && extra && ownName) text = [self translate:english hit:extra];
             text = text ?: [self translate:english];
         }
         item.title = Shown(item, @"title", (self.active ? text : english) ?: @"");
@@ -472,6 +486,14 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
     if (window.contentView) [self localizeView:window.contentView];
 }
 
+- (void)setTitle:(NSString *)english ofWindow:(NSWindow *)window {
+    if (!window) return;
+    NSMutableDictionary *d = [Originals() objectForKey:window];
+    if (!d) { d = [NSMutableDictionary dictionary]; [Originals() setObject:d forKey:window]; }
+    d[@"title"] = english;
+    window.title = Shown(window, @"title", [self translateTitle:english]);
+}
+
 - (void)localizeView:(NSView *)view {
     if ([view isKindOfClass:[NSButton class]] && ![view isKindOfClass:[NSPopUpButton class]]) {
         // (A pop-up's setTitle: selects or adds an item; its items are done below.)
@@ -482,7 +504,9 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             else if (b.bezelStyle == NSBezelStyleRounded) FitPushButton(b);
         }
     }
-    if ([view isKindOfClass:[NSPopUpButton class]]) {
+    if ([view.identifier isEqualToString:NppUntranslatedIdentifier]) {
+        // left as it is
+    } else if ([view isKindOfClass:[NSPopUpButton class]]) {
         NSPopUpButton *popup = (NSPopUpButton *)view;
         for (NSMenuItem *item in popup.itemArray) {
             item.title = Shown(item, @"title", [self translate:Original(item, @"title", item.title)]);

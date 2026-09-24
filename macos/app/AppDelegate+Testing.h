@@ -81,6 +81,8 @@
 - (BOOL)goToLineOrOffset:(NSString *)answer;
 /// The command line's folders and patterns: the files they open, in order (getMatchedFileNames).
 + (NSArray<NSString *> *)filesMatching:(NSString *)pattern inFolder:(NSString *)folder recursive:(BOOL)recursive;
+- (nullable NSMenuItem *)menuItemAtCommandPath:(NSString *)path;
+- (BOOL)performMenuItem:(NSMenuItem *)item;
 - (void)rebuildExecMenu;
 - (void)executeScriptText:(NSString *)text;
 - (void)stopScript:(id)sender;

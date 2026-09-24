@@ -1084,7 +1084,9 @@ static void RestartChangeHistory(ScintillaView *sci) {
     if (![self writeCurrentToPath:path]) return NO;
     doc.path = path;
     doc.displayName = path.lastPathComponent;
-    doc.language = [[LanguageCatalog sharedCatalog] languageForFileName:path];
+    // Buffer::setFileName: a language set from the menu (_hasLangBeenSetFromMenu)
+    // stays; one that came from the old name is worked out from the new one.
+    if (!doc.languageChosenByUser) doc.language = [[LanguageCatalog sharedCatalog] languageForFileName:path];
     [self applyLanguage];
     [self refreshChrome];
     return YES;

@@ -5960,6 +5960,31 @@ int NppMacRunTests(AppDelegate *app) {
                        [[cat languageForFileName:@"b.py"].name isEqualToString:@"python"] &&
                        [[cat languageForFileName:@"c.rs"].name isEqualToString:@"rust"];
         Check(@"IDM_LANG_TEXT", @"extension picks the language", detects);
+        Check(@"IDM_LANG_TEXT", @"a plain-text name is refined only by upstream's whole names (Buffer::setFileName)",
+              [[cat languageForFileName:@"/x/CMakeLists.txt"].name isEqualToString:@"cmake"] &&
+              [[cat languageForFileName:@"/x/Rakefile"].name isEqualToString:@"ruby"] &&
+              [[cat languageForFileName:@"/x/PKGBUILD"].name isEqualToString:@"bash"] &&
+              [[cat languageForFileName:@"/x/makefile"].name isEqualToString:@"makefile"] &&
+              [[cat languageForFileName:@"/x/conf"].name isEqualToString:@"normal"] &&
+              [[cat languageForFileName:@"/x/c"].name isEqualToString:@"normal"]);
+        {
+            NSUInteger jsItems = 0; BOOL embedded = NO;
+            __block void (^scan)(NSMenu *);
+            void (^__block __weak weakScan)(NSMenu *);
+            __block NSUInteger *jsp = &jsItems; __block BOOL *emb = &embedded;
+            scan = ^(NSMenu *m) {
+                for (NSMenuItem *it in m.itemArray) {
+                    if (it.submenu) { weakScan(it.submenu); continue; }
+                    if (it.action != NSSelectorFromString(@"pickLanguage:")) continue;
+                    if ([it.representedObject isEqual:@"javascript.js"] && [it.title isEqualToString:@"JavaScript"]) (*jsp)++;
+                    if ([it.representedObject isEqual:@"javascript"]) *emb = YES;
+                }
+            };
+            weakScan = scan;
+            for (NSMenuItem *top in NSApp.mainMenu.itemArray) if ([NppEnglishMenuTitle(top.submenu) isEqualToString:@"Language"]) scan(top.submenu);
+            Check(@"IDM_LANG_JS", @"JavaScript is one Language menu entry, for javascript.js; Embedded JS is not listed",
+                  jsItems == 1 && !embedded);
+        }
 
         SetDoc(ed, @"# a comment\n");
         [ed setLanguageNamed:@"python"];
@@ -9429,6 +9454,24 @@ int NppMacRunTests(AppDelegate *app) {
         }
         // The Shortcut Mapper still knows every command by its English title.
         BOOL mapper = [app.shortcutStore menuItemsByIdentifier].count == idsBefore;
+        {
+            // The port's own wording (nativeLang-extra) wins over upstream's translation of a
+            // like-named command; the Find window's title follows its tab in the translation.
+            __block NSMenuItem *trash = nil, *count = nil;
+            __block void (^find)(NSMenu *);
+            void (^__block __weak weakFind)(NSMenu *);
+            find = ^(NSMenu *m) {
+                for (NSMenuItem *it in m.itemArray) {
+                    if (it.submenu) { weakFind(it.submenu); continue; }
+                    if (it.action == NSSelectorFromString(@"moveToTrash:")) trash = it;
+                    if (it.action == NSSelectorFromString(@"numbersInsertCount:")) count = it;
+                }
+            };
+            weakFind = find;
+            find(NSApp.mainMenu);
+            Check(@"Localization (own wording)", @"Move to Trash and Selected Numbers > Count read as nativeLang-extra words them",
+                  (!trash || [trash.title isEqualToString:@"Переместить в Корзину"]) && [count.title isEqualToString:@"Количество"]);
+        }
         // A dialog's controls, by their English text.
         [app buildFindPanel];
         NSPanel *findDialog = [app valueForKey:@"findPanel"];
@@ -10005,6 +10048,18 @@ int NppMacRunTests(AppDelegate *app) {
               stillDifferent == 1);
 
         // Ignoring spaces makes re-indented lines equal.
+        {
+            NSMutableArray *bigOld = [NSMutableArray arrayWithCapacity:50000];
+            for (int i = 0; i < 50000; ++i) [bigOld addObject:@"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"];
+            NSMutableArray *bigNew = [bigOld mutableCopy];
+            [bigNew addObject:@"new line"];
+            NSDate *t0 = [NSDate date];
+            NSArray<NppDiffLine *> *bigDiff = [EditorController diffBetween:bigOld and:bigNew ignoreCase:NO ignoreSpaces:NO ignoreEmptyLines:NO];
+            NSTimeInterval took = -t0.timeIntervalSinceNow;
+            NSUInteger added = 0; for (NppDiffLine *d in bigDiff) if (d.kind == NppDiffAdded) added++;
+            Check(@"Compare (big file)", @"50000 equal lines and one added: one added line, well under a second",
+                  added == 1 && bigDiff.lastObject.kind == NppDiffAdded && took < 1.0);
+        }
         NSArray *spacedDiff = [EditorController diffBetween:@[@"a  b", @"c"]
                                                        and:@[@"a b", @"c"]
                                                 ignoreCase:NO ignoreSpaces:YES

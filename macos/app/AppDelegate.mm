@@ -2450,7 +2450,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     NSSet *hidden = [NSSet setWithArray:p.languageMenuHidden ?: @[]];
     NSArray<NppLanguage *> *langs = [[LanguageCatalog sharedCatalog].allLanguages
         filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NppLanguage *l, NSDictionary *b) {
-            return !l.userDefined && ![l.name isEqualToString:@"normal"] && ![l.name isEqualToString:@"searchResult"] &&
+            return !l.userDefined && ![l.name isEqualToString:@"normal"] && [LanguageCatalog languageHasMenuEntry:l.name] &&
                    ![hidden containsObject:l.name];
         }]];
     langs = [langs sortedArrayUsingComparator:^NSComparisonResult(NppLanguage *a, NppLanguage *b) {
@@ -2742,7 +2742,10 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 /// NPP_MENUCOMMAND's path: "Edit|Undo" or "Edit\Undo", by the English titles
 /// (or the shown ones), without "…" and without the shortcut.
-- (BOOL)performMenuCommandAtPath:(NSString *)path {
+/// A menu item by its path ("Edit|Line Operations|Sort Lines..."), English or
+/// as shown, "…"/"..." and "&" ignored; submenus built when opened are
+/// built first. nil when there is none.
+- (NSMenuItem *)menuItemAtCommandPath:(NSString *)path {
     NSArray *parts = [path componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"|\\"]];
     NSString *(^plain)(NSString *) = ^NSString *(NSString *t) {
         NSString *x = [[t stringByReplacingOccurrencesOfString:@"…" withString:@""] stringByReplacingOccurrencesOfString:@"..." withString:@""];
@@ -2756,20 +2759,35 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     for (NSUInteger i = 0; i < parts.count && menu; ++i) {
         NSString *want = plain(parts[i]);
         found = nil;
+        if ([menu.delegate respondsToSelector:@selector(menuNeedsUpdate:)]) [menu.delegate menuNeedsUpdate:menu];
         for (NSMenuItem *item in menu.itemArray) {
             if (item.isSeparatorItem) continue;
             NSString *english = item.submenu && menu == NSApp.mainMenu ? NppEnglishMenuTitle(item.submenu) : NppEnglishTitle(item);
             if ([plain(english) isEqualToString:want] || [plain(item.title) isEqualToString:want]) { found = item; break; }
         }
-        if (!found) return NO;
+        if (!found) return nil;
         menu = i + 1 < parts.count ? found.submenu : nil;
     }
+    return found;
+}
+
+/// A menu item's action as a click on it would send it - with the menu's
+/// will/did-send notifications, which the macro recorder listens to. A
+/// command for the first responder means the editor's, not the console's.
+- (BOOL)performMenuItem:(NSMenuItem *)found {
     if (!found || found.submenu || !found.action) return NO;
     [found.menu update];   // validation decides whether it is enabled
     if (!found.isEnabled) return NO;
-    // A command for the first responder means the editor's, not the console's.
-    if (!found.target && [self.window.firstResponder tryToPerform:found.action with:found]) return YES;
-    return [NSApp sendAction:found.action to:found.target from:found];
+    NSDictionary *info = @{@"MenuItem": found};
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSMenuWillSendActionNotification object:found.menu userInfo:info];
+    BOOL ran = (!found.target && [self.window.firstResponder tryToPerform:found.action with:found]) ||
+               [NSApp sendAction:found.action to:found.target from:found];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSMenuDidSendActionNotification object:found.menu userInfo:info];
+    return ran;
+}
+
+- (BOOL)performMenuCommandAtPath:(NSString *)path {
+    return [self performMenuItem:[self menuItemAtCommandPath:path]];
 }
 
 /// A script runs off the main thread, so the console fills and the editor
@@ -4646,8 +4664,10 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     for (NSArray *group in perTab) [all addObjectsFromArray:group];
     for (NSView *view in all) view.hidden = ![shown containsObject:view];
 
+    // FindReplaceDlg::updateCombos... the title follows the tab in the interface language
+    // (the translation's <Find titleFind= titleReplace= titleFindInFiles= ... titleMark=>).
     NSArray *titles = @[@"Find", @"Replace", @"Find in Files", @"Find in Projects", @"Mark"];
-    self.findPanel.title = titles[(NSUInteger)tab];
+    [[NppLocalization shared] setTitle:titles[(NSUInteger)tab] ofWindow:self.findPanel];
     self.findStatus.stringValue = @"";
 }
 

@@ -89,9 +89,8 @@ static NSString *TextBetween(ScintillaView *sci, long start, long end) {
 /// them; positions are Scintilla's bytes. SCI_POSITIONAFTER walks UTF-8.
 static long ColumnOfPosition(ScintillaView *sci, long pos) {
     long line = Msg(sci, SCI_LINEFROMPOSITION, (uptr_t)pos);
-    long p = Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)line), col = 1;
-    while (p < pos) { p = Msg(sci, SCI_POSITIONAFTER, (uptr_t)p); col++; }
-    return col;
+    long start = Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)line);
+    return Msg(sci, SCI_COUNTCHARACTERS, (uptr_t)start, pos) + 1;
 }
 
 static long PositionOfLineColumn(ScintillaView *sci, long line, long column) {
@@ -135,9 +134,31 @@ static BOOL BoolParam(NSDictionary *args, NSString *key, BOOL fallback) {
     id v = Param(args, key);
     return [v respondsToSelector:@selector(boolValue)] ? [v boolValue] : fallback;
 }
+/// A whole number from JSON: a number, or a string of digits ("2") as some
+/// clients send them. NO for anything else.
+static BOOL IntegerValue(id v, long *out) {
+    if ([v isKindOfClass:[NSNumber class]]) { *out = [v longValue]; return YES; }
+    if ([v isKindOfClass:[NSString class]]) {
+        NSScanner *scan = [NSScanner scannerWithString:[v stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet]];
+        long long n;
+        if ([scan scanLongLong:&n] && scan.isAtEnd) { *out = (long)n; return YES; }
+    }
+    return NO;
+}
 static long LongParam(NSDictionary *args, NSString *key, long fallback) {
-    id v = Param(args, key);
-    return [v isKindOfClass:[NSNumber class]] ? [v longValue] : fallback;
+    long n;
+    return IntegerValue(Param(args, key), &n) ? n : fallback;
+}
+/// first_line/last_line of a document of `lines` lines: one-based, clamped at
+/// the end, refused when first_line is past it.
+static BOOL LineRange(NSDictionary *args, long lines, long *first, long *last, NSError **error) {
+    *first = LongParam(args, @"first_line", 1);
+    *last = LongParam(args, @"last_line", lines);
+    if (*first < 1) *first = 1;
+    if (*first > lines) { if (error) *error = Fail(@"first_line %ld is outside the document (1..%ld)", *first, lines); return NO; }
+    if (*last > lines) *last = lines;
+    if (*last < *first) *last = *first;
+    return YES;
 }
 
 /// A JSON schema for one tool, written once here rather than by hand in each.
@@ -235,7 +256,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
     mode_t was = umask(0177);   // the socket is made 0600: the user's processes only
     int bound = bind(fd, (struct sockaddr *)&addr, sizeof addr);
     umask(was);
-    if (bound != 0 || listen(fd, 8) != 0) {
+    if (bound != 0 || listen(fd, SOMAXCONN) != 0) {
         NSLog(@"Agent interface: cannot listen on %@: %s", path, strerror(errno));
         close(fd);
         return NO;
@@ -251,7 +272,9 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
         // A client that goes away before its answer is written must cost a
         // failed write, not a SIGPIPE that kills the whole editor.
         int one = 1;
-        setsockopt(client, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof one);
+        // It fails (EINVAL) only when the client has already gone - then no
+        // one is left to answer, and a write would raise SIGPIPE after all.
+        if (setsockopt(client, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof one) != 0) { close(client); return; }
         dispatch_async(weakSelf.queue, ^{ [weakSelf serveClient:client]; });
     });
     dispatch_source_set_cancel_handler(source, ^{ close(fd); });
@@ -307,6 +330,11 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
                 } else {
                     dispatch_sync(dispatch_get_main_queue(), ^{ reply = [self handleMessage:message]; });
                 }
+            } else if (message) {
+                // Valid JSON that is not one request (an array: a batch, which
+                // this protocol version does not have; a bare value).
+                reply = @{@"jsonrpc": @"2.0", @"id": [NSNull null],
+                          @"error": @{@"code": @-32600, @"message": @"Invalid Request: one JSON-RPC object per line"}};
             } else {
                 reply = @{@"jsonrpc": @"2.0", @"id": [NSNull null],
                           @"error": @{@"code": @-32700, @"message": @"Parse error"}};
@@ -380,7 +408,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
     } else if ([method isEqualToString:@"tools/call"]) {
         NSString *name = [params[@"name"] isKindOfClass:[NSString class]] ? params[@"name"] : @"";
         NSDictionary *args = [params[@"arguments"] isKindOfClass:[NSDictionary class]] ? params[@"arguments"] : @{};
-        if (!_handlers[name]) return RPCError(identifier, -32602, [NSString stringWithFormat:@"Unknown tool: %@", name]);
+        if (!_handlers[name]) return identifier ? RPCError(identifier, -32602, [NSString stringWithFormat:@"Unknown tool: %@", name]) : nil;
         NSError *error = nil;
         NSDictionary *answer = [self callTool:name arguments:args error:&error];
         if (!answer) {
@@ -396,7 +424,8 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
                        @"structuredContent": answer, @"isError": @NO};
         }
     } else {
-        return RPCError(identifier, -32601, [NSString stringWithFormat:@"Method not found: %@", method]);
+        // A notification is never answered, not even to say it was not understood.
+        return identifier ? RPCError(identifier, -32601, [NSString stringWithFormat:@"Method not found: %@", method]) : nil;
     }
     if (!identifier) return nil;
     return @{@"jsonrpc": @"2.0", @"id": identifier, @"result": result};
@@ -448,15 +477,27 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         if (!ed.currentDocument && error) *error = Fail(@"No document is open");
         return ed.currentDocument;
     }
-    if ([spec isKindOfClass:[NSNumber class]] ||
-        ([spec isKindOfClass:[NSString class]] && [(NSString *)spec rangeOfCharacterFromSet:
-            [NSCharacterSet.decimalDigitCharacterSet invertedSet]].location == NSNotFound)) {
+    // Indexes are the tabs' places, as list_documents gives them; the Search
+    // results tab keeps its place (a gap in the list) but is not a document an
+    // agent reads or edits.
+    NSArray<NppDocument *> *docs = ed.documents;
+    BOOL digits = [spec isKindOfClass:[NSString class]] && [(NSString *)spec rangeOfCharacterFromSet:
+                     [NSCharacterSet.decimalDigitCharacterSet invertedSet]].location == NSNotFound;
+    if (digits) {
+        // A tab called "2024" is that tab, not the 2024th.
+        for (NppDocument *d in docs) if ([d.displayName isEqualToString:spec] || [d.path.lastPathComponent isEqualToString:spec]) return d;
+    }
+    if ([spec isKindOfClass:[NSNumber class]] || digits) {
         NSInteger index = [spec integerValue];
-        if (index < 0 || index >= (NSInteger)ed.documents.count) {
-            if (error) *error = Fail(@"No document at index %ld (list_documents shows %lu)", (long)index, (unsigned long)ed.documents.count);
+        if (index < 0 || index >= (NSInteger)docs.count) {
+            if (error) *error = Fail(@"No document at index %ld (list_documents shows %lu)", (long)index, (unsigned long)docs.count);
             return nil;
         }
-        return ed.documents[(NSUInteger)index];
+        if (docs[(NSUInteger)index].isSearchResults) {
+            if (error) *error = Fail(@"No document at index %ld (it is the Search results tab)", (long)index);
+            return nil;
+        }
+        return docs[(NSUInteger)index];
     }
     if (![spec isKindOfClass:[NSString class]]) { if (error) *error = Fail(@"document must be an index, a path or a name"); return nil; }
     NSString *want = [(NSString *)spec stringByStandardizingPath];
@@ -504,7 +545,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
 - (NSDictionary *)infoOf:(NppDocument *)doc {
     EditorController *ed = self.editor;
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    info[@"index"] = @([ed.documents indexOfObjectIdenticalTo:doc]);
+    info[@"index"] = @([self.editor.documents indexOfObjectIdenticalTo:doc]);
     info[@"title"] = doc.displayName ?: @"";
     info[@"path"] = doc.path ?: [NSNull null];
     info[@"language"] = doc.language.name ?: @"normal";
@@ -513,7 +554,9 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
     info[@"current"] = @(doc == ed.currentDocument);
     info[@"encoding"] = EncodingName(doc);
     info[@"eol"] = EOLName(doc.eolMode);
-    info[@"read_only"] = @(doc.userReadOnly || doc.monitoring);
+    info[@"read_only"] = @(doc.userReadOnly || doc.monitoring ||
+                           (doc.path && [[NSFileManager defaultManager] fileExistsAtPath:doc.path] &&
+                            ![[NSFileManager defaultManager] isWritableFileAtPath:doc.path]));
     if (doc.pinned) info[@"pinned"] = @YES;
     if ([ed documentInSecondaryView] == doc) info[@"in_second_view"] = @YES;
     [self readDocument:doc using:^(ScintillaView *sci) {
@@ -551,20 +594,24 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
           handler:^NSDictionary *(NSDictionary *args, NSError **error) {
         DOC_OR_FAIL(args)
         NSMutableDictionary *out = [[weakSelf infoOf:doc] mutableCopy];
+        __block NSError *failed = nil;
         [weakSelf readDocument:doc using:^(ScintillaView *sci) {
-            long lines = Msg(sci, SCI_GETLINECOUNT);
-            long first = LongParam(args, @"first_line", 1), last = LongParam(args, @"last_line", lines);
-            if (first < 1) first = 1;
-            if (last > lines) last = lines;
-            if (last < first) last = first;
+            long lines = Msg(sci, SCI_GETLINECOUNT), first, last;
+            if (!LineRange(args, lines, &first, &last, &failed)) return;
             long start = Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)(first - 1));
             long end = last >= lines ? Msg(sci, SCI_GETLENGTH) : Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)last);
             BOOL truncated = NO;
-            if ((NSUInteger)(end - start) > kMostTextInAnswer) {
-                end = start + (long)kMostTextInAnswer;
-                // Not in the middle of a character.
-                end = Msg(sci, SCI_POSITIONBEFORE, (uptr_t)Msg(sci, SCI_POSITIONAFTER, (uptr_t)end));
-                last = Msg(sci, SCI_LINEFROMPOSITION, (uptr_t)end) + 1;
+            // The limit is in characters, as the answer's text is. A cut ends
+            // after the last whole line that fits, so asking again from
+            // last_line + 1 misses nothing; only a single line longer than the
+            // limit is cut inside itself.
+            if ((NSUInteger)(end - start) > kMostTextInAnswer &&
+                (NSUInteger)Msg(sci, SCI_COUNTCHARACTERS, (uptr_t)start, end) > kMostTextInAnswer) {
+                long cut = Msg(sci, SCI_POSITIONRELATIVE, (uptr_t)start, (sptr_t)kMostTextInAnswer);
+                long cutLine = Msg(sci, SCI_LINEFROMPOSITION, (uptr_t)cut);
+                long lineStart = Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)cutLine);
+                if (lineStart > start) { end = lineStart; last = cutLine; }
+                else { end = cut; last = cutLine + 1; }
                 truncated = YES;
             }
             out[@"text"] = TextBetween(sci, start, end);
@@ -572,6 +619,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
             out[@"last_line"] = @(last);
             out[@"truncated"] = @(truncated);
         }];
+        if (failed) { *error = failed; return nil; }
         return out;
     }];
 
@@ -586,12 +634,35 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         ScintillaView *sci = ed.sci;
         long start = Msg(sci, SCI_GETSELECTIONSTART), end = Msg(sci, SCI_GETSELECTIONEND);
         long caret = Msg(sci, SCI_GETCURRENTPOS);
-        return @{@"document": [weakSelf infoOf:ed.currentDocument],
-                 @"text": TextBetween(sci, start, end),
+        // A column block: each row's text, top to bottom, and together one per
+        // line - what Copy gives - not the whole stretch from the first row to the
+        // last. Several ordinary selections: the main one, the others counted.
+        long count = Msg(sci, SCI_GETSELECTIONS);
+        NSString *text = TextBetween(sci, start, end);
+        NSMutableArray *parts = nil;
+        if (count > 1 && Msg(sci, SCI_SELECTIONISRECTANGLE)) {
+            NSMutableArray *ranges = [NSMutableArray array];
+            for (long i = 0; i < count; ++i) {
+                [ranges addObject:@[@(Msg(sci, SCI_GETSELECTIONNSTART, (uptr_t)i)), @(Msg(sci, SCI_GETSELECTIONNEND, (uptr_t)i))]];
+            }
+            [ranges sortUsingComparator:^NSComparisonResult(NSArray *a, NSArray *b) { return [a[0] compare:b[0]]; }];
+            parts = [NSMutableArray array];
+            NSMutableArray *texts = [NSMutableArray array];
+            for (NSArray *r in ranges) {
+                long a = [r[0] longValue], b = [r[1] longValue];
+                [texts addObject:TextBetween(sci, a, b)];
+                [parts addObject:@{@"text": texts.lastObject, @"start": Place(sci, a), @"end": Place(sci, b)}];
+            }
+            text = [texts componentsJoinedByString:@"\n"];
+        }
+        NSMutableDictionary *answer = [@{@"document": [weakSelf infoOf:ed.currentDocument],
+                 @"text": text,
                  @"start": Place(sci, start), @"end": Place(sci, end), @"caret": Place(sci, caret),
                  @"selections": @(Msg(sci, SCI_GETSELECTIONS)),
                  @"rectangular": @(Msg(sci, SCI_SELECTIONISRECTANGLE) != 0),
-                 @"first_visible_line": @(Msg(sci, SCI_GETFIRSTVISIBLELINE) + 1)};
+                 @"first_visible_line": @(Msg(sci, SCI_GETFIRSTVISIBLELINE) + 1)} mutableCopy];
+        if (parts) answer[@"parts"] = parts;
+        return answer;
     }];
 
     [self addTool:@"open_document"
@@ -674,7 +745,11 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         if (doc != ed.currentDocument) [ed selectDocumentAtIndex:(NSInteger)index];
         ScintillaView *sci = ed.sci;
         long lines = Msg(sci, SCI_GETLINECOUNT);
-        long line = LongParam(args, @"line", 1);
+        // line is required and a number: an agent that sends none, or "2", has a bug
+        // it should hear about, not a caret silently put on line 1.
+        id given = Param(args, @"line");
+        if (![given isKindOfClass:[NSNumber class]]) { *error = Fail(@"go_to needs line, a number (1..%ld)", lines); return nil; }
+        long line = [given longValue];
         if (line < 1 || line > lines) { *error = Fail(@"Line %ld is outside 1..%ld", line, lines); return nil; }
         long from = PositionOfLineColumn(sci, line - 1, LongParam(args, @"column", 1));
         long endLine = LongParam(args, @"end_line", 0);
@@ -691,6 +766,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         // (SCI_GOTOPOS / SCI_SETSEL keep Scintilla's remembered x).
         Msg(sci, SCI_CHOOSECARETX);
         Msg(sci, SCI_VERTICALCENTRECARET);
+        Msg(sci, SCI_CHOOSECARETX);   // Up/Down afterwards keep this column, as after a click
         [ed.window makeFirstResponder:sci.content];   // the text view itself takes keys, not its wrapper
         if (BoolParam(args, @"activate_app", NO)) [NSApp activateIgnoringOtherApps:YES];
         return @{@"document": [weakSelf infoOf:doc],
@@ -723,6 +799,9 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         __block NSError *failed = nil;
         __block long applied = 0;
         [weakSelf withDocumentInFront:doc do:^(ScintillaView *sci) {
+            // A file the system marks read-only is shown read-only; Scintilla
+            // would drop the change without a word.
+            if (Msg(sci, SCI_GETREADONLY)) { failed = Fail(@"%@ is read-only", doc.displayName); return; }
             if ([whole isKindOfClass:[NSString class]]) {
                 NSData *utf8 = [whole dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
                 Msg(sci, SCI_BEGINUNDOACTION);
@@ -752,10 +831,13 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
                     to = el >= lines ? Msg(sci, SCI_GETLENGTH) : Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)el);
                 }
                 if (to < from) { failed = Fail(@"An edit ends before it starts (line %ld)", sl); return; }
-                [ranges addObject:@{@"from": @(from), @"to": @(to), @"text": t}];
+                [ranges addObject:@{@"from": @(from), @"to": @(to), @"text": t, @"order": @(ranges.count)}];
             }
+            // From the end backwards; of two at one place the later in the
+            // list goes in first, so the text reads in the order given.
             [ranges sortUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b) {
-                return [b[@"from"] compare:a[@"from"]];
+                NSComparisonResult r = [b[@"from"] compare:a[@"from"]];
+                return r != NSOrderedSame ? r : [b[@"order"] compare:a[@"order"]];
             }];
             for (NSUInteger i = 1; i < ranges.count; ++i) {
                 if ([ranges[i][@"to"] longValue] > [ranges[i - 1][@"from"] longValue]) { failed = Fail(@"Edits overlap"); return; }
@@ -798,27 +880,32 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
           handler:^NSDictionary *(NSDictionary *args, NSError **error) {
         DOC_OR_FAIL(args)
         NSMutableArray *lines = [NSMutableArray array];
+        NSMutableArray *ignored = [NSMutableArray array];   // not a line of the document
         [weakSelf withDocumentInFront:doc do:^(ScintillaView *sci) {
             const int marker = 1;   // NPPMAC_BOOKMARK_MARKER
             long count = Msg(sci, SCI_GETLINECOUNT);
             if (BoolParam(args, @"clear", NO)) Msg(sci, SCI_MARKERDELETEALL, (uptr_t)marker);
             for (id n in ([Param(args, @"remove") isKindOfClass:[NSArray class]] ? Param(args, @"remove") : @[])) {
-                long line = [n longValue];
-                if (line >= 1 && line <= count) Msg(sci, SCI_MARKERDELETE, (uptr_t)(line - 1), marker);
+                long line;
+                if (!IntegerValue(n, &line) || line < 1 || line > count) { [ignored addObject:n]; continue; }
+                Msg(sci, SCI_MARKERDELETE, (uptr_t)(line - 1), marker);
             }
             for (id n in ([Param(args, @"add") isKindOfClass:[NSArray class]] ? Param(args, @"add") : @[])) {
-                long line = [n longValue];
-                if (line >= 1 && line <= count && !(Msg(sci, SCI_MARKERGET, (uptr_t)(line - 1)) & (1 << marker)))
+                long line;
+                if (!IntegerValue(n, &line) || line < 1 || line > count) { [ignored addObject:n]; continue; }
+                if (!(Msg(sci, SCI_MARKERGET, (uptr_t)(line - 1)) & (1 << marker)))
                     Msg(sci, SCI_MARKERADD, (uptr_t)(line - 1), marker);
             }
             long line = -1;
             while ((line = Msg(sci, SCI_MARKERNEXT, (uptr_t)(line + 1), 1 << marker)) >= 0) [lines addObject:@(line + 1)];
         }];
-        return @{@"bookmarked_lines": lines, @"document": [weakSelf infoOf:doc]};
+        NSMutableDictionary *answer = [@{@"bookmarked_lines": lines, @"document": [weakSelf infoOf:doc]} mutableCopy];
+        if (ignored.count) answer[@"ignored"] = ignored;
+        return answer;
     }];
 
     [self addTool:@"list_commands"
-      description:@"The editor's menu commands - all 579 of Notepad++'s - by their upstream id name (IDM_EDIT_UPPERCASE), "
+      description:@"The editor's menu commands - Notepad++'s 579 and the port's own - by their upstream id name (IDM_EDIT_UPPERCASE), "
                   @"menu path and label, filtered by a query. Any of them runs through run_command: case conversion, "
                   @"line operations, sorting, trimming, comment toggling, encoding and EOL conversion, folding, "
                   @"JSON/XML formatting, hashes, Base64, the Compare and Function List panels, and the rest."
@@ -856,30 +943,41 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         id spec = Param(args, @"command");
         NSString *name = StringParam(args, @"command") ?: @"";
         AppDelegate *app = (AppDelegate *)NSApp.delegate;
+        NSDictionary<NSNumber *, NSMenuItem *> *byId = [app.shortcutStore menuItemsByIdentifier];
         int identifier = 0;
-        if ([spec isKindOfClass:[NSNumber class]]) identifier = [spec intValue];
+        NSMenuItem *item = nil;
+        long number;
+        if (IntegerValue(spec, &number)) identifier = (int)number;   // 42016 or "42016"
         else if ([name hasPrefix:@"IDM_"]) {
             for (int i = 0; i < kNppMenuCommandIDCount; ++i) if (!strcmp(kNppMenuCommandIDs[i].name, name.UTF8String)) { identifier = kNppMenuCommandIDs[i].identifier; break; }
             if (!identifier) { *error = Fail(@"No command named %@", name); return nil; }
         } else if (name.length) {
-            BOOL ran = [app performMenuCommandAtPath:name];
-            return @{@"ran": @(ran), @"command": name};
+            item = [app menuItemAtCommandPath:name];
+            if (!item) { *error = Fail(@"No menu item at %@", name); return nil; }
+            if (item.submenu || !item.action) { *error = Fail(@"%@ is a menu, not a command", name); return nil; }
+            for (NSNumber *n in byId) if (byId[n] == item) { identifier = n.intValue; break; }
         } else {
             *error = Fail(@"Give a command");
             return nil;
         }
-        // What an agent must not do for the user: quit, or throw a file away.
+        // What an agent must not do for the user: quit, or throw a file away -
+        // by whichever name it is asked for.
         static NSSet<NSNumber *> *kept;
         if (!kept) kept = [NSSet setWithArray:@[@41011 /* IDM_FILE_EXIT */, @41016 /* IDM_FILE_DELETE */]];
-        if ([kept containsObject:@(identifier)]) { *error = Fail(@"Command %d is left to the user", identifier); return nil; }
-        NSMenuItem *item = [app.shortcutStore menuItemsByIdentifier][@(identifier)];
+        if ([kept containsObject:@(identifier)] ||
+            (item && (item.action == @selector(terminate:) || item.action == NSSelectorFromString(@"moveToTrash:")))) {
+            *error = Fail(@"Command %@ is left to the user", identifier ? @(identifier) : name);
+            return nil;
+        }
+        if (!item) item = byId[@(identifier)];
         if (!item) { *error = Fail(@"Command %d is not in this build's menus", identifier); return nil; }
         [item.menu update];
-        if (!item.isEnabled) return @{@"ran": @NO, @"enabled": @NO, @"command": @(identifier), @"label": item.title ?: @""};
-        BOOL ran = (!item.target && [app.window.firstResponder tryToPerform:item.action with:item]) ||
-                   [NSApp sendAction:item.action to:item.target from:item];
+        NSMutableDictionary *answer = [@{@"command": identifier ? @(identifier) : (id)name, @"label": item.title ?: @""} mutableCopy];
+        if (!item.isEnabled) { answer[@"ran"] = @NO; answer[@"enabled"] = @NO; return answer; }
+        answer[@"enabled"] = @YES;
+        answer[@"ran"] = @([app performMenuItem:item]);
         [ED refreshChrome];
-        return @{@"ran": @(ran), @"enabled": @YES, @"command": @(identifier), @"label": item.title ?: @""};
+        return answer;
     }];
 
     [self addTool:@"detect_language"
@@ -932,10 +1030,10 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         for (NppStyle *s in [[StyleCatalog sharedCatalog] stylesForLexerName:lexerName] ?: @[]) {
             if (s.name.length && !names[@(s.styleID)]) names[@(s.styleID)] = s.name;
         }
+        __block NSError *failed = nil;
         [weakSelf readDocument:doc using:^(ScintillaView *sci) {
-            long lines = Msg(sci, SCI_GETLINECOUNT);
-            long first = MAX(1L, LongParam(args, @"first_line", 1)), last = MIN(lines, LongParam(args, @"last_line", lines));
-            if (last < first) last = first;
+            long lines = Msg(sci, SCI_GETLINECOUNT), first, last;
+            if (!LineRange(args, lines, &first, &last, &failed)) return;
             long start = Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)(first - 1));
             long end = last >= lines ? Msg(sci, SCI_GETLENGTH) : Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)last);
             Msg(sci, SCI_COLOURISE, 0, end);
@@ -979,6 +1077,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
                 out[@"folds"] = folds;
             }
         }];
+        if (failed) { *error = failed; return nil; }
         out[@"language"] = lexerName;
         out[@"lexer"] = doc.language.lexerID ?: @"null";
         out[@"document"] = [weakSelf infoOf:doc];
@@ -1078,15 +1177,35 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         [weakSelf withDocumentInFront:doc do:^(ScintillaView *sci) {
             NSArray<NSValue *> *ranges = [ed rangesOfMatches:spec];
             total = ranges.count;
+            // Matches come in order: a column is counted on from the one
+            // before on the same line, so a long line is walked once.
+            long lastLine = -1, lastPos = 0, lastColumn = 1;
             for (NSValue *v in ranges) {
                 if ((long)matches.count >= limit) break;
                 NSRange r = v.rangeValue;
-                long line = Msg(sci, SCI_LINEFROMPOSITION, (uptr_t)r.location);
+                long pos = (long)r.location;
+                long line = Msg(sci, SCI_LINEFROMPOSITION, (uptr_t)pos);
                 long lineStart = Msg(sci, SCI_POSITIONFROMLINE, (uptr_t)line), lineEnd = Msg(sci, SCI_GETLINEENDPOSITION, (uptr_t)line);
-                [matches addObject:@{@"line": @(line + 1), @"column": @(ColumnOfPosition(sci, (long)r.location)),
-                                     @"position": @(r.location), @"length": @(r.length),
-                                     @"match": TextBetween(sci, (long)r.location, (long)(r.location + r.length)),
-                                     @"line_text": TextBetween(sci, lineStart, lineEnd)}];
+                long column = line == lastLine ? lastColumn + Msg(sci, SCI_COUNTCHARACTERS, (uptr_t)lastPos, pos)
+                                               : Msg(sci, SCI_COUNTCHARACTERS, (uptr_t)lineStart, pos) + 1;
+                lastLine = line; lastPos = pos; lastColumn = column;
+                NSMutableDictionary *m = [@{@"line": @(line + 1), @"column": @(column),
+                                            @"position": @(r.location), @"length": @(r.length),
+                                            @"match": TextBetween(sci, pos, (long)(r.location + r.length))} mutableCopy];
+                // The line as context - but not a whole megabyte line for
+                // every hit on it: around the match, then.
+                if (lineEnd - lineStart <= 1000) {
+                    m[@"line_text"] = TextBetween(sci, lineStart, lineEnd);
+                } else {
+                    long from = MAX(lineStart, Msg(sci, SCI_POSITIONRELATIVE, (uptr_t)pos, -200));
+                    long to = Msg(sci, SCI_POSITIONRELATIVE, (uptr_t)(r.location + r.length), 200);
+                    if (to <= 0 || to > lineEnd) to = lineEnd;
+                    if (from <= 0 && pos > 0) from = lineStart;
+                    m[@"line_text"] = TextBetween(sci, from, to);
+                    m[@"line_text_from_column"] = @(Msg(sci, SCI_COUNTCHARACTERS, (uptr_t)lineStart, from) + 1);
+                    m[@"line_text_cut"] = @YES;
+                }
+                [matches addObject:m];
             }
             if (BoolParam(args, @"show_results", NO)) report = [ed findAllReport:spec hits:NULL];
         }];
@@ -1241,12 +1360,22 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         NSString *text = [EditorController textOfFileAtPath:path encoding:&used hasBOM:&hasBOM];
         long crlf = 0, lf = 0, cr = 0;
         if (text) {
-            NSUInteger n = MIN(text.length, (NSUInteger)(1 << 20));
-            for (NSUInteger i = 0; i < n; ++i) {
-                unichar c = [text characterAtIndex:i];
-                if (c == '\r') { if (i + 1 < n && [text characterAtIndex:i + 1] == '\n') { crlf++; i++; } else cr++; }
-                else if (c == '\n') lf++;
+            // The whole text, in blocks (the line count must be the file's,
+            // not the first megabyte's); a CR at a block's end looks ahead.
+            NSUInteger n = text.length;
+            unichar buffer[65536];
+            BOOL pendingCR = NO;
+            for (NSUInteger at = 0; at < n; at += 65536) {
+                NSUInteger len = MIN((NSUInteger)65536, n - at);
+                [text getCharacters:buffer range:NSMakeRange(at, len)];
+                for (NSUInteger i = 0; i < len; ++i) {
+                    unichar c = buffer[i];
+                    if (pendingCR) { pendingCR = NO; if (c == '\n') { crlf++; continue; } cr++; }
+                    if (c == '\r') pendingCR = YES;
+                    else if (c == '\n') lf++;
+                }
             }
+            if (pendingCR) cr++;
         }
         NSString *eol = crlf > lf && crlf > cr ? @"CRLF" : cr > lf && cr > crlf ? @"CR" : (lf || crlf || cr) ? @"LF" : @"none";
         BOOL mixed = (crlf > 0) + (lf > 0) + (cr > 0) > 1;
@@ -1329,22 +1458,27 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         NSString *used = language.length ? language : (orthography.dominantLanguage ?: checker.language);
         long line = 1;
         NSUInteger scanned = 0;
+        BOOL more = NO;
         for (NSTextCheckingResult *r in results) {
             if (r.resultType != NSTextCheckingTypeSpelling) continue;
-            if ((long)words.count >= limit) break;
+            if ((long)words.count >= limit) { more = YES; break; }
             NSRange range = r.range;
             for (; scanned < range.location; ++scanned) if ([text characterAtIndex:scanned] == '\n') line++;
             NSUInteger lineStart = [text rangeOfString:@"\n" options:NSBackwardsSearch range:NSMakeRange(0, range.location)].location;
             lineStart = lineStart == NSNotFound ? 0 : lineStart + 1;
             NSString *word = [text substringWithRange:range];
             NSArray *guesses = [checker guessesForWordRange:range inString:text language:used inSpellDocumentWithTag:tag] ?: @[];
-            [words addObject:@{@"word": word, @"line": @(line), @"column": @(range.location - lineStart + 1),
+            // Columns count characters, as everywhere in this protocol - not
+            // UTF-16 units, which an emoji takes two of.
+            NSString *before = [text substringWithRange:NSMakeRange(lineStart, range.location - lineStart)];
+            NSUInteger column = [before lengthOfBytesUsingEncoding:NSUTF32LittleEndianStringEncoding] / 4 + 1;
+            [words addObject:@{@"word": word, @"line": @(line), @"column": @(column),
                                @"suggestions": guesses.count > 5 ? [guesses subarrayWithRange:NSMakeRange(0, 5)] : guesses}];
         }
         [checker closeSpellDocumentWithTag:tag];
         checker.automaticallyIdentifiesLanguages = automatic;
         if (language.length && before.length) [checker setLanguage:before];
-        NSMutableDictionary *out = [NSMutableDictionary dictionaryWithDictionary:@{@"misspelled": words, @"language": used ?: @"", @"truncated": @((long)words.count >= limit)}];
+        NSMutableDictionary *out = [NSMutableDictionary dictionaryWithDictionary:@{@"misspelled": words, @"language": used ?: @"", @"truncated": @(more)}];
         if (info) out[@"document"] = info;
         return out;
     }];

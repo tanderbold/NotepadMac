@@ -198,12 +198,29 @@ static NSString *LexerIDForLanguage(NSString *langName) {
     NSString *ext = fileName.pathExtension.lowercaseString;
     NppLanguage *lang = ext.length ? ([self userLanguageForExtension:ext] ?: [self stylerLanguageForExtension:ext]
                                       ?: self.byExtension[ext]) : nil;
-    if (!lang) {
-        // Extension-less files Notepad++ still recognises by full name (e.g. "makefile").
-        NSString *whole = fileName.lastPathComponent.lowercaseString;
-        lang = [self userLanguageForExtension:whole] ?: self.byExtension[whole];
+    if (!lang || [lang.name isEqualToString:@"normal"]) {
+        // Buffer::setFileName: what the extension leaves as plain text is refined by a
+        // few whole names, and only by those - a file called "conf" or "c" is not a
+        // file with that extension, so its modeline or contents can still decide.
+        static NSDictionary<NSString *, NSString *> *wholeNames;
+        static dispatch_once_t once;
+        dispatch_once(&once, ^{
+            wholeNames = @{@"makefile": @"makefile", @"gnumakefile": @"makefile", @"cmakelists.txt": @"cmake",
+                           @"sconstruct": @"python", @"sconscript": @"python", @"wscript": @"python",
+                           @"rakefile": @"ruby", @"vagrantfile": @"ruby",
+                           @"crontab": @"bash", @"pkgbuild": @"bash", @"apkbuild": @"bash"};
+        });
+        NSString *whole = wholeNames[fileName.lastPathComponent.lowercaseString];
+        if (whole && self.byName[whole]) lang = self.byName[whole];
     }
     return lang ?: self.byName[@"normal"];
+}
+
++ (BOOL)languageHasMenuEntry:(NSString *)name {
+    for (int i = 0; i < kNppLangLexerCount; ++i) {
+        if (!strcmp(kNppLangLexers[i].langName, name.UTF8String)) return kNppLangLexers[i].menuID && *kNppLangLexers[i].menuID;
+    }
+    return YES;   // a language langs.model.xml has and the table does not: listed
 }
 
 /// The title upstream's Language menu gives a language: "C++", "None
