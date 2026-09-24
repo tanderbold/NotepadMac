@@ -2042,15 +2042,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // it is - HTML with <?php ?> in it - as it does ASP and JSP; phpscript is for PHP with no page around it.
     NSString *lexerID = [lang.name isEqualToString:@"php"] ? @"hypertext" : (lang.lexerID ?: @"");
     void *lexer = CreateLexer(lexerID.UTF8String);
-    // A language taken off (Python to Normal Text: CreateLexer("null") is nil) leaves
-    // nothing to restyle the text, so the old style bytes and fold levels would stay;
-    // they are cleared then, and only then - a document shown in both panes keeps
-    // its styling when a pane that had no lexer is set up again.
-    BOOL hadLexer = [sci message:SCI_GETLEXER] != SCLEX_NULL && [sci message:SCI_GETLEXER] != SCLEX_CONTAINER;
     [sci message:SCI_SETILEXER wParam:0 lParam:(sptr_t)lexer];
-    if (!lexer && hadLexer && doc.language && [doc.language.name isEqualToString:@"normal"]) {
-        [sci message:SCI_CLEARDOCUMENTSTYLE];   // styles and fold levels (Document::ClearLevels)
-    }
     [sci setLexerProperty:@"fold" value:@"1"];
     [sci setLexerProperty:@"fold.compact" value:@"0"];
     [sci setLexerProperty:@"fold.comment" value:@"1"];
