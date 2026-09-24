@@ -713,8 +713,9 @@ static NSString *Ordinal(NSUInteger n) {
 
 - (NSMenuItem *)item:(NSString *)title action:(SEL)sel key:(NSString *)key
                flags:(NSEventModifierFlags)flags menu:(NSMenu *)menu {
-    NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:title action:sel keyEquivalent:key];
-    if (flags) mi.keyEquivalentModifierMask = flags;
+    NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:title action:sel keyEquivalent:@""];
+    // AppKit's default mask (Command) when none is given; Shift in AppKit's spelling (NppSetMenuKey).
+    NppSetMenuKey(mi, key, flags ?: (key.length ? NSEventModifierFlagCommand : 0));
     mi.target = self;
     [menu addItem:mi];
     return mi;
@@ -757,6 +758,11 @@ static NSString *Ordinal(NSUInteger n) {
     NSMenu *revealMenu = [[NSMenu alloc] initWithTitle:@"Open Containing Folder"];
     [self item:@"Finder" action:@selector(revealInFinder:) key:@"" flags:0 menu:revealMenu];
     [self item:@"Terminal" action:@selector(openInTerminal:) key:@"" flags:0 menu:revealMenu];
+    // Upstream's third shell, PowerShell (IDM_FILE_OPEN_POWERSHELL): on a Mac both of its
+    // shells are Terminal, so the command is kept - for run_command, macros and a Windows
+    // shortcuts.xml - on a hidden item that does what Terminal does.
+    NSMenuItem *powerShell = [self item:@"PowerShell" action:@selector(openInTerminal:) key:@"" flags:0 menu:revealMenu];
+    powerShell.hidden = YES;
     [self item:@"Folder as Workspace" action:@selector(containingFolderAsWorkspace:) key:@"" flags:0 menu:revealMenu];
     NSMenuItem *revealItem = [fileMenu addItemWithTitle:@"Open Containing Folder" action:nil keyEquivalent:@""];
     revealItem.submenu = revealMenu;
@@ -900,6 +906,15 @@ static NSString *Ordinal(NSUInteger n) {
     [self item:@"Block Comment" action:@selector(streamComment:) key:@"" flags:0 menu:commentMenu];
     [self item:@"Block Uncomment" action:@selector(streamUncomment:) key:@"" flags:0 menu:commentMenu];
     [editMenu addItemWithTitle:@"Comment/Uncomment" action:nil keyEquivalent:@""].submenu = commentMenu;
+
+    // --- EOL Conversion (Notepad_plus.rc: Edit > EOL Conversion, subMenuId edit-eolConversion)
+    NSMenu *eolMenu = [[NSMenu alloc] initWithTitle:@"EOL Conversion"];
+    [self item:@"Windows (CR LF)" action:@selector(eolCRLF:) key:@"" flags:0 menu:eolMenu];
+    [self item:@"Unix (LF)"       action:@selector(eolLF:) key:@"" flags:0 menu:eolMenu];
+    [self item:@"Classic Mac (CR)" action:@selector(eolCR:) key:@"" flags:0 menu:eolMenu];
+    NSMenuItem *eolItem = [editMenu addItemWithTitle:@"EOL Conversion" action:nil keyEquivalent:@""];
+    eolItem.submenu = eolMenu;
+    eolItem.identifier = @"edit-eolConversion";
 
     // --- Blank Operations
     NSMenu *blankMenu = [[NSMenu alloc] initWithTitle:@"Blank Operations"];
@@ -1111,9 +1126,16 @@ static NSString *Ordinal(NSUInteger n) {
     NSMenuItem *viewItem = [[NSMenuItem alloc] init];
     [bar addItem:viewItem];
     NSMenu *viewMenu = [[NSMenu alloc] initWithTitle:@"View"];
-    [self item:@"Zoom In"    action:@selector(zoomIn:) key:@"+" flags:NSEventModifierFlagCommand menu:viewMenu];
-    [self item:@"Zoom Out"   action:@selector(zoomOut:) key:@"-" flags:NSEventModifierFlagCommand menu:viewMenu];
-    [self item:@"Actual Size" action:@selector(zoomReset:) key:@"0" flags:NSEventModifierFlagCommand menu:viewMenu];
+    // Notepad_plus.rc: View > Zoom (subMenuId view-zoom), Synchronize Across Views in it.
+    NSMenu *zoomMenu = [[NSMenu alloc] initWithTitle:@"Zoom"];
+    [self item:@"Zoom In"    action:@selector(zoomIn:) key:@"+" flags:NSEventModifierFlagCommand menu:zoomMenu];
+    [self item:@"Zoom Out"   action:@selector(zoomOut:) key:@"-" flags:NSEventModifierFlagCommand menu:zoomMenu];
+    [self item:@"Actual Size" action:@selector(zoomReset:) key:@"0" flags:NSEventModifierFlagCommand menu:zoomMenu];
+    [zoomMenu addItem:[NSMenuItem separatorItem]];
+    [self item:@"Synchronize Across Views" action:@selector(toggleSyncZoom:) key:@"" flags:0 menu:zoomMenu];
+    NSMenuItem *zoomItem = [viewMenu addItemWithTitle:@"Zoom" action:nil keyEquivalent:@""];
+    zoomItem.submenu = zoomMenu;
+    zoomItem.identifier = @"view-zoom";
     [viewMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Word Wrap" action:@selector(toggleWordWrap:) key:@"w"
          flags:NSEventModifierFlagCommand | NSEventModifierFlagOption menu:viewMenu];
@@ -1186,7 +1208,9 @@ static NSString *Ordinal(NSUInteger n) {
         mi.target = self; mi.tag = i;
         [projMenu addItem:mi];
     }
-    [viewMenu addItemWithTitle:@"Project Panels" action:nil keyEquivalent:@""].submenu = projMenu;
+    NSMenuItem *projItem = [viewMenu addItemWithTitle:@"Project Panels" action:nil keyEquivalent:@""];
+    projItem.submenu = projMenu;
+    projItem.identifier = @"view-project";   // english.xml names it "Project"
 
     [viewMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Focus on Another View" action:@selector(focusOtherView:) key:@"" flags:0 menu:viewMenu];
@@ -1198,7 +1222,6 @@ static NSString *Ordinal(NSUInteger n) {
     [viewMenu addItemWithTitle:@"Move/Clone Current Document" action:nil keyEquivalent:@""].submenu = moveViewMenu;
     [self item:@"Synchronize Vertical Scrolling" action:@selector(toggleSyncV:) key:@"" flags:0 menu:viewMenu];
     [self item:@"Synchronize Horizontal Scrolling" action:@selector(toggleSyncH:) key:@"" flags:0 menu:viewMenu];
-    [self item:@"Synchronize Zoom Across Views" action:@selector(toggleSyncZoom:) key:@"" flags:0 menu:viewMenu];
 
     [viewMenu addItem:[NSMenuItem separatorItem]];
     [self item:@"Text Direction RTL" action:@selector(textRTL:) key:@"" flags:0 menu:viewMenu];
@@ -1268,12 +1291,6 @@ static NSString *Ordinal(NSUInteger n) {
         mi.tag = (NSInteger)i;
         [encMenu addItem:mi];
     }
-    [encMenu addItem:[NSMenuItem separatorItem]];
-    NSMenuItem *eolHeader = [encMenu addItemWithTitle:@"EOL Conversion" action:nil keyEquivalent:@""];
-    eolHeader.enabled = NO;
-    [self item:@"Windows (CR LF)" action:@selector(eolCRLF:) key:@"" flags:0 menu:encMenu];
-    [self item:@"Unix (LF)"       action:@selector(eolLF:) key:@"" flags:0 menu:encMenu];
-    [self item:@"Classic Mac (CR)" action:@selector(eolCR:) key:@"" flags:0 menu:encMenu];
 
     [encMenu addItem:[NSMenuItem separatorItem]];
     // "Encode in": reinterpret the bytes through another charset.
@@ -1329,6 +1346,11 @@ static NSString *Ordinal(NSUInteger n) {
     udlSite.representedObject = @"https://github.com/notepad-plus-plus/userDefinedLanguages";
     [udlMenu addItem:udlSite];
     [langMenu addItemWithTitle:@"User Defined Language" action:nil keyEquivalent:@""].submenu = udlMenu;
+    // Notepad_plus.rc: "User-Defined" (IDM_LANG_USER) follows the submenu.
+    NSMenuItem *plainUser = [[NSMenuItem alloc] initWithTitle:@"User-Defined" action:@selector(pickLanguage:) keyEquivalent:@""];
+    plainUser.target = self;
+    plainUser.representedObject = @"udf";
+    [langMenu addItem:plainUser];
     langItem.submenu = langMenu;
 
     // ---- Tools
@@ -1632,6 +1654,10 @@ static NSString *Ordinal(NSUInteger n) {
     [windowMenu addItemWithTitle:@"Sort By" action:nil keyEquivalent:@""].submenu = sortMenu;
     [self item:@"Windows…" action:@selector(showWindowsList:) key:@"" flags:0 menu:windowMenu];
     [self item:@"Recent Window" action:@selector(recentWindow:) key:@"" flags:0 menu:windowMenu];
+    // Upstream's tab bar ends in a ▼ that lists the open documents (IDM_DROPLIST_LIST); this tab bar
+    // has no such button, so the command - for run_command, macros and shortcuts - is a hidden item
+    // showing the same list as Windows….
+    [self item:@"Open Documents" action:@selector(showWindowsList:) key:@"" flags:0 menu:windowMenu].hidden = YES;
     windowItem.submenu = windowMenu;
 
     // ---- Help

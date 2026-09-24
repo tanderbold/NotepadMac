@@ -4580,6 +4580,84 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_VIEW_FULLSCREENTOGGLE", @"wired to the window's full-screen action",
               fs != nil && fs.action == @selector(toggleFullScreenMode:));
 
+        // Upstream's submenus (Notepad_plus.rc): View > Zoom, View > Project, Edit > EOL Conversion,
+        // each named by its subMenuId in every language, the zoom keys kept.
+        NSDictionary<NSNumber *, NSMenuItem *> *menuIDs = [app.shortcutStore menuItemsByIdentifier];
+        NSMenuItem *(^parentOf)(NSMenuItem *) = ^NSMenuItem *(NSMenuItem *mi) {
+            for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+                for (NSMenuItem *sub in top.submenu.itemArray) if (sub.submenu == mi.menu) return sub;
+            return nil;
+        };
+        NSMenuItem *zoomSub = parentOf(menuIDs[@44023]), *eolSub = parentOf(menuIDs[@45002]), *projSub = parentOf(menuIDs[@44081]);
+        NSEventModifierFlags zoomMods = 0;
+        NSString *zoomKey = menuIDs[@44023] ? NppMenuItemKey(menuIDs[@44023], &zoomMods) : nil;
+        BOOL submenusPlaced = [zoomSub.identifier isEqualToString:@"view-zoom"] && [eolSub.identifier isEqualToString:@"edit-eolConversion"] &&
+                              [projSub.identifier isEqualToString:@"view-project"] && menuIDs[@44024].menu == zoomSub.submenu &&
+                              menuIDs[@44033].menu == zoomSub.submenu && menuIDs[@44027].menu == zoomSub.submenu &&
+                              menuIDs[@45001].menu == eolSub.submenu && menuIDs[@45003].menu == eolSub.submenu &&
+                              [zoomKey isEqualToString:@"+"] && zoomMods == NSEventModifierFlagCommand;
+        if (!submenusPlaced) printf("    submenus: zoom [%s] %s eol [%s] %s project [%s] %s; zoom key [%s] %lx\n",
+                                    zoomSub.title.UTF8String, zoomSub.identifier.UTF8String, eolSub.title.UTF8String, eolSub.identifier.UTF8String,
+                                    projSub.title.UTF8String, projSub.identifier.UTF8String, zoomKey.UTF8String, (unsigned long)zoomMods);
+        NppPreferences *viewPrefs = [NppPreferences shared];
+        NSString *viewLanguageWas = viewPrefs.localizationFile;
+        viewPrefs.localizationFile = @"russian.xml";
+        [app applyLocalization];
+        BOOL submenusRu = [zoomSub.title isEqualToString:@"Масштаб текста"] && [eolSub.title isEqualToString:@"Формат Конца Строк"] &&
+                          [projSub.title isEqualToString:@"Проект (панель)"] && [menuIDs[@46180].title isEqualToString:@"Пользовательский"];
+        if (!submenusRu) printf("    ru: [%s] [%s] [%s] [%s]\n", zoomSub.title.UTF8String, eolSub.title.UTF8String, projSub.title.UTF8String, menuIDs[@46180].title.UTF8String);
+        viewPrefs.localizationFile = viewLanguageWas ?: @"";
+        [app applyLocalization];
+        Check(@"IDM_VIEW_ZOOMIN (submenus)",
+              @"Zoom, Project and EOL Conversion are upstream's submenus, named by their subMenuId in Russian, Cmd++ kept",
+              submenusPlaced && submenusRu && [zoomSub.title isEqualToString:@"Zoom"]);
+
+        // Commands with no Mac counterpart of their own, kept by id: IE is the system browser (Safari),
+        // PowerShell a second Terminal, the tab bar's ▼ the Windows… list, and "User-Defined".
+        NSMenuItem *ie = menuIDs[@44103], *ps = menuIDs[@41027], *drop = menuIDs[@14001], *udlItem = menuIDs[@46180];
+        Check(@"IDM_VIEW_IN_IE", @"the system browser, Safari; Edge stays Edge",
+              [ie.title isEqualToString:@"Safari"] && [menuIDs[@44102].title isEqualToString:@"Edge"]);
+        Check(@"IDM_FILE_OPEN_POWERSHELL", @"a hidden twin of Open Containing Folder > Terminal",
+              ps.isHidden && ps.action == menuIDs[@41020].action && ps.menu == menuIDs[@41020].menu);
+        Check(@"IDM_DROPLIST_LIST", @"a hidden item showing the Windows… list",
+              drop.isHidden && drop.action == NSSelectorFromString(@"showWindowsList:"));
+        Check(@"IDM_LANG_USER", @"\"User-Defined\" follows the User Defined Language submenu",
+              [udlItem.title isEqualToString:@"User-Defined"] && !udlItem.isHidden &&
+              [udlItem.menu indexOfItem:udlItem] > 0 && [udlItem.menu itemAtIndex:[udlItem.menu indexOfItem:udlItem] - 1].submenu != nil);
+
+        // A shifted key is set as AppKit matches it - the shifted character, no Shift in the
+        // mask - so Cmd+G never reaches the item that has Shift+Cmd+G.
+        NSMenuItem *findPrev = menuIDs[@43010], *nextTab = nil;
+        for (NSMenuItem *top in NSApp.mainMenu.itemArray)
+            for (NSMenuItem *mi in top.submenu.itemArray) if (mi.action == NSSelectorFromString(@"nextTab:") && mi.keyEquivalent.length) nextTab = mi;
+        NSEventModifierFlags prevMods = 0, tabMods = 0;
+        NSString *prevKey = NppMenuItemKey(findPrev, &prevMods), *tabKey = nextTab ? NppMenuItemKey(nextTab, &tabMods) : nil;
+        if (![findPrev.keyEquivalent isEqualToString:@"G"] || ![nextTab.keyEquivalent isEqualToString:@"}"])
+            printf("    keys: find previous [%s] %lx -> [%s] %lx; next tab [%s] %lx -> [%s] %lx\n",
+               findPrev.keyEquivalent.UTF8String, (unsigned long)findPrev.keyEquivalentModifierMask, prevKey.UTF8String, (unsigned long)prevMods,
+               nextTab.keyEquivalent.UTF8String, (unsigned long)nextTab.keyEquivalentModifierMask, tabKey.UTF8String, (unsigned long)tabMods);
+        Check(@"IDM_SEARCH_FINDPREV (key)", @"Shift+Cmd+G is \"G\" with Command alone; Next Tab's Shift+Cmd+] is \"}\"",
+              [findPrev.keyEquivalent isEqualToString:@"G"] && !(findPrev.keyEquivalentModifierMask & NSEventModifierFlagShift) &&
+              [prevKey isEqualToString:@"g"] && prevMods == (NSEventModifierFlagCommand | NSEventModifierFlagShift) &&
+              [nextTab.keyEquivalent isEqualToString:@"}"] && [tabKey isEqualToString:@"]"] &&
+              tabMods == (NSEventModifierFlagCommand | NSEventModifierFlagShift));
+
+        // None (Normal Text) takes the lexer off: no style or fold level of the language before stays.
+        [ed newDocument];
+        SetDoc(ed, @"def f():\n    return 1\n");
+        [ed setLanguageNamed:@"python"];
+        [ed.sci message:SCI_COLOURISE wParam:0 lParam:-1];
+        BOOL styledBefore = [ed.sci message:SCI_GETSTYLEAT wParam:0] != 0;
+        [ed setLanguageNamed:@"normal"];
+        [ed.sci message:SCI_COLOURISE wParam:0 lParam:-1];
+        BOOL plain = YES;
+        NSInteger docLength = [ed.sci message:SCI_GETLENGTH];
+        for (NSInteger p = 0; p < docLength; ++p) if ([ed.sci message:SCI_GETSTYLEAT wParam:(uptr_t)p] != 0) plain = NO;
+        BOOL noFolds = !([ed.sci message:SCI_GETFOLDLEVEL wParam:0] & SC_FOLDLEVELHEADERFLAG);
+        Check(@"IDM_LANG_TEXT (styles)", @"after Python every style byte is 0 and no line is a fold header",
+              styledBefore && plain && noFolds);
+        [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+
         [app toggleFileBrowser:nil];
         BOOL browserOn = [ed workspaceVisible];
         [app toggleFileBrowser:nil];
@@ -5837,7 +5915,8 @@ int NppMacRunTests(AppDelegate *app) {
             NSMenuItem *toLF = nil;
             for (NSMenuItem *top in NSApp.mainMenu.itemArray)
                 for (NSMenuItem *it in top.submenu.itemArray)
-                    if (it.action == NSSelectorFromString(@"eolLF:")) toLF = it;   // Encoding > EOL Conversion
+                    for (NSMenuItem *sub in it.submenu.itemArray)
+                        if (sub.action == NSSelectorFromString(@"eolLF:")) toLF = sub;   // Edit > EOL Conversion
             [ed convertEOLTo:SC_EOL_LF];
             BOOL greyed = ![(id<NSMenuItemValidation>)app validateMenuItem:toLF];
             [ed convertEOLTo:SC_EOL_CRLF];

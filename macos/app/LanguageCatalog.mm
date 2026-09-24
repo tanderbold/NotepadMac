@@ -192,7 +192,22 @@ static NSString *LexerIDForLanguage(NSString *langName) {
     return nil;
 }
 
-- (NppLanguage *)languageNamed:(NSString *)name { return self.byName[name]; }
+- (NppLanguage *)languageNamed:(NSString *)name {
+    NppLanguage *found = self.byName[name];
+    if (found || ![name isEqualToString:@"udf"]) return found;
+    // Language > User-Defined (IDM_LANG_USER, L_USER): the user-defined lexer with no
+    // definition of its own; langs.model.xml has no entry for it.
+    static NppLanguage *plain;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        plain = [[NppLanguage alloc] init];
+        plain.name = @"udf";
+        plain.lexerID = @"user";
+        plain.keywordSets = @{};
+        plain.extensions = @[];
+    });
+    return plain;
+}
 
 - (NppLanguage *)languageForFileName:(NSString *)fileName {
     NSString *ext = fileName.pathExtension.lowercaseString;

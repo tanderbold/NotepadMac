@@ -61,6 +61,53 @@ static unichar Shifted(unichar c) {
     return (c < 128 && at) ? (unichar)shifted[at - plain] : c;
 }
 
+
+/// The US layout's shifted characters, as a key equivalent spells Shift with them.
+static NSDictionary<NSString *, NSString *> *ShiftedCharacters(void) {
+    static NSDictionary *map;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        map = @{@"1": @"!", @"2": @"@", @"3": @"#", @"4": @"$", @"5": @"%", @"6": @"^", @"7": @"&", @"8": @"*",
+                @"9": @"(", @"0": @")", @"-": @"_", @"=": @"+", @"[": @"{", @"]": @"}", @"\\": @"|", @";": @":",
+                @"'": @"\"", @",": @"<", @".": @">", @"/": @"?", @"`": @"~"};
+    });
+    return map;
+}
+
+NSString *NppShiftedCharacter(NSString *key) {
+    if (key.length != 1) return nil;
+    unichar c = [key characterAtIndex:0];
+    return (c >= 'a' && c <= 'z') ? key.uppercaseString : ShiftedCharacters()[key];
+}
+
+void NppSetMenuKey(NSMenuItem *item, NSString *key, NSEventModifierFlags modifiers) {
+    NSString *k = key ?: @"";
+    NSEventModifierFlags m = modifiers;
+    if ((m & NSEventModifierFlagShift) && k.length == 1) {
+        unichar c = [k characterAtIndex:0];
+        NSString *shifted = (c >= 'a' && c <= 'z') ? k.uppercaseString : ShiftedCharacters()[k];
+        if (shifted) { k = shifted; m &= ~NSEventModifierFlagShift; }
+    }
+    item.keyEquivalent = k;
+    item.keyEquivalentModifierMask = k.length ? m : 0;
+}
+
+NSString *NppMenuItemKey(NSMenuItem *item, NSEventModifierFlags *modifiers) {
+    NSString *k = item.keyEquivalent ?: @"";
+    NSEventModifierFlags m = item.keyEquivalentModifierMask;
+    if (k.length == 1) {
+        unichar c = [k characterAtIndex:0];
+        if (c >= 'A' && c <= 'Z') { k = k.lowercaseString; m |= NSEventModifierFlagShift; }
+        else if (c != '+') {   // Notepad++ names "+" itself (Ctrl++, Zoom In): Shift+= and "+" are one key press here
+            for (NSString *plain in ShiftedCharacters()) {
+                if ([ShiftedCharacters()[plain] isEqualToString:k]) { k = plain; m |= NSEventModifierFlagShift; break; }
+            }
+        }
+    }
+    if (modifiers) *modifiers = m;
+    return k;
+}
+
 @implementation NppKeyCombo
 
 + (instancetype)comboWithKey:(NSString *)key modifiers:(NSEventModifierFlags)modifiers {
@@ -269,22 +316,24 @@ static NSDictionary<NSString *, NSString *> *PortRenamedCommands(void) {
         @"File/Open Recent/Clear Menu": @"IDM_CLEAN_RECENT_FILE_LIST",
         @"File/Open Containing Folder/Finder": @"IDM_FILE_OPEN_FOLDER",
         @"File/Open Containing Folder/Terminal": @"IDM_FILE_OPEN_CMD",
+        @"File/Open Containing Folder/PowerShell": @"IDM_FILE_OPEN_POWERSHELL",
         @"Edit/Duplicate Line": @"IDM_EDIT_DUP_LINE", @"Edit/Toggle Line Comment": @"IDM_EDIT_BLOCK_COMMENT",
         @"Edit/Line Operations/Sort Lines Lex. Ignoring Case Ascending": @"IDM_EDIT_SORTLINES_LEXICO_CASE_INSENS_ASCENDING",
         @"Edit/Line Operations/Sort Lines Lex. Ignoring Case Descending": @"IDM_EDIT_SORTLINES_LEXICO_CASE_INSENS_DESCENDING",
         @"Edit/On Selection/Open Containing Folder in Finder": @"IDM_EDIT_OPENSELECTEDFILEFOLDERINEXPLORER",   // Explorer on Windows (EDIT-083)
         @"Edit/On Selection/Redact Selection": @"IDM_EDIT_REDACT_SELECTION",
-        @"View/Zoom In": @"IDM_VIEW_ZOOMIN", @"View/Zoom Out": @"IDM_VIEW_ZOOMOUT",
-        @"View/Actual Size": @"IDM_VIEW_ZOOMRESTORE", @"View/Show Whitespace": @"IDM_VIEW_TAB_SPACE",
-        @"View/Synchronize Zoom Across Views": @"IDM_VIEW_ZOOM_SYNC",
-        @"View/View Current File in/Safari": @"IDM_VIEW_IN_EDGE",
-        @"Encoding/Classic Mac (CR)": @"IDM_FORMAT_TOMAC",
+        @"View/Zoom/Zoom In": @"IDM_VIEW_ZOOMIN", @"View/Zoom/Zoom Out": @"IDM_VIEW_ZOOMOUT",
+        @"View/Zoom/Actual Size": @"IDM_VIEW_ZOOMRESTORE", @"View/Show Whitespace": @"IDM_VIEW_TAB_SPACE",
+        @"View/Zoom/Synchronize Across Views": @"IDM_VIEW_ZOOM_SYNC",
+        @"View/View Current File in/Safari": @"IDM_VIEW_IN_IE",   // the system browser, as IE was Windows's
+        @"Edit/EOL Conversion/Classic Mac (CR)": @"IDM_FORMAT_TOMAC",
         @"Settings/Settings…": @"IDM_SETTING_PREFERENCE",
         @"Help/Check for Updates": @"IDM_UPDATE_NPP", @"Help/About NotepadMac": @"IDM_ABOUT",
         @"NotepadMac/About NotepadMac": @"IDM_ABOUT", @"NotepadMac/Quit NotepadMac": @"IDM_FILE_EXIT",
         @"File/Pin Tab": @"IDM_PINTAB",
         @"Edit/Read-Only/Read-Only Attribute on Disk": @"IDM_EDIT_TOGGLESYSTEMREADONLY",
         @"Window/Recent Window": @"IDM_WINDOW_MRU_FIRST",
+        @"Window/Open Documents": @"IDM_DROPLIST_LIST",
     };
 }
 
@@ -384,8 +433,9 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
 - (void)captureMenuDefaults {
     [self walkMenu:NSApp.mainMenu path:@[] block:^(NSMenuItem *item, NSArray<NSString *> *path) {
         if (IsListedElsewhere(item)) return;
-        NppKeyCombo *combo = item.keyEquivalent.length
-            ? [NppKeyCombo comboWithKey:item.keyEquivalent modifiers:item.keyEquivalentModifierMask] : nil;
+        NSEventModifierFlags mods = 0;
+        NSString *k = NppMenuItemKey(item, &mods);
+        NppKeyCombo *combo = k.length ? [NppKeyCombo comboWithKey:k modifiers:mods] : nil;
         self.menuDefaults[MenuKey(item, path)] = combo ?: [NSNull null];
     }];
 }
@@ -465,8 +515,9 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
                 c.detail = [path componentsJoinedByString:@" › "];
                 c.key = MenuKey(item, path);
                 c.identifier = [self identifierForItem:item path:path];
-                c.combo = item.keyEquivalent.length
-                    ? [NppKeyCombo comboWithKey:item.keyEquivalent modifiers:item.keyEquivalentModifierMask] : nil;
+                NSEventModifierFlags mods = 0;
+                NSString *k = NppMenuItemKey(item, &mods);
+                c.combo = k.length ? [NppKeyCombo comboWithKey:k modifiers:mods] : nil;
                 c.extraCombos = @[];
                 [out addObject:c];
             }];
@@ -597,8 +648,7 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
             }
         }
         if (!decided) return;
-        item.keyEquivalent = combo.key ?: @"";
-        item.keyEquivalentModifierMask = combo ? combo.modifiers : 0;
+        NppSetMenuKey(item, combo.key ?: @"", combo ? combo.modifiers : 0);
     }];
 }
 
