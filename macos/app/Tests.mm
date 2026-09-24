@@ -11024,6 +11024,7 @@ int NppMacRunTests(AppDelegate *app) {
               flow && shell);
         [engine runScript:@"/usr/bin/printf 'no-newline|'\n" arguments:@[]];
         Check(@"NppExec (script)", @"output without a final newline: \"<<< Process finished\" still starts a line of its own",
+              [[ed.console text] containsString:@"no-newline|\n<<< Process finished. (Exit code 0)"] &&
               [engine.log containsString:@"no-newline|\n<<< Process finished. (Exit code 0)"]);
 
         // The editor's commands: open by mask, switch, change, save, close.
