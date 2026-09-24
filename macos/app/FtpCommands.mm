@@ -4,6 +4,7 @@
 #import <objc/runtime.h>
 
 static const char kFtpClientKey = 0;
+static char kFtpConnectErrorKey;
 static const char kFtpDirectoryKey = 0;
 static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
 
@@ -54,6 +55,7 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
 #pragma mark - Connection
 
 - (NppFtpClient *)ftpClient { return objc_getAssociatedObject(self, &kFtpClientKey); }
+- (nullable NSString *)ftpConnectError { return objc_getAssociatedObject(self, &kFtpConnectErrorKey); }
 - (BOOL)ftpConnected { return [self ftpClient] != nil; }
 
 - (NSString *)ftpCurrentDirectory {
@@ -72,7 +74,12 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
 
     // Listing the starting directory is the connection test: a profile that
     // cannot list is not usable, and failing here is clearer than failing later.
-    if (![client listDirectory:start]) return NO;
+    // The failed client's reason (curl's or sftp's message) is kept for the alert.
+    if (![client listDirectory:start]) {
+        objc_setAssociatedObject(self, &kFtpConnectErrorKey, client.lastError, OBJC_ASSOCIATION_COPY);
+        return NO;
+    }
+    objc_setAssociatedObject(self, &kFtpConnectErrorKey, nil, OBJC_ASSOCIATION_COPY);
 
     objc_setAssociatedObject(self, &kFtpClientKey, client, OBJC_ASSOCIATION_RETAIN);
     objc_setAssociatedObject(self, &kFtpDirectoryKey, start, OBJC_ASSOCIATION_COPY);
@@ -173,9 +180,14 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
         remote = [([self ftpCurrentDirectory] ?: @"/") stringByAppendingPathComponent:name];
     }
 
-    NSString *text = [self documentText];
-    NSData *data = [text dataUsingEncoding:self.currentDocument.encoding ?: NSUTF8StringEncoding
-                      allowLossyConversion:YES];
+    // NppFTP uploads the file as it is on disk: a saved document goes byte for byte
+    // (its BOM, its character set, its line endings); an unsaved one as Save would
+    // write it - dataForText: puts the BOM back, which re-encoding the text dropped.
+    NppDocument *doc = self.currentDocument;
+    NSData *data = nil;
+    if (doc.path && !doc.modified) data = [NSData dataWithContentsOfFile:doc.path];
+    if (!data) data = [EditorController dataForText:[self documentText]
+                                           encoding:doc.encoding ?: NSUTF8StringEncoding hasBOM:doc.hasBOM];
     if (!data) return NO;
     if (![client uploadData:data toPath:remote]) return NO;
 

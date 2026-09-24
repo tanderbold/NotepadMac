@@ -206,9 +206,16 @@ static size_t ReadFromData(void *buffer, size_t size, size_t count, void *contex
     task.executableURL = [NSURL fileURLWithPath:@"/usr/bin/sftp"];
     // BatchMode means no password prompt: SFTP here relies on an SSH key, which
     // is how a non-interactive client has to work.
+    // ConnectTimeout bounds the TCP connect and the SSH banner exchange: a port that
+    // does not speak SSH (an FTP server answering "220 ...") otherwise keeps ssh
+    // waiting for "SSH-" for ever, and the application with it. 15 s as curl's
+    // CURLOPT_CONNECTTIMEOUT above; ServerAlive ends a connection that goes silent.
     task.arguments = @[@"-b", script,
                        @"-o", @"BatchMode=yes",
                        @"-o", @"StrictHostKeyChecking=accept-new",
+                       @"-o", @"ConnectTimeout=15",
+                       @"-o", @"ServerAliveInterval=15",
+                       @"-o", @"ServerAliveCountMax=2",
                        @"-P", [@([self.profile respondsToSelector:@selector(port)]
                                  ? (self.profile.port > 0 ? self.profile.port : 22) : 22) stringValue],
                        [NSString stringWithFormat:@"%@@%@", self.profile.username ?: @"",
@@ -226,6 +233,12 @@ static size_t ReadFromData(void *buffer, size_t size, size_t count, void *contex
     // spinning the run loop, which would re-enter AppKit.
     dispatch_semaphore_t done = dispatch_semaphore_create(0);
     task.terminationHandler = ^(NSTask *t) { dispatch_semaphore_signal(done); };
+    // Whatever else keeps sftp from finishing, reading its output must not wait longer
+    // than curl's CURLOPT_TIMEOUT: the batch is stopped, the pipe closes, the read returns.
+    __weak NSTask *weakTask = task;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 120 * NSEC_PER_SEC), dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        if (weakTask.isRunning) [weakTask terminate];
+    });
     NSData *out = [pipe.fileHandleForReading readDataToEndOfFile];
     dispatch_semaphore_wait(done, dispatch_time(DISPATCH_TIME_NOW, 120 * NSEC_PER_SEC));
     [[NSFileManager defaultManager] removeItemAtPath:script error:NULL];

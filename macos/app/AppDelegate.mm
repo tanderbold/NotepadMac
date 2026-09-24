@@ -2220,7 +2220,7 @@ static NSString *Ordinal(NSUInteger n) {
     if (![self.editor connectToFtpProfile:profile]) {
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = @"Cannot connect.";
-        alert.informativeText = [self.editor ftpClient].lastError
+        alert.informativeText = [self.editor ftpConnectError]
             ?: @"The server did not answer, or the credentials were refused.";
         [alert runModal];
         return;

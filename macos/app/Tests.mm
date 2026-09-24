@@ -10170,6 +10170,37 @@ int NppMacRunTests(AppDelegate *app) {
             Check(@"FTP directories", @"changing directory follows the server",
                   descended && [[ed ftpCurrentDirectory] hasSuffix:@"sub"]);
 
+            // NppFTP uploads the file as Save writes it: a UTF-8-BOM document keeps its EF BB BF.
+            [ed openRemoteFileAtPath:@"/greeting.txt"];
+            ed.currentDocument.encoding = NSUTF8StringEncoding;
+            ed.currentDocument.hasBOM = YES;
+            SetDoc(ed, @"bom here\n");
+            [ed uploadCurrentDocument];
+            NSData *bomBytes = [NSData dataWithContentsOfFile:[root stringByAppendingPathComponent:@"greeting.txt"]];
+            Check(@"FTP upload (BOM)", @"a UTF-8-BOM document is uploaded with its BOM",
+                  bomBytes.length > 3 && memcmp(bomBytes.bytes, "\xEF\xBB\xBF" "bom here\n", 12) == 0);
+            ed.currentDocument.hasBOM = NO;
+
+            // A failed Connect says why, in the transfer's own words.
+            NppFtpProfile *dead = [[NppFtpProfile alloc] init];
+            dead.name = @"test-dead"; dead.host = @"127.0.0.1"; dead.port = 1; dead.username = @"tester";
+            BOOL deadOK = [ed connectToFtpProfile:dead password:@""];
+            NSString *why = [ed ftpConnectError];
+            Check(@"FTP connect error", @"a refused connection keeps curl's reason for the alert",
+                  !deadOK && why.length > 0 && [why.lowercaseString containsString:@"connect"]);
+
+            // SFTP to a port that does not speak SSH gives up (ConnectTimeout) instead of hanging.
+            NppFtpProfile *notSSH = [[NppFtpProfile alloc] init];
+            notSSH.name = @"test-sftp"; notSSH.host = @"127.0.0.1"; notSSH.port = port; notSSH.username = @"tester";
+            notSSH.protocol = NppFtpSFTP;
+            NSDate *sftpStart = [NSDate date];
+            BOOL sftpOK = [ed connectToFtpProfile:notSSH password:@""];
+            NSTimeInterval sftpTook = -sftpStart.timeIntervalSinceNow;
+            Check(@"FTP sftp timeout", @"SFTP against a non-SSH port fails within the connect timeout",
+                  !sftpOK && sftpTook < 25 && [ed ftpConnectError].length > 0);
+            if (sftpTook >= 25) printf("    sftp took %.1fs\n", sftpTook);
+            [ed connectToFtpProfile:profile password:@"secret"];
+
             [ed disconnectFtp];
             Check(@"FTP disconnect", @"disconnecting drops the connection",
                   ![ed ftpConnected] && [ed ftpClient] == nil);
