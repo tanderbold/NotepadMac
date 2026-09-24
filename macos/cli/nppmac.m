@@ -156,7 +156,19 @@ static int serveMCP(void) {
             }
         }
     }
-    if (sock >= 0) close(sock);
+    /* A last line without its newline is still a message. */
+    if (pending.length) {
+        [pending appendBytes:"\n" length:1];
+        if (sock >= 0) writeAll(sock, pending);
+        else answerUnavailable([[NSString alloc] initWithData:pending encoding:NSUTF8StringEncoding] ?: @"");
+    }
+    if (sock >= 0) {
+        /* The agent has said everything; the answers may still be on their
+         * way. Close only our sending half: the application answers what it
+         * has, closes, and the reader above ends the process. */
+        shutdown(sock, SHUT_WR);
+        for (;;) pause();
+    }
     return 0;
 }
 
