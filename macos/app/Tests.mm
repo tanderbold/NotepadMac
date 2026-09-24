@@ -1686,7 +1686,32 @@ int NppMacRunTests(AppDelegate *app) {
         [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
         [ed toggleLineComment];
         BOOL restored = [DocText(ed) isEqualToString:@"int a;\nint b;\n"];
-        Check(@"IDM_EDIT_BLOCK_COMMENT_SET", @"line comment toggles both ways", commented && restored);
+        Check(@"IDM_EDIT_BLOCK_COMMENT", @"line comment toggles both ways", commented && restored);
+
+        // The selection follows the text: toggling twice without reselecting restores (EDIT-052).
+        SetDoc(ed, @"int a;\n  int b;\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed toggleLineComment];
+        [ed toggleLineComment];
+        Check(@"IDM_EDIT_BLOCK_COMMENT", @"the lines stay selected, so a second toggle takes the comments off",
+              [DocText(ed) isEqualToString:@"int a;\n  int b;\n"]);
+        // Single Line Comment always adds a level (EDIT-054).
+        SetDoc(ed, @"// a\nb\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed setLineComment];
+        Check(@"IDM_EDIT_BLOCK_COMMENT_SET", @"adds a comment level to every line, commented or not",
+              [DocText(ed) isEqualToString:@"// // a\n// b\n"]);
+        // A language with only a stream comment wraps each line (EDIT-056).
+        [ed setLanguageNamed:@"html"];
+        SetDoc(ed, @"<p>hi</p>\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed toggleLineComment];
+        BOOL wrappedHtml = [DocText(ed) isEqualToString:@"<!-- <p>hi</p> -->\n"];
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed uncommentLines];
+        Check(@"IDM_EDIT_BLOCK_COMMENT", @"HTML lines are wrapped in <!-- --> and unwrapped again",
+              wrappedHtml && [DocText(ed) isEqualToString:@"<p>hi</p>\n"]);
+        [ed setLanguageNamed:@"cpp"];
 
         SetDoc(ed, @"value\n");
         [sci message:SCI_SETSEL wParam:0 lParam:5];
