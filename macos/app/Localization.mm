@@ -8,6 +8,9 @@
 /// What the port says and Windows does not (its own panels and settings),
 /// from macos/resources/nativeLang-extra/<the same file name>.
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraStrings;
+/// The same by the English text exactly: "Execute NppExec Script…" and "Execute NppExec Script"
+/// are one key once normalised, and each has its own words.
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *extraExact;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *menuNames;      // menuId / subMenuId -> text
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *englishMenuIds;  // english name -> menuId / subMenuId
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *strings;        // normalised english -> text
@@ -353,13 +356,14 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         }
     }
     self.extraStrings = [NSMutableDictionary dictionary];
+    self.extraExact = [NSMutableDictionary dictionary];
     NSString *extraPath = [[[dir stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"nativeLang-extra"]
                            stringByAppendingPathComponent:fileName];
     NSData *extraData = [NSData dataWithContentsOfFile:extraPath];
     NSXMLDocument *extra = extraData ? [[NSXMLDocument alloc] initWithData:extraData options:0 error:NULL] : nil;
     for (NSXMLElement *item in [extra.rootElement elementsForName:@"Item"]) {
         NSString *en = [item attributeForName:@"english"].stringValue, *text = [item attributeForName:@"text"].stringValue;
-        if (en.length && text.length) self.extraStrings[Normalised(en)] = text;
+        if (en.length && text.length) { self.extraStrings[Normalised(en)] = text; self.extraExact[en] = text; }
     }
     self.languageFile = fileName;
     return YES;
@@ -463,7 +467,7 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             // words itself ("Move to Trash", not "Move to Recycle Bin"; "…" set as a Mac
             // sets it) or has on its own (Selected Numbers > Count), and it is that
             // file's translator who chose the words.
-            NSString *extra = self.extraStrings[Normalised(english)];
+            NSString *extra = self.extraExact[english] ?: self.extraStrings[Normalised(english)];
             if (extra) ownName = YES;
             text = (identifier && !ownName) ? [self commandName:identifier.intValue] : nil;
             if (!text && extra && ownName) text = [self translate:english hit:extra];
