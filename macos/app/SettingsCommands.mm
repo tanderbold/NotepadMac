@@ -33,7 +33,7 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"showWhitespace"):  @NO,
         Key(@"showIndentGuides"):@YES,
         Key(@"showEOL"): @NO, Key(@"showWrapSymbol"): @NO,
-        Key(@"restoreSession"):  @NO,
+        Key(@"restoreSession"):  @YES,   // NppGUI::_rememberLastSession = true
         Key(@"detectLanguageFromContent"): @YES,
         Key(@"defaultEOL"):      @(SC_EOL_LF),
         Key(@"defaultEncoding"): @"UTF-8",

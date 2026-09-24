@@ -7804,6 +7804,9 @@ int NppMacRunTests(AppDelegate *app) {
         Check(@"IDM_SETTING_PREFERENCE (new document at startup)",
               @"\"Always open a new document in addition at startup\" is off by default, as upstream",
               [registered[@"NppMac.openNewDocumentAtStartup"] isEqual:@NO]);
+        Check(@"IDM_SETTING_PREFERENCE (remember session)",
+              @"\"Remember current session for next launch\" is on by default, as upstream (NppGUI::_rememberLastSession)",
+              [registered[@"NppMac.restoreSession"] isEqual:@YES]);
     }
 
     if (NppSectionWanted(@"Appearance: themes")) { printf("\n== Appearance: themes ==\n");
