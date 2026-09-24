@@ -21,6 +21,12 @@
 #import "TabBarView.h"
 #import "UpdateChecker.h"
 
+// TabBarView.mm's own: where a tab's close button is drawn, and whether it is.
+@interface NppTabBarView (E2EPrivate)
+- (NSRect)closeButtonRectForIndex:(NSInteger)index;
+- (BOOL)closeButtonVisibleForIndex:(NSInteger)index;
+@end
+
 typedef NSDictionary *_Nullable (^NppE2EToolBlock)(NSDictionary *args, NSError **error);
 
 @interface NppAgentServer (E2EPrivate)
@@ -357,6 +363,26 @@ static void E2EHookPrinting(void) {
 }
 @end
 
+// Brace highlighting: Scintilla keeps the braces it was last told to show and has no
+// message that gives them back, so what each view was last sent is kept beside it.
+static const char kE2EBraces = 0;
+static void E2ENoteBraces(ScintillaView *sci, unsigned int message, uptr_t w, sptr_t l) {
+    // As Editor::SetBraceHighlight holds it: two positions (-1 for none) and the style they are drawn in.
+    NSArray *state = message == SCI_BRACEHIGHLIGHT ? @[@((sptr_t)w), @(l), @(STYLE_BRACELIGHT)]
+                                                   : @[@((sptr_t)w), @(-1), @(STYLE_BRACEBAD)];
+    objc_setAssociatedObject(sci, &kE2EBraces, state, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+@implementation ScintillaView (NppE2EBraces)
+- (sptr_t)e2e_message:(unsigned int)message wParam:(uptr_t)w lParam:(sptr_t)l {
+    if (message == SCI_BRACEHIGHLIGHT || message == SCI_BRACEBADLIGHT) E2ENoteBraces(self, message, w, l);
+    return [self e2e_message:message wParam:w lParam:l];
+}
+- (sptr_t)e2e_message:(unsigned int)message wParam:(uptr_t)w {
+    if (message == SCI_BRACEHIGHLIGHT || message == SCI_BRACEBADLIGHT) E2ENoteBraces(self, message, w, 0);
+    return [self e2e_message:message wParam:w];
+}
+@end
+
 static void E2ESwap(Class cls, SEL original, SEL replacement, BOOL classMethod) {
     Method a = classMethod ? class_getClassMethod(cls, original) : class_getInstanceMethod(cls, original);
     Method b = classMethod ? class_getClassMethod(cls, replacement) : class_getInstanceMethod(cls, replacement);
@@ -396,6 +422,11 @@ void NppE2EInstall(void) {
         E2ESwap([NSEvent class], @selector(modifierFlags), @selector(e2e_modifierFlags), YES);
         E2ESwap([NSApplication class], @selector(keyWindow), @selector(e2e_keyWindow), NO);
         E2ESwap([NSWindow class], @selector(isKeyWindow), @selector(e2e_isKeyWindow), NO);
+        // objc_getClass, not [ScintillaView class]: messaging the class here, before there is an
+        // application, would run its +initialize too early.
+        Class sciClass = objc_getClass("ScintillaView");
+        E2ESwap(sciClass, @selector(message:wParam:lParam:), @selector(e2e_message:wParam:lParam:), NO);
+        E2ESwap(sciClass, @selector(message:wParam:), @selector(e2e_message:wParam:), NO);
     });
 }
 
@@ -477,8 +508,15 @@ static NSDictionary *E2EControlInfo(NSView *v, NSString *path) {
         for (NSInteger i = 0; i < (NSInteger)bar.items.count; ++i) {
             NppTabItem *item = bar.items[(NSUInteger)i];
             NSRect r = [bar frameOfTabAtIndex:i];
-            [tabs addObject:@{@"title": item.title ?: @"", @"modified": @(item.modified), @"pinned": @(item.pinned),
-                              @"colour": @(item.colour), @"frame": @[@(r.origin.x), @(r.origin.y), @(r.size.width), @(r.size.height)]}];
+            // label: the text the tab draws (cut to the length set), beside the item's whole title.
+            NSMutableDictionary *tab = [@{@"title": item.title ?: @"", @"label": [bar displayTitleAtIndex:i],
+                                          @"modified": @(item.modified), @"pinned": @(item.pinned), @"colour": @(item.colour),
+                                          @"frame": @[@(r.origin.x), @(r.origin.y), @(r.size.width), @(r.size.height)]} mutableCopy];
+            if ([bar closeButtonVisibleForIndex:i]) {
+                NSRect c = [bar closeButtonRectForIndex:i];
+                tab[@"close"] = @[@(c.origin.x), @(c.origin.y), @(c.size.width), @(c.size.height)];
+            }
+            [tabs addObject:tab];
         }
         d[@"tabs"] = tabs;
         d[@"selected"] = @(bar.selectedIndex);
@@ -938,6 +976,37 @@ static void E2EClickAt(NSWindow *w, NSPoint inWindow, NSEventModifierFlags flags
     if (left) { if (view) [view mouseUp:left]; else [NSApp sendEvent:left]; }
 }
 
+/// A drag with the left button: down at `from`, moved in steps, up at `to` (window
+/// coordinates; `to` may lie outside the window, as the pointer does in a real drag).
+/// The moves and the up are queued before the down is sent, as for a click: a view
+/// that tracks the drag in a loop of its own (NSSplitView's divider) pulls them from
+/// the queue; one the window tells of each event (a dock's tab strip) leaves them, and
+/// they are delivered here through the window, which gives them to the view the down went to.
+static void E2EDragAt(NSWindow *w, NSPoint from, NSPoint to, NSEventModifierFlags flags) {
+    NSTimeInterval now = NSProcessInfo.processInfo.systemUptime;
+    NSEvent *down = [NSEvent mouseEventWithType:NSEventTypeLeftMouseDown location:from modifierFlags:flags timestamp:now
+                                   windowNumber:w.windowNumber context:nil eventNumber:0 clickCount:1 pressure:1];
+    NSMutableArray<NSEvent *> *rest = [NSMutableArray array];
+    const int steps = 10;
+    for (int i = 1; i <= steps; ++i) {
+        NSPoint p = NSMakePoint(from.x + (to.x - from.x) * i / steps, from.y + (to.y - from.y) * i / steps);
+        [rest addObject:[NSEvent mouseEventWithType:NSEventTypeLeftMouseDragged location:p modifierFlags:flags
+                                          timestamp:now + 0.01 * i windowNumber:w.windowNumber context:nil
+                                        eventNumber:0 clickCount:1 pressure:1]];
+    }
+    [rest addObject:[NSEvent mouseEventWithType:NSEventTypeLeftMouseUp location:to modifierFlags:flags
+                                      timestamp:now + 0.01 * (steps + 1) windowNumber:w.windowNumber context:nil
+                                    eventNumber:0 clickCount:1 pressure:1]];
+    for (NSEvent *e in rest.reverseObjectEnumerator) [NSApp postEvent:e atStart:YES];
+    [NSApp sendEvent:down];
+    NSEvent *e;
+    while ((e = [NSApp nextEventMatchingMask:NSEventMaskLeftMouseDragged | NSEventMaskLeftMouseUp untilDate:[NSDate distantPast]
+                                      inMode:NSDefaultRunLoopMode dequeue:YES])) {
+        [NSApp sendEvent:e];
+        if (e.type == NSEventTypeLeftMouseUp) break;
+    }
+}
+
 #pragma mark - Values across the JSON boundary
 
 static id E2EJSONValue(id value) {
@@ -1061,9 +1130,11 @@ static id E2ETarget(NSString *name, NSError **error) {
     NppE2EInstall();
 
     [self addTool:@"e2e_sci"
-      description:@"E2E: sends a Scintilla message to a view (main, sub, front = the focused one, map). lparam is an "
-                  @"integer or a string (passed as a C string); returns=string reads a string answer the way "
-                  @"SCI_GETTEXT-style messages give one (first asking for the length with lparam 0)."
+      description:@"E2E: sends a Scintilla message to a view (main, sub, front = the focused one, map). wparam and "
+                  @"lparam are integers or strings (passed as C strings: SCI_GETREPRESENTATION takes its character in "
+                  @"wparam); returns=string reads a string answer the way SCI_GETTEXT-style messages give one (first "
+                  @"asking for the length with lparam 0). braces=true instead gives the brace highlight the view was "
+                  @"last told to show: [position, position, style], -1 for none."
            schema:E2ESchema(@{})
           handler:^NSDictionary *(NSDictionary *args, NSError **error) {
         AppDelegate *app = (AppDelegate *)NSApp.delegate;
@@ -1081,9 +1152,38 @@ static id E2ETarget(NSString *name, NSError **error) {
             if ([v isKindOfClass:[ScintillaView class]]) sci = v; else { *error = E2EFail(@"No view %@", which); return nil; }
         }
         if (!sci) { *error = E2EFail(@"View %@ is not there", which); return nil; }
+        if ([args[@"braces"] boolValue]) return @{@"braces": objc_getAssociatedObject(sci, &kE2EBraces) ?: @[@(-1), @(-1), @(STYLE_BRACELIGHT)]};
         unsigned int message = [args[@"message"] unsignedIntValue];
-        uptr_t w = (uptr_t)[args[@"wparam"] longLongValue];
+        id wArg = args[@"wparam"];
         id l = args[@"lparam"];
+        // Messages that read a C string from wParam or lParam: given a number (or nothing), Scintilla
+        // would strlen() the null pointer and the application would crash under the test.
+        static NSSet<NSNumber *> *stringW, *stringL;
+        static dispatch_once_t once;
+        dispatch_once(&once, ^{
+            stringW = [NSSet setWithArray:@[@(SCI_SETREPRESENTATION), @(SCI_GETREPRESENTATION), @(SCI_CLEARREPRESENTATION),
+                                            @(SCI_SETREPRESENTATIONAPPEARANCE), @(SCI_GETREPRESENTATIONAPPEARANCE),
+                                            @(SCI_SETREPRESENTATIONCOLOUR), @(SCI_GETREPRESENTATIONCOLOUR),
+                                            @(SCI_SETPROPERTY), @(SCI_GETPROPERTY), @(SCI_GETPROPERTYEXPANDED),
+                                            @(SCI_GETPROPERTYINT)]];
+            stringL = [NSSet setWithArray:@[@(SCI_SETTEXT), @(SCI_REPLACESEL), @(SCI_SETREPRESENTATION), @(SCI_SETPROPERTY),
+                                            @(SCI_SETKEYWORDS), @(SCI_ADDTEXT), @(SCI_APPENDTEXT), @(SCI_INSERTTEXT),
+                                            @(SCI_REPLACETARGET), @(SCI_REPLACETARGETRE), @(SCI_REPLACETARGETMINIMAL),
+                                            @(SCI_SEARCHINTARGET), @(SCI_SEARCHNEXT), @(SCI_SEARCHPREV),
+                                            @(SCI_STYLESETFONT), @(SCI_SETWORDCHARS), @(SCI_SETWHITESPACECHARS),
+                                            @(SCI_SETPUNCTUATIONCHARS), @(SCI_AUTOCSHOW), @(SCI_USERLISTSHOW),
+                                            @(SCI_CALLTIPSHOW),
+                                            @(SCI_COPYTEXT), @(SCI_TEXTWIDTH)]];
+        });
+        if ([stringW containsObject:@(message)] && ![wArg isKindOfClass:[NSString class]]) {
+            *error = E2EFail(@"Message %u takes a string in wparam", message);
+            return nil;
+        }
+        if ([stringL containsObject:@(message)] && ![args[@"returns"] isEqual:@"string"] && ![l isKindOfClass:[NSString class]]) {
+            *error = E2EFail(@"Message %u takes a string in lparam", message);
+            return nil;
+        }
+        uptr_t w = [wArg isKindOfClass:[NSString class]] ? (uptr_t)[wArg UTF8String] : (uptr_t)[wArg longLongValue];
         if ([args[@"returns"] isEqual:@"string"]) {
             sptr_t length = [sci message:message wParam:w lParam:0];
             if (length < 0) length = 0;
@@ -1598,7 +1698,10 @@ static id E2ETarget(NSString *name, NSError **error) {
                   @"point [x, y] in the view's own coordinates (default: its middle; for an editor, point may be "
                   @"{line, column} one-based), clicks (1, 2, 3), modifiers ['cmd','alt','shift','ctrl'], "
                   @"button left|right. A right click does not pop the menu up: it returns the menu the view gives "
-                  @"for it, and performs menu_path (A|B) in it when given."
+                  @"for it, and performs menu_path (A|B) in it when given. A drag instead of a click: drag_to [x, y] "
+                  @"(the view's coordinates), drag_by [dx, dy] or drag_to_screen [x, y] (screen coordinates, as "
+                  @"window frames give them). divider: the point is the middle of a split view's divider - an index "
+                  @"when the target is the NSSplitView, or before|after for the divider beside a view it holds."
            schema:E2ESchema(@{})
           handler:^NSDictionary *(NSDictionary *args, NSError **error) {
         AppDelegate *app = (AppDelegate *)NSApp.delegate;
@@ -1640,6 +1743,28 @@ static id E2ETarget(NSString *name, NSError **error) {
         NSPoint local = NSMakePoint(NSMidX(v.bounds), NSMidY(v.bounds));
         NSArray *pt = args[@"point"];
         if ([pt isKindOfClass:[NSArray class]] && pt.count == 2) local = NSMakePoint([pt[0] doubleValue], [pt[1] doubleValue]);
+        id divider = args[@"divider"];
+        if (divider) {
+            NSSplitView *split = nil;
+            NSInteger index = -1;
+            if ([v isKindOfClass:[NSSplitView class]] && [divider isKindOfClass:[NSNumber class]]) {
+                split = (NSSplitView *)v;
+                index = [divider integerValue];
+            } else if ([v.superview isKindOfClass:[NSSplitView class]]) {
+                split = (NSSplitView *)v.superview;
+                NSInteger at = (NSInteger)[split.subviews indexOfObject:v];
+                index = [divider isEqual:@"before"] ? at - 1 : at;
+            }
+            if (!split || index < 0 || index + 1 >= (NSInteger)split.subviews.count) {
+                *error = E2EFail(@"No divider %@ there", divider);
+                return nil;
+            }
+            NSRect a = split.subviews[(NSUInteger)index].frame;
+            CGFloat half = split.dividerThickness / 2;
+            local = split.isVertical ? NSMakePoint(NSMaxX(a) + half, NSMidY(split.bounds))
+                                     : NSMakePoint(NSMidX(split.bounds), split.isFlipped ? NSMaxY(a) + half : NSMinY(a) - half);
+            v = split;
+        }
         NSPoint inWindow = [v convertPoint:local toView:nil];
         NSEventModifierFlags flags = 0;
         for (NSString *m in args[@"modifiers"] ?: @[]) {
@@ -1670,6 +1795,17 @@ static id E2ETarget(NSString *name, NSError **error) {
                 return @{@"ran": @YES};
             }
             return @{@"menu": E2EMenuTree(menu, 2)};
+        }
+        NSArray *dragTo = args[@"drag_to"], *dragBy = args[@"drag_by"], *dragToScreen = args[@"drag_to_screen"];
+        if (dragTo || dragBy || dragToScreen) {
+            NSPoint to;
+            if (dragToScreen) to = [w convertPointFromScreen:NSMakePoint([dragToScreen[0] doubleValue], [dragToScreen[1] doubleValue])];
+            else if (dragTo) to = [v convertPoint:NSMakePoint([dragTo[0] doubleValue], [dragTo[1] doubleValue]) toView:nil];
+            else to = [v convertPoint:NSMakePoint(local.x + [dragBy[0] doubleValue], local.y + [dragBy[1] doubleValue]) toView:nil];
+            gE2EForcedKeyWindow = w;
+            E2EDragAt(w, inWindow, to, flags);
+            gE2EForcedKeyWindow = nil;
+            return @{@"dragged": @YES, @"from": @[@(inWindow.x), @(inWindow.y)], @"to": @[@(to.x), @(to.y)]};
         }
         NSInteger clicks = args[@"clicks"] ? [args[@"clicks"] integerValue] : 1;
         gE2EForcedKeyWindow = w;
