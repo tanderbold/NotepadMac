@@ -27,6 +27,7 @@ static NSString *SliceBytes(NSData *data, long start, long end) {
 
 /// style 0..4 -> indicators 8..12; NPPMAC_STYLE_COUNT -> the Find Mark indicator.
 static int IndicatorFor(NSInteger style) {
+    if (style == NPPMAC_SMART_STYLE) return NPPMAC_SMART_INDICATOR;
     if (style >= NPPMAC_STYLE_COUNT) return NPPMAC_FIND_MARK_INDICATOR;
     if (style < 0) style = 0;
     return NPPMAC_STYLE_FIRST_INDICATOR + (int)style;
@@ -42,7 +43,8 @@ static int IndicatorFor(NSInteger style) {
         0x7FFFFF,   // orange
         0x00A5FF,   // find mark
     };
-    int slot = indicator - NPPMAC_STYLE_FIRST_INDICATOR;
+    // Smart highlighting keeps the look it had on mark style 5's indicator.
+    int slot = indicator == NPPMAC_SMART_INDICATOR ? 4 : indicator - NPPMAC_STYLE_FIRST_INDICATOR;
     if (slot < 0 || slot > NPPMAC_STYLE_COUNT) slot = NPPMAC_STYLE_COUNT;
     [sci message:SCI_INDICSETSTYLE wParam:(uptr_t)indicator lParam:INDIC_ROUNDBOX];
     [sci message:SCI_INDICSETALPHA wParam:(uptr_t)indicator lParam:80];

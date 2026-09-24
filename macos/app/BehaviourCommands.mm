@@ -377,8 +377,8 @@ static BOOL UrlLooksReal(NSString *candidate) {
 
 - (NSUInteger)updateSmartHighlight {
     ScintillaView *sci = self.sci;
-    // Style 4 is reserved for this, as Notepad++ reserves a Smart Highlighting style.
-    NSInteger style = 4;
+    // Its own indicator, as Notepad++ reserves a Smart Highlighting style.
+    NSInteger style = NPPMAC_SMART_STYLE;
     [self clearStyle:style];
     [self clearSmartHighlightInOtherView];
     if (![NppPreferences shared].smartHighlightEnabled ||
@@ -405,7 +405,7 @@ static BOOL UrlLooksReal(NSString *candidate) {
 - (void)clearSmartHighlightInOtherView {
     ScintillaView *other = self.secondarySci;
     if (!other) return;
-    [other message:SCI_SETINDICATORCURRENT wParam:(uptr_t)(NPPMAC_STYLE_FIRST_INDICATOR + 4)];
+    [other message:SCI_SETINDICATORCURRENT wParam:(uptr_t)NPPMAC_SMART_INDICATOR];
     [other message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[other message:SCI_GETLENGTH]];
 }
 
@@ -413,7 +413,7 @@ static BOOL UrlLooksReal(NSString *candidate) {
 /// the same indicator and look.
 - (NSUInteger)smartHighlightOtherViewMatchCase:(BOOL)matchCase wholeWord:(BOOL)wholeWord {
     ScintillaView *sci = self.sci, *other = self.secondarySci;
-    int indicator = NPPMAC_STYLE_FIRST_INDICATOR + 4;
+    int indicator = NPPMAC_SMART_INDICATOR;
     long a = [sci message:SCI_GETSELECTIONSTART], b = [sci message:SCI_GETSELECTIONEND];
     NSData *mine = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
     if (b <= a || (NSUInteger)b > mine.length) return 0;

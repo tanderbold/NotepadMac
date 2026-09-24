@@ -10,6 +10,12 @@ NS_ASSUME_NONNULL_BEGIN
 #define NPPMAC_STYLE_FIRST_INDICATOR 8
 /// Indicator 13 backs "Find Mark Style", the one Find's Mark All writes.
 #define NPPMAC_FIND_MARK_INDICATOR 13
+/// Smart highlighting has an indicator of its own, as upstream's
+/// SCE_UNIVERSAL_FOUND_STYLE_SMART is apart from the five mark styles: on 12 it
+/// cleared mark style 5 at every selection change (SEARCH-109..122). Its style
+/// number for the calls below is NPPMAC_SMART_STYLE.
+#define NPPMAC_SMART_INDICATOR 19
+#define NPPMAC_SMART_STYLE 100
 
 @interface EditorController (SearchCommands)
 

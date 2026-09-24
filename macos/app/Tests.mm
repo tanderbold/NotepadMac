@@ -8888,8 +8888,8 @@ int NppMacRunTests(AppDelegate *app) {
         ScintillaView *other = ed.secondarySci;
         NSUInteger inOther = 0;
         for (long pos = 0; pos < [other message:SCI_GETLENGTH]; ++pos) {
-            if ([other message:SCI_INDICATORVALUEAT wParam:NPPMAC_STYLE_FIRST_INDICATOR + 4 lParam:pos] &&
-                (pos == 0 || ![other message:SCI_INDICATORVALUEAT wParam:NPPMAC_STYLE_FIRST_INDICATOR + 4 lParam:pos - 1])) inOther++;
+            if ([other message:SCI_INDICATORVALUEAT wParam:NPPMAC_SMART_INDICATOR lParam:pos] &&
+                (pos == 0 || ![other message:SCI_INDICATORVALUEAT wParam:NPPMAC_SMART_INDICATOR lParam:pos - 1])) inOther++;
         }
         hp.smartHighlightOtherView = NO;
         [ed setSecondaryViewVisible:NO];
