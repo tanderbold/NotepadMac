@@ -725,8 +725,11 @@ static BOOL IsBlockIf(NSString *rest) {
                                                       stopWhen:^BOOL{ return weakSelf.cancelled; }];
     NSString *output = result.output ?: @"";
     if (output.length) [self record:output];
-    [self print:[NSString stringWithFormat:@"<<< Process finished. (Exit code %d)%@", result.exitStatus,
-                 result.timedOut ? @" - timed out" : @""]];
+    // A program whose output does not end its last line (printf '%s|' ...) must not have
+    // "<<< Process finished" run on after it: NppExec starts that message on a line of its own.
+    BOOL openLine = output.length && ![output hasSuffix:@"\n"] && ![output hasSuffix:@"\r"];
+    [self print:[NSString stringWithFormat:@"%@<<< Process finished. (Exit code %d)%@", openLine ? @"\n" : @"",
+                 result.exitStatus, result.timedOut ? @" - timed out" : @""]];
     while ([output hasSuffix:@"\n"] || [output hasSuffix:@"\r"]) output = [output substringToIndex:output.length - 1];
     NSArray *outLines = [output componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
     self.variables[@"OUTPUT"] = output;

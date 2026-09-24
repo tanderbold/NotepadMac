@@ -131,7 +131,9 @@ static NSString *Key(NSString *name) { return [kDefaultsPrefix stringByAppending
         Key(@"autoInsertDoubleQuote"): @NO,
         Key(@"autoInsertCloseTag"): @NO,
         Key(@"defaultLanguage"): @"",
-        Key(@"openNewDocumentAtStartup"): @YES,
+        // Parameters.h: _addNewDocumentOnStartup = false. On by mistake, it went unnoticed while
+        // the box did nothing; once it worked every session launch got an extra "new 1".
+        Key(@"openNewDocumentAtStartup"): @NO,
         Key(@"untitledFromFirstLine"): @NO,
         Key(@"hideTabBar"): @NO,
         Key(@"tabDoubleClickCloses"): @NO,

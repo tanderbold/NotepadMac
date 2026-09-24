@@ -7762,6 +7762,8 @@ int NppMacRunTests(AppDelegate *app) {
     }
 
     if (NppSectionWanted(@"Preferences: pages")) { printf("\n== Preferences: pages ==\n");
+        Check(@"Preferences (defaults)", @"a new document in addition at startup is off, as upstream (_addNewDocumentOnStartup = false)",
+              [[[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain][@"NppMac.openNewDocumentAtStartup"] isEqual:@NO]);
         PreferencesWindow *prefs = [[PreferencesWindow alloc] initWithEditor:ed];
         NSArray *pages = [prefs categoryNames];
 
@@ -11020,6 +11022,9 @@ int NppMacRunTests(AppDelegate *app) {
         if (!(flow && shell)) printf("%s\n", log.UTF8String);
         Check(@"NppExec (script)", @"SET and SET ~, IF…GOTO and IF/ELSE IF/ELSE/ENDIF, CD, ENV_SET, $(OUTPUT) and $(EXITCODE)",
               flow && shell);
+        [engine runScript:@"/usr/bin/printf 'no-newline|'\n" arguments:@[]];
+        Check(@"NppExec (script)", @"output without a final newline: \"<<< Process finished\" still starts a line of its own",
+              [engine.log containsString:@"no-newline|\n<<< Process finished. (Exit code 0)"]);
 
         // The editor's commands: open by mask, switch, change, save, close.
         NSUInteger docsBefore = ed.documents.count;
