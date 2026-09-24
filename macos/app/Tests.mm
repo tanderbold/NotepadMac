@@ -8414,11 +8414,14 @@ int NppMacRunTests(AppDelegate *app) {
         [ed setLanguageNamed:@"cpp"];
         [sci message:SCI_COLOURISE wParam:0 lParam:-1];
         long commentFore = [sci message:SCI_STYLEGETFORE wParam:SCE_C_COMMENTLINE];
-        long wordBold = [sci message:SCI_STYLEGETBOLD wParam:SCE_C_WORD];
+        long wordBold = [sci message:SCI_STYLEGETBOLD wParam:(uptr_t)[sci message:SCI_GETSTYLEAT wParam:8]];   // "int"
         p.printColourMode = NppPrintWYSIWYG;
         p.printLineNumbers = YES;
+        NSString *fontWas = p.fontName;
+        p.fontName = @"Menlo";                       // a family with a bold face
         NSTextStorage *styled = ((NSTextView *)[ed printOperationShowingPanel:NO].view).textStorage;
         p.printLineNumbers = NO;
+        p.fontName = fontWas;
         NSRange noteAt = [styled.string rangeOfString:@"// note"];
         NSRange intAt = [styled.string rangeOfString:@"int"];
         NSColor *noteColour = noteAt.length ? [[styled attribute:NSForegroundColorAttributeName atIndex:noteAt.location
@@ -8427,10 +8430,6 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL intBold = (intFont.fontDescriptor.symbolicTraits & NSFontDescriptorTraitBold) != 0;
         long printedFore = noteColour ? (lround(noteColour.redComponent * 255) | lround(noteColour.greenComponent * 255) << 8 |
                                          lround(noteColour.blueComponent * 255) << 16) : -1;
-        if (!([styled.string hasPrefix:@"1  // note"] && printedFore == commentFore && intBold == (wordBold != 0)))
-            printf("    styled: %s | fore %lx want %lx | bold %d want %ld\n",
-                   [styled.string substringToIndex:MIN((NSUInteger)30, styled.string.length)].UTF8String,
-                   printedFore, commentFore, intBold, wordBold);
         Check(@"IDM_FILE_PRINT (styled)",
               @"the print keeps each style's colour and bold, with numbered lines, and leaves the editor's styles whole",
               [styled.string hasPrefix:@"1  // note"] && [styled.string containsString:@"2  int x;"] &&

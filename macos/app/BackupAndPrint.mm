@@ -302,11 +302,11 @@ static NSColor *InvertedLight(NSColor *c) {
         style = MAX(0, MIN(style, STYLE_MAX));
         NSDictionary *hit = cache[@(style)];
         if (hit) return hit;
-        NSFontDescriptorSymbolicTraits traits = 0;
-        if ([sci message:SCI_STYLEGETBOLD wParam:(uptr_t)style]) traits |= NSFontDescriptorTraitBold;
-        if ([sci message:SCI_STYLEGETITALIC wParam:(uptr_t)style]) traits |= NSFontDescriptorTraitItalic;
-        NSFont *font = traits ? ([NSFont fontWithDescriptor:[base.fontDescriptor fontDescriptorWithSymbolicTraits:traits]
-                                                       size:base.pointSize] ?: base) : base;
+        // The family's own bold and italic faces (Courier-Bold, Menlo-Italic...).
+        NSFont *font = base;
+        NSFontManager *fm = [NSFontManager sharedFontManager];
+        if ([sci message:SCI_STYLEGETBOLD wParam:(uptr_t)style]) font = [fm convertFont:font toHaveTrait:NSBoldFontMask];
+        if ([sci message:SCI_STYLEGETITALIC wParam:(uptr_t)style]) font = [fm convertFont:font toHaveTrait:NSItalicFontMask];
         NSMutableDictionary *a = [@{NSFontAttributeName: font} mutableCopy];
         NSColor *fore = PrintColour([sci message:SCI_STYLEGETFORE wParam:(uptr_t)style]);
         NSColor *back = PrintColour([sci message:SCI_STYLEGETBACK wParam:(uptr_t)style]);
