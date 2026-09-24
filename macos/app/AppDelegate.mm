@@ -1657,6 +1657,9 @@ static NSString *Ordinal(NSUInteger n) {
     self.shortcutStore = [[NppShortcutStore alloc] initWithEditor:self.editor];
     [self.shortcutStore captureMenuDefaults];
     [self.shortcutStore load];
+    // What load imported from a Windows shortcuts.xml (macros, Run commands) joins the
+    // menus on this launch too: the change notification is not observed yet here.
+    [self savedCommandsChanged:nil];
     [self.editor rebuildContextMenu];
 }
 

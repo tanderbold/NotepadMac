@@ -263,6 +263,7 @@ static NSString *XMLYesNo(BOOL b) { return b ? @"yes" : @"no"; }
 static NSDictionary<NSString *, NSString *> *PortRenamedCommands(void) {
     return @{
         @"File/Close Tab": @"IDM_FILE_CLOSE", @"File/Move to Trash": @"IDM_FILE_DELETE",
+        @"Run/Validate shortcuts": @"IDM_EXECUTE_VALIDATE_SHORTCUTSXML",
         @"File/Restore Last Closed File": @"IDM_FILE_RESTORELASTCLOSEDFILE",
         @"File/Open Recent/Open All Recent Files": @"IDM_OPEN_ALL_RECENT_FILE",
         @"File/Open Recent/Clear Menu": @"IDM_CLEAN_RECENT_FILE_LIST",

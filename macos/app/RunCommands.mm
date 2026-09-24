@@ -303,7 +303,19 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
             i += 1;
             continue;
         }
-        [out appendString:quote ? QuotedForShell(value, context) : value];
+        NSString *spliced = quote ? QuotedForShell(value, context) : value;
+        if (quote) {
+            // Inside `...` the outer shell reads the text first and does not respect
+            // single quotes: a backquote would end the substitution, a backslash
+            // escape the next character. Each backquote level gets its own escapes.
+            for (NSArray<NSNumber *> *level in substitutions) {
+                if ([level[0] intValue] != -1) continue;
+                spliced = [[[spliced stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"]
+                            stringByReplacingOccurrencesOfString:@"`" withString:@"\\`"]
+                           stringByReplacingOccurrencesOfString:@"$" withString:@"\\$"];
+            }
+        }
+        [out appendString:spliced];
         i = close.location;
     }
     return out;
@@ -341,9 +353,16 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
     NppConsolePanel *console = intoConsole ? [self console] : nil;
     [console appendText:[NSString stringWithFormat:@"> %@\n", expanded]];
 
+    // The command goes to the shell as a script file in UTF-8, not as an argument:
+    // NSTask passes arguments through fileSystemRepresentation, which decomposes them
+    // (é arrives as e + U+0301, and printf 'é' prints the pieces). ShellExecute on
+    // Windows gets the text as written; so does /bin/sh here.
+    NSString *script = [NSTemporaryDirectory() stringByAppendingPathComponent:
+                        [NSString stringWithFormat:@"nppmac-run-%@.sh", [NSUUID UUID].UUIDString]];
+    if (![expanded writeToFile:script atomically:NO encoding:NSUTF8StringEncoding error:NULL]) script = nil;
     NSTask *task = [[NSTask alloc] init];
     task.executableURL = [NSURL fileURLWithPath:@"/bin/sh"];
-    task.arguments = @[@"-c", expanded];
+    task.arguments = script ? @[script] : @[@"-c", expanded];
 
     if (environment) {
         NSMutableDictionary *env = [[NSProcessInfo processInfo].environment mutableCopy];
@@ -362,6 +381,7 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
 
     NSError *error = nil;
     if (![task launchAndReturnError:&error]) {
+        if (script) [[NSFileManager defaultManager] removeItemAtPath:script error:NULL];
         NSString *message = [NSString stringWithFormat:@"%@\n",
                              error.localizedDescription ?: @"the command could not be started"];
         result.output = message;
@@ -425,6 +445,7 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
 
     [task waitUntilExit];   // the pipe is closed by now, so this returns at once
     if (watch) dispatch_source_cancel(watch);
+    if (script) [[NSFileManager defaultManager] removeItemAtPath:script error:NULL];
     result.output = [[NSString alloc] initWithData:collected encoding:NSUTF8StringEncoding] ?: @"";
     result.exitStatus = task.terminationStatus;
     result.timedOut = timedOut;

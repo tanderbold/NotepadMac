@@ -7227,6 +7227,22 @@ int NppMacRunTests(AppDelegate *app) {
         NSString *report = [ed validateShortcutsFile];
         Check(@"IDM_EXECUTE_VALIDATE_SHORTCUTSXML", @"reports on the menu shortcuts",
               [report containsString:@"shortcuts"]);
+        Check(@"IDM_EXECUTE_VALIDATE_SHORTCUTSXML (clean)", @"a clean profile has no duplicates (the hidden alternate Full Screen is not one)",
+              [report containsString:@"no duplicates"]);
+        Check(@"IDM_EXECUTE_VALIDATE_SHORTCUTSXML (menu)", @"the command has its menu item, by id",
+              [app.shortcutStore menuItemsByIdentifier][@49001] != nil);
+
+        // The command line reaches the shell as written: é precomposed, not e + U+0301.
+        NSString *bytes = [ed runCommandLine:@"printf %s 'é' | od -An -tx1 | tr -d ' \\n'" intoConsole:NO].output;
+        Check(@"IDM_EXECUTE (UTF-8)", @"a non-ASCII command reaches the shell precomposed (NFC)",
+              [bytes isEqualToString:@"c3a9"]);
+
+        // A document line with backquotes stays text inside `...` (it used to run).
+        SetDoc(ed, @"x`printf INJ`y\n");
+        [sci message:SCI_GOTOPOS wParam:0 lParam:0];
+        NSString *quoted = [ed runCommandLine:@"printf %s \"`printf %s $(CURRENT_LINESTR)`\"" intoConsole:NO].output;
+        Check(@"IDM_EXECUTE (backquotes)", @"$(CURRENT_LINESTR) inside backquotes is text, not a command",
+              [quoted isEqualToString:@"x`printf INJ`y"]);
 
         NSString *dbg = [ed debugInfo];
         BOOL fields = YES;
