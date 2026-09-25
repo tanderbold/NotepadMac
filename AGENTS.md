@@ -63,6 +63,9 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   leave the user's preferences changed, and do not do this while the user has the app open.
   Its screen is small (about 1024x768, smaller than the 1000x780 window): a check that moves or resizes
   windows must hold there too.
+  The suite runs as `-nosession`: it neither restores the saved session nor writes one, so every run
+  starts with one tab whatever the last run or the user left (a restored second-view document once
+  made four File checks fail at random); a check that needs a session saves it to a path of its own.
 
 ### Release packaging (signing and notarization)
 
