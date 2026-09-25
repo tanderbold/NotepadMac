@@ -136,6 +136,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 /// NSAlertFirstButtonReturn saves, NSAlertSecondButtonReturn does not,
 /// NSAlertThirdButtonReturn cancels. For the tests.
 @property (nonatomic) NSInteger scriptedCloseAnswer;
+/// An agent's request is running (AgentServer's callTool:): closing the last tab then never
+/// quits for "Exit on closing the last tab" - quitting is the user's, as IDM_FILE_EXIT is.
+@property (nonatomic) BOOL agentRequestRunning;
 
 /// -nosession on the command line: the session is neither loaded nor
 /// written, so the real last session is left for the next launch.

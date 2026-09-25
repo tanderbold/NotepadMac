@@ -207,6 +207,16 @@ the socket file.
   one `addTool:` call, a check in the suite's "Agent interface" section, and a row in README's table.
 - Refused to agents: `IDM_FILE_EXIT`, `IDM_FILE_DELETE`; closing a modified document without
   `discard_changes`; saving a document that has no file (that is a Save As panel, the user's).
+  Quitting stays the user's in every form: an agent closing the last tab (`close_document`, Close
+  All) never quits for "Exit on closing the last tab" (`agentRequestRunning`), a fresh tab is left.
+- While an app-modal alert or panel waits for the user, requests are still served (the main queue
+  runs in the modal's run loop), but only the reading tools (`list_documents`, `get_document`,
+  `get_selection`, `list_commands`, `detect_language`, `tokens`, `function_list`, `file_encoding`,
+  `ocr`, `read_qr`, `spell_check`) are answered; the rest are refused until it closes, because the
+  code waiting for the answer acts on what is in front then (Move to Trash, reload, Close All).
+  Refusing rather than queueing keeps the agent from hanging on a dialog the user may leave open.
+- Switching the server off (`stop`) also ends the connections already made (`shutdown`), so no
+  agent keeps control after the user unticks the preference.
 
 ### Git
 

@@ -196,6 +196,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
 
 @implementation NppAgentServer {
     NSMutableDictionary<NSString *, NppToolBlock> *_handlers;
+    NSMutableSet<NSNumber *> *_clients;   // connected sockets, so that stop can end them
 }
 
 + (instancetype)shared {
@@ -218,6 +219,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
     _listenFD = -1;
     _queue = dispatch_queue_create("org.notepad-plus-plus.mac.agent", DISPATCH_QUEUE_CONCURRENT);
     _handlers = [NSMutableDictionary dictionary];
+    _clients = [NSMutableSet set];
     [self registerTools];
     [self registerE2ETools];   // only under NPPMAC_E2E=1 (E2EHooks.mm)
     return self;
@@ -280,7 +282,14 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
         // It fails (EINVAL) only when the client has already gone - then no
         // one is left to answer, and a write would raise SIGPIPE after all.
         if (setsockopt(client, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof one) != 0) { close(client); return; }
-        dispatch_async(weakSelf.queue, ^{ [weakSelf serveClient:client]; });
+        NppAgentServer *server = weakSelf;
+        if (!server) { close(client); return; }
+        @synchronized (server->_clients) {
+            // Accepted as the server was being stopped: it does not get in.
+            if (!server.running) { close(client); return; }
+            [server->_clients addObject:@(client)];
+        }
+        dispatch_async(server.queue, ^{ [weakSelf serveClient:client]; });
     });
     dispatch_source_set_cancel_handler(source, ^{ close(fd); });
     dispatch_resume(source);
@@ -292,7 +301,13 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
     if (!self.running) return;
     dispatch_source_cancel(self.acceptSource);
     self.acceptSource = nil;
-    self.listenFD = -1;
+    // Switched off means no agent keeps control: the connections already made are ended
+    // too. shutdown, not close: the connection's own thread sees the end of its input,
+    // leaves its loop and closes the descriptor itself, so the number is not reused under it.
+    @synchronized (_clients) {
+        self.listenFD = -1;
+        for (NSNumber *client in _clients) shutdown(client.intValue, SHUT_RDWR);
+    }
     unlink([[self class] socketPath].fileSystemRepresentation);
 }
 
@@ -367,6 +382,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
             }
         }
     }
+    @synchronized (_clients) { [_clients removeObject:@(client)]; }
     close(client);
 }
 
@@ -446,12 +462,31 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
     NppToolBlock handler = _handlers[name];
     if (!handler) { if (error) *error = Fail(@"Unknown tool: %@", name); return nil; }
     if (!self.editor) { if (error) *error = Fail(@"The editor is not up yet"); return nil; }
+    // While the user answers an app-modal alert or panel, a request is served inside that
+    // modal's run loop (the main queue is drained in the common modes). The code waiting for
+    // the answer then acts on what is in front (moveToTrash:, a reload, Close All's prompts),
+    // so a request that changes what is open, in front or in a document is refused until the
+    // modal ends; one that only reads is answered. The e2e_* hooks drive modals on purpose.
+    static NSSet<NSString *> *readingTools;
+    if (!readingTools) readingTools = [NSSet setWithArray:@[@"list_documents", @"get_document", @"get_selection", @"list_commands",
+                                                            @"detect_language", @"tokens", @"function_list", @"file_encoding",
+                                                            @"ocr", @"read_qr", @"spell_check"]];
+    if (NSApp.modalWindow && ![readingTools containsObject:name] && ![name hasPrefix:@"e2e_"]) {
+        if (error) *error = Fail(@"NotepadMac is waiting for the user to answer a dialog; %@ can run once it is closed", name);
+        return nil;
+    }
     NSError *inner = nil;
     NSDictionary *answer = nil;
+    // Closing the last tab for an agent does not quit for "Exit on closing the last tab".
+    // (The e2e_* hooks stand in for the user's keys and clicks, so they act as the user.)
+    BOOL wasRunning = self.editor.agentRequestRunning;
+    self.editor.agentRequestRunning = wasRunning || ![name hasPrefix:@"e2e_"];
     @try {
         answer = handler(arguments ?: @{}, &inner);
     } @catch (NSException *e) {
         inner = Fail(@"%@", e.reason ?: e.name);
+    } @finally {
+        self.editor.agentRequestRunning = wasRunning;
     }
     if (!answer && !inner) inner = Fail(@"%@ failed", name);
     if (error) *error = inner;

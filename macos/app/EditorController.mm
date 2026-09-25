@@ -1450,7 +1450,7 @@ static BOOL gCheckingFilesOnDisk;
     if (self.docs.count && [self mainTabCount] == 0) [self setSecondaryViewVisible:NO];
 
     if (self.docs.count == 0) {
-        if ([NppPreferences shared].exitOnClosingLastTab) {
+        if ([NppPreferences shared].exitOnClosingLastTab && !self.agentRequestRunning) {
             [NSApp terminate:nil];
             return;
         }
@@ -1792,6 +1792,7 @@ static BOOL gCheckingFilesOnDisk;
     if (d.backupPath && [[NSFileManager defaultManager] fileExistsAtPath:d.backupPath]) {
         entry[@"backup"] = d.backupPath;
     }
+    if (d.fileModificationDate) entry[@"fileDate"] = d.fileModificationDate;
     // Bookmarks are marker 1, wherever it sits; the document can be asked
     // without being shown by pointing a query at its pointer... but Scintilla
     // answers for the view's document only, so the others were recorded on

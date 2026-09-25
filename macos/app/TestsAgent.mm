@@ -73,6 +73,26 @@ void NppTestsAgent(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         Check(@"Agent (get_document)", @"a line range comes back alone; overlapping edits are refused whole",
               [partial isEqualToString:@"two\n"] && overlap[@"error"] && [DocText(ed) isEqualToString:@"one\ntwo\nthree\n"]);
 
+        // While the user answers an app-modal dialog, a request that would change the editor is
+        // refused and one that reads is answered; after it, the change goes through.
+        {
+            NSPanel *modal = [[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 200, 80) styleMask:NSWindowStyleMaskTitled
+                                                          backing:NSBackingStoreBuffered defer:YES];
+            NSModalSession session = [NSApp beginModalSessionForWindow:modal];
+            BOOL inModal = NSApp.modalWindow == modal;
+            NSDictionary *changedDuring = tool(@"edit_document", @{@"document": sample, @"text": @"changed while asked\n"});
+            NSDictionary *wentDuring = tool(@"go_to", @{@"document": sample, @"line": @2});
+            NSDictionary *readDuring = tool(@"get_document", @{@"document": sample});
+            [NSApp endModalSession:session];
+            [modal orderOut:nil];
+            NSDictionary *changedAfter = tool(@"edit_document", @{@"document": sample, @"text": @"one\ntwo\nthree\n"});
+            printf("    during a modal (%d): edit %s, go_to %s\n", inModal,
+                   [changedDuring[@"error"] ?: @"ran" UTF8String], [wentDuring[@"error"] ?: @"ran" UTF8String]);
+            Check(@"Agent (while a dialog is up)", @"edit_document and go_to are refused while an app-modal dialog waits for the user, get_document is answered, and the edit goes through afterwards",
+                  inModal && [changedDuring[@"error"] containsString:@"waiting for the user"] && [wentDuring[@"error"] containsString:@"waiting for the user"] &&
+                  [readDuring[@"text"] isEqualToString:@"one\ntwo\nthree\n"] && [changedAfter[@"applied"] integerValue] == 1);
+        }
+
         // Search with Notepad++'s engine: regex hits with their place; a bad pattern names its fault; replace with $1.
         NSDictionary *found = tool(@"find", @{@"what": @"t.o", @"mode": @"regex", @"document": sample});
         NSDictionary *bad = tool(@"find", @{@"what": @"(", @"mode": @"regex", @"document": sample});
@@ -404,7 +424,41 @@ void NppTestsAgent(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         NSString *parseError = ask(@"{not json\n");
         NSString *pingBack = ask(@"{\"jsonrpc\":\"2.0\",\"id\":\"p\",\"method\":\"ping\"}\n");
         NSString *secondConnection = ask(@"{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":{\"name\":\"get_selection\",\"arguments\":{}}}\n");
+        // A lone surrogate ("\ud83d") is not JSON NSJSONSerialization reads: the line is a parse
+        // error and no tool runs, so edit_document never sees a text UTF-8 cannot hold.
+        NSString *beforeSurrogate = DocText(ed);
+        NSString *loneSurrogate = ask(@"{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/call\",\"params\":{\"name\":\"edit_document\",\"arguments\":{\"text\":\"a\\ud83db\"}}}\n");
+        Check(@"Agent (a lone surrogate)", @"a request whose text has a lone surrogate is a parse error and leaves the document as it was",
+              [loneSurrogate containsString:@"-32700"] && [DocText(ed) isEqualToString:beforeSurrogate]);
+        // A connection that stays open is ended when the server is switched off: the agent on it
+        // loses control with the rest (it reads the end of the stream, not a timeout).
+        int stay = socket(AF_UNIX, SOCK_STREAM, 0);
+        struct sockaddr_un stayAddr; memset(&stayAddr, 0, sizeof stayAddr); stayAddr.sun_family = AF_UNIX;
+        strlcpy(stayAddr.sun_path, sock2.fileSystemRepresentation, sizeof stayAddr.sun_path);
+        BOOL stayConnected = connect(stay, (struct sockaddr *)&stayAddr, sizeof stayAddr) == 0;
+        struct timeval stayWait = {5, 0};
+        setsockopt(stay, SOL_SOCKET, SO_RCVTIMEO, &stayWait, sizeof stayWait);
+        __block ssize_t stayPong = -1, stayAfter = -1;
+        dispatch_semaphore_t stayDone = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
+            const char *ping = "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"ping\"}\n";
+            write(stay, ping, strlen(ping));
+            char buf[4096];
+            stayPong = read(stay, buf, sizeof buf);
+            dispatch_semaphore_signal(stayDone);
+        });
+        NppSettleUntil(^BOOL{ return dispatch_semaphore_wait(stayDone, DISPATCH_TIME_NOW) == 0; }, 10);
         [agent stop];
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
+            char buf[4096];
+            stayAfter = read(stay, buf, sizeof buf);
+            dispatch_semaphore_signal(stayDone);
+        });
+        NppSettleUntil(^BOOL{ return dispatch_semaphore_wait(stayDone, DISPATCH_TIME_NOW) == 0; }, 10);
+        close(stay);
+        printf("    kept connection: pong %zd bytes, after stop %zd\n", stayPong, stayAfter);
+        Check(@"Agent (switched off, connections end)", @"a client connected before the server is stopped is disconnected by the stop",
+              stayConnected && stayPong > 0 && stayAfter == 0);
         // Another process's socket: a listener of our own stands in for a second NotepadMac.
         int holder = socket(AF_UNIX, SOCK_STREAM, 0);
         struct sockaddr_un held; memset(&held, 0, sizeof held); held.sun_family = AF_UNIX;
@@ -426,5 +480,25 @@ void NppTestsAgent(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         Check(@"Agent (socket life)", @"a stale socket file is replaced and a second start is harmless; a broken line gets a parse error and the next connection is served; a socket another process holds is left alone; the MISC. setting starts and stops the listener and removes the file",
               replacedStale && [parseError containsString:@"-32700"] && [pingBack containsString:@"\"id\":\"p\""] &&
               [secondConnection containsString:@"structuredContent"] && holding && leftAlone && onByPreference && offByPreference);
+
+        // "Exit on closing the last tab" is the user's: an agent closing the last tab, by
+        // close_document or Close All, leaves a fresh tab and the editor running.
+        {
+            while (ed.documents.count > 1) [ed closeDocumentAtIndex:0 discardChanges:YES];
+            [ed closeDocumentAtIndex:0 discardChanges:YES];
+            NppPreferences *xp = [NppPreferences shared];
+            BOOL wasExit = xp.exitOnClosingLastTab;
+            xp.exitOnClosingLastTab = YES;
+            tool(@"open_document", @{@"text": @"one\n"});
+            tool(@"open_document", @{@"text": @"two\n"});
+            NSDictionary *closedAll = tool(@"run_command", @{@"command": @"IDM_FILE_CLOSEALL"});
+            NSUInteger afterCloseAll = ed.documents.count;
+            NSDictionary *closedLast = tool(@"close_document", @{});
+            BOOL flagDown = !ed.agentRequestRunning;
+            xp.exitOnClosingLastTab = wasExit;
+            Check(@"Agent (last tab, exit on closing it)", @"with the setting on, an agent's Close All and close_document of the last tab leave one fresh tab and the editor running",
+                  [closedAll[@"ran"] boolValue] && afterCloseAll == 1 && [closedLast[@"open_documents"] integerValue] == 1 &&
+                  ed.documents.count == 1 && !ed.documents.firstObject.modified && flagDown);
+        }
     }
 }
