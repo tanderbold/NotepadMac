@@ -52,6 +52,9 @@
 #pragma mark - Formatting
 
 + (NSXMLDocument *)documentFromText:(NSString *)text {
+    // XML has no NUL character; a parser handed the text as a C string would stop there and
+    // take the part before it for the document, which would then replace all of it.
+    if (!text.length || [text rangeOfCharacterFromSet:[NSCharacterSet characterSetWithRange:NSMakeRange(0, 1)]].location != NSNotFound) return nil;
     NSError *error = nil;
     return [[NSXMLDocument alloc] initWithXMLString:text
                                             options:NSXMLNodePreserveCDATA
@@ -297,16 +300,16 @@ static void CollectSchemaError(void *context, const char *format, ...) {
 
 - (BOOL)prettyPrintXMLDocument:(NppXmlPrettyStyle)style {
     return [self replaceDocumentWithXML:
-        [EditorController prettyPrintXML:([self.sci string] ?: @"") style:style]];
+        [EditorController prettyPrintXML:[self documentTextIfUTF8] style:style]];
 }
 
 - (BOOL)linearizeXMLDocument {
     return [self replaceDocumentWithXML:
-        [EditorController linearizeXML:([self.sci string] ?: @"")]];
+        [EditorController linearizeXML:[self documentTextIfUTF8]]];
 }
 
 - (NppXmlError *)checkXMLSyntaxOfDocument {
-    NppXmlError *error = [EditorController checkXMLSyntax:([self.sci string] ?: @"")];
+    NppXmlError *error = [EditorController checkXMLSyntax:[self documentTextIfUTF8]];
     if (error && error.line >= 0) {
         [self.sci message:SCI_GOTOLINE wParam:(uptr_t)error.line lParam:0];
         [self refreshChrome];

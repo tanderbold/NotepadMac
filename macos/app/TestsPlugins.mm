@@ -3,6 +3,25 @@
 // Called from NppMacRunTests (Tests.mm), which runs the areas in the suite's
 // order; the helpers they share are in TestSupport.h.
 #import "TestSupport.h"
+#import <WebKit/WebKit.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+
+// A navigation as WebKit hands one to the preview's delegate, made up: a link click cannot be
+// made without a window server's events, and the delegate reads only these.
+@interface NppTestFrame : NSObject
+@property (nonatomic) BOOL isMainFrame;
+@end
+@implementation NppTestFrame
+@end
+@interface NppTestNavigation : NSObject
+@property (nonatomic) NSURLRequest *request;
+@property (nonatomic) WKNavigationType navigationType;
+@property (nonatomic) NppTestFrame *targetFrame;
+@end
+@implementation NppTestNavigation
+@end
 
 /// == JSON ==; == Compare ==; == FTP ==; == XML ==; == Run ==; == MIME Tools ==; == Converter ==; == Export ==; == Spell check ==
 void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
@@ -53,6 +72,18 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         BOOL refused = ![ed formatJSONDocument];
         Check(@"JSON refuses non-JSON", @"a non-JSON document is left untouched",
               refused && [DocText(ed) isEqualToString:before]);
+        // What follows a NUL is part of the document: formatting reads it all (a NUL is no JSON, so
+        // the format is refused), never the part before the NUL, which would replace everything.
+        NSData *(^allBytes)(void) = ^NSData *{
+            long n = [ed.sci message:SCI_GETLENGTH];
+            return [NSData dataWithBytes:(const char *)[ed.sci message:SCI_GETCHARACTERPOINTER] length:(NSUInteger)n];
+        };
+        [ed.sci message:SCI_CLEARALL];
+        [ed.sci message:SCI_APPENDTEXT wParam:15 lParam:(sptr_t)"{\"a\":1}\0{\"b\":2}"];
+        NSData *jsonBefore = allBytes();
+        BOOL jsonNulRefused = ![ed formatJSONDocument];
+        Check(@"JSON (a NUL inside)", @"a document with a NUL after its first object is refused whole and left as it was",
+              jsonNulRefused && [allBytes() isEqualToData:jsonBefore]);
 
         // The tree lists every node with its path.
         SetDoc(ed, @"{\"top\":{\"inner\":[10,20]}}");
@@ -449,6 +480,49 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
                   bomBytes.length > 3 && memcmp(bomBytes.bytes, "\xEF\xBB\xBF" "bom here\n", 12) == 0);
             ed.currentDocument.hasBOM = NO;
 
+            // A file belongs to the server it came from: after connecting to another one, Upload does not
+            // send it to the same path there (NppFTP's cache is per profile). It goes where a local file
+            // would, into the folder being browsed.
+            NSString *rootB = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_ftproot_b"];
+            [[NSFileManager defaultManager] removeItemAtPath:rootB error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtPath:[rootB stringByAppendingPathComponent:@"incoming"]
+                                      withIntermediateDirectories:YES attributes:nil error:NULL];
+            [@"B's own\n" writeToFile:[rootB stringByAppendingPathComponent:@"greeting.txt"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            NSTask *serverB = [[NSTask alloc] init];
+            serverB.executableURL = [NSURL fileURLWithPath:@"/usr/bin/python3"];
+            serverB.arguments = @[script, rootB];
+            NSPipe *outB = [NSPipe pipe];
+            serverB.standardOutput = outB;
+            NSInteger portB = 0;
+            if ([serverB launchAndReturnError:NULL]) {
+                NSScanner *scanner = [NSScanner scannerWithString:[[NSString alloc] initWithData:[outB.fileHandleForReading availableData] encoding:NSUTF8StringEncoding] ?: @""];
+                [scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:NULL];
+                [scanner scanInteger:&portB];
+            }
+            [ed openRemoteFileAtPath:@"/greeting.txt"];            // from the first server
+            NppDocument *fromA = ed.currentDocument;
+            [ed disconnectFtp];
+            NppFtpProfile *other = [[NppFtpProfile alloc] init];
+            other.name = @"test-server-b"; other.host = @"127.0.0.1"; other.port = portB; other.username = @"tester";
+            other.protocol = NppFtpPlain; other.initialDirectory = @"/incoming";
+            BOOL connectedB = portB > 0 && [ed connectToFtpProfile:other password:@"secret"];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:fromA]];
+            NSString *mappedOnB = [ed remotePathForCurrentDocument];
+            SetDoc(ed, @"meant for A\n");
+            BOOL uploadedB = [ed uploadCurrentDocument];
+            NSString *bGreeting = [NSString stringWithContentsOfFile:[rootB stringByAppendingPathComponent:@"greeting.txt"] encoding:NSUTF8StringEncoding error:NULL];
+            NSString *bIncoming = [NSString stringWithContentsOfFile:[rootB stringByAppendingPathComponent:@"incoming/greeting.txt"] encoding:NSUTF8StringEncoding error:NULL];
+            [ed disconnectFtp];
+            [ed connectToFtpProfile:profile password:@"secret"];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:fromA]];
+            NSString *mappedOnA = [ed remotePathForCurrentDocument];
+            Check(@"FTP upload (another server)", @"after connecting to a second server, a file downloaded from the first is not uploaded over the same path "
+                  @"there but into the folder being browsed; back on the first server it knows its path again",
+                  connectedB && mappedOnB == nil && uploadedB && [bGreeting isEqualToString:@"B's own\n"] &&
+                  [bIncoming isEqualToString:@"meant for A\n"] && [mappedOnA isEqualToString:@"/greeting.txt"]);
+            [serverB terminate];
+            [[NSFileManager defaultManager] removeItemAtPath:rootB error:NULL];
+
             // A failed Connect says why, in the transfer's own words.
             NppFtpProfile *dead = [[NppFtpProfile alloc] init];
             dead.name = @"test-dead"; dead.host = @"127.0.0.1"; dead.port = 1; dead.username = @"tester";
@@ -522,6 +596,13 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         BOOL refused = ![ed prettyPrintXMLDocument:NppXmlPrettyDefault];
         Check(@"XML refuses non-XML", @"a non-XML document is left untouched",
               refused && [DocText(ed) isEqualToString:before]);
+        // The same for XML: the part before a NUL is not the document.
+        [ed.sci message:SCI_CLEARALL];
+        [ed.sci message:SCI_APPENDTEXT wParam:15 lParam:(sptr_t)"<a><b/></a>\0<c>"];
+        long xmlLength = [ed.sci message:SCI_GETLENGTH];
+        BOOL xmlNulRefused = ![ed prettyPrintXMLDocument:NppXmlPrettyDefault] && ![ed linearizeXMLDocument];
+        Check(@"XML (a NUL inside)", @"a document with a NUL after its root element is refused whole and left as it was",
+              xmlNulRefused && [ed.sci message:SCI_GETLENGTH] == xmlLength && xmlLength == 15);
 
         // XPath, including an expression that selects attributes.
         NSString *doc = @"<catalog><book id=\"a\"><title>First</title></book>"
@@ -585,6 +666,11 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
     }
 
     if (NppSectionWanted(@"Run")) { printf("\n== Run ==\n");
+        // Run hands a program over and leaves it going (Command::run, ShellExecute): one that takes
+        // longer than half a minute is not stopped. Started first, looked at last.
+        __block NppRunResult *longRun = nil;
+        [ed runCommandLineInBackground:@"sleep 32; echo still-running" completion:^(NppRunResult *r) { longRun = r; }];
+        NSDate *longStart = [NSDate date];
         // The variables are read off a real document, so the test exercises the
         // same path the menu command does.
         NSString *runPath = TempFile(@"npp_run_test.txt", @"alpha beta\nsecond line\n");
@@ -674,6 +760,21 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
               async != nil && async.exitStatus == 0 &&
               [async.output isEqualToString:@"$(FILE_NAME)\n"]);
 
+        // A command that leaves a child in the background is over when the shell is: the child
+        // holds the pipe open, and waiting for its end would wait for the child.
+        [ed.console clear];
+        __block NppRunResult *leaving = nil;
+        NSDate *leaveStart = [NSDate date];
+        [ed runCommandLineInBackground:@"(sleep 4; echo late-output) & echo right-away"
+                            completion:^(NppRunResult *r) { leaving = r; }];
+        NppSettleUntil(^BOOL { return leaving != nil; }, 10);
+        NSTimeInterval leaveTook = -[leaveStart timeIntervalSinceNow];
+        NppSettleUntil(^BOOL { return [ed.console.text containsString:@"late-output"]; }, 10);
+        Check(@"Run (a child left in the background)", @"the command is finished as soon as its shell is, with what it wrote; "
+              @"what the child writes later still reaches the console",
+              leaving != nil && leaveTook < 3 && leaving.exitStatus == 0 && [leaving.output isEqualToString:@"right-away\n"] &&
+              [ed.console.text containsString:@"late-output"]);
+
         // Saved commands are keyed by name, so saving the same name again
         // replaces it rather than adding a duplicate.
         NSUInteger before = [ed savedCommands].count;
@@ -687,6 +788,9 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         Check(@"Run saved commands", @"saving by name replaces, and removing takes it away",
               replaced && [ed savedCommands].count == before);
 
+        NppSettleUntil(^BOOL { return longRun != nil; }, 45 + [longStart timeIntervalSinceNow]);
+        Check(@"Run (no time limit)", @"a program running for longer than 30 s is left to finish",
+              longRun != nil && !longRun.timedOut && longRun.exitStatus == 0 && [longRun.output isEqualToString:@"still-running\n"]);
         [[NSFileManager defaultManager] removeItemAtPath:runPath error:NULL];
         [[NSFileManager defaultManager] removeItemAtPath:plainPath error:NULL];
     }
@@ -977,6 +1081,92 @@ void NppTestsMarkdown(AppDelegate *app, EditorController *ed, ScintillaView *sci
         Check(@"Markdown preview panel", @"the panel shows and carries the rendered document",
               panel.visible && [panel.lastHTML containsString:@"<h1>Hello</h1>"] &&
               [panel.lastHTML containsString:@"<li>one</li>"]);
+        // A document's relative image is drawn from beside it (and the page is drawn at all): the page
+        // is loaded under the document's folder through the panel's own scheme, since WebKit gives a
+        // page from a string no read access to file: URLs.
+        NSString *mdFolder = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_md_images"];
+        [[NSFileManager defaultManager] removeItemAtPath:mdFolder error:NULL];
+        [[NSFileManager defaultManager] createDirectoryAtPath:mdFolder withIntermediateDirectories:YES attributes:nil error:NULL];
+        NSBitmapImageRep *red = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:120 pixelsHigh:120 bitsPerSample:8
+                                  samplesPerPixel:3 hasAlpha:NO isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:0];
+        for (NSInteger y = 0; y < 120; ++y) for (NSInteger x = 0; x < 120; ++x) { NSUInteger px[3] = {255, 0, 0}; [red setPixel:px atX:x y:y]; }
+        [[red representationUsingType:NSBitmapImageFileTypePNG properties:@{}] writeToFile:[mdFolder stringByAppendingPathComponent:@"pic.png"] atomically:YES];
+        NSString *mdPath = [mdFolder stringByAppendingPathComponent:@"doc.md"];
+        [@"<b>raw</b>\n\n![p](pic.png)\n" writeToFile:mdPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        NSInteger (^redPixels)(void) = ^NSInteger {
+            __block NSImage *shot = nil;
+            __block BOOL done = NO;
+            [panel.webView takeSnapshotWithConfiguration:nil completionHandler:^(NSImage *image, NSError *error) { shot = image; done = YES; }];
+            NppSettleUntil(^BOOL { return done; }, 5);
+            NSBitmapImageRep *bits = shot ? [[NSBitmapImageRep alloc] initWithData:shot.TIFFRepresentation] : nil;
+            NSInteger count = 0;
+            for (NSInteger y = 0; y < bits.pixelsHigh; y += 2) for (NSInteger x = 0; x < bits.pixelsWide; x += 2) {
+                NSColor *c = [[bits colorAtX:x y:y] colorUsingColorSpace:NSColorSpace.deviceRGBColorSpace];
+                if (c.redComponent > 0.8 && c.greenComponent < 0.25 && c.blueComponent < 0.25) count++;
+            }
+            return count;
+        };
+        [ed openFileAtPath:mdPath error:NULL];
+        [panel refresh];
+        __block NSInteger reds = 0;
+        NppSettleUntil(^BOOL { return !panel.webView.isLoading && (reds = redPixels()) > 100; }, 8);
+        Check(@"Markdown preview (relative image)", @"a picture beside the document, named relative to it, is drawn in the preview",
+              reds > 100);
+
+        // The document may carry raw HTML: an image from a server, a <meta refresh> to one. The preview
+        // fetches nothing from the network (the server would learn the file was opened) and stays on
+        // the document; a link clicked opens in the browser, as MarkdownViewer++ has it.
+        int listener = socket(AF_INET, SOCK_STREAM, 0);
+        struct sockaddr_in address = {};
+        address.sin_len = sizeof address; address.sin_family = AF_INET; address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+        socklen_t addressLength = sizeof address;
+        BOOL listening = listener >= 0 && bind(listener, (struct sockaddr *)&address, sizeof address) == 0 && listen(listener, 8) == 0 &&
+                         getsockname(listener, (struct sockaddr *)&address, &addressLength) == 0 && fcntl(listener, F_SETFL, O_NONBLOCK) == 0;
+        int port = ntohs(address.sin_port);
+        SetDoc(ed, [NSString stringWithFormat:@"# Remote\n\n<img src=\"http://127.0.0.1:%d/pixel.png\">\n\n"
+                    @"<meta http-equiv=\"refresh\" content=\"0; url=http://127.0.0.1:%d/away\">\n", port, port]);
+        [panel refresh];
+        __block BOOL fetched = NO;
+        NppSettleUntil(^BOOL {
+            int connection = accept(listener, NULL, NULL);
+            if (connection >= 0) { fetched = YES; close(connection); }
+            return fetched;
+        }, 3);
+        NSString *shownURL = panel.webView.URL.absoluteString ?: @"";
+        if (listener >= 0) close(listener);
+        Check(@"Markdown preview (nothing remote)", @"an image from a server is not fetched and a <meta refresh> to one does not take the preview there",
+              listening && port > 0 && !fetched && ![shownURL hasPrefix:@"http"] && [panel.lastHTML containsString:@"<h1>Remote</h1>"]);
+
+        NSMutableArray<NSURL *> *opened = [NSMutableArray array];
+        void (^openWas)(NSURL *) = panel.openLink;
+        panel.openLink = ^(NSURL *url) { [opened addObject:url]; };
+        id<WKNavigationDelegate> delegate = (id<WKNavigationDelegate>)panel;
+        BOOL decides = [delegate respondsToSelector:@selector(webView:decidePolicyForNavigationAction:decisionHandler:)];
+        NSInteger (^decide)(NSString *, WKNavigationType) = ^NSInteger(NSString *address, WKNavigationType type) {
+            if (!decides) return -1;
+            NppTestNavigation *action = [[NppTestNavigation alloc] init];
+            action.request = [NSURLRequest requestWithURL:[NSURL URLWithString:address]];
+            action.navigationType = type;
+            action.targetFrame = [[NppTestFrame alloc] init];
+            action.targetFrame.isMainFrame = YES;
+            __block NSInteger policy = -1;
+            [delegate webView:panel.webView decidePolicyForNavigationAction:(WKNavigationAction *)action
+              decisionHandler:^(WKNavigationActionPolicy p) { policy = p; }];
+            return policy;
+        };
+        NSString *here = panel.webView.URL.absoluteString ?: @"";           // doc.md's folder, through the preview's scheme
+        NSInteger clickedWeb = decide(@"https://example.org/page", WKNavigationTypeLinkActivated);
+        NSInteger clickedFile = decide(@"file:///etc/hosts", WKNavigationTypeLinkActivated);
+        NSInteger refreshed = decide(@"https://example.org/refresh", WKNavigationTypeOther);
+        NSInteger anchor = decide([here stringByAppendingString:@"#remote"], WKNavigationTypeLinkActivated);
+        panel.openLink = openWas;
+        Check(@"Markdown preview (links)", @"a clicked web link is cancelled in the preview and handed to the browser; a link to a local file "
+              @"and a navigation the page starts by itself are cancelled and opened nowhere; a jump to an anchor of the page goes ahead",
+              decides && [here hasPrefix:@"npp-preview://file/"] && clickedWeb == WKNavigationActionPolicyCancel && clickedFile == WKNavigationActionPolicyCancel &&
+              refreshed == WKNavigationActionPolicyCancel && anchor == WKNavigationActionPolicyAllow &&
+              opened.count == 1 && [opened.firstObject.absoluteString isEqualToString:@"https://example.org/page"]);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];   // doc.md, still in front
+        [[NSFileManager defaultManager] removeItemAtPath:mdFolder error:NULL];
         [app toggleMarkdownPreview:nil];
         Check(@"Markdown preview toggles away", @"the second toggle hides the panel", !panel.visible);
     }
@@ -1189,6 +1379,15 @@ void NppTestsPluginHost(AppDelegate *app, EditorController *ed, ScintillaView *s
         printf("    exec stop took %.1fs\n%s", slowTook, slowTook < 5 ? "" : slow.log.UTF8String);
         Check(@"NppExec (stop)", @"stopping a script ends the program it is running, and nothing after it runs",
               slowTook < 5 && ![slow.log containsString:@"not-reached"]);
+
+        // A program that leaves a child in the background: NppExec goes on when the program ends.
+        NppScriptEngine *leaves = [[NppScriptEngine alloc] initWithEditor:ed];
+        NSDate *leavesStart = [NSDate date];
+        [leaves runScript:@"/bin/sh -c \"(/bin/sleep 5; echo late) & echo now\"\nECHO after-it\n" arguments:@[]];
+        NSTimeInterval leavesTook = -[leavesStart timeIntervalSinceNow];
+        Check(@"NppExec (a child left in the background)", @"the script goes on as soon as the program itself has ended, with its output and exit code",
+              leavesTook < 3 && [leaves.log containsString:@"now"] && [leaves.log containsString:@"after-it"] &&
+              [leaves.log containsString:@"Exit code 0"]);
 
         // EXIT ends the script it is in; the caller goes on. EXIT 1 ends them all.
         [ed saveScript:[NppSavedScript scriptNamed:@"t_inner" text:@"ECHO inner-start\nEXIT $(ARGV[1])\nECHO inner-not-reached"]];

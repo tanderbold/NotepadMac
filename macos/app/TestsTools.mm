@@ -38,6 +38,23 @@ void NppTestsToolsMenu(AppDelegate *app, EditorController *ed, ScintillaView *sc
                   [[[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString]
                       isEqualToString:hashes[i].want]);
         }
+
+        // The selection's hash is of its bytes as they are: a NUL earlier in the document, or bytes
+        // that are not UTF-8, change nothing about the selected "abc".
+        void (^bytesInto)(const char *, size_t) = ^(const char *bytes, size_t length) {
+            [sci message:SCI_CLEARALL];
+            [sci message:SCI_APPENDTEXT wParam:length lParam:(sptr_t)bytes];
+        };
+        [ed newDocument];
+        bytesInto("a\0babc", 6);
+        [sci message:SCI_SETSEL wParam:3 lParam:6];
+        NSString *afterNul = [ed hashOfSelection:NppDigestMD5];
+        bytesInto("\xFF\xFE" "abc", 5);
+        [sci message:SCI_SETSEL wParam:2 lParam:5];
+        NSString *afterBinary = [ed hashOfSelection:NppDigestMD5];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        Check(@"IDM_TOOL_MD5_GENERATEINTOCLIPBOARD (the bytes selected)", @"the hash of a selected abc is abc's after a NUL and after bytes that are not UTF-8",
+              [afterNul isEqualToString:@"900150983cd24fb0d6963f7d28e17f72"] && [afterBinary isEqualToString:@"900150983cd24fb0d6963f7d28e17f72"]);
     }
 
     if (NppSectionWanted(@"Tools: the digests the port adds")) { printf("\n== Tools: the digests the port adds ==\n");
@@ -456,6 +473,23 @@ void NppTestsToolsMenu(AppDelegate *app, EditorController *ed, ScintillaView *sc
         BOOL pbkdfRight = [hw.result.string isEqualToString:@"c5e478d59288c841aa530db6845c4c8d962893a001ce4e11a4963873aa98134a"];
         Check(@"Tools > Hashes > scrypt, Argon2, PBKDF2 > Generate…", @"each, given a published vector's text, salt and settings through its fields, shows the vector's result",
               scryptRight && argonRight && pbkdfRight);
+
+        // Typing does not start a key derivation per keystroke (one cannot be stopped halfway, and a
+        // strong one takes gigabytes): the work starts once typing pauses, one job at a time, and
+        // the result is the last text's.
+        [hw showForKind:NppPasswordHashScrypt fromFiles:NO];
+        hw.bareKey.state = NSControlStateValueOn;
+        hw.salt.stringValue = [NppCrypto hexOfData:[@"SodiumChloride" dataUsingEncoding:NSUTF8StringEncoding]];
+        [(NSTextField *)hw.fields[@"scryptLogN"] setStringValue:@"14"];
+        NSUInteger jobsBefore = hw.jobsStarted;
+        NSString *typed = @"pleaseletmein";
+        for (NSUInteger n = 1; n <= typed.length; ++n) { hw.input.string = [typed substringToIndex:n]; [hw refresh]; }
+        NSString *scryptVector = @"7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2";
+        NppSettleUntil(^BOOL { return [hw.result.string isEqualToString:scryptVector]; }, 20);
+        NSUInteger jobsTyped = hw.jobsStarted - jobsBefore;
+        Check(@"Tools > Hashes (typing)", @"thirteen keystrokes in a row start one key derivation, not thirteen, and the result is the whole text's",
+              jobsTyped >= 1 && jobsTyped <= 2 && [hw.result.string isEqualToString:scryptVector]);
+        hw.salt.stringValue = [NppCrypto hexOfData:[@"salt" dataUsingEncoding:NSUTF8StringEncoding]];   // as the files' check below has it
 
         // From files, as the digests have it: a line for each file, and the file's contents are what is hashed.
         [hw showForKind:NppPasswordHashPBKDF2 fromFiles:YES];

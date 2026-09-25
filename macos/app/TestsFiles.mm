@@ -1786,6 +1786,39 @@ void NppTestsFilesAsUpstream(AppDelegate *app, EditorController *ed, ScintillaVi
         Check(@"IDM_FILE_SAVE (symlink)", @"saving through a symlink writes the target and keeps the link",
               [linkAttrs[NSFileType] isEqual:NSFileTypeSymbolicLink] &&
               [[NSString stringWithContentsOfFile:target encoding:NSUTF8StringEncoding error:NULL] isEqualToString:@"changed\n"]);
+        // What is watched through a link is the file it points at: changed by another program it is
+        // reloaded, gone it is kept as modified - and a big file opened through a link is big.
+        NppPreferences *lp = [NppPreferences shared];
+        BOOL detectionWas = lp.fileAutoDetection;
+        lp.fileAutoDetection = YES;
+        [@"from elsewhere\n" writeToFile:target atomically:NO encoding:NSUTF8StringEncoding error:NULL];
+        [fm setAttributes:@{NSFileModificationDate: [NSDate dateWithTimeIntervalSinceNow:5]} ofItemAtPath:target error:NULL];
+        [ed checkFilesOnDisk];
+        BOOL linkReloaded = [[ed documentText] isEqualToString:@"from elsewhere\n"] && !ed.currentDocument.modified;
+        [fm removeItemAtPath:target error:NULL];
+        [ed checkFilesOnDisk];
+        BOOL linkGone = [ed.currentDocument.path isEqualToString:link] && ed.currentDocument.modified;
+        lp.fileAutoDetection = detectionWas;
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        [fm removeItemAtPath:link error:NULL];
+        NSString *bigTarget = [root stringByAppendingPathComponent:@"big.txt"], *bigLink = [root stringByAppendingPathComponent:@"big-link.txt"];
+        NSMutableData *bigData = [NSMutableData dataWithLength:3 * 1024 * 1024 / 2];
+        memset(bigData.mutableBytes, 'x', bigData.length);
+        [bigData writeToFile:bigTarget atomically:YES];
+        [fm createSymbolicLinkAtPath:bigLink withDestinationPath:bigTarget error:NULL];
+        BOOL restrictionWas = lp.largeFileRestrictionEnabled;
+        NSInteger thresholdWas = lp.largeFileThresholdMB;
+        lp.largeFileRestrictionEnabled = YES;
+        lp.largeFileThresholdMB = 1;
+        [ed openFileAtPath:bigLink error:NULL];
+        BOOL bigThroughLink = [ed.currentDocument.path isEqualToString:bigLink] &&
+                              ([ed.sci message:SCI_GETDOCUMENTOPTIONS] & SC_DOCUMENTOPTION_STYLES_NONE) != 0;
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        lp.largeFileRestrictionEnabled = restrictionWas;
+        lp.largeFileThresholdMB = thresholdWas;
+        Check(@"IDM_FILE_OPEN (symlink watched)", @"a file opened through a symlink is reloaded when its target changes, kept as modified when the target goes, "
+              @"and counts as large by the target's size",
+              linkReloaded && linkGone && bigThroughLink);
 
         // Window > Sort By: numstrcmp, full names, languages, text in memory (WindowsDlg BufferEquivalent).
         while (ed.documents.count > 1) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];

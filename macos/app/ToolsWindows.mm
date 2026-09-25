@@ -296,6 +296,12 @@ static NSString *Naming(NSString *englishWithSHA256, NSString *name) {
 @property (nonatomic) NSProgressIndicator *spinner;
 @property (nonatomic) NSUInteger generation;
 @property (nonatomic, copy) NSArray<NSString *> *files;
+/// A key derivation cannot be stopped halfway, and a strong one takes seconds and gigabytes: one
+/// runs at a time, started once typing pauses, and what was asked for meanwhile waits its turn.
+@property (nonatomic) BOOL working;
+@property (nonatomic, copy, nullable) NSString *(^waitingWork)(BOOL (^)(void));
+@property (nonatomic) NSUInteger waitingGeneration;
+@property (nonatomic, readwrite) NSUInteger jobsStarted;
 @end
 
 // Which rows each kind shows, in the order they stand in the window.
@@ -525,6 +531,8 @@ static NSString *ResultFor(NSArray<NSData *> *pieces, NSArray<NSString *> *names
 
 - (void)refreshAndWait {
     ++self.generation;
+    self.waitingWork = nil;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startWaitingWork) object:nil];
     [self.spinner stopAnimation:nil];
     NSString *(^work)(BOOL (^)(void)) = [self work];
     if (!work) { self.result.string = @""; return; }
@@ -536,15 +544,31 @@ static NSString *ResultFor(NSArray<NSData *> *pieces, NSArray<NSString *> *names
 - (void)refresh {
     NSUInteger mine = ++self.generation;
     NSString *(^work)(BOOL (^)(void)) = [self work];
-    if (!work) { self.result.string = @""; [self.spinner stopAnimation:nil]; return; }
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startWaitingWork) object:nil];
+    if (!work) { self.waitingWork = nil; self.result.string = @""; if (!self.working) [self.spinner stopAnimation:nil]; return; }
     [self.spinner startAnimation:nil];
+    self.waitingWork = work;
+    self.waitingGeneration = mine;
+    [self performSelector:@selector(startWaitingWork) withObject:nil afterDelay:0.3];
+}
+
+- (void)startWaitingWork {
+    if (self.working || !self.waitingWork) return;   // the job running starts this one when it ends
+    NSString *(^work)(BOOL (^)(void)) = self.waitingWork;
+    NSUInteger mine = self.waitingGeneration;
+    self.waitingWork = nil;
+    self.working = YES;
+    self.jobsStarted++;
     __weak __typeof__(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         NSString *result = work(^BOOL { return weakSelf.generation == mine; });
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakSelf.generation != mine) return;
-            [weakSelf.spinner stopAnimation:nil];
-            [weakSelf show:result];
+            __typeof__(self) me = weakSelf;
+            if (!me) return;
+            me.working = NO;
+            if (me.generation == mine) { [me.spinner stopAnimation:nil]; [me show:result]; }
+            else if (!me.waitingWork) [me.spinner stopAnimation:nil];
+            [me startWaitingWork];
         });
     });
 }
@@ -590,7 +614,12 @@ static NSString *ResultFor(NSArray<NSData *> *pieces, NSArray<NSString *> *names
 }
 
 - (void)copyResult:(id)sender { CopyText(self.result.string); }
-- (void)close:(id)sender { ++self.generation; [self.panel orderOut:nil]; }
+- (void)close:(id)sender {
+    ++self.generation;
+    self.waitingWork = nil;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startWaitingWork) object:nil];
+    [self.panel orderOut:nil];
+}
 
 @end
 

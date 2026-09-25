@@ -691,6 +691,14 @@ NSString *NppCanonicalPath(NSString *path) {
     return path.stringByStandardizingPath;
 }
 
+/// Upstream reads a file's size and time with GetFileAttributesEx; on a Mac a symlinked file is an
+/// everyday thing, and what is opened, saved (in place, through the link) and watched is the target.
+NSDictionary<NSFileAttributeKey, id> *NppFileAttributes(NSString *path) {
+    char resolved[PATH_MAX];
+    if (!path.length || !realpath(path.fileSystemRepresentation, resolved)) return nil;   // gone, or a dangling link
+    return [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithUTF8String:resolved] ?: path error:NULL];
+}
+
 - (void)newDocument {
     NppDocument *doc = [[NppDocument alloc] init];
     doc.docPointer = [self createScintillaDocument:SC_DOCUMENTOPTION_DEFAULT];
@@ -726,6 +734,19 @@ NSString *NppCanonicalPath(NSString *path) {
     NSString *text = [[NSString alloc] initWithBytes:buffer.data() length:(NSUInteger)length
                                             encoding:NSUTF8StringEncoding];
     return text ?: ([self.sci string] ?: @"");
+}
+
+- (NSData *)documentRawBytes {
+    long length = [self.sci message:SCI_GETLENGTH wParam:0 lParam:0];
+    if (length <= 0) return [NSData data];
+    NSMutableData *bytes = [NSMutableData dataWithLength:(NSUInteger)length + 1];
+    [self.sci message:SCI_GETTEXT wParam:(uptr_t)(length + 1) lParam:(sptr_t)bytes.mutableBytes];
+    bytes.length = (NSUInteger)length;                  // SCI_GETTEXT copies the NULs too; only its end is added
+    return bytes;
+}
+
+- (NSString *)documentTextIfUTF8 {
+    return [[NSString alloc] initWithData:[self documentRawBytes] encoding:NSUTF8StringEncoding];
 }
 
 + (NSString *)textOfFileAtPath:(NSString *)path encoding:(NSStringEncoding *)encoding hasBOM:(BOOL *)hasBOM {
@@ -816,8 +837,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     // Decided on the size on disk, before anything is read: a file too big to
     // hold is refused, and a large one is opened without styling from the
     // start rather than styled and then unstyled.
-    unsigned long long size = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL]
-                               fileSize];
+    unsigned long long size = [NppFileAttributes(path) fileSize];
     NppPreferences *prefs = [NppPreferences shared];
     BOOL huge = size >= 2ULL * 1024 * 1024 * 1024;
     // As upstream asks before a file of 2 GB or more, unless told not to.
@@ -871,8 +891,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     doc.hasBOM = bom;
     doc.codepage = 0;
     doc.eolMode = direct ? DetectEOLBytes(direct) : DetectEOL(text);
-    doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL]
-                                fileModificationDate];
+    doc.fileModificationDate = [NppFileAttributes(path) fileModificationDate];
 
     // loadBufferIntoView: the file takes the place of a lone clean untitled tab.
     NppDocument *lone = [self mainTabCount] == 1 ? self.docs.firstObject : nil;
@@ -1225,7 +1244,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     self.currentDocument.modified = NO;
     self.currentDocument.encodingChanged = NO;
     self.currentDocument.fileModificationDate =
-        [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
+        [NppFileAttributes(path) fileModificationDate];
     [self dropBackupOfDocument:self.currentDocument];
     [self refreshChrome];
     [[NSNotificationCenter defaultCenter] postNotificationName:NppDocumentSavedNotification object:self];
@@ -1249,13 +1268,12 @@ static BOOL gCheckingFilesOnDisk;
     // application, which asks again: not while a check is under way.
     if (gCheckingFilesOnDisk) return;
     gCheckingFilesOnDisk = YES;
-    NSFileManager *fm = [NSFileManager defaultManager];
     NppDocument *was = self.currentDocument;
     NppDocument *previous = [self previousTab];
 
     for (NppDocument *doc in [self.docs copy]) {
         if (!doc.path || ![self.docs containsObject:doc]) continue;
-        NSDate *onDisk = [[fm attributesOfItemAtPath:doc.path error:NULL] fileModificationDate];
+        NSDate *onDisk = [NppFileAttributes(doc.path) fileModificationDate];
 
         if (!onDisk) {
             if (!doc.fileModificationDate) continue;      // already known to be gone, and kept
@@ -1516,8 +1534,7 @@ static BOOL gCheckingFilesOnDisk;
     [self.sci message:SCI_GOTOPOS
                    wParam:(uptr_t)MIN(caret, [self.sci message:SCI_GETLENGTH]) lParam:0];
     [self.sci message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstLine lParam:0];
-    doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:doc.path error:NULL]
-                                fileModificationDate];
+    doc.fileModificationDate = [NppFileAttributes(doc.path) fileModificationDate];
     [self dropBackupOfDocument:doc];
     doc.modified = NO;
     [self refreshChrome];
@@ -2006,6 +2023,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         e[@"tabColour"] = @(attr(@"tabColourId").length ? MAX(0, attr(@"tabColourId").integerValue + 1) : 0);
         e[@"monitoring"] = @([attr(@"macMonitoring") isEqualToString:@"yes"]);
         if (attr(@"encoding").intValue > 0) e[@"codepage"] = @(attr(@"encoding").intValue);
+        // The port's own: what the document was held in, which its snapshot backup is written in.
+        if (attr(@"macEncoding").longLongValue > 0) e[@"encoding"] = @((NSStringEncoding)attr(@"macEncoding").longLongValue);
+        if (attr(@"macBOM").length) e[@"bom"] = @([attr(@"macBOM") isEqualToString:@"yes"]);
+        if (attr(@"macEOL").length) e[@"eol"] = @(attr(@"macEOL").intValue);
         if (attr(@"backupFilePath").length) e[@"backup"] = attr(@"backupFilePath");
         unsigned long long ticks = (strtoull(attr(@"originalFileLastModifTimestampHigh").UTF8String ?: "0", NULL, 10) << 32) |
                                    (strtoull(attr(@"originalFileLastModifTimestamp").UTF8String ?: "0", NULL, 10) & 0xFFFFFFFFULL);
@@ -2136,7 +2157,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
             NSString *name = u[@"name"];
             if ([name isKindOfClass:[NSString class]] && name.length) [self mainCurrentDocument].displayName = name;
             [self applySessionEntry:u];
-            [self restoreBackupData:data forDocument:[self mainCurrentDocument] atPath:backup];
+            [self restoreBackupData:data forDocument:[self mainCurrentDocument] atPath:backup entry:u];
             if ([self mainCurrentDocument]) byBackup[backup] = [self mainCurrentDocument];
             if ([u[@"subOnly"] boolValue] && [self mainCurrentDocument]) [subOnlyDocs addObject:[self mainCurrentDocument]];
         }
@@ -2242,7 +2263,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if ([backup isKindOfClass:[NSString class]] && doc.path) {
         NSData *data = [NSData dataWithContentsOfFile:backup];
         if (data) {
-            [self restoreBackupData:data forDocument:doc atPath:backup];
+            [self restoreBackupData:data forDocument:doc atPath:backup entry:f];
             // A FILETIME holds 100 ns: the same time read back differs below that, and is the same time.
             NSDate *then = [f[@"fileDate"] isKindOfClass:[NSDate class]] ? f[@"fileDate"] : nil;
             if (then && doc.fileModificationDate && fabs([then timeIntervalSinceDate:doc.fileModificationDate]) > 1e-6) {
@@ -2277,8 +2298,25 @@ static NSString *InternalLanguageName(NSString *sessionName) {
 
 /// The text of a backup goes into the document in front, which is then
 /// modified, and the backup stays where it is until the document is saved.
-- (void)restoreBackupData:(NSData *)data forDocument:(NppDocument *)doc atPath:(NSString *)backup {
-    NSString *text = doc.codepage ? [EditorController stringFromData:data codepage:doc.codepage] : nil;
+/// runAutosavePass writes a backup in the document's own encoding and code page,
+/// and the session says which (loadSession hands the session's encoding to doOpen
+/// for the backup): read back in that, the text is what it was, byte for byte.
+/// Only a backup whose session does not say is guessed at, as a file would be.
+- (void)restoreBackupData:(NSData *)data forDocument:(NppDocument *)doc atPath:(NSString *)backup entry:(NSDictionary *)entry {
+    NSNumber *(^number)(NSString *) = ^NSNumber *(NSString *key) {
+        return [entry[key] isKindOfClass:[NSNumber class]] ? entry[key] : nil;
+    };
+    unsigned int codepage = doc.codepage ?: number(@"codepage").unsignedIntValue;
+    NSString *text = nil;
+    if (codepage && (text = [EditorController stringFromData:data codepage:codepage])) {
+        doc.codepage = codepage;
+        doc.encoding = [EditorController encodingForCodepage:codepage] ?: NSUTF8StringEncoding;
+        doc.hasBOM = NO;
+    } else if (number(@"encoding").unsignedIntegerValue &&
+               (text = [[NSString alloc] initWithData:data encoding:number(@"encoding").unsignedIntegerValue])) {
+        doc.encoding = number(@"encoding").unsignedIntegerValue;
+        if (number(@"bom")) doc.hasBOM = number(@"bom").boolValue;
+    }
     if (!text) {
         NSStringEncoding enc = NSUTF8StringEncoding; BOOL bom = NO;
         text = DecodeText(data, &enc, &bom);
@@ -2286,6 +2324,11 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     if (!text) return;
     [self setDocumentText:text];
     [self.sciView message:SCI_EMPTYUNDOBUFFER wParam:0 lParam:0];
+    NSNumber *eol = number(@"eol");
+    if (eol && (eol.intValue == SC_EOL_CRLF || eol.intValue == SC_EOL_CR || eol.intValue == SC_EOL_LF)) {
+        doc.eolMode = eol.intValue;
+        [self.sciView message:SCI_SETEOLMODE wParam:(uptr_t)doc.eolMode lParam:0];
+    }
     doc.modified = YES;
     doc.backupPath = backup;
     [self refreshChrome];

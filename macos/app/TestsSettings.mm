@@ -1309,6 +1309,38 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
                   newerFileKept && goneFileKept);
         }
 
+        // A snapshot backup is written in the document's own encoding, and the session says which
+        // (loadSession opens a backup in the session's encoding): it comes back exactly, not guessed at.
+        // UTF-16 LE without a BOM is the case guessing gets wrong - its bytes are not UTF-8.
+        [ed newDocument];
+        NppDocument *wide = ed.currentDocument;
+        SetDoc(ed, @"\u4e2d\u6587\u5b57\u7b26");
+        wide.encoding = NSUTF16LittleEndianStringEncoding;
+        wide.hasBOM = NO;
+        wide.modified = YES;
+        [ed runAutosavePass];
+        NSString *wideBackup = wide.backupPath;
+        NSString *wideSession = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-backup-encoding.xml"];
+        [ed saveSessionTo:wideSession error:NULL];
+        wide.backupPath = nil;                                    // left behind, as a crash would leave it
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:wide] discardChanges:YES];
+        [ed loadSessionFrom:wideSession error:NULL];
+        NppDocument *wideBack = nil;
+        for (NppDocument *d in ed.documents) if (!d.path && [d.backupPath isEqualToString:wideBackup]) wideBack = d;
+        BOOL exact = NO;
+        if (wideBack) {
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:wideBack]];
+            exact = [[ed documentText] isEqualToString:@"\u4e2d\u6587\u5b57\u7b26"] &&
+                    wideBack.encoding == NSUTF16LittleEndianStringEncoding && !wideBack.hasBOM && wideBack.modified;
+            if (!exact) printf("       came back as \"%s\", encoding %lu\n", [ed documentText].UTF8String, (unsigned long)wideBack.encoding);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:wideBack] discardChanges:YES];
+        }
+        if (wideBackup) [[NSFileManager defaultManager] removeItemAtPath:wideBackup error:NULL];
+        [[NSFileManager defaultManager] removeItemAtPath:wideSession error:NULL];
+        Check(@"IDM_FILE_LOADSESSION (a backup in its own encoding)",
+              @"the unsaved text of a UTF-16 LE document without a BOM comes back from its backup as it was, in UTF-16 LE",
+              wideBackup != nil && wideBack != nil && exact);
+
         [ed setAutosaveEnabled:YES interval:60];
         BOOL running = [ed autosaveRunning];
         [ed setAutosaveEnabled:NO interval:60];

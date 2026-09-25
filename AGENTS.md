@@ -125,7 +125,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Panels and docking | `DockingManager.mm`, `NppPanel.mm`, `DocumentListPanel.mm`, `FunctionListPanel.mm`, `FunctionListCatalog.mm`, `ProjectPanel.mm`, `WorkspacePanel.mm`, `AuxPanels.mm` |
 | Preferences, shortcuts, context menu | `SettingsCommands.mm` (NPP_PREF_* macros, defaults), `SettingsPanels.mm`, `ShortcutMapper.mm`, `ContextMenuFile.mm` |
 | Localisation | `Localization.mm` (upstream `nativeLang/*.xml` by command id and by English text; the port's own texts from `resources/nativeLang-extra/`) |
-| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm` (ComparePlus's engine from `macos/third_party/compareplus` over the two panes; see below), `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker; indicator 17 - 8-16 are taken by mark styles, find mark, links and tag match), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off) |
+| Plugin stand-ins | `JsonCommands.mm`, `CompareCommands.mm` (ComparePlus's engine from `macos/third_party/compareplus` over the two panes; see below), `XmlCommands.mm`, `FtpClient.mm`/`FtpCommands.mm`, `ScriptCommands.mm` (NppExec), `RunCommands.mm`, `MimeCommands.mm` (MIME Tools), `ConverterCommands.mm` + the Conversion Panel in `ToolsWindows.mm`, `ExportCommands.mm` (NppExport), `SpellCheck.mm` (DSpellCheck by way of NSSpellChecker; indicator 17 - 8-16 are taken by mark styles, find mark, links and tag match), `MarkdownPanel.mm` (MarkdownViewer++: cmark from `macos/third_party/cmark` + a GFM-table pre-pass, shown in a WKWebView with JavaScript off, a Content-Security-Policy that loads local files only, and a navigation delegate that keeps the preview on the document and hands clicked http/https/mailto links to the browser) |
 | Third-party plugins | `PluginHost.mm` (dlopen, the send() bridge, NPPM/NPPN subset); the public C interface and sample live in `macos/plugin-sdk/`. Release signing needs `macos/entitlements.plist` (library validation off) or the hardened runtime refuses the dylibs |
 | Tools menu | `ToolsCommands.mm` (digests, macros, window list), `CryptoTools.mm` (bcrypt, scrypt, Argon2 wrapper, PBKDF2, SHA-3, Base58/32, passwords), `HttpRequest.mm` (request, curl import/export, libcurl), `ToolsWindows.mm` (the windows, Auto Layout) |
 | Mac extras | `ImageCommands.mm` (OCR paste, QR both ways - Vision + Core Image), `macos/cli/nppmac.m` (the command line tool, built into Contents/Helpers and heard over a distributed notification; `nppmac mcp` is the stdio bridge to the agent socket) |
@@ -229,8 +229,17 @@ thread; fetch, pull and push stream into the NppExec console from a thread.
 
 - Repository roots are cached per folder (`repositoryRootForPath:`), forgotten when the app comes
   to front, on Refresh and after fetch/pull/push. The document's path relative to the root is
-  worked out with symlinks resolved on both sides: git reports `/private/var/...`, the editor may
-  hold `/var/...`.
+  worked out with both sides as the disk spells them (realpath: symlinks, `/private/var` for
+  `/var`, the disk's case) and compared name by name precomposed, as git reports paths
+  (`core.precomposeUnicode`); what follows the root goes to git in the disk's spelling.
+- A repository from anywhere is in the user's name, so its `.git/config` can name programs git runs
+  by itself. The calls that only read (`+[NppGit read:…]`: status, branch, rev-parse, show, blame,
+  log - the automatic ones on open, save and activation among them) pass `--no-optional-locks`,
+  `core.fsmonitor=false`, `core.hooksPath=/dev/null`, `log.showSignature=false`, empty commands for
+  every filter and diff driver the repository's own config defines (a driver the user's global or
+  system config names the same way - git-lfs - is kept), and status does not go into submodules
+  for their dirt (`--ignore-submodules=dirty`), which would run git under each one's config.
+  Stage, commit, checkout, pull and the rest run as git runs them, hooks and filters included.
 - Margin markers 6-8 in margin 4 (`SCI_SETMARGINS` is 5 for that) mark added, changed and removed
   lines against HEAD's text - fetched once per HEAD commit per document - diffed with Compare's
   Myers implementation over the text as it is now, 0.6 s after typing stops (not for texts over

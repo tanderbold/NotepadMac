@@ -142,6 +142,62 @@ static const long kMostBytesDiffedLive = 2 * 1024 * 1024;
     });
 }
 
+#pragma mark Reading without running the repository's programs
+
+static NSMutableDictionary<NSString *, NSArray<NSString *> *> *gReadOnlyOptions;   // root -> the -c options
+
+/// What goes before a command that only reads, run by itself on open, save and activation (and for
+/// Blame and History): a repository from anywhere - an archive, a download - is in the user's own
+/// name, so git's safe.directory lets its .git/config name programs that git then runs by itself.
+/// Those are turned off here: the fsmonitor hook (status), the hooks (status writes the index, which
+/// runs post-index-change), and the filter and textconv drivers the repository's own config defines
+/// (status cleans a changed file to compare it; blame converts it). A driver the user set up in their
+/// own ~/.gitconfig or the system's (git-lfs) is theirs and stays. Writing commands - Stage, Commit,
+/// Checkout, Pull - run as git runs them, hooks and filters included, as a Git plugin would.
++ (NSArray<NSString *> *)readOnlyOptionsIn:(NSString *)directory {
+    if (!gReadOnlyOptions) gReadOnlyOptions = [NSMutableDictionary dictionary];
+    NSArray *known = gReadOnlyOptions[directory];
+    if (known) return known;
+    NSMutableArray<NSString *> *options = [NSMutableArray arrayWithArray:@[
+        @"--no-optional-locks", @"-c", @"core.fsmonitor=false", @"-c", @"core.hooksPath=/dev/null",
+        @"-c", @"log.showSignature=false"]];
+    // `git config` reads configuration and runs nothing. -z: "scope NUL key LF value NUL".
+    NSString *listing = nil;
+    [self run:@[@"config", @"--show-scope", @"-z", @"--get-regexp", @"^(filter|diff)\\."] in:directory output:&listing error:NULL];
+    NSMutableSet<NSString *> *trusted = [NSMutableSet set], *repository = [NSMutableSet set];
+    NSArray<NSString *> *parts = [listing ?: @"" componentsSeparatedByString:@"\0"];
+    for (NSUInteger i = 0; i + 1 < parts.count; i += 2) {
+        NSString *scope = parts[i], *entry = parts[i + 1];
+        NSRange lf = [entry rangeOfString:@"\n"];
+        // git writes the section and the name in lower case and the driver's name as it is spelt.
+        NSString *key = lf.location == NSNotFound ? entry : [entry substringToIndex:lf.location];
+        NSString *value = lf.location == NSNotFound ? @"" : [entry substringFromIndex:NSMaxRange(lf)];
+        NSString *pair = [NSString stringWithFormat:@"%@=%@", key, value];
+        if ([scope isEqualToString:@"system"] || [scope isEqualToString:@"global"] || [scope isEqualToString:@"command"]) [trusted addObject:pair];
+        else [repository addObject:pair];
+    }
+    NSMutableSet<NSString *> *drivers = [NSMutableSet set];
+    for (NSString *pair in repository) {
+        if ([trusted containsObject:pair]) continue;          // the same program the user's own config names
+        NSString *key = [pair substringToIndex:[pair rangeOfString:@"="].location];
+        NSRange lastDot = [key rangeOfString:@"." options:NSBackwardsSearch];
+        NSString *setting = [key substringFromIndex:lastDot.location + 1];
+        if ([key hasPrefix:@"filter."] && [@[@"clean", @"smudge", @"process"] containsObject:setting]) [drivers addObject:[key substringToIndex:lastDot.location]];
+        if ([key hasPrefix:@"diff."] && [@[@"textconv", @"command"] containsObject:setting]) [drivers addObject:[key substringToIndex:lastDot.location]];
+    }
+    for (NSString *driver in [drivers.allObjects sortedArrayUsingSelector:@selector(compare:)]) {
+        // An empty command is no command (convert.c apply_filter, userdiff's textconv).
+        NSArray *settings = [driver hasPrefix:@"filter."] ? @[@"clean=", @"smudge=", @"process=", @"required=false"] : @[@"textconv=", @"command="];
+        for (NSString *s in settings) [options addObjectsFromArray:@[@"-c", [NSString stringWithFormat:@"%@.%@", driver, s]]];
+    }
+    gReadOnlyOptions[directory] = options;
+    return options;
+}
+
++ (BOOL)read:(NSArray<NSString *> *)arguments in:(NSString *)directory output:(NSString **)output error:(NSString **)error {
+    return [self run:[[self readOnlyOptionsIn:directory] arrayByAddingObjectsFromArray:arguments] in:directory output:output error:error];
+}
+
 #pragma mark Repositories
 
 static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNull for "none"
@@ -164,7 +220,7 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
     return root;
 }
 
-+ (void)forgetRepositoryRoots { [gRoots removeAllObjects]; }
++ (void)forgetRepositoryRoots { [gRoots removeAllObjects]; [gReadOnlyOptions removeAllObjects]; }
 
 + (NSArray<NppGitFileStatus *> *)statusesFromPorcelain:(NSString *)porcelain {
     NSMutableArray *out = [NSMutableArray array];
@@ -188,7 +244,8 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
 
 + (NSArray<NppGitFileStatus *> *)statusOfRepository:(NSString *)root {
     NSString *out = nil;
-    if (![self run:@[@"status", @"--porcelain=v1", @"-z", @"--untracked-files=all"] in:root output:&out error:NULL]) return @[];
+    // Not into submodules for what is changed inside them: that is a git run in each, under its own config.
+    if (![self read:@[@"status", @"--porcelain=v1", @"-z", @"--untracked-files=all", @"--ignore-submodules=dirty"] in:root output:&out error:NULL]) return @[];
     return [self statusesFromPorcelain:out];
 }
 
@@ -196,7 +253,7 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
     if (ahead) *ahead = 0;
     if (behind) *behind = 0;
     NSString *out = nil;
-    if (![self run:@[@"status", @"--porcelain=v2", @"--branch", @"--untracked-files=no"] in:root output:&out error:NULL]) return nil;
+    if (![self read:@[@"status", @"--porcelain=v2", @"--branch", @"--untracked-files=no", @"--ignore-submodules=dirty"] in:root output:&out error:NULL]) return nil;
     NSString *branch = nil;
     for (NSString *line in [out componentsSeparatedByString:@"\n"]) {
         if ([line hasPrefix:@"# branch.head "]) branch = [line substringFromIndex:14];
@@ -215,7 +272,7 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
 
 + (NSArray<NSString *> *)branchesOfRepository:(NSString *)root {
     NSString *out = nil;
-    if (![self run:@[@"branch", @"--list", @"--format=%(refname:short)"] in:root output:&out error:NULL]) return @[];
+    if (![self read:@[@"branch", @"--list", @"--format=%(refname:short)"] in:root output:&out error:NULL]) return @[];
     NSMutableArray *names = [NSMutableArray array];
     for (NSString *line in [out componentsSeparatedByString:@"\n"]) if (line.length) [names addObject:line];
     return names;
@@ -223,14 +280,14 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
 
 + (NSString *)headCommitOfRepository:(NSString *)root {
     NSString *out = nil;
-    if (![self run:@[@"rev-parse", @"--verify", @"-q", @"HEAD"] in:root output:&out error:NULL]) return nil;
+    if (![self read:@[@"rev-parse", @"--verify", @"-q", @"HEAD"] in:root output:&out error:NULL]) return nil;
     NSString *sha = [out stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
     return sha.length ? sha : nil;
 }
 
 + (NSString *)headContentsOfFile:(NSString *)relativePath inRepository:(NSString *)root {
     NSString *out = nil;
-    if (![self run:@[@"show", [NSString stringWithFormat:@"HEAD:%@", relativePath]] in:root output:&out error:NULL]) return nil;
+    if (![self read:@[@"show", @"--no-textconv", [NSString stringWithFormat:@"HEAD:%@", relativePath]] in:root output:&out error:NULL]) return nil;
     return out;
 }
 
@@ -290,15 +347,26 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 - (NSString *)gitRelativePathOfDocument:(NppDocument *)doc {
     NSString *root = [self gitRootOfDocument:doc];
     if (!root) return nil;
-    // The repository root git reports has symlinks resolved; the document's path may not.
-    NSString *path = doc.path.stringByResolvingSymlinksInPath;
-    NSString *base = [root.stringByResolvingSymlinksInPath stringByAppendingString:@"/"];
-    if (![path hasPrefix:base]) {
-        base = [root stringByAppendingString:@"/"];
-        path = doc.path;
-        if (![path hasPrefix:base]) return nil;
-    }
-    return [path substringFromIndex:base.length];
+    // The root git reports is the folder as the disk spells it, symlinks resolved, and precomposed
+    // (core.precomposeUnicode); the document's path is as it was opened - another case, another
+    // Unicode form, a symlink. Both are taken as the disk has them and compared name by name in one
+    // Unicode form; what follows the root is given to git as the disk spells it.
+    // A file deleted meanwhile (staging its deletion) is taken through its folder.
+    NSString *(^onDisk)(NSString *) = ^NSString *(NSString *path) {
+        return [[NSFileManager defaultManager] fileExistsAtPath:path] ? NppCanonicalPath(path)
+            : [NppCanonicalPath(path.stringByDeletingLastPathComponent) stringByAppendingPathComponent:path.lastPathComponent];
+    };
+    NSArray<NSString *> *(^components)(NSString *) = ^NSArray<NSString *> *(NSString *path) {
+        NSMutableArray *names = [NSMutableArray array];
+        for (NSString *name in onDisk(path).pathComponents) [names addObject:name.precomposedStringWithCanonicalMapping];
+        return names;
+    };
+    NSArray<NSString *> *rootNames = components(root);
+    NSArray<NSString *> *pathNames = onDisk(doc.path).pathComponents;
+    NSArray<NSString *> *pathComposed = components(doc.path);
+    if (pathNames.count <= rootNames.count || pathComposed.count != pathNames.count ||
+        ![[pathComposed subarrayWithRange:NSMakeRange(0, rootNames.count)] isEqualToArray:rootNames]) return nil;
+    return [NSString pathWithComponents:[pathNames subarrayWithRange:NSMakeRange(rootNames.count, pathNames.count - rootNames.count)]];
 }
 
 #pragma mark Markers
@@ -419,6 +487,13 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     return NO;
 }
 
+/// In a repository, but the path cannot be put relative to its root (the file is gone from under it).
+- (BOOL)gitFailWithoutRelativePath {
+    self.gitLastError = NppL(@"The file is not in a Git repository");
+    NppBeep();
+    return NO;
+}
+
 /// A new read-only document beside the current one, for blame and history.
 - (void)gitShowText:(NSString *)text titled:(NSString *)title {
     [self newDocument];
@@ -503,8 +578,9 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 - (BOOL)gitBlame {
     if ([self gitFailWithoutRepository]) return NO;
     NSString *root = [self gitRootOfCurrentDocument], *relative = [self gitRelativePathOfDocument:self.currentDocument];
+    if (!relative) return [self gitFailWithoutRelativePath];
     NSString *out = nil, *err = nil;
-    if (![NppGit run:@[@"blame", @"--date=short", @"--", relative] in:root output:&out error:&err]) { self.gitLastError = err; NppBeep(); return NO; }
+    if (![NppGit read:@[@"blame", @"--no-textconv", @"--date=short", @"--", relative] in:root output:&out error:&err]) { self.gitLastError = err; NppBeep(); return NO; }
     [self gitShowText:out titled:[NSString stringWithFormat:@"%@ (blame)", relative.lastPathComponent]];
     return YES;
 }
@@ -512,8 +588,9 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 - (BOOL)gitFileHistory {
     if ([self gitFailWithoutRepository]) return NO;
     NSString *root = [self gitRootOfCurrentDocument], *relative = [self gitRelativePathOfDocument:self.currentDocument];
+    if (!relative) return [self gitFailWithoutRelativePath];
     NSString *out = nil, *err = nil;
-    if (![NppGit run:@[@"log", @"--follow", @"--date=short", @"--format=%h  %ad  %an%n    %s%n", @"--", relative]
+    if (![NppGit read:@[@"log", @"--follow", @"--date=short", @"--format=%h  %ad  %an%n    %s%n", @"--", relative]
                  in:root output:&out error:&err]) { self.gitLastError = err; NppBeep(); return NO; }
     if (!out.length) out = [NppL(@"The file is not in HEAD yet") stringByAppendingString:@"\n"];
     [self gitShowText:out titled:[NSString stringWithFormat:@"%@ (history)", relative.lastPathComponent]];
@@ -560,7 +637,7 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     for (NSString *p in relativePaths) {
         NSString *full = [root stringByAppendingPathComponent:p];
         for (NppDocument *d in self.documents) {
-            if ([d.path isEqualToString:full] || [d.path.stringByResolvingSymlinksInPath isEqualToString:full.stringByResolvingSymlinksInPath]) {
+            if ([d.path isEqualToString:full] || [NppCanonicalPath(d.path) isEqualToString:NppCanonicalPath(full)]) {
                 NSUInteger index = [self.documents indexOfObjectIdenticalTo:d];
                 if (d == self.currentDocument) [self reloadCurrentDocument:NULL];
                 else { NppDocument *front = self.currentDocument; [self selectDocumentAtIndex:(NSInteger)index]; [self reloadCurrentDocument:NULL];
@@ -589,21 +666,25 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
         if (![self gitAsk:NppL(@"Save the file before staging it?") detail:@"" button:NppL(@"Save")]) return NO;
     }
     if (self.currentDocument.modified && ![self saveCurrentDocument]) return NO;
-    return [self gitStagePaths:@[[self gitRelativePathOfDocument:self.currentDocument]]];
+    NSString *relative = [self gitRelativePathOfDocument:self.currentDocument];
+    return relative ? [self gitStagePaths:@[relative]] : [self gitFailWithoutRelativePath];
 }
 
 - (BOOL)gitUnstageCurrent {
     if ([self gitFailWithoutRepository]) return NO;
-    return [self gitUnstagePaths:@[[self gitRelativePathOfDocument:self.currentDocument]]];
+    NSString *relative = [self gitRelativePathOfDocument:self.currentDocument];
+    return relative ? [self gitUnstagePaths:@[relative]] : [self gitFailWithoutRelativePath];
 }
 
 - (BOOL)gitDiscardCurrent {
     if ([self gitFailWithoutRepository]) return NO;
+    NSString *relative = [self gitRelativePathOfDocument:self.currentDocument];
+    if (!relative) return [self gitFailWithoutRelativePath];
     NSString *name = self.currentDocument.displayName;
     if (![self gitAsk:NppLMessage(@"Discard the changes in \"$STR_REPLACE$\"?", name, 0)
                detail:NppL(@"The file goes back to the last committed version. This cannot be undone.")
                button:NppL(@"Discard")]) return NO;
-    return [self gitDiscardPaths:@[[self gitRelativePathOfDocument:self.currentDocument]]];
+    return [self gitDiscardPaths:@[relative]];
 }
 
 - (BOOL)gitCommitWithMessage:(NSString *)message stageAll:(BOOL)stageAll commit:(NSString **)commit {

@@ -46,8 +46,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<NSString *> *)visibleFieldNames;
 - (NppPasswordHashSettings *)settings;
 - (void)newSalt:(nullable id)sender;
+/// Works the result out again, off the main thread, once typing pauses; one job at a time.
+- (void)refresh;
 /// Works the result out again. Typing does this off the main thread; this waits for it.
 - (void)refreshAndWait;
+/// How many key derivations typing has started (for the suite).
+@property (nonatomic, readonly) NSUInteger jobsStarted;
 - (void)hashFilesAndWait:(NSArray<NSString *> *)paths;
 - (void)verifyAndWait;
 /// A hash with the kind's default settings and a random salt: what "into clipboard" and the password generator give.

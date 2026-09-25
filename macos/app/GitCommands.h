@@ -34,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// the outputs are what it wrote, decoded as UTF-8.
 + (BOOL)run:(NSArray<NSString *> *)arguments in:(NSString *)directory
      output:(NSString *_Nullable *_Nullable)output error:(NSString *_Nullable *_Nullable)error;
+/// The same for a command that only reads (status, show, blame, log): the programs a repository's
+/// own config names - the fsmonitor hook, hooks, filter and textconv drivers - are not run.
++ (BOOL)read:(NSArray<NSString *> *)arguments in:(NSString *)directory
+      output:(NSString *_Nullable *_Nullable)output error:(NSString *_Nullable *_Nullable)error;
 /// The same, off the main thread, streaming what git writes as it comes;
 /// `finished` is called on the main thread. For fetch, pull and push.
 + (void)run:(NSArray<NSString *> *)arguments in:(NSString *)directory

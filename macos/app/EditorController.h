@@ -22,6 +22,9 @@ FOUNDATION_EXPORT void NppBeep(void);
 FOUNDATION_EXPORT NSString *NppAvailableFontName(NSString *name);
 /// A path with symlinks and dots resolved (realpath), to tell whether two spellings are one file.
 FOUNDATION_EXPORT NSString *NppCanonicalPath(NSString *path);
+/// The attributes of the file a path names, through a symlink to what it points at (a link
+/// opened is the file edited: its size, its date, whether it is still there); nil when it is gone.
+FOUNDATION_EXPORT NSDictionary<NSFileAttributeKey, id> *_Nullable NppFileAttributes(NSString *_Nullable path);
 
 /// Posted whenever the set of open documents changes, so panels listing them
 /// can reload instead of drawing from a stale row count.
@@ -102,6 +105,12 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 /// by length, so that a NUL byte inside a file is kept rather than ending it.
 - (NSString *)documentText;
 - (void)setDocumentText:(NSString *)text;
+/// The bytes of the document in front as Scintilla holds them (UTF-8 in all but name), NULs
+/// and all - for a tool that must work on what is there, not on what decodes.
+- (NSData *)documentRawBytes;
+/// The text, but nil when the bytes are not UTF-8 (a tool that rewrites the document must
+/// not rewrite it from a partial or empty reading).
+- (nullable NSString *)documentTextIfUTF8;
 /// Files at least this big are mapped and handed to Scintilla as bytes; for tests.
 /// A file's text read the way Open reads it - BOM, UTF-16, UTF-8, then the
 /// character set uchardet finds - for searching files that are not open.

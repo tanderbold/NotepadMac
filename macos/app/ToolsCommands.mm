@@ -76,12 +76,17 @@
 }
 
 - (NSString *)hashOfSelection:(NppDigest)digest {
+    // IDM_TOOL_MD5_GENERATEINTOCLIPBOARD: the selection's bytes as Scintilla has them (SCI_GETSELTEXT),
+    // to the first NUL (digestString, strlen) - never a re-encoding of text that stops at a NUL before
+    // the selection or at bytes that are not UTF-8.
     ScintillaView *sci = self.sci;
     long a = [sci message:SCI_GETSELECTIONSTART], b = [sci message:SCI_GETSELECTIONEND];
-    NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *doc = [self documentRawBytes];
     NSData *slice = (b > a && (NSUInteger)b <= doc.length)
         ? [doc subdataWithRange:NSMakeRange((NSUInteger)a, (NSUInteger)(b - a))]
         : doc;                                   // no selection: hash the document
+    const void *nul = memchr(slice.bytes, 0, slice.length);
+    if (nul) slice = [slice subdataWithRange:NSMakeRange(0, (NSUInteger)((const char *)nul - (const char *)slice.bytes))];
     return [EditorController hashOfData:slice digest:digest];
 }
 
@@ -419,7 +424,6 @@ static int NppNumStrCmp(NSString *a, NSString *b) {
 - (void)sortTabsBy:(NppTabSort)key ascending:(BOOL)ascending {
     NSMutableArray *docs = (NSMutableArray *)self.documents;
     NppDocument *keep = self.currentDocument;
-    NSFileManager *fm = [NSFileManager defaultManager];
 
     // BufferEquivalent::compare: the column's order, and the full path name when that says
     // nothing - for an untitled document its name, "new 1". The keys are worked out once.
@@ -444,7 +448,7 @@ static int NppNumStrCmp(NSString *a, NSString *b) {
                 break;
             }
             case NppTabSortModifiedTime:
-                k = [[fm attributesOfItemAtPath:(d.path ?: @"") error:NULL] fileModificationDate] ?: [NSDate distantPast];
+                k = [NppFileAttributes(d.path) fileModificationDate] ?: [NSDate distantPast];
                 break;
         }
         [keys setObject:k forKey:d];

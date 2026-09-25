@@ -6,7 +6,7 @@
 static const char kFtpClientKey = 0;
 static char kFtpConnectErrorKey;
 static const char kFtpDirectoryKey = 0;
-static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
+static const char kFtpRemotePathsKey = 0;   // local temp path -> @[server, remote path]
 
 @implementation EditorController (FtpCommands)
 
@@ -126,9 +126,21 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
     return map;
 }
 
+/// Which server a connection is: a file came from one account on one host, and belongs to it only.
+static NSString *ServerOf(NppFtpProfile *profile) {
+    return [NSString stringWithFormat:@"%ld://%@@%@:%ld", (long)profile.protocol, profile.username ?: @"",
+            profile.host.lowercaseString ?: @"", (long)profile.port];
+}
+
+/// Where the document in front came from - on the server connected now. A file downloaded from
+/// another server is, to this one, a local file like any other: NppFTP keeps a cache per profile
+/// and finds a remote path only in the connected profile's (FTPSession::GetExternalPathFromLocal).
 - (NSString *)remotePathForCurrentDocument {
     NSString *local = self.currentDocument.path;
-    return local ? [self remotePathMap][local] : nil;
+    NSArray<NSString *> *known = local ? [self remotePathMap][local] : nil;
+    NppFtpClient *client = [self ftpClient];
+    if (known.count != 2 || !client || ![known[0] isEqualToString:ServerOf(client.profile)]) return nil;
+    return known[1];
 }
 
 - (BOOL)openRemoteFileAtPath:(NSString *)path {
@@ -162,7 +174,7 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
     if (![data writeToFile:local atomically:YES]) return NO;
 
     if (![self openFileAtPath:local error:NULL]) return NO;
-    [self remotePathMap][local] = remote;
+    [self remotePathMap][local] = @[ServerOf(client.profile), remote];
     [self refreshChrome];
     return YES;
 }
@@ -191,7 +203,9 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> remote path
     if (!data) return NO;
     if (![client uploadData:data toPath:remote]) return NO;
 
-    if (self.currentDocument.path) [self remotePathMap][self.currentDocument.path] = remote;
+    // A local file uploaded is remembered where it went; one from a server stays that server's.
+    if (self.currentDocument.path && ![self remotePathMap][self.currentDocument.path])
+        [self remotePathMap][self.currentDocument.path] = @[ServerOf(client.profile), remote];
     return YES;
 }
 
