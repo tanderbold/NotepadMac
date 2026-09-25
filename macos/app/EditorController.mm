@@ -1906,8 +1906,12 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     set(@"userReadOnly", YesNo(entry[@"userReadOnly"]));
     set(@"filename", filename);
     set(@"backupFilePath", entry[@"backup"]);
-    set(@"originalFileLastModifTimestamp", @"0");
-    set(@"originalFileLastModifTimestampHigh", @"0");
+    // The file's time when the document last matched it, as a FILETIME (100 ns since 1601)
+    // in two halves, as upstream writes buf->getLastModifiedTimestamp().
+    NSDate *fileDate = [entry[@"fileDate"] isKindOfClass:[NSDate class]] ? entry[@"fileDate"] : nil;
+    unsigned long long ticks = fileDate ? (unsigned long long)llround((fileDate.timeIntervalSince1970 + 11644473600.0) * 1e7) : 0;
+    set(@"originalFileLastModifTimestamp", @(ticks & 0xFFFFFFFFULL).stringValue);
+    set(@"originalFileLastModifTimestampHigh", @(ticks >> 32).stringValue);
     // Upstream counts tab colours from 0 with -1 for none; here 0 is none.
     set(@"tabColourId", @([entry[@"tabColour"] integerValue] - 1).stringValue);
     set(@"RTL", @"no");
@@ -2002,6 +2006,9 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         e[@"monitoring"] = @([attr(@"macMonitoring") isEqualToString:@"yes"]);
         if (attr(@"encoding").intValue > 0) e[@"codepage"] = @(attr(@"encoding").intValue);
         if (attr(@"backupFilePath").length) e[@"backup"] = attr(@"backupFilePath");
+        unsigned long long ticks = (strtoull(attr(@"originalFileLastModifTimestampHigh").UTF8String ?: "0", NULL, 10) << 32) |
+                                   (strtoull(attr(@"originalFileLastModifTimestamp").UTF8String ?: "0", NULL, 10) & 0xFFFFFFFFULL);
+        if (ticks) e[@"fileDate"] = [NSDate dateWithTimeIntervalSince1970:(double)ticks / 1e7 - 11644473600.0];
         NSMutableArray *marks = [NSMutableArray array], *folds = [NSMutableArray array];
         for (NSXMLElement *m in [file elementsForName:@"Mark"]) [marks addObject:@([m attributeForName:@"line"].stringValue.longLongValue)];
         for (NSXMLElement *m in [file elementsForName:@"Fold"]) [folds addObject:@([m attributeForName:@"line"].stringValue.longLongValue)];
@@ -2092,7 +2099,24 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     for (NSDictionary *f in files) {
         NSString *p = f[@"path"];
         if (![p isKindOfClass:[NSString class]]) continue;
-        if (![[NSFileManager defaultManager] fileExistsAtPath:p]) continue;   // deleted since
+        if (![[NSFileManager defaultManager] fileExistsAtPath:p]) {
+            // Deleted since, or on a volume not mounted: passed over, unless its unsaved
+            // text is in a backup, which comes back under the file's name as upstream's
+            // loadSession opens it (doOpen with the backup), modified, the file known to
+            // be gone (checkFilesOnDisk's kept state), so saving writes it again.
+            NSString *backup = [f[@"backup"] isKindOfClass:[NSString class]] ? f[@"backup"] : nil;
+            if (!backup || ![[NSFileManager defaultManager] fileExistsAtPath:backup]) continue;
+            [self newDocument];
+            NppDocument *doc = [self mainCurrentDocument];
+            doc.path = p;
+            doc.displayName = p.lastPathComponent;
+            doc.language = [[LanguageCatalog sharedCatalog] languageForFileName:p];
+            doc.fileModificationDate = nil;
+            [self applyLanguage];
+            opened++;
+            [self applySessionEntry:f];
+            continue;
+        }
         if ([self openFileAtPath:p error:NULL]) {
             opened++;
             [self applySessionEntry:f];
@@ -2209,15 +2233,21 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         [self.sciView message:SCI_SETREADONLY wParam:1 lParam:0];
         doc.userReadOnly = YES;
     }
-    // A backup newer than the file is the unsaved text of the last session.
+    // The backup is the unsaved text of the last session and is always opened
+    // (Notepad_plus::loadSession, FileManager::loadFile with backupFileName). The
+    // file's time as it was then goes with it, so a file changed since is asked about
+    // by the changed-on-disk check (Buffer::checkFileState), never silently dropped.
     NSString *backup = f[@"backup"];
     if ([backup isKindOfClass:[NSString class]] && doc.path) {
-        NSDate *backupDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:backup error:NULL] fileModificationDate];
-        NSData *data = backupDate && doc.fileModificationDate &&
-                       [backupDate compare:doc.fileModificationDate] != NSOrderedAscending
-            ? [NSData dataWithContentsOfFile:backup] : nil;
-        if (data) [self restoreBackupData:data forDocument:doc atPath:backup];
-        else [[NSFileManager defaultManager] removeItemAtPath:backup error:NULL];
+        NSData *data = [NSData dataWithContentsOfFile:backup];
+        if (data) {
+            [self restoreBackupData:data forDocument:doc atPath:backup];
+            // A FILETIME holds 100 ns: the same time read back differs below that, and is the same time.
+            NSDate *then = [f[@"fileDate"] isKindOfClass:[NSDate class]] ? f[@"fileDate"] : nil;
+            if (then && doc.fileModificationDate && fabs([then timeIntervalSinceDate:doc.fileModificationDate]) > 1e-6) {
+                doc.fileModificationDate = then;
+            }
+        }
     }
     // The bookmarks go on once the text is final: replacing the text would
     // have swept them all onto the first line.

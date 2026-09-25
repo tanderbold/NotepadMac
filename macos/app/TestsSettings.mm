@@ -1256,6 +1256,59 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               @"restored from the session, still modified",
               droppedOnSave && cameBack);
 
+        // A file changed by another program after its backup, or gone since, still has its
+        // unsaved text come back (Notepad_plus::loadSession always opens the backup); a
+        // changed file keeps the time it had, so the changed-on-disk check asks about it.
+        {
+            NSFileManager *fm = [NSFileManager defaultManager];
+            NSString *keptSession = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-backup-kept-session.xml"];
+            NSString *kept = TempFile(@"t_session_kept.txt", @"on disk\n");
+            [ed openFileAtPath:kept error:NULL];
+            NppDocument *kd = ed.currentDocument;
+            NSDate *openedAt = kd.fileModificationDate;
+            SetDoc(ed, @"only in the backup\n");
+            kd.modified = YES;
+            [ed runAutosavePass];
+            NSString *keptBackup = kd.backupPath;
+            [ed saveSessionTo:keptSession error:NULL];
+            kd.backupPath = nil;                               // left behind, as a crash would leave it
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:kd] discardChanges:YES];
+            NppDocument *(^reopened)(void) = ^NppDocument *{
+                [ed loadSessionFrom:keptSession error:NULL];
+                for (NppDocument *d in ed.documents) {
+                    if ([d.path isEqualToString:kept]) {
+                        [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:d]];
+                        return d;
+                    }
+                }
+                return nil;
+            };
+            void (^dropIt)(NppDocument *) = ^(NppDocument *d) {
+                if (!d) return;
+                d.backupPath = nil;
+                [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:d] discardChanges:YES];
+            };
+            [@"changed elsewhere\n" writeToFile:kept atomically:NO encoding:NSUTF8StringEncoding error:NULL];
+            [fm setAttributes:@{NSFileModificationDate: [NSDate dateWithTimeIntervalSinceNow:120]} ofItemAtPath:kept error:NULL];
+            NppDocument *changed = reopened();
+            BOOL newerFileKept = changed && changed.modified && [DocText(ed) isEqualToString:@"only in the backup\n"] &&
+                                 [fm fileExistsAtPath:keptBackup] && openedAt && changed.fileModificationDate &&
+                                 fabs([changed.fileModificationDate timeIntervalSinceDate:openedAt]) < 1e-6;
+            dropIt(changed);
+            [fm removeItemAtPath:kept error:NULL];
+            NppDocument *gone = reopened();
+            BOOL goneFileKept = gone && gone.modified && [DocText(ed) isEqualToString:@"only in the backup\n"] &&
+                                gone.fileModificationDate == nil && [gone.displayName isEqualToString:@"t_session_kept.txt"];
+            dropIt(gone);
+            [fm removeItemAtPath:keptBackup error:NULL];
+            [fm removeItemAtPath:keptSession error:NULL];
+            printf("    kept backups: newer file %d, gone file %d\n", newerFileKept, goneFileKept);
+            Check(@"IDM_FILE_LOADSESSION (backup of a changed or missing file)",
+                  @"the unsaved text comes back when the file is newer than its backup or is gone, "
+                  @"and a changed file is left for the changed-on-disk check",
+                  newerFileKept && goneFileKept);
+        }
+
         [ed setAutosaveEnabled:YES interval:60];
         BOOL running = [ed autosaveRunning];
         [ed setAutosaveEnabled:NO interval:60];
