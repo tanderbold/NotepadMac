@@ -2021,7 +2021,10 @@ void NppTestsDocking(AppDelegate *app, EditorController *ed, ScintillaView *sci)
             ghostPlaces[@"t_unmade_panel"] = @(NppDockBottom);
             withGhost[@"places"] = ghostPlaces;
             [NppPreferences shared].dockLayout = withGhost;
-            [dock performSelector:NSSelectorFromString(@"saveLayout")];
+            #pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [dock performSelector:NSSelectorFromString(@"saveLayout")];   // void; nothing to leak
+#pragma clang diagnostic pop
             Check(@"Docking (layout kept)", @"saving the layout keeps the place of a panel not made yet this run",
                   [[NppPreferences shared].dockLayout[@"places"][@"t_unmade_panel"] integerValue] == NppDockBottom);
             [NppPreferences shared].dockLayout = layoutBefore;

@@ -6,6 +6,12 @@
 
 @class EditorController;
 
+// Most of these take nil freely (they are menu actions and test hooks), so a
+// blanket audited region would lie; the lone `nullable` below still makes
+// clang ask for the rest. It is told not to.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+
 @interface AppDelegate (Testing)
 @property (nonatomic, copy) NSString *lastSearchTerm;
 - (EditorController *)editor;
@@ -93,3 +99,5 @@
 /// Menus filled when opened: the spelling languages, the Git branches.
 - (void)menuNeedsUpdate:(NSMenu *)menu;
 @end
+
+#pragma clang diagnostic pop

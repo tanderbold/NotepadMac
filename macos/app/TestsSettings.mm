@@ -165,7 +165,10 @@ void NppTestsEditorSettings(AppDelegate *app, EditorController *ed, ScintillaVie
             NSTextField *pf = [ed valueForKey:@"pathField"];
             NSRect was = box.frame;
             pf.stringValue = [@"" stringByPaddingToLength:300 withString:@"/deep" startingAtIndex:0];
-            [ed performSelector:NSSelectorFromString(@"layoutStatusFields")];
+            #pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [ed performSelector:NSSelectorFromString(@"layoutStatusFields")];   // void; nothing to leak
+#pragma clang diagnostic pop
             [box setFrameSize:NSMakeSize(640, NSHeight(was))];
             BOOL halved = NSWidth(pf.frame) <= 320 + 1;
             [box setFrameSize:was.size];

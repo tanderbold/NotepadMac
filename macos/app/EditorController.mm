@@ -4025,10 +4025,11 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
         case SCN_UPDATEUI:
             [self refreshChrome];
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateDocumentMap];
-            if (n->updated & SC_UPDATE_CONTENT) {
-                [self gitScheduleMarkerRefresh];       // the git margin follows the text
-                [self compareScheduleRefresh];         // and so does a comparison that is on
-            }
+            // The text-following debounces are NOT armed here: SC_UPDATE_CONTENT
+            // also announces marker and indicator writes, so a refresh that
+            // paints its markers would arm the next refresh - and the spell
+            // pass (0.35s) would reset the git timer (0.6s) forever.
+            // SCN_MODIFIED below hears real edits only.
             if (n->updated & (SC_UPDATE_V_SCROLL | SC_UPDATE_CONTENT)) [self updateLineNumberWidth];
             // Only a scroll of this pane is mirrored: every SCN_UPDATEUI mirrored both ways kept the
             // panes echoing each other (a freeze with long lines).
@@ -4039,7 +4040,14 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
             [self updateBraceMatch];
             if (n->updated & SC_UPDATE_SELECTION) [self updateSmartHighlight];
             if (n->updated & (SC_UPDATE_SELECTION | SC_UPDATE_CONTENT)) [self highlightMatchingTags];
-            if (n->updated & (SC_UPDATE_CONTENT | SC_UPDATE_V_SCROLL)) [self scheduleSpellCheck];
+            if (n->updated & SC_UPDATE_V_SCROLL) [self scheduleSpellCheck];   // the visible lines changed
+            break;
+        case SCN_MODIFIED:
+            if (n->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT)) {
+                [self gitScheduleMarkerRefresh];       // the git margin follows the text
+                [self compareScheduleRefresh];         // and so does a comparison that is on
+                [self scheduleSpellCheck];
+            }
             break;
         case SCN_CHARADDED:
             [self handleCharacterAdded:n->ch];
