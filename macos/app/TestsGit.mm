@@ -418,6 +418,8 @@ void NppTestsGit(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         BOOL historyHostile = [ed gitFileHistory];
         while ((NSInteger)ed.documents.count > hostileTabs) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
         [ed openFileAtPath:hostileFile error:NULL];
+        // The branch comes back to the status bar from git in the background, a moment after the switch.
+        NppSettleUntil(^BOOL{ return [[ed gitStatusBarText] hasPrefix:@"⎇ "]; }, 10);
         NSArray *whatRan = [fm contentsOfDirectoryAtPath:ran error:NULL] ?: @[];
         if (whatRan.count) printf("       ran: %s\n", [[whatRan componentsJoinedByString:@", "] UTF8String]);
         Check(@"Git (a repository from elsewhere)", @"the status bar, the margin, the panel, Blame and History run none of the programs the repository's config names "

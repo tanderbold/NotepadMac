@@ -626,6 +626,8 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
                   [bIncoming isEqualToString:@"meant for A\n"] && [mappedOnA isEqualToString:@"/greeting.txt"]);
             [serverB terminate];
             [[NSFileManager defaultManager] removeItemAtPath:rootB error:NULL];
+            // Its edit was for this check only: the tab goes, or opening greeting.txt again would find it.
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:fromA] discardChanges:YES];
 
             // A failed Connect says why, in the transfer's own words.
             NppFtpProfile *dead = [[NppFtpProfile alloc] init];
