@@ -474,6 +474,23 @@ void NppTestsToolsMenu(AppDelegate *app, EditorController *ed, ScintillaView *sc
         Check(@"Tools > Hashes > scrypt, Argon2, PBKDF2 > Generate…", @"each, given a published vector's text, salt and settings through its fields, shows the vector's result",
               scryptRight && argonRight && pbkdfRight);
 
+        // Typing does not start a key derivation per keystroke (one cannot be stopped halfway, and a
+        // strong one takes gigabytes): the work starts once typing pauses, one job at a time, and
+        // the result is the last text's.
+        [hw showForKind:NppPasswordHashScrypt fromFiles:NO];
+        hw.bareKey.state = NSControlStateValueOn;
+        hw.salt.stringValue = [NppCrypto hexOfData:[@"SodiumChloride" dataUsingEncoding:NSUTF8StringEncoding]];
+        [(NSTextField *)hw.fields[@"scryptLogN"] setStringValue:@"14"];
+        NSUInteger jobsBefore = hw.jobsStarted;
+        NSString *typed = @"pleaseletmein";
+        for (NSUInteger n = 1; n <= typed.length; ++n) { hw.input.string = [typed substringToIndex:n]; [hw refresh]; }
+        NSString *scryptVector = @"7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2";
+        NppSettleUntil(^BOOL { return [hw.result.string isEqualToString:scryptVector]; }, 20);
+        NSUInteger jobsTyped = hw.jobsStarted - jobsBefore;
+        Check(@"Tools > Hashes (typing)", @"thirteen keystrokes in a row start one key derivation, not thirteen, and the result is the whole text's",
+              jobsTyped >= 1 && jobsTyped <= 2 && [hw.result.string isEqualToString:scryptVector]);
+        hw.salt.stringValue = [NppCrypto hexOfData:[@"salt" dataUsingEncoding:NSUTF8StringEncoding]];   // as the files' check below has it
+
         // From files, as the digests have it: a line for each file, and the file's contents are what is hashed.
         [hw showForKind:NppPasswordHashPBKDF2 fromFiles:YES];
         hw.bareKey.state = NSControlStateValueOn;
