@@ -95,6 +95,8 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 @property (nonatomic, strong) NSSplitView *split;
 @property (nonatomic, strong) NSView *editorArea;
 @property (nonatomic, strong) ScintillaView *secondaryView;
+/// The paths of a drop on the text still arriving, one SCN_URIDROPPED each.
+@property (nonatomic, strong, nullable) NSMutableArray<NSString *> *pendingDrop;
 @property (nonatomic, strong) NSSplitView *editorSplit;
 @property (nonatomic, strong) NSView *secondaryHost;     // the second pane and, above it, Compare's bar
 @property (nonatomic, strong) id secondaryDelegate;
@@ -3823,6 +3825,25 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
                 dispatch_async(dispatch_get_main_queue(), ^{ [self openSearchResultAtCaret]; });
             }
             break;
+        case SCN_URIDROPPED: {
+            // Files dropped on the text: ScintillaWin::Drop hands a CF_HDROP to the main window as
+            // WM_DROPFILES, and Notepad_plus::dropFiles makes the view it landed on the current
+            // one, then opens them. Scintilla sends one notification per file, all within the drop,
+            // so they are gathered and handed on together once it is over.
+            NSString *path = n->text ? [NSString stringWithUTF8String:n->text] : nil;
+            if (!path.length) break;
+            if (self.pendingDrop) { [self.pendingDrop addObject:path]; break; }
+            self.pendingDrop = [NSMutableArray arrayWithObject:path];
+            ScintillaView *target = fromSecondary && self.secondaryDocument && !self.secondaryScratch
+                ? self.secondaryView : self.sciView;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSArray<NSString *> *paths = [self.pendingDrop copy];
+                self.pendingDrop = nil;
+                [self.window makeFirstResponder:target.content];
+                if (self.droppedPathsHandler) self.droppedPathsHandler(paths);
+            });
+            break;
+        }
         case SCN_MACRORECORD:
             [self recordMacroMessage:(int)n->message
                               wParam:(unsigned long)n->wParam

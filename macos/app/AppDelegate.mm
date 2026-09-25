@@ -485,8 +485,11 @@ static NSString *Ordinal(NSUInteger n) {
     self.editor.window = self.window;
     [self.editor gitInstall];
     self.window.delegate = self;
-    // Files dropped anywhere on the window open, as on Windows.
+    // Files dropped anywhere on the window open, as on Windows: on the tab bar or the status bar
+    // the window takes the drop, on the text Scintilla does and says so (SCN_URIDROPPED).
     [self.window registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
+    __weak __typeof(self) weakDropSelf = self;
+    self.editor.droppedPathsHandler = ^(NSArray<NSString *> *paths) { [weakDropSelf openDroppedPaths:paths]; };
     // Opening a file whose name says nothing may turn up several languages that
     // fit; this is what puts them to the user.
     __weak __typeof(self) weakSelf = self;
@@ -3289,15 +3292,55 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
     NSArray<NSURL *> *urls = [sender.draggingPasteboard readObjectsForClasses:@[[NSURL class]]
                                                                       options:@{NSPasteboardURLReadingFileURLsOnlyKey: @YES}];
-    BOOL opened = NO;
-    for (NSURL *url in urls) {
+    NSMutableArray<NSString *> *paths = [NSMutableArray array];
+    for (NSURL *url in urls) if (url.path.length) [paths addObject:url.path];
+    return [self openDroppedPaths:paths];
+}
+
+/// Notepad_plus::dropFiles, in its default mode (not "Open all files of folder instead of
+/// launching Folder as Workspace on folder dropping"): files open and the last one is shown;
+/// folders alone open as Folder as Workspace; files and folders together are refused.
+- (BOOL)openDroppedPaths:(NSArray<NSString *> *)paths {
+    NSMutableArray<NSString *> *files = [NSMutableArray array], *folders = [NSMutableArray array];
+    for (NSString *path in paths) {
         BOOL isDirectory = NO;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:url.path isDirectory:&isDirectory] && !isDirectory) {
-            if ([self.editor openFileAtPath:url.path error:NULL]) opened = YES;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory)
+            [folders addObject:path];
+        else
+            [files addObject:path];
+    }
+    BOOL done = NO;
+    if (!folders.count) {
+        NppDocument *lastOpened = nil;
+        for (NSString *path in files) {
+            if ([self.editor openFileAtPath:path error:NULL]) lastOpened = self.editor.currentDocument;
         }
+        if (lastOpened) {
+            NSUInteger index = [self.editor.documents indexOfObjectIdenticalTo:lastOpened];
+            if (index != NSNotFound && self.editor.currentDocument != lastOpened) [self.editor selectDocumentAtIndex:(NSInteger)index];
+            done = YES;
+        }
+    } else if (files.count) {
+        // DroppingFolderAsProjectModeWarning. Its second sentence names a preference the port does
+        // not have (it always drops folders as a workspace), so only the first is shown.
+        NppLocalization *l10n = [NppLocalization shared];
+        NSString *message = [l10n message:@"You can only drop files or folders but not both, because you're in dropping Folder as Project mode.\rYou have to enable \"Open all files of folder instead of launching Folder as Workspace on folder dropping\" in \"Default Directory\" section of Preferences dialog to make this operation work."
+                                   string:nil number:0];
+        message = [message componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]].firstObject ?: message;
+        if (!getenv("NPPMAC_TEST")) {
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = [l10n translateTitle:@"Invalid action"];
+            alert.informativeText = message;
+            [alert runModal];
+        }
+    } else {
+        for (NSString *folder in folders) [self.editor openFolderAsWorkspace:folder];
+        done = YES;
     }
     [self rebuildRecentMenu];
-    return opened;
+    // As dropFiles ends: the window comes to the front.
+    if (done) [NSApp activateIgnoringOtherApps:YES];
+    return done;
 }
 
 - (void)openRecentFile:(NSMenuItem *)sender {
