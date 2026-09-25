@@ -1361,6 +1361,26 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               normalFile && nowRestricted && styledUnderRestriction == 0 &&
               styledNormally == SCE_C_COMMENTLINE);
 
+        // A large file opens as Normal text whatever its extension, as upstream's
+        // determinateFormat has it: a 300 MB .cpp was given the C++ lexer after the
+        // restriction had taken it away, and lexed whole.
+        {
+            NSString *big = [NSTemporaryDirectory() stringByAppendingPathComponent:@"nppmac-large.cpp"];
+            [@"// a comment\nint x = 1;\n" writeToFile:big atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            p.largeFileThresholdMB = 0;
+            BOOL opened = [ed openFileAtPath:big error:NULL];
+            NSString *language = ed.currentDocument.language.name;
+            long lexer = [sci message:SCI_GETLEXER];
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+            p.largeFileThresholdMB = 200;
+            BOOL small = [ed openFileAtPath:big error:NULL] && [ed.currentDocument.language.name isEqualToString:@"cpp"];
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+            [[NSFileManager defaultManager] removeItemAtPath:big error:NULL];
+            Check(@"IDM_SETTING_PREFERENCE (large file language)",
+                  @"a file above the threshold opens as Normal text with no lexer, below it by its extension",
+                  opened && [language isEqualToString:@"normal"] && lexer <= SCLEX_NULL && small);
+        }
+
         // Clickable links.
         p.linksEnabled = YES;
         p.linkCustomSchemes = @"";

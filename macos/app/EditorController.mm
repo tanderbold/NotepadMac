@@ -874,7 +874,10 @@ static void RestartChangeHistory(ScintillaView *sci) {
                                                          : SC_DOCUMENTOPTION_DEFAULT];
     doc.path = path;
     doc.displayName = path.lastPathComponent;
-    doc.language = [[LanguageCatalog sharedCatalog] languageForFileName:path];
+    // A large file is Normal text whatever its name, as upstream's Buffer::determinateFormat has
+    // it (_isLargeFile: L_TEXT): no lexer goes over it, and its contents are not guessed at.
+    doc.language = large ? [[LanguageCatalog sharedCatalog] languageNamed:@"normal"]
+                         : [[LanguageCatalog sharedCatalog] languageForFileName:path];
     doc.encoding = used;
     doc.hasBOM = bom;
     doc.codepage = 0;
@@ -934,8 +937,9 @@ static void RestartChangeHistory(ScintillaView *sci) {
     [self forgetRecentFile:path];
     [self rememberOpenDirectory:path];
 
-    // A name with no extension says nothing, so the contents are asked instead.
-    [self detectLanguageOfCurrentDocumentOffering:self.languageChoiceHandler];
+    // A name with no extension says nothing, so the contents are asked instead - not of a large
+    // file (FileManager::loadFile: "if not a large file ... we use the detected value").
+    if (!large) [self detectLanguageOfCurrentDocumentOffering:self.languageChoiceHandler];
     [[NSNotificationCenter defaultCenter] postNotificationName:NppDocumentOpenedNotification object:self];
     return YES;
 }
