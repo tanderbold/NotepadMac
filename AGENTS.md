@@ -167,7 +167,8 @@ filters. `NPPMAC_SNAPSHOT_COMPARE=<file>` snapshots the sample compared with tha
 
 ### End-to-end hooks (`E2EHooks.mm`)
 
-A separate black-box suite (`../npp-tests`, not in this repository) drives a copy of the
+A separate black-box suite ([NotepadMac-tests](https://github.com/tanderbold/NotepadMac-tests), checked out
+beside this one as `../npp-tests`) drives a copy of the
 built application under its own bundle id over the agent socket. With `NPPMAC_E2E=1`, and
 only then, the agent server registers `e2e_*` tools (Scintilla messages, menu state, windows
 and their controls, clicks and keys through AppKit's own routing, snapshots (`screen=true`: the window

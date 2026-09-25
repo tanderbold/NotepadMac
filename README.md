@@ -250,6 +250,9 @@ and `NPPMAC_NOTARY_PROFILE=<profile made with xcrun notarytool store-credentials
   macOS runner): every menu command, file formats against files written on Windows, encodings,
   regular expressions, cryptography against published vectors, the HTTP and FTP clients against
   local servers, the interface in another language with no text cut off.
+- A separate black-box suite, [NotepadMac-tests](https://github.com/tanderbold/NotepadMac-tests), of about
+  1,500 tests drives a copy of the built application from the outside - menus, keys, clicks,
+  dialogs, files - on GitHub's macOS runners, for each new commit on `main` (checked hourly).
 - [AGENTS.md](AGENTS.md) is the technical briefing - how to build, test and find one's way in
   the code, and how the language-detection model is trained. It is written for AI coding agents
   and reads just as well for people.
