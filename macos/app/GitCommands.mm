@@ -751,6 +751,9 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
         col.editable = NO;
         [_table addTableColumn:col];
     }
+    // A panel narrower or wider than the table was made: the file column gives or takes the difference,
+    // the two narrow ones keep their headings' width.
+    _table.columnAutoresizingStyle = NSTableViewLastColumnOnlyAutoresizingStyle;
     [self fitColumns];
     _table.allowsMultipleSelection = YES;
     _table.dataSource = self;
@@ -762,6 +765,12 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     scroll.translatesAutoresizingMaskIntoConstraints = NO;
     scroll.hasVerticalScroller = YES;
     scroll.documentView = _table;
+    // The file column reaches the panel's edge whatever the panel's width (the dock's divider, a
+    // floating window resized): a table only adjusts its columns when told.
+    scroll.contentView.postsFrameChangedNotifications = YES;
+    __weak NSTableView *weakTable = _table;
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSViewFrameDidChangeNotification object:scroll.contentView
+                                                       queue:nil usingBlock:^(NSNotification *n) { [weakTable sizeLastColumnToFit]; }];
 
     [content addSubview:buttons];
     [content addSubview:_branchLabel];

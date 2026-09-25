@@ -12338,6 +12338,33 @@ int NppMacRunTests(AppDelegate *app) {
         BOOL freshBack = [byPath[@"fresh.txt"] untracked];
         Check(@"Git (stage, unstage, the panel)", @"the panel lists the modified, the renamed (with its old name, staged first) and the untracked file with the branch and counts; Stage File and Unstage File move the file between the index and the working tree, and the panel's buttons do the same for the selected row",
               rowsRight && nowStaged && backAgain && freshStaged && freshBack);
+        // The panel made narrower and wider: the file column takes the difference, the narrow two keep theirs.
+        {
+            NSScrollView *tableScroll = panel.table.enclosingScrollView;
+            NSSize before = tableScroll.frame.size;
+            NSTableColumn *stagedCol = panel.table.tableColumns[0], *fileCol = panel.table.tableColumns.lastObject;
+            CGFloat stagedWidth = stagedCol.width;
+            // The table style's inset stays between the last column and the edge; 260 and 420 are
+            // wide enough for the file column's minimum.
+            BOOL fills = YES;
+            CGFloat fileAt[2] = {0, 0}, roomAt[2] = {0, 0};
+            NSArray<NSNumber *> *widths = @[@260, @420];
+            for (NSUInteger k = 0; k < widths.count; ++k) {
+                [tableScroll setFrameSize:NSMakeSize(widths[k].doubleValue, before.height)];
+                [tableScroll tile];
+                roomAt[k] = NSWidth(tableScroll.contentView.bounds);
+                fileAt[k] = fileCol.width;
+                CGFloat end = NSMaxX([panel.table rectOfColumn:(NSInteger)panel.table.tableColumns.count - 1]);
+                fills = fills && end <= roomAt[k] + 1 && end >= roomAt[k] - 12 && fabs(stagedCol.width - stagedWidth) < 1;
+            }
+            fills = fills && fabs((fileAt[1] - fileAt[0]) - (roomAt[1] - roomAt[0])) <= 1;
+            if (!fills) printf("    columns: room %.1f/%.1f file %.1f/%.1f staged %.1f/%.1f\n",
+                               roomAt[0], roomAt[1], fileAt[0], fileAt[1], stagedCol.width, stagedWidth);
+            [tableScroll setFrameSize:before];
+            [tableScroll tile];
+            Check(@"Git (the panel's columns)", @"a narrower or wider panel gives or takes the room from the file column, which ends at the panel's edge",
+                  fills);
+        }
 
         // Discard: the tracked file goes back to HEAD and the open document is reread; an untracked one is removed.
         ed.gitAnswersWithoutAsking = YES;
