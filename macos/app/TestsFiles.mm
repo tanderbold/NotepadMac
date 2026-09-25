@@ -1383,6 +1383,32 @@ void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     }
 
     if (NppSectionWanted(@"File: close family")) { printf("\n== File: close family ==\n");
+        // Cmd+W typed in the Find window closes that window, not the document behind it (upstream
+        // gives the main window's accelerators to the main window only).
+        {
+            [ed newDocument];
+            NppDocument *behind = ed.currentDocument;
+            NSUInteger count = ed.documents.count;
+            [app performSelector:@selector(showFind:) withObject:nil];
+            NSPanel *find = [app valueForKey:@"findPanel"];
+            [find makeKeyAndOrderFront:nil];
+            NppSettleUntil(^BOOL { return find.isKeyWindow; }, 2);
+            BOOL wasKey = find.isKeyWindow;
+            NSEvent *cmdW = [NSEvent keyEventWithType:NSEventTypeKeyDown location:NSZeroPoint modifierFlags:NSEventModifierFlagCommand
+                                            timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:find.windowNumber context:nil
+                                           characters:@"w" charactersIgnoringModifiers:@"w" isARepeat:NO keyCode:13];
+            [NSApp postEvent:cmdW atStart:NO];
+            NppSettleUntil(^BOOL { return !find.isVisible || ![ed.documents containsObject:behind]; }, 2);
+            BOOL documentKept = [ed.documents containsObject:behind] && ed.documents.count == count;
+            BOOL panelClosed = !find.isVisible;
+            [find orderOut:nil];
+            [ed.window makeKeyAndOrderFront:nil];
+            if ([ed.documents containsObject:behind])
+                [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:behind] discardChanges:YES];
+            Check(@"IDM_FILE_CLOSE (typed in another window)",
+                  @"Cmd+W in the Find window closes the Find window and leaves the document behind it open",
+                  wasKey && documentKept && panelClosed);
+        }
         NSError *err = nil;
         [ed closeAllDocuments];
         Check(@"IDM_FILE_CLOSEALL", @"leaves exactly one fresh, unsaved tab",

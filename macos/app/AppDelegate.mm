@@ -3241,7 +3241,22 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 
 - (void)saveDocument:(id)sender   { [self.editor saveCurrentDocument]; }
 - (void)saveDocumentAs:(id)sender { [self.editor saveCurrentDocumentAs]; }
-- (void)closeTab:(id)sender       { [self.editor closeCurrentDocument]; }
+- (void)closeTab:(id)sender {
+    // Cmd+W typed in another window of the application - Find, Preferences, a floating panel.
+    // Upstream's accelerators belong to the main window only (Notepad_plus_Window::isDlgsMsg
+    // gives a modeless dialog's keys to the dialog, and the Find dialog's own table has only the
+    // search commands), so the document behind is never closed from there. On the Mac, Cmd+W
+    // closes the window it is typed in, as File > Close does everywhere; a window that cannot
+    // close says so. From the menu, a macro or an agent the command is the tab's.
+    NSEvent *event = NSApp.currentEvent;
+    NSWindow *typedIn = event.type == NSEventTypeKeyDown ? (event.window ?: NSApp.keyWindow) : nil;
+    if (typedIn && typedIn != self.window) {
+        if (typedIn.styleMask & NSWindowStyleMaskClosable) [typedIn performClose:sender];
+        else NppBeep();
+        return;
+    }
+    [self.editor closeCurrentDocument];
+}
 
 - (void)clearRecentDocuments:(id)sender {
     [self.editor clearRecentFiles];
