@@ -132,6 +132,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Agent interface (MCP) | `AgentServer.mm`: the Unix socket, the JSON-RPC/MCP methods and the 21 tools; see below |
 | Git | `GitCommands.mm`: `NppGit` (runs the `git` executable; status, branches, HEAD contents), the margin markers against HEAD, the status-bar branch, the Git panel, the Commit window; see below |
 | Help | `InfoWindows.mm`, `UpdateChecker.mm` |
+| Accessibility | `Accessibility.mm`: `NppAXElement` (a drawn part of a view - a tab, its close button, a dock tab - as an accessibility element), symbol buttons named by their tooltips, fields named by the label beside them (oleacc's rule for Win32 dialogs); the tab bar, dock strip, Document Map zone and status bar path say their parts in their own files |
 
 Generators (`macos/gen_*.py|sh`) rebuild headers and resources from upstream sources; rerun them
 after merging upstream rather than editing their output.
@@ -175,7 +176,11 @@ as the window server composites it, which the app may take of itself without the
 permission), preferences,
 a private clipboard), NSAlert and open/save panels take queued answers, NSWorkspace opens
 and printing are logged instead of performed, and requests are served in the run loop's
-common modes so a modal can be driven from a second connection. `nppmac` talks to the
+common modes so a modal can be driven from a second connection. `e2e_ax` reads a window's accessibility
+tree from the accessibility server (AXUIElement on the app's own process, from a second thread while
+the main run loop answers; a process may read itself without the Accessibility permission), so a test
+sees what VoiceOver sees - not what the NSAccessibility methods return when called directly, which
+for a view given its role by the setters is AXUnknown. `nppmac` talks to the
 application it ships in (its bundle id + `.cli`), so the copy never reaches the user's
 instance. Without the variable nothing of this exists; keep it that way.
 
