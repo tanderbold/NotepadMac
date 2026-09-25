@@ -49,7 +49,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 <p><img src="docs/screenshots/editor-panels.png" alt="Function List and Document Map docked beside a Python file" width="49%"> <img src="docs/screenshots/find-in-files.png" alt="Find in Files results grouped by file" width="49%"></p>
 
 **Search**
-- Find, Replace, Find in Files, Find in Projects, Mark, incremental search, with Notepad++'s regular-expression syntax (Boost), the results panel with folding and navigation, search-result colours.
+- Find, Replace, Find in Files, Find in Projects, Mark, incremental search, with Notepad++'s regular-expression syntax (Boost), the results panel - folding, and a double-click on a hit opens its file at that line - and search-result colours.
 
 **Files and encodings**
 - UTF-8/16 with and without BOM, ANSI, all 46 of Notepad++'s character sets as "Encode in" and "Convert to", encoding detection, EOL conversion.
