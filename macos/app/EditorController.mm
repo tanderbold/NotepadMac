@@ -682,6 +682,28 @@ static long SciColor(NSColor *c) {
 
 #pragma mark - Documents
 
+NSString *NppTextRange(ScintillaView *sci, long start, long end) {
+    long length = [sci message:SCI_GETLENGTH];
+    start = MAX(0L, start);
+    end = MIN(end, length);
+    if (end <= start) return @"";
+    std::string buffer((size_t)(end - start) + 1, '\0');
+    Sci_TextRangeFull range;
+    range.chrg.cpMin = start;
+    range.chrg.cpMax = end;
+    range.lpstrText = &buffer[0];
+    [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&range];
+    return [[NSString alloc] initWithBytes:buffer.data() length:(NSUInteger)(end - start) encoding:NSUTF8StringEncoding];
+}
+
+void NppEnsureStyled(ScintillaView *sci) {
+    long length = [sci message:SCI_GETLENGTH];
+    long styled = [sci message:SCI_GETENDSTYLED];
+    if (styled >= length) return;
+    long from = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)[sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)styled]];
+    [sci message:SCI_COLOURISE wParam:(uptr_t)from lParam:-1];
+}
+
 /// A path with its symlinks and "."/".." resolved, as realpath(3) gives it (NSString's own
 /// resolving turns /private/var into /var); the path as given when it no longer exists.
 NSString *NppCanonicalPath(NSString *path) {

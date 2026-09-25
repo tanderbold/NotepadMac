@@ -61,8 +61,7 @@ static int IndicatorFor(NSInteger style) {
         b = [sci message:SCI_WORDENDPOSITION wParam:(uptr_t)pos lParam:1];
     }
     if (b <= a) return @"";
-    NSData *data = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    return SliceBytes(data, a, b);
+    return NppTextRange(sci, a, b) ?: @"";
 }
 
 /// Byte offsets of every occurrence of `term`.
@@ -228,8 +227,7 @@ static int IndicatorFor(NSInteger style) {
     ScintillaView *sci = self.sci;
     long start = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
     long end = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
-    NSData *data = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    return SliceBytes(data, start, end);
+    return NppTextRange(sci, start, end) ?: @"";
 }
 
 - (NSString *)bookmarkedLinesText {
@@ -654,12 +652,7 @@ static const char kOlderResultsKey = 0;
     sptr_t start = [self.sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line lParam:0];
     sptr_t end = [self.sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line lParam:0];
     if (end <= start) return @"";
-    NSData *bytes = [([self.sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    if ((NSUInteger)end > bytes.length) return @"";
-    NSString *text = [[NSString alloc] initWithData:
-        [bytes subdataWithRange:NSMakeRange((NSUInteger)start, (NSUInteger)(end - start))]
-                                           encoding:NSUTF8StringEncoding];
-    return text ?: @"";
+    return NppTextRange(self.sci, (long)start, (long)end) ?: @"";
 }
 
 - (BOOL)openSearchResultAtCaret {

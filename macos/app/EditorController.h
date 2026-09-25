@@ -22,6 +22,14 @@ FOUNDATION_EXPORT void NppBeep(void);
 FOUNDATION_EXPORT NSString *NppAvailableFontName(NSString *name);
 /// A path with symlinks and dots resolved (realpath), to tell whether two spellings are one file.
 FOUNDATION_EXPORT NSString *NppCanonicalPath(NSString *path);
+/// The text between two byte positions of a view's document (nil when they are not UTF-8), read with
+/// SCI_GETTEXTRANGEFULL as upstream's getGenericText does. Code that runs on each keystroke or caret
+/// move reads what it needs this way: [ScintillaView string] copies and decodes the whole document.
+FOUNDATION_EXPORT NSString *_Nullable NppTextRange(ScintillaView *sci, long start, long end);
+/// Styles (and folds) the view's document to its end, from where its styling stopped: what
+/// SCI_COLOURISE 0 -1 gives, without lexing again what is styled already (Scintilla keeps the
+/// styles before GETENDSTYLED valid, and restarts there after an edit, as EnsureStyledTo does).
+FOUNDATION_EXPORT void NppEnsureStyled(ScintillaView *sci);
 
 /// Posted whenever the set of open documents changes, so panels listing them
 /// can reload instead of drawing from a stale row count.

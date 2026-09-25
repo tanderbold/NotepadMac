@@ -25,6 +25,8 @@ typedef NS_ENUM(NSInteger, NppCompletionKind) {
 - (BOOL)showCompletion:(NppCompletionKind)kind autoInsert:(BOOL)autoInsert;
 /// Whether completion ignores case here: the API file says, and plain text does not.
 - (BOOL)completionIgnoresCase;
+/// Words in the order Scintilla's list lookup expects (case folded when completion ignores case).
+- (NSArray<NSString *> *)sortedForCompletion:(NSArray<NSString *> *)words;
 /// What the last list offered; for the tests.
 - (nullable NSArray<NSString *> *)lastCompletionList;
 

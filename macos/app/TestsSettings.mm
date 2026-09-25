@@ -1592,6 +1592,59 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               @"a numeric prefix offers nothing while that is on", numeric.count == 0);
         p.autoCompleteIgnoreNumbers = YES;
 
+        // The words are found in the document's bytes: for any prefix, ASCII or not, case folded
+        // or not, they are the words the whole text split at the separators and compared as
+        // strings gives (what this did before, kept here as the reference).
+        p.autoCompleteSource = NppCompletionWords;
+        NSString *mixed = @"Élan élite ÉLÉGANT e\u0301clat x=eclair;esprit(eclat) KELVIN \u212Aelp straße STRASSE 12 123 1234\n";
+        NSArray *(^reference)(NSString *, BOOL) = ^NSArray *(NSString *prefix, BOOL ignoreCase) {
+            NSCharacterSet *separators = [NSCharacterSet characterSetWithCharactersInString:@" \t\n\r.,;:\"(){}=<>'+!?[]"];
+            NSMutableOrderedSet *found = [NSMutableOrderedSet orderedSet];
+            for (NSString *w in [mixed componentsSeparatedByCharactersInSet:separators]) {
+                if (w.length <= prefix.length) continue;
+                if ([w rangeOfString:prefix options:NSAnchoredSearch | (ignoreCase ? NSCaseInsensitiveSearch : 0)].location != 0) continue;
+                if ([w rangeOfCharacterFromSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location == NSNotFound) continue;
+                [found addObject:w];
+            }
+            return [ed sortedForCompletion:found.array];
+        };
+        BOOL sameWords = YES;
+        for (NSString *language in @[@"sql", @"normal"]) {      // sql's API file ignores case, plain text respects it
+            [ed setLanguageNamed:language];
+            SetDoc(ed, mixed);
+            for (NSString *prefix in @[@"él", @"É", @"ecl", @"e", @"ke", @"K", @"stra", @"STR", @"12", @"x"]) {
+                NSArray *got = [ed completionCandidatesForPrefix:prefix], *want = reference(prefix, [ed completionIgnoresCase]);
+                if (![got isEqualToArray:want]) {
+                    sameWords = NO;
+                    printf("    %s '%s': %s, not %s\n", language.UTF8String, prefix.UTF8String,
+                           [got componentsJoinedByString:@","].UTF8String, [want componentsJoinedByString:@","].UTF8String);
+                }
+            }
+        }
+        Check(@"IDM_EDIT_AUTOCOMPLETE_CURRENTFILE (words in place)",
+              @"the document's words for a prefix are those string comparison finds, split at the same separators",
+              sameWords);
+
+        // It runs on every character typed: in a 10 MB document a keystroke used to copy and
+        // split the whole text (0.8 s in the test VM); the bytes in place take a few ms.
+        [ed setLanguageNamed:@"cpp"];
+        {
+            NSMutableString *big = [NSMutableString stringWithCapacity:11 << 20];
+            for (long i = 0; big.length < (10 << 20); ++i)
+                [big appendFormat:@"static int func_%ld(int a) { return total_%ld + a; }\n", i, i];
+            SetDoc(ed, big);
+        }
+        p.autoCompleteSource = NppCompletionWords;
+        NSDate *started = [NSDate date];
+        NSUInteger offered = 0;
+        for (int i = 0; i < 10; ++i) offered += [ed completionCandidatesForPrefix:@"func_12345"].count;
+        NSTimeInterval perKey = [[NSDate date] timeIntervalSinceDate:started] / 10;
+        Check(@"IDM_EDIT_AUTOCOMPLETE_CURRENTFILE (10 MB document)",
+              [NSString stringWithFormat:@"the words of a 10 MB document are gathered in under 0.25 s (%.3f s)", perKey],
+              perKey < 0.25 && offered == 10 * 10);
+        p.autoCompleteSource = NppCompletionBoth;
+        SetDoc(ed, @"");
+
         // Auto-insertion of the matching character.
         struct { int ch; NSString *want; NSString *flag; } pairs[] = {
             {'(', @")", @"autoInsertParenthesis"},

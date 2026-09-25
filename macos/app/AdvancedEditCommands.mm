@@ -35,8 +35,7 @@ static NSString *SliceBytes(NSData *data, long start, long end) {
         b = [sci message:SCI_WORDENDPOSITION wParam:(uptr_t)pos lParam:1];
     }
     if (b <= a) return @"";
-    NSData *data = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    return SliceBytes(data, a, b);
+    return NppTextRange(sci, a, b) ?: @"";
 }
 
 /// Byte offsets of every match of `term` under the given flags.
@@ -481,8 +480,7 @@ static NSInteger PathStart(NSString *line) {
     long pos = [sci message:SCI_GETCURRENTPOS];
     long lineStart = [sci message:SCI_POSITIONFROMLINE
                              wParam:(uptr_t)[sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)pos]];
-    NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *before = SliceBytes(doc, lineStart, pos);
+    NSString *before = NppTextRange(sci, lineStart, pos) ?: @"";
 
     // What was typed, and the folder to list: the folder itself when the
     // typing names one, otherwise the one its last "/" ends.
@@ -561,8 +559,7 @@ static const char kApiCallTipKey = 0;
     long lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
     long lineEnd = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
     if (caret - lineStart < 2 || lineEnd - lineStart + 3 >= 256) return nil;
-    NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *text = SliceBytes(doc, lineStart, caret);
+    NSString *text = NppTextRange(sci, lineStart, caret) ?: @"";
 
     unichar start = [env[@"start"] characterAtIndex:0], stop = [env[@"stop"] characterAtIndex:0];
     unichar param = [env[@"param"] characterAtIndex:0], terminal = [env[@"terminal"] characterAtIndex:0];
