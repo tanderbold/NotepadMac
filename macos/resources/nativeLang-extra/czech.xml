@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="Požadavek HTTP"/>
     <Item english="Send" text="Odeslat"/>
+    <Item english="Method" text="Metoda"/>
     <Item english="Parameters" text="Parametry"/>
     <Item english="Headers" text="Hlavičky"/>
     <Item english="Body" text="Tělo"/>

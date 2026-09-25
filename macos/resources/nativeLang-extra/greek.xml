@@ -262,6 +262,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="Αίτημα HTTP"/>
     <Item english="Send" text="Αποστολή"/>
+    <Item english="Method" text="Μέθοδος"/>
     <Item english="Parameters" text="Παράμετροι"/>
     <Item english="Headers" text="Κεφαλίδες"/>
     <Item english="Body" text="Σώμα"/>

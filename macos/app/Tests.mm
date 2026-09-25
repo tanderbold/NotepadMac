@@ -128,6 +128,7 @@ int NppMacRunTests(AppDelegate *app) {
     NppTestsSessionDepth(app, ed, sci);
     NppTestsLocalizationAndDefaults(app, ed, sci);
     NppTestsTabBar(app, ed, sci);
+    NppTestsAccessibility(app, ed, sci);
     NppTestsUserLanguages(app, ed, sci);
     NppTestsPluginCommands(app, ed, sci);
     NppTestsFilesAsUpstream(app, ed, sci);

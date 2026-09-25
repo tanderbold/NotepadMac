@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="Yêu cầu HTTP"/>
     <Item english="Send" text="Gửi"/>
+    <Item english="Method" text="Phương thức"/>
     <Item english="Parameters" text="Tham số"/>
     <Item english="Headers" text="Tiêu đề"/>
     <Item english="Body" text="Phần thân"/>

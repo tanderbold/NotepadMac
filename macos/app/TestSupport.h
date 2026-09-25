@@ -121,6 +121,7 @@ void NppTestsDocking(AppDelegate *app, EditorController *ed, ScintillaView *sci)
 void NppTestsSessionDepth(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsFiles.mm
 void NppTestsLocalizationAndDefaults(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsSettings.mm
 void NppTestsTabBar(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsView.mm
+void NppTestsAccessibility(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsView.mm
 void NppTestsUserLanguages(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsLanguages.mm
 void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsPlugins.mm
 void NppTestsFilesAsUpstream(AppDelegate *app, EditorController *ed, ScintillaView *sci);   // TestsFiles.mm

@@ -578,6 +578,8 @@ static const char kCompareTimerKey = 0;
         b.bezelStyle = NSBezelStyleRounded;
         b.translatesAutoresizingMaskIntoConstraints = NO;
         b.toolTip = NppL(tip);
+        // ◀ ▶ ✕ are pictures of what the buttons do; VoiceOver says what the tooltip says.
+        b.accessibilityLabel = b.toolTip;
         [b setContentCompressionResistancePriority:NSLayoutPriorityRequired forOrientation:NSLayoutConstraintOrientationHorizontal];
         return b;
     };

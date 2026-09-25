@@ -1,3 +1,4 @@
+#import "Accessibility.h"
 #import "NppPanel.h"
 #import "SettingsPanels.h"
 #import "Localization.h"
@@ -120,6 +121,9 @@
     [self addSubview:_size];
     _using_ = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(200, 0, 220, 26)];
     [_using_ addItemsWithTitles:@[@"Tab character", @"Space character(s)"]];
+    // Upstream's radio buttons stand under "Indent using:" (IDC_INDENTUSING_STATIC); the pop-up has
+    // no room for the label, so it carries it for VoiceOver.
+    _using_.accessibilityLabel = [NppL(@"Indent using:") stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@":： "]];
     _using_.target = self;
     _using_.action = @selector(changed:);
     [self addSubview:_using_];
@@ -303,6 +307,9 @@
     // (Always: a label written "Group|Field" is put together there even in English.)
     [[NppLocalization shared] localizeView:page];
     [self fitTextsOfPage:page];
+    // Where the texts ended up: the page's fields named by their labels.
+    NppAXLabelSymbolButtons(page);
+    NppAXLinkLabels(page);
 }
 
 /// The width a label or a checkbox needs for its whole title on one line.

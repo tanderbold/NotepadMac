@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP İsteği"/>
     <Item english="Send" text="Gönder"/>
+    <Item english="Method" text="Yöntem"/>
     <Item english="Parameters" text="Parametreler"/>
     <Item english="Headers" text="Başlıklar"/>
     <Item english="Body" text="Gövde"/>

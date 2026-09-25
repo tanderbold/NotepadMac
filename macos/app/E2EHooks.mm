@@ -10,6 +10,7 @@
 #import <objc/message.h>
 #import <dlfcn.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import "Localization.h"
 #import "BehaviourCommands.h"
 #import "AgentServer.h"
@@ -1124,6 +1125,259 @@ static id E2ETarget(NSString *name, NSError **error) {
 
 #pragma mark - Tools
 
+#pragma mark - Accessibility
+
+// e2e_ax reads a window as an assistive application does: through the accessibility
+// server, with the AXUIElement API, on the application's own process. A process may read
+// itself without the Accessibility permission (TCC), and the answers are the ones
+// VoiceOver gets - AppKit's bridge from the NSAccessibility protocol included, which
+// calling the protocol's methods directly would skip (a view given its role through the
+// setters answers AXUnknown to the old attribute methods, yet its role to the server).
+// A request to one's own process does not go through the server's port: the client calls
+// AppKit's entry points directly, on the calling thread - so the questions are asked from
+// the main thread, where AppKit wants them. The client functions are looked up at run
+// time: nothing else in the app is an accessibility client.
+
+typedef AXError (*E2EAXCopyMultiple)(AXUIElementRef, CFArrayRef, AXCopyMultipleAttributeOptions, CFArrayRef *);
+typedef AXError (*E2EAXCopyValue)(AXUIElementRef, CFStringRef, CFTypeRef *);
+typedef AXError (*E2EAXCopyActions)(AXUIElementRef, CFArrayRef *);
+typedef AXError (*E2EAXPerform)(AXUIElementRef, CFStringRef);
+typedef AXUIElementRef (*E2EAXCreateApp)(pid_t);
+typedef AXError (*E2EAXGetWindow)(AXUIElementRef, CGWindowID *);
+typedef AXError (*E2EAXSetTimeout)(AXUIElementRef, float);
+typedef Boolean (*E2EAXValueGet)(AXValueRef, AXValueType, void *);
+typedef AXValueType (*E2EAXValueType)(AXValueRef);
+typedef CFTypeID (*E2EAXTypeID)(void);
+
+static struct {
+    E2EAXCopyMultiple copyMultiple; E2EAXCopyValue copy; E2EAXCopyActions actions; E2EAXPerform perform;
+    E2EAXCreateApp createApp; E2EAXGetWindow getWindow; E2EAXSetTimeout setTimeout;
+    E2EAXValueGet valueGet; E2EAXValueType valueType; E2EAXTypeID elementType, valueTypeID;
+} gAX;
+
+static BOOL E2EAXLoad(void) {
+    static BOOL ok;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        void *h = dlopen("/System/Library/Frameworks/ApplicationServices.framework/ApplicationServices", RTLD_LAZY);
+        if (!h) return;
+        gAX.copyMultiple = (E2EAXCopyMultiple)dlsym(h, "AXUIElementCopyMultipleAttributeValues");
+        gAX.copy = (E2EAXCopyValue)dlsym(h, "AXUIElementCopyAttributeValue");
+        gAX.actions = (E2EAXCopyActions)dlsym(h, "AXUIElementCopyActionNames");
+        gAX.perform = (E2EAXPerform)dlsym(h, "AXUIElementPerformAction");
+        gAX.createApp = (E2EAXCreateApp)dlsym(h, "AXUIElementCreateApplication");
+        gAX.getWindow = (E2EAXGetWindow)dlsym(h, "_AXUIElementGetWindow");   // the window server's number of an AXWindow
+        gAX.setTimeout = (E2EAXSetTimeout)dlsym(h, "AXUIElementSetMessagingTimeout");
+        gAX.valueGet = (E2EAXValueGet)dlsym(h, "AXValueGetValue");
+        gAX.valueType = (E2EAXValueType)dlsym(h, "AXValueGetType");
+        gAX.elementType = (E2EAXTypeID)dlsym(h, "AXUIElementGetTypeID");
+        gAX.valueTypeID = (E2EAXTypeID)dlsym(h, "AXValueGetTypeID");
+        ok = gAX.copyMultiple && gAX.copy && gAX.actions && gAX.perform && gAX.createApp && gAX.getWindow &&
+             gAX.valueGet && gAX.valueType && gAX.elementType && gAX.valueTypeID;
+    });
+    return ok;
+}
+
+static NSString *E2EAXDescribeElement(AXUIElementRef el);
+
+/// An attribute's value as JSON: text, numbers, points, sizes, ranges; an element by its role.
+static id E2EAXPlain(CFTypeRef value) {
+    if (!value) return nil;
+    CFTypeID type = CFGetTypeID(value);
+    if (type == CFStringGetTypeID()) {
+        NSString *s = (__bridge NSString *)value;
+        return s.length > 2000 ? [s substringToIndex:2000] : s;
+    }
+    if (type == CFAttributedStringGetTypeID()) return E2EAXPlain((__bridge CFTypeRef)[(__bridge NSAttributedString *)value string]);
+    if (type == CFBooleanGetTypeID()) return @(CFBooleanGetValue((CFBooleanRef)value) ? YES : NO);
+    if (type == CFNumberGetTypeID()) return (__bridge NSNumber *)value;
+    if (type == CFURLGetTypeID()) return [(__bridge NSURL *)value isFileURL] ? [(__bridge NSURL *)value path] : [(__bridge NSURL *)value absoluteString];
+    if (type == gAX.valueTypeID()) {
+        AXValueRef v = (AXValueRef)value;
+        switch (gAX.valueType(v)) {
+            case kAXValueTypeCGPoint: { CGPoint p; gAX.valueGet(v, kAXValueTypeCGPoint, &p); return @[@(p.x), @(p.y)]; }
+            case kAXValueTypeCGSize: { CGSize s; gAX.valueGet(v, kAXValueTypeCGSize, &s); return @[@(s.width), @(s.height)]; }
+            case kAXValueTypeCGRect: { CGRect r; gAX.valueGet(v, kAXValueTypeCGRect, &r); return E2ERect(r); }
+            case kAXValueTypeCFRange: { CFRange r; gAX.valueGet(v, kAXValueTypeCFRange, &r); return @[@(r.location), @(r.length)]; }
+            default: return nil;
+        }
+    }
+    if (type == gAX.elementType()) return E2EAXDescribeElement((AXUIElementRef)value);
+    if (type == CFArrayGetTypeID()) return @(CFArrayGetCount((CFArrayRef)value));
+    return nil;
+}
+
+static NSArray *E2EAXAttributes(AXUIElementRef el, NSArray<NSString *> *names) {
+    CFArrayRef values = NULL;
+    if (gAX.copyMultiple(el, (__bridge CFArrayRef)names, 0, &values) == kAXErrorSuccess && values)
+        return (__bridge_transfer NSArray *)values;
+    // Some elements (a stepper's arrows) answer only one attribute at a time.
+    NSMutableArray *one = [NSMutableArray array];
+    for (NSString *name in names) {
+        CFTypeRef v = NULL;
+        if (gAX.copy(el, (__bridge CFStringRef)name, &v) == kAXErrorSuccess && v) [one addObject:(__bridge_transfer id)v];
+        else [one addObject:[NSNull null]];
+    }
+    return one;
+}
+
+/// What a screen reader calls an element: its description (the label), else its title,
+/// else the text of the element that titles it (a label beside a field, linked).
+static NSString *E2EAXNameOf(AXUIElementRef el) {
+    NSArray *v = E2EAXAttributes(el, @[@"AXDescription", @"AXTitle", @"AXTitleUIElement"]);
+    for (NSUInteger i = 0; i < 2 && i < v.count; ++i) {
+        id s = E2EAXPlain((__bridge CFTypeRef)v[i]);
+        if ([s isKindOfClass:[NSString class]] && [s length]) return s;
+    }
+    if (v.count > 2 && CFGetTypeID((__bridge CFTypeRef)v[2]) == gAX.elementType()) {
+        NSArray *t = E2EAXAttributes((__bridge AXUIElementRef)v[2], @[@"AXValue", @"AXTitle", @"AXDescription"]);
+        for (id x in t) {
+            id s = E2EAXPlain((__bridge CFTypeRef)x);
+            if ([s isKindOfClass:[NSString class]] && [s length]) return s;
+        }
+    }
+    return nil;
+}
+
+static NSString *E2EAXDescribeElement(AXUIElementRef el) {
+    NSArray *v = E2EAXAttributes(el, @[@"AXRole"]);
+    id role = v.count ? E2EAXPlain((__bridge CFTypeRef)v[0]) : nil;
+    NSString *name = E2EAXNameOf(el);
+    return name ? [NSString stringWithFormat:@"<%@ %@>", role ?: @"?", name] : [NSString stringWithFormat:@"<%@>", role ?: @"?"];
+}
+
+static NSArray *E2EAXChildren(AXUIElementRef el) {
+    CFTypeRef kids = NULL;
+    if (gAX.copy(el, kAXChildrenAttribute, &kids) != kAXErrorSuccess || !kids) return @[];
+    if (CFGetTypeID(kids) != CFArrayGetTypeID()) { CFRelease(kids); return @[]; }
+    return (__bridge_transfer NSArray *)kids;
+}
+
+static NSDictionary *E2EAXNode(AXUIElementRef el, NSString *path, NSInteger depth, NSInteger maxChildren) {
+    static NSArray *keys, *attributes;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        NSDictionary *map = @{@"role": @"AXRole", @"subrole": @"AXSubrole", @"role_description": @"AXRoleDescription",
+                              @"label": @"AXDescription", @"title": @"AXTitle", @"value": @"AXValue", @"help": @"AXHelp",
+                              @"enabled": @"AXEnabled", @"focused": @"AXFocused", @"identifier": @"AXIdentifier",
+                              @"placeholder": @"AXPlaceholderValue", @"selected": @"AXSelected",
+                              @"number_of_characters": @"AXNumberOfCharacters", @"selected_text": @"AXSelectedText",
+                              @"selected_range": @"AXSelectedTextRange", @"insertion_line": @"AXInsertionPointLineNumber",
+                              @"position": @"AXPosition", @"size": @"AXSize", @"title_element": @"AXTitleUIElement",
+                              @"default_button": @"AXDefaultButton", @"cancel_button": @"AXCancelButton",
+                              @"modal": @"AXModal", @"main": @"AXMain"};
+        keys = map.allKeys;
+        NSMutableArray *a = [NSMutableArray array];
+        for (NSString *k in keys) [a addObject:map[k]];
+        attributes = a;
+    });
+    NSMutableDictionary *d = [NSMutableDictionary dictionaryWithObject:path forKey:@"path"];
+    NSArray *values = E2EAXAttributes(el, attributes);
+    for (NSUInteger i = 0; i < values.count && i < keys.count; ++i) {
+        id v = E2EAXPlain((__bridge CFTypeRef)values[i]);
+        if (v) d[keys[i]] = v;
+    }
+    if (d[@"position"] && d[@"size"]) {
+        d[@"frame"] = @[d[@"position"][0], d[@"position"][1], d[@"size"][0], d[@"size"][1]];
+        [d removeObjectsForKeys:@[@"position", @"size"]];
+    }
+    NSString *name = E2EAXNameOf(el);
+    if (name) d[@"name"] = name;
+    CFArrayRef actions = NULL;
+    if (gAX.actions(el, &actions) == kAXErrorSuccess && actions) {
+        if (CFArrayGetCount(actions)) d[@"actions"] = (__bridge NSArray *)actions;
+        CFRelease(actions);
+    }
+    NSArray *children = depth > 0 ? E2EAXChildren(el) : @[];
+    if (children.count) {
+        NSMutableArray *nodes = [NSMutableArray array];
+        for (NSUInteger i = 0; i < children.count && (NSInteger)i < maxChildren; ++i) {
+            [nodes addObject:E2EAXNode((__bridge AXUIElementRef)children[i], [NSString stringWithFormat:@"%@.%lu", path, (unsigned long)i],
+                                       depth - 1, maxChildren)];
+        }
+        d[@"children"] = nodes;
+        if ((NSInteger)children.count > maxChildren) d[@"children_count"] = @(children.count);
+    }
+    return d;
+}
+
+/// The application's AXWindow for a window (sheets are children of their window).
+static id E2EAXWindowElement(NSWindow *w) {
+    AXUIElementRef app = gAX.createApp(getpid());
+    if (!app) return nil;
+    if (gAX.setTimeout) gAX.setTimeout(app, 10);
+    id found = nil;
+    CFTypeRef windows = NULL;
+    if (gAX.copy(app, kAXWindowsAttribute, &windows) == kAXErrorSuccess && windows) {
+        for (id candidate in (__bridge NSArray *)windows) {
+            CGWindowID number = 0;
+            if (gAX.getWindow((__bridge AXUIElementRef)candidate, &number) == kAXErrorSuccess && (NSInteger)number == w.windowNumber) { found = candidate; break; }
+            for (id child in E2EAXChildren((__bridge AXUIElementRef)candidate)) {
+                if (gAX.getWindow((__bridge AXUIElementRef)child, &number) == kAXErrorSuccess && (NSInteger)number == w.windowNumber) { found = child; break; }
+            }
+            if (found) break;
+        }
+        CFRelease(windows);
+    }
+    CFRelease(app);
+    return found;
+}
+
+static id E2EAXElementAtPath(AXUIElementRef window, NSString *path) {
+    if (![path isKindOfClass:[NSString class]]) return nil;
+    NSArray *parts = [path componentsSeparatedByString:@"."];
+    id el = (__bridge id)window;
+    for (NSUInteger i = 1; i < parts.count; ++i) {
+        NSArray *children = E2EAXChildren((__bridge AXUIElementRef)el);
+        NSInteger index = [parts[i] integerValue];
+        if (index < 0 || index >= (NSInteger)children.count) return nil;
+        el = children[(NSUInteger)index];
+    }
+    return el;
+}
+
+/// A view's path as e2e_ui gives it (subview indices from the window's frame view).
+static NSString *E2EViewPath(NSView *v) {
+    NSView *root = v.window.contentView.superview ?: v.window.contentView;
+    if (!root) return nil;
+    NSMutableArray *parts = [NSMutableArray array];
+    for (NSView *cur = v; cur != root; cur = cur.superview) {
+        NSView *up = cur.superview;
+        if (!up) return nil;
+        NSUInteger i = [up.subviews indexOfObjectIdenticalTo:cur];
+        if (i == NSNotFound) return nil;
+        [parts insertObject:[NSString stringWithFormat:@"%lu", (unsigned long)i] atIndex:0];
+    }
+    [parts insertObject:@"0" atIndex:0];
+    return [parts componentsJoinedByString:@"."];
+}
+
+/// For finding one's way back from an element to the code: the view under its middle.
+static void E2EAXAnnotateViews(NSMutableDictionary *node, NSWindow *w) {
+    NSArray *f = node[@"frame"];
+    if (f.count == 4 && [f[2] doubleValue] > 0 && [f[3] doubleValue] > 0) {
+        // Accessibility frames are top-left based on the main screen; windows bottom-left.
+        CGFloat screenTop = NSMaxY(NSScreen.screens.firstObject.frame);
+        NSPoint mid = NSMakePoint([f[0] doubleValue] + [f[2] doubleValue] / 2, screenTop - ([f[1] doubleValue] + [f[3] doubleValue] / 2));
+        NSView *root = w.contentView.superview ?: w.contentView;
+        NSPoint inWindow = [w convertPointFromScreen:mid];
+        NSView *hit = [root hitTest:root.superview ? [root.superview convertPoint:inWindow fromView:nil] : inWindow];
+        if (hit) {
+            node[@"view_class"] = NSStringFromClass(hit.class);
+            NSString *path = E2EViewPath(hit);
+            if (path) node[@"view_path"] = path;
+            if (hit.toolTip.length) node[@"tooltip"] = hit.toolTip;
+        }
+    }
+    NSMutableArray *children = [node[@"children"] mutableCopy];
+    for (NSUInteger i = 0; i < children.count; ++i) {
+        NSMutableDictionary *c = [children[i] mutableCopy];
+        E2EAXAnnotateViews(c, w);
+        children[i] = c;
+    }
+    if (children) node[@"children"] = children;
+}
+
 @implementation NppAgentServer (E2E)
 
 - (void)registerE2ETools {
@@ -1830,6 +2084,75 @@ static id E2ETarget(NSString *name, NSError **error) {
         for (NSInteger c = 1; c <= clicks; ++c) E2EClickAt(w, inWindow, flags, c, nil);
         gE2EForcedKeyWindow = nil;
         return @{@"clicked": @(clicks), @"at": @[@(inWindow.x), @(inWindow.y)]};
+    }];
+
+    [self addTool:@"e2e_ax"
+      description:@"E2E: a window's accessibility tree as VoiceOver reads it (the accessibility server's AXUIElement "
+                  @"answers for the app's own process; no permission needed): per element path, role, subrole, "
+                  @"role_description, label, title, name (label, title or linked title element), value, help, enabled, "
+                  @"focused, identifier, placeholder, selected, text attributes, title_element, actions, frame, and the "
+                  @"view under it (view_class, view_path, tooltip); windows add default_button and cancel_button. "
+                  @"depth (default 40), max_children per element (default 80); focus: the first responder's view "
+                  @"(class, path) and full_keyboard_access; key_loop=true adds the nextKeyView chain from the "
+                  @"initial first responder (class, path, refuses). perform={path, action} "
+                  @"performs an accessibility action (default AXPress) on the element at that path instead."
+           schema:E2ESchema(@{})
+          handler:^NSDictionary *(NSDictionary *args, NSError **error) {
+        NSWindow *w = E2EFindWindow(args[@"window"], error);
+        if (!w) return nil;
+        if (!E2EAXLoad()) { *error = E2EFail(@"The accessibility client functions are not there"); return nil; }
+        if (!w.isVisible) { *error = E2EFail(@"Window %@ is not on screen: it has no accessibility element", args[@"window"]); return nil; }
+        [w.contentView layoutSubtreeIfNeeded];
+        NSDictionary *perform = [args[@"perform"] isKindOfClass:[NSDictionary class]] ? args[@"perform"] : nil;
+        NSInteger depth = args[@"depth"] ? [args[@"depth"] integerValue] : 40;
+        NSInteger maxChildren = args[@"max_children"] ? [args[@"max_children"] integerValue] : 80;
+        NSInteger number = w.windowNumber;
+        NSWindow *target = w;
+        NSDictionary *answer = (^NSDictionary *(void) {
+            id window = E2EAXWindowElement(target);
+            if (!window) return @{@"error": [NSString stringWithFormat:@"No accessibility element for window %ld", (long)number]};
+            if (perform) {
+                id el = E2EAXElementAtPath((__bridge AXUIElementRef)window, perform[@"path"]);
+                if (!el) return @{@"error": [NSString stringWithFormat:@"No element at %@", perform[@"path"]]};
+                NSString *action = perform[@"action"] ?: @"AXPress";
+                AXError e = gAX.perform((__bridge AXUIElementRef)el, (__bridge CFStringRef)action);
+                if (e != kAXErrorSuccess) return @{@"error": [NSString stringWithFormat:@"%@ on %@ failed (%d)", action, perform[@"path"], (int)e]};
+                return @{@"performed": action, @"path": perform[@"path"]};
+            }
+            return @{@"tree": E2EAXNode((__bridge AXUIElementRef)window, @"0", depth, maxChildren)};
+        })();
+        if (answer[@"error"]) { *error = E2EFail(@"%@", answer[@"error"]); return nil; }
+        if (perform) return answer;
+        NSMutableDictionary *tree = [answer[@"tree"] mutableCopy];
+        E2EAXAnnotateViews(tree, w);
+        NSMutableDictionary *out = [@{@"window": E2EWindowInfo(w), @"tree": tree,
+                                      @"full_keyboard_access": @(NSApp.isFullKeyboardAccessEnabled)} mutableCopy];
+        if ([args[@"key_loop"] boolValue]) {
+            // The window's key view loop as Tab with Keyboard navigation on walks it: the nextKeyView
+            // chain (as AppKit last worked it out - a Tab press does) from the initial first responder,
+            // with whether each view would refuse the focus.
+            NSMutableArray *loop = [NSMutableArray array];
+            NSView *start = w.initialFirstResponder ?: w.contentView;
+            NSHashTable *seen = [NSHashTable hashTableWithOptions:NSPointerFunctionsObjectPointerPersonality];
+            for (NSView *v = start; v && ![seen containsObject:v] && loop.count < 1000; v = v.nextKeyView) {
+                [seen addObject:v];
+                NSMutableDictionary *entry = [@{@"class": NSStringFromClass(v.class), @"path": E2EViewPath(v) ?: @""} mutableCopy];
+                if ([v isKindOfClass:[NSControl class]] && [(NSControl *)v refusesFirstResponder]) entry[@"refuses"] = @YES;
+                if (v.isHiddenOrHasHiddenAncestor) entry[@"hidden"] = @YES;
+                [loop addObject:entry];
+            }
+            out[@"key_loop"] = loop;
+        }
+        // Where the keyboard is: the first responder's view (a field being edited: the field,
+        // not the window's shared field editor).
+        NSResponder *focus = w.firstResponder;
+        if ([focus isKindOfClass:[NSTextView class]] && [(NSTextView *)focus isFieldEditor] &&
+            [[(NSTextView *)focus delegate] isKindOfClass:[NSView class]]) focus = (NSView *)[(NSTextView *)focus delegate];
+        if ([focus isKindOfClass:[NSView class]]) {
+            NSString *path = E2EViewPath((NSView *)focus);
+            out[@"focus"] = @{@"class": NSStringFromClass(focus.class), @"path": path ?: @""};
+        }
+        return out;
     }];
 
     [self addTool:@"e2e_idle"

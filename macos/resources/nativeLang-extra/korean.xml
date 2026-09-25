@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP 요청"/>
     <Item english="Send" text="보내기"/>
+    <Item english="Method" text="메서드"/>
     <Item english="Parameters" text="매개변수"/>
     <Item english="Headers" text="헤더"/>
     <Item english="Body" text="본문"/>

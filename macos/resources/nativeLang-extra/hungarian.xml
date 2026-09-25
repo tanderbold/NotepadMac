@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP-kérés"/>
     <Item english="Send" text="Küldés"/>
+    <Item english="Method" text="Metódus"/>
     <Item english="Parameters" text="Paraméterek"/>
     <Item english="Headers" text="Fejlécek"/>
     <Item english="Body" text="Törzs"/>
