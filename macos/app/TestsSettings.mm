@@ -767,6 +767,18 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
             Check(@"IDM_MACRO_STARTRECORDINGMACRO (menu commands)",
                   @"a recordable menu command is recorded by its id, once, and plays back",
                   recordedOnce && replayed);
+
+            // Not recording, a menu command does not look its id up: that walked the whole
+            // menu, 15 ms in the test VM for every command and shortcut.
+            [ed newDocument];
+            NSMenuItem *selectAll = [app.shortcutStore menuItemsByIdentifier][@42007];     // IDM_EDIT_SELECTALL
+            NSDate *started = [NSDate date];
+            for (int i = 0; i < 100; ++i) [app performMenuItem:selectAll];
+            NSTimeInterval perCommand = [[NSDate date] timeIntervalSinceDate:started] / 100;
+            [ed closeDocumentAtIndex:ed.documents.count - 1 discardChanges:YES];
+            Check(@"IDM_EDIT_SELECTALL (a menu command's cost)",
+                  [NSString stringWithFormat:@"a menu command outside a recording takes under 3 ms (%.4f s)", perCommand],
+                  selectAll != nil && perCommand < 0.003);
         }
 
         // Saved macros are in the Macro menu, as on Windows.

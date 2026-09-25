@@ -2765,7 +2765,10 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
 }
 
 - (void)menuDidSendAction:(NSNotification *)note {
-    [self.editor endRecordableMenuCommand:[self macroableIdentifierOf:note.userInfo[@"MenuItem"]]];
+    // The command's id is only recorded while a macro is: looking it up walks the whole menu
+    // (about 15 ms), which every menu command and shortcut paid for nothing.
+    int identifier = [self.editor recordingMacro] ? [self macroableIdentifierOf:note.userInfo[@"MenuItem"]] : 0;
+    [self.editor endRecordableMenuCommand:identifier];
 }
 
 #pragma mark - NppExec scripts
