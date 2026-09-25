@@ -2,7 +2,15 @@
 // the raw HTML Markdown is allowed to carry, and what the table pre-pass
 // makes), a WKWebView shows it with JavaScript off, and the panel re-renders,
 // debounced, whenever the editor's chrome says something changed - which
-// typing does. Relative image paths resolve against the document's folder.
+// typing does. Relative image paths resolve against the document's folder,
+// which the page is loaded under as npp-preview://file/<folder>/ and whose
+// files a scheme handler of the panel's own serves: WebKit gives a page
+// loaded from a string no read access to file: URLs, so a file: base left
+// the images out (and, in a sandboxed WebContent process, the page blank).
+// Nothing is fetched from the network (a remote image would tell its server
+// the file was opened, and from where) and the preview never navigates away
+// from the document: a link clicked opens in the browser, as MarkdownViewer++
+// sends every navigation to the default browser (webBrowserPreview_Navigating).
 #import "MarkdownPanel.h"
 #import "EditorController.h"
 #import "DockingManager.h"
@@ -11,10 +19,47 @@
 #import <WebKit/WebKit.h>
 #import "cmark.h"
 
-@interface MarkdownPanel ()
+static NSString *const kPreviewScheme = @"npp-preview";
+
+/// npp-preview://file/<absolute path>: the file at that path, read here and handed to WebKit
+/// (images, a stylesheet beside the document). Only files are served, never a listing, and
+/// with no JavaScript in the page there is nothing that could read one and send it on.
+@interface NppPreviewFiles : NSObject <WKURLSchemeHandler>
+@end
+
+@implementation NppPreviewFiles
+- (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)task {
+    NSURL *url = task.request.URL;
+    NSString *path = url.path.stringByStandardizingPath;
+    BOOL isDirectory = YES;
+    NSData *data = nil;
+    if ([url.host isEqualToString:@"file"] && path.isAbsolutePath &&
+        [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && !isDirectory)
+        data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:NULL];
+    if (!data) {
+        [task didFailWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorFileDoesNotExist userInfo:nil]];
+        return;
+    }
+    // What a Markdown page refers to; WebKit sniffs an image whose type it is not told.
+    NSDictionary<NSString *, NSString *> *types = @{
+        @"png": @"image/png", @"jpg": @"image/jpeg", @"jpeg": @"image/jpeg", @"gif": @"image/gif", @"webp": @"image/webp",
+        @"svg": @"image/svg+xml", @"bmp": @"image/bmp", @"ico": @"image/x-icon", @"tif": @"image/tiff", @"tiff": @"image/tiff",
+        @"heic": @"image/heic", @"css": @"text/css", @"woff": @"font/woff", @"woff2": @"font/woff2", @"ttf": @"font/ttf",
+        @"otf": @"font/otf", @"mp4": @"video/mp4", @"mov": @"video/quicktime", @"mp3": @"audio/mpeg", @"wav": @"audio/wav"};
+    NSString *type = types[path.pathExtension.lowercaseString] ?: @"application/octet-stream";
+    [task didReceiveResponse:[[NSURLResponse alloc] initWithURL:url MIMEType:type expectedContentLength:(NSInteger)data.length textEncodingName:nil]];
+    [task didReceiveData:data];
+    [task didFinish];
+}
+- (void)webView:(WKWebView *)webView stopURLSchemeTask:(id<WKURLSchemeTask>)task {}
+@end
+
+@interface MarkdownPanel () <WKNavigationDelegate>
 @property (nonatomic, weak) EditorController *editor;
 @property (nonatomic) WKWebView *webView;
 @property (nonatomic, copy) NSString *lastHTML;
+@property (nonatomic, nullable) NSURL *baseURL;     // what the page was loaded under
+@property (nonatomic) NSUInteger loadsPending;     // loadHTMLString calls not yet let through
 @end
 
 @implementation MarkdownPanel
@@ -134,7 +179,10 @@
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         // The preview shows; it must not run. Markdown's raw HTML stays inert.
         config.defaultWebpagePreferences.allowsContentJavaScript = NO;
+        [config setURLSchemeHandler:[[NppPreviewFiles alloc] init] forURLScheme:kPreviewScheme];
         _webView = [[WKWebView alloc] initWithFrame:NSMakeRect(0, 0, 400, 500) configuration:config];
+        _webView.navigationDelegate = self;
+        _openLink = ^(NSURL *url) { [[NSWorkspace sharedWorkspace] openURL:url]; };
         [[NppDockingManager shared] registerPanel:@"markdownPreview" title:@"Markdown Preview"
                                              view:_webView defaultPlace:NppDockRight];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentChanged:)
@@ -164,6 +212,11 @@
     NSString *body = [MarkdownPanel htmlFromMarkdown:markdown];
     NSString *page = [NSString stringWithFormat:
         @"<!doctype html><html><head><meta charset=\"utf-8\">\n"
+        // Before anything of the document's: a policy a later <meta> cannot loosen. Local files
+        // (the document's own images) load; nothing from the network does.
+        @"<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; img-src npp-preview: data:; "
+        @"style-src 'unsafe-inline' npp-preview:; font-src npp-preview: data:; media-src npp-preview: data:\">\n"
+        @"<meta http-equiv=\"x-dns-prefetch-control\" content=\"off\">\n"
         @"<style>\n"
         @"body { font: 14px -apple-system, sans-serif; margin: 12px 16px; color: CanvasText; background: Canvas; color-scheme: light dark; }\n"
         @"pre, code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }\n"
@@ -177,8 +230,50 @@
         @"</style></head><body>%@</body></html>", body];
     self.lastHTML = page;
     NSString *folder = self.editor.currentDocument.path.stringByDeletingLastPathComponent;
-    NSURL *base = folder.length ? [NSURL fileURLWithPath:folder isDirectory:YES] : nil;
+    NSURL *base = nil;
+    if (folder.length) {
+        NSURLComponents *parts = [[NSURLComponents alloc] init];
+        parts.scheme = kPreviewScheme;
+        parts.host = @"file";
+        parts.path = [folder hasSuffix:@"/"] ? folder : [folder stringByAppendingString:@"/"];
+        base = parts.URL;
+    }
+    self.baseURL = base;
+    self.loadsPending++;
     [self.webView loadHTMLString:page baseURL:base];
+}
+
+static NSString *WithoutFragment(NSURL *url) {
+    NSString *text = url.absoluteString ?: @"";
+    NSRange hash = [text rangeOfString:@"#"];
+    return hash.location == NSNotFound ? text : [text substringToIndex:hash.location];
+}
+
+/// The page given to loadHTMLString goes in; a jump to an anchor of it too. Anything else - a
+/// link, a <meta http-equiv=refresh>, a form, a frame - would put another page in the preview's
+/// place: it is stopped, and a link the user clicks opens in the browser instead.
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)action
+decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSURL *url = action.request.URL;
+    BOOL mainFrame = action.targetFrame.isMainFrame;
+    NSURL *expected = self.baseURL ?: [NSURL URLWithString:@"about:blank"];
+    if (mainFrame && action.navigationType == WKNavigationTypeOther && self.loadsPending &&
+        [WithoutFragment(url) isEqualToString:WithoutFragment(expected)]) {
+        self.loadsPending--;
+        decisionHandler(WKNavigationActionPolicyAllow);
+        return;
+    }
+    if (mainFrame && [url.absoluteString containsString:@"#"] && action.navigationType == WKNavigationTypeLinkActivated &&
+        [WithoutFragment(url) isEqualToString:WithoutFragment(webView.URL ?: expected)]) {
+        decisionHandler(WKNavigationActionPolicyAllow);
+        return;
+    }
+    NSString *scheme = url.scheme.lowercaseString;
+    if (action.navigationType == WKNavigationTypeLinkActivated &&
+        ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"] || [scheme isEqualToString:@"mailto"])) {
+        if (self.openLink) self.openLink(url);
+    }
+    decisionHandler(WKNavigationActionPolicyCancel);
 }
 
 @end

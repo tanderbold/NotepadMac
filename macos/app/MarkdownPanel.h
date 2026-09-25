@@ -3,6 +3,7 @@
 // rendered by cmark (macos/third_party/cmark); GFM tables, which core
 // CommonMark leaves out, are turned into HTML by a pre-pass here.
 #import <Cocoa/Cocoa.h>
+#import <WebKit/WebKit.h>
 @class EditorController;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,6 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL visible;
 /// The page last given to the web view; what the tests read.
 @property (nonatomic, readonly, nullable) NSString *lastHTML;
+/// The web view the page is shown in.
+@property (nonatomic, readonly) WKWebView *webView;
+/// What a clicked http, https or mailto link does: the default browser (or mail
+/// program) is given it. The suite puts its own here.
+@property (nonatomic, copy, nullable) void (^openLink)(NSURL *url);
 
 /// Markdown to an HTML fragment: the table pre-pass, then cmark.
 + (NSString *)htmlFromMarkdown:(NSString *)markdown;

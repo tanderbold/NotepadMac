@@ -3,6 +3,25 @@
 // Called from NppMacRunTests (Tests.mm), which runs the areas in the suite's
 // order; the helpers they share are in TestSupport.h.
 #import "TestSupport.h"
+#import <WebKit/WebKit.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+
+// A navigation as WebKit hands one to the preview's delegate, made up: a link click cannot be
+// made without a window server's events, and the delegate reads only these.
+@interface NppTestFrame : NSObject
+@property (nonatomic) BOOL isMainFrame;
+@end
+@implementation NppTestFrame
+@end
+@interface NppTestNavigation : NSObject
+@property (nonatomic) NSURLRequest *request;
+@property (nonatomic) WKNavigationType navigationType;
+@property (nonatomic) NppTestFrame *targetFrame;
+@end
+@implementation NppTestNavigation
+@end
 
 /// == JSON ==; == Compare ==; == FTP ==; == XML ==; == Run ==; == MIME Tools ==; == Converter ==; == Export ==; == Spell check ==
 void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
@@ -1062,6 +1081,92 @@ void NppTestsMarkdown(AppDelegate *app, EditorController *ed, ScintillaView *sci
         Check(@"Markdown preview panel", @"the panel shows and carries the rendered document",
               panel.visible && [panel.lastHTML containsString:@"<h1>Hello</h1>"] &&
               [panel.lastHTML containsString:@"<li>one</li>"]);
+        // A document's relative image is drawn from beside it (and the page is drawn at all): the page
+        // is loaded under the document's folder through the panel's own scheme, since WebKit gives a
+        // page from a string no read access to file: URLs.
+        NSString *mdFolder = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_md_images"];
+        [[NSFileManager defaultManager] removeItemAtPath:mdFolder error:NULL];
+        [[NSFileManager defaultManager] createDirectoryAtPath:mdFolder withIntermediateDirectories:YES attributes:nil error:NULL];
+        NSBitmapImageRep *red = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:120 pixelsHigh:120 bitsPerSample:8
+                                  samplesPerPixel:3 hasAlpha:NO isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace bytesPerRow:0 bitsPerPixel:0];
+        for (NSInteger y = 0; y < 120; ++y) for (NSInteger x = 0; x < 120; ++x) { NSUInteger px[3] = {255, 0, 0}; [red setPixel:px atX:x y:y]; }
+        [[red representationUsingType:NSBitmapImageFileTypePNG properties:@{}] writeToFile:[mdFolder stringByAppendingPathComponent:@"pic.png"] atomically:YES];
+        NSString *mdPath = [mdFolder stringByAppendingPathComponent:@"doc.md"];
+        [@"<b>raw</b>\n\n![p](pic.png)\n" writeToFile:mdPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        NSInteger (^redPixels)(void) = ^NSInteger {
+            __block NSImage *shot = nil;
+            __block BOOL done = NO;
+            [panel.webView takeSnapshotWithConfiguration:nil completionHandler:^(NSImage *image, NSError *error) { shot = image; done = YES; }];
+            NppSettleUntil(^BOOL { return done; }, 5);
+            NSBitmapImageRep *bits = shot ? [[NSBitmapImageRep alloc] initWithData:shot.TIFFRepresentation] : nil;
+            NSInteger count = 0;
+            for (NSInteger y = 0; y < bits.pixelsHigh; y += 2) for (NSInteger x = 0; x < bits.pixelsWide; x += 2) {
+                NSColor *c = [[bits colorAtX:x y:y] colorUsingColorSpace:NSColorSpace.deviceRGBColorSpace];
+                if (c.redComponent > 0.8 && c.greenComponent < 0.25 && c.blueComponent < 0.25) count++;
+            }
+            return count;
+        };
+        [ed openFileAtPath:mdPath error:NULL];
+        [panel refresh];
+        __block NSInteger reds = 0;
+        NppSettleUntil(^BOOL { return !panel.webView.isLoading && (reds = redPixels()) > 100; }, 8);
+        Check(@"Markdown preview (relative image)", @"a picture beside the document, named relative to it, is drawn in the preview",
+              reds > 100);
+
+        // The document may carry raw HTML: an image from a server, a <meta refresh> to one. The preview
+        // fetches nothing from the network (the server would learn the file was opened) and stays on
+        // the document; a link clicked opens in the browser, as MarkdownViewer++ has it.
+        int listener = socket(AF_INET, SOCK_STREAM, 0);
+        struct sockaddr_in address = {};
+        address.sin_len = sizeof address; address.sin_family = AF_INET; address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+        socklen_t addressLength = sizeof address;
+        BOOL listening = listener >= 0 && bind(listener, (struct sockaddr *)&address, sizeof address) == 0 && listen(listener, 8) == 0 &&
+                         getsockname(listener, (struct sockaddr *)&address, &addressLength) == 0 && fcntl(listener, F_SETFL, O_NONBLOCK) == 0;
+        int port = ntohs(address.sin_port);
+        SetDoc(ed, [NSString stringWithFormat:@"# Remote\n\n<img src=\"http://127.0.0.1:%d/pixel.png\">\n\n"
+                    @"<meta http-equiv=\"refresh\" content=\"0; url=http://127.0.0.1:%d/away\">\n", port, port]);
+        [panel refresh];
+        __block BOOL fetched = NO;
+        NppSettleUntil(^BOOL {
+            int connection = accept(listener, NULL, NULL);
+            if (connection >= 0) { fetched = YES; close(connection); }
+            return fetched;
+        }, 3);
+        NSString *shownURL = panel.webView.URL.absoluteString ?: @"";
+        if (listener >= 0) close(listener);
+        Check(@"Markdown preview (nothing remote)", @"an image from a server is not fetched and a <meta refresh> to one does not take the preview there",
+              listening && port > 0 && !fetched && ![shownURL hasPrefix:@"http"] && [panel.lastHTML containsString:@"<h1>Remote</h1>"]);
+
+        NSMutableArray<NSURL *> *opened = [NSMutableArray array];
+        void (^openWas)(NSURL *) = panel.openLink;
+        panel.openLink = ^(NSURL *url) { [opened addObject:url]; };
+        id<WKNavigationDelegate> delegate = (id<WKNavigationDelegate>)panel;
+        BOOL decides = [delegate respondsToSelector:@selector(webView:decidePolicyForNavigationAction:decisionHandler:)];
+        NSInteger (^decide)(NSString *, WKNavigationType) = ^NSInteger(NSString *address, WKNavigationType type) {
+            if (!decides) return -1;
+            NppTestNavigation *action = [[NppTestNavigation alloc] init];
+            action.request = [NSURLRequest requestWithURL:[NSURL URLWithString:address]];
+            action.navigationType = type;
+            action.targetFrame = [[NppTestFrame alloc] init];
+            action.targetFrame.isMainFrame = YES;
+            __block NSInteger policy = -1;
+            [delegate webView:panel.webView decidePolicyForNavigationAction:(WKNavigationAction *)action
+              decisionHandler:^(WKNavigationActionPolicy p) { policy = p; }];
+            return policy;
+        };
+        NSString *here = panel.webView.URL.absoluteString ?: @"";           // doc.md's folder, through the preview's scheme
+        NSInteger clickedWeb = decide(@"https://example.org/page", WKNavigationTypeLinkActivated);
+        NSInteger clickedFile = decide(@"file:///etc/hosts", WKNavigationTypeLinkActivated);
+        NSInteger refreshed = decide(@"https://example.org/refresh", WKNavigationTypeOther);
+        NSInteger anchor = decide([here stringByAppendingString:@"#remote"], WKNavigationTypeLinkActivated);
+        panel.openLink = openWas;
+        Check(@"Markdown preview (links)", @"a clicked web link is cancelled in the preview and handed to the browser; a link to a local file "
+              @"and a navigation the page starts by itself are cancelled and opened nowhere; a jump to an anchor of the page goes ahead",
+              decides && [here hasPrefix:@"npp-preview://file/"] && clickedWeb == WKNavigationActionPolicyCancel && clickedFile == WKNavigationActionPolicyCancel &&
+              refreshed == WKNavigationActionPolicyCancel && anchor == WKNavigationActionPolicyAllow &&
+              opened.count == 1 && [opened.firstObject.absoluteString isEqualToString:@"https://example.org/page"]);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];   // doc.md, still in front
+        [[NSFileManager defaultManager] removeItemAtPath:mdFolder error:NULL];
         [app toggleMarkdownPreview:nil];
         Check(@"Markdown preview toggles away", @"the second toggle hides the panel", !panel.visible);
     }
