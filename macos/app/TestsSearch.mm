@@ -718,13 +718,49 @@ void NppTestsFindDialog(AppDelegate *app, EditorController *ed, ScintillaView *s
               [ed countMatches:[NppFindSpec specFor:@"^." mode:NppSearchRegex
                                             options:NppFindNone]] == 2);
 
-        // '.' covers everything, including the odd control character.
-        unichar formFeed = 0x0C;
-        SetDoc(ed, [NSString stringWithFormat:@"a%Cb\n", formFeed]);
+        // '.' covers the odd control character, but not one of Boost's line
+        // separators (is_separator: \r, \n, \f, U+0085, U+2028, U+2029), and
+        // '^' starts a line after each of them.
+        SetDoc(ed, @"a\001b a\fb\n");
         Check(@"IDM_SEARCH_FIND (dot spans anything)",
-              @"'.' matches a form feed as readily as a letter",
+              @"'.' matches a control character but not a form feed, which ends a line as in Boost",
               [ed countMatches:[NppFindSpec specFor:@"a.b" mode:NppSearchRegex
+                                            options:NppFindNone]] == 1 &&
+              [ed countMatches:[NppFindSpec specFor:@"^b" mode:NppSearchRegex
                                             options:NppFindNone]] == 1);
+
+        // CRLF, as Boost reads it in Notepad++: '^' and '$' never stand between
+        // the CR and the LF (match_start_line / match_end_line), '^' also
+        // starts the empty line after the last line end, and Replace All
+        // steps over an empty match where the previous match ended
+        // (SCFIND_REGEXP_EMPTYMATCH_NOTAFTERMATCH | SKIPCRLFASONE).
+        NSString *dollar = replaced(@"a\r\nb\r\n", @"$", @";");
+        NSString *caret = replaced(@"a\r\nb\r\n", @"^", @">");
+        NSString *trailing = replaced(@"a \r\nb\t\r\nc", @"\\s+$", @"");
+        NSString *lineEnds = replaced(@"a\r\nb\nc\rd", @"\\R", @"|");
+        NSString *emptyLines = replaced(@"a\r\n\r\nb", @"^$", @"E");
+        NSString *afterMatch = replaced(@"baac", @"a*", @"-");
+        Check(@"IDM_SEARCH_REPLACE (CRLF)",
+              @"Replace All of '$', '^', \\s+$, \\R and a* on CRLF text gives what Notepad++ gives",
+              [dollar isEqualToString:@"a;\r\nb;\r\n;"] &&
+              [caret isEqualToString:@">a\r\n>b\r\n>"] &&
+              [trailing isEqualToString:@"a\r\nb\r\nc"] &&
+              [lineEnds isEqualToString:@"a|b|c|d"] &&
+              [emptyLines isEqualToString:@"a\r\nE\r\nb"] &&
+              [afterMatch isEqualToString:@"-b-c-"]);
+
+        // Count and Mark take no empty match at all (EMPTYMATCH_NONE), and Find
+        // Next never stops between a CR and its LF.
+        SetDoc(ed, @"ab\r\ncd\r\n");
+        NppFindSpec *eol = [NppFindSpec specFor:@"$" mode:NppSearchRegex options:NppFindNone];
+        NSUInteger eolCount = [ed countMatches:eol];
+        NSUInteger lineCount = [ed countMatches:[NppFindSpec specFor:@"^.+$" mode:NppSearchRegex options:NppFindNone]];
+        NSMutableArray *stops = [NSMutableArray array];
+        [sci message:SCI_GOTOPOS wParam:0 lParam:0];
+        for (int i = 0; i < 3 && [ed findNext:eol]; ++i) [stops addObject:@([sci message:SCI_GETCURRENTPOS])];
+        Check(@"IDM_SEARCH_FIND (CRLF)",
+              @"Count takes no empty match, each CRLF line counts once, and Find Next '$' stops before each CR",
+              eolCount == 0 && lineCount == 2 && [stops isEqualToArray:(@[@2, @6, @8])]);
     }
 }
 

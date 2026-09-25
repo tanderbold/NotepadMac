@@ -5095,7 +5095,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     // Notepad++ can put a bookmark on every line it marks.
     if (self.bookmarkLineBox.state == NSControlStateValueOn) {
         ScintillaView *sci = self.editor.sci;
-        for (NSValue *match in [self.editor rangesOfMatches:spec]) {
+        for (NSValue *match in [self.editor rangesOfMatches:spec emptyMatches:NppEmptyMatchesNone]) {
             long line = [sci message:SCI_LINEFROMPOSITION
                                wParam:(uptr_t)match.rangeValue.location];
             [sci message:SCI_MARKERADD wParam:(uptr_t)line lParam:1];   // the bookmark marker

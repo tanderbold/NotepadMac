@@ -2,6 +2,7 @@
 // go with them, and replacement that understands back-references. What was here
 // before searched for a literal string and nothing else.
 #import "EditorController.h"
+#import "NppRegex.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -144,6 +145,9 @@ typedef NS_OPTIONS(NSInteger, NppFindOptions) {
 
 /// Byte ranges of every match; the others are built on this.
 - (NSArray<NSValue *> *)rangesOfMatches:(NppFindSpec *)spec;
+/// The same, with the empty matches the upstream operation keeps: Count and
+/// Mark none, Find All not one right after the previous match.
+- (NSArray<NSValue *> *)rangesOfMatches:(NppFindSpec *)spec emptyMatches:(NppEmptyMatches)empty;
 
 @end
 
