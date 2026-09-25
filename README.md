@@ -14,7 +14,7 @@ language, colour, theme, function-list and translation files as the Windows
 version - in a Cocoa application that runs on Apple silicon and Intel Macs.
 No Wine, no emulation, no Windows code.
 
-![NotepadMac editing an Objective-C++ source file: syntax highlighting, line numbers and code folding, dark theme](docs/screenshot-editor.png)
+![NotepadMac editing a Python file, with tabs, the Function List docked on the left and the Document Map on the right, dark theme](docs/screenshots/editor-panels.png)
 
 > An independent, unofficial port. It is not made, released or supported by the
 > Notepad++ project: **questions, bug reports and requests about the Mac version
@@ -46,7 +46,7 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - Function List for every language upstream has a parser for (run with PCRE2, as written), Document Map, Document List, Folder as Workspace, Project panels - dockable, floatable, remembered.
 - **The language of a text is worked out from its contents** when its name says nothing - a file without an extension, a snippet pasted into an empty tab - by a small model trained on real code, which offers one language or a short list.
 
-<p><img src="docs/screenshots/editor-panels.png" alt="Function List and Document Map docked beside a Python file" width="49%"> <img src="docs/screenshots/find-in-files.png" alt="Find in Files results grouped by file" width="49%"></p>
+<p><img src="docs/screenshots/find-in-files.png" alt="Find in Files results grouped by file" width="60%"></p>
 
 **Search**
 - Find, Replace, Find in Files, Find in Projects, Mark, incremental search, with Notepad++'s regular-expression syntax (Boost), the results panel - folding, and a double-click on a hit opens its file at that line - and search-result colours.
