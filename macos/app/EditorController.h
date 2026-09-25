@@ -22,6 +22,9 @@ FOUNDATION_EXPORT void NppBeep(void);
 FOUNDATION_EXPORT NSString *NppAvailableFontName(NSString *name);
 /// A path with symlinks and dots resolved (realpath), to tell whether two spellings are one file.
 FOUNDATION_EXPORT NSString *NppCanonicalPath(NSString *path);
+/// The attributes of the file a path names, through a symlink to what it points at (a link
+/// opened is the file edited: its size, its date, whether it is still there); nil when it is gone.
+FOUNDATION_EXPORT NSDictionary<NSFileAttributeKey, id> *_Nullable NppFileAttributes(NSString *_Nullable path);
 
 /// Posted whenever the set of open documents changes, so panels listing them
 /// can reload instead of drawing from a stale row count.

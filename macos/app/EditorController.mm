@@ -691,6 +691,14 @@ NSString *NppCanonicalPath(NSString *path) {
     return path.stringByStandardizingPath;
 }
 
+/// Upstream reads a file's size and time with GetFileAttributesEx; on a Mac a symlinked file is an
+/// everyday thing, and what is opened, saved (in place, through the link) and watched is the target.
+NSDictionary<NSFileAttributeKey, id> *NppFileAttributes(NSString *path) {
+    char resolved[PATH_MAX];
+    if (!path.length || !realpath(path.fileSystemRepresentation, resolved)) return nil;   // gone, or a dangling link
+    return [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithUTF8String:resolved] ?: path error:NULL];
+}
+
 - (void)newDocument {
     NppDocument *doc = [[NppDocument alloc] init];
     doc.docPointer = [self createScintillaDocument:SC_DOCUMENTOPTION_DEFAULT];
@@ -816,8 +824,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     // Decided on the size on disk, before anything is read: a file too big to
     // hold is refused, and a large one is opened without styling from the
     // start rather than styled and then unstyled.
-    unsigned long long size = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL]
-                               fileSize];
+    unsigned long long size = [NppFileAttributes(path) fileSize];
     NppPreferences *prefs = [NppPreferences shared];
     BOOL huge = size >= 2ULL * 1024 * 1024 * 1024;
     // As upstream asks before a file of 2 GB or more, unless told not to.
@@ -871,8 +878,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     doc.hasBOM = bom;
     doc.codepage = 0;
     doc.eolMode = direct ? DetectEOLBytes(direct) : DetectEOL(text);
-    doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL]
-                                fileModificationDate];
+    doc.fileModificationDate = [NppFileAttributes(path) fileModificationDate];
 
     // loadBufferIntoView: the file takes the place of a lone clean untitled tab.
     NppDocument *lone = [self mainTabCount] == 1 ? self.docs.firstObject : nil;
@@ -1225,7 +1231,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
     self.currentDocument.modified = NO;
     self.currentDocument.encodingChanged = NO;
     self.currentDocument.fileModificationDate =
-        [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
+        [NppFileAttributes(path) fileModificationDate];
     [self dropBackupOfDocument:self.currentDocument];
     [self refreshChrome];
     [[NSNotificationCenter defaultCenter] postNotificationName:NppDocumentSavedNotification object:self];
@@ -1249,13 +1255,12 @@ static BOOL gCheckingFilesOnDisk;
     // application, which asks again: not while a check is under way.
     if (gCheckingFilesOnDisk) return;
     gCheckingFilesOnDisk = YES;
-    NSFileManager *fm = [NSFileManager defaultManager];
     NppDocument *was = self.currentDocument;
     NppDocument *previous = [self previousTab];
 
     for (NppDocument *doc in [self.docs copy]) {
         if (!doc.path || ![self.docs containsObject:doc]) continue;
-        NSDate *onDisk = [[fm attributesOfItemAtPath:doc.path error:NULL] fileModificationDate];
+        NSDate *onDisk = [NppFileAttributes(doc.path) fileModificationDate];
 
         if (!onDisk) {
             if (!doc.fileModificationDate) continue;      // already known to be gone, and kept
@@ -1516,8 +1521,7 @@ static BOOL gCheckingFilesOnDisk;
     [self.sci message:SCI_GOTOPOS
                    wParam:(uptr_t)MIN(caret, [self.sci message:SCI_GETLENGTH]) lParam:0];
     [self.sci message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstLine lParam:0];
-    doc.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:doc.path error:NULL]
-                                fileModificationDate];
+    doc.fileModificationDate = [NppFileAttributes(doc.path) fileModificationDate];
     [self dropBackupOfDocument:doc];
     doc.modified = NO;
     [self refreshChrome];

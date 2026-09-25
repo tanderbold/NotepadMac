@@ -419,7 +419,6 @@ static int NppNumStrCmp(NSString *a, NSString *b) {
 - (void)sortTabsBy:(NppTabSort)key ascending:(BOOL)ascending {
     NSMutableArray *docs = (NSMutableArray *)self.documents;
     NppDocument *keep = self.currentDocument;
-    NSFileManager *fm = [NSFileManager defaultManager];
 
     // BufferEquivalent::compare: the column's order, and the full path name when that says
     // nothing - for an untitled document its name, "new 1". The keys are worked out once.
@@ -444,7 +443,7 @@ static int NppNumStrCmp(NSString *a, NSString *b) {
                 break;
             }
             case NppTabSortModifiedTime:
-                k = [[fm attributesOfItemAtPath:(d.path ?: @"") error:NULL] fileModificationDate] ?: [NSDate distantPast];
+                k = [NppFileAttributes(d.path) fileModificationDate] ?: [NSDate distantPast];
                 break;
         }
         [keys setObject:k forKey:d];

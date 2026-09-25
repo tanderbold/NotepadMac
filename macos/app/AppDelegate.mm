@@ -3773,7 +3773,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
     NSMutableString *out = [NSMutableString string];
     NSString *path = self.editor.currentDocument.path;
     if (path.length) {
-        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
+        NSDictionary *attrs = NppFileAttributes(path);
         NSDateFormatter *when = [[NSDateFormatter alloc] init];   // GetDateFormat + GetTimeFormat, the user's locale
         when.dateStyle = NSDateFormatterShortStyle;
         when.timeStyle = NSDateFormatterMediumStyle;
