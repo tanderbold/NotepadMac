@@ -53,6 +53,18 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         BOOL refused = ![ed formatJSONDocument];
         Check(@"JSON refuses non-JSON", @"a non-JSON document is left untouched",
               refused && [DocText(ed) isEqualToString:before]);
+        // What follows a NUL is part of the document: formatting reads it all (a NUL is no JSON, so
+        // the format is refused), never the part before the NUL, which would replace everything.
+        NSData *(^allBytes)(void) = ^NSData *{
+            long n = [ed.sci message:SCI_GETLENGTH];
+            return [NSData dataWithBytes:(const char *)[ed.sci message:SCI_GETCHARACTERPOINTER] length:(NSUInteger)n];
+        };
+        [ed.sci message:SCI_CLEARALL];
+        [ed.sci message:SCI_APPENDTEXT wParam:15 lParam:(sptr_t)"{\"a\":1}\0{\"b\":2}"];
+        NSData *jsonBefore = allBytes();
+        BOOL jsonNulRefused = ![ed formatJSONDocument];
+        Check(@"JSON (a NUL inside)", @"a document with a NUL after its first object is refused whole and left as it was",
+              jsonNulRefused && [allBytes() isEqualToData:jsonBefore]);
 
         // The tree lists every node with its path.
         SetDoc(ed, @"{\"top\":{\"inner\":[10,20]}}");
@@ -565,6 +577,13 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         BOOL refused = ![ed prettyPrintXMLDocument:NppXmlPrettyDefault];
         Check(@"XML refuses non-XML", @"a non-XML document is left untouched",
               refused && [DocText(ed) isEqualToString:before]);
+        // The same for XML: the part before a NUL is not the document.
+        [ed.sci message:SCI_CLEARALL];
+        [ed.sci message:SCI_APPENDTEXT wParam:15 lParam:(sptr_t)"<a><b/></a>\0<c>"];
+        long xmlLength = [ed.sci message:SCI_GETLENGTH];
+        BOOL xmlNulRefused = ![ed prettyPrintXMLDocument:NppXmlPrettyDefault] && ![ed linearizeXMLDocument];
+        Check(@"XML (a NUL inside)", @"a document with a NUL after its root element is refused whole and left as it was",
+              xmlNulRefused && [ed.sci message:SCI_GETLENGTH] == xmlLength && xmlLength == 15);
 
         // XPath, including an expression that selects attributes.
         NSString *doc = @"<catalog><book id=\"a\"><title>First</title></book>"

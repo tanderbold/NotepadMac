@@ -38,6 +38,23 @@ void NppTestsToolsMenu(AppDelegate *app, EditorController *ed, ScintillaView *sc
                   [[[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString]
                       isEqualToString:hashes[i].want]);
         }
+
+        // The selection's hash is of its bytes as they are: a NUL earlier in the document, or bytes
+        // that are not UTF-8, change nothing about the selected "abc".
+        void (^bytesInto)(const char *, size_t) = ^(const char *bytes, size_t length) {
+            [sci message:SCI_CLEARALL];
+            [sci message:SCI_APPENDTEXT wParam:length lParam:(sptr_t)bytes];
+        };
+        [ed newDocument];
+        bytesInto("a\0babc", 6);
+        [sci message:SCI_SETSEL wParam:3 lParam:6];
+        NSString *afterNul = [ed hashOfSelection:NppDigestMD5];
+        bytesInto("\xFF\xFE" "abc", 5);
+        [sci message:SCI_SETSEL wParam:2 lParam:5];
+        NSString *afterBinary = [ed hashOfSelection:NppDigestMD5];
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        Check(@"IDM_TOOL_MD5_GENERATEINTOCLIPBOARD (the bytes selected)", @"the hash of a selected abc is abc's after a NUL and after bytes that are not UTF-8",
+              [afterNul isEqualToString:@"900150983cd24fb0d6963f7d28e17f72"] && [afterBinary isEqualToString:@"900150983cd24fb0d6963f7d28e17f72"]);
     }
 
     if (NppSectionWanted(@"Tools: the digests the port adds")) { printf("\n== Tools: the digests the port adds ==\n");

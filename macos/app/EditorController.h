@@ -105,6 +105,12 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 /// by length, so that a NUL byte inside a file is kept rather than ending it.
 - (NSString *)documentText;
 - (void)setDocumentText:(NSString *)text;
+/// The bytes of the document in front as Scintilla holds them (UTF-8 in all but name), NULs
+/// and all - for a tool that must work on what is there, not on what decodes.
+- (NSData *)documentRawBytes;
+/// The text, but nil when the bytes are not UTF-8 (a tool that rewrites the document must
+/// not rewrite it from a partial or empty reading).
+- (nullable NSString *)documentTextIfUTF8;
 /// Files at least this big are mapped and handed to Scintilla as bytes; for tests.
 /// A file's text read the way Open reads it - BOM, UTF-16, UTF-8, then the
 /// character set uchardet finds - for searching files that are not open.

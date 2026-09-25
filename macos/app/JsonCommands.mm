@@ -251,9 +251,11 @@ void WriteJson(const JsonNode &n, std::string &out, int spaces, int level, bool 
 }
 
 bool ParseJson(NSString *text, JsonNode &root, std::string *why = nullptr, size_t *at = nullptr) {
-    const char *utf = text.UTF8String;
-    if (!utf) return false;
-    JsonParser parser{utf, utf, utf + strlen(utf)};
+    // The whole text, by its length: a NUL inside is a character JSON does not allow, not the end.
+    NSData *bytes = [text dataUsingEncoding:NSUTF8StringEncoding];
+    if (!bytes) return false;
+    const char *utf = bytes.length ? (const char *)bytes.bytes : "";
+    JsonParser parser{utf, utf, utf + bytes.length};
     bool ok = parser.document(root);
     if (!ok && why) *why = parser.error;
     if (!ok && at) *at = parser.errorAt;
@@ -340,23 +342,23 @@ static void PlaceJsonError(NppJsonError *error, NSData *data, NSInteger byteOffs
 
 - (BOOL)formatJSONDocument {
     return [self replaceDocumentWithJSON:
-        [EditorController formatJSON:([self.sci string] ?: @"")
+        [EditorController formatJSON:[self documentTextIfUTF8]
                               indent:[NppPreferences shared].jsonIndent sorted:NO]];
 }
 
 - (BOOL)sortJSONDocument {
     return [self replaceDocumentWithJSON:
-        [EditorController formatJSON:([self.sci string] ?: @"")
+        [EditorController formatJSON:[self documentTextIfUTF8]
                               indent:[NppPreferences shared].jsonIndent sorted:YES]];
 }
 
 - (BOOL)compactJSONDocument {
     return [self replaceDocumentWithJSON:
-        [EditorController compactJSON:([self.sci string] ?: @"")]];
+        [EditorController compactJSON:[self documentTextIfUTF8]]];
 }
 
 - (NppJsonError *)validateJSONDocument {
-    NppJsonError *error = [EditorController validateJSON:([self.sci string] ?: @"")];
+    NppJsonError *error = [EditorController validateJSON:[self documentTextIfUTF8]];
     if (error && error.line >= 0) {
         [self.sci message:SCI_GOTOLINE wParam:(uptr_t)error.line lParam:0];
         [self refreshChrome];
@@ -389,7 +391,7 @@ static void FlattenJSON(const JsonNode &node, NSString *path, NSMutableArray *ou
 
 - (NSArray<NSDictionary<NSString *, NSString *> *> *)jsonTree {
     JsonNode root;
-    if (!ParseJson([self.sci string] ?: @"", root)) return @[];
+    if (!ParseJson([self documentTextIfUTF8], root)) return @[];
     NSMutableArray *out = [NSMutableArray array];
     FlattenJSON(root, @"", out);
     return out;

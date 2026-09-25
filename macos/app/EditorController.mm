@@ -736,6 +736,19 @@ NSDictionary<NSFileAttributeKey, id> *NppFileAttributes(NSString *path) {
     return text ?: ([self.sci string] ?: @"");
 }
 
+- (NSData *)documentRawBytes {
+    long length = [self.sci message:SCI_GETLENGTH wParam:0 lParam:0];
+    if (length <= 0) return [NSData data];
+    NSMutableData *bytes = [NSMutableData dataWithLength:(NSUInteger)length + 1];
+    [self.sci message:SCI_GETTEXT wParam:(uptr_t)(length + 1) lParam:(sptr_t)bytes.mutableBytes];
+    bytes.length = (NSUInteger)length;                  // SCI_GETTEXT copies the NULs too; only its end is added
+    return bytes;
+}
+
+- (NSString *)documentTextIfUTF8 {
+    return [[NSString alloc] initWithData:[self documentRawBytes] encoding:NSUTF8StringEncoding];
+}
+
 + (NSString *)textOfFileAtPath:(NSString *)path encoding:(NSStringEncoding *)encoding hasBOM:(BOOL *)hasBOM {
     NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:NULL];
     if (!data) return nil;
