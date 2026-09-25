@@ -23,6 +23,53 @@
 @implementation NppTestNavigation
 @end
 
+#include <mach/mach.h>
+#include <random>
+#include <string>
+#include <vector>
+
+/// Myers' greedy difference as it was written before the checkpoints: the
+/// whole trace kept, then walked back. The reference the new one must equal.
+static std::string TraceMyersScript(const std::vector<int> &a, const std::vector<int> &b) {
+    const long n = (long)a.size(), m = (long)b.size(), max = n + m;
+    if (!max) return "";
+    std::vector<long> v((size_t)(2 * max + 1), 0);
+    std::vector<std::vector<long>> trace;
+    for (long d = 0; d <= max; ++d) {
+        std::vector<long> snapshot((size_t)(2 * d + 1));
+        for (long k = -d; k <= d; ++k) snapshot[(size_t)(k + d)] = v[(size_t)(k + max)];
+        trace.push_back(std::move(snapshot));
+        bool end = false;
+        for (long k = -d; k <= d; k += 2) {
+            long x = (k == -d || (k != d && v[(size_t)(k - 1 + max)] < v[(size_t)(k + 1 + max)])) ? v[(size_t)(k + 1 + max)] : v[(size_t)(k - 1 + max)] + 1;
+            long y = x - k;
+            while (x < n && y < m && a[(size_t)x] == b[(size_t)y]) { x++; y++; }
+            v[(size_t)(k + max)] = x;
+            if (x >= n && y >= m) { end = true; break; }
+        }
+        if (end) break;
+    }
+    std::string reversed;
+    long x = n, y = m;
+    for (long d = (long)trace.size() - 1; d >= 0 && (x > 0 || y > 0); --d) {
+        const std::vector<long> &vd = trace[(size_t)d];
+        auto at = [&](long k) -> long { return (k < -d || k > d) ? 0 : vd[(size_t)(k + d)]; };
+        long k = x - y, prevK = (k == -d || (k != d && at(k - 1) < at(k + 1))) ? k + 1 : k - 1;
+        long prevX = at(prevK), prevY = prevX - prevK;
+        while (x > prevX && y > prevY) { reversed += '='; x--; y--; }
+        if (d == 0) break;
+        if (x > prevX) { reversed += '-'; x--; } else { reversed += '+'; y--; }
+    }
+    return std::string(reversed.rbegin(), reversed.rend());
+}
+
+static uint64_t PhysicalFootprint(void) {
+    task_vm_info_data_t info;
+    mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
+    if (task_info(mach_task_self(), TASK_VM_INFO, (task_info_t)&info, &count) != KERN_SUCCESS) return 0;
+    return info.phys_footprint;
+}
+
 /// == JSON ==; == Compare ==; == FTP ==; == XML ==; == Run ==; == MIME Tools ==; == Converter ==; == Export ==; == Spell check ==
 void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     if (NppSectionWanted(@"JSON")) { printf("\n== JSON ==\n");
@@ -156,6 +203,63 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
             NSUInteger added = 0; for (NppDiffLine *d in bigDiff) if (d.kind == NppDiffAdded) added++;
             Check(@"Compare (big file)", @"50000 equal lines and one added: one added line, well under a second",
                   added == 1 && bigDiff.lastObject.kind == NppDiffAdded && took < 1.0);
+        }
+        // The checkpointed walk finds the very path the whole trace did, lines
+        // that repeat included (few distinct lines, many ties), whatever the
+        // segment length.
+        {
+            std::mt19937 random(20260925);
+            NSUInteger pairs = 0, differing = 0;
+            for (int round = 0; round < 3000; ++round) {
+                int n = (int)(random() % 40), m = (int)(random() % 40), alphabet = 1 + (int)(random() % 5);
+                std::vector<int> a((size_t)n), b((size_t)m);
+                for (int &line : a) line = (int)(random() % (unsigned)alphabet);
+                for (int &line : b) line = (int)(random() % (unsigned)alphabet);
+                if (round % 3 == 0) {                   // a few edits apart, as files usually are
+                    b = a;
+                    for (int e = (int)(random() % 4); e > 0; --e) {
+                        if (!b.empty() && random() % 2) b.erase(b.begin() + (long)(random() % b.size()));
+                        else b.insert(b.begin() + (long)(b.empty() ? 0 : random() % b.size()), (int)(random() % (unsigned)alphabet));
+                    }
+                }
+                std::string expected = TraceMyersScript(a, b);
+                for (long segment : {1L, 2L, 3L, 7L, 0L}) {
+                    std::vector<char> ops;
+                    NppMyersScript(a.data(), (long)a.size(), b.data(), (long)b.size(), segment, ops);
+                    pairs++;
+                    if (std::string(ops.begin(), ops.end()) != expected) differing++;
+                }
+            }
+            Check(@"Compare (same path as before)", @"on 3000 random pairs the edit script equals the whole-trace Myers, at every segment length",
+                  pairs == 15000 && differing == 0);
+        }
+        // Two unrelated texts of 5000 lines (D = 10000): the trace needed
+        // D(D+1) numbers, 800 MB, on the main thread; now a few MB.
+        {
+            NSMutableArray *left = [NSMutableArray array], *right = [NSMutableArray array];
+            for (int i = 0; i < 5000; ++i) {
+                [left addObject:[NSString stringWithFormat:@"left %d", i]];
+                [right addObject:[NSString stringWithFormat:@"right %d", i]];
+            }
+            uint64_t before = PhysicalFootprint();
+            __block uint64_t peak = before;
+            __block NSArray<NppDiffLine *> *unrelated = nil;
+            dispatch_semaphore_t done = dispatch_semaphore_create(0);
+            NSDate *t0 = [NSDate date];
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+                unrelated = [EditorController diffBetween:left and:right ignoreCase:NO ignoreSpaces:NO ignoreEmptyLines:NO];
+                dispatch_semaphore_signal(done);
+            });
+            // Sampled while it runs: the peak is what would have hurt.
+            while (dispatch_semaphore_wait(done, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_MSEC))) {
+                peak = MAX(peak, PhysicalFootprint());
+                if (-t0.timeIntervalSinceNow > 60) break;
+            }
+            NSTimeInterval took = -t0.timeIntervalSinceNow;
+            NSUInteger changedLines = 0; for (NppDiffLine *d in unrelated) if (d.kind == NppDiffChanged) changedLines++;
+            printf("  (unrelated 5000 lines: %.2f s, %.0f MB above the start)\n", took, (double)(peak - before) / 1e6);
+            Check(@"Compare (unrelated files)", @"two unrelated 5000-line texts: 5000 changed lines, under 100 MB more and 20 s",
+                  unrelated.count == 5000 && changedLines == 5000 && peak - before < 100000000ull && took < 20);
         }
         NSArray *spacedDiff = [EditorController diffBetween:@[@"a  b", @"c"]
                                                        and:@[@"a b", @"c"]

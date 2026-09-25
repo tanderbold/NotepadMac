@@ -120,7 +120,7 @@ must not begin with `copy`/`new`/`init` (ARC ownership rules) and must not be ca
 | Documents, tabs, views, session, lexer set-up, themes | `EditorController.mm`, `TabBarView.mm`, `Toolbar.mm`, `EditorLook.mm`, `ViewCommands.mm`, `BehaviourCommands.mm`, `BackupAndPrint.mm` |
 | Languages, styles, UDL | `LanguageCatalog.mm`, `LangMap.h` (generated), `StyleCatalog.mm`, `StyleConfigurator.mm`, `UserLanguages.mm`, `UserLanguageDialog.mm`, `ApiCatalog.mm` (auto-completion) |
 | Language from contents | `LanguageDetection.mm` (declarations only: shebang, `<?xml`, modeline, JSON), `LanguageModel.mm` (the trained model) |
-| Search | `FindCommands.mm`, `SearchCommands.mm`, `NppRegex.mm` (Boost-syntax regex over ICU/PCRE2), `BoostFormat.mm` |
+| Search | `FindCommands.mm`, `SearchCommands.mm`, `NppRegex.mm` (Boost-syntax regex over PCRE2 with (*ANY), '^'/'$' refused inside a CRLF as Boost refuses them, and upstream's empty-match rules per operation: `NppEmptyMatches`), `BoostFormat.mm` |
 | Editing commands | `EditCommands.mm`, `AdvancedEditCommands.mm`, `TypingCommands.mm`, `EncodingCommands.mm`, `CharsetDetection.mm`, `TagMatch.mm`, `NumberSet.mm`, `Formula.mm` + `NumberSetCommands.mm` (the context menu's sum/average/min/max/count and sort of a selected set of numbers; Edit > Calculate, Cmd+=, a formula's value after its `=`, selected or at the caret; Edit > Selected Numbers mirrors the context submenu for shortcuts and `run_command`; user reference `docs/numbers.html`; Foundation-only parsing, NSDecimalNumber arithmetic, functions in double) |
 | Panels and docking | `DockingManager.mm`, `NppPanel.mm`, `DocumentListPanel.mm`, `FunctionListPanel.mm`, `FunctionListCatalog.mm`, `ProjectPanel.mm`, `WorkspacePanel.mm`, `AuxPanels.mm` |
 | Preferences, shortcuts, context menu | `SettingsCommands.mm` (NPP_PREF_* macros, defaults), `SettingsPanels.mm`, `ShortcutMapper.mm`, `ContextMenuFile.mm` |
@@ -162,7 +162,9 @@ in both panes. What is the port's own around it: the other text in the second pa
 document's language and theme, the bar, Escape, the comparison re-run 0.4 s after typing
 (`compareRefreshNow`, the view kept where it was), and the revert arrow (marker 9) beside
 each run of the port's own line diff (`diffBetween`, which the git margin and the agent use
-too). Not carried over: selection compare, find unique, the nav bar, patches, visual
+too; `NppMyersScript` finds greedy Myers' own path with one bit per diagonal per step, kept a
+segment of about sqrt(32 D) steps at a time between checkpoints: some 45 MB at D = 100 000,
+where the whole trace was 80 GB, and the same pairing of lines). Not carried over: selection compare, find unique, the nav bar, patches, visual
 filters. `NPPMAC_SNAPSHOT_COMPARE=<file>` snapshots the sample compared with that file.
 
 ### End-to-end hooks (`E2EHooks.mm`)

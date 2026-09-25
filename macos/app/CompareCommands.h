@@ -27,6 +27,16 @@ typedef NS_ENUM(NSInteger, NppDiffKind) {
 @property (nonatomic) NSInteger newLine;   // -1 when the line is not in the new file
 @end
 
+#ifdef __cplusplus
+NS_ASSUME_NONNULL_END
+#include <vector>
+NS_ASSUME_NONNULL_BEGIN
+/// The edit script of Myers' greedy difference of two sequences of line
+/// numbers: '=', '-' (a line of a) and '+' (a line of b), in order. `segment`
+/// is how many steps share a checkpoint; 0 chooses. Public for the tests.
+void NppMyersScript(const int *a, long n, const int *b, long m, long segment, std::vector<char> &ops);
+#endif
+
 @interface EditorController (CompareCommands)
 
 /// The line-by-line difference, using Myers' algorithm as ComparePlus does.

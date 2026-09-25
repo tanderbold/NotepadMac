@@ -288,6 +288,9 @@ extern NSString *const NppEditorDocumentsDidChangeNotification;
 - (void)layoutSecondaryHost;
 - (void)focusOtherView;
 - (BOOL)otherViewHasFocus;
+/// Files dropped on a view's text (SCN_URIDROPPED), all of one drop together, once it is
+/// over; that view has been made the focused one first, as Notepad_plus::dropFiles does.
+@property (nonatomic, copy, nullable) void (^droppedPathsHandler)(NSArray<NSString *> *paths);
 /// The second view has the focus and one of its tabs' documents in it: commands act on that.
 - (BOOL)secondaryViewIsActive;
 - (BOOL)moveCurrentToOtherView;

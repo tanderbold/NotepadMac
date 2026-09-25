@@ -1,5 +1,7 @@
 #import "NppRegex.h"
 #include <dlfcn.h>
+#include <string>
+#include <vector>
 
 // libpcre2 is on every macOS that matters, but there is no pcre2.h in the SDK,
 // so the handful of entry points that are needed are declared here. They are
@@ -24,6 +26,9 @@ static const uint32_t kUTF = 0x00080000u;
 /// PCRE2_UCP: \w, \b, \d and the POSIX classes know every script, as Boost's do in
 /// Notepad++ (wide characters) - "café" is a word, \w matches "я".
 static const uint32_t kUCP = 0x00020000u;
+/// PCRE2_ALT_CIRCUMFLEX: '^' also matches after a newline that ends the
+/// subject, as Boost's match_start_line does ("a\n" has two line starts).
+static const uint32_t kAltCircumflex = 0x00200000u;
 
 static npp_pcre2_compile gCompile;
 static npp_pcre2_match_data_create_from_pattern gMatchDataCreate;
@@ -62,6 +67,72 @@ static void LoadPCRE2(void) {
 
 + (BOOL)available { LoadPCRE2(); return gLoaded; }
 
+/// Boost refuses '^' and '$' in the middle of a CRLF (perl_matcher::
+/// match_start_line / match_end_line check for '\r' before and '\n' at the
+/// position); PCRE2 takes the LF there for a newline of its own. So every
+/// anchor outside a class, an escape or a comment gets that same condition:
+/// without it `$` matched twice at each CRLF and `\s+$` swallowed the CR.
+/// The pattern is rewritten as UTF-8 bytes (every character that means
+/// something here is ASCII), and `origin` keeps where each output byte came
+/// from, so a compile error can still name an offset in what the user typed.
+static const char kNotInsideCRLF[] = "(?!(?<=\\r)\\n))";
+
+static std::string BoostLineAnchors(const std::string &in, std::vector<size_t> &origin) {
+    std::string out;
+    out.reserve(in.size() + 16);
+    origin.clear();
+    auto copy = [&](size_t from, size_t to) {
+        for (size_t k = from; k < to && k < in.size(); ++k) { out += in[k]; origin.push_back(k); }
+    };
+    auto until = [&](size_t from, const char *what) {   // the index just past `what`, or the end
+        size_t found = in.find(what, from);
+        return found == std::string::npos ? in.size() : found + strlen(what);
+    };
+    const size_t n = in.size();
+    size_t i = 0;
+    while (i < n) {
+        char c = in[i];
+        if (c == '\\') {
+            char e = i + 1 < n ? in[i + 1] : 0;
+            size_t to = i + 2;
+            if (e == 'Q') to = until(i + 2, "\\E");                       // \Q...\E is literal
+            else if ((e == 'p' || e == 'P') && i + 2 < n && in[i + 2] == '{') to = until(i + 2, "}");   // \p{^Lu}
+            else if (e == 'c') to = i + 3;                                  // \c^ is a control character
+            copy(i, to); i = to; continue;
+        }
+        if (c == '[') {                                                     // a class: nothing in it is an anchor
+            size_t j = i + 1;
+            if (j < n && in[j] == '^') ++j;
+            if (j < n && in[j] == ']') ++j;
+            while (j < n && in[j] != ']') {
+                if (in[j] == '\\') j = (j + 1 < n && in[j + 1] == 'Q') ? until(j + 2, "\\E") : j + 2;
+                else if (in[j] == '[' && j + 1 < n && (in[j + 1] == ':' || in[j + 1] == '.' || in[j + 1] == '=')) {
+                    char close[3] = {in[j + 1], ']', 0};
+                    j = until(j + 2, close);
+                } else ++j;
+            }
+            copy(i, j + 1); i = j + 1; continue;
+        }
+        if (c == '(' && i + 2 < n && in[i + 1] == '?' && in[i + 2] == '#') {   // (?#comment)
+            size_t to = until(i, ")"); copy(i, to); i = to; continue;
+        }
+        if (c == '(' && i + 2 < n && in[i + 1] == '?' && in[i + 2] == '^') {   // (?^) resets options
+            copy(i, i + 3); i += 3; continue;
+        }
+        if (c == '(' && i + 1 < n && in[i + 1] == '*') {                       // (*VERB:name)
+            size_t to = until(i, ")"); copy(i, to); i = to; continue;
+        }
+        if (c == '^' || c == '$') {
+            std::string anchor = std::string("(?:") + c + kNotInsideCRLF;
+            for (char a : anchor) { out += a; origin.push_back(i); }
+            ++i; continue;
+        }
+        copy(i, i + 1); ++i;
+    }
+    origin.push_back(n);
+    return out;
+}
+
 /// Compiles, returning either the code or the reason it would not compile.
 static void *CompilePattern(NSString *pattern, NSString **errorOut) {
     LoadPCRE2();
@@ -69,31 +140,37 @@ static void *CompilePattern(NSString *pattern, NSString **errorOut) {
         if (errorOut) *errorOut = @"libpcre2 is not available";
         return NULL;
     }
-    // Scintilla searches with Boost, which counts \r\n, \r and \n all as line
-    // separators: '$' stands before the \r of a CRLF and '.' does not swallow
-    // it. PCRE2 defaults to \n alone, which puts a stray \r on the end of
-    // anything matched up to '$' in a CRLF file. The newline convention has to
-    // be the first thing in the pattern.
-    NSString *withConvention = [@"(*ANYCRLF)" stringByAppendingString:pattern];
-    NSData *bytes = [withConvention dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *bytes = [pattern dataUsingEncoding:NSUTF8StringEncoding];
     if (!bytes) {
         if (errorOut) *errorOut = @"the pattern is not valid UTF-8";
         return NULL;
     }
+    std::vector<size_t> origin;
+    std::string rewritten = BoostLineAnchors(std::string((const char *)bytes.bytes, bytes.length), origin);
+    // Scintilla searches with Boost, whose line separators (is_separator) are
+    // \r\n, \r, \n, \f, U+0085, U+2028 and U+2029: '$' stands before each and
+    // '.' does not swallow one. PCRE2 defaults to \n alone, which puts a stray
+    // \r on the end of anything matched up to '$' in a CRLF file; (*ANY) is the
+    // convention nearest Boost's (it adds only \v). The newline convention has
+    // to be the first thing in the pattern.
+    static const char kConvention[] = "(*ANY)";
+    const size_t prefix = strlen(kConvention);
+    rewritten.insert(0, kConvention);
 
     int errorCode = 0;
     size_t errorOffset = 0;
     // The same options upstream searches with: SCFIND_REGEXP_DOTMATCHESNL, and
     // '^' anchored per line. See functionParser.cpp.
-    void *code = gCompile((const uint8_t *)bytes.bytes, bytes.length,
-                          kMultiline | kDotAll | kUTF | kUCP, &errorCode, &errorOffset, NULL);
+    void *code = gCompile((const uint8_t *)rewritten.data(), rewritten.size(),
+                          kMultiline | kDotAll | kUTF | kUCP | kAltCircumflex,
+                          &errorCode, &errorOffset, NULL);
     if (!code && errorOut) {
         uint8_t message[256] = {0};
         if (gErrorMessage) gErrorMessage(errorCode, message, sizeof message);
-        // Counted in the pattern as written, not with the convention prefix.
-        size_t prefix = strlen("(*ANYCRLF)");
-        *errorOut = [NSString stringWithFormat:@"%s (at offset %zu)", message,
-                     errorOffset >= prefix ? errorOffset - prefix : errorOffset];
+        // Counted in the pattern as written, not as rewritten.
+        size_t at = errorOffset >= prefix ? errorOffset - prefix : 0;
+        size_t typed = at < origin.size() ? origin[at] : bytes.length;
+        *errorOut = [NSString stringWithFormat:@"%s (at offset %zu)", message, typed];
     }
     return code;
 }
@@ -157,6 +234,19 @@ static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
 
 - (void)enumerateMatchesWithGroupsInData:(NSData *)data range:(NSRange)range
                               usingBlock:(void (^)(NSArray<NSValue *> *, BOOL *))block {
+    [self enumerateMatchesWithGroupsInData:data range:range emptyMatches:NppEmptyMatchesAll usingBlock:block];
+}
+
+/// BoostRegexSearch::SearchParameters::nextCharacter with SCFIND_REGEXP_SKIPCRLFASONE,
+/// which every search in FindReplaceDlg sets: a CRLF is stepped over whole.
+static size_t NextCharacterSkippingCRLF(const uint8_t *bytes, size_t length, size_t from) {
+    if (from + 1 < length && bytes[from] == '\r' && bytes[from + 1] == '\n') return from + 2;
+    return NextCharacter(bytes, length, from);
+}
+
+- (void)enumerateMatchesWithGroupsInData:(NSData *)data range:(NSRange)range
+                            emptyMatches:(NppEmptyMatches)empty
+                              usingBlock:(void (^)(NSArray<NSValue *> *, BOOL *))block {
     if (!self.code || !data.length || !block) return;
     if (NSMaxRange(range) > data.length) return;
 
@@ -167,6 +257,9 @@ static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
     size_t end = NSMaxRange(range);
     size_t at = range.location;
     BOOL stop = NO;
+    // Whether this search goes on from where the last match ended, which is
+    // what makes an empty match there no match (isContinuationSearch).
+    BOOL continuation = NO;
 
     while (at <= end && !stop) {
         // The subject is cut at `end` so a match cannot run past the range it
@@ -177,6 +270,22 @@ static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
         size_t *ovector = gOvector(matchData);
         size_t start = ovector[0], finish = ovector[1];
         if (start > end) break;
+
+        if (empty != NppEmptyMatchesAll && finish == start) {
+            // FindTextForward: an empty match is valid when empty matches are
+            // allowed at all and it is not at the start of a continued search;
+            // an invalid one sends the search on from the next character.
+            BOOL valid = empty == NppEmptyMatchesNotAfterMatch && (!continuation || start > at);
+            if (!valid) {
+                size_t next = NextCharacterSkippingCRLF(bytes, data.length, start);
+                if (next > end) break;
+                // Still the same search, so an empty match from here on is
+                // past its start and valid.
+                at = next;
+                continuation = NO;
+                continue;
+            }
+        }
 
         // rc is the number of pairs the match filled in, so it counts the whole
         // match plus the groups that took part.
@@ -192,7 +301,15 @@ static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
         }
 
         block(groups, &stop);
-        at = (finish > start) ? finish : NextCharacter(bytes, end, start);
+        if (empty == NppEmptyMatchesAll) {
+            at = (finish > start) ? finish : NextCharacter(bytes, end, start);
+        } else {
+            // processRange: the match that reaches the end of the range is the
+            // last, so '$' there is not replaced again and again.
+            if (finish == end) break;
+            at = finish;
+            continuation = YES;
+        }
     }
 
     gMatchDataFree(matchData);

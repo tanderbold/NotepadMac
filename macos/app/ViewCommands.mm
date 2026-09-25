@@ -76,8 +76,9 @@
     NSInteger to = from + (forward ? 1 : -1);
     NSRange run = [self tabRunOfDocument:self.currentDocument];
     if (from == NSNotFound || to < (NSInteger)run.location || to >= (NSInteger)NSMaxRange(run)) { NppBeep(); return NO; }
-    [docs exchangeObjectAtIndex:(NSUInteger)from withObjectAtIndex:(NSUInteger)to];
-    [self selectDocumentAtIndex:to];
+    // As a drag of the tab does it: the tab in front keeps its own caret, bookmarks and folds
+    // (exchanged here and then selected, the neighbour took them as the tab "leaving").
+    [(id<NppTabBarDelegate>)self tabBar:[self valueForKey:@"tabBar"] didMoveIndex:from toIndex:to];
     return YES;
 }
 
@@ -87,10 +88,8 @@
     NSInteger from = [docs indexOfObject:doc];
     NSRange run = [self tabRunOfDocument:doc];
     if (from == NSNotFound || !run.length) return;
-    [docs removeObjectAtIndex:(NSUInteger)from];
     NSInteger to = end ? (NSInteger)NSMaxRange(run) - 1 : (NSInteger)run.location;
-    [docs insertObject:doc atIndex:(NSUInteger)to];
-    [self selectDocumentAtIndex:to];
+    [(id<NppTabBarDelegate>)self tabBar:[self valueForKey:@"tabBar"] didMoveIndex:from toIndex:to];
 }
 
 - (void)setTabColour:(NSInteger)colour {

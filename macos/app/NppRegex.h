@@ -7,6 +7,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Which empty matches a walk over the matches reports. Upstream's search asks
+/// Scintilla for one match at a time with SCFIND_REGEXP_EMPTYMATCH_* flags
+/// (FindReplaceDlg::processRange, BoostRegexSearch::FindTextForward); these
+/// are those loops.
+typedef NS_ENUM(NSInteger, NppEmptyMatches) {
+    /// Every match, empty ones included, one search on from each: Find Next's
+    /// list of candidates and the Function List.
+    NppEmptyMatchesAll = 0,
+    /// Replace All and Find All (EMPTYMATCH_NOTAFTERMATCH): an empty match
+    /// right where the previous one ended is not one, and the walk ends with a
+    /// match that reaches the end of the range.
+    NppEmptyMatchesNotAfterMatch,
+    /// Count and Mark (EMPTYMATCH_NONE): empty matches are never reported.
+    NppEmptyMatchesNone,
+};
+
 @interface NppRegex : NSObject
 
 /// Whether libpcre2 could be loaded. When it cannot, there is no second engine:
@@ -30,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// the nth group. A group that did not take part has location NSNotFound.
 /// Replacement needs these, for \1 and $1.
 - (void)enumerateMatchesWithGroupsInData:(NSData *)data range:(NSRange)range
+                              usingBlock:(void (^)(NSArray<NSValue *> *groups, BOOL *stop))block;
+- (void)enumerateMatchesWithGroupsInData:(NSData *)data range:(NSRange)range
+                            emptyMatches:(NppEmptyMatches)empty
                               usingBlock:(void (^)(NSArray<NSValue *> *groups, BOOL *stop))block;
 
 /// The first match, or a range with location NSNotFound.

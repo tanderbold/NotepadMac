@@ -4,6 +4,48 @@
 // order; the helpers they share are in TestSupport.h.
 #import "TestSupport.h"
 
+/// What AppKit hands a drag destination, for a drop made without the window server:
+/// the pasteboard of the drag, where it is, what the source allows.
+@interface NppTestDrop : NSObject
+@property (nonatomic, strong) NSPasteboard *draggingPasteboard;
+@property (nonatomic) NSPoint draggingLocation;
+@property (nonatomic, weak) NSWindow *draggingDestinationWindow;
+@end
+@implementation NppTestDrop
+- (NSDragOperation)draggingSourceOperationMask { return NSDragOperationCopy | NSDragOperationLink | NSDragOperationGeneric; }
+- (id)draggingSource { return nil; }
+- (NSInteger)draggingSequenceNumber { return 1; }
+- (NSInteger)numberOfValidItemsForDrop { return 1; }
+@end
+
+/// Drops `paths` at the middle of `target` the way AppKit would: to the deepest view under the
+/// point that takes file URLs, entered, performed and concluded. Returns that view.
+static NSView *DropPaths(NSArray<NSString *> *paths, NSView *target) {
+    NSWindow *window = target.window;
+    NSRect shown = target.visibleRect;             // the text view is as tall as the document
+    NSPoint inWindow = [target convertPoint:NSMakePoint(NSMidX(shown), NSMidY(shown)) toView:nil];
+    NSView *frame = window.contentView.superview;
+    NSView *view = [frame hitTest:[frame convertPoint:inWindow fromView:nil]];
+    while (view && ![view.registeredDraggedTypes containsObject:NSPasteboardTypeFileURL]) view = view.superview;
+    NSMutableArray *urls = [NSMutableArray array];
+    for (NSString *path in paths) [urls addObject:[NSURL fileURLWithPath:path]];
+    NSPasteboard *board = [NSPasteboard pasteboardWithUniqueName];
+    [board clearContents];
+    [board writeObjects:urls];
+    NppTestDrop *drop = [[NppTestDrop alloc] init];
+    drop.draggingPasteboard = board;
+    drop.draggingLocation = inWindow;
+    drop.draggingDestinationWindow = window;
+    id<NSDraggingDestination> destination = (id<NSDraggingDestination>)(view ?: (id)window.delegate);
+    id<NSDraggingInfo> info = (id<NSDraggingInfo>)drop;
+    if ([destination draggingEntered:info] != NSDragOperationNone &&
+        (![destination respondsToSelector:@selector(prepareForDragOperation:)] || [destination prepareForDragOperation:info]))
+        [destination performDragOperation:info];
+    if ([destination respondsToSelector:@selector(concludeDragOperation:)]) [destination concludeDragOperation:info];
+    [board releaseGlobally];
+    return view;
+}
+
 /// == File ==; == File: more ==; == File: close family ==; == File: folders and workspace ==; == Sessions ==
 void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     if (NppSectionWanted(@"File")) { printf("\n== File ==\n");
@@ -1341,6 +1383,32 @@ void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     }
 
     if (NppSectionWanted(@"File: close family")) { printf("\n== File: close family ==\n");
+        // Cmd+W typed in the Find window closes that window, not the document behind it (upstream
+        // gives the main window's accelerators to the main window only).
+        {
+            [ed newDocument];
+            NppDocument *behind = ed.currentDocument;
+            NSUInteger count = ed.documents.count;
+            [app performSelector:@selector(showFind:) withObject:nil];
+            NSPanel *find = [app valueForKey:@"findPanel"];
+            [find makeKeyAndOrderFront:nil];
+            NppSettleUntil(^BOOL { return find.isKeyWindow; }, 2);
+            BOOL wasKey = find.isKeyWindow;
+            NSEvent *cmdW = [NSEvent keyEventWithType:NSEventTypeKeyDown location:NSZeroPoint modifierFlags:NSEventModifierFlagCommand
+                                            timestamp:NSProcessInfo.processInfo.systemUptime windowNumber:find.windowNumber context:nil
+                                           characters:@"w" charactersIgnoringModifiers:@"w" isARepeat:NO keyCode:13];
+            [NSApp postEvent:cmdW atStart:NO];
+            NppSettleUntil(^BOOL { return !find.isVisible || ![ed.documents containsObject:behind]; }, 2);
+            BOOL documentKept = [ed.documents containsObject:behind] && ed.documents.count == count;
+            BOOL panelClosed = !find.isVisible;
+            [find orderOut:nil];
+            [ed.window makeKeyAndOrderFront:nil];
+            if ([ed.documents containsObject:behind])
+                [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:behind] discardChanges:YES];
+            Check(@"IDM_FILE_CLOSE (typed in another window)",
+                  @"Cmd+W in the Find window closes the Find window and leaves the document behind it open",
+                  wasKey && documentKept && panelClosed);
+        }
         NSError *err = nil;
         [ed closeAllDocuments];
         Check(@"IDM_FILE_CLOSEALL", @"leaves exactly one fresh, unsaved tab",
@@ -1447,6 +1515,43 @@ void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         Check(@"IDM_FILE_CONTAININGFOLDERASWORKSPACE", @"roots the panel at the current file's folder",
               [[ed workspaceRootPath] isEqualToString:dir]);
         [ed openFolderAsWorkspace:nil];
+
+        // Files dropped on the text, most of the window: the text view is the deepest one under
+        // the pointer that takes file URLs, so it gets the drop, not the window; they open as
+        // Notepad_plus::dropFiles opens them, the last one in front. A folder alone opens as
+        // Folder as Workspace; files and folders together are refused.
+        {
+            NSString *one = [dir stringByAppendingPathComponent:@"dropped one.txt"];
+            NSString *two = [dir stringByAppendingPathComponent:@"dropped two.txt"];
+            NSString *sub = [dir stringByAppendingPathComponent:@"dropped folder"];
+            [@"1\n" writeToFile:one atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            [@"2\n" writeToFile:two atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtPath:sub withIntermediateDirectories:YES attributes:nil error:NULL];
+            BOOL (^isOpen)(NSString *) = ^BOOL(NSString *path) {
+                for (NppDocument *d in ed.documents) if ([d.path isEqualToString:path]) return YES;
+                return NO;
+            };
+            NSView *receiver = DropPaths(@[one, two], ed.sci.content);
+            NppSettleUntil(^BOOL { return isOpen(one) && isOpen(two); }, 3);
+            BOOL textTookIt = receiver == (NSView *)ed.sci.content;
+            BOOL bothOpen = isOpen(one) && isOpen(two);
+            BOOL lastInFront = [ed.currentDocument.path isEqualToString:two];
+            NSUInteger before = ed.documents.count;
+            DropPaths(@[one, sub], ed.sci.content);
+            NppSettle(0.2);
+            BOOL mixedRefused = ed.documents.count == before && ![[ed workspaceRootPaths] containsObject:sub];
+            DropPaths(@[sub], ed.sci.content);
+            NppSettleUntil(^BOOL { return [[ed workspaceRootPaths] containsObject:sub]; }, 3);
+            BOOL folderAsWorkspace = [[ed workspaceRootPaths] containsObject:sub];
+            [ed openFolderAsWorkspace:nil];
+            for (NSString *path in @[one, two]) {
+                for (NSUInteger i = 0; i < ed.documents.count; ++i) {
+                    if ([ed.documents[i].path isEqualToString:path]) { [ed closeDocumentAtIndex:(NSInteger)i discardChanges:YES]; break; }
+                }
+            }
+            Check(@"File (dropped on the text)", @"files dropped on the text open, the last in front; a folder opens as a workspace; both together are refused",
+                  textTookIt && bothOpen && lastInFront && mixedRefused && folderAsWorkspace);
+        }
     }
 
     if (NppSectionWanted(@"Sessions")) { printf("\n== Sessions ==\n");

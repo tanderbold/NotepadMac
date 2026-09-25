@@ -304,7 +304,7 @@ static const char kMenuCommandKey = 0;
         case 1615:                                                                // IDCMARKALL
             [self markAll:spec purge:(flags & 4) != 0];
             if (flags & 16) {                                                     // "Bookmark line"
-                for (NSValue *match in [self rangesOfMatches:spec]) {
+                for (NSValue *match in [self rangesOfMatches:spec emptyMatches:NppEmptyMatchesNone]) {
                     long line = [self.sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)match.rangeValue.location];
                     [self.sci message:SCI_MARKERADD wParam:(uptr_t)line lParam:1];
                 }

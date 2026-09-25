@@ -99,6 +99,31 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
         Check(@"IDM_VIEW_TAB_MOVEBACKWARD", @"moves it back",
               [ed.documents indexOfObject:moving] == 0);
 
+        // Moving a tab is not a switch of tabs: the neighbour it passes keeps its own caret and
+        // bookmarks, the moved tab its caret (the exchange once made the neighbour "leave").
+        {
+            NppDocument *neighbour = ed.documents[1];
+            [ed selectDocumentAtIndex:1];
+            SetDoc(ed, @"n1\nn2\nn3\n");
+            [ed.sci message:SCI_GOTOPOS wParam:1 lParam:0];
+            [ed selectDocumentAtIndex:0];
+            SetDoc(ed, @"m1\nm2\nm3\nm4\n");
+            [ed.sci message:SCI_MARKERADD wParam:2 lParam:1];   // the bookmark marker
+            [ed.sci message:SCI_GOTOPOS wParam:7 lParam:0];
+            [ed moveCurrentTab:YES];
+            BOOL movedKeepsCaret = ed.currentDocument == moving && [ed.sci message:SCI_GETCURRENTPOS] == 7;
+            BOOL neighbourMarks = ![neighbour.bookmarkedLines containsObject:@2];
+            [ed moveCurrentTabToEnd:NO];
+            BOOL stillCaret = ed.currentDocument == moving && [ed.sci message:SCI_GETCURRENTPOS] == 7;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:neighbour]];
+            BOOL neighbourCaret = [ed.sci message:SCI_GETCURRENTPOS] == 1;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:moving]];
+            [ed.sci message:SCI_MARKERDELETEALL wParam:1 lParam:0];
+            Check(@"IDM_VIEW_TAB_MOVEFORWARD (not a switch)",
+                  @"Move Tab Forward and Move to Start leave the neighbour its caret and bookmarks and the moved tab its caret",
+                  movedKeepsCaret && neighbourMarks && stillCaret && neighbourCaret && [ed.documents indexOfObject:moving] == 0);
+        }
+
         [ed selectTabNumber:5];
         NppDocument *jumper = ed.currentDocument;
         [ed moveCurrentTabToEnd:NO];
@@ -612,6 +637,49 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
             Check(@"IDM_VIEW_CLONE_TO_ANOTHER_VIEW (own tabs)",
                   @"Clone shows the document in both views' tabs; each view keeps its own document in front",
                   cloned && ed.currentDocument == da && [ed documentInSecondaryView] == dc);
+
+            // Coming back to the application with the focus in the second view checks the files on
+            // disk and leaves both views as they were: the main view's tab, the second view's
+            // document (its own or a clone), the focus. A file changed on disk that only the second
+            // view has is reloaded there (prepareBufferChangedDialog brings it up in the view that has it).
+            {
+                NppPreferences *prefs = [NppPreferences shared];
+                BOOL detectWas = prefs.fileAutoDetection;
+                prefs.fileAutoDetection = YES;
+                BOOL (^asBefore)(NppDocument *) = ^BOOL(NppDocument *second) {
+                    return [ed mainCurrentDocument] == da && (void *)[ed.mainSci message:SCI_GETDOCPOINTER] == da.docPointer &&
+                           [ed documentInSecondaryView] == second && [ed otherViewHasFocus] && ed.currentDocument == second;
+                };
+                [ed showDocumentInSecondaryView:db];
+                [app.window makeFirstResponder:ed.secondarySci.content];
+                [ed checkFilesOnDisk];
+                BOOL ownKept = asBefore(db);
+                [ed showDocumentInSecondaryView:dc];
+                [app.window makeFirstResponder:ed.secondarySci.content];
+                [ed checkFilesOnDisk];
+                BOOL cloneKept = asBefore(dc);
+                [@"bbb changed\n" writeToFile:pb atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+                [[NSFileManager defaultManager] setAttributes:@{NSFileModificationDate: [NSDate dateWithTimeIntervalSinceNow:60]}
+                                                 ofItemAtPath:pb error:NULL];
+                ed.scriptedCloseAnswer = NSAlertFirstButtonReturn;       // Reload
+                [ed checkFilesOnDisk];
+                ed.scriptedCloseAnswer = 0;
+                BOOL reloadedThere = asBefore(dc) && !db.modified && [ed.mainViewDocuments isEqualToArray:(@[da, dc])];
+                [ed showDocumentInSecondaryView:db];
+                BOOL newText = [[ed.secondarySci string] isEqualToString:@"bbb changed\n"];
+                // Put back as the checks below expect it: the file as it was, the unsaved "!" on top.
+                [@"bbb\n" writeToFile:pb atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+                [ed.secondarySci setString:@"bbb\n"];
+                [ed.secondarySci message:SCI_SETSAVEPOINT];
+                [ed.secondarySci message:SCI_APPENDTEXT wParam:1 lParam:(sptr_t)"!"];
+                db.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:pb error:NULL] fileModificationDate];
+                [ed showDocumentInSecondaryView:dc];
+                prefs.fileAutoDetection = detectWas;
+                [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:da]];
+                Check(@"IDM_VIEW_SWITCHTO_OTHER_VIEW (activation keeps the views)",
+                      @"checking the files on disk with the focus in the second view keeps each view's document and the focus; a change to the second view's own file is reloaded there",
+                      ownKept && cloneKept && reloadedThere && newText);
+            }
 
             // Session: both views' tabs, as upstream's mainView and subView File entries.
             NSString *sess = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_views_session.xml"];

@@ -95,6 +95,8 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 @property (nonatomic, strong) NSSplitView *split;
 @property (nonatomic, strong) NSView *editorArea;
 @property (nonatomic, strong) ScintillaView *secondaryView;
+/// The paths of a drop on the text still arriving, one SCN_URIDROPPED each.
+@property (nonatomic, strong, nullable) NSMutableArray<NSString *> *pendingDrop;
 @property (nonatomic, strong) NSSplitView *editorSplit;
 @property (nonatomic, strong) NSView *secondaryHost;     // the second pane and, above it, Compare's bar
 @property (nonatomic, strong) id secondaryDelegate;
@@ -1268,8 +1270,28 @@ static BOOL gCheckingFilesOnDisk;
     // application, which asks again: not while a check is under way.
     if (gCheckingFilesOnDisk) return;
     gCheckingFilesOnDisk = YES;
-    NppDocument *was = self.currentDocument;
+    // What each view shows and which has the focus, put back only if a question or a reload
+    // had to bring another document up: most activations find nothing changed and touch nothing.
+    NppDocument *mainWas = [self mainCurrentDocument];
+    NppDocument *secondWas = self.secondaryScratch ? nil : self.secondaryDocument;
+    BOOL secondHadFocus = [self secondaryViewIsActive];
     NppDocument *previous = [self previousTab];
+    __block BOOL broughtUp = NO;
+    // prepareBufferChangedDialog: the changed document comes up in the focused view when that
+    // view has a tab of it, in the other view when not. Returns the view it is in (1 or 2).
+    NSInteger (^bringUp)(NppDocument *) = ^NSInteger(NppDocument *doc) {
+        broughtUp = YES;
+        NSUInteger index = [self.docs indexOfObjectIdenticalTo:doc];
+        BOOL inMain = index != NSNotFound && (NSInteger)index < [self mainTabCount];
+        BOOL inSecond = !self.secondaryScratch && [self.subDocs containsObject:doc];
+        if (inSecond && (!inMain || [self secondaryViewIsActive])) {
+            [self showDocumentInSecondaryView:doc];
+            [self.window makeFirstResponder:self.secondaryView.content];
+            return 2;
+        }
+        if (index != NSNotFound) [self selectDocumentAtIndex:(NSInteger)index];
+        return 1;
+    };
 
     for (NppDocument *doc in [self.docs copy]) {
         if (!doc.path || ![self.docs containsObject:doc]) continue;
@@ -1278,7 +1300,7 @@ static BOOL gCheckingFilesOnDisk;
         if (!onDisk) {
             if (!doc.fileModificationDate) continue;      // already known to be gone, and kept
             // Gone. Kept as a modified document, or closed, as the user says.
-            [self selectDocumentAtIndex:(NSInteger)[self.docs indexOfObject:doc]];
+            bringUp(doc);
             NSInteger answer = self.scriptedCloseAnswer;
             if (!answer && getenv("NPPMAC_TEST")) answer = NSAlertFirstButtonReturn;
             if (!answer) {
@@ -1305,7 +1327,7 @@ static BOOL gCheckingFilesOnDisk;
 
         // Changed by another program. Reloaded, unless the user has edits and
         // wants to keep them; asked first unless the setting says not to.
-        [self selectDocumentAtIndex:(NSInteger)[self.docs indexOfObject:doc]];
+        bringUp(doc);
         NSInteger answer = self.scriptedCloseAnswer;
         if (!answer && p.fileAutoDetectionSilent && !doc.modified) answer = NSAlertFirstButtonReturn;
         if (!answer && getenv("NPPMAC_TEST")) answer = NSAlertFirstButtonReturn;
@@ -1321,15 +1343,24 @@ static BOOL gCheckingFilesOnDisk;
             answer = [ask runModal];
         }
         if (answer == NSAlertFirstButtonReturn) {
-            [self reselectDocument:doc];                  // the alert may have moved the front
+            // The alert may have moved the front; reloaded in the view it is in.
+            NSInteger forced = self.forcedView;
+            self.forcedView = bringUp(doc);
             if ([self reloadCurrentDocument:NULL] && p.fileAutoDetectionScrollToEnd) {
-                [self.sciView message:SCI_DOCUMENTEND wParam:0 lParam:0];
+                [self.sci message:SCI_DOCUMENTEND wParam:0 lParam:0];
             }
+            self.forcedView = forced;
         }
         // Either way this version is the one known, so it is not asked about again.
         doc.fileModificationDate = onDisk;
     }
-    [self reselectDocument:was];
+    if (broughtUp) {
+        if (mainWas && [self mainCurrentDocument] != mainWas) [self reselectDocument:mainWas];
+        if (secondWas && self.secondaryDocument != secondWas && [self.subDocs containsObject:secondWas])
+            [self showDocumentInSecondaryView:secondWas];
+        BOOL toSecond = secondHadFocus && self.secondaryDocument && [self secondaryViewVisible];
+        [self.window makeFirstResponder:toSecond ? self.secondaryView.content : self.sciView.content];
+    }
     [self rememberPreviousTab:previous];
     gCheckingFilesOnDisk = NO;
 }
@@ -3899,6 +3930,25 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
                 dispatch_async(dispatch_get_main_queue(), ^{ [self openSearchResultAtCaret]; });
             }
             break;
+        case SCN_URIDROPPED: {
+            // Files dropped on the text: ScintillaWin::Drop hands a CF_HDROP to the main window as
+            // WM_DROPFILES, and Notepad_plus::dropFiles makes the view it landed on the current
+            // one, then opens them. Scintilla sends one notification per file, all within the drop,
+            // so they are gathered and handed on together once it is over.
+            NSString *path = n->text ? [NSString stringWithUTF8String:n->text] : nil;
+            if (!path.length) break;
+            if (self.pendingDrop) { [self.pendingDrop addObject:path]; break; }
+            self.pendingDrop = [NSMutableArray arrayWithObject:path];
+            ScintillaView *target = fromSecondary && self.secondaryDocument && !self.secondaryScratch
+                ? self.secondaryView : self.sciView;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSArray<NSString *> *paths = [self.pendingDrop copy];
+                self.pendingDrop = nil;
+                [self.window makeFirstResponder:target.content];
+                if (self.droppedPathsHandler) self.droppedPathsHandler(paths);
+            });
+            break;
+        }
         case SCN_MACRORECORD:
             [self recordMacroMessage:(int)n->message
                               wParam:(unsigned long)n->wParam

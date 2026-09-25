@@ -204,19 +204,25 @@
 #pragma mark - Matches
 
 - (NSArray<NSValue *> *)rangesOfMatches:(NppFindSpec *)spec {
+    return [self rangesOfMatches:spec emptyMatches:NppEmptyMatchesAll];
+}
+
+- (NSArray<NSValue *> *)rangesOfMatches:(NppFindSpec *)spec emptyMatches:(NppEmptyMatches)empty {
     NppRegex *regex = [self regexFor:spec];
     if (!regex) return @[];
     NSData *data = [self documentBytes];
     NSMutableArray *out = [NSMutableArray array];
-    [regex enumerateMatchesInData:data range:[self searchRangeFor:spec inData:data]
-                       usingBlock:^(NSRange m, BOOL *stop) {
-        [out addObject:[NSValue valueWithRange:m]];
+    [regex enumerateMatchesWithGroupsInData:data range:[self searchRangeFor:spec inData:data]
+                               emptyMatches:empty
+                                 usingBlock:^(NSArray<NSValue *> *groups, BOOL *stop) {
+        [out addObject:groups.firstObject];
     }];
     return out;
 }
 
+/// ProcessCountAll searches with SCFIND_REGEXP_EMPTYMATCH_NONE: '^' counts 0.
 - (NSUInteger)countMatches:(NppFindSpec *)spec {
-    return [self rangesOfMatches:spec].count;
+    return [self rangesOfMatches:spec emptyMatches:NppEmptyMatchesNone].count;
 }
 
 - (BOOL)findNext:(NppFindSpec *)spec {
@@ -255,7 +261,8 @@
 - (NSUInteger)markAll:(NppFindSpec *)spec { return [self markAll:spec purge:YES]; }
 
 - (NSUInteger)markAll:(NppFindSpec *)spec purge:(BOOL)purge {
-    NSArray<NSValue *> *matches = [self rangesOfMatches:spec];
+    // ProcessMarkAll, like Count, never takes an empty match.
+    NSArray<NSValue *> *matches = [self rangesOfMatches:spec emptyMatches:NppEmptyMatchesNone];
     ScintillaView *sci = self.sci;
     [sci message:SCI_SETINDICATORCURRENT wParam:NPPMAC_FIND_MARK_INDICATOR];
     // Without "Purge for each search" the marks of earlier searches stay.
@@ -328,7 +335,10 @@
     NSMutableArray<NSValue *> *ranges = [NSMutableArray array];
     NSMutableArray<NSString *> *texts = [NSMutableArray array];
     __block NSUInteger previousEnd = scope.location;
+    // ProcessReplaceAll: SCFIND_REGEXP_EMPTYMATCH_NOTAFTERMATCH, so "a*" in
+    // "baac" gives "-b-c-", not an empty match again after "aa".
     [regex enumerateMatchesWithGroupsInData:data range:scope
+                               emptyMatches:NppEmptyMatchesNotAfterMatch
                                  usingBlock:^(NSArray<NSValue *> *groups, BOOL *stop) {
         [ranges addObject:groups.firstObject];
         [texts addObject:[self replacementFor:spec groups:groups data:data regex:regex
@@ -559,6 +569,7 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
     NSMutableArray<NSString *> *texts = [NSMutableArray array];
     __block NSUInteger previousEnd = 0;
     [regex enumerateMatchesWithGroupsInData:data range:NSMakeRange(0, data.length)
+                               emptyMatches:NppEmptyMatchesNotAfterMatch
                                  usingBlock:^(NSArray<NSValue *> *groups, BOOL *stop) {
         if (search.cancelled) { *stop = YES; return; }
         [ranges addObject:groups.firstObject];
@@ -827,7 +838,7 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
 }
 
 - (NSString *)findAllReport:(NppFindSpec *)spec hits:(NSUInteger *)hits {
-    NSArray<NSValue *> *matches = [self rangesOfMatches:spec];
+    NSArray<NSValue *> *matches = [self rangesOfMatches:spec emptyMatches:NppEmptyMatchesNotAfterMatch];
     NSString *path = self.currentDocument.path ?: self.currentDocument.displayName;
     NSMutableString *report = [NSMutableString stringWithFormat:@"Search \"%@\" in %@\n\n", spec.what, path];
     [report appendString:[self reportLinesForMatches:matches]];
@@ -863,7 +874,7 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
     NSMutableString *body = [NSMutableString string];
     [self forEachOpenDocument:^(NppDocument *doc) {
         searched++;
-        NSArray<NSValue *> *matches = [self rangesOfMatches:whole];
+        NSArray<NSValue *> *matches = [self rangesOfMatches:whole emptyMatches:NppEmptyMatchesNotAfterMatch];
         if (!matches.count) return;
         total += matches.count;
         files++;
