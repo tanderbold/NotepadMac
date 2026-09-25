@@ -271,9 +271,19 @@
     if (!doc) return;
     if (!on) { [self stopMonitoringDocument:doc]; [self refreshChrome]; return; }
     if (doc.monitoring) return;
-    if (!doc.path.length || ![[NSFileManager defaultManager] fileExistsAtPath:doc.path] || doc.modified) { NppBeep(); return; }
+    if ([self monitoringRefusal]) { NppBeep(); return; }
     [self startMonitoringDocument:doc];
     [self refreshChrome];
+}
+
+/// IDM_VIEW_MONITORING's two refusals, in its order: the file must exist (DocNoExistToMonitor),
+/// then be saved (DocTooDirtyToMonitor).
+- (NSString *)monitoringRefusal {
+    NppDocument *doc = self.currentDocument;
+    if (!doc.path.length || ![[NSFileManager defaultManager] fileExistsAtPath:doc.path])
+        return @"The file should exist to be monitored.";
+    if (doc.modified) return @"The document is dirty. Please save the modification before monitoring it.";
+    return nil;
 }
 
 - (void)startMonitoringDocument:(NppDocument *)doc {

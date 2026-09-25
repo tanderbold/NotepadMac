@@ -61,6 +61,8 @@ typedef NS_ENUM(NSInteger, NppWindowMode) {
 /// Loads what a monitored document missed while it was not in front.
 - (void)catchUpMonitoredDocument;
 - (void)setMonitoring:(BOOL)on;
+/// Why the current document cannot be monitored (upstream's message, in English), or nil.
+- (nullable NSString *)monitoringRefusal;
 
 @end
 

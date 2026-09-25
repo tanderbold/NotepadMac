@@ -3801,6 +3801,18 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 }
 
 - (void)toggleMonitoring:(id)sender {
+    // Refused as upstream refuses it, with its "Monitoring problem" box rather than a bare beep:
+    // an unsaved tab or unsaved changes otherwise look like a button that does nothing.
+    NSString *why = [self.editor monitoringEnabled] ? nil : [self.editor monitoringRefusal];
+    if (why) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"Monitoring problem";
+        alert.informativeText = why;
+        alert.alertStyle = NSAlertStyleWarning;
+        [alert addButtonWithTitle:@"OK"];
+        if (!getenv("NPPMAC_TEST")) [alert runModal];
+        return;
+    }
     [self.editor setMonitoring:![self.editor monitoringEnabled]];
 }
 
