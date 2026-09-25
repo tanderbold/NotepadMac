@@ -337,6 +337,124 @@ void NppTestsGit(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         Check(@"Git (outside a repository)", @"stage, blame, history, compare, commit and checkout all decline with the reason; the panel and the commit window say it too",
               declined && panelSaysSo && windowSaysSo);
 
+        // A repository from elsewhere - an archive, a clone of someone's - is in the user's own name,
+        // so git lets its .git/config name programs: the fsmonitor hook, a filter, a textconv, and
+        // .git/hooks. Opening a file of it makes the editor ask git about it by itself (the branch,
+        // the margin, the panel), and Blame and History only read: none of those may run them.
+        NSString *hostile = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_git_hostile"];
+        NSString *ran = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_git_hostile_ran"];
+        [fm removeItemAtPath:hostile error:NULL];
+        [fm removeItemAtPath:ran error:NULL];
+        [fm createDirectoryAtPath:hostile withIntermediateDirectories:YES attributes:nil error:NULL];
+        [fm createDirectoryAtPath:ran withIntermediateDirectories:YES attributes:nil error:NULL];
+        BOOL (^inHostile)(NSString *, NSArray<NSString *> *) = ^BOOL(NSString *where, NSArray<NSString *> *args) {
+            NSArray *identity = @[@"-c", @"user.email=suite@example.invalid", @"-c", @"user.name=Suite Runner", @"-c", @"commit.gpgsign=false"];
+            return [NppGit run:[identity arrayByAddingObjectsFromArray:args] in:where output:NULL error:NULL];
+        };
+        NSString *nested = [hostile stringByAppendingPathComponent:@"nested"];
+        [fm createDirectoryAtPath:nested withIntermediateDirectories:YES attributes:nil error:NULL];
+        NSString *hostileFile = [hostile stringByAppendingPathComponent:@"a.txt"];
+        [@"one\n" writeToFile:hostileFile atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [@"*.txt filter=evil diff=evil\n" writeToFile:[hostile stringByAppendingPathComponent:@".gitattributes"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [@"n\n" writeToFile:[nested stringByAppendingPathComponent:@"n.txt"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [@"*.txt filter=inner\n" writeToFile:[nested stringByAppendingPathComponent:@".gitattributes"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        BOOL hostileMade = inHostile(nested, @[@"init", @"-q"]) && inHostile(nested, @[@"add", @"-A"]) && inHostile(nested, @[@"commit", @"-q", @"-m", @"inner"]) &&
+                           inHostile(hostile, @[@"init", @"-q"]) && inHostile(hostile, @[@"add", @"-A"]) && inHostile(hostile, @[@"commit", @"-q", @"-m", @"outer"]);
+        NSString *(^touch)(NSString *) = ^NSString *(NSString *name) {
+            return [NSString stringWithFormat:@"touch '%@'; cat", [ran stringByAppendingPathComponent:name]];
+        };
+        hostileMade = hostileMade &&
+            inHostile(hostile, @[@"config", @"core.fsmonitor", [NSString stringWithFormat:@"touch '%@'; false", [ran stringByAppendingPathComponent:@"fsmonitor"]]]) &&
+            inHostile(hostile, @[@"config", @"filter.evil.clean", touch(@"clean")]) && inHostile(hostile, @[@"config", @"filter.evil.required", @"true"]) &&
+            inHostile(hostile, @[@"config", @"diff.evil.textconv", touch(@"textconv")]) &&
+            inHostile(nested, @[@"config", @"filter.inner.clean", touch(@"nested-clean")]);
+        NSString *hook = [hostile stringByAppendingPathComponent:@".git/hooks/post-index-change"];
+        [[NSString stringWithFormat:@"#!/bin/sh\ntouch '%@'\n", [ran stringByAppendingPathComponent:@"hook"]] writeToFile:hook atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [fm setAttributes:@{NSFilePosixPermissions: @0755} ofItemAtPath:hook error:NULL];
+        // Changed, and the same size, so that status has to read them to know.
+        NSDate *past = [NSDate dateWithTimeIntervalSinceNow:-120];
+        [fm setAttributes:@{NSFileModificationDate: past} ofItemAtPath:hostileFile error:NULL];
+        [NppGit run:@[@"update-index", @"--refresh"] in:hostile output:NULL error:NULL];
+        [fm removeItemAtPath:ran error:NULL];
+        [fm createDirectoryAtPath:ran withIntermediateDirectories:YES attributes:nil error:NULL];
+        [@"two\n" writeToFile:hostileFile atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [@"m\n" writeToFile:[nested stringByAppendingPathComponent:@"n.txt"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        [NppGit forgetRepositoryRoots];
+        [ed openFileAtPath:hostileFile error:NULL];
+        [ed gitRefreshState];
+        [panel reload];
+        BOOL listed = NO;
+        for (NppGitFileStatus *row in panel.rows) if ([row.path isEqualToString:@"a.txt"] && row.unstaged) listed = YES;
+        NSInteger hostileTabs = (NSInteger)ed.documents.count;
+        BOOL blamedHostile = [ed gitBlame];
+        while ((NSInteger)ed.documents.count > hostileTabs) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        [ed openFileAtPath:hostileFile error:NULL];
+        BOOL historyHostile = [ed gitFileHistory];
+        while ((NSInteger)ed.documents.count > hostileTabs) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+        [ed openFileAtPath:hostileFile error:NULL];
+        NSArray *whatRan = [fm contentsOfDirectoryAtPath:ran error:NULL] ?: @[];
+        if (whatRan.count) printf("       ran: %s\n", [[whatRan componentsJoinedByString:@", "] UTF8String]);
+        Check(@"Git (a repository from elsewhere)", @"the status bar, the margin, the panel, Blame and History run none of the programs the repository's config names "
+              @"(fsmonitor, a filter, a textconv, a hook, a nested repository's filter) and still show the file as changed",
+              hostileMade && whatRan.count == 0 && listed && blamedHostile && historyHostile && [[ed gitStatusBarText] hasPrefix:@"⎇ "]);
+        [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+        [NppGit forgetRepositoryRoots];
+        [fm removeItemAtPath:hostile error:NULL];
+        [fm removeItemAtPath:ran error:NULL];
+
+        // A file opened under another spelling of its path than the disk's - another case (the file
+        // system does not mind), the other Unicode form of an accented name (git precomposes) - is
+        // still the repository's file: stage, unstage, blame, history and discard work on it.
+        NSString *spelt = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_git_Spelt"];
+        [fm removeItemAtPath:spelt error:NULL];
+        NSString *accented = [[spelt stringByAppendingPathComponent:@"Sub"] stringByAppendingPathComponent:@"Caf\u00e9.txt"];
+        [fm createDirectoryAtPath:accented.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:NULL];
+        [@"first\n" writeToFile:accented atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        NSString *gone = [[spelt stringByAppendingPathComponent:@"Sub"] stringByAppendingPathComponent:@"gone.txt"];
+        [@"gone\n" writeToFile:gone atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        BOOL speltMade = inHostile(spelt, @[@"init", @"-q"]) && inHostile(spelt, @[@"add", @"-A"]) && inHostile(spelt, @[@"commit", @"-q", @"-m", @"first"]);
+        [@"second\n" writeToFile:accented atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        NSString *otherSpelling = [[[NSTemporaryDirectory() stringByAppendingPathComponent:@"T_GIT_SPELT"] stringByAppendingPathComponent:@"sub"]
+                                   stringByAppendingPathComponent:@"CAFE\u0301.TXT"];                                   // decomposed, and in capitals
+        BOOL openedSpelt = [ed openFileAtPath:otherSpelling error:NULL] && [ed.currentDocument.path isEqualToString:otherSpelling];
+        NSString *speltRelative = [ed gitRelativePathOfDocument:ed.currentDocument];
+        NSString *(^speltStatus)(void) = ^NSString *{
+            NSString *out = nil; [NppGit run:@[@"status", @"--porcelain"] in:spelt output:&out error:NULL];
+            return [out stringByTrimmingCharactersInSet:NSCharacterSet.newlineCharacterSet] ?: @"";   // " M" keeps its space
+        };
+        BOOL speltStaged = NO, speltUnstaged = NO, speltBlamed = NO, speltLogged = NO, speltDiscarded = NO, speltGoneStaged = NO;
+        NSString *crash = nil;
+        @try {
+            speltStaged = [ed gitStageCurrent] && [speltStatus() hasPrefix:@"M "];
+            speltUnstaged = [ed gitUnstageCurrent] && [speltStatus() hasPrefix:@" M"];
+            NSInteger speltTabs = (NSInteger)ed.documents.count;
+            NppDocument *speltDoc = ed.currentDocument;
+            speltBlamed = [ed gitBlame] && [ed documentText].length > 0;
+            while ((NSInteger)ed.documents.count > speltTabs) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:speltDoc]];
+            speltLogged = [ed gitFileHistory] && [[ed documentText] containsString:@"first"];
+            while ((NSInteger)ed.documents.count > speltTabs) [ed closeDocumentAtIndex:(NSInteger)ed.documents.count - 1 discardChanges:YES];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:speltDoc]];
+            speltDiscarded = [ed gitDiscardCurrent] && speltStatus().length == 0 && [[ed documentText] isEqualToString:@"first\n"];
+            // Deleted from disk meanwhile, the tab kept: a path that is not the disk's spelling can no longer
+            // be put right from the file, only from its folder; it is still the repository's, and staging
+            // stages the deletion.
+            NSString *goneOtherwise = [[[NSTemporaryDirectory() stringByAppendingPathComponent:@"T_GIT_SPELT"] stringByAppendingPathComponent:@"sub"]
+                                       stringByAppendingPathComponent:@"gone.txt"];           // its folders in other capitals
+            [ed openFileAtPath:goneOtherwise error:NULL];
+            [fm removeItemAtPath:gone error:NULL];
+            speltGoneStaged = [ed gitStageCurrent] && [speltStatus() hasPrefix:@"D  Sub/gone.txt"];
+        } @catch (NSException *e) { crash = e.reason ?: e.name; }
+        if (crash) printf("       raised: %s\n", crash.UTF8String);
+        Check(@"Git (the path spelt otherwise)", @"a file opened in other capitals and the decomposed form of its accented name has its path in the repository "
+              @"as the disk spells it, and stage, unstage, blame, history and discard all work on it; a file deleted under its tab is staged as deleted",
+              speltMade && openedSpelt && [speltRelative.precomposedStringWithCanonicalMapping isEqualToString:@"Sub/Caf\u00e9.txt"] && !crash &&
+              speltStaged && speltUnstaged && speltBlamed && speltLogged && speltDiscarded && speltGoneStaged);
+        for (NppDocument *d in [ed.documents copy])
+            if ([d.path isEqualToString:otherSpelling] || [d.path.lastPathComponent isEqualToString:@"gone.txt"]) [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:d] discardChanges:YES];
+        [NppGit forgetRepositoryRoots];
+        [fm removeItemAtPath:spelt error:NULL];
+
         // The menu: Plugins > Git with its commands; then every interface language that translates the
         // Git texts: the menu item and the window are translated, and nothing in the window or the
         // panel's buttons is cut off - long German, Finnish and Hungarian words, Arabic, CJK alike.
