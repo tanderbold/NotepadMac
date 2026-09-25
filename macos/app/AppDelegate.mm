@@ -23,6 +23,7 @@
 #import "BehaviourCommands.h"
 #import "TypingCommands.h"
 #include "CommandIDs.h"
+#import "Accessibility.h"
 #import "Localization.h"
 #include "LangMap.h"
 #import "JsonCommands.h"
@@ -2548,7 +2549,16 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     alert.informativeText = text.length ? text : @"(nothing)";
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Copy"];
-    if ([alert runModal] == NSAlertSecondButtonReturn) [self.editor copyToClipboard:text];
+    // Escape leaves it as OK does, as it leaves upstream's message boxes and the Windows dialog
+    // (IDCANCEL); an alert gives Escape only to a button called Cancel, and this one has none.
+    id escape = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskKeyDown handler:^NSEvent *(NSEvent *e) {
+        if (e.keyCode != 53 || e.window != alert.window) return e;
+        [alert.buttons.firstObject performClick:nil];
+        return nil;
+    }];
+    NSModalResponse answer = [alert runModal];
+    [NSEvent removeMonitor:escape];
+    if (answer == NSAlertSecondButtonReturn) [self.editor copyToClipboard:text];
 }
 
 - (void)hashGenerate:(NSMenuItem *)sender {
@@ -2885,6 +2895,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     NSPopUpButton *choice = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(16, 340, 488, 26)];
     choice.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
     [choice addItemWithTitle:@"<temporary script>"];
+    choice.accessibilityLabel = NppL(@"Script name");   // what the pop-up picks; nothing stands by it
     NSArray<NppSavedScript *> *saved = [self.editor savedScripts];
     for (NppSavedScript *s in saved) [choice.menu addItemWithTitle:s.name action:nil keyEquivalent:@""];
     [v addSubview:choice];
@@ -4343,6 +4354,8 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
 - (void)windowBecameKey:(NSNotification *)note {
     NppLocalization *l = [NppLocalization shared];
     if (l.active) [l localizeWindow:note.object];
+    // In the language it is now shown in: symbol buttons named by their tooltips, fields by their labels.
+    NppAXPrepareWindow(note.object);
 }
 
 /// Menus rebuilt since (macros, recent files, languages) are translated as they open.
@@ -4623,6 +4636,9 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
                                                  target:self action:@selector(findTransparencyChanged:)];
     self.transparencySlider.frame = NSMakeRect(556, 4, 128, 22);
     [content addSubview:self.transparencySlider];
+    // Upstream's trackbar sits in the group the Transparency check box titles (IDC_TRANSPARENT_GRPBOX):
+    // that box is what names it.
+    self.transparencySlider.accessibilityTitleUIElement = self.transparencyBox;
 
     // The options as they were left.
     self.matchCaseBox.state = prefs.findMatchCase ? NSControlStateValueOn : NSControlStateValueOff;

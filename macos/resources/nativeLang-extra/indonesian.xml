@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="Permintaan HTTP"/>
     <Item english="Send" text="Kirim"/>
+    <Item english="Method" text="Metode"/>
     <Item english="Parameters" text="Parameter"/>
     <Item english="Headers" text="Header"/>
     <Item english="Body" text="Isi"/>

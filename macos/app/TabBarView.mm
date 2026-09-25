@@ -1,4 +1,6 @@
 #import "TabBarView.h"
+#import "Accessibility.h"
+#import "Localization.h"
 
 @implementation NppTabItem
 @end
@@ -14,6 +16,8 @@ static const CGFloat kPadding = 8;
 @property (nonatomic) NSInteger hoverIndex;
 @property (nonatomic) NSInteger dragIndex;
 @property (nonatomic) BOOL dragging;
+/// One element per tab, kept while the tab is there so that VoiceOver keeps its place.
+@property (nonatomic, strong) NSMutableArray<NppAXElement *> *axTabs;
 @end
 
 @implementation NppTabBarView
@@ -38,11 +42,14 @@ static const CGFloat kPadding = 8;
     _items = [items copy];
     [self layoutTabs];
     [self setNeedsDisplay:YES];
+    NSAccessibilityPostNotification(self, NSAccessibilityLayoutChangedNotification);
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex {
+    BOOL changed = selectedIndex != _selectedIndex;
     _selectedIndex = selectedIndex;
     [self setNeedsDisplay:YES];
+    if (changed) NSAccessibilityPostNotification(self, NSAccessibilityValueChangedNotification);
 }
 
 - (void)setVertical:(BOOL)vertical   { _vertical = vertical; [self layoutTabs]; [self setNeedsDisplay:YES]; }
@@ -290,6 +297,74 @@ static NSColor *TabColour(NSInteger colour) {
 - (void)mouseUp:(NSEvent *)event {
     self.dragIndex = -1;
     self.dragging = NO;
+}
+
+#pragma mark - Accessibility
+
+// TabBarPlus is a Win32 tab control, which tells UI Automation about each of its tabs; the
+// bar says the same to VoiceOver: a tab group of tab buttons, the one in front selected, each
+// with its close button when the bar draws them (a pointer shows it on hover; VoiceOver has none).
+
+- (BOOL)isAccessibilityElement { return YES; }
+- (NSAccessibilityRole)accessibilityRole { return NSAccessibilityTabGroupRole; }
+- (NSString *)accessibilityLabel { return NppL(@"Tab Bar"); }
+- (NSArray *)accessibilityChildren { return [self accessibilityTabElements]; }
+- (NSArray *)accessibilityTabs { return [self accessibilityTabElements]; }
+- (id)accessibilityValue {
+    NSArray *tabs = [self accessibilityTabElements];
+    return self.selectedIndex >= 0 && self.selectedIndex < (NSInteger)tabs.count ? tabs[(NSUInteger)self.selectedIndex] : nil;
+}
+
+- (NSArray<NppAXElement *> *)accessibilityTabElements {
+    if (!self.axTabs) self.axTabs = [NSMutableArray array];
+    while (self.axTabs.count > self.items.count) [self.axTabs removeLastObject];
+    while (self.axTabs.count < self.items.count) {
+        NppAXElement *tab = [NppAXElement elementInView:self role:NSAccessibilityRadioButtonRole label:@""];
+        tab.accessibilitySubrole = NSAccessibilityTabButtonSubrole;
+        [self.axTabs addObject:tab];
+    }
+    __weak NppTabBarView *weakSelf = self;
+    for (NSUInteger i = 0; i < self.axTabs.count; ++i) {
+        NppAXElement *tab = self.axTabs[i];
+        NppTabItem *item = self.items[i];
+        NSInteger index = (NSInteger)i;
+        tab.rectInView = [self frameOfTabAtIndex:index];
+        // The whole name, not the shortened label; a modified document marked as upstream's
+        // title bar marks it (Notepad_plus::setTitle puts "*" before the name).
+        tab.accessibilityLabel = [(item.modified ? @"*" : @"") stringByAppendingString:item.title ?: @""];
+        tab.accessibilityValue = @(index == self.selectedIndex);
+        tab.accessibilitySelected = index == self.selectedIndex;
+        tab.pressHandler = ^{
+            NppTabBarView *bar = weakSelf;
+            if (bar && index < (NSInteger)bar.items.count) [bar.tabDelegate tabBar:bar didSelectIndex:index];
+        };
+        // The tab's right-click menu (Close, Pin, the Close Multiple Tabs family...), which
+        // is always there for the keyboard even when the bar draws no close buttons.
+        tab.showMenuHandler = ^{
+            NppTabBarView *bar = weakSelf;
+            if (!bar || index >= (NSInteger)bar.items.count || ![bar.tabDelegate respondsToSelector:@selector(tabBar:menuForIndex:)]) return;
+            NSMenu *menu = [bar.tabDelegate tabBar:bar menuForIndex:index];
+            NSRect r = [bar frameOfTabAtIndex:index];
+            [menu popUpMenuPositioningItem:nil atLocation:NSMakePoint(NSMinX(r), NSMaxY(r)) inView:bar];
+        };
+        if (self.showCloseButtons) {
+            NppAXElement *close = tab.accessibilityChildren.firstObject;
+            if (![close isKindOfClass:[NppAXElement class]]) {
+                close = [NppAXElement elementInView:self role:NSAccessibilityButtonRole label:@""];
+                close.accessibilityParent = tab;
+                tab.accessibilityChildren = @[close];
+            }
+            close.accessibilityLabel = NppL(@"Close");
+            close.rectInView = [self closeButtonRectForIndex:index];
+            close.pressHandler = ^{
+                NppTabBarView *bar = weakSelf;
+                if (bar && index < (NSInteger)bar.items.count) [bar.tabDelegate tabBar:bar didRequestCloseIndex:index];
+            };
+        } else {
+            tab.accessibilityChildren = @[];
+        }
+    }
+    return self.axTabs;
 }
 
 @end

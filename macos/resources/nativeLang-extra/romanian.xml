@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="Cerere HTTP"/>
     <Item english="Send" text="Trimite"/>
+    <Item english="Method" text="Metodă"/>
     <Item english="Parameters" text="Parametri"/>
     <Item english="Headers" text="Antete"/>
     <Item english="Body" text="Corp"/>

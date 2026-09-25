@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP 請求"/>
     <Item english="Send" text="傳送"/>
+    <Item english="Method" text="方法"/>
     <Item english="Parameters" text="參數"/>
     <Item english="Headers" text="標頭"/>
     <Item english="Body" text="本文"/>

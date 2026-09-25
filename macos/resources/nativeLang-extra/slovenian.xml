@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="Zahteva HTTP"/>
     <Item english="Send" text="Pošlji"/>
+    <Item english="Method" text="Metoda"/>
     <Item english="Parameters" text="Parametri"/>
     <Item english="Headers" text="Glave"/>
     <Item english="Body" text="Telo"/>

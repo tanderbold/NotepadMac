@@ -264,6 +264,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP-запыт"/>
     <Item english="Send" text="Адправіць"/>
+    <Item english="Method" text="Метад"/>
     <Item english="Parameters" text="Параметры"/>
     <Item english="Headers" text="Загалоўкі"/>
     <Item english="Body" text="Цела"/>

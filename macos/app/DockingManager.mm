@@ -1,6 +1,7 @@
 #import "DockingManager.h"
 #import "SettingsCommands.h"
 #import "Localization.h"
+#import "Accessibility.h"
 
 NSNotificationName const NppDockPanelVisibilityDidChangeNotification = @"NppDockPanelVisibilityDidChange";
 
@@ -58,6 +59,9 @@ static const CGFloat kHeader = 22;
 @property (nonatomic, copy, nullable) NSString *dragging;
 @property (nonatomic) NSPoint dragStart;
 @property (nonatomic) BOOL dragMoved;
+/// The strip's tabs and close button as VoiceOver is told of them.
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NppAXElement *> *axTabs;
+@property (nonatomic, strong) NppAXElement *axClose;
 @end
 
 @implementation NppDockContainerView
@@ -163,6 +167,52 @@ static const CGFloat kHeader = 22;
 - (NSMenu *)menuForEvent:(NSEvent *)event {
     NSString *hit = [self panelAtPoint:[self convertPoint:event.locationInWindow fromView:nil]] ?: self.front;
     return hit ? [self.manager menuForPanel:hit] : nil;
+}
+
+#pragma mark Accessibility
+
+// Upstream's DockingCont is a caption and a Win32 tab control, both read by UI Automation;
+// here the strip is drawn, so it says what it has: a group named after the panel in front,
+// its tabs (the front one selected), the close button, then the panel itself.
+
+- (BOOL)isAccessibilityElement { return YES; }
+- (NSAccessibilityRole)accessibilityRole { return NSAccessibilityGroupRole; }
+- (NSString *)accessibilityLabel { return self.front ? [self.manager titleOf:self.front] : nil; }
+
+- (NSArray *)accessibilityChildren {
+    if (!self.axTabs) self.axTabs = [NSMutableDictionary dictionary];
+    NSMutableArray *out = [NSMutableArray array];
+    NSArray *rects = [self tabRects];
+    __weak NppDockContainerView *weakSelf = self;
+    for (NSUInteger i = 0; i < self.panels.count; ++i) {
+        NSString *panel = self.panels[i];
+        NppAXElement *tab = self.axTabs[panel];
+        if (!tab) {
+            tab = [NppAXElement elementInView:self role:NSAccessibilityRadioButtonRole label:@""];
+            tab.accessibilitySubrole = NSAccessibilityTabButtonSubrole;
+            tab.pressHandler = ^{ [weakSelf.manager containerClickedPanel:panel]; };
+            self.axTabs[panel] = tab;
+        }
+        tab.accessibilityLabel = [self.manager titleOf:panel];
+        tab.rectInView = [rects[i] rectValue];
+        BOOL front = [panel isEqualToString:self.front];
+        tab.accessibilityValue = @(front);
+        tab.accessibilitySelected = front;
+        [out addObject:tab];
+    }
+    [self.axTabs removeObjectsForKeys:[self.axTabs.allKeys filteredArrayUsingPredicate:
+        [NSPredicate predicateWithBlock:^BOOL(NSString *p, NSDictionary *b) { return ![weakSelf.panels containsObject:p]; }]]];
+    if (self.front) {
+        if (!self.axClose) {
+            self.axClose = [NppAXElement elementInView:self role:NSAccessibilityButtonRole label:@""];
+            self.axClose.pressHandler = ^{ NppDockContainerView *me = weakSelf; if (me.front) [me.manager hidePanel:me.front]; };
+        }
+        self.axClose.accessibilityLabel = NppL(@"Close");
+        self.axClose.rectInView = [self closeRect];
+        [out addObject:self.axClose];
+    }
+    [out addObjectsFromArray:NSAccessibilityUnignoredChildren(super.accessibilityChildren ?: @[])];
+    return out;
 }
 
 @end
@@ -275,6 +325,8 @@ static const CGFloat kHeader = 22;
     // to English too, when that is the language).
     if (r.view) [[NppLocalization shared] localizeView:r.view];
     [self arrange];
+    // Laid out in its window now: its fields can be named by the labels beside them.
+    if (r.view) { [r.view layoutSubtreeIfNeeded]; NppAXLabelSymbolButtons(r.view); NppAXLinkLabels(r.view); }
     if (!was) [[NSNotificationCenter defaultCenter] postNotificationName:NppDockPanelVisibilityDidChangeNotification object:identifier];
 }
 

@@ -2,6 +2,7 @@
 //
 // Called from NppMacRunTests (Tests.mm), which runs the areas in the suite's
 // order; the helpers they share are in TestSupport.h.
+#import "Accessibility.h"
 #import "TestSupport.h"
 
 /// == View ==; == View: tabs ==; == View: fold levels ==; == View: symbols, lines, direction ==; == View: window modes and panels ==; == View: split panes and panels ==
@@ -2041,6 +2042,156 @@ void NppTestsTabBar(AppDelegate *app, EditorController *ed, ScintillaView *sci) 
         Check(@"IDM_SETTING_PREFERENCE (tab bar lock)",
               @"locking is passed to the bar", locked && !bar.locked);
     }
+}
+
+/// == Accessibility ==
+void NppTestsAccessibility(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
+    if (!NppSectionWanted(@"Accessibility")) return;
+    printf("\n== Accessibility ==\n");
+    NSError *err = nil;
+    [ed closeAllDocuments];
+    [ed openFileAtPath:TempFile(@"ax1.txt", @"one\n") error:&err];
+    [ed openFileAtPath:TempFile(@"ax2.txt", @"two\n") error:&err];
+    NppTabBarView *bar = [ed valueForKey:@"tabBar"];
+    [bar setFrameSize:NSMakeSize(600, 26)];
+    [ed refreshChrome];
+
+    // The tab bar: a tab group of tabs named after their documents, the one in front selected.
+    NSArray *tabs = bar.accessibilityChildren;
+    NSInteger first = [[bar.items valueForKey:@"title"] indexOfObject:@"ax1.txt"];
+    NSInteger second = [[bar.items valueForKey:@"title"] indexOfObject:@"ax2.txt"];
+    BOOL named = tabs.count == bar.items.count && first != NSNotFound && second != NSNotFound;
+    for (NSUInteger i = 0; named && i < tabs.count; ++i) {
+        NSAccessibilityElement *t = tabs[i];
+        named = [t.accessibilityRole isEqual:NSAccessibilityRadioButtonRole] &&
+                [t.accessibilitySubrole isEqual:NSAccessibilityTabButtonSubrole] &&
+                [t.accessibilityLabel isEqual:bar.items[i].title] &&
+                [t.accessibilityValue boolValue] == ((NSInteger)i == bar.selectedIndex) &&
+                !NSIsEmptyRect(t.accessibilityFrame) == (bar.window != nil);
+    }
+    Check(@"Accessibility (tab bar)", @"the bar is a tab group of tabs named after their documents, the front one selected",
+          [bar.accessibilityRole isEqual:NSAccessibilityTabGroupRole] && bar.isAccessibilityElement && named);
+    if (named) {
+        [(NSAccessibilityElement *)bar.accessibilityChildren[(NSUInteger)first] accessibilityPerformPress];
+        BOOL pressed = [ed.currentDocument.displayName isEqual:@"ax1.txt"] &&
+                       [[bar.accessibilityChildren[(NSUInteger)first] accessibilityValue] boolValue];
+        Check(@"Accessibility (tab press)", @"pressing a tab brings its document to the front", pressed);
+        [ed.sci message:SCI_APPENDTEXT wParam:1 lParam:(sptr_t)"x"];
+        [ed refreshChrome];
+        Check(@"Accessibility (tab modified)", @"a modified document's tab is named with the \"*\" upstream's title bar puts first",
+              [[bar.accessibilityChildren[(NSUInteger)first] accessibilityLabel] isEqual:@"*ax1.txt"] &&
+              [[bar.accessibilityChildren[(NSUInteger)second] accessibilityLabel] isEqual:@"ax2.txt"]);
+        [ed.sci message:SCI_UNDO];
+        [ed refreshChrome];
+        NppPreferences *p = [NppPreferences shared];
+        BOOL closeBefore = p.tabShowCloseButton;
+        p.tabShowCloseButton = NO;
+        [ed applyTabBarPreferences];
+        NSUInteger bareChildren = [[bar.accessibilityChildren[(NSUInteger)second] accessibilityChildren] count];
+        BOOL menuAlways = [bar.accessibilityChildren[(NSUInteger)second] isAccessibilitySelectorAllowed:@selector(accessibilityPerformShowMenu)];
+        p.tabShowCloseButton = YES;
+        [ed applyTabBarPreferences];
+        NSArray *closeButtons = [bar.accessibilityChildren[(NSUInteger)second] accessibilityChildren];
+        NSAccessibilityElement *close = closeButtons.firstObject;
+        NSUInteger before = ed.documents.count;
+        BOOL closeNamed = bar.showCloseButtons && closeButtons.count == 1 &&
+                          [close.accessibilityRole isEqual:NSAccessibilityButtonRole] && [close.accessibilityLabel isEqual:NppL(@"Close")];
+        [close accessibilityPerformPress];
+        p.tabShowCloseButton = closeBefore;
+        [ed applyTabBarPreferences];
+        Check(@"Accessibility (tab close button)", @"with close buttons shown each tab has one, named, and pressing it closes that tab",
+              closeNamed && ed.documents.count == before - 1 && ![[bar.items valueForKey:@"title"] containsObject:@"ax2.txt"]);
+        Check(@"Accessibility (tab menu)", @"without close buttons a tab has none, and its right-click menu is there for VoiceOver either way",
+              bareChildren == 0 && menuAlways);
+    }
+
+    // The editors: named after the document they show, described in the system's words.
+    Check(@"Accessibility (editor)", @"the editor is a text area named after its document, with the text and the selection",
+          [ed.sci.content.accessibilityRole isEqual:NSAccessibilityTextAreaRole] &&
+          [ed.sci.content.accessibilityLabel isEqual:@"ax1.txt"] &&
+          [ed.sci.content.accessibilityRoleDescription isEqual:NSAccessibilityRoleDescription(NSAccessibilityTextAreaRole, nil)] &&
+          [ed.sci.content.accessibilityValue isEqual:@"one\n"] && ed.sci.content.isAccessibilityElement);
+
+    // A dock: a group named after the panel in front, its tabs, its close button, then the panel.
+    NppDockingManager *dock = [NppDockingManager shared];
+    // Shown and in front of its dock, whatever an earlier section left beside it.
+    [dock showPanel:@"documentList"];
+    NSView *container = nil;
+    for (NSView *v in [[dock valueForKey:@"containers"] allValues]) if ([[v valueForKey:@"panels"] containsObject:@"documentList"]) container = v;
+    NSArray *dockChildren = container.accessibilityChildren;
+    NSAccessibilityElement *dockTab = nil;
+    for (id c in dockChildren)
+        if ([c isKindOfClass:[NSAccessibilityElement class]] && [[c accessibilityLabel] isEqual:[dock titleOf:@"documentList"]]) dockTab = c;
+    BOOL dockNamed = [container.accessibilityRole isEqual:NSAccessibilityGroupRole] &&
+                     [container.accessibilityLabel isEqual:[dock titleOf:@"documentList"]] &&
+                     [dockTab.accessibilitySubrole isEqual:NSAccessibilityTabButtonSubrole] &&
+                     [dockTab.accessibilityLabel isEqual:[dock titleOf:@"documentList"]];
+    NSAccessibilityElement *dockClose = nil;
+    for (id c in dockChildren) if ([c isKindOfClass:[NSAccessibilityElement class]] && [[c accessibilityRole] isEqual:NSAccessibilityButtonRole]) dockClose = c;
+    BOOL panelInside = NO;
+    for (id c in dockChildren) if ([c isKindOfClass:[NSView class]] || ![c isKindOfClass:[NSAccessibilityElement class]]) panelInside = YES;
+    [dockClose accessibilityPerformPress];
+    Check(@"Accessibility (dock)", @"a dock is a group named after its panel, with the panel's tab, a close button that hides it, and the panel",
+          container && dockNamed && [dockClose.accessibilityLabel isEqual:NppL(@"Close")] && panelInside &&
+          ![dock isPanelVisible:@"documentList"]);
+    if (!dockNamed || !dockClose) printf("    (dock: container %s, label %s, tab %s, close %s)\n", container ? "yes" : "no",
+                                       [[container accessibilityLabel] UTF8String] ?: "-", [[dockTab accessibilityLabel] UTF8String] ?: "-",
+                                       dockClose ? "yes" : "no");
+
+    // The Document Map: a slider over the document; its tiny copy of the text is not read out.
+    NSMutableString *lines = [NSMutableString string];
+    for (int i = 0; i < 400; ++i) [lines appendFormat:@"line %d\n", i];
+    [ed.sci setString:lines];
+    [ed setDocumentMapVisible:YES];
+    NSView *zone = [ed valueForKey:@"docMapZone"];
+    ScintillaView *map = [ed valueForKey:@"docMapView"];
+    [ed.sci message:SCI_SETFIRSTVISIBLELINE wParam:0];
+    long top = [ed.sci message:SCI_GETFIRSTVISIBLELINE];
+    [zone accessibilityPerformIncrement];
+    long down = [ed.sci message:SCI_GETFIRSTVISIBLELINE];
+    NSInteger value = [zone.accessibilityValue integerValue];
+    [zone accessibilityPerformDecrement];
+    Check(@"Accessibility (document map)", @"the map is a slider named Document Map whose increment and decrement page the editor",
+          [zone.accessibilityRole isEqual:NSAccessibilitySliderRole] && [zone.accessibilityLabel isEqual:NppL(@"Document Map")] &&
+          zone.isAccessibilityElement && !map.content.isAccessibilityElement &&
+          down > top && value > 0 && [ed.sci message:SCI_GETFIRSTVISIBLELINE] == top);
+    [ed setDocumentMapVisible:NO];
+    [ed.sci setString:@"one\n"];
+    [ed.sci message:SCI_SETSAVEPOINT];
+
+    // The status bar's path: a button named the path while a click copies it.
+    NSTextField *path = [ed valueForKey:@"pathField"];
+    Check(@"Accessibility (status bar path)", @"the path field is a button named the path, its tooltip its help",
+          [path.accessibilityRole isEqual:NSAccessibilityButtonRole] && [path.accessibilityLabel isEqual:ed.currentDocument.path] &&
+          [path.accessibilityHelp isEqual:path.toolTip]);
+
+    // Labels: a field named by the label on its left or above it; a symbol button by its tooltip.
+    NSView *form = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 400, 200)];
+    NSTextField *label = [NSTextField labelWithString:@"Find what:"];
+    label.frame = NSMakeRect(10, 150, 80, 20);
+    NSTextField *field = [NSTextField textFieldWithString:@""];
+    field.frame = NSMakeRect(100, 148, 200, 24);
+    NSTextField *heading = [NSTextField labelWithString:@"Directory:"];
+    heading.frame = NSMakeRect(10, 110, 100, 18);
+    NSPopUpButton *popup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(10, 80, 200, 26) pullsDown:NO];
+    NSTextField *ownName = [NSTextField textFieldWithString:@""];
+    ownName.frame = NSMakeRect(100, 20, 200, 24);
+    ownName.accessibilityLabel = @"Own name";
+    NSTextField *far = [NSTextField labelWithString:@"Elsewhere"];
+    far.frame = NSMakeRect(320, 20, 70, 20);
+    NSButton *symbol = [NSButton buttonWithTitle:@"✕" target:nil action:nil];
+    symbol.toolTip = @"Close";
+    NSButton *worded = [NSButton buttonWithTitle:@"OK" target:nil action:nil];
+    worded.toolTip = @"Accept";
+    for (NSView *v in @[label, field, heading, popup, ownName, far, symbol, worded]) [form addSubview:v];
+    NppAXLinkLabels(form);
+    NppAXLabelSymbolButtons(form);
+    Check(@"Accessibility (labels)", @"a field takes the label on its row, a pop-up the one above it, a named field keeps its name",
+          field.accessibilityTitleUIElement == label && popup.accessibilityTitleUIElement == heading &&
+          ownName.accessibilityTitleUIElement == nil && [ownName.accessibilityLabel isEqual:@"Own name"]);
+    Check(@"Accessibility (symbol buttons)", @"a button of symbols is named by its tooltip; one of words keeps its title",
+          [symbol.accessibilityLabel isEqual:@"Close"] && ![worded.accessibilityLabel isEqual:@"Accept"]);
+    [ed closeAllDocuments];
 }
 
 /// == Font fallback ==; == Tab bar layout ==

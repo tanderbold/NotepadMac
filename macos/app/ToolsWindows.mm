@@ -154,6 +154,13 @@ static void Present(NSPanel *panel) {
     [panel makeKeyAndOrderFront:nil];
 }
 
+/// A text area no label stands by (upstream's hash dialogs have none either): named for
+/// VoiceOver with the words the Base window puts over its own, in the language shown now.
+static void NameTextArea(NSTextView *view, NSString *english) {
+    NSString *name = [NppL(english) stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@":： "]];
+    view.accessibilityLabel = name;
+}
+
 static void CopyText(NSString *text) {
     if (!text.length) { NSBeep(); return; }
     NSPasteboard *board = [NSPasteboard generalPasteboard];
@@ -222,6 +229,8 @@ static NSString *Naming(NSString *englishWithSHA256, NSString *name) {
     self.hmacRow.hidden = !keyed;
     if (fromFiles) self.result.string = @"";
     Present(panel);
+    NameTextArea(self.input, @"Input:");
+    NameTextArea(self.result, @"Result:");
     // After the window's own texts are translated: these two name the digest, which the translator's sentence is made to do.
     panel.title = Naming(fromFiles ? @"Generate SHA-256 digest from files" : @"Generate SHA-256 digest", name);
     self.chooseFiles.title = Naming(@"Choose files to generate SHA-256...", name);
@@ -414,6 +423,8 @@ static NSString *NameOfKind(NppPasswordHash kind) {
     self.verdict.stringValue = @"";
     if (fromFiles) self.result.string = @"";
     Present(panel);
+    NameTextArea(self.input, @"Input:");
+    NameTextArea(self.result, @"Result:");
     panel.title = Naming(fromFiles ? @"Generate SHA-256 digest from files" : @"Generate SHA-256 digest", NameOfKind(kind));
     self.chooseFiles.title = Naming(@"Choose files to generate SHA-256...", NameOfKind(kind));
     // The rows differ from kind to kind, and so does the height the window needs.
@@ -1003,6 +1014,7 @@ static NSSegmentedControl *Segments(NSArray<NSString *> *labels, id target, SEL 
 - (NSPanel *)panel {
     if (_panel) return _panel;
     self.method = Popup(@[@"GET", @"POST", @"PUT", @"PATCH", @"DELETE", @"HEAD", @"OPTIONS"], nil, NULL);
+    self.method.accessibilityLabel = NppL(@"Method");   // no label stands by it: the request line reads as one
     self.address = Field(@"", 380, self);
     self.address.placeholderString = @"https://example.com/path";
     self.sendButton = Button(@"Send", self, @selector(send:));

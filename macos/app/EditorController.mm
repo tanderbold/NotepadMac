@@ -47,6 +47,9 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 @property (nonatomic, strong) NSColor *colour;
 @property (nonatomic, copy) void (^scrollTo)(CGFloat y);
 @property (nonatomic, copy) void (^wheel)(NSEvent *event);
+/// For VoiceOver: where the editor is in its document (0 to 1), and a page towards either end.
+@property (nonatomic, copy) double (^fraction)(void);
+@property (nonatomic, copy) void (^page)(NSInteger direction);
 @end
 
 @implementation NppMapZoneView
@@ -62,6 +65,16 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 - (void)mouseDown:(NSEvent *)e { if (self.scrollTo) self.scrollTo([self convertPoint:e.locationInWindow fromView:nil].y); }
 - (void)mouseDragged:(NSEvent *)e { [self mouseDown:e]; }
 - (void)scrollWheel:(NSEvent *)e { if (self.wheel) self.wheel(e); }
+// The map is a picture to the eye; to VoiceOver it is what it does, a slider over the
+// document: its value where the editor is, increment and decrement a page down and up.
+- (BOOL)isAccessibilityElement { return YES; }
+- (NSAccessibilityRole)accessibilityRole { return NSAccessibilitySliderRole; }
+- (NSString *)accessibilityLabel { return NppL(@"Document Map"); }
+- (id)accessibilityValue { return @(lround((self.fraction ? self.fraction() : 0) * 100)); }
+- (id)accessibilityMinValue { return @0; }
+- (id)accessibilityMaxValue { return @100; }
+- (BOOL)accessibilityPerformIncrement { if (self.page) self.page(1); return self.page != nil; }
+- (BOOL)accessibilityPerformDecrement { if (self.page) self.page(-1); return self.page != nil; }
 @end
 
 /// ScintillaNotificationProtocol gives no sender, so the secondary pane gets its
@@ -84,10 +97,20 @@ NSString *const NppEditorDocumentsDidChangeNotification = @"NppEditorDocumentsDi
 /// wants out of the status bar, and a label cannot be selected.
 @interface NppStatusPathField : NSTextField
 @property (nonatomic, copy) void (^onClick)(void);
+@property (nonatomic, readonly) BOOL clickable;
 @end
 @implementation NppStatusPathField
 - (void)mouseDown:(NSEvent *)event { if (self.onClick) self.onClick(); }
 - (void)resetCursorRects { if (self.onClick) [self addCursorRect:self.bounds cursor:[NSCursor pointingHandCursor]]; }
+// A click copies the path: to VoiceOver that is a button named the path, its tooltip the help.
+- (BOOL)clickable { return self.onClick && self.toolTip.length; }
+// (A text field's own element is its cell's; overriding the field's role makes the field the
+// element, so both roles are said here.)
+- (NSAccessibilityRole)accessibilityRole { return self.clickable ? NSAccessibilityButtonRole : NSAccessibilityStaticTextRole; }
+- (NSString *)accessibilityLabel { return self.clickable ? self.stringValue : nil; }
+- (id)accessibilityValue { return self.clickable ? nil : self.stringValue; }
+- (NSString *)accessibilityHelp { return self.toolTip; }
+- (BOOL)accessibilityPerformPress { if (!self.clickable) return NO; self.onClick(); return YES; }
 @end
 
 @interface EditorController () <ScintillaNotificationProtocol, WorkspacePanelDelegate, NppTabBarDelegate>
@@ -2975,6 +2998,22 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     self.forcedView = forced;
 }
 
+/// Scintilla names its text area "Scintilla" and calls it a "source code editor", in English
+/// whatever the language: each view is named after the document it shows instead (the name its
+/// tab has), and described in the system's words for a text area.
+- (void)nameEditorsForAccessibility:(NSArray<NppTabItem *> *)mainItems {
+    NSInteger front = self.tabBar.selectedIndex;
+    NSString *mainName = front >= 0 && front < (NSInteger)mainItems.count ? mainItems[(NSUInteger)front].title : nil;
+    NSString *subName = self.secondaryScratch ? NppL(@"Compare")
+                      : self.secondaryDocument ? [self untitledNameForDocument:self.secondaryDocument] : nil;
+    NSString *area = NSAccessibilityRoleDescription(NSAccessibilityTextAreaRole, nil);
+    for (ScintillaView *view in @[self.sciView, self.secondaryView]) {
+        NSString *name = view == self.sciView ? mainName : subName;
+        if (name.length) view.content.accessibilityLabel = name;
+        view.content.accessibilityRoleDescription = area;
+    }
+}
+
 - (void)refreshChromeOfFocusedView {
     [[NSNotificationCenter defaultCenter]
         postNotificationName:NppEditorDocumentsDidChangeNotification object:self];
@@ -3000,6 +3039,7 @@ static unsigned int CodepageOfEncoding(NSStringEncoding encoding) {
     for (NppDocument *d in self.subDocs) [subItems addObject:itemOf(d)];
     self.subTabBar.items = subItems;
     self.subTabBar.selectedIndex = self.secondaryDocument ? (NSInteger)[self.subDocs indexOfObjectIdenticalTo:self.secondaryDocument] : -1;
+    [self nameEditorsForAccessibility:tabItems];
     BOOL secondActive = [self secondaryViewIsActive];
     self.tabBar.inFocusedView = !secondActive;
     self.subTabBar.inFocusedView = secondActive;
@@ -3517,6 +3557,8 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
         [self.docMapView message:SCI_SETMARGINWIDTHN wParam:2 lParam:0];
         [self.docMapView message:SCI_SETHSCROLLBAR wParam:0 lParam:0];
         [self.docMapView message:SCI_SETVSCROLLBAR wParam:0 lParam:0];
+        // A second, tiny copy of the text is nothing to VoiceOver: the zone over it speaks for the map.
+        self.docMapView.content.accessibilityElement = NO;
         self.docMapHost = [[NSView alloc] initWithFrame:self.docMapView.frame];
         self.docMapHost.wantsLayer = YES;
         self.docMapHost.layer.masksToBounds = YES;
@@ -3540,6 +3582,17 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
         __weak __typeof(self) weakSelf = self;
         self.docMapZone.scrollTo = ^(CGFloat y) { [weakSelf scrollFromDocumentMapAtY:y]; };
         self.docMapZone.wheel = ^(NSEvent *e) { [[weakSelf mapSourceView] scrollWheel:e]; };
+        self.docMapZone.fraction = ^double {
+            ScintillaView *source = [weakSelf mapSourceView];
+            long lines = [source message:SCI_GETLINECOUNT], shown = [source message:SCI_LINESONSCREEN];
+            long top = [source message:SCI_DOCLINEFROMVISIBLE wParam:(uptr_t)[source message:SCI_GETFIRSTVISIBLELINE]];
+            return lines > shown ? MIN(1.0, (double)top / (double)(lines - shown)) : 0;
+        };
+        self.docMapZone.page = ^(NSInteger direction) {
+            ScintillaView *source = [weakSelf mapSourceView];
+            [source message:SCI_LINESCROLL wParam:0 lParam:(sptr_t)(direction * [source message:SCI_LINESONSCREEN])];
+            [weakSelf updateDocumentMap];
+        };
     }
     self.docMapZone.frame = self.docMapView.bounds;
     [self.docMapView addSubview:self.docMapZone positioned:NSWindowAbove relativeTo:nil];

@@ -267,6 +267,7 @@
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP Request"/>
     <Item english="Send" text="Send"/>
+    <Item english="Method" text="Method"/>
     <Item english="Parameters" text="Parameters"/>
     <Item english="Headers" text="Headers"/>
     <Item english="Body" text="Body"/>
