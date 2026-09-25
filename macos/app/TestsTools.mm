@@ -953,6 +953,21 @@ void NppTestsHttpMacroRunHelp(AppDelegate *app, EditorController *ed, ScintillaV
                   [copied hasPrefix:@"curl -X PATCH 'http://127.0.0.1:"] && [copied containsString:@"-H 'X-Pasted: yes'"] && [copied containsString:@"-u 'me:pw'"] &&
                   [copied containsString:@"--data-raw 'a=1'"] && [copied hasSuffix:@"-k"] && notPasted);
 
+            // A method the pop-up does not list (WebDAV's PROPFIND) is added to it by the paste,
+            // and is the one sent and copied out again.
+            [board clearContents];
+            [board setString:[NSString stringWithFormat:@"curl -X PROPFIND '%@/echo'", base] forType:NSPasteboardTypeString];
+            BOOL pastedOther = [hw pasteCurlCommand:nil] && [hw.method.titleOfSelectedItem isEqualToString:@"PROPFIND"];
+            NSString *otherMethod = nil, *otherCopied = nil;
+            @try {
+                otherMethod = [hw request].method;
+                [hw copyAsCurl:nil];
+                otherCopied = [board stringForType:NSPasteboardTypeString];
+            } @catch (NSException *e) { printf("    PROPFIND: %s\n", e.reason.UTF8String); }
+            [hw.method selectItemWithTitle:@"GET"];
+            Check(@"Tools > HTTP Request (a method of its own)", @"a pasted method the pop-up does not list is added, selected, and is the request's method",
+                  pastedOther && [otherMethod isEqualToString:@"PROPFIND"] && [otherCopied hasPrefix:@"curl -X PROPFIND "]);
+
             // The answer into the editor, in the language its content type names.
             NSUInteger tabsBefore = ed.documents.count;
             hw.formatJSON.state = NSControlStateValueOn; [hw answerSectionChanged:nil];

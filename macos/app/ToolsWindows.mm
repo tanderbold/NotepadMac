@@ -1107,8 +1107,9 @@ static NSSegmentedControl *Segments(NSArray<NSString *> *labels, id target, SEL 
 
 - (NppHttpRequest *)request {
     NppHttpRequest *request = [[NppHttpRequest alloc] init];
-    // (By position: the pop-up's titles are not translated, but nothing here should depend on that.)
-    request.method = @[@"GET", @"POST", @"PUT", @"PATCH", @"DELETE", @"HEAD", @"OPTIONS"][(NSUInteger)MAX(self.method.indexOfSelectedItem, 0)];
+    // The method is the item's title: the pop-up's titles are not translated, and a pasted
+    // curl command can add a method the list does not have (PROPFIND, MKCOL...).
+    request.method = self.method.titleOfSelectedItem.length ? self.method.titleOfSelectedItem : @"GET";
     request.address = self.address.stringValue;
     request.parameters = [NppHttpPair pairsFromText:self.parameters.string separator:@"="];
     NSMutableArray<NppHttpPair *> *headers = [[NppHttpPair pairsFromText:self.headers.string separator:@":"] mutableCopy];
