@@ -1049,6 +1049,23 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
               [found containsObject:@"one(self)"] && [found containsObject:@"two(self)"] &&
               ![[found componentsJoinedByString:@" "] containsString:@"def "]);
 
+        // A large file: each function's line was counted from the start of the text, so a 10 MB
+        // C++ file (30,000 functions) took minutes; the lines are the same, CRLF and CR ones too.
+        {
+            NSMutableString *many = [NSMutableString string];
+            for (int i = 0; i < 20000; ++i)
+                [many appendFormat:@"// f%d\r\nstatic int f%d(int a)\n{\r    return a;\n}\n\n", i, i];
+            NSDate *started = [NSDate date];
+            NSArray<NppFunctionEntry *> *listed = [cat entriesInText:many forLanguage:@"cpp" extension:@"cpp"];
+            NSTimeInterval took = [[NSDate date] timeIntervalSinceDate:started];
+            BOOL lines = listed.count == 20000;
+            for (NSUInteger i = 0; lines && i < listed.count; i += 997)
+                lines = [listed[i].name hasPrefix:[NSString stringWithFormat:@"f%lu", (unsigned long)i]] && listed[i].line == 1 + 6 * i;
+            Check(@"IDM_VIEW_FUNC_LIST (a large file)",
+                  [NSString stringWithFormat:@"20,000 functions are listed in well under a second (%.2f s), each at its own line", took],
+                  lines && took < 1.0);
+        }
+
         // C# exercises what Python does not: a class whose body has to be found
         // by counting braces, names that several patterns narrow down in turn,
         // and a comment that must not be searched.
