@@ -196,7 +196,10 @@ static NSString *ByLine(NSString *text, NSString *(^piece)(NSString *)) {
     ScintillaView *sci = self.sci;
     long start = [sci message:SCI_GETSELECTIONSTART], end = [sci message:SCI_GETSELECTIONEND];
     if (start == end) { NppBeep(); return YES; }   // nothing selected: handled, nothing to report
-    NSMutableData *raw = [NSMutableData dataWithLength:(NSUInteger)(end - start) + 1];
+    // Sized by Scintilla itself: with several selections, or a rectangular one, the text is
+    // every range with a line end after each, longer than the main selection.
+    long length = [sci message:SCI_GETSELTEXT wParam:0 lParam:0];
+    NSMutableData *raw = [NSMutableData dataWithLength:(NSUInteger)MAX(length, 0) + 1];
     [sci message:SCI_GETSELTEXT wParam:0 lParam:(sptr_t)raw.mutableBytes];
     NSString *selected = [[NSString alloc] initWithUTF8String:(const char *)raw.bytes] ?: @"";
     NSString *made = transform(selected);

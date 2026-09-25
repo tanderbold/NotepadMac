@@ -747,6 +747,27 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         [sci message:SCI_UNDO wParam:0 lParam:0];
         Check(@"MIME Tools on the selection", @"the selection is replaced in place and one undo returns it",
               did && [encoded isEqualToString:@"%66%6F%6F%62%61%72"] && [DocText(ed) isEqualToString:@"foobar"]);
+
+        // Several selections, and a rectangular one: the text given is all of them, as
+        // SCI_GETSELTEXT copies it (each range with a line end after it), however long.
+        {
+            NSMutableString *many = [NSMutableString string];
+            for (int i = 0; i < 40; ++i) [many appendString:@"abc xyz\n"];
+            SetDoc(ed, many);
+            [sci message:SCI_SETSELECTION wParam:0 lParam:3];
+            for (long i = 1; i < 40; ++i) [sci message:SCI_ADDSELECTION wParam:(uptr_t)(i * 8) lParam:i * 8 + 3];
+            __block NSString *given = nil;
+            [ed mimeTransformSelection:^NSString *(NSString *text) { given = text; return nil; }];
+            long expectMulti = [sci message:SCI_GETSELTEXT wParam:0 lParam:0];
+            [sci message:SCI_SETRECTANGULARSELECTIONANCHOR wParam:4];
+            [sci message:SCI_SETRECTANGULARSELECTIONCARET wParam:39 * 8 + 7];
+            __block NSString *givenRect = nil;
+            [ed mimeTransformSelection:^NSString *(NSString *text) { givenRect = text; return nil; }];
+            printf("    MIME selections: %lu of %ld, rectangle %lu\n", (unsigned long)given.length, expectMulti, (unsigned long)givenRect.length);
+            Check(@"MIME Tools on several selections", @"every selected range is what the conversion is given, a rectangle's rows too",
+                  given.length == 40 * 4 && [given hasPrefix:@"abc\nabc\n"] && (long)given.length == expectMulti &&
+                  givenRect.length == 40 * 4 && [givenRect hasPrefix:@"xyz\nxyz\n"]);
+        }
     }
 
     if (NppSectionWanted(@"Converter")) { printf("\n== Converter ==\n");
