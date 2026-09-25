@@ -8,6 +8,7 @@
 // clipboard is a private pasteboard, so a test never touches the user's.
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import <dlfcn.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "Localization.h"
 #import "BehaviourCommands.h"
@@ -1546,13 +1547,30 @@ static id E2ETarget(NSString *name, NSError **error) {
     }];
 
     [self addTool:@"e2e_snapshot"
-      description:@"E2E: renders a window's content (window as for e2e_ui; main by default) to a PNG at path."
+      description:@"E2E: renders a window's content (window as for e2e_ui; main by default) to a PNG at path; "
+                  @"frame=true includes the title bar; screen=true takes it as the window server shows it."
            schema:E2ESchema(@{})
           handler:^NSDictionary *(NSDictionary *args, NSError **error) {
         NSWindow *w = E2EFindWindow(args[@"window"], error);
         if (!w) return nil;
         NSString *path = args[@"path"];
         if (!path.length) { *error = E2EFail(@"Give a path"); return nil; }
+        // screen=true: the window as the window server composites it - what is on the screen, shadow
+        // left out. An application may always capture its own windows, with no Screen Recording
+        // permission; the call is looked up at run time, as later SDKs drop it for ScreenCaptureKit.
+        if ([args[@"screen"] boolValue]) {
+            [w displayIfNeeded];
+            typedef CGImageRef (*CreateImage)(CGRect, uint32_t, uint32_t, uint32_t);
+            CreateImage create = (CreateImage)dlsym(RTLD_DEFAULT, "CGWindowListCreateImage");
+            CGImageRef image = create ? create(CGRectNull, 1 << 3 /* IncludingWindow */, (uint32_t)w.windowNumber,
+                                               1 << 0 /* BoundsIgnoreFraming */) : NULL;
+            if (!image) { *error = E2EFail(@"The window server gave no image of window %ld", (long)w.windowNumber); return nil; }
+            NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithCGImage:image];
+            CGImageRelease(image);
+            NSData *png = [rep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
+            if (![png writeToFile:path atomically:YES]) { *error = E2EFail(@"Cannot write %@", path); return nil; }
+            return @{@"path": path, @"width": @(rep.pixelsWide), @"height": @(rep.pixelsHigh)};
+        }
         // frame=true: the whole window, title bar and toolbar included.
         NSView *view = [args[@"frame"] boolValue] ? (w.contentView.superview ?: w.contentView) : w.contentView;
         [view layoutSubtreeIfNeeded];
