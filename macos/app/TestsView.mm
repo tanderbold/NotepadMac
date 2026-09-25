@@ -99,6 +99,31 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
         Check(@"IDM_VIEW_TAB_MOVEBACKWARD", @"moves it back",
               [ed.documents indexOfObject:moving] == 0);
 
+        // Moving a tab is not a switch of tabs: the neighbour it passes keeps its own caret and
+        // bookmarks, the moved tab its caret (the exchange once made the neighbour "leave").
+        {
+            NppDocument *neighbour = ed.documents[1];
+            [ed selectDocumentAtIndex:1];
+            SetDoc(ed, @"n1\nn2\nn3\n");
+            [ed.sci message:SCI_GOTOPOS wParam:1 lParam:0];
+            [ed selectDocumentAtIndex:0];
+            SetDoc(ed, @"m1\nm2\nm3\nm4\n");
+            [ed.sci message:SCI_MARKERADD wParam:2 lParam:1];   // the bookmark marker
+            [ed.sci message:SCI_GOTOPOS wParam:7 lParam:0];
+            [ed moveCurrentTab:YES];
+            BOOL movedKeepsCaret = ed.currentDocument == moving && [ed.sci message:SCI_GETCURRENTPOS] == 7;
+            BOOL neighbourMarks = ![neighbour.bookmarkedLines containsObject:@2];
+            [ed moveCurrentTabToEnd:NO];
+            BOOL stillCaret = ed.currentDocument == moving && [ed.sci message:SCI_GETCURRENTPOS] == 7;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:neighbour]];
+            BOOL neighbourCaret = [ed.sci message:SCI_GETCURRENTPOS] == 1;
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:moving]];
+            [ed.sci message:SCI_MARKERDELETEALL wParam:1 lParam:0];
+            Check(@"IDM_VIEW_TAB_MOVEFORWARD (not a switch)",
+                  @"Move Tab Forward and Move to Start leave the neighbour its caret and bookmarks and the moved tab its caret",
+                  movedKeepsCaret && neighbourMarks && stillCaret && neighbourCaret && [ed.documents indexOfObject:moving] == 0);
+        }
+
         [ed selectTabNumber:5];
         NppDocument *jumper = ed.currentDocument;
         [ed moveCurrentTabToEnd:NO];
