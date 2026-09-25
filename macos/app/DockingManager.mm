@@ -36,6 +36,9 @@ static const CGFloat kHeader = 22;
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSString *> *fronts;
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSNumber *> *sizes;
 @property (nonatomic) BOOL arranging;
+/// The split view whose divider is being dragged: AppKit asks where it may go
+/// (splitView:constrainSplitPosition:ofSubviewAt:) before each move, and the resize that follows is the user's.
+@property (nonatomic, weak) NSSplitView *draggedSplit;
 - (void)containerClickedPanel:(NSString *)identifier;
 - (void)dragOfPanel:(NSString *)identifier endedAtScreenPoint:(NSPoint)point;
 - (void)dragOfPanel:(NSString *)identifier movedToScreenPoint:(NSPoint)point;
@@ -620,12 +623,21 @@ static const CGFloat kHeader = 22;
                                            @"fronts": fronts, @"groups": groupsOut};
 }
 
+/// Asked only while the user drags a divider - never for a window resized or a layout pass.
+- (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)position ofSubviewAt:(NSInteger)index {
+    self.draggedSplit = splitView;
+    return position;
+}
+
 /// A divider dragged: the container's new size is kept. The window resized is not that: the
 /// docks keep their size then and the editor takes the difference (splitView:shouldAdjustSizeOfSubview:).
+/// Neither the event (NSApp.currentEvent is still the last click) nor the split view's size (AppKit
+/// adjusts the subviews again after a resize, to whole pixels) tells the two apart; the drag's own
+/// question does.
 - (void)splitViewDidResizeSubviews:(NSNotification *)note {
-    NSEventType event = NSApp.currentEvent.type;
-    BOOL dragged = note.userInfo[@"NSSplitViewDividerIndex"] &&
-        (event == NSEventTypeLeftMouseDragged || event == NSEventTypeLeftMouseDown || event == NSEventTypeLeftMouseUp);
+    // The split view dragged in, not the one inside it that its move resizes.
+    BOOL dragged = note.object == self.draggedSplit;
+    if (dragged) self.draggedSplit = nil;
     if (self.arranging || !dragged) return;
     for (NSNumber *placeKey in @[@(NppDockLeft), @(NppDockRight), @(NppDockTop), @(NppDockBottom)]) {
         NppDockContainerView *c = self.containers[placeKey];
