@@ -885,6 +885,14 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
             BOOL peeking = [ed documentPeekerVisible] && [ed documentPeekerDocument] == other.docPointer;
             [ed peekAtTabIndex:frontIndex];
             BOOL frontHides = ![ed documentPeekerVisible];
+            // Read-only belongs to the Scintilla document, not the view: the
+            // peeker must not leave the document it showed read-only.
+            [ed selectDocumentAtIndex:otherIndex];
+            BOOL stillWritable = [sci message:SCI_GETREADONLY] == 0 && !other.userReadOnly;
+            [sci message:SCI_DOCUMENTEND];
+            [sci setStringProperty:SCI_REPLACESEL parameter:0 value:@"x"];
+            stillWritable = stillWritable && [DocText(ed) isEqualToString:@"peek at me\nx"];
+            [ed selectDocumentAtIndex:frontIndex];
             pp.docPeekOnTab = NO;
             pp.docPeekOnMap = YES;
             [ed setDocumentMapVisible:YES];
@@ -900,6 +908,9 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
             Check(@"IDM_VIEW_DOC_MAP (document peeker)",
                   @"peek on tab and peek on map show the hovered document, and only when switched on",
                   offByDefault && peeking && frontHides && mapPeeks && mapBack);
+            Check(@"IDM_VIEW_DOC_MAP (peeked document stays writable)",
+                  @"after peek on tab showed a document, it takes typing when brought to front",
+                  stillWritable);
         }
 
         [ed setLanguageNamed:@"python"];

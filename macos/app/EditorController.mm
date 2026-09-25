@@ -1052,8 +1052,10 @@ static void RestartChangeHistory(ScintillaView *sci) {
         self.peekPanel.contentView = self.peekView;
     }
     ScintillaView *peek = self.peekView, *sci = self.sciView;
+    // No SCI_SETREADONLY here: read-only is the Scintilla document's, so it would stay on the
+    // real document after the peek. The panel ignores the mouse and never becomes key, so the
+    // view takes no typing anyway (DocumentPeeker::syncDisplay does not set it either).
     [peek message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)doc.docPointer];
-    [peek message:SCI_SETREADONLY wParam:1 lParam:0];
     for (int st = 0; st <= STYLE_MAX; ++st) {
         [peek message:SCI_STYLESETFORE wParam:(uptr_t)st lParam:[sci message:SCI_STYLEGETFORE wParam:(uptr_t)st]];
         [peek message:SCI_STYLESETBACK wParam:(uptr_t)st lParam:[sci message:SCI_STYLEGETBACK wParam:(uptr_t)st]];
