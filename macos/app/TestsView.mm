@@ -980,6 +980,61 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
               [NppRegex compileErrorForPattern:@"(unclosed"].length > 0 &&
               [NppRegex compileErrorForPattern:@"\\w+"] == nil);
 
+        // The subject is checked for UTF-8 once per search, not once per match: 50,000 matches
+        // in a megabyte took seconds (each call checked the rest of it), a gigabyte never ended.
+        // A subject that is not UTF-8 still gives nothing, whatever comes before the bad byte.
+        {
+            NSMutableData *many = [NSMutableData dataWithCapacity:1 << 20];
+            while (many.length < (1 << 20)) [many appendBytes:"word1 word2 word3 wörd4 \n" length:26];
+            NppRegex *digit = [NppRegex regexWithPattern:@"\\d"];
+            __block NSUInteger hits = 0;
+            NSDate *started = [NSDate date];
+            [digit enumerateMatchesInData:many range:NSMakeRange(0, many.length) usingBlock:^(NSRange m, BOOL *stop) { hits++; }];
+            NSTimeInterval took = [[NSDate date] timeIntervalSinceDate:started];
+            NSMutableData *bad = [NSMutableData dataWithData:[@"1 2 3 " dataUsingEncoding:NSUTF8StringEncoding]];
+            [bad appendBytes:"\xff 4" length:3];
+            __block NSUInteger badHits = 0;
+            [digit enumerateMatchesInData:bad range:NSMakeRange(0, bad.length) usingBlock:^(NSRange m, BOOL *stop) { badHits++; }];
+            // After the first match the subject is searched a stretch of lines at a time; the
+            // matches are the same as searching to the end each time finds, for patterns that
+            // cross lines and stretches, look around, match nothing, or run to the end.
+            NSMutableData *mixed = [NSMutableData data];
+            for (int i = 0; mixed.length < (3 << 20); ++i) {
+                NSString *piece = (i % 97 == 0) ? [@"" stringByPaddingToLength:70000 withString:@"long x " startingAtIndex:0]
+                                : [NSString stringWithFormat:@"Needle %d café%@", i, (i % 3 == 0) ? @"\r\n" : (i % 11 == 0) ? @"\r" : @"\n"];
+                [mixed appendData:[piece dataUsingEncoding:NSUTF8StringEncoding]];
+                if (i % 500 == 0) [mixed appendData:[@"BEGIN\nmiddle\nEND\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+            NSArray<NSString *> *patterns = @[@"(?i)needle", @"Needle", @"\\d+", @"^", @"$", @"(?=END)", @"\\r?$", @"BEGIN.*?END", @"BEGIN.*END",
+                                              @"(?<=Needle )\\d+", @"\\d+(?= caf)", @"Needle \\K\\d+", @"\\bcaf\\w", @"é\\r?\\n",
+                                              @"END\\n(?:[^\\n]*\\n){3}", @"long x (?=long)", @"\\r\\n|\\r|\\n", @"(?m)^Needle 1\\d*"];
+            BOOL sameMatches = YES;
+            for (NSString *pattern in patterns) {
+                NppRegex *re = [NppRegex regexWithPattern:pattern];
+                NSMutableArray *(^all)(void) = ^NSMutableArray *(void) {
+                    NSMutableArray *found = [NSMutableArray array];
+                    [re enumerateMatchesWithGroupsInData:mixed range:NSMakeRange(5, mixed.length - 9)
+                                              usingBlock:^(NSArray<NSValue *> *groups, BOOL *stop) { [found addObject:groups]; }];
+                    return found;
+                };
+                NSArray *stretched = all();
+                [NppRegex setSearchesInStretches:NO];
+                NSArray *whole = all();
+                [NppRegex setSearchesInStretches:YES];
+                if (![stretched isEqualToArray:whole] || !whole.count) {
+                    sameMatches = NO;
+                    printf("    %s: %lu matches in stretches, %lu to the end\n", pattern.UTF8String,
+                           (unsigned long)stretched.count, (unsigned long)whole.count);
+                }
+            }
+            Check(@"IDM_VIEW_FUNC_LIST (regex in stretches)",
+                  @"searching on a stretch at a time finds exactly the matches searching to the end does",
+                  sameMatches);
+            Check(@"IDM_VIEW_FUNC_LIST (regex over a large subject)",
+                  [NSString stringWithFormat:@"every match of a 1 MB subject is found in well under a second (%.3f s), none in one that is not UTF-8", took],
+                  hits == (many.length / 26) * 4 && took < 1.0 && badHits == 0);
+        }
+
         // A Python class with methods, through the upstream parser.
         NSArray<NppFunctionEntry *> *entries = [cat entriesInText:
             @"class Alpha:\n    def one(self):\n        pass\n    def two(self):\n        pass\n"

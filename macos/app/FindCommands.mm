@@ -198,7 +198,12 @@
 }
 
 - (NSData *)documentBytes {
-    return [[self documentText] dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+    // Scintilla holds UTF-8: the bytes are copied as they are, not decoded into a string and
+    // encoded back (three copies of the document, four times its size at the peak, for every search).
+    ScintillaView *sci = self.sci;
+    long length = [sci message:SCI_GETLENGTH];
+    const char *text = length > 0 ? (const char *)[sci message:SCI_GETCHARACTERPOINTER] : NULL;
+    return text ? [NSData dataWithBytes:text length:(NSUInteger)length] : [NSData data];
 }
 
 #pragma mark - Matches
@@ -206,7 +211,13 @@
 - (NSArray<NSValue *> *)rangesOfMatches:(NppFindSpec *)spec {
     NppRegex *regex = [self regexFor:spec];
     if (!regex) return @[];
-    NSData *data = [self documentBytes];
+    // Searched where Scintilla keeps the text, not in a copy of it (a gigabyte more for a Count
+    // in a 1 GB file): nothing changes the document while the matches are only collected, and
+    // the bytes are not kept past this.
+    ScintillaView *sci = self.sci;
+    long length = [sci message:SCI_GETLENGTH];
+    const char *text = length > 0 ? (const char *)[sci message:SCI_GETCHARACTERPOINTER] : NULL;
+    NSData *data = text ? [NSData dataWithBytesNoCopy:(void *)text length:(NSUInteger)length freeWhenDone:NO] : [NSData data];
     NSMutableArray *out = [NSMutableArray array];
     [regex enumerateMatchesInData:data range:[self searchRangeFor:spec inData:data]
                        usingBlock:^(NSRange m, BOOL *stop) {
@@ -809,7 +820,6 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
 /// as Notepad++'s Find All lists them.
 - (NSString *)reportLinesForMatches:(NSArray<NSValue *> *)matches {
     ScintillaView *sci = self.sci;
-    NSData *bytes = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableString *block = [NSMutableString string];
     long lastLine = -1;
     for (NSValue *match in matches) {
@@ -818,9 +828,9 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
         lastLine = line;
         long start = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
         long end = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
-        NSString *text = (end > start && (NSUInteger)end <= bytes.length)
-            ? [[NSString alloc] initWithData:[bytes subdataWithRange:NSMakeRange((NSUInteger)start, (NSUInteger)(end - start))]
-                                    encoding:NSUTF8StringEncoding] : @"";
+        // Each hit line read by itself, as upstream's Finder does (getGenericText), not sliced out of
+        // a copy of the whole document.
+        NSString *text = NppTextRange(sci, start, end);
         [block appendFormat:@"\tLine %ld: %@\n", line + 1, [EditorController singleReportLine:text ?: @""]];
     }
     return block;

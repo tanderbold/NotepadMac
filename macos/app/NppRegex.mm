@@ -24,6 +24,11 @@ static const uint32_t kUTF = 0x00080000u;
 /// PCRE2_UCP: \w, \b, \d and the POSIX classes know every script, as Boost's do in
 /// Notepad++ (wide characters) - "café" is a word, \w matches "я".
 static const uint32_t kUCP = 0x00020000u;
+/// PCRE2_NO_UTF_CHECK (a match option): the subject is not validated again.
+static const uint32_t kNoUTFCheck = 0x40000000u;
+/// PCRE2_PARTIAL_HARD (a match option), and what pcre2_match answers.
+static const uint32_t kPartialHard = 0x00000020u;
+static const int kNoMatch = -1, kPartial = -2;
 
 static npp_pcre2_compile gCompile;
 static npp_pcre2_match_data_create_from_pattern gMatchDataCreate;
@@ -138,6 +143,37 @@ static void *CompilePattern(NSString *pattern, NSString **errorOut) {
     if (_code && gCodeFree) gCodeFree(_code);
 }
 
+static BOOL gInStretches = YES;
+
++ (void)setSearchesInStretches:(BOOL)on { gInStretches = on; }
+
+/// The next match at or after `from`, as one search to `end` finds it, but looked for a
+/// stretch of lines at a time. Every search also checks the subject is UTF-8 to its end,
+/// and one for a letter in either case (the "needle" of a Find, which ignores case) looks
+/// for each case to the end with memchr: once per match, both made a search for all the
+/// matches of a document quadratic - a count in 1 GB, a Find All in 100 MB, took minutes.
+/// A stretch is searched with PCRE2_PARTIAL_HARD, which answers "partial" as soon as a way
+/// of matching reaches the end of the stretch: that match might go on past it, so the
+/// stretch is widened and searched again. A match or "no match" given without reaching the
+/// end is what the whole subject gives. Stretches end after a line end, so a \r\n is
+/// never split.
+static int SearchOn(void *code, const uint8_t *bytes, size_t end, size_t from, void *matchData) {
+    if (!gInStretches) return gMatch(code, bytes, end, from, kNoUTFCheck, matchData, NULL);
+    size_t stretch = 64 * 1024;
+    for (;;) {
+        size_t cut = end;
+        if (end - from > stretch) {
+            const uint8_t *nl = (const uint8_t *)memchr(bytes + from + stretch, '\n', end - from - stretch);
+            if (nl) cut = (size_t)(nl - bytes) + 1;
+        }
+        if (cut >= end) return gMatch(code, bytes, end, from, kNoUTFCheck, matchData, NULL);
+        int rc = gMatch(code, bytes, cut, from, kNoUTFCheck | kPartialHard, matchData, NULL);
+        if (rc == kPartial) { stretch *= 4; continue; }     // it may go on: again, with more
+        if (rc == kNoMatch) { from = cut; continue; }       // nothing starts before the cut
+        return rc;
+    }
+}
+
 /// Steps past one UTF-8 character, so an empty match cannot stall the loop and
 /// cannot leave the offset inside a character.
 static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
@@ -167,11 +203,17 @@ static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
     size_t end = NSMaxRange(range);
     size_t at = range.location;
     BOOL stop = NO;
+    BOOL first = YES;
 
     while (at <= end && !stop) {
         // The subject is cut at `end` so a match cannot run past the range it
-        // was asked for -- which is how a class body is kept to itself.
-        int rc = gMatch(self.code, bytes, end, at, 0, matchData, NULL);
+        // was asked for -- which is how a class body is kept to itself. The
+        // first search checks the subject is UTF-8, from where it starts to its
+        // end, which is all the later ones would check again (they start further
+        // on, at a character boundary); an invalid one still ends the search.
+        int rc = first ? gMatch(self.code, bytes, end, at, 0, matchData, NULL)
+                       : SearchOn(self.code, bytes, end, at, matchData);
+        first = NO;
         if (rc < 0) break;
 
         size_t *ovector = gOvector(matchData);

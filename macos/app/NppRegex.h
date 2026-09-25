@@ -43,6 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// The number of the group a pattern named (?<name>...), or -1.
 - (NSInteger)groupNumberForName:(NSString *)name;
 
+/// After the first match the rest of the subject is searched a stretch at a time (see the
+/// implementation); off, every search runs to the end of the subject. For the suite, which
+/// checks that both find the same matches.
++ (void)setSearchesInStretches:(BOOL)on;
+
 @end
 
 NS_ASSUME_NONNULL_END
