@@ -880,13 +880,14 @@ static void AddComboAttributes(NSXMLElement *e, NppKeyCombo *combo) {
                 [m addChild:a];
                 continue;
             }
-            [a addAttribute:[NSXMLNode attributeWithName:@"type" stringValue:text.length ? @"1" : @"0"]];
+            // A text step's lParam was a pointer when it was recorded; Windows
+            // writes 0 there and carries the text in sParam, an empty one too.
+            BOOL textStep = text.length || [EditorController macroMessageTakesString:[step[@"msg"] intValue]];
+            [a addAttribute:[NSXMLNode attributeWithName:@"type" stringValue:textStep ? @"1" : @"0"]];
             [a addAttribute:[NSXMLNode attributeWithName:@"message" stringValue:[step[@"msg"] description]]];
             [a addAttribute:[NSXMLNode attributeWithName:@"wParam" stringValue:[step[@"w"] ?: @0 description]]];
-            // A text step's lParam was a pointer when it was recorded; Windows
-            // writes 0 there and carries the text in sParam.
             [a addAttribute:[NSXMLNode attributeWithName:@"lParam"
-                                             stringValue:text.length ? @"0" : [step[@"l"] ?: @0 description]]];
+                                             stringValue:textStep ? @"0" : [step[@"l"] ?: @0 description]]];
             [a addAttribute:[NSXMLNode attributeWithName:@"sParam" stringValue:text ?: @""]];
             [m addChild:a];
         }

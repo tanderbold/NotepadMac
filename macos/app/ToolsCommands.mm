@@ -183,21 +183,33 @@ static const char kMacroSuspendedKey = 0;
     if (![self recordingMacro]) return;
     if ([objc_getAssociatedObject(self, &kMacroSuspendedKey) boolValue]) return;
     // Messages whose lParam is a string must have the text copied now; the
-    // pointer Scintilla passes does not outlive the callback.
-    NSString *text = nil;
+    // pointer Scintilla passes does not outlive the callback, so it is not kept
+    // (recordedMacroStep: _sParameter, _lParameter = 0), an empty text included.
+    NSString *text = @"";
+    BOOL takesString = [EditorController macroMessageTakesString:message];
+    if (takesString && lParam) {
+        // Scintilla holds UTF-8 here; bytes that are not (a plugin's) keep one character each.
+        const char *bytes = (const char *)lParam;
+        text = [NSString stringWithUTF8String:bytes] ?: [NSString stringWithCString:bytes encoding:NSISOLatin1StringEncoding] ?: @"";
+    }
+    [[self macroSteps] addObject:@{@"msg": @(message),
+                                   @"w": @(wParam),
+                                   @"l": @(takesString ? 0 : lParam),
+                                   @"text": text}];
+}
+
++ (BOOL)macroMessageTakesString:(int)message {
     switch (message) {
         case SCI_REPLACESEL:
         case SCI_ADDTEXT:
         case SCI_INSERTTEXT:
         case SCI_APPENDTEXT:
-            if (lParam) text = @((const char *)lParam);
-            break;
-        default: break;
+        case SCI_SEARCHNEXT:
+        case SCI_SEARCHPREV:
+            return YES;
+        default:
+            return NO;
     }
-    [[self macroSteps] addObject:@{@"msg": @(message),
-                                   @"w": @(wParam),
-                                   @"l": @(lParam),
-                                   @"text": text ?: @""}];
 }
 
 - (BOOL)playbackMacro:(NSUInteger)times {
@@ -228,8 +240,10 @@ static const char kMacroSuspendedKey = 0;
                 [self playFindStep:msg value:[step[@"l"] longValue] text:text ?: @"" into:findState];
                 continue;
             }
-            if (text.length) {
-                [sci setStringProperty:msg parameter:[step[@"w"] longValue] value:text];
+            // recordedMacroStep::PlayBack: a string message is sent its stored text, never a
+            // number that was a pointer (a macro saved before, with an address in lParam).
+            if ([EditorController macroMessageTakesString:msg] || text.length) {
+                [sci setStringProperty:msg parameter:[step[@"w"] longValue] value:[text isKindOfClass:[NSString class]] ? text : @""];
             } else {
                 [sci message:msg wParam:(uptr_t)[step[@"w"] unsignedLongValue]
                       lParam:(sptr_t)[step[@"l"] longValue]];

@@ -49,6 +49,9 @@ typedef NS_ENUM(NSInteger, NppTabSort) {
 - (void)reloadSavedMacros;
 /// Called from the notification handler for each recorded Scintilla action.
 - (void)recordMacroMessage:(int)message wParam:(unsigned long)wParam lParam:(long)lParam;
+/// A Scintilla message whose lParam is a string: a step of it carries the text, never the
+/// pointer, which does not outlive the recording (recordedMacroStep's mtUseSParameter).
++ (BOOL)macroMessageTakesString:(int)message;
 /// Around a menu command that a macro records by its id rather than by what it sends to Scintilla.
 - (void)beginRecordableMenuCommand;
 - (void)endRecordableMenuCommand:(int)identifier;

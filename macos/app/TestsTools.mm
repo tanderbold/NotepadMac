@@ -1090,6 +1090,33 @@ void NppTestsHttpMacroRunHelp(AppDelegate *app, EditorController *ed, ScintillaV
         BOOL saved = [ed saveRecordedMacroAs:@"test macro"];
         Check(@"IDM_MACRO_SAVECURRENTMACRO", @"stores the macro under a name",
               saved && [[ed savedMacroNames] containsObject:@"test macro"]);
+
+        // A string step keeps its text, never the pointer it came with (recordedMacroStep:
+        // mtUseSParameter): an empty text, and bytes that are not UTF-8 (what a plugin may send).
+        {
+            SetDoc(ed, @"abcd");
+            [sci message:SCI_SETSEL wParam:0 lParam:2];
+            char *bytes = (char *)calloc(8, 1);
+            bytes[0] = (char)0xE9;
+            [ed startRecordingMacro];
+            [sci message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)bytes];
+            [sci setStringProperty:SCI_REPLACESEL parameter:0 value:@""];
+            [ed stopRecordingMacro];
+            BOOL noPointer = [ed recordedStepCount] == 2;
+            for (NSDictionary *step in [[ed valueForKey:@"macroSteps"] copy]) {
+                if ([step[@"msg"] intValue] == SCI_REPLACESEL && [step[@"l"] longValue] != 0) noPointer = NO;
+            }
+            strcpy(bytes, "ZZ");                      // the memory the pointer named now says something else
+            SetDoc(ed, @"abcd");
+            [sci message:SCI_SETSEL wParam:0 lParam:2];
+            [ed playbackMacro:1];
+            NSString *replayed = DocText(ed);
+            free(bytes);
+            printf("    string steps: pointer kept %d, replayed \"%s\"\n", !noPointer, replayed.UTF8String);
+            Check(@"IDM_MACRO_PLAYBACKRECORDEDMACRO (string steps)",
+                  @"a recorded string message replays its own text, empty or not UTF-8, never the address it was recorded from",
+                  noPointer && [replayed isEqualToString:@"\u00E9cd"]);
+        }
     }
 
     if (NppSectionWanted(@"Window")) { printf("\n== Window ==\n");
