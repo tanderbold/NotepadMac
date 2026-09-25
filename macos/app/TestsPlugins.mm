@@ -585,6 +585,11 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
     }
 
     if (NppSectionWanted(@"Run")) { printf("\n== Run ==\n");
+        // Run hands a program over and leaves it going (Command::run, ShellExecute): one that takes
+        // longer than half a minute is not stopped. Started first, looked at last.
+        __block NppRunResult *longRun = nil;
+        [ed runCommandLineInBackground:@"sleep 32; echo still-running" completion:^(NppRunResult *r) { longRun = r; }];
+        NSDate *longStart = [NSDate date];
         // The variables are read off a real document, so the test exercises the
         // same path the menu command does.
         NSString *runPath = TempFile(@"npp_run_test.txt", @"alpha beta\nsecond line\n");
@@ -674,6 +679,21 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
               async != nil && async.exitStatus == 0 &&
               [async.output isEqualToString:@"$(FILE_NAME)\n"]);
 
+        // A command that leaves a child in the background is over when the shell is: the child
+        // holds the pipe open, and waiting for its end would wait for the child.
+        [ed.console clear];
+        __block NppRunResult *leaving = nil;
+        NSDate *leaveStart = [NSDate date];
+        [ed runCommandLineInBackground:@"(sleep 4; echo late-output) & echo right-away"
+                            completion:^(NppRunResult *r) { leaving = r; }];
+        NppSettleUntil(^BOOL { return leaving != nil; }, 10);
+        NSTimeInterval leaveTook = -[leaveStart timeIntervalSinceNow];
+        NppSettleUntil(^BOOL { return [ed.console.text containsString:@"late-output"]; }, 10);
+        Check(@"Run (a child left in the background)", @"the command is finished as soon as its shell is, with what it wrote; "
+              @"what the child writes later still reaches the console",
+              leaving != nil && leaveTook < 3 && leaving.exitStatus == 0 && [leaving.output isEqualToString:@"right-away\n"] &&
+              [ed.console.text containsString:@"late-output"]);
+
         // Saved commands are keyed by name, so saving the same name again
         // replaces it rather than adding a duplicate.
         NSUInteger before = [ed savedCommands].count;
@@ -687,6 +707,9 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
         Check(@"Run saved commands", @"saving by name replaces, and removing takes it away",
               replaced && [ed savedCommands].count == before);
 
+        NppSettleUntil(^BOOL { return longRun != nil; }, 45 + [longStart timeIntervalSinceNow]);
+        Check(@"Run (no time limit)", @"a program running for longer than 30 s is left to finish",
+              longRun != nil && !longRun.timedOut && longRun.exitStatus == 0 && [longRun.output isEqualToString:@"still-running\n"]);
         [[NSFileManager defaultManager] removeItemAtPath:runPath error:NULL];
         [[NSFileManager defaultManager] removeItemAtPath:plainPath error:NULL];
     }
@@ -1189,6 +1212,15 @@ void NppTestsPluginHost(AppDelegate *app, EditorController *ed, ScintillaView *s
         printf("    exec stop took %.1fs\n%s", slowTook, slowTook < 5 ? "" : slow.log.UTF8String);
         Check(@"NppExec (stop)", @"stopping a script ends the program it is running, and nothing after it runs",
               slowTook < 5 && ![slow.log containsString:@"not-reached"]);
+
+        // A program that leaves a child in the background: NppExec goes on when the program ends.
+        NppScriptEngine *leaves = [[NppScriptEngine alloc] initWithEditor:ed];
+        NSDate *leavesStart = [NSDate date];
+        [leaves runScript:@"/bin/sh -c \"(/bin/sleep 5; echo late) & echo now\"\nECHO after-it\n" arguments:@[]];
+        NSTimeInterval leavesTook = -[leavesStart timeIntervalSinceNow];
+        Check(@"NppExec (a child left in the background)", @"the script goes on as soon as the program itself has ended, with its output and exit code",
+              leavesTook < 3 && [leaves.log containsString:@"now"] && [leaves.log containsString:@"after-it"] &&
+              [leaves.log containsString:@"Exit code 0"]);
 
         // EXIT ends the script it is in; the caller goes on. EXIT 1 ends them all.
         [ed saveScript:[NppSavedScript scriptNamed:@"t_inner" text:@"ECHO inner-start\nEXIT $(ARGV[1])\nECHO inner-not-reached"]];

@@ -48,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)runVariableNamed:(NSString *)name;
 
 /// Runs a command line through the shell, in the current document's directory.
-/// Blocks until it finishes; output reaches the console as it arrives.
+/// Blocks until it finishes (at most 30 s: it holds up the caller); output reaches the console as
+/// it arrives. It is finished when the shell is: a child it leaves in the background runs on.
 - (NppRunResult *)runCommandLine:(NSString *)command intoConsole:(BOOL)intoConsole;
 /// An expanded command in the given directory, with variables added to the
 /// environment; safe off the main thread when the console is not asked for.
@@ -61,7 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
                              environment:(nullable NSDictionary<NSString *, NSString *> *)environment
                              intoConsole:(BOOL)intoConsole timeout:(NSTimeInterval)timeout
                                 stopWhen:(nullable BOOL (^)(void))stopWhen;
-/// The same, off the main thread, so the console fills while the app stays live.
+/// The same, off the main thread, so the console fills while the app stays live - with no time
+/// limit, as Run's ShellExecute has none.
 - (void)runCommandLineInBackground:(NSString *)command
                         completion:(void (^_Nullable)(NppRunResult *))completion;
 

@@ -3,6 +3,7 @@
 #import "SettingsCommands.h"
 #import "ScintillaView.h"
 #import <objc/runtime.h>
+#include <poll.h>
 
 static const char kConsoleKey = 0;
 
@@ -389,9 +390,8 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
         return result;
     }
 
-    // Terminating the task is what a timeout means here: killing it closes the
-    // pipe, which is what ends the read loop below.
-    // The shell's children hold the pipe open after the shell is gone, so
+    // Terminating the task is what a timeout or Stop means here: the shell's
+    // end is what ends the read loop below. Its children would run on, so
     // ending a command means ending them first, deepest last.
     void (^endTask)(void) = ^{
         NSMutableArray<NSNumber *> *family = [NSMutableArray arrayWithObject:@(task.processIdentifier)];
@@ -428,22 +428,52 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
     }
 
     // Read chunk by chunk rather than to the end, so the console fills while the
-    // command is still going. This blocks on the pipe, never on the run loop --
+    // command is still going. This waits on the pipe, never on the run loop --
     // spinning the run loop here would re-enter AppKit in the middle of a menu
     // command, which is not survivable.
+    // The command is over when the shell is, as NppExec's CChildProcess ends when its
+    // process does and ShellExecute leaves whatever the program started running: a
+    // child left in the background (`server &`) keeps the pipe open, so the end of the
+    // pipe cannot be what is waited for. What such a child still writes goes on
+    // reaching the console, from a reader of its own, until it closes the pipe too.
     NSMutableData *collected = [NSMutableData data];
     NSFileHandle *handle = pipe.fileHandleForReading;
-    while (YES) {
-        NSData *chunk = [handle availableData];
-        if (!chunk.length) break;
+    int fd = handle.fileDescriptor;
+    void (^deliver)(NSData *) = ^(NSData *chunk) {
+        if (!console) return;
+        NSString *piece = [[NSString alloc] initWithData:chunk encoding:NSUTF8StringEncoding];
+        if (piece) [console appendText:piece];
+    };
+    BOOL open = YES;
+    char buffer[65536];
+    NSUInteger readsAfterExit = 0;
+    while (open) {
+        // Once the shell has gone, only what is already in the pipe is taken (and not
+        // for ever, should a child keep writing): then the command is over.
+        BOOL shellGone = !task.isRunning;
+        struct pollfd ready = { fd, POLLIN, 0 };
+        int got = poll(&ready, 1, shellGone ? 0 : 100);
+        if (got < 0 && errno == EINTR) continue;
+        if (got <= 0) { if (shellGone) break; continue; }
+        ssize_t n = read(fd, buffer, sizeof buffer);
+        if (n < 0 && errno == EINTR) continue;
+        if (n <= 0) { open = NO; break; }
+        NSData *chunk = [NSData dataWithBytes:buffer length:(NSUInteger)n];
         [collected appendData:chunk];
-        if (console) {
-            NSString *piece = [[NSString alloc] initWithData:chunk encoding:NSUTF8StringEncoding];
-            if (piece) [console appendText:piece];
-        }
+        deliver(chunk);
+        if (shellGone && ++readsAfterExit >= 64) break;
+    }
+    if (open) {
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+            for (;;) {
+                NSData *chunk = [handle availableData];
+                if (!chunk.length) break;
+                deliver(chunk);
+            }
+        });
     }
 
-    [task waitUntilExit];   // the pipe is closed by now, so this returns at once
+    [task waitUntilExit];   // the shell has ended by now, so this returns at once
     if (watch) dispatch_source_cancel(watch);
     if (script) [[NSFileManager defaultManager] removeItemAtPath:script error:NULL];
     result.output = [[NSString alloc] initWithData:collected encoding:NSUTF8StringEncoding] ?: @"";
@@ -462,8 +492,13 @@ static NSString *QuotedForShell(NSString *value, NppShellContext context) {
     // The variables have to be read on the main thread, where the editor lives;
     // only the running itself moves off it.
     NSString *expanded = [self expandRunVariables:command];
+    NSString *directory = [self runVariableNamed:@"CURRENT_DIRECTORY"];
+    (void)[self console];                               // a panel is made on the main thread
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        NppRunResult *result = [self runExpandedCommandLine:expanded intoConsole:YES];
+        // No time limit: Command::run hands the program to ShellExecute and leaves it
+        // running - an interpreter on the file, an application, a server.
+        NppRunResult *result = [self runExpandedCommandLine:expanded directory:directory environment:nil
+                                                intoConsole:YES timeout:0 stopWhen:nil];
         if (completion) dispatch_async(dispatch_get_main_queue(), ^{ completion(result); });
     });
 }
