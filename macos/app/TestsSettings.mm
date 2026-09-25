@@ -1224,6 +1224,24 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               [untitledBackup isEqualToString:@"never saved anywhere\n"] &&
               [trackedDoc.backupPath hasPrefix:[ed backupDirectory]]);
 
+        // The pass reads the documents behind the front one without bringing them up: the tab in
+        // front keeps its multiple selection, and no tab switch is announced.
+        {
+            SetDoc(ed, @"never saved anywhere\n");
+            [ed.sci message:SCI_SETSELECTION wParam:6 lParam:0];
+            [ed.sci message:SCI_ADDSELECTION wParam:11 lParam:7];
+            ed.currentDocument.modified = YES;
+            __block NSUInteger activations = 0;
+            id observer = [[NSNotificationCenter defaultCenter] addObserverForName:NppBufferActivatedNotification object:nil
+                                                                             queue:nil usingBlock:^(NSNotification *note) { activations++; }];
+            NSUInteger again = [ed runAutosavePass];
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+            Check(@"IDM_SETTING_PREFERENCE (periodic backup, front untouched)",
+                  @"a backup pass leaves the tab in front and its multiple selection alone and announces no tab switch",
+                  again == 2 && ed.currentDocument == untitledDoc && [ed.sci message:SCI_GETSELECTIONS] == 2 &&
+                  activations == 0);
+        }
+
         // Saving drops the backup; the session brings an untitled one back.
         NSString *sessionFile = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-backup-session.json"];
         [ed saveSessionTo:sessionFile error:NULL];

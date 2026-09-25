@@ -5,6 +5,7 @@
 #import "SettingsCommands.h"
 #import "ScintillaView.h"
 #import <objc/runtime.h>
+#include <string>
 
 /// A text view that paints the configured header and footer on each page.
 @interface NppPrintView : NSTextView
@@ -177,11 +178,13 @@ static const char kAutosaveTimerKey = 0;
     // modified document goes to its own file in the backup folder, and the
     // document's own file is never touched. The session lists the backups,
     // so the text comes back after a crash or a quit.
-    // Each document is brought to the main view's front in turn; the focus goes back to the view
-    // that had it.
-    NSInteger restore = [self.documents indexOfObject:[self mainCurrentDocument]];
-    BOOL secondFocused = [self otherViewHasFocus] && [self documentInSecondaryView];
-    NppDocument *previous = [self previousTab];
+    // Each document is read through a view of its own, as the agent server reads one: no tab
+    // comes to the front, so the one in front keeps its selections, scroll, folds and
+    // auto-closer, and no BufferActivated goes out (FileManager::backupCurrentBuffer reads the
+    // buffer, it never activates one).
+    NppPreferences *prefs = [NppPreferences shared];
+    static ScintillaView *reader;
+    if (!reader) reader = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
     NSUInteger written = 0;
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *dir = [self backupDirectory];
@@ -189,15 +192,24 @@ static const char kAutosaveTimerKey = 0;
     stamp.dateFormat = @"yyyy-MM-dd_HHmmss";
     stamp.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
 
-    for (NSInteger i = 0; i < (NSInteger)self.documents.count; ++i) {
-        NppDocument *d = self.documents[(NSUInteger)i];
+    for (NppDocument *d in [self.documents copy]) {
         if (!d.modified) {
             [self dropBackupOfDocument:d];
             continue;
         }
-        [self selectDocumentAtIndex:i];
-        if ([self largeFileRestrictionActive]) continue;
-        NSString *text = [self documentText];
+        [reader message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)d.docPointer];
+        long length = [reader message:SCI_GETLENGTH];
+        // buffer->isLargeFile(): a big document is not backed up.
+        BOOL large = prefs.largeFileRestrictionEnabled && length > (long)prefs.largeFileThresholdMB * 1024 * 1024;
+        NSString *text = @"";
+        if (!large && length > 0) {
+            std::string buffer((size_t)length + 1, '\0');
+            [reader message:SCI_GETTEXT wParam:(uptr_t)(length + 1) lParam:(sptr_t)&buffer[0]];
+            text = [[NSString alloc] initWithBytes:buffer.data() length:(NSUInteger)length encoding:NSUTF8StringEncoding]
+                ?: ([reader string] ?: @"");
+        }
+        [reader message:SCI_SETDOCPOINTER wParam:0 lParam:0];
+        if (large) continue;
         if (!d.path && !text.length) {
             [self dropBackupOfDocument:d];             // emptied: nothing left to keep
             continue;
@@ -216,9 +228,6 @@ static const char kAutosaveTimerKey = 0;
             : [text dataUsingEncoding:d.encoding ?: NSUTF8StringEncoding allowLossyConversion:YES];
         if (data && [data writeToFile:d.backupPath options:NSDataWritingAtomic error:NULL]) written++;
     }
-    if (restore != NSNotFound) [self selectDocumentAtIndex:restore];
-    if (secondFocused) [self.window makeFirstResponder:self.secondarySci.content];
-    [self rememberPreviousTab:previous];
     if (!self.sessionSavingDisabled) [self saveSessionTo:[self defaultSessionPath] error:NULL];
     return written;
 }
