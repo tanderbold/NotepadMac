@@ -559,7 +559,11 @@ static NSString *Ordinal(NSUInteger n) {
     [self.editor restorePanelState];
     [self restoreFloatingPanels];
     [[NppDockingManager shared] restoreFronts];
-    if ([self.commandLine[@"-nosession"] boolValue]) {
+    // The built-in suite runs as -nosession: its periodic and explicit backup passes wrote the
+    // session of whatever it had open at that moment, the next run restored it, and a document
+    // left in the second view broke the checks that expect none. It starts from nothing and
+    // leaves the user's session alone.
+    if ([self.commandLine[@"-nosession"] boolValue] || getenv("NPPMAC_TEST")) {
         self.editor.sessionSavingDisabled = YES;      // neither loaded nor overwritten
     } else if ([NppPreferences shared].restoreSession) {
         [self.editor loadSessionFrom:[self.editor defaultSessionPath] error:NULL];

@@ -60,6 +60,11 @@ static NSView *DropPaths(NSArray<NSString *> *paths, NSView *target) {
 /// == File ==; == File: more ==; == File: close family ==; == File: folders and workspace ==; == Sessions ==
 void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     if (NppSectionWanted(@"File")) { printf("\n== File ==\n");
+        // The suite starts from nothing, whatever the last run (or the user) saved as the session:
+        // a document it restored into the second view took the place of the ones the checks open.
+        Check(@"IDM_FILE_SAVESESSION (the suite's own start)",
+              @"the saved session is neither restored nor overwritten by the suite: one tab, no second view",
+              ed.sessionSavingDisabled && ed.documents.count == 1 && ![ed secondaryViewVisible]);
         NSUInteger before = ed.documents.count;
         [app newDocument:nil];
         Check(@"IDM_FILE_NEW", @"adds a tab", ed.documents.count == before + 1);
