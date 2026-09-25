@@ -162,7 +162,9 @@ in both panes. What is the port's own around it: the other text in the second pa
 document's language and theme, the bar, Escape, the comparison re-run 0.4 s after typing
 (`compareRefreshNow`, the view kept where it was), and the revert arrow (marker 9) beside
 each run of the port's own line diff (`diffBetween`, which the git margin and the agent use
-too). Not carried over: selection compare, find unique, the nav bar, patches, visual
+too; `NppMyersScript` finds greedy Myers' own path with one bit per diagonal per step, kept a
+segment of about sqrt(32 D) steps at a time between checkpoints: some 45 MB at D = 100 000,
+where the whole trace was 80 GB, and the same pairing of lines). Not carried over: selection compare, find unique, the nav bar, patches, visual
 filters. `NPPMAC_SNAPSHOT_COMPARE=<file>` snapshots the sample compared with that file.
 
 ### End-to-end hooks (`E2EHooks.mm`)

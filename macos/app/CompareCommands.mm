@@ -15,6 +15,7 @@
 #import "ScintillaView.h"
 #import <objc/runtime.h>
 #include <vector>
+#include <cmath>
 #include "Engine.h"
 #include "NppHelpers.h"
 
@@ -68,8 +69,95 @@ static NSString *NormalisedLine(NSString *line, BOOL ignoreCase, BOOL ignoreSpac
     return out;
 }
 
-/// Myers' O(ND) difference. The trace of each step is kept so the path can be
-/// walked back once the end is reached.
+/// Myers' greedy O((N+M)D) difference, in O(N+M) working memory plus
+/// checkpoints, with exactly the path the plain algorithm finds.
+///
+/// The plain algorithm keeps the furthest-reaching x of every diagonal for
+/// every step d and walks that trace back from the end: D(D+1) numbers,
+/// gigabytes for two unrelated files. Here the walk back needs only, for each
+/// step, which neighbour each diagonal came from (one bit), and even those are
+/// kept for one segment of steps at a time: the forward pass saves the
+/// diagonals every `segment` steps, and a segment is re-run from its checkpoint
+/// when the walk reaches it. The walk yields the diagonal of every step; the
+/// path is then rebuilt forwards, each snake as long as it goes, which is how
+/// the forward pass made it. Linear-space Myers (the middle snake) would find
+/// another path of the same length when lines repeat, and the Compare panes and
+/// the git margin would pair lines differently; this keeps the pairing.
+/// About sqrt(D) checkpoints of 2d+1 numbers and a segment of sqrt(D) rows of
+/// d bits: some 45 MB at D = 100 000, where the trace was 80 GB.
+/// `ops` gets '=' (a line of each), '-' (a line of a) and '+' (a line of b).
+void NppMyersScript(const int *a, long n, const int *b, long m, long segment, std::vector<char> &ops) {
+    ops.clear();
+    const long max = n + m;
+    if (max == 0) return;
+    if (segment <= 0) segment = std::max(64L, (long)std::sqrt(32.0 * (double)max));
+    // v[k + off]: the furthest x on diagonal k; step d reads only what step
+    // d - 1 wrote, and step 0 reads the 0 on diagonal 1.
+    const long off = max + 1;
+    std::vector<long> v((size_t)(2 * max + 3), 0);
+    std::vector<std::vector<int>> checkpoints;     // before step j*segment: diagonals -(s)..s
+    std::vector<std::vector<uint64_t>> rows;       // for the segment in hand: bit (k+d)/2 set = came down from k+1
+
+    // One step d of the forward pass, as the plain algorithm takes it.
+    auto step = [&](long d, std::vector<uint64_t> &row) -> bool {
+        row.assign((size_t)(d / 64 + 1), 0);
+        for (long k = -d; k <= d; k += 2) {
+            bool down = k == -d || (k != d && v[(size_t)(k - 1 + off)] < v[(size_t)(k + 1 + off)]);
+            long x = down ? v[(size_t)(k + 1 + off)] : v[(size_t)(k - 1 + off)] + 1;
+            long y = x - k;
+            while (x < n && y < m && a[x] == b[y]) { x++; y++; }
+            v[(size_t)(k + off)] = x;
+            if (down) row[(size_t)((k + d) / 2 / 64)] |= (uint64_t)1 << (((k + d) / 2) % 64);
+            if (x >= n && y >= m) return true;
+        }
+        return false;
+    };
+    auto save = [&](long s) {
+        std::vector<int> cp((size_t)(2 * s + 3));
+        for (long k = -s - 1; k <= s + 1; ++k) cp[(size_t)(k + s + 1)] = (int)v[(size_t)(k + off)];
+        checkpoints.push_back(std::move(cp));
+    };
+    auto restore = [&](long s) {
+        const std::vector<int> &cp = checkpoints[(size_t)(s / segment)];
+        for (long k = -s - 1; k <= s + 1; ++k) v[(size_t)(k + off)] = cp[(size_t)(k + s + 1)];
+    };
+
+    long D = 0;
+    for (long d = 0; d <= max; ++d) {
+        if (d % segment == 0) { save(d); rows.clear(); }
+        rows.emplace_back();
+        if (step(d, rows.back())) { D = d; break; }
+    }
+
+    // Back from the end, one segment at a time: the diagonal of each step.
+    // The rows in hand are those of the segment the forward pass ended in.
+    std::vector<long> diagonal((size_t)D + 1);
+    diagonal[(size_t)D] = n - m;
+    long first = D - D % segment;
+    for (long d = D; d > 0; --d) {
+        if (d < first) {                            // re-run the segment before from its checkpoint
+            first -= segment;
+            restore(first);
+            rows.clear();
+            for (long t = first; t < first + segment; ++t) { rows.emplace_back(); step(t, rows.back()); }
+        }
+        long k = diagonal[(size_t)d], i = (k + d) / 2;
+        bool down = (rows[(size_t)(d - first)][(size_t)(i / 64)] >> (i % 64)) & 1;
+        diagonal[(size_t)(d - 1)] = down ? k + 1 : k - 1;
+    }
+
+    // Forwards along those diagonals: a move onto each, then its snake.
+    long x = 0, y = 0;
+    for (long d = 0; d <= D; ++d) {
+        if (d > 0) {
+            if (diagonal[(size_t)(d - 1)] == diagonal[(size_t)d] + 1) { ops.push_back('+'); y++; }
+            else { ops.push_back('-'); x++; }
+        }
+        while (x < n && y < m && a[x] == b[y]) { ops.push_back('='); x++; y++; }
+    }
+}
+
+/// Myers' O(ND) difference over the lines as the options see them.
 + (NSArray<NppDiffLine *> *)diffBetween:(NSArray<NSString *> *)oldLines
                                     and:(NSArray<NSString *> *)newLines
                              ignoreCase:(BOOL)ignoreCase
@@ -95,9 +183,7 @@ static NSString *NormalisedLine(NSString *line, BOOL ignoreCase, BOOL ignoreSpac
     }
 
     // Myers' O((N+M)D) difference, on whole numbers standing for the lines: a
-    // line is hashed and compared once, and each step d keeps only its own 2d+1
-    // diagonals (the trace was a full copy of all 2(N+M)+1 per step, as boxed
-    // numbers - a minute and gigabytes for a big file with a few changes).
+    // line is hashed and compared once (NppMyersScript).
     const long n = (long)a.count, m = (long)b.count;
     std::vector<int> ai((size_t)n), bi((size_t)m);
     {
@@ -112,63 +198,17 @@ static NSString *NormalisedLine(NSString *line, BOOL ignoreCase, BOOL ignoreSpac
         for (long i = 0; i < n; ++i) ai[(size_t)i] = idOf(a[(NSUInteger)i]);
         for (long i = 0; i < m; ++i) bi[(size_t)i] = idOf(b[(NSUInteger)i]);
     }
-    const long max = n + m;
-    std::vector<long> v((size_t)(2 * max + 1), 0);
-    std::vector<std::vector<long>> trace;   // trace[d][k + d]: v before step d, diagonals -d..d
-    for (long d = 0; d <= max; ++d) {
-        std::vector<long> snapshot((size_t)(2 * d + 1));
-        for (long k = -d; k <= d; ++k) snapshot[(size_t)(k + d)] = v[(size_t)(k + max)];
-        trace.push_back(std::move(snapshot));
-        BOOL reachedEnd = NO;
-        for (long k = -d; k <= d; k += 2) {
-            long x;
-            if (k == -d || (k != d && v[(size_t)(k - 1 + max)] < v[(size_t)(k + 1 + max)])) x = v[(size_t)(k + 1 + max)];
-            else x = v[(size_t)(k - 1 + max)] + 1;
-            long y = x - k;
-            while (x < n && y < m && ai[(size_t)x] == bi[(size_t)y]) { x++; y++; }
-            v[(size_t)(k + max)] = x;
-            if (x >= n && y >= m) { reachedEnd = YES; break; }
-        }
-        if (reachedEnd) break;
-    }
-
-    // Walk the trace backwards to recover the path.
-    NSMutableArray<NppDiffLine *> *reversed = [NSMutableArray array];
-    long x = n, y = m;
-    for (long d = (long)trace.size() - 1; d >= 0 && (x > 0 || y > 0); --d) {
-        const std::vector<long> &vd = trace[(size_t)d];
-        auto at = [&](long k) -> long { return (k < -d || k > d) ? 0 : vd[(size_t)(k + d)]; };
-        long k = x - y;
-        long prevK = (k == -d || (k != d && at(k - 1) < at(k + 1))) ? k + 1 : k - 1;
-        long prevX = at(prevK);
-        long prevY = prevX - prevK;
-
-        while (x > prevX && y > prevY) {
-            NppDiffLine *line = [[NppDiffLine alloc] init];
-            line.kind = NppDiffSame;
-            line.oldLine = [aIndex[(NSUInteger)(x - 1)] integerValue];
-            line.newLine = [bIndex[(NSUInteger)(y - 1)] integerValue];
-            [reversed addObject:line];
-            x--; y--;
-        }
-        if (d == 0) break;
+    std::vector<char> ops;
+    NppMyersScript(ai.data(), n, bi.data(), m, 0, ops);
+    NSMutableArray<NppDiffLine *> *result = [NSMutableArray arrayWithCapacity:ops.size()];
+    long x = 0, y = 0;
+    for (char op : ops) {
         NppDiffLine *line = [[NppDiffLine alloc] init];
-        if (x > prevX) {
-            line.kind = NppDiffRemoved;
-            line.oldLine = [aIndex[(NSUInteger)(x - 1)] integerValue];
-            line.newLine = -1;
-            x--;
-        } else {
-            line.kind = NppDiffAdded;
-            line.oldLine = -1;
-            line.newLine = [bIndex[(NSUInteger)(y - 1)] integerValue];
-            y--;
-        }
-        [reversed addObject:line];
+        line.kind = op == '=' ? NppDiffSame : op == '-' ? NppDiffRemoved : NppDiffAdded;
+        line.oldLine = op == '+' ? -1 : [aIndex[(NSUInteger)x++] integerValue];
+        line.newLine = op == '-' ? -1 : [bIndex[(NSUInteger)y++] integerValue];
+        [result addObject:line];
     }
-
-    NSMutableArray<NppDiffLine *> *result = [NSMutableArray array];
-    for (NppDiffLine *line in reversed.reverseObjectEnumerator) [result addObject:line];
 
     // A run of removals followed by a run of additions is a block of changed
     // lines, paired up as far as both runs go, which is how ComparePlus presents
