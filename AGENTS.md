@@ -213,8 +213,14 @@ the socket file.
 Xcode's, found through `xcode-select -p` so that a Mac without the tools never gets Apple's
 install dialog from `/usr/bin/git`; else Homebrew's) - never a library, so what the editor shows
 is what `git status` says. Every call sets `GIT_TERMINAL_PROMPT=0`: git fails rather than hangs
-on a prompt no one can see. Quick calls (status, show, rev-parse) run synchronously on the main
-thread; fetch, pull and push stream into the NppExec console from a thread.
+on a prompt no one can see. The refresh on open, save, tab switch and coming to front
+(`gitRefreshStateInBackground`) runs status, rev-parse and show on a serial queue and applies
+the result if the document is still in front and no later refresh came first; commands the
+user gives (stage, commit, the panel, Refresh) still run git on the main thread, waited for
+with a semaphore rather than `waitUntilExit` (which spins the run loop and let queued main-queue
+work run in the middle of a command); fetch, pull and push stream into the NppExec console
+from a thread. The FTP menu's transfers run on a serial queue of their own the same way
+(`FtpCommands.h`, the `completion:` variants); the blocking ones remain for the agent and the suite.
 
 - Repository roots are cached per folder (`repositoryRootForPath:`), forgotten when the app comes
   to front, on Refresh and after fetch/pull/push. The document's path relative to the root is

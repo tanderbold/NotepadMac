@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// The root of the repository a path is in, or nil. Cached by folder.
 + (nullable NSString *)repositoryRootForPath:(NSString *)path;
 + (void)forgetRepositoryRoots;
+/// What the cache already knows of the path's repository, with no git run: NO when it knows nothing.
++ (BOOL)cachedRootForPath:(NSString *)path root:(NSString *_Nullable *_Nonnull)root;
+/// How many git processes were waited for on the main thread (the suite checks
+/// that switching tabs waits for none).
++ (NSUInteger)runsOnMainThread;
 /// Runs git with arguments in a folder, waiting for it. YES on exit status 0;
 /// the outputs are what it wrote, decoded as UTF-8.
 + (BOOL)run:(NSArray<NSString *> *)arguments in:(NSString *)directory
@@ -74,6 +79,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Renews what is cached about the current document's repository: branch,
 /// HEAD, the status list of the panel, the markers.
 - (void)gitRefreshState;
+/// The same, with git run on a queue of its own and the result applied when it
+/// comes, if the document is still in front: what opening, saving, switching tabs
+/// and coming to front do.
+- (void)gitRefreshStateInBackground;
 
 // The commands, each on the document in front. NO when it is not in a repository or git fails;
 // the reason is in gitLastError.
