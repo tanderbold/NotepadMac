@@ -103,7 +103,7 @@
 /// Contracts or expands every fold header whose level equals `level`.
 - (void)applyFoldLevel:(NSInteger)level expanded:(BOOL)expanded {
     ScintillaView *sci = self.sci;
-    [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    NppEnsureStyled(sci);
     long total = [sci message:SCI_GETLINECOUNT];
     for (long line = 0; line < total; ++line) {
         long fold = [sci message:SCI_GETFOLDLEVEL wParam:(uptr_t)line];
