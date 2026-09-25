@@ -153,14 +153,43 @@ static NSString *ConvertLineBytes(NSString *line, std::string (^convert)(const s
 #pragma mark - Shared plumbing
 
 
+/// Replaces the bytes start..end with text through Scintilla's target, as upstream's
+/// ScintillaEditView::replaceTarget does, leaving alone what the old and the new
+/// text have in common at either end: the lines outside the change keep their
+/// bookmarks, folds and change history, and undo holds the difference only.
+static void ReplaceRange(ScintillaView *sci, long start, long end, NSString *text) {
+    NSData *fresh = [text dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+    std::string old;
+    if (end > start) {
+        std::string buffer((size_t)(end - start) + 1, '\0');
+        Sci_TextRangeFull range = {{start, end}, buffer.data()};
+        [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&range];
+        old.assign(buffer.data(), (size_t)(end - start));
+    }
+    const unsigned char *a = (const unsigned char *)old.data(), *b = (const unsigned char *)fresh.bytes;
+    long oldLength = (long)old.size(), newLength = (long)fresh.length;
+    long head = 0;
+    while (head < oldLength && head < newLength && a[head] == b[head]) head++;
+    // Never cut a character in two: step back to the start of one.
+    while (head > 0 && ((head < oldLength && (a[head] & 0xC0) == 0x80) ||
+                        (head < newLength && (b[head] & 0xC0) == 0x80))) head--;
+    long tail = 0;
+    while (tail < oldLength - head && tail < newLength - head &&
+           a[oldLength - 1 - tail] == b[newLength - 1 - tail]) tail++;
+    while (tail > 0 && (((a[oldLength - tail] & 0xC0) == 0x80) || ((b[newLength - tail] & 0xC0) == 0x80))) tail--;
+    if (head == oldLength && head == newLength) return;
+    [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)(start + head) lParam:end - tail];
+    [sci message:SCI_REPLACETARGET wParam:(uptr_t)(newLength - head - tail) lParam:(sptr_t)(b + head)];
+}
+
 /// Replaces the whole document in one undo step, restoring the caret line.
 - (void)replaceDocumentText:(NSString *)text keepingLine:(long)line {
     ScintillaView *sci = self.sci;
     // An edit, not a reload: a read-only document is left alone, as Scintilla
-    // leaves it alone for Notepad++'s commands (setDocumentText lifts the flag).
+    // leaves it alone for Notepad++'s commands.
     if ([sci message:SCI_GETREADONLY]) { NppBeep(); return; }
     [sci message:SCI_BEGINUNDOACTION];
-    [self setDocumentText:text];
+    ReplaceRange(sci, 0, [sci message:SCI_GETLENGTH], text);
     [sci message:SCI_ENDUNDOACTION];
     long last = [sci message:SCI_GETLINECOUNT] - 1;
     [sci message:SCI_GOTOLINE wParam:(uptr_t)MAX(0, MIN(line, last)) lParam:0];
@@ -180,6 +209,7 @@ static NSString *ConvertLineBytes(NSString *line, std::string (^convert)(const s
 /// Rewrites the selected lines (or every line when nothing is selected).
 - (void)transformSelectedLines:(NSArray<NSString *> *(^)(NSArray<NSString *> *bodies))transform {
     ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETREADONLY]) { NppBeep(); return; }
     BOOL hasSelection = [sci message:SCI_GETSELECTIONSTART] != [sci message:SCI_GETSELECTIONEND];
     NSArray *lines = SplitKeepingEndings(self.documentText);
     if (!lines.count) return;
@@ -206,13 +236,13 @@ static NSString *ConvertLineBytes(NSString *line, std::string (^convert)(const s
 
     NSArray *newBodies = transform(bodies);
 
-    NSMutableArray *rebuilt = [NSMutableArray arrayWithArray:[lines subarrayWithRange:NSMakeRange(0, (NSUInteger)first)]];
     // Reuse the original endings positionally; the final line keeps whatever it had.
     NSString *fallback = endings.count ? endings.lastObject : @"";
     if (!fallback.length) {
         fallback = [self.currentDocument.eolMode == SC_EOL_CRLF ? @"\r\n"
                   : self.currentDocument.eolMode == SC_EOL_CR   ? @"\r" : @"\n" copy];
     }
+    NSMutableArray<NSString *> *rebuilt = [NSMutableArray array];
     for (NSUInteger i = 0; i < newBodies.count; ++i) {
         // The tail is the last line written when the range reached the last
         // line of the file - judged by the output, since the transform may
@@ -228,12 +258,46 @@ static NSString *ConvertLineBytes(NSString *line, std::string (^convert)(const s
         }
         [rebuilt addObject:[newBodies[i] stringByAppendingString:ending]];
     }
-    if (last + 1 < (long)lines.count) {
-        [rebuilt addObjectsFromArray:[lines subarrayWithRange:
-            NSMakeRange((NSUInteger)(last + 1), lines.count - (NSUInteger)(last + 1))]];
-    }
 
-    [self replaceDocumentText:[rebuilt componentsJoinedByString:@""] keepingLine:first];
+    // Only the lines that change are touched, as upstream's commands do through
+    // the target (sortLines' replaceTarget, doTrim's replace per match): a
+    // bookmark or a fold anywhere else stays where it was. Bottom up, so the
+    // positions of the lines above stay valid.
+    long lineCount = [sci message:SCI_GETLINECOUNT];
+    long (^lineStart)(long) = ^long(long ln) {
+        return ln < lineCount ? [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)ln] : [sci message:SCI_GETLENGTH];
+    };
+    NSArray<NSString *> *old = [lines subarrayWithRange:NSMakeRange((NSUInteger)first, (NSUInteger)(last - first + 1))];
+    // Lines taken out (duplicates, empty lines) with the rest unchanged and in
+    // order: each goes on its own, and the lines kept keep their marks.
+    NSMutableIndexSet *dropped = [NSMutableIndexSet indexSet];
+    NSUInteger kept = 0;
+    if (rebuilt.count < old.count) {
+        for (NSUInteger i = 0; i < old.count; ++i) {
+            if (kept < rebuilt.count && [old[i] isEqualToString:rebuilt[kept]]) kept++;
+            else [dropped addIndex:i];
+        }
+    }
+    [sci message:SCI_BEGINUNDOACTION];
+    if (rebuilt.count == old.count) {
+        for (long i = (long)old.count - 1; i >= 0; --i) {
+            if ([old[(NSUInteger)i] isEqualToString:rebuilt[(NSUInteger)i]]) continue;
+            long ln = first + i;
+            ReplaceRange(sci, lineStart(ln), lineStart(ln + 1), rebuilt[(NSUInteger)i]);
+        }
+    } else if (rebuilt.count < old.count && kept == rebuilt.count) {
+        [dropped enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger i, BOOL *stop) {
+            long ln = first + (long)i;
+            long from = lineStart(ln), to = lineStart(ln + 1);
+            [sci message:SCI_DELETERANGE wParam:(uptr_t)from lParam:to - from];
+        }];
+    } else {
+        ReplaceRange(sci, lineStart(first), lineStart(last + 1), [rebuilt componentsJoinedByString:@""]);
+    }
+    [sci message:SCI_ENDUNDOACTION];
+    long lastLine = [sci message:SCI_GETLINECOUNT] - 1;
+    [sci message:SCI_GOTOLINE wParam:(uptr_t)MAX(0, MIN(first, lastLine)) lParam:0];
+    [self refreshChrome];
 }
 
 /// Rewrites the selected characters, or the whole document when nothing is selected.
@@ -251,13 +315,11 @@ static NSString *ConvertLineBytes(NSString *line, std::string (^convert)(const s
     }
 
     NSData *data = [whole dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *prefix = StringFromBytes(data, 0, selStart);
-    NSString *middle = StringFromBytes(data, selStart, selEnd);
-    NSString *suffix = StringFromBytes(data, selEnd, (long)data.length);
-    NSString *replaced = transform(middle);
+    NSString *replaced = transform(StringFromBytes(data, selStart, selEnd));
 
+    // ScintillaEditView::convertSelectedTextTo: the selection is the target.
     [sci message:SCI_BEGINUNDOACTION];
-    [self setDocumentText:[NSString stringWithFormat:@"%@%@%@", prefix, replaced, suffix]];
+    ReplaceRange(sci, selStart, selEnd, replaced);
     [sci message:SCI_ENDUNDOACTION];
     [sci message:SCI_SETSEL wParam:(uptr_t)selStart lParam:selStart + Utf8Length(replaced)];
     [self refreshChrome];
@@ -633,35 +695,50 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
     }];
 }
 
+// IDM_EDIT_SPLIT_LINES: the selected lines, or the caret's, go to Scintilla's
+// SCI_LINESSPLIT at the width of the edge column (the last one of several) in
+// "P"s, or at the window's width when no edge is shown.
 - (void)splitLines {
-    // Notepad++ splits at the wrap width; without wrapping we split on spaces
-    // so a long line becomes one word-run per line at the current edge column.
-    long edge = [self.sci message:SCI_GETEDGECOLUMN];
-    if (edge <= 0) edge = 80;
-    [self transformSelectedLines:^NSArray *(NSArray *bodies) {
-        NSMutableArray *out = [NSMutableArray array];
-        for (NSString *line in bodies) {
-            if ((long)line.length <= edge) { [out addObject:line]; continue; }
-            NSMutableString *current = [NSMutableString string];
-            for (NSString *word in [line componentsSeparatedByString:@" "]) {
-                if (current.length && (long)(current.length + 1 + word.length) > edge) {
-                    [out addObject:[current copy]];
-                    [current setString:word];
-                } else {
-                    if (current.length) [current appendString:@" "];
-                    [current appendString:word];
-                }
+    ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETSELECTIONS] != 1) return;
+    long first = 0, last = 0;
+    [self selectedFirstLine:&first lastLine:&last];
+    long anchorPos = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)first];
+    long caretPos = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)last];
+    [sci message:SCI_SETSELECTION wParam:(uptr_t)caretPos lParam:anchorPos];
+    [sci message:SCI_TARGETFROMSELECTION];
+    long edgeMode = [sci message:SCI_GETEDGEMODE];
+    if (edgeMode == EDGE_NONE) {
+        [sci message:SCI_LINESSPLIT wParam:0 lParam:0];
+    } else {
+        long textWidth = [sci message:SCI_TEXTWIDTH wParam:STYLE_DEFAULT lParam:(sptr_t)"P"];
+        long edgeCol = [sci message:SCI_GETEDGECOLUMN];   // EDGE_LINE, EDGE_BACKGROUND
+        if (edgeMode == EDGE_MULTILINE) {
+            // svp._edgeMultiColumnPos.back(): the last column the user gave.
+            for (NSString *piece in [([NppPreferences shared].edgeColumns ?: @"") componentsSeparatedByCharactersInSet:
+                                     [NSCharacterSet characterSetWithCharactersInString:@" ,;\t"]]) {
+                if (piece.integerValue > 0) edgeCol = piece.integerValue;
             }
-            if (current.length) [out addObject:[current copy]];
         }
-        return out;
-    }];
+        ++edgeCol;   // compensate for zero-based column number
+        [sci message:SCI_LINESSPLIT wParam:(uptr_t)(textWidth * edgeCol) lParam:0];
+    }
+    [self refreshChrome];
 }
 
+// IDM_EDIT_JOIN_LINES: Scintilla's SCI_LINESJOIN over the selected lines; a
+// caret, or a selection inside one line, joins nothing.
 - (void)joinLines {
-    [self transformSelectedLines:^NSArray *(NSArray *bodies) {
-        return @[[bodies componentsJoinedByString:@" "]];
-    }];
+    ScintillaView *sci = self.sci;
+    long first = 0, last = 0;
+    [self selectedFirstLine:&first lastLine:&last];
+    if (first == last) return;
+    long anchorPos = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)first];
+    long caretPos = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)last];
+    [sci message:SCI_SETSELECTION wParam:(uptr_t)caretPos lParam:anchorPos];
+    [sci message:SCI_TARGETFROMSELECTION];
+    [sci message:SCI_LINESJOIN];
+    [self refreshChrome];
 }
 
 - (void)moveLine:(BOOL)up {
@@ -874,62 +951,173 @@ static BOOL PreparedLineIsEmpty(NSString *prepared) {
 
 #pragma mark - Comments
 
+// Notepad_plus::doBlockComment(cm_uncomment): the selected lines, or the
+// caret's, lose a leading line comment (compared without case, for REM) and
+// the space after it; the selection follows the text. A language with only a
+// stream comment, or lines none of which was commented, go to undoStreamComment.
 - (void)uncommentLines {
-    NSString *token = self.currentDocument.language.commentLine;
-    NSString *open = self.currentDocument.language.commentStart, *close = self.currentDocument.language.commentEnd;
-    if (!token.length && open.length && close.length) {
-        // No line comment (HTML, XML): each line's own stream comment comes off, as
-        // doBlockComment's uncomment does for such a language (EDIT-056).
-        [self transformSelectedLines:^NSArray *(NSArray *bodies) {
-            NSMutableArray *out = [NSMutableArray array];
-            for (NSString *line in bodies) {
-                NSUInteger i = 0;
-                while (i < line.length &&
-                       [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[line characterAtIndex:i]]) i++;
-                NSString *indent = [line substringToIndex:i], *rest = [line substringFromIndex:i];
-                if ([rest hasPrefix:open] && [rest hasSuffix:close] && rest.length >= open.length + close.length) {
-                    rest = [rest substringWithRange:NSMakeRange(open.length, rest.length - open.length - close.length)];
-                    if ([rest hasPrefix:@" "]) rest = [rest substringFromIndex:1];
-                    if ([rest hasSuffix:@" "]) rest = [rest substringToIndex:rest.length - 1];
-                }
-                [out addObject:[indent stringByAppendingString:rest]];
-            }
-            return out;
-        }];
+    ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETREADONLY]) return;
+    NppLanguage *language = self.currentDocument.language;
+    NSString *token = language.commentLine;
+    if (!token.length) {
+        if (language.commentStart.length && language.commentEnd.length) [self undoStreamComment:NO];
+        else NppBeep();
         return;
     }
-    if (!token.length) { NppBeep(); return; }
-    [self transformSelectedLines:^NSArray *(NSArray *bodies) {
-        NSMutableArray *out = [NSMutableArray array];
-        for (NSString *line in bodies) {
-            NSUInteger i = 0;
-            while (i < line.length &&
-                   [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[line characterAtIndex:i]]) i++;
-            NSString *indent = [line substringToIndex:i];
-            NSString *rest = [line substringFromIndex:i];
-            if ([rest hasPrefix:token]) {
-                rest = [rest substringFromIndex:token.length];
-                if ([rest hasPrefix:@" "]) rest = [rest substringFromIndex:1];
-            }
-            [out addObject:[indent stringByAppendingString:rest]];
+    BOOL baan = [language.name isEqualToString:@"baanc"];   // BaanC standardization - no space
+    const BOOL avoidIndent = baan || [language.name isEqualToString:@"fortran77"];
+    NSData *symbol = [token dataUsingEncoding:NSUTF8StringEncoding];
+    long symbolLength = (long)symbol.length;
+
+    long selectionStart = [sci message:SCI_GETSELECTIONSTART];
+    long selectionEnd = [sci message:SCI_GETSELECTIONEND];
+    long caretPosition = [sci message:SCI_GETCURRENTPOS];
+    BOOL moveCaret = caretPosition < selectionEnd;
+    long selStartLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selectionStart];
+    long selEndLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selectionEnd];
+    if (selEndLine > selStartLine && selectionEnd == [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)selEndLine]) selEndLine--;
+    int uncommented = 0;
+
+    [sci message:SCI_BEGINUNDOACTION];
+    for (long i = selStartLine; i <= selEndLine; ++i) {
+        long lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)i];
+        long lineIndent = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)i];
+        long lineEnd = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)i];
+        if (lineIndent == lineEnd && !baan) continue;   // empty lines are not commented
+        if (avoidIndent) lineIndent = lineStart;
+        if (lineEnd - lineIndent < symbolLength) continue;
+        std::string text((size_t)(lineEnd - lineIndent) + 1, '\0');
+        Sci_TextRangeFull range = {{lineIndent, lineEnd}, text.data()};
+        [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&range];
+        if (strncasecmp(text.c_str(), (const char *)symbol.bytes, (size_t)symbolLength) != 0) continue;
+        long len = symbolLength + (!baan && text[(size_t)symbolLength] == ' ' ? 1 : 0);
+        [sci message:SCI_DELETERANGE wParam:(uptr_t)lineIndent lParam:len];
+
+        if (i == selStartLine) {
+            if (selectionStart > lineIndent + len) selectionStart -= len;
+            else if (selectionStart > lineIndent) selectionStart = lineIndent;
         }
-        return out;
-    }];
+        if (i == selEndLine) {
+            if (selectionEnd > lineIndent + len) selectionEnd -= len;
+            else if (selectionEnd > lineIndent) {
+                selectionEnd = lineIndent;
+                if (lineIndent == lineStart && i != selStartLine) ++selectionEnd;   // avoid caret return
+            }
+        } else {
+            selectionEnd -= len;
+        }
+        ++uncommented;
+    }
+    if (moveCaret) {
+        [sci message:SCI_GOTOPOS wParam:(uptr_t)selectionEnd lParam:0];
+        [sci message:SCI_SETCURRENTPOS wParam:(uptr_t)selectionStart lParam:0];
+    } else {
+        [sci message:SCI_SETSEL wParam:(uptr_t)selectionStart lParam:selectionEnd];
+    }
+    [sci message:SCI_ENDUNDOACTION];
+    if (!uncommented && language.commentStart.length && language.commentEnd.length) [self undoStreamComment:NO];
+    [self refreshChrome];
 }
 
 - (void)streamComment:(BOOL)comment {
     NSString *open = self.currentDocument.language.commentStart;
     NSString *close = self.currentDocument.language.commentEnd;
-    if (!open.length || !close.length) { NppBeep(); return; }
+    if (comment) {
+        if (!open.length || !close.length) { NppBeep(); return; }
+        [self toggleBlockComment];
+        return;
+    }
+    // IDM_EDIT_STREAM_UNCOMMENT is undoStreamComment(), which falls back to the
+    // line comment for a language that has no stream comment.
+    if (![self undoStreamComment:YES] && (!open.length || !close.length) && !self.currentDocument.language.commentLine.length) NppBeep();
+    [self refreshChrome];
+}
 
-    if (comment) { [self toggleBlockComment]; return; }
+/// Notepad_plus::undoStreamComment: the stream comment around the selection's
+/// start, else around its end, else the first one inside it, is taken off with
+/// a space inside each delimiter, and again while there is one - so a caret
+/// inside a comment uncomments it.
+- (BOOL)undoStreamComment:(BOOL)tryBlockComment {
+    ScintillaView *sci = self.sci;
+    if ([sci message:SCI_GETREADONLY]) return NO;
+    NppLanguage *language = self.currentDocument.language;
+    NSString *open = language.commentStart, *close = language.commentEnd;
+    if (!open.length || !close.length) {
+        if (language.commentLine.length && tryBlockComment) { [self uncommentLines]; return YES; }
+        return NO;
+    }
+    NSData *start = [open dataUsingEncoding:NSUTF8StringEncoding], *end = [close dataUsingEncoding:NSUTF8StringEncoding];
+    // ScintillaEditView::searchInTarget: a target from..to, backwards when from > to.
+    long (^search)(NSData *, long, long) = ^long(NSData *what, long from, long to) {
+        [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)from lParam:to];
+        return [sci message:SCI_SEARCHINTARGET wParam:what.length lParam:(sptr_t)what.bytes];
+    };
+    BOOL retVal = NO;
+    [sci message:SCI_BEGINUNDOACTION];
+    while (true) {
+        long selectionStart = [sci message:SCI_GETSELECTIONSTART];
+        long selectionEnd = [sci message:SCI_GETSELECTIONEND];
+        long caretPosition = [sci message:SCI_GETCURRENTPOS];
+        long docLength = [sci message:SCI_GETLENGTH];
+        BOOL moveCaret = caretPosition < selectionEnd;
+        // Upstream searches with SCFIND_WORDSTART, which refuses a delimiter
+        // touching punctuation of its own class - the "-->" of "<!--<p>hi</p>-->",
+        // just after ">", is never found and the HTML comment Block Comment wrote
+        // cannot be taken off (upstream issue #15914). A plain search finds it.
+        [sci message:SCI_SETSEARCHFLAGS wParam:0 lParam:0];
 
-    [self transformSelectedText:^NSString *(NSString *sel) {
-        NSString *r = sel;
-        if ([r hasPrefix:open]) r = [r substringFromIndex:open.length];
-        if ([r hasSuffix:close]) r = [r substringToIndex:r.length - close.length];
-        return r;
-    }];
+        long startBefore = search(start, selectionStart, 0), endBefore = search(end, selectionStart, 0);
+        long startAfter = search(start, selectionStart, docLength), endAfter = search(end, selectionStart, docLength);
+        long posStartComment, posEndComment;
+        if (startBefore != -1 && endAfter != -1
+            && (endBefore == -1 || startBefore >= endBefore)
+            && (startAfter == -1 || endAfter <= startAfter)) {
+            posStartComment = startBefore;
+            posEndComment = endAfter;
+        } else {
+            long startBeforeEnd = search(start, selectionEnd, 0), endBeforeEnd = search(end, selectionEnd, 0);
+            long startAfterEnd = search(start, selectionEnd, docLength), endAfterEnd = search(end, selectionEnd, docLength);
+            if (startBeforeEnd != -1 && endAfterEnd != -1
+                && (endBeforeEnd == -1 || startBeforeEnd >= endBeforeEnd)
+                && (startAfterEnd == -1 || endAfterEnd <= startAfterEnd)) {
+                posStartComment = startBeforeEnd;
+                posEndComment = endAfterEnd;
+            } else if (startAfter != -1 && startAfter < selectionEnd && endBeforeEnd != -1 && endBeforeEnd > selectionStart) {
+                // More than one inside the selection: the first after its start.
+                posStartComment = startAfter;
+                posEndComment = endAfter;
+            } else {
+                [sci message:SCI_ENDUNDOACTION];
+                return retVal;
+            }
+        }
+        retVal = YES;
+        long startCommentLength = (long)start.length, endCommentLength = (long)end.length;
+        // The end first, so that the start's position holds; a space before it goes too.
+        if (posEndComment > 0 && [sci message:SCI_GETCHARAT wParam:(uptr_t)(posEndComment - 1)] == ' ') {
+            endCommentLength += 1;
+            posEndComment -= 1;
+        }
+        [sci message:SCI_DELETERANGE wParam:(uptr_t)posEndComment lParam:endCommentLength];
+        if ([sci message:SCI_GETCHARAT wParam:(uptr_t)(posStartComment + startCommentLength)] == ' ') startCommentLength += 1;
+        [sci message:SCI_DELETERANGE wParam:(uptr_t)posStartComment lParam:startCommentLength];
+
+        long selectionStartMove = 0, selectionEndMove;
+        if (selectionStart > posStartComment) {
+            selectionStartMove = selectionStart >= posStartComment + startCommentLength
+                ? -startCommentLength : -(selectionStart - posStartComment);
+        }
+        if (selectionEnd >= posEndComment + endCommentLength) selectionEndMove = -(startCommentLength + endCommentLength);
+        else if (selectionEnd <= posEndComment) selectionEndMove = -startCommentLength;
+        else selectionEndMove = -(startCommentLength + (selectionEnd - posEndComment));
+        if (moveCaret) {
+            [sci message:SCI_GOTOPOS wParam:(uptr_t)(selectionEnd + selectionEndMove) lParam:0];
+            [sci message:SCI_SETCURRENTPOS wParam:(uptr_t)(selectionStart + selectionStartMove) lParam:0];
+        } else {
+            [sci message:SCI_SETSEL wParam:(uptr_t)(selectionStart + selectionStartMove) lParam:selectionEnd + selectionEndMove];
+        }
+    }
 }
 
 #pragma mark - Read-only
