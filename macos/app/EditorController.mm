@@ -2001,6 +2001,19 @@ static BOOL gCheckingFilesOnDisk;
 
 static NSString *YesNo(id value) { return [value boolValue] ? @"yes" : @"no"; }
 
+/// A file's time as a FILETIME (100 ns since 1601), what session.xml's
+/// originalFileLastModifTimestamp(High) hold. Counted from 2001, where an NSDate's double
+/// keeps a tenth of a microsecond, and moved to 1601 in whole ticks: from 1970 or 1601 in
+/// floating point the ticks came out a microsecond off.
+static const unsigned long long kFileTimeTicksTo2001 = (11644473600ULL + 978307200ULL) * 10000000ULL;
+static unsigned long long FileTimeOfDate(NSDate *date) {
+    if (!date) return 0;
+    return (unsigned long long)((long long)kFileTimeTicksTo2001 + llround(date.timeIntervalSinceReferenceDate * 1e7));
+}
+static NSDate *DateOfFileTime(unsigned long long ticks) {
+    return [NSDate dateWithTimeIntervalSinceReferenceDate:(double)((long long)ticks - (long long)kFileTimeTicksTo2001) / 1e7];
+}
+
 /// The name a language has in the Language menu, which is what session.xml calls it by.
 static NSString *SessionLanguageName(NSString *internal) { return [LanguageCatalog menuTitleForLanguage:internal ?: @"normal"]; }
 
@@ -2036,7 +2049,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // The file's time when the document last matched it, as a FILETIME (100 ns since 1601)
     // in two halves, as upstream writes buf->getLastModifiedTimestamp().
     NSDate *fileDate = [entry[@"fileDate"] isKindOfClass:[NSDate class]] ? entry[@"fileDate"] : nil;
-    unsigned long long ticks = fileDate ? (unsigned long long)llround((fileDate.timeIntervalSince1970 + 11644473600.0) * 1e7) : 0;
+    unsigned long long ticks = FileTimeOfDate(fileDate);
     set(@"originalFileLastModifTimestamp", @(ticks & 0xFFFFFFFFULL).stringValue);
     set(@"originalFileLastModifTimestampHigh", @(ticks >> 32).stringValue);
     // Upstream counts tab colours from 0 with -1 for none; here 0 is none.
@@ -2139,7 +2152,10 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         if (attr(@"backupFilePath").length) e[@"backup"] = attr(@"backupFilePath");
         unsigned long long ticks = (strtoull(attr(@"originalFileLastModifTimestampHigh").UTF8String ?: "0", NULL, 10) << 32) |
                                    (strtoull(attr(@"originalFileLastModifTimestamp").UTF8String ?: "0", NULL, 10) & 0xFFFFFFFFULL);
-        if (ticks) e[@"fileDate"] = [NSDate dateWithTimeIntervalSince1970:(double)ticks / 1e7 - 11644473600.0];
+        if (ticks) {
+            e[@"fileDate"] = DateOfFileTime(ticks);
+            e[@"fileTime"] = @(ticks);
+        }
         NSMutableArray *marks = [NSMutableArray array], *folds = [NSMutableArray array];
         for (NSXMLElement *m in [file elementsForName:@"Mark"]) [marks addObject:@([m attributeForName:@"line"].stringValue.longLongValue)];
         for (NSXMLElement *m in [file elementsForName:@"Fold"]) [folds addObject:@([m attributeForName:@"line"].stringValue.longLongValue)];
@@ -2373,9 +2389,14 @@ static NSString *InternalLanguageName(NSString *sessionName) {
         NSData *data = [NSData dataWithContentsOfFile:backup];
         if (data) {
             [self restoreBackupData:data forDocument:doc atPath:backup entry:f];
-            // A FILETIME holds 100 ns: the same time read back differs below that, and is the same time.
+            // A FILETIME holds 100 ns, and the disk's time more: the file is the one of then when
+            // its time comes to the same ticks (Buffer::checkFileState compares FILETIMEs). Compared
+            // as dates, the part below a tick made an unchanged file "modified by another program",
+            // and Yes to reloading it, the default, threw the restored text away.
             NSDate *then = [f[@"fileDate"] isKindOfClass:[NSDate class]] ? f[@"fileDate"] : nil;
-            if (then && doc.fileModificationDate && fabs([then timeIntervalSinceDate:doc.fileModificationDate]) > 1e-6) {
+            unsigned long long thenTicks = [f[@"fileTime"] isKindOfClass:[NSNumber class]]
+                ? [f[@"fileTime"] unsignedLongLongValue] : FileTimeOfDate(then);
+            if (then && doc.fileModificationDate && FileTimeOfDate(doc.fileModificationDate) != thenTicks) {
                 doc.fileModificationDate = then;
             }
         }

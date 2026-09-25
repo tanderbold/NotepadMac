@@ -3,6 +3,8 @@
 // Called from NppMacRunTests (Tests.mm), which runs the areas in the suite's
 // order; the helpers they share are in TestSupport.h.
 #import "TestSupport.h"
+#include <fcntl.h>
+#include <sys/stat.h>
 
 /// == Editor settings Notepad++ has ==
 void NppTestsEditorSettings(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
@@ -1337,6 +1339,48 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
                   @"the unsaved text comes back when the file is newer than its backup or is gone, "
                   @"and a changed file is left for the changed-on-disk check",
                   newerFileKept && goneFileKept);
+        }
+
+        // A file left alone since its backup is not "changed by another program" after the
+        // restore, whatever its time below the 100 ns of a FILETIME: the reload question that
+        // followed was answered Yes by Return and threw the restored text away. The times are
+        // ones whose FILETIME read back as a date lands more than a microsecond off.
+        {
+            NSFileManager *fm = [NSFileManager defaultManager];
+            NSString *sameSession = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp-backup-same-session.xml"];
+            NSString *same = TempFile(@"t_session_same.txt", @"on disk\n");
+            int unchanged = 0, tried = 0;
+            for (long nsec : {134623L, 237570L, 285084L, 388031L, 490978L, 760224L, 863171L, 910685L}) {
+                struct timespec times[2] = {{1790000000, nsec}, {1790000000, nsec}};
+                utimensat(AT_FDCWD, same.fileSystemRepresentation, times, 0);
+                [ed openFileAtPath:same error:NULL];
+                NppDocument *sd = ed.currentDocument;
+                SetDoc(ed, @"only in the backup\n");
+                sd.modified = YES;
+                [ed runAutosavePass];
+                NSString *sameBackup = sd.backupPath;
+                [ed saveSessionTo:sameSession error:NULL];
+                sd.backupPath = nil;
+                [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:sd] discardChanges:YES];
+                [ed loadSessionFrom:sameSession error:NULL];
+                NppDocument *back = nil;
+                for (NppDocument *d in ed.documents) if ([d.path isEqualToString:same]) back = d;
+                NSDate *onDisk = [NppFileAttributes(same) fileModificationDate];
+                tried++;
+                if (back && back.modified && onDisk && [onDisk compare:back.fileModificationDate] == NSOrderedSame) unchanged++;
+                if (back) {
+                    back.backupPath = nil;
+                    [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:back] discardChanges:YES];
+                }
+                [fm removeItemAtPath:sameBackup error:NULL];
+            }
+            [fm removeItemAtPath:same error:NULL];
+            [fm removeItemAtPath:sameSession error:NULL];
+            printf("    unchanged file after restore: %d of %d known as unchanged\n", unchanged, tried);
+            Check(@"IDM_FILE_LOADSESSION (backup of an unchanged file)",
+                  @"a file unchanged since its backup is not taken for changed on disk after the restore, "
+                  @"whatever its time below a FILETIME's 100 ns",
+                  unchanged == tried);
         }
 
         // A snapshot backup is written in the document's own encoding, and the session says which
