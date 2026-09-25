@@ -260,6 +260,7 @@ and `NPPMAC_NOTARY_PROFILE=<profile made with xcrun notarytool store-credentials
 ## Questions, bugs, contributing
 
 Use this repository's **Issues** for bugs and requests and **Discussions** for questions.
+[TESTING.md](TESTING.md) says what is most useful to try, especially if you come from Notepad++ on Windows.
 Please do not take problems with the Mac version to the Notepad++ project - they did not
 make it and cannot fix it.
 

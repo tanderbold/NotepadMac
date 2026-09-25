@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/tanderbold/NotepadMac/discussions
+    about: How do I..., is it planned..., show what you built - Discussions is the place.
+  - name: Help test NotepadMac
+    url: https://github.com/tanderbold/NotepadMac/blob/main/TESTING.md
+    about: What is most useful to try, especially if you come from Notepad++ on Windows.

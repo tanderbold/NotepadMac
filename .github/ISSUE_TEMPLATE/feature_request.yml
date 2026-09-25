@@ -1,0 +1,18 @@
+name: Feature request
+description: Something Notepad++ on Windows has that NotepadMac lacks, or something the Mac version should do.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What you would like
+      description: If it is a Notepad++ feature or plugin, name it - the port follows upstream's behaviour where it can.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What it is for
+      description: The task you want to do; it helps find the right way on a Mac.
+    validations:
+      required: true
