@@ -449,6 +449,49 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
                   bomBytes.length > 3 && memcmp(bomBytes.bytes, "\xEF\xBB\xBF" "bom here\n", 12) == 0);
             ed.currentDocument.hasBOM = NO;
 
+            // A file belongs to the server it came from: after connecting to another one, Upload does not
+            // send it to the same path there (NppFTP's cache is per profile). It goes where a local file
+            // would, into the folder being browsed.
+            NSString *rootB = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_ftproot_b"];
+            [[NSFileManager defaultManager] removeItemAtPath:rootB error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtPath:[rootB stringByAppendingPathComponent:@"incoming"]
+                                      withIntermediateDirectories:YES attributes:nil error:NULL];
+            [@"B's own\n" writeToFile:[rootB stringByAppendingPathComponent:@"greeting.txt"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            NSTask *serverB = [[NSTask alloc] init];
+            serverB.executableURL = [NSURL fileURLWithPath:@"/usr/bin/python3"];
+            serverB.arguments = @[script, rootB];
+            NSPipe *outB = [NSPipe pipe];
+            serverB.standardOutput = outB;
+            NSInteger portB = 0;
+            if ([serverB launchAndReturnError:NULL]) {
+                NSScanner *scanner = [NSScanner scannerWithString:[[NSString alloc] initWithData:[outB.fileHandleForReading availableData] encoding:NSUTF8StringEncoding] ?: @""];
+                [scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:NULL];
+                [scanner scanInteger:&portB];
+            }
+            [ed openRemoteFileAtPath:@"/greeting.txt"];            // from the first server
+            NppDocument *fromA = ed.currentDocument;
+            [ed disconnectFtp];
+            NppFtpProfile *other = [[NppFtpProfile alloc] init];
+            other.name = @"test-server-b"; other.host = @"127.0.0.1"; other.port = portB; other.username = @"tester";
+            other.protocol = NppFtpPlain; other.initialDirectory = @"/incoming";
+            BOOL connectedB = portB > 0 && [ed connectToFtpProfile:other password:@"secret"];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:fromA]];
+            NSString *mappedOnB = [ed remotePathForCurrentDocument];
+            SetDoc(ed, @"meant for A\n");
+            BOOL uploadedB = [ed uploadCurrentDocument];
+            NSString *bGreeting = [NSString stringWithContentsOfFile:[rootB stringByAppendingPathComponent:@"greeting.txt"] encoding:NSUTF8StringEncoding error:NULL];
+            NSString *bIncoming = [NSString stringWithContentsOfFile:[rootB stringByAppendingPathComponent:@"incoming/greeting.txt"] encoding:NSUTF8StringEncoding error:NULL];
+            [ed disconnectFtp];
+            [ed connectToFtpProfile:profile password:@"secret"];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:fromA]];
+            NSString *mappedOnA = [ed remotePathForCurrentDocument];
+            Check(@"FTP upload (another server)", @"after connecting to a second server, a file downloaded from the first is not uploaded over the same path "
+                  @"there but into the folder being browsed; back on the first server it knows its path again",
+                  connectedB && mappedOnB == nil && uploadedB && [bGreeting isEqualToString:@"B's own\n"] &&
+                  [bIncoming isEqualToString:@"meant for A\n"] && [mappedOnA isEqualToString:@"/greeting.txt"]);
+            [serverB terminate];
+            [[NSFileManager defaultManager] removeItemAtPath:rootB error:NULL];
+
             // A failed Connect says why, in the transfer's own words.
             NppFtpProfile *dead = [[NppFtpProfile alloc] init];
             dead.name = @"test-dead"; dead.host = @"127.0.0.1"; dead.port = 1; dead.username = @"tester";
