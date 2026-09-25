@@ -66,6 +66,9 @@ static void LoadPCRE2(void) {
 
 @interface NppRegex ()
 @property (nonatomic) void *code;
+/// A filtered copy borrows the code of the regex it was made from and keeps that alive.
+@property (nonatomic, strong, nullable) NppRegex *codeOwner;
+@property (nonatomic, copy, nullable) BOOL (^accept)(const uint8_t *bytes, size_t length, NSRange match);
 @end
 
 @implementation NppRegex
@@ -217,7 +220,15 @@ static void *CompilePattern(NSString *pattern, NSString **errorOut) {
 - (void)dealloc {
     // Instances live in the cache for the life of the process, so this runs only
     // if one is discarded; freeing is still the right thing to do.
-    if (_code && gCodeFree) gCodeFree(_code);
+    if (_code && gCodeFree && !_codeOwner) gCodeFree(_code);
+}
+
+- (NppRegex *)regexAcceptingOnly:(BOOL (^)(const uint8_t *bytes, size_t length, NSRange match))accept {
+    NppRegex *filtered = [[NppRegex alloc] init];
+    filtered.code = self.code;
+    filtered.codeOwner = self.codeOwner ?: self;
+    filtered.accept = accept;
+    return filtered;
 }
 
 static BOOL gInStretches = YES;
@@ -298,6 +309,7 @@ static size_t NextCharacterSkippingCRLF(const uint8_t *bytes, size_t length, siz
     BOOL continuation = NO;
     BOOL first = YES;
 
+    BOOL (^accept)(const uint8_t *, size_t, NSRange) = self.accept;
     while (at <= end && !stop) {
         // The subject is cut at `end` so a match cannot run past the range it
         // was asked for -- which is how a class body is kept to itself. The
@@ -312,6 +324,14 @@ static size_t NextCharacterSkippingCRLF(const uint8_t *bytes, size_t length, siz
         size_t *ovector = gOvector(matchData);
         size_t start = ovector[0], finish = ovector[1];
         if (start > end) break;
+        // A match the filter refuses is passed over, and the search goes on one
+        // character after where it began, as Scintilla's FindText does when a
+        // match is not a whole word.
+        if (accept && !accept(bytes, data.length, NSMakeRange(start, finish - start))) {
+            at = NextCharacter(bytes, end, start);
+            continuation = NO;      // still the one search, which began before this
+            continue;
+        }
 
         if (empty != NppEmptyMatchesAll && finish == start) {
             // FindTextForward: an empty match is valid when empty matches are

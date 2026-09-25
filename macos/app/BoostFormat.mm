@@ -11,7 +11,12 @@ struct Formatter {
     bool haveConditional = false;
     NSMutableString *out = nil;
     NSArray *groups = nil;
-    NSString *prefix = nil, *suffix = nil;
+    // Read only when the format names them ($` $' $PREMATCH...): the text after
+    // a match runs to the end of the document, and building it for every match
+    // made Replace All quadratic in the number of matches.
+    NSString *(^prefixOf)(void) = nil, *(^suffixOf)(void) = nil;
+    NSString *prefix() const { return prefixOf ? prefixOf() : nil; }
+    NSString *suffix() const { return suffixOf ? suffixOf() : nil; }
     NSInteger lastClosed = -1;
     NSInteger (^named)(NSString *) = nil;
     static const unsigned kMaxDepth = 200;
@@ -112,8 +117,8 @@ struct Formatter {
         size_t save = pos;
         switch (fmt[pos]) {
             case '&': ++pos; put(group(0)); return;
-            case '`': ++pos; put(prefix); return;
-            case '\'': ++pos; put(suffix); return;
+            case '`': ++pos; put(prefix()); return;
+            case '\'': ++pos; put(suffix()); return;
             case '$': put(fmt[pos++]); return;
             case '+':
                 if (++pos != end && fmt[pos] == '{') {
@@ -166,8 +171,8 @@ struct Formatter {
             }
             switch (verb.what) {
                 case 0: put(group(0)); break;
-                case 1: put(prefix); break;
-                case 2: put(suffix); break;
+                case 1: put(prefix()); break;
+                case 2: put(suffix()); break;
                 case 3: put(group(groups.count > 1 ? (NSInteger)groups.count - 1 : 1)); break;
                 default: put(group(lastClosed)); break;
             }
@@ -291,7 +296,7 @@ struct Formatter {
 
 }  // namespace
 
-NSString *NppBoostFormat(NSString *format, NSArray *groups, NSString *prefix, NSString *suffix,
+NSString *NppBoostFormat(NSString *format, NSArray *groups, NSString *(^prefix)(void), NSString *(^suffix)(void),
                          NSInteger lastClosedGroup, NSInteger (^groupNamed)(NSString *)) {
     Formatter f;
     f.fmt.resize(format.length);
@@ -299,8 +304,8 @@ NSString *NppBoostFormat(NSString *format, NSArray *groups, NSString *prefix, NS
     f.end = f.fmt.size();
     f.out = [NSMutableString string];
     f.groups = groups;
-    f.prefix = prefix;
-    f.suffix = suffix;
+    f.prefixOf = prefix;
+    f.suffixOf = suffix;
     f.lastClosed = lastClosedGroup;
     f.named = groupNamed;
     // format() is one format_all: a stray ')' ends the replacement there.

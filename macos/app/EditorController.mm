@@ -1547,11 +1547,13 @@ static BOOL gCheckingFilesOnDisk;
     // view's (upstream hides the emptied view; the other then fills the window).
     if (self.docs.count && [self mainTabCount] == 0) [self setSecondaryViewVisible:NO];
 
+    // Notepad_plus::doClose: the close is finished first - a fresh tab, the recent
+    // list, the backup, the document released - and only then IDM_FILE_EXIT, so a
+    // quit that is cancelled leaves the empty tab, not a view on a closed document.
+    // An agent's close never quits the editor (AGENT-106): it gets the fresh tab.
+    BOOL quitAfterwards = self.docs.count == 0 && [NppPreferences shared].exitOnClosingLastTab &&
+                          !self.agentRequestRunning;
     if (self.docs.count == 0) {
-        if ([NppPreferences shared].exitOnClosingLastTab && !self.agentRequestRunning) {
-            [NSApp terminate:nil];
-            return;
-        }
         self.currentIndex = -1;
         [self newDocument];                       // switches the view off the old doc
     } else if (inFront && inFront != doc && [self.docs containsObject:inFront]) {
@@ -1578,6 +1580,7 @@ static BOOL gCheckingFilesOnDisk;
     }
     // Safe only once the view no longer points at it.
     [self.sciView message:SCI_RELEASEDOCUMENT wParam:0 lParam:(sptr_t)doc.docPointer];
+    if (quitAfterwards) [NSApp terminate:nil];
 }
 
 #pragma mark - File commands

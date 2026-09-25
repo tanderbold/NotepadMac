@@ -305,17 +305,90 @@ void NppTestsEditMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
         Check(@"IDM_EDIT_REMOVE_CONSECUTIVE_DUP_LINES", @"collapses only neighbours",
               [DocText(ed) isEqualToString:@"a\nb\na\n"]);
 
+        long edgeMode = [sci message:SCI_GETEDGEMODE], edgeColumn = [sci message:SCI_GETEDGECOLUMN];
+        [sci message:SCI_SETEDGEMODE wParam:EDGE_LINE lParam:0];
         SetDoc(ed, @"one two three\n");
         [sci message:SCI_SETEDGECOLUMN wParam:7 lParam:0];
         [ed splitLines];
         Check(@"IDM_EDIT_SPLIT_LINES", @"breaks a long line at the edge column",
               [[DocText(ed) componentsSeparatedByString:@"\n"] count] > 2);
-        [sci message:SCI_SETEDGECOLUMN wParam:0 lParam:0];
+        // IDM_EDIT_SPLIT_LINES with a caret splits the caret's line only (getSelectionLinesRange).
+        SetDoc(ed, @"one two three\nfour five six\n");
+        [sci message:SCI_GOTOPOS wParam:[sci message:SCI_POSITIONFROMLINE wParam:1] lParam:0];
+        [ed splitLines];
+        Check(@"IDM_EDIT_SPLIT_LINES", @"with a caret only the caret's line is split",
+              [DocText(ed) hasPrefix:@"one two three\nfour "] && ![DocText(ed) hasSuffix:@"four five six\n"]);
+        [sci message:SCI_SETEDGECOLUMN wParam:(uptr_t)edgeColumn lParam:0];
+        [sci message:SCI_SETEDGEMODE wParam:(uptr_t)edgeMode lParam:0];
 
         SetDoc(ed, @"a\nb\nc\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
         [ed joinLines];
         Check(@"IDM_EDIT_JOIN_LINES", @"joins with single spaces",
               [DocText(ed) hasPrefix:@"a b c"]);
+        // NppCommands.cpp IDM_EDIT_JOIN_LINES: nothing when the range is one line.
+        SetDoc(ed, @"a\nb\nc\n");
+        [sci message:SCI_GOTOPOS wParam:0 lParam:0];
+        [ed joinLines];
+        Check(@"IDM_EDIT_JOIN_LINES", @"with only a caret nothing is joined",
+              [DocText(ed) isEqualToString:@"a\nb\nc\n"]);
+        // SCI_LINESJOIN adds no second space after a line that ends in one.
+        SetDoc(ed, @"a \nb\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
+        [ed joinLines];
+        Check(@"IDM_EDIT_JOIN_LINES", @"a line ending in a space is joined without another",
+              [DocText(ed) isEqualToString:@"a b\n"]);
+
+        // Line and case transforms change only the lines they change (upstream
+        // goes through the target): bookmarks and folds elsewhere stay, and
+        // one undo gives the text back.
+        {
+            NSMutableString *big = [NSMutableString string];
+            for (int i = 0; i < 600; ++i) {
+                if (i == 200) [big appendString:@"int f() {\n"];
+                else if (i == 205) [big appendString:@"}\n"];
+                // (Editing inside a folded block shows it: Scintilla's SC_AUTOMATICFOLD_SHOW.)
+                else if (i > 200 && i < 205) [big appendFormat:@"    return %d;\n", i];
+                else [big appendFormat:@"line %d word  \n", i];
+            }
+            [ed setLanguageNamed:@"cpp"];
+            SetDoc(ed, big);
+            [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+            BOOL (^marked)(long) = ^BOOL(long ln) {
+                return ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & (1 << 1)) != 0;
+            };
+            [sci message:SCI_MARKERADD wParam:100 lParam:1];
+            [sci message:SCI_MARKERADD wParam:500 lParam:1];
+            [sci message:SCI_FOLDLINE wParam:200 lParam:SC_FOLDACTION_CONTRACT];
+            BOOL (^kept)(void) = ^BOOL {
+                return marked(100) && marked(500) && [sci message:SCI_GETFOLDEXPANDED wParam:200] == 0;
+            };
+            long wordAt = [sci message:SCI_POSITIONFROMLINE wParam:300] + 9;
+            [sci message:SCI_SETSEL wParam:(uptr_t)wordAt lParam:wordAt + 4];
+            [ed convertCase:NppCaseUpper];
+            Check(@"IDM_EDIT_UPPERCASE", @"upper-casing one word keeps the bookmarks and folds of other lines",
+                  kept() && [DocText(ed) containsString:@"line 300 WORD"]);
+            [sci message:SCI_SETSEL wParam:(uptr_t)[sci message:SCI_POSITIONFROMLINE wParam:10]
+                  lParam:[sci message:SCI_POSITIONFROMLINE wParam:20]];
+            [ed sortLines:NppSortLexicographic descending:YES];
+            Check(@"IDM_EDIT_SORTLINES_LEXICOGRAPHIC_DESCENDING", @"sorting some lines keeps bookmarks and folds elsewhere",
+                  kept() && [DocText(ed) containsString:@"line 19 word  \nline 18"]);
+            [sci message:SCI_SETEMPTYSELECTION wParam:0];
+            [ed applyTrim:NppTrimTrailing];
+            Check(@"IDM_EDIT_TRIMTRAILING", @"trimming every line keeps the bookmarked lines' marks and the fold",
+                  kept() && ![DocText(ed) containsString:@"word  \n"]);
+            [sci message:SCI_UNDO];
+            Check(@"IDM_EDIT_TRIMTRAILING", @"one undo gives the trimmed spaces back",
+                  [DocText(ed) containsString:@"line 400 word  \n"]);
+            [sci message:SCI_INSERTTEXT wParam:[sci message:SCI_POSITIONFROMLINE wParam:300] lParam:(sptr_t)"line 1 word  \n"];
+            [sci message:SCI_SETEMPTYSELECTION wParam:0];
+            [ed removeDuplicateLines:NO];
+            Check(@"IDM_EDIT_REMOVE_ANY_DUP_LINES", @"removing a duplicate keeps the marks of the lines that stay",
+                  kept() && [sci message:SCI_GETLINECOUNT] == 601);
+            [sci message:SCI_MARKERDELETEALL wParam:1];
+            [sci message:SCI_FOLDALL wParam:SC_FOLDACTION_EXPAND];
+            [ed setLanguageNamed:@"normal"];
+        }
 
         SetDoc(ed, @"one\ntwo\n");
         [sci message:SCI_GOTOLINE wParam:1 lParam:0];
@@ -432,9 +505,28 @@ void NppTestsEditMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
 
         [ed setLanguageNamed:@"cpp"];
         SetDoc(ed, @"// x\n// y\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:(sptr_t)[sci message:SCI_GETLENGTH]];
         [ed uncommentLines];
         Check(@"IDM_EDIT_BLOCK_UNCOMMENT", @"strips the line comment token",
               [DocText(ed) isEqualToString:@"x\ny\n"]);
+        // doBlockComment(cm_uncomment) with a caret: that line only.
+        SetDoc(ed, @"// x\n// y\n");
+        [sci message:SCI_GOTOPOS wParam:1 lParam:0];
+        [ed uncommentLines];
+        Check(@"IDM_EDIT_BLOCK_UNCOMMENT", @"with a caret only the caret's line is uncommented",
+              [DocText(ed) isEqualToString:@"x\n// y\n"]);
+        // undoStreamComment looks around the caret.
+        SetDoc(ed, @"a /* body */ b\n/* other */\n");
+        [sci message:SCI_GOTOPOS wParam:6 lParam:0];
+        [ed streamComment:NO];
+        Check(@"IDM_EDIT_STREAM_UNCOMMENT", @"a caret inside a stream comment takes that comment off",
+              [DocText(ed) isEqualToString:@"a body b\n/* other */\n"]);
+        // A line with no line comment falls back to the stream comment (doBlockComment).
+        SetDoc(ed, @"/* z */\n");
+        [sci message:SCI_GOTOPOS wParam:3 lParam:0];
+        [ed uncommentLines];
+        Check(@"IDM_EDIT_BLOCK_UNCOMMENT", @"no line comment on the line: the stream comment around the caret comes off",
+              [DocText(ed) isEqualToString:@"z\n"]);
 
         SetDoc(ed, @"body\n");
         [sci message:SCI_SETSEL wParam:0 lParam:4];

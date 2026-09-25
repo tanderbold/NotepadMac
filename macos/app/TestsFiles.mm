@@ -46,6 +46,17 @@ static NSView *DropPaths(NSArray<NSString *> *paths, NSView *target) {
     return view;
 }
 
+/// Stands in for the application's delegate while a quit must be refused.
+@interface NppCancelQuitDelegate : NSObject <NSApplicationDelegate>
+@property (nonatomic) BOOL asked;
+@end
+@implementation NppCancelQuitDelegate
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+    self.asked = YES;
+    return NSTerminateCancel;
+}
+@end
+
 /// == File ==; == File: more ==; == File: close family ==; == File: folders and workspace ==; == Sessions ==
 void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     if (NppSectionWanted(@"File")) { printf("\n== File ==\n");
@@ -1573,6 +1584,29 @@ void NppTestsFiles(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
         for (NppDocument *d in ed.documents) if (d.path) [paths addObject:d.path];
         Check(@"IDM_FILE_LOADSESSION", @"reopens every file from the session",
               loaded && [paths containsObject:f1] && [paths containsObject:f2]);
+
+        // "Exit on close the last tab" with the quit cancelled (a question answered
+        // Cancel): doClose finished first, so the window is left on a fresh tab,
+        // not on the closed document with no tab.
+        {
+            [ed closeAllDocuments];
+            [ed openFileAtPath:f1 error:&err];
+            [ed closeAllButCurrent];
+            NppPreferences *prefs = [NppPreferences shared];
+            BOOL exitWas = prefs.exitOnClosingLastTab;
+            prefs.exitOnClosingLastTab = YES;
+            NppCancelQuitDelegate *stub = [NppCancelQuitDelegate new];
+            id<NSApplicationDelegate> real = NSApp.delegate;
+            NSApp.delegate = stub;
+            [ed closeDocumentAtIndex:0 discardChanges:YES];
+            NSApp.delegate = real;
+            prefs.exitOnClosingLastTab = exitWas;
+            NppDocument *left = ed.currentDocument;
+            Check(@"IDM_FILE_CLOSE (exit on closing the last tab)",
+                  @"the quit was asked; cancelled, a fresh tab is in front and the view shows it",
+                  stub.asked && ed.documents.count == 1 && left && !left.path &&
+                  (sptr_t)[sci message:SCI_GETDOCPOINTER] == (sptr_t)left.docPointer && [sci message:SCI_GETLENGTH] == 0);
+        }
     }
 }
 

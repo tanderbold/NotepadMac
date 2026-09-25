@@ -2265,15 +2265,18 @@ static NSString *Ordinal(NSUInteger n) {
     NppFtpProfile *profile = [self.editor ftpProfileNamed:chosen];
     if (!profile) { NppBeep(); return; }
 
-    if (![self.editor connectToFtpProfile:profile]) {
-        NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Cannot connect.";
-        alert.informativeText = [self.editor ftpConnectError]
-            ?: @"The server did not answer, or the credentials were refused.";
-        [alert runModal];
-        return;
-    }
-    [self ftpBrowse:sender];
+    // Off the main thread: a server that does not answer takes 15 s to give up.
+    [self.editor connectToFtpProfile:profile password:nil completion:^(BOOL connected, NSArray<NppFtpEntry *> *entries) {
+        if (!connected) {
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = @"Cannot connect.";
+            alert.informativeText = [self.editor ftpConnectError]
+                ?: @"The server did not answer, or the credentials were refused.";
+            [alert runModal];
+            return;
+        }
+        [self ftpShowEntries:entries];   // the connection test listed it already
+    }];
 }
 
 - (void)ftpDisconnect:(id)sender {
@@ -2283,12 +2286,18 @@ static NSString *Ordinal(NSUInteger n) {
 
 - (void)ftpBrowse:(id)sender {
     if (![self.editor ftpConnected]) { [self ftpConnect:sender]; return; }
-    NSArray *entries = [self.editor ftpListCurrentDirectory];
-    if (!entries) {
-        [self presentText:[self.editor ftpClient].lastError ?: @"Cannot list the directory."
-                    title:@"FTP"];
-        return;
-    }
+    [self.editor ftpListCurrentDirectoryCompletion:^(NSArray<NppFtpEntry *> *entries) {
+        if (!entries) {
+            [self presentText:[self.editor ftpClient].lastError ?: @"Cannot list the directory."
+                        title:@"FTP"];
+            return;
+        }
+        [self ftpShowEntries:entries];
+    }];
+}
+
+- (void)ftpShowEntries:(NSArray<NppFtpEntry *> *)entries {
+    if (![self.editor ftpConnected]) return;   // disconnected while the listing came
     self.ftpEntries = entries;
 
     if (!self.ftpPanel) {
@@ -2337,31 +2346,36 @@ static NSString *Ordinal(NSUInteger n) {
 
 - (void)ftpRowActivated:(id)sender {
     NSInteger row = self.ftpTable.clickedRow;
-    if (row == 0) { [self.editor ftpChangeDirectory:@".."]; [self ftpBrowse:nil]; return; }
     NSInteger index = row - 1;
-    if (index < 0 || index >= (NSInteger)self.ftpEntries.count) return;
-
-    NppFtpEntry *entry = self.ftpEntries[(NSUInteger)index];
-    if (entry.isDirectory) {
-        [self.editor ftpChangeDirectory:entry.name];
-        [self ftpBrowse:nil];
+    if (row != 0 && (index < 0 || index >= (NSInteger)self.ftpEntries.count)) return;
+    NppFtpEntry *entry = row == 0 ? nil : self.ftpEntries[(NSUInteger)index];
+    if (row == 0 || entry.isDirectory) {
+        // One listing, which both tests the directory and fills the panel; where
+        // it cannot be entered, the directory the panel was on is shown again.
+        [self.editor ftpChangeDirectory:row == 0 ? @".." : entry.name completion:^(NSArray<NppFtpEntry *> *entries) {
+            if (entries) [self ftpShowEntries:entries];
+            else [self ftpBrowse:nil];
+        }];
         return;
     }
-    if (![self.editor openRemoteFileAtPath:entry.name]) {
-        [self presentText:[self.editor ftpClient].lastError ?: @"Cannot open that file."
-                    title:@"FTP"];
-    }
+    [self.editor openRemoteFileAtPath:entry.name completion:^(BOOL opened) {
+        if (!opened) {
+            [self presentText:[self.editor ftpClient].lastError ?: @"Cannot open that file."
+                        title:@"FTP"];
+        }
+    }];
 }
 
 - (void)ftpUpload:(id)sender {
     if (![self.editor ftpConnected]) { NppBeep(); return; }
-    if ([self.editor uploadCurrentDocument]) {
-        [self presentText:[NSString stringWithFormat:@"Uploaded to %@",
-                           [self.editor remotePathForCurrentDocument] ?: @"the server"]
-                    title:@"FTP"];
-    } else {
-        [self presentText:[self.editor ftpClient].lastError ?: @"The upload failed." title:@"FTP"];
-    }
+    [self.editor uploadCurrentDocumentCompletion:^(BOOL uploaded, NSString *remote) {
+        if (uploaded) {
+            [self presentText:[NSString stringWithFormat:@"Uploaded to %@", remote ?: @"the server"]
+                        title:@"FTP"];
+        } else {
+            [self presentText:[self.editor ftpClient].lastError ?: @"The upload failed." title:@"FTP"];
+        }
+    }];
 }
 
 #pragma mark - Settings

@@ -71,6 +71,31 @@ void NppTestsGit(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
               [statusText containsString:branch] && [statusText hasPrefix:@"⎇ "] && emptyOutside &&
               [[(NSTextField *)[ed valueForKey:@"statusField"] stringValue] containsString:statusText]);
 
+        // Switching tabs waits for no git process: the branch and the margin are worked out
+        // on a queue of their own and arrive a moment later - and nothing queued for the main
+        // thread (a fetch's end, an agent's request) runs in the middle of the switch, as it
+        // did while waitUntilExit spun the run loop.
+        {
+            [ed openFileAtPath:outside error:NULL];
+            NppDocument *outsideDoc = ed.currentDocument;
+            NppSettleUntil(^BOOL{ return [ed gitStatusBarText].length == 0; }, 10);
+            [NppGit forgetRepositoryRoots];
+            NSUInteger runsBefore = [NppGit runsOnMainThread];
+            __block BOOL switching = YES, ranInside = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{ if (switching) ranInside = YES; });
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc]];
+            switching = NO;
+            NSUInteger runsDuring = [NppGit runsOnMainThread] - runsBefore;
+            NppSettleUntil(^BOOL{ return [[ed gitStatusBarText] containsString:branch]; }, 10);
+            Check(@"Git (off the main thread)", @"nothing queued for the main thread runs in the middle of a tab switch",
+                  !ranInside);
+            Check(@"Git (off the main thread)", @"a tab switch runs no git on the main thread, and the branch arrives a moment later",
+                  runsDuring == 0 && [[ed gitStatusBarText] containsString:branch]);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:outsideDoc] discardChanges:YES];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:trackedDoc]];
+            [ed gitRefreshState];
+        }
+
         // Markers against HEAD, on the text as it is now: a changed line, an added line, and where a line went.
         long (^markersOn)(long) = ^long(long line) { return [ed.sci message:SCI_MARKERGET wParam:(uptr_t)line lParam:0] & ((1 << 6) | (1 << 7) | (1 << 8)); };
         SetDoc(ed, @"one\nTWO\nthree\nfour\nfive\n");            // two changed, five added
@@ -325,6 +350,7 @@ void NppTestsGit(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
 
         // Outside a repository, every command declines and says why.
         [ed openFileAtPath:outside error:NULL];
+        NppSettleUntil(^BOOL{ return [ed gitStatusBarText].length == 0; }, 10);   // the state follows a switch a moment later
         BOOL declined = ![ed gitStageCurrent] && [ed.gitLastError isEqualToString:NppL(@"The file is not in a Git repository")] &&
                         ![ed gitBlame] && ![ed gitFileHistory] && ![ed gitCompareWithHead] && ![ed gitRevertChangeAtCaret] && ![ed gitCommitWithMessage:@"x" stageAll:YES commit:NULL] &&
                         ![ed gitCheckoutBranch:@"main"] && [ed gitStatusBarText].length == 0;

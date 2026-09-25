@@ -647,6 +647,37 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
             if (sftpTook >= 25) printf("    sftp took %.1fs\n", sftpTook);
             [ed connectToFtpProfile:profile password:@"secret"];
 
+            // The menu's commands transfer off the main thread: Show Remote Files
+            // returns at once and the listing fills the panel when it comes; the
+            // editor's other calls come back the same way with what the blocking
+            // ones give.
+            [app setValue:nil forKey:@"ftpEntries"];
+            [NSApp sendAction:@selector(ftpBrowse:) to:app from:nil];
+            BOOL browseReturnedFirst = [app valueForKey:@"ftpEntries"] == nil;
+            NppSettleUntil(^BOOL{ return [app valueForKey:@"ftpEntries"] != nil; }, 20);
+            NSArray *shown = [[app valueForKey:@"ftpEntries"] valueForKey:@"name"];
+            [(NSPanel *)[app valueForKey:@"ftpPanel"] orderOut:nil];
+            Check(@"FTP (off the main thread)", @"Show Remote Files returns before the listing and shows it when it comes",
+                  browseReturnedFirst && [shown containsObject:@"greeting.txt"]);
+            __block int arrived = 0;
+            __block NSArray<NppFtpEntry *> *subEntries = nil;
+            __block BOOL openedLater = NO, deadLater = YES;
+            [ed ftpChangeDirectory:@"sub" completion:^(NSArray<NppFtpEntry *> *entries) { subEntries = entries; arrived++; }];
+            BOOL cdReturnedFirst = arrived == 0;
+            NppSettleUntil(^BOOL{ return arrived == 1; }, 20);
+            BOOL inSub = subEntries != nil && [[ed ftpCurrentDirectory] hasSuffix:@"sub"];
+            [ed ftpChangeDirectory:@".." completion:^(NSArray<NppFtpEntry *> *entries) { arrived++; }];
+            NppSettleUntil(^BOOL{ return arrived == 2; }, 20);
+            [ed openRemoteFileAtPath:@"greeting.txt" completion:^(BOOL opened) { openedLater = opened; arrived++; }];
+            NppSettleUntil(^BOOL{ return arrived == 3; }, 20);
+            BOOL openedText = openedLater && [DocText(ed) isEqualToString:@"bom here\n"];
+            [ed connectToFtpProfile:dead password:@"" completion:^(BOOL connected, NSArray<NppFtpEntry *> *entries) { deadLater = connected; arrived++; }];
+            NppSettleUntil(^BOOL{ return arrived == 4; }, 20);
+            Check(@"FTP (off the main thread)", @"changing directory, opening a file and a refused connection answer by completion, as the blocking calls do",
+                  cdReturnedFirst && inSub && [[ed ftpCurrentDirectory] isEqualToString:@"/"] && openedText &&
+                  arrived == 4 && !deadLater && [ed ftpConnectError].length > 0);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+
             [ed disconnectFtp];
             Check(@"FTP disconnect", @"disconnecting drops the connection",
                   ![ed ftpConnected] && [ed ftpClient] == nil);

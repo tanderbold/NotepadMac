@@ -66,25 +66,62 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> @[server, remo
     return [self connectToFtpProfile:profile password:nil];
 }
 
-- (BOOL)connectToFtpProfile:(NppFtpProfile *)profile password:(NSString *)password {
-    if (!profile.host.length) return NO;
+/// The transfers of the menu's commands run here, one after another: a server
+/// that is slow to answer (15 s to connect, 120 s for a transfer) must not stop
+/// the editor. What they change in the editor is done back on the main thread.
+static dispatch_queue_t FtpQueue(void) {
+    static dispatch_queue_t queue;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{ queue = dispatch_queue_create("org.notepad-plus-plus.mac.ftp", DISPATCH_QUEUE_SERIAL); });
+    return queue;
+}
+
+static void OffMainThread(id (^work)(void), void (^done)(id result)) {
+    dispatch_async(FtpQueue(), ^{
+        id result = work();
+        dispatch_async(dispatch_get_main_queue(), ^{ done(result); });
+    });
+}
+
+- (NppFtpClient *)makeFtpClientFor:(NppFtpProfile *)profile password:(NSString *)password {
     NppFtpClient *client = [[NppFtpClient alloc] initWithProfile:profile];
     client.password = password;
-    NSString *start = profile.initialDirectory.length ? profile.initialDirectory : @"/";
+    return client;
+}
 
-    // Listing the starting directory is the connection test: a profile that
-    // cannot list is not usable, and failing here is clearer than failing later.
-    // The failed client's reason (curl's or sftp's message) is kept for the alert.
-    if (![client listDirectory:start]) {
+static NSString *FtpStartDirectory(NppFtpProfile *profile) {
+    return profile.initialDirectory.length ? profile.initialDirectory : @"/";
+}
+
+/// Listing the starting directory is the connection test: a profile that
+/// cannot list is not usable, and failing here is clearer than failing later.
+/// The failed client's reason (curl's or sftp's message) is kept for the alert.
+- (BOOL)finishFtpConnect:(NppFtpClient *)client listing:(NSArray *)entries {
+    if (!entries) {
         objc_setAssociatedObject(self, &kFtpConnectErrorKey, client.lastError, OBJC_ASSOCIATION_COPY);
         return NO;
     }
     objc_setAssociatedObject(self, &kFtpConnectErrorKey, nil, OBJC_ASSOCIATION_COPY);
-
     objc_setAssociatedObject(self, &kFtpClientKey, client, OBJC_ASSOCIATION_RETAIN);
-    objc_setAssociatedObject(self, &kFtpDirectoryKey, start, OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(self, &kFtpDirectoryKey, FtpStartDirectory(client.profile), OBJC_ASSOCIATION_COPY);
     [self refreshChrome];
     return YES;
+}
+
+- (BOOL)connectToFtpProfile:(NppFtpProfile *)profile password:(NSString *)password {
+    if (!profile.host.length) return NO;
+    NppFtpClient *client = [self makeFtpClientFor:profile password:password];
+    return [self finishFtpConnect:client listing:[client listDirectory:FtpStartDirectory(profile)]];
+}
+
+- (void)connectToFtpProfile:(NppFtpProfile *)profile password:(NSString *)password
+                 completion:(void (^)(BOOL connected, NSArray<NppFtpEntry *> *entries))completion {
+    if (!profile.host.length) { completion(NO, nil); return; }
+    NppFtpClient *client = [self makeFtpClientFor:profile password:password];
+    NSString *start = FtpStartDirectory(profile);
+    OffMainThread(^id { return [client listDirectory:start]; }, ^(NSArray *entries) {
+        completion([self finishFtpConnect:client listing:entries], entries);
+    });
 }
 
 - (void)disconnectFtp {
@@ -99,20 +136,41 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> @[server, remo
     return [client listDirectory:[self ftpCurrentDirectory] ?: @"/"];
 }
 
+- (void)ftpListCurrentDirectoryCompletion:(void (^)(NSArray<NppFtpEntry *> *entries))completion {
+    NppFtpClient *client = [self ftpClient];
+    if (!client) { completion(nil); return; }
+    NSString *directory = [self ftpCurrentDirectory] ?: @"/";
+    OffMainThread(^id { return [client listDirectory:directory]; }, ^(NSArray *entries) { completion(entries); });
+}
+
+- (NSString *)ftpTargetDirectory:(NSString *)path {
+    if ([path isEqualToString:@".."]) {
+        NSString *target = [([self ftpCurrentDirectory] ?: @"/") stringByDeletingLastPathComponent];
+        return target.length ? target : @"/";
+    }
+    return [path hasPrefix:@"/"] ? path : [([self ftpCurrentDirectory] ?: @"/") stringByAppendingPathComponent:path];
+}
+
 - (BOOL)ftpChangeDirectory:(NSString *)path {
     NppFtpClient *client = [self ftpClient];
     if (!client) return NO;
-
-    NSString *target = path;
-    if ([path isEqualToString:@".."]) {
-        target = [([self ftpCurrentDirectory] ?: @"/") stringByDeletingLastPathComponent];
-        if (!target.length) target = @"/";
-    } else if (![path hasPrefix:@"/"]) {
-        target = [([self ftpCurrentDirectory] ?: @"/") stringByAppendingPathComponent:path];
-    }
+    NSString *target = [self ftpTargetDirectory:path];
     if (![client listDirectory:target]) return NO;
     objc_setAssociatedObject(self, &kFtpDirectoryKey, target, OBJC_ASSOCIATION_COPY);
     return YES;
+}
+
+- (void)ftpChangeDirectory:(NSString *)path completion:(void (^)(NSArray<NppFtpEntry *> *entries))completion {
+    NppFtpClient *client = [self ftpClient];
+    if (!client) { completion(nil); return; }
+    NSString *target = [self ftpTargetDirectory:path];
+    // The listing that tests the directory is the one shown: no second one.
+    OffMainThread(^id { return [client listDirectory:target]; }, ^(NSArray *entries) {
+        if (entries && [self ftpClient] == client) {
+            objc_setAssociatedObject(self, &kFtpDirectoryKey, target, OBJC_ASSOCIATION_COPY);
+        }
+        completion([self ftpClient] == client ? entries : nil);
+    });
 }
 
 #pragma mark - Files
@@ -143,15 +201,12 @@ static NSString *ServerOf(NppFtpProfile *profile) {
     return known[1];
 }
 
-- (BOOL)openRemoteFileAtPath:(NSString *)path {
-    NppFtpClient *client = [self ftpClient];
-    if (!client) return NO;
+- (NSString *)ftpRemotePathFor:(NSString *)path {
+    return [path hasPrefix:@"/"] ? path : [([self ftpCurrentDirectory] ?: @"/") stringByAppendingPathComponent:path];
+}
 
-    NSString *remote = [path hasPrefix:@"/"]
-        ? path
-        : [([self ftpCurrentDirectory] ?: @"/") stringByAppendingPathComponent:path];
-
-    NSData *data = [client downloadFileAtPath:remote];
+/// A downloaded file into a tab.
+- (BOOL)openDownloaded:(NSData *)data from:(NSString *)remote client:(NppFtpClient *)client {
     if (!data) return NO;
 
     // The file is edited locally and written back on save, so it needs a real
@@ -179,10 +234,24 @@ static NSString *ServerOf(NppFtpProfile *profile) {
     return YES;
 }
 
-- (BOOL)uploadCurrentDocument {
+- (BOOL)openRemoteFileAtPath:(NSString *)path {
     NppFtpClient *client = [self ftpClient];
     if (!client) return NO;
+    NSString *remote = [self ftpRemotePathFor:path];
+    return [self openDownloaded:[client downloadFileAtPath:remote] from:remote client:client];
+}
 
+- (void)openRemoteFileAtPath:(NSString *)path completion:(void (^)(BOOL opened))completion {
+    NppFtpClient *client = [self ftpClient];
+    if (!client) { completion(NO); return; }
+    NSString *remote = [self ftpRemotePathFor:path];
+    OffMainThread(^id { return [client downloadFileAtPath:remote]; }, ^(NSData *data) {
+        completion([self openDownloaded:data from:remote client:client]);
+    });
+}
+
+/// Where the current document goes and what is sent, or NO.
+- (BOOL)uploadOfCurrentDocument:(NSString **)remoteOut data:(NSData **)dataOut {
     NSString *remote = [self remotePathForCurrentDocument];
     if (!remote.length) {
         // A document that did not come from the server goes into the directory
@@ -201,12 +270,37 @@ static NSString *ServerOf(NppFtpProfile *profile) {
     if (!data) data = [EditorController dataForText:[self documentText]
                                            encoding:doc.encoding ?: NSUTF8StringEncoding hasBOM:doc.hasBOM];
     if (!data) return NO;
-    if (![client uploadData:data toPath:remote]) return NO;
-
-    // A local file uploaded is remembered where it went; one from a server stays that server's.
-    if (self.currentDocument.path && ![self remotePathMap][self.currentDocument.path])
-        [self remotePathMap][self.currentDocument.path] = @[ServerOf(client.profile), remote];
+    *remoteOut = remote;
+    *dataOut = data;
     return YES;
+}
+
+- (BOOL)uploadCurrentDocument {
+    NppFtpClient *client = [self ftpClient];
+    if (!client) return NO;
+    NSString *remote = nil;
+    NSData *data = nil;
+    if (![self uploadOfCurrentDocument:&remote data:&data]) return NO;
+    if (![client uploadData:data toPath:remote]) return NO;
+    [self rememberUploadOf:self.currentDocument.path to:remote on:client];
+    return YES;
+}
+
+/// A local file uploaded is remembered where it went; one from a server stays that server's.
+- (void)rememberUploadOf:(NSString *)local to:(NSString *)remote on:(NppFtpClient *)client {
+    if (local && ![self remotePathMap][local]) [self remotePathMap][local] = @[ServerOf(client.profile), remote];
+}
+
+- (void)uploadCurrentDocumentCompletion:(void (^)(BOOL uploaded, NSString *remote))completion {
+    NppFtpClient *client = [self ftpClient];
+    NSString *remote = nil;
+    NSData *data = nil;
+    if (!client || ![self uploadOfCurrentDocument:&remote data:&data]) { completion(NO, nil); return; }
+    NSString *local = self.currentDocument.path;   // the document sent, whichever is in front later
+    OffMainThread(^id { return @([client uploadData:data toPath:remote]); }, ^(NSNumber *ok) {
+        if (ok.boolValue) [self rememberUploadOf:local to:remote on:client];
+        completion(ok.boolValue, local ? remote : nil);   // what remotePathForCurrentDocument said after it
+    });
 }
 
 @end

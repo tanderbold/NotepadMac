@@ -1118,6 +1118,28 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
                            (long)mode.integerValue, (unsigned long)stretched.count, (unsigned long)whole.count);
                 }
             }
+            // A match refused by a filter (whole word, SCFIND_WHOLEWORD) sends the search on one
+            // character, into the same stretches.
+            {
+                NppRegex *firstDigits = [[NppRegex regexWithPattern:@"\\d+|x"] regexAcceptingOnly:^BOOL(const uint8_t *b, size_t n, NSRange m) {
+                    return m.location > 0 && b[m.location - 1] == ' ';
+                }];
+                NSMutableArray *(^filtered)(void) = ^NSMutableArray *(void) {
+                    NSMutableArray *found = [NSMutableArray array];
+                    [firstDigits enumerateMatchesWithGroupsInData:mixed range:NSMakeRange(0, mixed.length)
+                                                     usingBlock:^(NSArray<NSValue *> *groups, BOOL *stop) { [found addObject:groups]; }];
+                    return found;
+                };
+                NSArray *stretched = filtered();
+                [NppRegex setSearchesInStretches:NO];
+                NSArray *whole = filtered();
+                [NppRegex setSearchesInStretches:YES];
+                if (![stretched isEqualToArray:whole] || !whole.count) {
+                    sameMatches = NO;
+                    printf("    filtered: %lu matches in stretches, %lu to the end\n",
+                           (unsigned long)stretched.count, (unsigned long)whole.count);
+                }
+            }
             Check(@"IDM_VIEW_FUNC_LIST (regex in stretches)",
                   @"searching on a stretch at a time finds exactly the matches searching to the end does",
                   sameMatches);

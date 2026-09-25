@@ -1,4 +1,5 @@
 #import <objc/runtime.h>
+#include <atomic>
 #import "GitCommands.h"
 #import "CompareCommands.h"
 #import "EditCommands.h"
@@ -76,6 +77,10 @@ static const long kMostBytesDiffedLive = 2 * 1024 * 1024;
     return found;
 }
 
+static std::atomic<NSUInteger> gRunsOnMainThread{0};
+
++ (NSUInteger)runsOnMainThread { return gRunsOnMainThread; }
+
 + (BOOL)run:(NSArray<NSString *> *)arguments in:(NSString *)directory output:(NSString **)output error:(NSString **)error {
     NSString *git = [self executable];
     if (!git) { if (error) *error = @"Git is not installed"; return NO; }
@@ -85,6 +90,9 @@ static const long kMostBytesDiffedLive = 2 * 1024 * 1024;
     task.currentDirectoryURL = [NSURL fileURLWithPath:directory];
     NSMutableDictionary *env = [NSProcessInfo.processInfo.environment mutableCopy];
     env[@"GIT_TERMINAL_PROMPT"] = @"0";   // fail, never hang on a prompt no one can see
+    // No optional locks (git status refreshing the index): the refresh in the
+    // background must not hold index.lock while a command the user gave runs.
+    env[@"GIT_OPTIONAL_LOCKS"] = @"0";
     env[@"LC_ALL"] = @"en_US.UTF-8";
     env[@"GIT_PAGER"] = @"cat";
     task.environment = env;
@@ -92,15 +100,21 @@ static const long kMostBytesDiffedLive = 2 * 1024 * 1024;
     task.standardOutput = out;
     task.standardError = err;
     task.standardInput = [NSFileHandle fileHandleWithNullDevice];
+    // Waited for with a semaphore, not waitUntilExit: that runs the run loop, and
+    // what was queued for the main thread - a fetch's finished:, an agent's
+    // request, the marker timer - ran in the middle of this command.
+    dispatch_semaphore_t exited = dispatch_semaphore_create(0);
+    task.terminationHandler = ^(NSTask *t) { dispatch_semaphore_signal(exited); };
     NSError *launch = nil;
     if (![task launchAndReturnError:&launch]) { if (error) *error = launch.localizedDescription; return NO; }
+    if ([NSThread isMainThread]) gRunsOnMainThread++;
     // Both pipes drained before waiting, or a chatty git fills one and stalls.
     __block NSData *outData = nil, *errData = nil;
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_async(group, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{ outData = [out.fileHandleForReading readDataToEndOfFile]; });
     dispatch_group_async(group, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{ errData = [err.fileHandleForReading readDataToEndOfFile]; });
-    [task waitUntilExit];
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(exited, DISPATCH_TIME_FOREVER);
     if (output) *output = [[NSString alloc] initWithData:outData ?: [NSData data] encoding:NSUTF8StringEncoding] ?: @"";
     NSString *errText = [[NSString alloc] initWithData:errData ?: [NSData data] encoding:NSUTF8StringEncoding] ?: @"";
     if (error) *error = [errText stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
@@ -155,8 +169,12 @@ static NSMutableDictionary<NSString *, NSArray<NSString *> *> *gReadOnlyOptions;
 /// own ~/.gitconfig or the system's (git-lfs) is theirs and stays. Writing commands - Stage, Commit,
 /// Checkout, Pull - run as git runs them, hooks and filters included, as a Git plugin would.
 + (NSArray<NSString *> *)readOnlyOptionsIn:(NSString *)directory {
-    if (!gReadOnlyOptions) gReadOnlyOptions = [NSMutableDictionary dictionary];
-    NSArray *known = gReadOnlyOptions[directory];
+    // The status bar's refresh reads git off the main thread: the cache is shared.
+    NSArray *known = nil;
+    @synchronized ([NppGit class]) {
+        if (!gReadOnlyOptions) gReadOnlyOptions = [NSMutableDictionary dictionary];
+        known = gReadOnlyOptions[directory];
+    }
     if (known) return known;
     NSMutableArray<NSString *> *options = [NSMutableArray arrayWithArray:@[
         @"--no-optional-locks", @"-c", @"core.fsmonitor=false", @"-c", @"core.hooksPath=/dev/null",
@@ -190,7 +208,7 @@ static NSMutableDictionary<NSString *, NSArray<NSString *> *> *gReadOnlyOptions;
         NSArray *settings = [driver hasPrefix:@"filter."] ? @[@"clean=", @"smudge=", @"process=", @"required=false"] : @[@"textconv=", @"command="];
         for (NSString *s in settings) [options addObjectsFromArray:@[@"-c", [NSString stringWithFormat:@"%@.%@", driver, s]]];
     }
-    gReadOnlyOptions[directory] = options;
+    @synchronized ([NppGit class]) { gReadOnlyOptions[directory] = options; }
     return options;
 }
 
@@ -206,8 +224,12 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
     if (!path.length || ![self executable]) return nil;
     BOOL isDir = NO;
     NSString *folder = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir ? path : path.stringByDeletingLastPathComponent;
-    if (!gRoots) gRoots = [NSMutableDictionary dictionary];
-    id cached = gRoots[folder];
+    // Asked from the main thread and from the background refresh alike.
+    id cached = nil;
+    @synchronized ([NppGit class]) {
+        if (!gRoots) gRoots = [NSMutableDictionary dictionary];
+        cached = gRoots[folder];
+    }
     if (cached) return cached == [NSNull null] ? nil : cached;
     NSString *out = nil;
     NSString *root = nil;
@@ -216,11 +238,22 @@ static NSMutableDictionary<NSString *, id> *gRoots;   // folder -> root, or NSNu
         root = [out stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
         if (!root.length) root = nil;
     }
-    gRoots[folder] = root ?: [NSNull null];
+    @synchronized ([NppGit class]) { gRoots[folder] = root ?: [NSNull null]; }
     return root;
 }
 
-+ (void)forgetRepositoryRoots { [gRoots removeAllObjects]; [gReadOnlyOptions removeAllObjects]; }
++ (BOOL)cachedRootForPath:(NSString *)path root:(NSString **)root {
+    NSString *folder = path.stringByDeletingLastPathComponent;
+    id cached = nil;
+    @synchronized ([NppGit class]) { cached = gRoots[folder] ?: gRoots[path]; }
+    if (!cached) return NO;
+    *root = cached == [NSNull null] ? nil : cached;
+    return YES;
+}
+
++ (void)forgetRepositoryRoots {
+    @synchronized ([NppGit class]) { [gRoots removeAllObjects]; [gReadOnlyOptions removeAllObjects]; }
+}
 
 + (NSArray<NppGitFileStatus *> *)statusesFromPorcelain:(NSString *)porcelain {
     NSMutableArray *out = [NSMutableArray array];
@@ -329,13 +362,13 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     for (NSNotificationName name in @[NppDocumentOpenedNotification, NppDocumentSavedNotification, NppBufferActivatedNotification]) {
         [nc addObserverForName:name object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            [self gitRefreshState];
+            [self gitRefreshStateInBackground];
         }];
     }
     [nc addObserverForName:NSApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         // Something may have been committed or pulled in a terminal meanwhile.
         [NppGit forgetRepositoryRoots];
-        [self gitRefreshState];
+        [self gitRefreshStateInBackground];
     }];
 }
 
@@ -344,9 +377,10 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 }
 - (NSString *)gitRootOfCurrentDocument { return [self gitRootOfDocument:self.currentDocument]; }
 
-- (NSString *)gitRelativePathOfDocument:(NppDocument *)doc {
-    NSString *root = [self gitRootOfDocument:doc];
-    if (!root) return nil;
+/// Where a document is inside its repository, as git names it; nil when git cannot place it.
+/// A plain function: the status bar's refresh calls it off the main thread.
+static NSString *GitRelativePath(NSString *documentPath, NSString *root) {
+    if (!root || !documentPath) return nil;
     // The root git reports is the folder as the disk spells it, symlinks resolved, and precomposed
     // (core.precomposeUnicode); the document's path is as it was opened - another case, another
     // Unicode form, a symlink. Both are taken as the disk has them and compared name by name in one
@@ -362,11 +396,15 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
         return names;
     };
     NSArray<NSString *> *rootNames = components(root);
-    NSArray<NSString *> *pathNames = onDisk(doc.path).pathComponents;
-    NSArray<NSString *> *pathComposed = components(doc.path);
+    NSArray<NSString *> *pathNames = onDisk(documentPath).pathComponents;
+    NSArray<NSString *> *pathComposed = components(documentPath);
     if (pathNames.count <= rootNames.count || pathComposed.count != pathNames.count ||
         ![[pathComposed subarrayWithRange:NSMakeRange(0, rootNames.count)] isEqualToArray:rootNames]) return nil;
     return [NSString pathWithComponents:[pathNames subarrayWithRange:NSMakeRange(rootNames.count, pathNames.count - rootNames.count)]];
+}
+
+- (NSString *)gitRelativePathOfDocument:(NppDocument *)doc {
+    return GitRelativePath(doc.path, [self gitRootOfDocument:doc]);
 }
 
 #pragma mark Markers
@@ -449,6 +487,9 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
     [pending invalidate];
     __weak EditorController *weakSelf = self;
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.6 repeats:NO block:^(NSTimer *t) {
+        // Judged again when it fires: the document in front may be another by
+        // then, one too big to be diffed while typing.
+        if ([weakSelf.sci message:SCI_GETLENGTH] > kMostBytesDiffedLive) return;
         [weakSelf gitRefreshMarkersCachedOnly:YES];
     }];
     objc_setAssociatedObject(self, &kGitTimerKey, timer, OBJC_ASSOCIATION_RETAIN);
@@ -458,7 +499,84 @@ static char kGitHeadTextKey, kGitHeadCommitKey, kGitRootKey, kGitStatusTextKey, 
 
 - (NSString *)gitStatusBarText { return objc_getAssociatedObject(self, &kGitStatusTextKey) ?: @""; }
 
+/// Bumped by every refresh, so a background one that a later refresh overtook is dropped.
+static NSUInteger gGitRefreshGeneration;
+
+/// gitRefreshState for opening, saving, switching tabs and coming to front: the
+/// git runs (rev-parse, status, show) go to a queue of their own, since in a large
+/// repository they take long enough to stall every tab switch, and the result is
+/// applied if that document is still in front and no later refresh came first.
+- (void)gitRefreshStateInBackground {
+    NppDocument *doc = self.currentDocument;
+    NSString *path = doc.path;
+    // A document known to be in no repository needs no git at all: its state
+    // (nothing in the status bar, no margin) is shown at once, not after the
+    // previous tab's branch lingered.
+    NSString *knownRoot = nil;
+    BOOL rootKnown = path && [NppGit cachedRootForPath:path root:&knownRoot];
+    if (!path || (rootKnown && !knownRoot)) { [self gitRefreshState]; return; }
+    NSUInteger generation = ++gGitRefreshGeneration;
+    NSString *known = objc_getAssociatedObject(doc, &kGitHeadCommitKey);
+    BOOL marks = [NppPreferences shared].gitMarginMarks;
+    ScintillaView *sci = self.sci;
+    // The margin a repository's document has is there at once (its markers are the
+    // document's own and came with it); only what git has to say comes later.
+    if (knownRoot && marks) [sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_GIT_MARGIN lParam:6];
+    // Whether the text changed while git ran: the markers are then left to the
+    // refresh typing schedules, as they would have been had they been made first.
+    NSArray *(^textState)(void) = ^NSArray *{
+        return @[@([sci message:SCI_GETLENGTH]), @([sci message:SCI_GETUNDOACTIONS]), @([sci message:SCI_GETUNDOCURRENT])];
+    };
+    NSArray *textBefore = textState();
+    static dispatch_queue_t queue;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{ queue = dispatch_queue_create("org.notepad-plus-plus.mac.git", DISPATCH_QUEUE_SERIAL); });
+    dispatch_async(queue, ^{
+        NSString *root = path ? [NppGit repositoryRootForPath:path] : nil;
+        NSString *text = @"";
+        if (root) {
+            NSInteger ahead = 0, behind = 0;
+            NSString *branch = [NppGit branchOfRepository:root ahead:&ahead behind:&behind];
+            if (branch.length) {
+                NSMutableString *s = [NSMutableString stringWithFormat:@"⎇ %@", branch];
+                if (ahead) [s appendFormat:@" ↑%ld", (long)ahead];
+                if (behind) [s appendFormat:@" ↓%ld", (long)behind];
+                text = s;
+            }
+        }
+        // HEAD's text as gitHeadTextOfCurrentDocumentInRoot fetches it: again only when HEAD moved.
+        NSString *head = nil, *headText = nil;
+        BOOL fetched = NO;
+        if (root && marks) {
+            head = [NppGit headCommitOfRepository:root] ?: @"";
+            if (![known isEqualToString:head]) {
+                NSString *relative = GitRelativePath(path, root);
+                headText = relative ? [NppGit headContentsOfFile:relative inRepository:root] : nil;
+                fetched = YES;
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (generation != gGitRefreshGeneration || self.currentDocument != doc) return;
+            if (fetched) {
+                objc_setAssociatedObject(doc, &kGitHeadCommitKey, head, OBJC_ASSOCIATION_COPY);
+                objc_setAssociatedObject(doc, &kGitHeadTextKey, headText ?: [NSNull null], OBJC_ASSOCIATION_RETAIN);
+            }
+            objc_setAssociatedObject(self, &kGitStatusTextKey, text, OBJC_ASSOCIATION_COPY);
+            objc_setAssociatedObject(self, &kGitRootKey, root, OBJC_ASSOCIATION_COPY);
+            if ([textState() isEqualToArray:textBefore]) [self gitRefreshMarkersCachedOnly:YES];   // HEAD's text is known now: no git run
+            else {
+                [sci message:SCI_SETMARGINWIDTHN wParam:NPPMAC_GIT_MARGIN lParam:root && marks ? 6 : 0];
+                [self gitScheduleMarkerRefresh];   // not for a big file: it is diffed on save
+            }
+            [self refreshChrome];
+            NppGitPanel *panel = objc_getAssociatedObject(self, &kGitPanelKey);
+            if (panel.visible) [panel reload];
+        });
+    });
+}
+
 - (void)gitRefreshState {
+    ++gGitRefreshGeneration;
     NSString *root = [self gitRootOfCurrentDocument];
     NSString *text = @"";
     if (root) {
