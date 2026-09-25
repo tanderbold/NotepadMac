@@ -16,4 +16,8 @@ other file translates them for the nativeLang file of the same name in
 - Use the words the language's own nativeLang file already uses (its words
   for Compare, Folder, Bookmark, Match case and so on).
 
-`python3 macos/check_nativelang_extra.py [file …]` checks the files.
+`python3 macos/check_nativelang_extra.py [file …]` checks the files;
+`python3 macos/check_nativelang_terms.py [-v] [file …]` checks that each uses
+the official file's words for the same English terms, and its placeholders,
+colons and ellipses. What it reports for native speakers to decide is listed in
+`macos/nativelang-terms-pending.txt`.

@@ -7,6 +7,8 @@ APP="$ROOT/macos/build/NotepadMac.app/Contents/MacOS/NotepadMac"
 LOG="$ROOT/macos/build/last-test-run.txt"
 # The port's own translations: well-formed, and of texts the port still has.
 python3 "$ROOT/macos/check_nativelang_extra.py" >/dev/null || { python3 "$ROOT/macos/check_nativelang_extra.py" | grep -B1 '^    '; exit 1; }
+# ...and in the vocabulary of each language's nativeLang file, with the forms the localiser relies on.
+python3 "$ROOT/macos/check_nativelang_terms.py" >/dev/null || { python3 "$ROOT/macos/check_nativelang_terms.py" | grep -B1 '^    '; exit 1; }
 set +e
 NPPMAC_TEST=1 "$APP" 2>/dev/null | tee "$LOG"
 status=${PIPESTATUS[0]}

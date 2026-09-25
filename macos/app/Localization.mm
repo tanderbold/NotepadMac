@@ -522,14 +522,16 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         text = [[text substringToIndex:text.length - ([text hasSuffix:@"…"] ? 1 : 3)]
                 stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
-    while (!englishColon && [text hasSuffix:@":"]) {
+    // The full-width colon (Chinese, Japanese) is the colon too: Taiwanese Mandarin and
+    // Cantonese end nearly every label with one, and a ":" put after it showed as "：:".
+    while (!englishColon && ([text hasSuffix:@":"] || [text hasSuffix:@"："])) {
         text = [[text substringToIndex:text.length - 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
     while ([text containsString:@"  "]) text = [text stringByReplacingOccurrencesOfString:@"  " withString:@" "];
     // An indented label stays indented.
     NSRange lead = [english rangeOfCharacterFromSet:NSCharacterSet.whitespaceCharacterSet.invertedSet];
     if (lead.location != NSNotFound && lead.location > 0) text = [[english substringToIndex:lead.location] stringByAppendingString:text];
-    if ([trimmed hasSuffix:@":"] && ![text hasSuffix:@":"]) text = [text stringByAppendingString:@":"];
+    if ([trimmed hasSuffix:@":"] && ![text hasSuffix:@":"] && ![text hasSuffix:@"："]) text = [text stringByAppendingString:@":"];
     if (([trimmed hasSuffix:@"…"] || [trimmed hasSuffix:@"..."]) && ![text hasSuffix:@"…"] && ![text hasSuffix:@"..."]) {
         text = [text stringByAppendingString:@"…"];
     }

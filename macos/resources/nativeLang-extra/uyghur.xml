@@ -7,8 +7,8 @@
     <Item english="Hide Others" text="باشقىلىرىنى يوشۇرۇش"/>
     <Item english="Show All" text="ھەممىنى كۆرسىتىش"/>
     <Item english="Quit NotepadMac" text="NotepadMac نى ئاخىرلاشتۇرۇش"/>
-    <Item english="Open Containing Folder in Finder" text="ھۆججەت قىسقۇچىنى Finder دا ئېچىش"/>
-    <Item english="Open Containing Folder in Terminal" text="ھۆججەت قىسقۇچىنى تېرمىنالدا ئېچىش"/>
+    <Item english="Open Containing Folder in Finder" text="ھۈججەت قىسقۇچىنى Finder دا ئېچىش"/>
+    <Item english="Open Containing Folder in Terminal" text="ھۈججەت قىسقۇچىنى تېرمىنالدا ئېچىش"/>
     <Item english="Toggle Insert/Overtype" text="قىستۇرۇش/ئۈستىدىن يېزىش ھالىتىنى ئالماشتۇرۇش"/>
     <Item english="Toggle Fold" text="قاتلامنى يىغىش/يېيىش"/>
     <Item english="Show All Hidden Lines" text="يوشۇرۇن قۇرلارنىڭ ھەممىسىنى كۆرسىتىش"/>
@@ -24,9 +24,9 @@
     <Item english="Sort Keys" text="ئاچقۇچلارنى تەرتىپلەش"/>
     <Item english="Validate" text="تەكشۈرۈش"/>
     <Item english="Show JSON Tree" text="JSON دەرىخىنى كۆرسىتىش"/>
-    <Item english="Set as First to Compare" text="سېلىشتۇرۇشتىكى بىرىنجى ھۆججەت قىلىپ بەلگىلەش"/>
+    <Item english="Set as First to Compare" text="سېلىشتۇرۇشتىكى بىرىنجى ھۈججەت قىلىپ بەلگىلەش"/>
     <Item english="Compare" text="سېلىشتۇرۇش"/>
-    <Item english="Compare with File…" text="ھۆججەت بىلەن سېلىشتۇرۇش…"/>
+    <Item english="Compare with File…" text="ھۈججەت بىلەن سېلىشتۇرۇش…"/>
     <Item english="Next Difference" text="كېيىنكى پەرق"/>
     <Item english="Previous Difference" text="ئالدىنقى پەرق"/>
     <Item english="First Difference" text="بىرىنجى پەرق"/>
@@ -47,8 +47,8 @@
     <Item english="Connections…" text="ئۇلىنىشلار…"/>
     <Item english="Connect…" text="ئۇلىنىش…"/>
     <Item english="Disconnect" text="ئۇلىنىشنى ئۈزۈش"/>
-    <Item english="Show Remote Files" text="يىراقتىكى ھۆججەتلەرنى كۆرسىتىش"/>
-    <Item english="Upload Current File" text="ھازىرقى ھۆججەتنى يۈكلەش"/>
+    <Item english="Show Remote Files" text="يىراقتىكى ھۈججەتلەرنى كۆرسىتىش"/>
+    <Item english="Upload Current File" text="ھازىرقى ھۈججەتنى يۈكلەش"/>
     <Item english="Execute NppExec Script…" text="NppExec سكرىپتىنى ئىجرا قىلىش…"/>
     <Item english="Execute Previous NppExec Script" text="ئالدىنقى NppExec سكرىپتىنى ئىجرا قىلىش"/>
     <Item english="Stop Running NppExec Script" text="ئىجرا بولۇۋاتقان NppExec سكرىپتىنى توختىتىش"/>
@@ -110,7 +110,7 @@
     <Item english="Open the Releases Page" text="نەشر بېتىنى ئېچىش"/>
     <Item english="Copy debug info to clipboard" text="سازلاش ئۇچۇرىنى ئىشتاختىغا كۆچۈرۈش"/>
     <Item english="Fonts…" text="فونتلار…"/>
-    <Item english="This document is not valid JSON." text="بۇ ھۆججەت ئىناۋەتلىك JSON ئەمەس."/>
+    <Item english="This document is not valid JSON." text="بۇ ھۈججەت ئىناۋەتلىك JSON ئەمەس."/>
     <Item english="Converter" text="ئايلاندۇرغۇچ"/>
     <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
     <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
@@ -128,7 +128,7 @@
     <Item english="Copy HTML to clipboard" text="HTML نى ئىشتاختىغا كۆچۈرۈش"/>
     <Item english="Copy all formats to clipboard" text="بارلىق فورماتلارنى ئىشتاختىغا كۆچۈرۈش"/>
     <Item english="Spell Check" text="ئىملا تەكشۈرۈش"/>
-    <Item english="Spell Check Document Automatically" text="ھۆججەت ئىملاسىنى ئاپتوماتىك تەكشۈرۈش"/>
+    <Item english="Spell Check Document Automatically" text="ھۈججەت ئىملاسىنى ئاپتوماتىك تەكشۈرۈش"/>
     <Item english="Language" text="تىل"/>
     <Item english="Automatic" text="ئاپتوماتىك"/>
     <Item english="Ignore Spelling" text="ئىملانى نەزەردىن ساقىت قىلىش"/>
@@ -136,8 +136,8 @@
     <Item english="No Guesses Found" text="تەۋسىيە تېپىلمىدى"/>
     <Item english="Markdown Preview" text="Markdown ئالدىن كۆرۈش"/>
     <Item english="Paste Image as Text" text="سۈرەتنى تېكىست قىلىپ چاپلاش"/>
-    <Item english="Recognize Text in File…" text="ھۆججەتتىكى تېكىستنى تونۇش…"/>
-    <Item english="No text was found in the file." text="ھۆججەتتىن تېكىست تېپىلمىدى."/>
+    <Item english="Recognize Text in File…" text="ھۈججەتتىكى تېكىستنى تونۇش…"/>
+    <Item english="No text was found in the file." text="ھۈججەتتىن تېكىست تېپىلمىدى."/>
     <Item english="QR Code from Selection" text="تاللانغان تېكىستتىن QR كودى"/>
     <Item english="Read QR Code from Clipboard" text="ئىشتاختىدىن QR كودىنى ئوقۇش"/>
     <Item english="Install Command Line Tool" text="بۇيرۇق قۇرى قورالىنى ئورنىتىش"/>
@@ -151,12 +151,12 @@
     <Item english="Could not write to /usr/local/bin." text="/usr/local/bin غا يازغىلى بولمىدى."/>
     <Item english="Valid JSON." text="JSON ئىناۋەتلىك."/>
     <Item english="Invalid JSON." text="JSON ئىناۋەتسىز."/>
-    <Item english="Set as the first file to compare." text="سېلىشتۇرۇشتىكى بىرىنجى ھۆججەت قىلىپ بەلگىلەندى."/>
+    <Item english="Set as the first file to compare." text="سېلىشتۇرۇشتىكى بىرىنجى ھۈججەت قىلىپ بەلگىلەندى."/>
     <Item english="Nothing to compare with." text="سېلىشتۇرىدىغان نەرسە يوق."/>
-    <Item english="The document is valid XML." text="بۇ ھۆججەت ئىناۋەتلىك XML."/>
+    <Item english="The document is valid XML." text="بۇ ھۈججەت ئىناۋەتلىك XML."/>
     <Item english="FTP connections" text="FTP ئۇلىنىشلىرى"/>
     <Item english="Cannot connect." text="ئۇلىنالمىدى."/>
-    <Item english="That file is open in another tab." text="بۇ ھۆججەت باشقا بەتكۈچتە ئوچۇق."/>
+    <Item english="That file is open in another tab." text="بۇ ھۈججەت باشقا بەتكۈچتە ئوچۇق."/>
     <Item english="Close it first, or choose another name." text="ئاۋۋال ئۇنى يېپىڭ ياكى باشقا ئىسىم تاللاڭ."/>
     <Item english="Which language is this?" text="بۇ قايسى تىل؟"/>
     <Item english="Some characters cannot be represented in this encoding." text="بەزى ھەرپلەرنى بۇ كودلاشتا ئىپادىلىگىلى بولمايدۇ."/>
@@ -165,8 +165,8 @@
     <Item english="Nothing is marked" text="ھېچنېمە بەلگىلەنمىگەن"/>
     <Item english="Marked text copied" text="بەلگە قويۇلغان تېكىست كۆچۈرۈلدى"/>
     <Item english="Choose a folder first" text="ئاۋۋال قىسقۇچ تاللاڭ"/>
-    <Item english="This document has no folder" text="بۇ ھۆججەتنىڭ قىسقۇچى يوق"/>
-    <Item english="The ticked project panels have no files" text="تاللانغان ئىشتۈرى تاختىلىرىدا ھۆججەت يوق"/>
+    <Item english="This document has no folder" text="بۇ ھۈججەتنىڭ قىسقۇچى يوق"/>
+    <Item english="The ticked project panels have no files" text="تاللانغان ئىشتۈرى تاختىلىرىدا ھۈججەت يوق"/>
     <Item english="Searching..." text="ئىزدەۋاتىدۇ..."/>
     <Item english="Stopping..." text="توختىتىۋاتىدۇ..."/>
     <Item english="Marks cleared" text="بەلگىلەر تازىلاندى"/>
@@ -210,7 +210,7 @@
     <Item english="Leave out characters that look alike (O 0 o I l 1)" text="ئوخشاپ كېتىدىغان ھەرپلەرنى چىقىرىۋېتىش (O 0 o I l 1)"/>
     <Item english="At least one character of each kind" text="ھەر بىر خىلدىن كەم دېگەندە بىر ھەرپ"/>
     <Item english="Choose at least one kind of character." text="كەم دېگەندە بىر خىل ھەرپنى تاللاڭ."/>
-    <Item english="Insert into Document" text="ھۆججەتكە قىستۇرۇش"/>
+    <Item english="Insert into Document" text="ھۈججەتكە قىستۇرۇش"/>
     <!-- Tools: HTTP Request -->
     <Item english="HTTP Request" text="HTTP ئىلتىماسى"/>
     <Item english="Send" text="يوللاش"/>
@@ -223,7 +223,7 @@
     <Item english="Format JSON" text="JSON نى فورماتلاش"/>
     <Item english="Paste curl Command" text="curl بۇيرۇقىنى چاپلاش"/>
     <Item english="Copy as curl" text="curl سۈپىتىدە كۆچۈرۈش"/>
-    <Item english="Open in New Document" text="يېڭى ھۆججەتتە ئېچىش"/>
+    <Item english="Open in New Document" text="يېڭى ھۈججەتتە ئېچىش"/>
     <Item english="One to a line: Name: value" text="ھەر قۇرغا بىردىن: ئىسىم: قىممەت"/>
     <Item english="Sent as it is written, in UTF-8." text="يېزىلغان پېتى UTF-8 دا يوللىنىدۇ."/>
     <Item english="The answer is not text: $INT_REPLACE$ bytes." text="جاۋاب تېكىست ئەمەس: $INT_REPLACE$ بايت."/>
@@ -235,8 +235,8 @@
     <Item english="Git Panel" text="Git تاختىسى"/>
     <Item english="Compare with HEAD" text="HEAD بىلەن سېلىشتۇرۇش"/>
     <Item english="Blame" text="Blame"/>
-    <Item english="File History" text="ھۆججەت تارىخى"/>
-    <Item english="Discard Changes in File…" text="ھۆججەتتىكى ئۆزگىرىشلەرنى تاشلىۋېتىش…"/>
+    <Item english="File History" text="ھۈججەت تارىخى"/>
+    <Item english="Discard Changes in File…" text="ھۈججەتتىكى ئۆزگىرىشلەرنى تاشلىۋېتىش…"/>
     <Item english="Switch Branch" text="تارماقنى ئالماشتۇرۇش"/>
     <Item english="New Branch…" text="يېڭى تارماق…"/>
     <Item english="Fetch" text="Fetch"/>
@@ -249,8 +249,8 @@
     <Item english="Commit" text="تاپشۇرۇش"/>
     <Item english="Commit message" text="تاپشۇرۇش ئۇچۇرى"/>
     <Item english="Git is not installed (xcode-select --install)" text="Git ئورنىتىلمىغان (xcode-select --install)"/>
-    <Item english="The file is not in a Git repository" text="ھۆججەت Git ئامبىرىدا ئەمەس"/>
-    <Item english="The file is not in HEAD yet" text="ھۆججەت تېخى HEAD دا ئەمەس"/>
+    <Item english="The file is not in a Git repository" text="ھۈججەت Git ئامبىرىدا ئەمەس"/>
+    <Item english="The file is not in HEAD yet" text="ھۈججەت تېخى HEAD دا ئەمەس"/>
     <Item english="Discard the changes in &quot;$STR_REPLACE$&quot;?" text="&quot;$STR_REPLACE$&quot; دىكى ئۆزگىرىشلەرنى تاشلىۋېتەمسىز؟"/>
     <Item english="Discard" text="تاشلىۋېتىش"/>
     <Item english="A commit needs a message" text="تاپشۇرۇشقا ئۇچۇر كېرەك"/>

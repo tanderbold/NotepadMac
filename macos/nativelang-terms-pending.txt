@@ -1,0 +1,919 @@
+# What macos/check_nativelang_terms.py finds in macos/resources/nativeLang-extra and a native
+# speaker has to decide: file, English text, kind, term, tab-separated.
+#   term       the text has none of the words the official nativeLang file uses for the term
+#   identical  the text is the English one although the official file translates its words
+#   english    an English word left inside the translated text
+# Many are a word in another sense or form than the official file's (the adjective "open" for
+# the verb, the spelling's "Language" for the programming one) and fine as they are; some are
+# another word for the same thing. Deciding one: change the text to the official word, or leave
+# the Item out (it stays English), or add a fifth column "right". Then
+# python3 macos/check_nativelang_terms.py --pending rewrites this list (header and "right" kept).
+# A finding not listed here fails macos/test.sh.
+afrikaans.xml	3 parts	term	part
+afrikaans.xml	4 parts	term	part
+afrikaans.xml	5 parts	term	part
+afrikaans.xml	6 parts	term	part
+afrikaans.xml	7 parts	term	part
+afrikaans.xml	8 parts	term	part
+afrikaans.xml	9 parts	term	part
+afrikaans.xml	Number of passwords:	term	number
+afrikaans.xml	Open in New Document	term	new document
+afrikaans.xml	Selected Numbers	term	number
+albanian.xml	Recent Window	term	recent
+albanian.xml	Enable Multi-Editing (Cmd+click/selection)	term	enable
+albanian.xml	Max Characters to Auto-Fill Find Field	term	find
+albanian.xml	Fonts…	term	font
+albanian.xml	Close it first, or choose another name.	term	name
+albanian.xml	The hash could not be generated with these settings.	term	setting
+albanian.xml	These settings need more than 2 GB of memory.	term	setting
+albanian.xml	These settings need more than 4 GB of memory.	term	setting
+albanian.xml	Empty: a random salt each time	term	empty
+albanian.xml	Save the file before staging it?	term	save
+albanian.xml	A branch needs a name	term	name
+albanian.xml	Git: mark lines changed since the last commit in the margin	term	line
+arabic.xml	Escape Characters in Selection	term	escape
+arabic.xml	Remember which panels were open	term	open
+arabic.xml	A line	term	line
+arabic.xml	Columns (space separated)	term	column
+arabic.xml	3 parts	term	part
+arabic.xml	4 parts	term	part
+arabic.xml	5 parts	term	part
+arabic.xml	6 parts	term	part
+arabic.xml	7 parts	term	part
+arabic.xml	8 parts	term	part
+arabic.xml	9 parts	term	part
+arabic.xml	Header font (blank for the editor's)	term	font
+arabic.xml	Header font size	term	font
+arabic.xml	Margins: left, top, right, bottom (points)	term	left
+arabic.xml	URL Encode (RFC1738) by line	term	line
+arabic.xml	URL Encode (Extended) by line	term	line
+arabic.xml	URL Encode (Full) by line	term	line
+arabic.xml	Copy RTF to clipboard	term	clipboard
+arabic.xml	Copy HTML to clipboard	term	clipboard
+arabic.xml	Copy all formats to clipboard	term	clipboard
+arabic.xml	Paste Image as Text	term	text
+arabic.xml	No text was found in the file.	term	text
+arabic.xml	Read QR Code from Clipboard	term	clipboard
+arabic.xml	No text was found in the clipboard's image.	term	text
+arabic.xml	That file is open in another tab.	term	open
+arabic.xml	That file is open in another tab.	term	another
+arabic.xml	Close it first, or choose another name.	term	close
+arabic.xml	Close it first, or choose another name.	term	another
+arabic.xml	Empty: a random salt each time	term	empty
+arabic.xml	One to a line: name=value. They are added to the address, encoded.	term	line
+arabic.xml	One to a line: Name: value	term	line
+arabic.xml	The answer is not text: $INT_REPLACE$ bytes.	term	text
+arabic.xml	$INT_REPLACE$ files will be staged and committed	term	file
+arabic.xml	Detect Moves	term	move
+aragonese.xml	Show the fold margin	term	fold
+azerbaijani.xml	Sort Keys	term	sort
+azerbaijani.xml	Escape Characters in Selection	term	escape
+azerbaijani.xml	Toolbar buttons	term	button
+azerbaijani.xml	Invalid JSON.	term	invalid
+azerbaijani.xml	Switch Branch	term	switch
+basque.xml	Move to Trash	term	move
+basque.xml	Selected text can be dragged	term	selected
+basque.xml	A line	term	line
+basque.xml	Result:	term	result
+basque.xml	Number of passwords:	term	number
+basque.xml	Selected Numbers	term	selected
+belarusian.xml	Recent Window	term	recent
+belarusian.xml	Clear Active Compare	term	clear
+belarusian.xml	Clear All Compares	term	clear
+belarusian.xml	Unescape Characters in Selection	term	character
+belarusian.xml	Dock Top	term	top
+belarusian.xml	Show the fold margin	term	fold
+belarusian.xml	Margins: left, top, right, bottom (points)	term	top
+belarusian.xml	Characters before it opens	term	open
+belarusian.xml	Max Characters to Auto-Fill Find Field	term	find
+belarusian.xml	Invalid JSON.	term	invalid
+belarusian.xml	Parameters	term	parameter
+belarusian.xml	Options	term	option
+belarusian.xml	User name:	term	name
+belarusian.xml	Allow invalid certificates	term	invalid
+belarusian.xml	Open in New Document	term	new document
+belarusian.xml	One to a line: name=value. They are added to the address, encoded.	term	name
+belarusian.xml	One to a line: Name: value	term	name
+belarusian.xml	Git: mark lines changed since the last commit in the margin	term	mark
+bengali.xml	Toggle Insert/Overtype	term	insert
+bengali.xml	Recent Window	term	window
+bengali.xml	Sort Keys	term	sort
+bengali.xml	Escape Characters in Selection	term	escape
+bengali.xml	A line	term	line
+bengali.xml	3 parts	term	part
+bengali.xml	4 parts	term	part
+bengali.xml	5 parts	term	part
+bengali.xml	6 parts	term	part
+bengali.xml	7 parts	term	part
+bengali.xml	8 parts	term	part
+bengali.xml	9 parts	term	part
+bengali.xml	Close it first, or choose another name.	term	close
+bengali.xml	Converting will replace them.	term	replace
+bengali.xml	Insert into Document	term	insert
+bengali.xml	Content type:	term	content
+bengali.xml	Allow invalid certificates	term	allow
+bosnian.xml	Next Difference	term	next
+bosnian.xml	3 parts	term	part
+bosnian.xml	4 parts	term	part
+bosnian.xml	5 parts	term	part
+bosnian.xml	6 parts	term	part
+bosnian.xml	7 parts	term	part
+bosnian.xml	8 parts	term	part
+bosnian.xml	9 parts	term	part
+bosnian.xml	Max Characters to Auto-Fill Find Field	term	find
+bosnian.xml	Open in New Document	term	new document
+brazilian_portuguese.xml	Sort Keys	term	sort
+brazilian_portuguese.xml	Remember which panels were open	term	open
+brazilian_portuguese.xml	Show the fold margin	term	fold
+brazilian_portuguese.xml	Max Characters to Auto-Fill Find Field	term	find
+brazilian_portuguese.xml	Language	term	language
+brazilian_portuguese.xml	That file is open in another tab.	term	open
+breton.xml	Follow the system	term	system
+breton.xml	Text:	term	text
+breton.xml	Paste Image as Text	term	text
+breton.xml	No text was found in the file.	term	text
+breton.xml	No text was found in the clipboard's image.	term	text
+bulgarian.xml	Ignore Case	term	ignore
+bulgarian.xml	Ignore Spaces	term	ignore
+bulgarian.xml	Ignore Empty Lines	term	ignore
+bulgarian.xml	Escape Characters in Selection	term	escape
+bulgarian.xml	A line	term	line
+bulgarian.xml	Characters before it opens	term	open
+bulgarian.xml	Compare: ignore case	term	ignore
+bulgarian.xml	Compare: ignore spaces	term	ignore
+bulgarian.xml	Compare: ignore empty lines	term	ignore
+bulgarian.xml	Language	term	language
+bulgarian.xml	Git: mark lines changed since the last commit in the margin	term	mark
+catalan.xml	Margins: left, top, right, bottom (points)	term	left
+catalan.xml	Language	term	language
+catalan.xml	Number of passwords:	term	number
+catalan.xml	Detect Moves	term	move
+catalan.xml	Selected Numbers	term	number
+chineseSimplified.xml	Sort Keys	term	sort
+chineseSimplified.xml	Escape Characters in Selection	term	escape
+chineseSimplified.xml	Columns (space separated)	term	column
+chineseSimplified.xml	Header font (blank for the editor's)	term	blank
+chineseSimplified.xml	Characters before it opens	term	open
+chineseSimplified.xml	Max Characters to Auto-Fill Find Field	term	field
+chineseSimplified.xml	URL Encode (Full)	term	full
+chineseSimplified.xml	URL Encode (Full) by line	term	full
+chineseSimplified.xml	No Guesses Found	term	found
+chineseSimplified.xml	QR Code from Selection	term	code
+chineseSimplified.xml	Read QR Code from Clipboard	term	code
+chineseSimplified.xml	QR Code	term	code
+chineseSimplified.xml	The selection is too long for a QR code.	term	long
+chineseSimplified.xml	The selection is too long for a QR code.	term	code
+chineseSimplified.xml	No QR code was found in the clipboard's image.	term	code
+chineseSimplified.xml	The password matches the hash.	term	matche
+chineseSimplified.xml	User name:	term	name
+chineseSimplified.xml	Open in New Document	term	new document
+chineseSimplified.xml	Switch Branch	term	switch
+corsican.xml	Show the fold margin	term	fold
+corsican.xml	Header font (blank for the editor's)	term	blank
+corsican.xml	The password matches the hash.	term	matche
+corsican.xml	User name:	term	user
+corsican.xml	Switch Branch	term	switch
+croatian.xml	Pretty Print — Indent Attributes	term	indent
+croatian.xml	Follow the system	term	system
+croatian.xml	A line	term	line
+croatian.xml	Language	term	language
+croatian.xml	Input:	term	input
+croatian.xml	The input is not bytes written in hexadecimal.	term	input
+croatian.xml	The input is not valid $STR_REPLACE$.	term	input
+croatian.xml	User name:	term	user
+croatian.xml	Discard Changes in File…	term	change
+croatian.xml	Switch Branch	term	switch
+croatian.xml	Stage all changes first	term	change
+croatian.xml	Discard the changes in "$STR_REPLACE$"?	term	change
+croatian.xml	Revert Change at Caret to HEAD	term	change
+croatian.xml	The caret is on no change since the last commit	term	change
+czech.xml	Ignore Spaces	term	ignore
+czech.xml	Ignore Empty Lines	term	ignore
+czech.xml	Escape Characters in Selection	term	escape
+czech.xml	Compare: ignore spaces	term	ignore
+czech.xml	Compare: ignore empty lines	term	ignore
+czech.xml	Language	term	language
+czech.xml	Ignore Spelling	term	ignore
+czech.xml	Number of passwords:	term	number
+danish.xml	Toggle Insert/Overtype	term	toggle
+danish.xml	Dock Top	term	top
+danish.xml	Toolbar buttons	term	button
+danish.xml	Margins: left, top, right, bottom (points)	term	top
+dutch.xml	Toggle Insert/Overtype	term	toggle
+dutch.xml	Format	term	format
+dutch.xml	Escape Characters in Selection	term	escape
+dutch.xml	Show the fold margin	term	fold
+dutch.xml	A line	term	line
+dutch.xml	Header font (blank for the editor's)	term	blank
+dutch.xml	Header font size	term	font
+dutch.xml	No update is available.	term	update
+dutch.xml	An update package is available, do you want to download it?	term	update
+dutch.xml	Format JSON	term	format
+esperanto.xml	Remember which panels were open	term	panel
+esperanto.xml	Conversion Panel	term	panel
+esperanto.xml	Number of passwords:	term	number
+esperanto.xml	Git Panel	term	panel
+esperanto.xml	Detect Moves	term	move
+esperanto.xml	Selected Numbers	term	number
+estonian.xml	Toggle Insert/Overtype	term	insert
+estonian.xml	Recent Window	term	recent
+estonian.xml	Move to Trash	term	move
+estonian.xml	Decimal:	term	decimal
+estonian.xml	Open in New Document	term	new document
+estonian.xml	Detect Moves	term	move
+estonian.xml	Sort Ascending	term	ascending
+farsi.xml	Toggle Insert/Overtype	term	toggle
+farsi.xml	Toggle Insert/Overtype	term	insert
+farsi.xml	Set as First to Compare	term	set
+farsi.xml	Pretty Print — Indent Attributes	term	indent
+farsi.xml	3 parts	term	part
+farsi.xml	4 parts	term	part
+farsi.xml	5 parts	term	part
+farsi.xml	6 parts	term	part
+farsi.xml	7 parts	term	part
+farsi.xml	8 parts	term	part
+farsi.xml	9 parts	term	part
+farsi.xml	Decimal:	term	decimal
+farsi.xml	Close it first, or choose another name.	term	close
+farsi.xml	View 1	term	view
+farsi.xml	View 2	term	view
+farsi.xml	Insert into Document	term	insert
+farsi.xml	Allow invalid certificates	term	allow
+farsi.xml	Detect Moves	term	move
+finnish.xml	Hide NotepadMac	term	hide
+finnish.xml	Hide Others	term	hide
+finnish.xml	Toggle Fold	term	fold
+finnish.xml	Clear Active Compare	term	clear
+finnish.xml	Clear All Compares	term	clear
+finnish.xml	Remember which panels were open	term	panel
+finnish.xml	Show the fold margin	term	fold
+finnish.xml	Work the language out from the contents when the name does not say	term	content
+finnish.xml	Conversion Panel	term	panel
+finnish.xml	Content type:	term	content
+finnish.xml	Open in New Document	term	new document
+finnish.xml	Git Panel	term	panel
+french.xml	Move to Trash	term	move
+french.xml	Escape Characters in Selection	term	escape
+french.xml	Remember which panels were open	term	remember
+french.xml	Invalid JSON.	term	invalid
+french.xml	Input:	term	input
+french.xml	The input is not bytes written in hexadecimal.	term	input
+french.xml	The input is not valid $STR_REPLACE$.	term	input
+friulian.xml	Next Difference	term	next
+friulian.xml	That file is open in another tab.	term	tab
+friulian.xml	Open in New Document	term	new document
+galician.xml	Remember which panels were open	term	open
+galician.xml	No Guesses Found	term	found
+galician.xml	No text was found in the file.	term	found
+galician.xml	No text was found in the clipboard's image.	term	found
+galician.xml	No QR code was found in the clipboard's image.	term	found
+galician.xml	That file is open in another tab.	term	open
+galician.xml	Close it first, or choose another name.	term	close
+georgian.xml	Clear Active Compare	term	clear
+georgian.xml	Clear All Compares	term	clear
+georgian.xml	That file is open in another tab.	term	tab
+georgian.xml	Converting will replace them.	term	replace
+georgian.xml	Open in New Document	term	new document
+georgian.xml	Save the file before staging it?	term	save
+german.xml	Show All	term	show
+german.xml	Show All Hidden Lines	term	show
+german.xml	Recent Window	term	recent
+german.xml	Pretty Print	english	Pretty
+german.xml	Pretty Print	english	Print
+german.xml	Pretty Print — Indent Attributes	english	Pretty
+german.xml	Pretty Print — Indent Attributes	english	Print
+german.xml	Check XML Syntax Now	term	check
+german.xml	Escape Characters in Selection	term	escape
+german.xml	A line	term	line
+german.xml	Notepad++ update	term	update
+german.xml	No update is available.	term	update
+german.xml	An update package is available, do you want to download it?	term	update
+german.xml	Spell Check	term	check
+german.xml	Spell Check Document Automatically	term	check
+greek.xml	Recent Window	term	recent
+greek.xml	Remember which panels were open	term	panel
+greek.xml	Remember which panels were open	term	open
+greek.xml	Selected text can be dragged	term	text
+greek.xml	3 parts	term	part
+greek.xml	4 parts	term	part
+greek.xml	5 parts	term	part
+greek.xml	6 parts	term	part
+greek.xml	7 parts	term	part
+greek.xml	8 parts	term	part
+greek.xml	9 parts	term	part
+greek.xml	Characters before it opens	term	open
+greek.xml	A fixed folder	term	folder
+greek.xml	Fixed folder	term	folder
+greek.xml	Paste Image as Text	term	text
+greek.xml	No text was found in the file.	term	text
+greek.xml	No text was found in the clipboard's image.	term	text
+greek.xml	That file is open in another tab.	term	open
+greek.xml	Marked text copied	term	text
+greek.xml	Choose a folder first	term	folder
+greek.xml	This document has no folder	term	folder
+greek.xml	Text:	term	text
+greek.xml	The decoded bytes are not UTF-8 text; they are shown in hexadecimal only.	term	text
+greek.xml	Allow invalid certificates	term	allow
+greek.xml	Open in New Document	term	new document
+greek.xml	The answer is not text: $INT_REPLACE$ bytes.	term	text
+gujarati.xml	Previous Difference	term	previou
+gujarati.xml	Clear Active Compare	term	clear
+gujarati.xml	Clear All Compares	term	clear
+gujarati.xml	Execute Previous NppExec Script	term	previou
+gujarati.xml	A line	term	line
+gujarati.xml	Work the language out from the contents when the name does not say	term	content
+gujarati.xml	URL Encode (RFC1738) by line	term	line
+gujarati.xml	URL Encode (Extended) by line	term	line
+gujarati.xml	URL Encode (Full) by line	term	line
+gujarati.xml	Install Command Line Tool	term	line
+gujarati.xml	Number of passwords:	term	number
+gujarati.xml	Allow invalid certificates	term	allow
+gujarati.xml	One to a line: name=value. They are added to the address, encoded.	term	line
+gujarati.xml	One to a line: Name: value	term	line
+gujarati.xml	Selected Numbers	term	number
+hebrew.xml	Pretty Print — Indent Attributes	term	indent
+hebrew.xml	Max Characters to Auto-Fill Find Field	term	find
+hebrew.xml	View 1	term	view
+hebrew.xml	View 2	term	view
+hindi.xml	Sort Keys	term	sort
+hindi.xml	Escape Characters in Selection	term	escape
+hindi.xml	A line	term	line
+hindi.xml	Highlight matching braces	term	highlight
+hindi.xml	Add characters to the word list	term	add
+hindi.xml	Decimal:	term	decimal
+hindi.xml	Invalid JSON.	term	invalid
+hindi.xml	Allow invalid certificates	term	invalid
+hindi.xml	Open in New Document	term	new document
+hongKongCantonese.xml	Save Current Command…	term	save
+hongKongCantonese.xml	Previous Difference	term	previou
+hongKongCantonese.xml	Ignore Case	term	ignore
+hongKongCantonese.xml	Unescape Characters in Selection	english	unescape
+hongKongCantonese.xml	Execute Previous NppExec Script	term	previou
+hongKongCantonese.xml	Show the fold margin	term	fold
+hongKongCantonese.xml	Show the fold margin	term	margin
+hongKongCantonese.xml	Characters before it opens	term	open
+hongKongCantonese.xml	Compare: ignore case	term	ignore
+hongKongCantonese.xml	Max Characters to Auto-Fill Find Field	term	field
+hongKongCantonese.xml	Open the Releases Page	term	page
+hongKongCantonese.xml	Copy debug info to clipboard	term	copy
+hongKongCantonese.xml	URL Encode (Extended)	term	extended
+hongKongCantonese.xml	URL Encode (Extended) by line	term	extended
+hongKongCantonese.xml	Copy RTF to clipboard	term	copy
+hongKongCantonese.xml	Copy HTML to clipboard	term	copy
+hongKongCantonese.xml	Copy all formats to clipboard	term	copy
+hongKongCantonese.xml	Ignore Spelling	term	ignore
+hongKongCantonese.xml	Copy Image	term	copy
+hongKongCantonese.xml	Save…	term	save
+hongKongCantonese.xml	Marks cleared	term	mark
+hongKongCantonese.xml	The password matches the hash.	term	matche
+hongKongCantonese.xml	Result:	term	result
+hongKongCantonese.xml	Copy as curl	term	copy
+hongKongCantonese.xml	File History	term	history
+hongKongCantonese.xml	Switch Branch	term	switch
+hongKongCantonese.xml	Stage all changes first	english	stage
+hongKongCantonese.xml	Save the file before staging it?	term	save
+hongKongCantonese.xml	Git: mark lines changed since the last commit in the margin	term	mark
+hongKongCantonese.xml	Git: mark lines changed since the last commit in the margin	term	margin
+hongKongCantonese.xml	Copy	term	copy
+hungarian.xml	Clear Active Compare	term	clear
+hungarian.xml	Clear All Compares	term	clear
+hungarian.xml	Escape Characters in Selection	term	escape
+hungarian.xml	Unescape Characters in Selection	term	character
+hungarian.xml	Input:	term	input
+hungarian.xml	The input is not bytes written in hexadecimal.	term	input
+hungarian.xml	The input is not valid $STR_REPLACE$.	term	input
+indonesian.xml	A line	term	line
+indonesian.xml	Work the language out from the contents when the name does not say	term	content
+indonesian.xml	URL Encode (Full)	term	full
+indonesian.xml	URL Encode (Full) by line	term	full
+indonesian.xml	Content type:	term	type
+indonesian.xml	Switch Branch	term	switch
+indonesian.xml	Click to copy the full path	term	copy
+irish.xml	Open Containing Folder in Finder	term	containing
+irish.xml	Open Containing Folder in Terminal	term	containing
+irish.xml	Save Current Command…	term	command
+irish.xml	Manage Saved Commands…	term	command
+irish.xml	Previous Difference	term	previou
+irish.xml	Execute Previous NppExec Script	term	previou
+irish.xml	Show the fold margin	term	fold
+irish.xml	Fonts…	term	font
+irish.xml	Install Command Line Tool	term	command
+irish.xml	The nppmac command is installed.	term	command
+irish.xml	Paste curl Command	term	command
+irish.xml	This is not a curl command.	term	command
+irish.xml	The command has no address.	term	command
+irish.xml	The command reads its data from a file, which is not done here.	term	command
+irish.xml	Click to copy the full path	term	copy
+irish.xml	Click to copy the full path	term	path
+italian.xml	A line	term	line
+italian.xml	3 parts	term	part
+italian.xml	4 parts	term	part
+italian.xml	5 parts	term	part
+italian.xml	6 parts	term	part
+italian.xml	7 parts	term	part
+italian.xml	8 parts	term	part
+italian.xml	9 parts	term	part
+italian.xml	Add characters to the word list	term	list
+italian.xml	Allow invalid certificates	term	allow
+italian.xml	Switch Branch	term	switch
+japanese.xml	Toggle Fold	term	fold
+japanese.xml	Recent Window	term	recent
+japanese.xml	Format	term	format
+japanese.xml	Execute Previous NppExec Script	term	previou
+japanese.xml	Show the fold margin	term	fold
+japanese.xml	Show the fold margin	term	margin
+japanese.xml	Columns (space separated)	term	column
+japanese.xml	3 parts	term	part
+japanese.xml	4 parts	term	part
+japanese.xml	5 parts	term	part
+japanese.xml	6 parts	term	part
+japanese.xml	7 parts	term	part
+japanese.xml	8 parts	term	part
+japanese.xml	9 parts	term	part
+japanese.xml	Add characters to the word list	term	list
+japanese.xml	Confirm Replace All	term	confirm
+japanese.xml	URL Encode (Full)	term	full
+japanese.xml	URL Encode (Full) by line	term	full
+japanese.xml	Hex format is not conformed	term	format
+japanese.xml	Copy all formats to clipboard	term	format
+japanese.xml	The selection is too long for a QR code.	term	long
+japanese.xml	Converting will replace them.	term	replace
+japanese.xml	The password matches the hash.	term	matche
+japanese.xml	Result:	term	result
+japanese.xml	Content type:	term	type
+japanese.xml	Format JSON	term	format
+japanese.xml	Git: mark lines changed since the last commit in the margin	term	mark
+kabyle.xml	Fonts…	term	font
+kannada.xml	Conversion Panel	term	panel
+kannada.xml	Git Panel	term	panel
+kazakh.xml	Work the language out from the contents when the name does not say	term	language
+kazakh.xml	Max Characters to Auto-Fill Find Field	term	find
+kazakh.xml	Language	term	language
+kazakh.xml	Which language is this?	term	language
+kazakh.xml	View 1	term	view
+kazakh.xml	View 2	term	view
+kazakh.xml	Number of passwords:	term	number
+kazakh.xml	Open in New Document	term	new document
+kazakh.xml	Selected Numbers	term	number
+korean.xml	Remember which panels were open	term	open
+korean.xml	Header font (blank for the editor's)	term	blank
+korean.xml	Characters before it opens	term	open
+korean.xml	The selection is too long for a QR code.	term	long
+korean.xml	Invalid JSON.	term	invalid
+korean.xml	That file is open in another tab.	term	open
+korean.xml	Close it first, or choose another name.	term	close
+korean.xml	Empty: a random salt each time	term	empty
+korean.xml	Content type:	term	type
+korean.xml	Allow invalid certificates	term	invalid
+kurdish.xml	These settings need more than 2 GB of memory.	term	setting
+kurdish.xml	These settings need more than 4 GB of memory.	term	setting
+kyrgyz.xml	3 parts	term	part
+kyrgyz.xml	4 parts	term	part
+kyrgyz.xml	5 parts	term	part
+kyrgyz.xml	6 parts	term	part
+kyrgyz.xml	7 parts	term	part
+kyrgyz.xml	8 parts	term	part
+kyrgyz.xml	9 parts	term	part
+kyrgyz.xml	Close it first, or choose another name.	term	close
+kyrgyz.xml	View 1	term	view
+kyrgyz.xml	View 2	term	view
+kyrgyz.xml	Number of passwords:	term	number
+kyrgyz.xml	Selected Numbers	term	number
+latvian.xml	Toggle Insert/Overtype	term	insert
+latvian.xml	Recent Window	term	recent
+latvian.xml	A line	term	line
+latvian.xml	Max Characters to Auto-Fill Find Field	term	find
+latvian.xml	Insert into Document	term	insert
+latvian.xml	File History	term	history
+ligurian.xml	Open in New Document	term	new document
+lithuanian.xml	Sort Keys	term	sort
+lithuanian.xml	A line	term	line
+lithuanian.xml	Characters before it opens	term	open
+lithuanian.xml	The password matches the hash.	term	matche
+luxembourgish.xml	3 parts	term	part
+luxembourgish.xml	4 parts	term	part
+luxembourgish.xml	5 parts	term	part
+luxembourgish.xml	6 parts	term	part
+luxembourgish.xml	7 parts	term	part
+luxembourgish.xml	8 parts	term	part
+luxembourgish.xml	9 parts	term	part
+luxembourgish.xml	Open in New Document	term	new document
+macedonian.xml	Open in New Document	term	new document
+malay.xml	Max Characters to Auto-Fill Find Field	term	find
+malay.xml	Number of passwords:	term	number
+marathi.xml	Number of passwords:	term	number
+marathi.xml	Open in New Document	term	new document
+marathi.xml	Selected Numbers	term	number
+mongolian.xml	Recent Window	term	recent
+mongolian.xml	Work the language out from the contents when the name does not say	term	content
+mongolian.xml	Content type:	term	content
+mongolian.xml	Open in New Document	term	new document
+nepali.xml	Save Current Command…	term	command
+nepali.xml	Manage Saved Commands…	term	command
+nepali.xml	Install Command Line Tool	term	command
+nepali.xml	Invalid JSON.	term	invalid
+nepali.xml	Allow invalid certificates	term	invalid
+nepali.xml	Copy	term	copy
+norwegian.xml	Recent Window	term	recent
+norwegian.xml	Check XML Syntax Now	term	check
+norwegian.xml	Apply XSL Transformation…	term	apply
+norwegian.xml	Show the fold margin	term	fold
+norwegian.xml	Header font (blank for the editor's)	term	blank
+norwegian.xml	Spell Check	term	check
+norwegian.xml	Spell Check Document Automatically	term	check
+norwegian.xml	No text was found in the file.	term	found
+norwegian.xml	No text was found in the clipboard's image.	term	found
+norwegian.xml	No QR code was found in the clipboard's image.	term	found
+norwegian.xml	That file is open in another tab.	term	open
+nynorsk.xml	Unescape Characters in Selection	term	character
+nynorsk.xml	Remember which panels were open	term	panel
+nynorsk.xml	Conversion Panel	term	panel
+nynorsk.xml	Git Panel	term	panel
+occitan.xml	Add characters to the word list	term	add
+polish.xml	Recent Window	term	recent
+polish.xml	Escape Characters in Selection	term	escape
+polish.xml	3 parts	term	part
+polish.xml	4 parts	term	part
+polish.xml	5 parts	term	part
+polish.xml	6 parts	term	part
+polish.xml	7 parts	term	part
+polish.xml	8 parts	term	part
+polish.xml	9 parts	term	part
+polish.xml	Work the language out from the contents when the name does not say	term	language
+polish.xml	No Guesses Found	term	found
+polish.xml	Which language is this?	term	language
+polish.xml	Converting will replace them.	term	replace
+polish.xml	The password matches the hash.	term	matche
+portuguese.xml	Remember which panels were open	term	open
+portuguese.xml	Header font (blank for the editor's)	term	blank
+portuguese.xml	URL Encode (Extended)	term	extended
+portuguese.xml	URL Encode (Extended) by line	term	extended
+portuguese.xml	Language	term	language
+portuguese.xml	No Guesses Found	term	found
+portuguese.xml	That file is open in another tab.	term	open
+portuguese.xml	User name:	term	user
+punjabi.xml	Open Containing Folder in Finder	term	open
+punjabi.xml	Open Containing Folder in Terminal	term	open
+punjabi.xml	Toggle Insert/Overtype	term	insert
+punjabi.xml	Recent Window	term	recent
+punjabi.xml	Open Plugins Folder…	term	open
+punjabi.xml	Ignore Spaces	term	space
+punjabi.xml	Clear Active Compare	term	clear
+punjabi.xml	Clear All Compares	term	clear
+punjabi.xml	Pretty Print — Indent Attributes	term	indent
+punjabi.xml	Escape Characters in Selection	term	escape
+punjabi.xml	Remember which panels were open	term	open
+punjabi.xml	A line	term	line
+punjabi.xml	Columns (space separated)	term	space
+punjabi.xml	Characters before it opens	term	open
+punjabi.xml	Confirm Replace All	term	replace
+punjabi.xml	Compare: ignore spaces	term	space
+punjabi.xml	Open the Releases Page	term	open
+punjabi.xml	Decimal:	term	decimal
+punjabi.xml	Paste Image as Text	term	text
+punjabi.xml	Recognize Text in File…	term	text
+punjabi.xml	No text was found in the file.	term	text
+punjabi.xml	No text was found in the clipboard's image.	term	text
+punjabi.xml	That file is open in another tab.	term	open
+punjabi.xml	Text:	term	text
+punjabi.xml	The decoded bytes are not UTF-8 text; they are shown in hexadecimal only.	term	text
+punjabi.xml	Open in New Document	term	open
+punjabi.xml	The answer is not text: $INT_REPLACE$ bytes.	term	text
+punjabi.xml	Selected Numbers	term	number
+romanian.xml	3 parts	term	part
+romanian.xml	4 parts	term	part
+romanian.xml	5 parts	term	part
+romanian.xml	6 parts	term	part
+romanian.xml	7 parts	term	part
+romanian.xml	8 parts	term	part
+romanian.xml	9 parts	term	part
+romanian.xml	Header font (blank for the editor's)	term	blank
+romanian.xml	Discard Changes in File…	term	change
+romanian.xml	Switch Branch	term	switch
+romanian.xml	Stage all changes first	term	change
+romanian.xml	Discard the changes in "$STR_REPLACE$"?	term	change
+romanian.xml	Revert Change at Caret to HEAD	term	change
+romanian.xml	The caret is on no change since the last commit	term	change
+russian.xml	Show All	term	show
+russian.xml	Show All Hidden Lines	term	show
+russian.xml	Show Console	term	show
+russian.xml	Show JSON Tree	term	show
+russian.xml	Set as First to Compare	term	set
+russian.xml	Clear Active Compare	term	clear
+russian.xml	Clear All Compares	term	clear
+russian.xml	Unescape Characters in Selection	term	character
+russian.xml	Show Remote Files	term	show
+russian.xml	Show NppExec Console	term	show
+russian.xml	Show the toolbar	term	show
+russian.xml	Show the fold margin	term	show
+russian.xml	Show the fold margin	term	fold
+russian.xml	Work the language out from the contents when the name does not say	term	language
+russian.xml	Characters before it opens	term	open
+russian.xml	Language	term	language
+russian.xml	Invalid JSON.	term	invalid
+russian.xml	Set as the first file to compare.	term	set
+russian.xml	Which language is this?	term	language
+russian.xml	Show the bare key in hexadecimal	term	show
+sardinian.xml	Add characters to the word list	term	add
+sardinian.xml	Content type:	term	content
+sardinian.xml	Open in New Document	term	new document
+serbian.xml	Toggle Insert/Overtype	term	toggle
+serbian.xml	Recent Window	term	recent
+serbian.xml	Pretty Print — Indent Attributes	term	indent
+serbian.xml	Remember which panels were open	term	remember
+serbian.xml	Selected text can be dragged	term	selected
+serbian.xml	3 parts	term	part
+serbian.xml	4 parts	term	part
+serbian.xml	5 parts	term	part
+serbian.xml	6 parts	term	part
+serbian.xml	7 parts	term	part
+serbian.xml	8 parts	term	part
+serbian.xml	9 parts	term	part
+serbian.xml	Max Characters to Auto-Fill Find Field	term	find
+serbian.xml	Invalid JSON.	term	invalid
+serbian.xml	Marks cleared	term	mark
+serbian.xml	User name:	term	user
+serbian.xml	Allow invalid certificates	term	invalid
+serbian.xml	Discard Changes in File…	term	change
+serbian.xml	Switch Branch	term	switch
+serbian.xml	Stage all changes first	term	change
+serbian.xml	Discard the changes in "$STR_REPLACE$"?	term	change
+serbian.xml	Revert Change at Caret to HEAD	term	change
+serbian.xml	The caret is on no change since the last commit	term	change
+serbian.xml	Selected Numbers	term	selected
+serbianCyrillic.xml	Toggle Insert/Overtype	term	toggle
+serbianCyrillic.xml	Recent Window	term	recent
+serbianCyrillic.xml	Pretty Print — Indent Attributes	term	indent
+serbianCyrillic.xml	Remember which panels were open	term	remember
+serbianCyrillic.xml	Selected text can be dragged	term	selected
+serbianCyrillic.xml	3 parts	term	part
+serbianCyrillic.xml	4 parts	term	part
+serbianCyrillic.xml	5 parts	term	part
+serbianCyrillic.xml	6 parts	term	part
+serbianCyrillic.xml	7 parts	term	part
+serbianCyrillic.xml	8 parts	term	part
+serbianCyrillic.xml	9 parts	term	part
+serbianCyrillic.xml	Max Characters to Auto-Fill Find Field	term	find
+serbianCyrillic.xml	Invalid JSON.	term	invalid
+serbianCyrillic.xml	Marks cleared	term	mark
+serbianCyrillic.xml	User name:	term	user
+serbianCyrillic.xml	Allow invalid certificates	term	invalid
+serbianCyrillic.xml	Discard Changes in File…	term	change
+serbianCyrillic.xml	Switch Branch	term	switch
+serbianCyrillic.xml	Stage all changes first	term	change
+serbianCyrillic.xml	Discard the changes in "$STR_REPLACE$"?	term	change
+serbianCyrillic.xml	Revert Change at Caret to HEAD	term	change
+serbianCyrillic.xml	The caret is on no change since the last commit	term	change
+serbianCyrillic.xml	Selected Numbers	term	selected
+sinhala.xml	Script name	term	name
+sinhala.xml	Work the language out from the contents when the name does not say	term	name
+sinhala.xml	Close it first, or choose another name.	term	name
+sinhala.xml	Number of passwords:	term	number
+sinhala.xml	Open in New Document	term	new document
+sinhala.xml	One to a line: name=value. They are added to the address, encoded.	term	name
+sinhala.xml	One to a line: Name: value	term	name
+sinhala.xml	A branch needs a name	term	name
+sinhala.xml	New branch name:	term	name
+sinhala.xml	Selected Numbers	term	number
+slovak.xml	URL Encode (Full)	term	full
+slovak.xml	URL Encode (Full) by line	term	full
+slovak.xml	Decimal:	term	decimal
+slovak.xml	Choose a folder first	term	choose
+slovak.xml	Number of passwords:	term	number
+slovak.xml	Choose at least one kind of character.	term	choose
+slovenian.xml	Format	term	format
+slovenian.xml	Ignore Case	term	ignore
+slovenian.xml	Apply XSL Transformation…	term	apply
+slovenian.xml	Escape Characters in Selection	term	escape
+slovenian.xml	Dock Top	term	top
+slovenian.xml	Show the fold margin	term	fold
+slovenian.xml	A line	term	line
+slovenian.xml	Margins: left, top, right, bottom (points)	term	top
+slovenian.xml	Compare: ignore case	term	ignore
+slovenian.xml	URL Encode (Full)	term	full
+slovenian.xml	URL Encode (Full) by line	term	full
+slovenian.xml	Format JSON	term	format
+spanish.xml	Remember which panels were open	term	open
+spanish.xml	Margins: left, top, right, bottom (points)	term	margin
+spanish.xml	Language	term	language
+spanish.xml	That file is open in another tab.	term	open
+spanish.xml	Close it first, or choose another name.	term	close
+spanish_ar.xml	Clear Active Compare	term	clear
+spanish_ar.xml	Clear All Compares	term	clear
+spanish_ar.xml	Remember which panels were open	term	open
+spanish_ar.xml	Show the fold margin	term	fold
+spanish_ar.xml	Max Characters to Auto-Fill Find Field	term	find
+spanish_ar.xml	Language	term	language
+spanish_ar.xml	That file is open in another tab.	term	open
+spanish_ar.xml	Close it first, or choose another name.	term	close
+spanish_ar.xml	Open in New Document	term	new document
+swedish.xml	Apply XSL Transformation…	term	apply
+swedish.xml	Unescape Characters in Selection	term	character
+swedish.xml	Show the fold margin	term	fold
+swedish.xml	A line	term	line
+swedish.xml	Invalid JSON.	term	invalid
+swedish.xml	Input:	term	input
+swedish.xml	The input is not bytes written in hexadecimal.	term	input
+swedish.xml	The input is not valid $STR_REPLACE$.	term	input
+swedish.xml	Allow invalid certificates	term	invalid
+tagalog.xml	A line	term	line
+tagalog.xml	Copy debug info to clipboard	english	debug
+tagalog.xml	Copy debug info to clipboard	english	info
+tagalog.xml	URL Encode (RFC1738) by line	term	line
+tagalog.xml	URL Encode (Extended) by line	term	line
+tagalog.xml	URL Encode (Full) by line	term	line
+tagalog.xml	Spell Check Document Automatically	term	document
+tagalog.xml	Install Command Line Tool	english	Command
+tagalog.xml	Install Command Line Tool	english	Line
+tagalog.xml	Install Command Line Tool	english	Tool
+tagalog.xml	Open in New Document	term	new document
+tagalog.xml	Selected Numbers	term	number
+taiwaneseMandarin.xml	Apply XSL Transformation…	term	apply
+taiwaneseMandarin.xml	Escape Characters in Selection	term	escape
+taiwaneseMandarin.xml	Remember which panels were open	term	panel
+taiwaneseMandarin.xml	Columns (space separated)	term	column
+taiwaneseMandarin.xml	Header font (blank for the editor's)	term	blank
+taiwaneseMandarin.xml	Conversion Panel	term	panel
+taiwaneseMandarin.xml	Decimal:	term	decimal
+taiwaneseMandarin.xml	Result:	term	result
+taiwaneseMandarin.xml	Open in New Document	term	new document
+taiwaneseMandarin.xml	Git Panel	term	panel
+taiwaneseMandarin.xml	File History	term	history
+taiwaneseMandarin.xml	Switch Branch	term	switch
+tajikCyrillic.xml	Toggle Insert/Overtype	term	insert
+tajikCyrillic.xml	Recent Window	term	recent
+tajikCyrillic.xml	Work the language out from the contents when the name does not say	term	content
+tajikCyrillic.xml	Characters before it opens	term	open
+tajikCyrillic.xml	Max Characters to Auto-Fill Find Field	term	find
+tajikCyrillic.xml	Close it first, or choose another name.	term	close
+tajikCyrillic.xml	Converting will replace them.	term	replace
+tajikCyrillic.xml	View 1	term	view
+tajikCyrillic.xml	View 2	term	view
+tajikCyrillic.xml	Insert into Document	term	insert
+tajikCyrillic.xml	Content type:	term	content
+tajikCyrillic.xml	Open in New Document	term	new document
+tamil.xml	Apply XSL Transformation…	term	apply
+tamil.xml	Toolbar buttons	term	button
+tamil.xml	Enable Multi-Editing (Cmd+click/selection)	term	click
+tamil.xml	Follow the system	term	system
+tamil.xml	A line	term	line
+tamil.xml	Add characters to the word list	term	add
+tamil.xml	Max Characters to Auto-Fill Find Field	term	find
+tamil.xml	Max Characters to Auto-Fill Find Field	term	field
+tamil.xml	No Guesses Found	term	found
+tamil.xml	No text was found in the file.	term	found
+tamil.xml	QR Code from Selection	term	code
+tamil.xml	Read QR Code from Clipboard	term	code
+tamil.xml	QR Code	term	code
+tamil.xml	No text was found in the clipboard's image.	term	found
+tamil.xml	The selection is too long for a QR code.	term	code
+tamil.xml	No QR code was found in the clipboard's image.	term	code
+tamil.xml	No QR code was found in the clipboard's image.	term	found
+tamil.xml	Open in New Document	term	new document
+tamil.xml	Click to copy the full path	term	click
+tamil.xml	Revert Change at Caret to HEAD	term	caret
+tamil.xml	The caret is on no change since the last commit	term	caret
+tatar.xml	Recent Window	term	recent
+tatar.xml	Show the fold margin	term	fold
+tatar.xml	Work the language out from the contents when the name does not say	term	content
+tatar.xml	Language	term	language
+tatar.xml	Which language is this?	term	language
+tatar.xml	Insert into Document	term	insert
+tatar.xml	Empty: a random salt each time	term	time
+tatar.xml	Content type:	term	content
+telugu.xml	Show All	term	show
+telugu.xml	Show All Hidden Lines	term	show
+telugu.xml	Show Console	term	show
+telugu.xml	Show JSON Tree	term	show
+telugu.xml	Previous Difference	term	previou
+telugu.xml	Clear Active Compare	term	clear
+telugu.xml	Clear All Compares	term	clear
+telugu.xml	Show Remote Files	term	show
+telugu.xml	Execute Previous NppExec Script	term	previou
+telugu.xml	Show NppExec Console	term	show
+telugu.xml	Show the toolbar	term	show
+telugu.xml	Show the fold margin	term	show
+telugu.xml	Number of passwords:	term	number
+telugu.xml	Show the bare key in hexadecimal	term	show
+telugu.xml	Open in New Document	term	new document
+telugu.xml	Selected Numbers	term	number
+thai.xml	Validate Against Schema…	english	Schema
+thai.xml	A line	term	line
+thai.xml	Salt (hexadecimal):	english	Salt
+thai.xml	The salt is not valid hexadecimal.	english	Salt
+thai.xml	bcrypt takes a salt of exactly 16 bytes.	english	Salt
+thai.xml	Argon2 takes a salt of at least 8 bytes.	english	Salt
+thai.xml	The cost must be between 4 and 31.	english	Cost
+thai.xml	Number of passwords:	term	number
+thai.xml	Empty: a random salt each time	english	Salt
+thai.xml	Open in New Document	term	new document
+turkish.xml	Open Containing Folder in Finder	term	containing
+turkish.xml	Open Containing Folder in Terminal	term	containing
+turkish.xml	Recent Window	term	recent
+turkish.xml	Unescape Characters in Selection	term	character
+turkish.xml	A line	term	line
+turkish.xml	3 parts	term	part
+turkish.xml	4 parts	term	part
+turkish.xml	5 parts	term	part
+turkish.xml	6 parts	term	part
+turkish.xml	7 parts	term	part
+turkish.xml	8 parts	term	part
+turkish.xml	9 parts	term	part
+turkish.xml	Work the language out from the contents when the name does not say	term	content
+turkish.xml	Empty: a random salt each time	term	time
+turkish.xml	User name:	term	user
+turkish.xml	Switch Branch	term	switch
+turkish.xml	Git: mark lines changed since the last commit in the margin	term	mark
+ukrainian.xml	Clear Active Compare	term	clear
+ukrainian.xml	Clear All Compares	term	clear
+ukrainian.xml	Unescape Characters in Selection	term	character
+ukrainian.xml	Characters before it opens	term	open
+ukrainian.xml	Max Characters to Auto-Fill Find Field	term	find
+ukrainian.xml	Invalid JSON.	term	invalid
+ukrainian.xml	Close it first, or choose another name.	term	choose
+ukrainian.xml	Choose a folder first	term	choose
+ukrainian.xml	Input:	term	input
+ukrainian.xml	The input is not bytes written in hexadecimal.	term	input
+ukrainian.xml	The input is not valid $STR_REPLACE$.	term	input
+ukrainian.xml	Choose at least one kind of character.	term	choose
+ukrainian.xml	Options	term	option
+ukrainian.xml	User name:	term	name
+ukrainian.xml	Allow invalid certificates	term	invalid
+ukrainian.xml	Open in New Document	term	new document
+uyghur.xml	Toggle Insert/Overtype	term	toggle
+uyghur.xml	Next Difference	term	next
+uyghur.xml	Previous Difference	term	previou
+uyghur.xml	Execute Previous NppExec Script	term	previou
+uyghur.xml	3 parts	term	part
+uyghur.xml	4 parts	term	part
+uyghur.xml	5 parts	term	part
+uyghur.xml	6 parts	term	part
+uyghur.xml	7 parts	term	part
+uyghur.xml	8 parts	term	part
+uyghur.xml	9 parts	term	part
+uyghur.xml	That file is open in another tab.	term	open
+uyghur.xml	That file is open in another tab.	term	tab
+uyghur.xml	Number of passwords:	term	number
+uyghur.xml	Open in New Document	term	new document
+uyghur.xml	Selected Numbers	term	number
+uzbek.xml	Recent Window	term	recent
+uzbek.xml	Sort Keys	term	sort
+uzbek.xml	Confirm Replace All	term	replace
+uzbekCyrillic.xml	Max Characters to Auto-Fill Find Field	term	find
+uzbekCyrillic.xml	Copy debug info to clipboard	term	copy
+uzbekCyrillic.xml	Copy RTF to clipboard	term	copy
+uzbekCyrillic.xml	Copy HTML to clipboard	term	copy
+uzbekCyrillic.xml	Copy all formats to clipboard	term	copy
+uzbekCyrillic.xml	Number of passwords:	term	number
+uzbekCyrillic.xml	Click to copy the full path	term	copy
+uzbekCyrillic.xml	Selected Numbers	term	number
+venetian.xml	3 parts	term	part
+venetian.xml	4 parts	term	part
+venetian.xml	5 parts	term	part
+venetian.xml	6 parts	term	part
+venetian.xml	7 parts	term	part
+venetian.xml	8 parts	term	part
+venetian.xml	9 parts	term	part
+venetian.xml	Switch Branch	term	switch
+venetian.xml	A branch needs a name	term	name
+venetian.xml	New branch name:	term	name
+venetian.xml	Click to copy the full path	term	copy
+venetian.xml	Detect Moves	term	move
+vietnamese.xml	Ignore Case	term	ignore
+vietnamese.xml	Ignore Spaces	term	ignore
+vietnamese.xml	Ignore Empty Lines	term	ignore
+vietnamese.xml	Clear Active Compare	term	clear
+vietnamese.xml	Clear All Compares	term	clear
+vietnamese.xml	Show the fold margin	term	margin
+vietnamese.xml	A line	term	line
+vietnamese.xml	Margins: left, top, right, bottom (points)	term	margin
+vietnamese.xml	Compare: ignore case	term	ignore
+vietnamese.xml	Compare: ignore spaces	term	ignore
+vietnamese.xml	Compare: ignore empty lines	term	ignore
+vietnamese.xml	Character:	term	character
+vietnamese.xml	Ignore Spelling	term	ignore
+vietnamese.xml	Block size (r):	term	size
+vietnamese.xml	Leave out characters that look alike (O 0 o I l 1)	term	character
+vietnamese.xml	At least one character of each kind	term	character
+vietnamese.xml	Choose at least one kind of character.	term	character
+vietnamese.xml	Switch Branch	term	switch
+vietnamese.xml	Git: mark lines changed since the last commit in the margin	term	margin
+welsh.xml	Remember which panels were open	term	panel
+welsh.xml	Margins: left, top, right, bottom (points)	term	right
+welsh.xml	Close it first, or choose another name.	term	close
+welsh.xml	View 1	term	view
+welsh.xml	View 2	term	view
+welsh.xml	Number of passwords:	term	number
+welsh.xml	Empty: a random salt each time	term	empty
+welsh.xml	Content type:	term	content
+zulu.xml	Remember which panels were open	term	panel
+zulu.xml	Columns (space separated)	term	column
+zulu.xml	Highlight matching braces	term	highlight
+zulu.xml	Copy RTF to clipboard	term	clipboard
+zulu.xml	Copy HTML to clipboard	term	clipboard
+zulu.xml	Copy all formats to clipboard	term	clipboard
+zulu.xml	Paste Image as Text	term	text
+zulu.xml	Read QR Code from Clipboard	term	clipboard
+zulu.xml	Number of passwords:	term	number
+zulu.xml	Open in New Document	term	new document
+zulu.xml	File History	term	history

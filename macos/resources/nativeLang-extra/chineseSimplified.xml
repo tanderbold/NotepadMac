@@ -134,11 +134,11 @@
     <Item english="ASCII -&gt; HEX" text="ASCII -&gt; HEX"/>
     <Item english="HEX -&gt; ASCII" text="HEX -&gt; ASCII"/>
     <Item english="Conversion Panel" text="转换面板"/>
-    <Item english="Character:" text="字符："/>
-    <Item english="Decimal:" text="十进制："/>
-    <Item english="Hexadecimal:" text="十六进制："/>
-    <Item english="Binary:" text="二进制："/>
-    <Item english="Octal:" text="八进制："/>
+    <Item english="Character:" text="字符:"/>
+    <Item english="Decimal:" text="十进制:"/>
+    <Item english="Hexadecimal:" text="十六进制:"/>
+    <Item english="Binary:" text="二进制:"/>
+    <Item english="Octal:" text="八进制:"/>
     <Item english="Hex format is not conformed" text="十六进制格式不正确"/>
     <Item english="Export" text="导出"/>
     <Item english="Export to RTF" text="导出为 RTF"/>
@@ -198,23 +198,23 @@
     <Item english="Base64…" text="Base64…"/>
     <Item english="Base58…" text="Base58…"/>
     <Item english="Base32…" text="Base32…"/>
-    <Item english="HMAC key (optional):" text="HMAC 密钥（可选）："/>
-    <Item english="Salt (hexadecimal):" text="盐（十六进制）："/>
+    <Item english="HMAC key (optional):" text="HMAC 密钥（可选）:"/>
+    <Item english="Salt (hexadecimal):" text="盐（十六进制）:"/>
     <Item english="Random" text="随机"/>
-    <Item english="Cost (4-31):" text="成本 (4-31)："/>
-    <Item english="Version:" text="版本："/>
-    <Item english="N, as a power of 2:" text="N（2 的幂次）："/>
-    <Item english="Block size (r):" text="块大小 (r)："/>
-    <Item english="Parallelism (p):" text="并行度 (p)："/>
-    <Item english="Variant:" text="变体："/>
-    <Item english="Memory (KiB):" text="内存 (KiB)："/>
-    <Item english="Iterations:" text="迭代次数："/>
-    <Item english="Parallelism:" text="并行度："/>
-    <Item english="Digest:" text="哈希函数："/>
-    <Item english="Hash length (bytes):" text="哈希长度（字节）："/>
-    <Item english="Hash:" text="哈希："/>
+    <Item english="Cost (4-31):" text="成本 (4-31):"/>
+    <Item english="Version:" text="版本:"/>
+    <Item english="N, as a power of 2:" text="N（2 的幂次）:"/>
+    <Item english="Block size (r):" text="块大小 (r):"/>
+    <Item english="Parallelism (p):" text="并行度 (p):"/>
+    <Item english="Variant:" text="变体:"/>
+    <Item english="Memory (KiB):" text="内存 (KiB):"/>
+    <Item english="Iterations:" text="迭代次数:"/>
+    <Item english="Parallelism:" text="并行度:"/>
+    <Item english="Digest:" text="哈希函数:"/>
+    <Item english="Hash length (bytes):" text="哈希长度（字节）:"/>
+    <Item english="Hash:" text="哈希:"/>
     <Item english="Verify" text="验证"/>
-    <Item english="Hash to check the password against:" text="用于核对密码的哈希："/>
+    <Item english="Hash to check the password against:" text="用于核对密码的哈希:"/>
     <Item english="The salt is not valid hexadecimal." text="盐不是有效的十六进制。"/>
     <Item english="bcrypt takes a salt of exactly 16 bytes." text="bcrypt 需要恰好 16 字节的盐。"/>
     <Item english="Argon2 takes a salt of at least 8 bytes." text="Argon2 需要至少 8 字节的盐。"/>
@@ -237,22 +237,22 @@
     <Item english="Base64 (URL-safe)" text="Base64（URL 安全）"/>
     <Item english="Encode" text="编码"/>
     <Item english="Decode" text="解码"/>
-    <Item english="The input is:" text="输入内容为："/>
+    <Item english="The input is:" text="输入内容为:"/>
     <Item english="Bytes in hexadecimal" text="十六进制字节"/>
-    <Item english="Input:" text="输入："/>
-    <Item english="Result:" text="结果："/>
-    <Item english="Text:" text="文本："/>
-    <Item english="Bytes in hexadecimal:" text="十六进制字节："/>
+    <Item english="Input:" text="输入:"/>
+    <Item english="Result:" text="结果:"/>
+    <Item english="Text:" text="文本:"/>
+    <Item english="Bytes in hexadecimal:" text="十六进制字节:"/>
     <Item english="The input is not bytes written in hexadecimal." text="输入不是以十六进制表示的字节。"/>
     <Item english="The input is not valid $STR_REPLACE$." text="输入不是有效的 $STR_REPLACE$。"/>
     <Item english="The decoded bytes are not UTF-8 text; they are shown in hexadecimal only." text="解码后的字节不是 UTF-8 文本，仅以十六进制显示。"/>
     <Item english="Password Generator" text="密码生成器"/>
-    <Item english="Length:" text="长度："/>
-    <Item english="Number of passwords:" text="密码数量："/>
+    <Item english="Length:" text="长度:"/>
+    <Item english="Number of passwords:" text="密码数量:"/>
     <Item english="Uppercase letters (A-Z)" text="大写字母 (A-Z)"/>
     <Item english="Lowercase letters (a-z)" text="小写字母 (a-z)"/>
     <Item english="Digits (0-9)" text="数字 (0-9)"/>
-    <Item english="Symbols:" text="符号："/>
+    <Item english="Symbols:" text="符号:"/>
     <Item english="Leave out characters that look alike (O 0 o I l 1)" text="排除外形相似的字符 (O 0 o I l 1)"/>
     <Item english="At least one character of each kind" text="每种字符至少包含一个"/>
     <Item english="Entropy: about $INT_REPLACE$ bits" text="熵：约 $INT_REPLACE$ 位"/>
@@ -268,10 +268,10 @@
     <Item english="Headers" text="标头"/>
     <Item english="Body" text="正文"/>
     <Item english="Options" text="选项"/>
-    <Item english="Content type:" text="内容类型："/>
-    <Item english="User name:" text="用户名："/>
-    <Item english="Password:" text="密码："/>
-    <Item english="Timeout (seconds):" text="超时（秒）："/>
+    <Item english="Content type:" text="内容类型:"/>
+    <Item english="User name:" text="用户名:"/>
+    <Item english="Password:" text="密码:"/>
+    <Item english="Timeout (seconds):" text="超时（秒）:"/>
     <Item english="Follow redirects" text="跟随重定向"/>
     <Item english="Allow invalid certificates" text="允许无效证书"/>
     <Item english="Format JSON" text="格式化 JSON"/>
@@ -328,7 +328,7 @@
     <Item english="A commit needs a message" text="提交需要提交信息"/>
     <Item english="Nothing is staged to commit" text="没有已暂存的更改可提交"/>
     <Item english="A branch needs a name" text="分支需要名称"/>
-    <Item english="New branch name:" text="新分支名称："/>
+    <Item english="New branch name:" text="新分支名称:"/>
     <Item english="Git: mark lines changed since the last commit in the margin" text="Git：在侧边标记自上次提交以来更改的行"/>
     <!-- Status bar: the path field -->
     <Item english="Click to copy the full path" text="点击复制完整路径"/>

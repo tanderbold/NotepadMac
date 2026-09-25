@@ -243,8 +243,14 @@ command id, everything else by its English text (`NppL(@"…")`, `NppLMessage` f
 `macos/resources/nativeLang-extra/english.xml` (the master) and is translated in the ~90 sibling
 files, which must use the vocabulary of the language's own `nativeLang` file; an item a translator
 is unsure of is **left out** (stays English), never guessed. `python3 macos/check_nativelang_extra.py`
-validates them. A literal `|` in a label is read as `Group|Field` - avoid it. New windows are laid
-out with Auto Layout so translated text cannot be cut; the suite checks that in Russian.
+validates them; `python3 macos/check_nativelang_terms.py` (also run by `test.sh`) checks the
+vocabulary against each official file - its term pairs learnt from the official files by element
+id, not listed by hand - and the forms the localiser relies on (placeholders, `&`, colon, ellipsis,
+`|`). What it finds that only a native speaker can decide is listed in
+`macos/nativelang-terms-pending.txt`; a new finding fails. The full-width colon `：` counts as the
+colon (Taiwanese Mandarin and Cantonese end their labels with it). A literal `|` in a label is
+read as `Group|Field` - avoid it. New windows are laid out with Auto Layout so translated text
+cannot be cut; the suite checks that in Russian.
 The translations are model-made and unreviewed by native speakers (said so in `README.md`).
 
 ## The language model (working out a language from a text)

@@ -241,7 +241,6 @@
     <Item english="Bytes in hexadecimal" text="Octeți în hexazecimal"/>
     <Item english="Input:" text="Intrare:"/>
     <Item english="Result:" text="Rezultat:"/>
-    <Item english="Text:" text="Text:"/>
     <Item english="Bytes in hexadecimal:" text="Octeți în hexazecimal:"/>
     <Item english="The input is not bytes written in hexadecimal." text="Intrarea nu reprezintă octeți scriși în hexazecimal."/>
     <Item english="The input is not valid $STR_REPLACE$." text="Intrarea nu este $STR_REPLACE$ valid."/>

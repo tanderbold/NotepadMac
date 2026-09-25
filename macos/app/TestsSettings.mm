@@ -2441,6 +2441,19 @@ void NppTestsLocalizationAndDefaults(AppDelegate *app, EditorController *ed, Sci
         printf("    l10n extras: %lu files, %lu broken\n", (unsigned long)extraFiles, (unsigned long)extraBroken);
         names = names && extraFiles >= 1 && !extraBroken && [NppL(@"A text the port does not have") isEqualToString:@"A text the port does not have"];
 
+        // A label ending in a colon, in a language that writes the full-width one: it is kept
+        // and no ":" goes after it (it showed as "：:"), in upstream's texts and the port's own.
+        lp.localizationFile = @"taiwaneseMandarin.xml";
+        [app applyLocalization];
+        NSString *twFind = NppL(@"Find what:"), *twHmac = NppL(@"HMAC key (optional):"), *twBare = NppL(@"Find what");
+        lp.localizationFile = @"russian.xml";
+        [app applyLocalization];
+        BOOL fullWidth = [twFind isEqualToString:@"尋找內容："] && [twHmac isEqualToString:@"HMAC 金鑰（選填）："] && [twBare isEqualToString:@"尋找內容"];
+        if (!fullWidth) printf("    full-width colon: \"%s\" \"%s\" \"%s\"\n", twFind.UTF8String, twHmac.UTF8String, twBare.UTF8String);
+        Check(@"Localization (full-width colon)",
+              @"in Taiwanese Mandarin \"Find what:\" is 尋找內容： and the port's own \"HMAC key (optional):\" HMAC 金鑰（選填）： with no ':' after them, and without the English colon the full-width one goes too",
+              fullWidth);
+
         // Context menus: the tab's in its own wording, the editor's still found
         // by the English titles the setting keeps.
         NSMenu *tabMenu = [app buildTabContextMenu];

@@ -103,7 +103,7 @@
     <Item english="Characters before it opens" text="Символов до появления списка"/>
     <Item english="Add characters to the word list" text="Добавить символы к списку символов слова"/>
     <Item english="A fixed folder" text="Заданная папка"/>
-    <Item english="Fixed folder" text="Заданная папка:"/>
+    <Item english="Fixed folder" text="Заданная папка"/>
     <Item english="Confirm Replace All" text="Подтверждать «Заменить все»"/>
     <Item english="Compare: ignore case" text="Сравнение: игнорировать регистр"/>
     <Item english="Compare: ignore spaces" text="Сравнение: игнорировать пробелы"/>
