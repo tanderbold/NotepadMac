@@ -35,6 +35,18 @@
     max-width: 100%; border-radius: 12px; border: 1px solid var(--border);
     display: block;
   }
+  .gallery-title { font-size: 1.35rem; margin: 40px 0 16px; }
+  .gallery {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 24px; margin: 0 0 32px;
+  }
+  .gallery figure { margin: 0; }
+  .gallery img {
+    width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); display: block;
+  }
+  .gallery figcaption { color: var(--muted); font-size: 0.95rem; margin-top: 8px; }
+  .gallery figcaption b { color: var(--fg); }
+  @media (max-width: 440px) { .gallery { grid-template-columns: 1fr; } }
   .features {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px; margin: 32px 0; padding: 0; list-style: none;

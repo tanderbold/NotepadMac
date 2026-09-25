@@ -38,11 +38,15 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - **[Selected numbers](https://tanderbold.github.io/NotepadMac/numbers.html)**: select a set of numbers - `3, 1, 2`, `3 1 2`, one per line, or a column - and Selected Numbers (context menu, or Edit > Selected Numbers) writes their sum, average, minimum, maximum or count after them (`30, 4, 100 SUM = 134`; under them for numbers one per line) and sorts them either way in place, each number keeping its own spelling and every separator staying where it was. Decimal arithmetic (0.1 + 0.2 is 0.3); a decimal comma (`1,5 2,25`) is understood.
 - **[Calculate](https://tanderbold.github.io/NotepadMac/numbers.html#calculate)** (Edit menu, ⌘=, and the context menu): a formula's value written after its `=` - the selected formula, or the one just typed (`2 + 3 =` ⌘= gives `2 + 3 = 5`; without the `=` it is added). `+ - * / : ^`, `mod`, `n!`, percent as a calculator has it (`200 + 15%` is 230), and functions: `sin cos tan cot` and their inverses and hyperbolics, `sqrt cbrt exp ln log lg log2`, `log(x; base)`, `root(x; n)`, `abs floor ceil round`, `min max gcd lcm`; `pi`, `e`; `°` for degrees (`sin 30° = 0.5`). Decimal arithmetic, ten decimal places. ⌘= is Calculate's; Zoom In is ⌘+ (⇧⌘=), ⌘-scroll or a pinch.
 
+<p><img src="docs/screenshots/two-views.png" alt="Two views side by side, each with its own tabs" width="49%"> <img src="docs/screenshots/numbers.png" alt="Selected Numbers and Calculate: SUM, AVG and formula results written into the text" width="49%"></p>
+
 **Languages**
 - Syntax highlighting and folding for about 90 languages, from Notepad++'s own `langs.model.xml` and `stylers.model.xml`; all upstream themes; the Style Configurator.
 - User Defined Languages: the full editor, and UDL files from Windows work as they are.
 - Function List for every language upstream has a parser for (run with PCRE2, as written), Document Map, Document List, Folder as Workspace, Project panels - dockable, floatable, remembered.
 - **The language of a text is worked out from its contents** when its name says nothing - a file without an extension, a snippet pasted into an empty tab - by a small model trained on real code, which offers one language or a short list.
+
+<p><img src="docs/screenshots/editor-panels.png" alt="Function List and Document Map docked beside a Python file" width="49%"> <img src="docs/screenshots/find-in-files.png" alt="Find in Files results grouped by file" width="49%"></p>
 
 **Search**
 - Find, Replace, Find in Files, Find in Projects, Mark, incremental search, with Notepad++'s regular-expression syntax (Boost), the results panel with folding and navigation, search-result colours.
@@ -58,6 +62,8 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 - **Password Generator**: length, character sets, look-alikes excluded, entropy shown, drawn from the system's secure random generator without bias; optionally the hash of each password.
 - **HTTP Request**: method, address, parameters, headers, body, Basic authentication, redirects, timeout; the answer's status, headers and body (JSON laid out), opened as a document if wanted; **Paste curl Command** and **Copy as curl**.
 - **QR codes, both ways**: the selection as a QR code (copy or save the picture), and the clipboard's QR code back as text.
+
+<p><img src="docs/screenshots/http-request.png" alt="HTTP Request with a formatted JSON answer" width="49%"> <img src="docs/screenshots/markdown.png" alt="Markdown Preview docked beside the text" width="49%"></p>
 
 **Only a Mac could**
 - **`nppmac` command line**: `nppmac file.txt`, `nppmac +42 file.txt`, `echo hi | nppmac -`, a folder opens as a workspace; Tools > Install Command Line Tool links it into /usr/local/bin.
@@ -79,6 +85,8 @@ the way they do on Windows - the port is written against Notepad++'s own sources
 
 - Markdown Preview: the document rendered live in a docked panel (CommonMark + tables), as MarkdownViewer++ does.
 
+<p><img src="docs/screenshots/compare.png" alt="Compare: both texts aligned, differences marked" width="49%"> <img src="docs/screenshots/git.png" alt="Git: changed lines in the margin and the Git panel" width="49%"></p>
+
 **Plugins of your own**: native plugins load from the plugins folder the way they do
 on Windows — a small C interface, Scintilla messages and all. See
 [Writing a plugin](#writing-a-plugin) below.
@@ -87,6 +95,8 @@ on Windows — a small C interface, Scintilla messages and all. See
 - The interface in any of Notepad++'s ~90 translations, chosen in Preferences; what only the Mac version says is translated too.
 - Preferences with Notepad++'s pages and wording, Shortcut Mapper (menu, macro, run and Scintilla commands, conflicts shown), editable context menu, toolbar with upstream's icon sets, dark mode.
 - Mac conventions where Windows ones make no sense: Finder and Terminal for Explorer and cmd, the Trash for the Recycle Bin, ⌘ shortcuts.
+
+<p><img src="docs/screenshots/preferences-russian.png" alt="Preferences in Russian" width="60%"></p>
 
 ## Differences from the Windows version
 
