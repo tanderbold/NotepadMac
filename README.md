@@ -106,6 +106,9 @@ on Windows — a small C interface, Scintilla messages and all. See
   Plugins Admin is absent.
 - Mac conventions replace Windows ones: Finder and Terminal instead of Explorer and cmd, the Trash
   instead of the Recycle Bin, the system menu bar and dark appearance, ⌘ shortcuts.
+- Where macOS keeps a Windows shortcut for itself, the Mac one differs: Block Comment is ⌥⌘/ (Ctrl+Shift+Q
+  is Log Out, and ⇧⌘/ is the Help menu's search), and Zoom In is ⌘+ because ⌘= is Calculate. All of
+  them can be changed in the Shortcut Mapper.
 - Settings that only make sense on Windows are left out (tray icon, DirectWrite modes, hiding the
   menu bar, custom dark-mode tones).
 - A font a theme names but the Mac lacks - Consolas, the Windows default, comes only with Microsoft Office - is shown in the system's monospaced font (SF Mono), so columns still line up; the setting keeps the name.
@@ -239,11 +242,11 @@ and `NPPMAC_NOTARY_PROFILE=<profile made with xcrun notarytool store-credentials
 
 ## How it is made
 
-- Upstream's `scintilla/` and `lexilla/` are compiled unchanged (one portability fix in `LexUser.cxx`);
+- Upstream's `scintilla/` and `lexilla/` are compiled unchanged (two portability fixes in `LexUser.cxx`);
   `PowerEditor/` is not compiled at all - it is the specification the Mac code is written against,
   and the source of the data files and generated tables.
-- The Mac application is about 40,000 lines of Objective-C++ in `macos/app/`.
-- A suite of almost 800 checks runs inside the real application on every push (GitHub Actions,
+- The Mac application is about 45,000 lines of Objective-C++ in `macos/app/`, besides its tests.
+- A suite of over 1,000 checks runs inside the real application on every push (GitHub Actions,
   macOS runner): every menu command, file formats against files written on Windows, encodings,
   regular expressions, cryptography against published vectors, the HTTP and FTP clients against
   local servers, the interface in another language with no text cut off.

@@ -47,12 +47,15 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   `NPPMAC_SNAPSHOT_PANEL=find:<tab>|prefs:<page>|style|mapper|about|debug|tools:<digest|files|bcrypt|scrypt|argon2|pbkdf2|base|unbase|password|converter|http[:<address>]>`.
   A setting can be overridden for one run without touching the user's defaults:
   `… NotepadMac -NppMac.localizationFile russian.xml`. Look at the PNG: it is how layout and
-  cut-off text are verified.
+  cut-off text are verified. The pictures in `docs/screenshots/` are whole windows on a made-up
+  project, taken by `../npp-tests/tools/shots.py` (English interface, no personal paths).
 - CI: `.github/workflows/macos.yml` (macos-14): universal build, suite, package; the `.dmg`
   is an artifact. **The runner has empty NSUserDefaults** - a test must set every preference it
   depends on and restore it afterwards. To reproduce locally: `defaults export org.notepad-plus-plus.mac backup.plist`,
   `defaults delete org.notepad-plus-plus.mac`, run the suite, then `defaults import` the backup. Never
   leave the user's preferences changed, and do not do this while the user has the app open.
+  Its screen is small (about 1024x768, smaller than the 1000x780 window): a check that moves or resizes
+  windows must hold there too.
 
 ### Release packaging (signing and notarization)
 
@@ -160,7 +163,9 @@ filters. `NPPMAC_SNAPSHOT_COMPARE=<file>` snapshots the sample compared with tha
 A separate black-box suite (`../npp-tests`, not in this repository) drives a copy of the
 built application under its own bundle id over the agent socket. With `NPPMAC_E2E=1`, and
 only then, the agent server registers `e2e_*` tools (Scintilla messages, menu state, windows
-and their controls, clicks and keys through AppKit's own routing, snapshots, preferences,
+and their controls, clicks and keys through AppKit's own routing, snapshots (`screen=true`: the window
+as the window server composites it, which the app may take of itself without the Screen Recording
+permission), preferences,
 a private clipboard), NSAlert and open/save panels take queued answers, NSWorkspace opens
 and printing are logged instead of performed, and requests are served in the run loop's
 common modes so a modal can be driven from a second connection. `nppmac` talks to the
