@@ -27,6 +27,8 @@ static const CGFloat kPadding = 8;
     _dragIndex = -1;
     _showCloseButtons = YES;
     _items = @[];
+    // Its drawing stays inside it (see drawRect:).
+    if ([self respondsToSelector:@selector(setClipsToBounds:)]) [self setValue:@YES forKey:@"clipsToBounds"];
     return self;
 }
 
@@ -155,8 +157,11 @@ static NSColor *TabColour(NSInteger colour) {
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
+    // Only the bar's own rectangle: from the macOS 14 SDK on a view is not clipped to its bounds
+    // and the rectangle to draw may reach past them - the second view's bar, above its pane in the
+    // same host, painted the whole pane over.
     [[NSColor windowBackgroundColor] setFill];
-    NSRectFill(dirtyRect);
+    NSRectFill(NSIntersectionRect(dirtyRect, self.bounds));
 
     CGFloat fontSize = self.reduced ? 11 : 12.5;
     NSDictionary *attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:fontSize],

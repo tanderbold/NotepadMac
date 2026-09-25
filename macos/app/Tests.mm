@@ -4896,6 +4896,27 @@ int NppMacRunTests(AppDelegate *app) {
                   (void *)[ed.secondarySci message:SCI_GETDOCPOINTER] == db.docPointer &&
                   [[ed.secondarySci string] isEqualToString:@"bbb\n!"] && ed.currentDocument != db);
 
+            // What the second pane shows, drawn as the window draws it: its margin and text, not a
+            // plain field (its tab bar, above it in the same host, once painted over the whole pane).
+            {
+                NSView *content = app.window.contentView;
+                [content layoutSubtreeIfNeeded];
+                [content displayIfNeeded];
+                NSRect pane = [ed.secondarySci convertRect:ed.secondarySci.bounds toView:content];
+                NSBitmapImageRep *rep = [content bitmapImageRepForCachingDisplayInRect:pane];
+                [content cacheDisplayInRect:pane toBitmapImageRep:rep];
+                NSMutableSet *colours = [NSMutableSet set];
+                for (NSInteger y = 0; y < rep.pixelsHigh; y += 3)
+                    for (NSInteger x = 0; x < rep.pixelsWide; x += 3) {
+                        NSUInteger px[4] = {0};
+                        [rep getPixel:px atX:x y:y];
+                        [colours addObject:@((px[0] << 16) | (px[1] << 8) | px[2])];
+                    }
+                Check(@"IDM_VIEW_GOTO_ANOTHER_VIEW (drawn)",
+                      @"the second view draws its document - line numbers and text - rather than an empty field",
+                      NSWidth(pane) > 50 && colours.count > 3);
+            }
+
             [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:dc]];
             [ed cloneCurrentToOtherView];
             BOOL cloned = [ed.subViewDocuments isEqualToArray:(@[db, dc])] && [ed.mainViewDocuments containsObject:dc] &&
