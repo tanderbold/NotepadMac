@@ -96,7 +96,7 @@ on Windows — a small C interface, Scintilla messages and all. See
 - Preferences with Notepad++'s pages and wording, Shortcut Mapper (menu, macro, run and Scintilla commands, conflicts shown), editable context menu, toolbar with upstream's icon sets, dark mode.
 - Mac conventions where Windows ones make no sense: Finder and Terminal for Explorer and cmd, the Trash for the Recycle Bin, ⌘ shortcuts.
 
-<p><img src="docs/screenshots/preferences-russian.png" alt="Preferences in Russian" width="60%"></p>
+<p><img src="docs/screenshots/preferences.png" alt="Preferences with Notepad++'s pages and wording" width="60%"></p>
 
 ## Differences from the Windows version
 
