@@ -38,8 +38,15 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   C sources of `macos/third_party/argon2` are compiled by their own block in `build.sh`, as is
   the ComparePlus engine (`macos/third_party/compareplus`, C++20, with the shims beside it).
 - Linked: Cocoa, QuartzCore, Security, WebKit, Vision, CoreImage, libcurl, libxml2, zlib; libpcre2 is loaded at run time.
-- The suite is `macos/app/Tests.mm` (one function, `NppMacRunTests`), run inside the real
-  application with `NPPMAC_TEST=1`. While working on one area run only its sections
+- The suite is run inside the real application with `NPPMAC_TEST=1`. `macos/app/Tests.mm` is the
+  driver (`NppMacRunTests`: the shared helpers, the counters, the coverage meta-test, the summary);
+  the sections live by area in `macos/app/Tests<Area>.mm` (beside it: `build.sh` compiles
+  `macos/app/*.mm` only) - `TestsFiles`, `TestsEditing`,
+  `TestsSearch`, `TestsView`, `TestsLanguages`, `TestsTools`, `TestsSettings`, `TestsPlugins`,
+  `TestsGit`, `TestsAgent` - each a function `NppTests…(app, ed, sci)` declared in
+  `TestSupport.h` (with the helpers) and called by the driver in the suite's order. Where an
+  area's sections are not together in that order, its file has one function per run of them;
+  a new section goes into its area's function, or a new function called at its place in the driver. While working on one area run only its sections
   (`NPPMAC_TEST_ONLY=Git,Agent`, matched against the `== … ==` headings); the whole suite,
   coverage meta-test included, runs before every commit and must end `0 failed`. A check is `Check(@"IDM_… or Area (what)", @"what must hold", condition)`.
   `macos/implemented.txt` lists upstream command ids the suite must cover (a meta-test reads it).
@@ -86,7 +93,7 @@ mangled and fails with 401 / "passphrase is not correct".
    file formats, edge cases. Say in a comment which upstream function a piece follows
    (`// setXmlLexer`, `// HashFromTextDlg::generateHashPerLine`). Where macOS needs something else
    (Finder for Explorer, Trash for Recycle Bin), say so at the site.
-2. **Every change comes with tests** in `Tests.mm`, against published vectors or a real local
+2. **Every change comes with tests** in the area's `Tests<Area>.mm`, against published vectors or a real local
    server where that applies (`test-ftp-server.py`, `test-http-server.py`), and with a check in
    another language when it has UI. Run the whole suite; it must end `0 failed`.
 3. **Docs move with the code**: this file for design decisions and numbers, `README.md` when what a user

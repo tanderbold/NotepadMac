@@ -263,7 +263,7 @@ make it and cannot fix it.
 Bug reports with a file or steps that show a difference from Windows Notepad++ are the most
 useful kind. Translations of the Mac-only texts are machine-made and need native speakers:
 see `macos/resources/nativeLang-extra/README.md`. Code changes come with a test in
-`macos/app/Tests.mm` and keep `bash macos/test.sh` at `0 failed`.
+`macos/app/Tests*.mm` and keep `bash macos/test.sh` at `0 failed`.
 
 ## Credits and licence
 
