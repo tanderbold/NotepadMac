@@ -19,8 +19,10 @@ What is learned on: not whole files but pieces of them as well - windows of
 three to forty lines - because that is what the model is asked about, and a
 model shown only whole files is sure of everything and right about less.
 
-Features are byte n-grams for shape, whole words for vocabulary, and the first
-word and the first and last character of each line for syntax. Every feature
+Features are byte n-grams for shape, whole words and pairs of neighbouring
+words for vocabulary, and for syntax the first word and the first and last
+character of each line, and runs of the line with its words reduced to one
+letter ("a.a(a,a);"). Every feature
 is a 64-bit key the application can compute the same way; nothing is looked
 up by string.
 
@@ -59,15 +61,16 @@ def setting(name, default, kind=int):
 # ---- what a piece of text is measured by -----------------------------------
 
 NGRAM_SIZES = tuple(int(n) for n in os.environ.get("NPP_NGRAMS", "2,3,4").split(","))
-TAG_WORD, TAG_FIRST_WORD, TAG_LINE_SHAPE, TAG_WORD_PAIR = 5, 6, 7, 8
+TAG_WORD, TAG_FIRST_WORD, TAG_LINE_SHAPE, TAG_WORD_PAIR, TAG_LINE_TOKENS = 5, 6, 7, 8, 9
 WORD_LENGTH, FIRST_WORD_LENGTH, PAIR_WORD_LENGTH = 24, 16, 16
+LINE_TOKEN_SIZES = (3, 5)
 
 # ---- how much of each file, and how it is cut up ---------------------------
 
 READ_BYTES = 32 * 1024          # read from each file
 HEAD_BYTES = 8 * 1024           # the "whole file" example: its beginning
 HEAD_LINES = 300
-CROPS_PER_FILE = setting("NPP_CROPS", 4)
+CROPS_PER_FILE = setting("NPP_CROPS", 8)
 CROP_LINES = (3, 5, 8, 12, 20, 40)
 TEST_LINES = (5, 10, 20, 40)
 LEAST_FRAGMENT_BYTES = 40
@@ -79,6 +82,14 @@ VARIED_CAP = setting("NPP_VARIED_CAP", 400)     # Linguist, Lexilla, corpus, rep
 ROSETTA_CAP = setting("NPP_ROSETTA_CAP", 150)
 ROSETTA_PER_TASK = 2
 REPO_FILES_PER_PROJECT = setting("NPP_REPO_FILES", 120)
+# Past those caps, more files that are only ever learnt from: the held-back files stay
+# exactly the ones the caps give, so that the numbers compare with a model trained without
+# them. Tripling what the big languages learn from, and letting a project give 300 files
+# of a language rather than 120, took 5-line pieces from 81.6% to 84.7% right and whole
+# files from 92.6% to 94.1%; more than this (every file, 600 per project) did no better.
+MORE_VARIED = setting("NPP_MORE_VARIED", 1200)       # of a language, varied files learnt from at most
+MORE_ROSETTA = setting("NPP_MORE_ROSETTA", 400)
+MORE_REPO_FILES = setting("NPP_MORE_REPO_FILES", 300)  # of a language from one project, at most
 LEAST_FILES = 3
 HOLDOUT = setting("NPP_HOLDOUT", 0.3, float)
 
@@ -211,7 +222,7 @@ def is_json(raw):
 
 
 class Sample:
-    __slots__ = ("language", "raw", "path", "source", "group")
+    __slots__ = ("language", "raw", "path", "source", "group", "extra")
 
     def __init__(self, language, raw, path, source, group):
         self.language = SAME_LANGUAGE.get(language, language)
@@ -219,6 +230,7 @@ class Sample:
         # order hash these, and the same checkout elsewhere (a worktree) must train
         # the same model.
         self.raw, self.path, self.source, self.group = raw, in_repository(path), source, in_repository(group)
+        self.extra = False      # past a project's share: only ever learnt from (see choose)
 
 
 def in_repository(path):
@@ -333,7 +345,8 @@ def gather(by_extension, names, linguist, rosetta, repos=None):
                     elif extension in language_extensions.ambiguous:
                         continue
                     # Not more of one project than of the others: a big one would be the language.
-                    if not language or per_language[language] >= REPO_FILES_PER_PROJECT:
+                    # (Past REPO_FILES_PER_PROJECT, up to MORE_REPO_FILES, only to learn from: see choose.)
+                    if not language or per_language[language] >= max(REPO_FILES_PER_PROJECT, MORE_REPO_FILES):
                         continue
                     path = os.path.join(walked, name)
                     raw = read_sample(path)
@@ -342,6 +355,7 @@ def gather(by_extension, names, linguist, rosetta, repos=None):
                         # Split by folder: a project wholly on one side would leave some
                         # language with no real code to learn from.
                         samples.append(Sample(language, raw, path, "repos", walked))
+                        samples[-1].extra = per_language[language] > REPO_FILES_PER_PROJECT
 
     # Examples written for the languages no corpus has (language-samples/<name>/),
     # and the hex formats, which are mechanical enough to generate.
@@ -440,10 +454,13 @@ def choose(samples):
     Duplicates go. Each language takes the varied sources first - they are
     what real files look like - and Rosetta Code only to fill up. The split
     is by group: a Rosetta task or a file path, so that two versions of one
-    program are never on both sides.
+    program are never on both sides. Past the caps, the files left over are
+    learnt from (MORE_*), never held back, and never of a held-back group.
     """
     seen, unique = set(), []
-    for sample in samples:
+    # The files past a project's share come last, so that they never put out a file that would
+    # have been there without them.
+    for sample in sorted(samples, key=lambda s: s.extra):
         digest = hashlib.md5(normalise(sample.raw[:2048])).digest()
         if digest in seen:
             continue
@@ -457,7 +474,8 @@ def choose(samples):
     train, test = [], []
     composition = {}
     for language, items in sorted(by_language.items()):
-        varied = [s for s in items if s.source != "rosetta"]
+        varied = [s for s in items if s.source != "rosetta" and not s.extra]
+        extra = sorted((s for s in items if s.extra), key=lambda s: stable_hash(s.path))
         rosetta = [s for s in items if s.source == "rosetta"]
         varied.sort(key=lambda s: stable_hash(s.path))
         rosetta.sort(key=lambda s: stable_hash(s.path))
@@ -465,11 +483,17 @@ def choose(samples):
         if len(chosen) < LEAST_FILES:
             continue
         composition[language] = collections.Counter(s.source for s in chosen)
-        for sample in chosen:
+        def held_back(sample):
             # The samples written for the application (language-samples) are few and
             # made to show each language as it is: always learnt from, never held back.
-            held = sample.source != "samples" and stable_hash("split:" + sample.group) % 1000 < HOLDOUT * 1000
-            (test if held else train).append(sample)
+            return sample.source != "samples" and stable_hash("split:" + sample.group) % 1000 < HOLDOUT * 1000
+        for sample in chosen:
+            (test if held_back(sample) else train).append(sample)
+        # More to learn from where a language has it, past the caps; the files held back are
+        # the same as without them, and nothing of a held-back group is learnt from.
+        for sample in (varied[VARIED_CAP:] + extra)[:max(0, MORE_VARIED - VARIED_CAP)] + rosetta[ROSETTA_CAP:MORE_ROSETTA]:
+            if not held_back(sample):
+                train.append(sample)
     return train, test, composition
 
 
@@ -544,6 +568,15 @@ def feature_keys(norm):
         tokens = _WORD.findall(line)
         for first, second in zip(tokens, tokens[1:]):
             other.append(keyed(TAG_WORD_PAIR, first[:PAIR_WORD_LENGTH] + b" " + second[:PAIR_WORD_LENGTH]))
+        # The line with every word one letter and the blanks gone - "a.a(a,a);",
+        # "$a=$a->a(a);" - in runs of three and five: the syntax of a line whatever its
+        # names are, which is most of what a few lines of unfamiliar code have to go by.
+        shape = _WORD.sub(b"a", line).replace(b" ", b"")
+        for size in LINE_TOKEN_SIZES:
+            if len(shape) < size:
+                other.append(keyed(TAG_LINE_TOKENS, shape))
+            for k in range(len(shape) - size + 1):
+                other.append(keyed(TAG_LINE_TOKENS, shape[k:k + size]))
     if other:
         parts.append(np.array(other, dtype=np.uint64))
     if not parts:
@@ -1040,6 +1073,14 @@ def report(held, scores, languages, temperature, half, coverage, by_source=True)
               f"{100 * (one & top[rows]).mean() / max(1e-9, one.mean()):>7.0f}%"
               f"{100 * listed.mean():>6.0f}%{100 * none.mean():>6.0f}%")
 
+    # The measure the rule was fitted by, on these other files: one number for right against asked.
+    measured = np.array([e.kind != "quoting" for e in held])
+    weights = np.array([0.3 if e.source == "rosetta" else 1.0 for e in held], dtype=np.float32)[measured]
+    fits = (inside & (size <= MOST_TO_OFFER))[measured]
+    lists = ((size > 1) & (size <= MOST_TO_OFFER))[measured]
+    print(f"measure {float((weights * fits).sum() - LIST_COST * (weights * lists).sum()) / float(weights.sum()):.4f}"
+          f" (in set, less {LIST_COST} a list)")
+
     if by_source:
         print("\nwhole files by source:")
         for source in sorted({e.source for e in held}):
@@ -1055,6 +1096,16 @@ def report(held, scores, languages, temperature, half, coverage, by_source=True)
     print("\nwhole files most often misread:")
     for (want, got), n in confusion.most_common(20):
         print(f"  {want:<14} as {got:<14} {n}")
+
+    # The short pieces, where most of what is misread is.
+    for kind in (5, 10):
+        confusion = collections.Counter()
+        for e, guess, ok in zip(held, order[:, 0], top):
+            if e.kind == kind and not ok:
+                confusion[(languages[e.label], languages[guess])] += 1
+        print(f"\n{kind}-line pieces most often misread ({sum(confusion.values())} in all):")
+        for (want, got), n in confusion.most_common(25):
+            print(f"  {want:<14} as {got:<14} {n}")
 
 
 def show(model, path):

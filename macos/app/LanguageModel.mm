@@ -21,8 +21,9 @@ static const NSUInteger kLeastBytes = 40;
 
 // The tags in the top byte of a feature key. Byte n-grams carry their own size
 // there; the rest are hashed.
-enum { kTagWord = 5, kTagFirstWord = 6, kTagLineShape = 7, kTagWordPair = 8 };
+enum { kTagWord = 5, kTagFirstWord = 6, kTagLineShape = 7, kTagWordPair = 8, kTagLineTokens = 9 };
 static const size_t kWordLength = 24, kFirstWordLength = 16, kPairWordLength = 16;
+static const size_t kLineTokenSizes[] = {3, 5};
 
 @implementation NppLanguageModel {
     std::vector<std::string> _languages;
@@ -198,6 +199,7 @@ static inline uint64_t Keyed(uint64_t tag, const uint8_t *bytes, size_t length) 
         counts[Keyed(kTagWord, bytes + start, MIN(i - start, kWordLength))] += 1;
     }
 
+    std::vector<uint8_t> tokens;   // one line's shape, reused
     size_t lineStart = 0;
     while (lineStart <= length) {
         size_t lineEnd = lineStart;
@@ -229,6 +231,26 @@ static inline uint64_t Keyed(uint64_t tag, const uint8_t *bytes, size_t length) 
                 }
                 memcpy(pair, bytes + start, wordLength);
                 previousLength = wordLength;
+            }
+            // The line with each word one letter and the blanks gone - "a.a(a,a);" -
+            // in runs of three and five, as the trainer cuts them.
+            tokens.clear();
+            for (size_t i = from; i < to;) {
+                if (IsWordStart(bytes[i])) {
+                    tokens.push_back('a');
+                    while (i < to && IsWordByte(bytes[i])) ++i;
+                } else {
+                    if (bytes[i] != ' ') tokens.push_back(bytes[i]);
+                    ++i;
+                }
+            }
+            for (size_t size : kLineTokenSizes) {
+                if (tokens.size() < size) {
+                    counts[Keyed(kTagLineTokens, tokens.data(), tokens.size())] += 1;
+                    continue;
+                }
+                for (size_t k = 0; k + size <= tokens.size(); ++k)
+                    counts[Keyed(kTagLineTokens, tokens.data() + k, size)] += 1;
             }
         }
         lineStart = lineEnd + 1;

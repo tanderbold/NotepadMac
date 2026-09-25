@@ -250,9 +250,11 @@ case wrong, report it; do not special-case it.
 - Model: one independent logistic judgement per language (91), so a text two languages could have
   written is offered as a short list. Features are 64-bit keys computed identically in
   `train-language-model.py` and `LanguageModel.mm`: byte n-grams (2,3,4), words, first word of a
-  line, line shape, pairs of neighbouring words. File format v5 (`NPPLANG\x05`) carries the weights
-  (int8 per class with a scale), idf, and the fitted rule: scale, level to be offered, level to be
-  applied alone (below it the best three are offered). Changing a feature means changing both files
+  line, line shape, pairs of neighbouring words, runs of three and five of the line with each word
+  one letter and the blanks gone (`a.a(a,a);`: the syntax of a few lines whatever their names).
+  File format v5 (`NPPLANG\x05`) carries the weights (int8 per class with a scale), idf, and the
+  fitted rule: scale, level to be offered, level to be applied alone (below it the best three are
+  offered). Changing a feature means changing both files
   and retraining; the suite checks the app and the trainer agree.
 - Corpora (not in the repository, ~4 GB, kept beside the clone as `../linguist`, `../rosetta`, `../repos`):
   - `git clone --depth 1 https://github.com/github-linguist/linguist.git`
@@ -266,10 +268,13 @@ case wrong, report it; do not special-case it.
     name; `.tex` as LaTeX or TeX by its head; Linguist's "JSON with Comments" as JSON5, the lexer
     Notepad++ has for it). A file labelled JSON that is not JSON (a `tsconfig.json` with comments or
     trailing commas) is left out: it taught the model that JSON has comments. At most 120 files per
-    project per language. The train/held-out split is by project folder (Rosetta: by task), hashed
-    on the path inside the repository for files of the checkout, so a worktree trains the same
-    model; the written samples are always learnt from, never held back.
-- Train (needs `numpy`, about four minutes):
+    project per language, and 400 varied files and 150 Rosetta ones per language, are split into
+    learnt-from and held back; past those caps more files (up to 300 per project, 1200 varied and
+    400 Rosetta per language) are only learnt from, never of a held-back group, so the held-back set
+    is the same with or without them. The train/held-out split is by project folder (Rosetta: by
+    task), hashed on the path inside the repository for files of the checkout, so a worktree trains
+    the same model; the written samples are always learnt from, never held back.
+- Train (needs `numpy`, about thirteen minutes; each file gives its head and eight windows of 3-40 lines):
   `python3 macos/train-language-model.py --linguist ../linguist --rosetta ../rosetta --repos ../repos --report > train.log`
   It writes `macos/resources/language-model.bin` and prints, on held-out files, accuracy by fragment
   length, by source, the confusions, and a "quoting" row (a piece of one language with a block of
@@ -279,8 +284,10 @@ case wrong, report it; do not special-case it.
 - After retraining: rebuild, run the suite (`IDM_LANG_DETECT …` checks, among them "a file of each
   language": at least 36 of the 41 corpus files offered their own language), update the table and
   numbers below, commit the `.bin` with the script.
-- Current numbers (held-out, first choice right): whole files 92.6%, 40 lines 90.8%, 20 lines 89.4%,
-  10 lines 86.4%, 5 lines 81.7%, quoting 61.5%. JSON5/JSONC files (34 held out) 79%, JSON 98%.
-  A list is offered for 18% of whole files, 34% of 10-line pieces. The rule's measure is flat near
-  its best (rules 0.002 apart differed twofold in how often they ask), so of the rules within
+- Current numbers (held-out, first choice right): whole files 94.1%, 40 lines 92.4%, 20 lines 91.5%,
+  10 lines 88.9%, 5 lines 84.7%, quoting 63.2%. JSON5/JSONC files (27 held out) 93%, JSON 98%.
+  A list is offered for 15% of whole files, 26% of 10-line pieces, 34% of 5-line pieces. The report's
+  "measure" line is the fitted rule's own measure (in set, less 0.15 a list) on the other half:
+  0.887 (0.864 before the line runs and the extra files). The rule's measure is flat near its best
+  (rules 0.002 apart differed twofold in how often they ask), so of the rules within
   `NPP_FIT_TOLERANCE` of the best the trainer takes the one that asks least.
