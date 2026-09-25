@@ -24,6 +24,7 @@ static const uint32_t kUTF = 0x00080000u;
 /// PCRE2_UCP: \w, \b, \d and the POSIX classes know every script, as Boost's do in
 /// Notepad++ (wide characters) - "café" is a word, \w matches "я".
 static const uint32_t kUCP = 0x00020000u;
+static const uint32_t kNoUTFCheck = 0x40000000u;   // PCRE2_NO_UTF_CHECK
 
 static npp_pcre2_compile gCompile;
 static npp_pcre2_match_data_create_from_pattern gMatchDataCreate;
@@ -56,6 +57,9 @@ static void LoadPCRE2(void) {
 
 @interface NppRegex ()
 @property (nonatomic) void *code;
+/// A filtered copy borrows the code of the regex it was made from and keeps that alive.
+@property (nonatomic, strong, nullable) NppRegex *codeOwner;
+@property (nonatomic, copy, nullable) BOOL (^accept)(const uint8_t *bytes, size_t length, NSRange match);
 @end
 
 @implementation NppRegex
@@ -135,7 +139,15 @@ static void *CompilePattern(NSString *pattern, NSString **errorOut) {
 - (void)dealloc {
     // Instances live in the cache for the life of the process, so this runs only
     // if one is discarded; freeing is still the right thing to do.
-    if (_code && gCodeFree) gCodeFree(_code);
+    if (_code && gCodeFree && !_codeOwner) gCodeFree(_code);
+}
+
+- (NppRegex *)regexAcceptingOnly:(BOOL (^)(const uint8_t *bytes, size_t length, NSRange match))accept {
+    NppRegex *filtered = [[NppRegex alloc] init];
+    filtered.code = self.code;
+    filtered.codeOwner = self.codeOwner ?: self;
+    filtered.accept = accept;
+    return filtered;
 }
 
 /// Steps past one UTF-8 character, so an empty match cannot stall the loop and
@@ -168,15 +180,28 @@ static size_t NextCharacter(const uint8_t *bytes, size_t length, size_t from) {
     size_t at = range.location;
     BOOL stop = NO;
 
+    BOOL (^accept)(const uint8_t *, size_t, NSRange) = self.accept;
+    // PCRE2 checks the UTF-8 of the subject from the start offset to its end on
+    // every call; once the first call has, the later ones (which start further
+    // on) are told not to, or matching everything in a text is quadratic.
+    uint32_t options = 0;
     while (at <= end && !stop) {
         // The subject is cut at `end` so a match cannot run past the range it
         // was asked for -- which is how a class body is kept to itself.
-        int rc = gMatch(self.code, bytes, end, at, 0, matchData, NULL);
+        int rc = gMatch(self.code, bytes, end, at, options, matchData, NULL);
         if (rc < 0) break;
+        options = kNoUTFCheck;
 
         size_t *ovector = gOvector(matchData);
         size_t start = ovector[0], finish = ovector[1];
         if (start > end) break;
+        // A match the filter refuses is passed over, and the search goes on one
+        // character after where it began, as Scintilla's FindText does when a
+        // match is not a whole word.
+        if (accept && !accept(bytes, data.length, NSMakeRange(start, finish - start))) {
+            at = NextCharacter(bytes, end, start);
+            continue;
+        }
 
         // rc is the number of pairs the match filled in, so it counts the whole
         // match plus the groups that took part.

@@ -9,10 +9,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// `groups[0]` is the whole match; NSNull stands for a group that did not
-/// take part. `prefix` runs from where the search started to the match, and
-/// `suffix` from the match to the end of the text searched.
+/// take part. `prefix` gives the text from where the search started to the match,
+/// and `suffix` from the match to the end of the text searched; each is called
+/// only if the format uses it.
 FOUNDATION_EXPORT NSString *NppBoostFormat(NSString *format, NSArray *groups,
-                                           NSString *prefix, NSString *suffix,
+                                           NSString *(^prefix)(void), NSString *(^suffix)(void),
                                            NSInteger lastClosedGroup,
                                            NSInteger (^_Nullable groupNamed)(NSString *name));
 

@@ -40,6 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// at the start of "[Section]" before it reaches the word.
 - (NSRange)firstNonEmptyMatchInData:(NSData *)data range:(NSRange)range;
 
+/// The same pattern, with every match first offered to `accept` (the whole
+/// text's bytes, its length, the match): one refused is not reported, and the
+/// search goes on from the character after the refused match's start.
+- (NppRegex *)regexAcceptingOnly:(BOOL (^)(const uint8_t *bytes, size_t length, NSRange match))accept;
+
 /// The number of the group a pattern named (?<name>...), or -1.
 - (NSInteger)groupNumberForName:(NSString *)name;
 

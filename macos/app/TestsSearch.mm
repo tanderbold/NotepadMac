@@ -609,6 +609,32 @@ void NppTestsFindDialog(AppDelegate *app, EditorController *ed, ScintillaView *s
               [crReport containsString:@"Line 2: beta needle"] &&
               [crReport containsString:@"Line 4: second needle here"]);
 
+        // Upstream's Find in Files runs the pattern over the whole file: a match
+        // may cross a line end, an empty line can match, and every match is a
+        // hit, a line with two being listed once.
+        {
+            NSString *multiRoot = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp_fif_whole"];
+            [[NSFileManager defaultManager] removeItemAtPath:multiRoot error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtPath:multiRoot withIntermediateDirectories:YES attributes:nil error:NULL];
+            [@"one\n\nfoo bar\nbar bob\n" writeToFile:[multiRoot stringByAppendingPathComponent:@"m.txt"]
+                                          atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            NSString *across = nil, *empty = nil, *twice = nil;
+            NSUInteger acrossHits = [ed findInFiles:[NppFindSpec specFor:@"bar\\nbar" mode:NppSearchRegex options:NppFindNone]
+                                             folder:multiRoot filters:nil recursive:NO includeHidden:NO report:&across];
+            NSUInteger emptyHits = [ed findInFiles:[NppFindSpec specFor:@"^$" mode:NppSearchRegex options:NppFindNone]
+                                            folder:multiRoot filters:nil recursive:NO includeHidden:NO report:&empty];
+            NSUInteger twiceHits = [ed findInFiles:[NppFindSpec specFor:@"b" mode:NppSearchNormal options:NppFindMatchCase]
+                                            folder:multiRoot filters:nil recursive:NO includeHidden:NO report:&twice];
+            [[NSFileManager defaultManager] removeItemAtPath:multiRoot error:NULL];
+            Check(@"IDM_SEARCH_FINDINFILES (over the whole file)", @"a pattern across a line end is found, on the line it starts",
+                  acrossHits == 1 && [across containsString:@"Line 3: foo bar"]);
+            Check(@"IDM_SEARCH_FINDINFILES (over the whole file)", @"an empty line can be found",
+                  emptyHits >= 1 && [empty containsString:@"Line 2: \n"]);
+            Check(@"IDM_SEARCH_FINDINFILES (hits are matches)", @"every match counts, a line with several is listed once",
+                  twiceHits == 4 && [twice containsString:@"(4 hits)"] &&
+                  [twice componentsSeparatedByString:@"Line 4:"].count == 2);
+        }
+
         [ed showSearchResults:crReport];
         NSInteger crHit = -1;
         sptr_t crLines = [ed.sci message:SCI_GETLINECOUNT wParam:0 lParam:0];
@@ -845,6 +871,62 @@ void NppTestsSearchModes(AppDelegate *app, EditorController *ed, ScintillaView *
         Check(@"IDM_SEARCH_REPLACE (in selection)",
               @"a search confined to the selection sees only what is inside it",
               [ed countMatches:inSel] == 2 && [ed countMatches:everywhere] == 4);
+
+        // FindReplaceDlg::processFindNext ignores "In selection": after the first
+        // hit the selection is that match, and F3 goes on to the next one.
+        SetDoc(ed, @"q q q q\n");
+        [sci message:SCI_SETSEL wParam:0 lParam:1];
+        NppFindSpec *nextInSel = [NppFindSpec specFor:@"q" mode:NppSearchNormal options:NppFindInSelection | NppFindWrap];
+        [ed findNext:nextInSel];
+        long firstHop = [sci message:SCI_GETSELECTIONSTART];
+        [ed findNext:nextInSel];
+        Check(@"IDM_SEARCH_FINDNEXT (in selection)", @"Find Next goes past the selection, as upstream's does",
+              firstHop == 2 && [sci message:SCI_GETSELECTIONSTART] == 4);
+
+        // Whole word is Scintilla's SCFIND_WHOLEWORD (Document::IsWordAt), not a
+        // regex \b: a word may start or end with punctuation, and a candidate
+        // refused is retried one character on.
+        SetDoc(ed, @"$var $varx x\naaa aa\n");
+        NppFindSpec *dollar = [NppFindSpec specFor:@"$var" mode:NppSearchNormal options:NppFindWholeWord];
+        NppFindSpec *doubleA = [NppFindSpec specFor:@"aa" mode:NppSearchNormal options:NppFindWholeWord];
+        NSArray<NSValue *> *aaAt = [ed rangesOfMatches:doubleA];
+        long aaExpected = [sci message:SCI_POSITIONFROMLINE wParam:1] + 4;
+        Check(@"IDM_SEARCH_FIND (whole word)", @"\"$var\" is a whole word before a space, not before \"x\"",
+              [ed countMatches:dollar] == 1);
+        Check(@"IDM_SEARCH_FIND (whole word)", @"\"aa\" is found as the word, not inside \"aaa\"",
+              aaAt.count == 1 && (long)aaAt.firstObject.rangeValue.location == aaExpected);
+
+        // Replace All with a regex is linear in the number of matches: the text
+        // after each match ($') is built only when the replacement asks for it,
+        // and PCRE2 checks the UTF-8 once, not before every match.
+        {
+            NSMutableString *many = [NSMutableString stringWithCapacity:500000];
+            for (int i = 0; i < 100000; ++i) [many appendString:@"word "];
+            SetDoc(ed, many);
+            NppFindSpec *renumber = [NppFindSpec specFor:@"w(o)rd" mode:NppSearchRegex options:NppFindNone];
+            renumber.replacement = @"$1";
+            CFAbsoluteTime t0 = CFAbsoluteTimeGetCurrent();
+            NSUInteger replacedMany = [ed replaceAll:renumber];
+            CFAbsoluteTime inDocument = CFAbsoluteTimeGetCurrent() - t0;
+            BOOL rightText = [sci message:SCI_GETLENGTH] == 200000 && [DocText(ed) hasPrefix:@"o o o "];
+            NSString *manyRoot = [NSTemporaryDirectory() stringByAppendingPathComponent:@"npp_many_matches"];
+            [[NSFileManager defaultManager] removeItemAtPath:manyRoot error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtPath:manyRoot withIntermediateDirectories:YES attributes:nil error:NULL];
+            NSString *manyFile = [manyRoot stringByAppendingPathComponent:@"many.txt"];
+            [many writeToFile:manyFile atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            t0 = CFAbsoluteTimeGetCurrent();
+            NSUInteger changed = 0;
+            NSUInteger replacedInFiles = [ed replaceInFiles:renumber folder:manyRoot filters:nil recursive:NO includeHidden:NO changedFiles:&changed];
+            CFAbsoluteTime inFiles = CFAbsoluteTimeGetCurrent() - t0;
+            NSString *rewritten = [NSString stringWithContentsOfFile:manyFile encoding:NSUTF8StringEncoding error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:manyRoot error:NULL];
+            printf("  (regex Replace All, 100000 matches: %.2f s in the document, %.2f s in a file)\n", inDocument, inFiles);
+            Check(@"IDM_SEARCH_REPLACE (100000 matches)", @"a regex Replace All over 100000 matches takes seconds, not hours",
+                  replacedMany == 100000 && rightText && inDocument < 10.0);
+            Check(@"IDM_SEARCH_FINDINFILES (100000 matches)", @"so does Replace in Files",
+                  replacedInFiles == 100000 && rewritten.length == 200000 && inFiles < 10.0);
+            SetDoc(ed, @"");
+        }
 
         // The panel has to carry these modes and options, or none of the above
         // is reachable from the Find dialog. Its controls are set here and the

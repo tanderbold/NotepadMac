@@ -1,6 +1,8 @@
 #import "FindCommands.h"
 #include <atomic>
 #include <memory>
+#include <vector>
+#include "CharacterCategoryMap.h"
 #import "SettingsCommands.h"
 #import "ToolsCommands.h"
 #import "BoostFormat.h"
@@ -135,6 +137,99 @@
     return out;
 }
 
+#pragma mark - Whole word
+
+// "Match whole word only" is Scintilla's SCFIND_WHOLEWORD, which upstream searches
+// with (Searching::buildSearchFlags): a match is a word when its first character
+// starts a run of word or punctuation characters and its last ends one
+// (Document::IsWordAt). A regex \b knows only word characters, so "$var", "-x"
+// or "->" were never whole words. The classes are Document::WordCharacterClass's:
+// the view's own for ASCII (its word, whitespace and punctuation characters),
+// Unicode's general category above.
+namespace {
+enum WordClass : unsigned char { WordSpace, WordNewLine, WordWord, WordPunctuation };
+
+struct WordClassifier {
+    unsigned char ascii[128];
+
+    WordClass classOf(unsigned int ch) const {
+        if (ch < 0x80) return (WordClass)ascii[ch];
+        using namespace Scintilla::Internal;
+        switch (CategoriseCharacter((int)ch)) {
+            case ccZl: case ccZp: return WordNewLine;
+            case ccZs: case ccCc: case ccCf: case ccCs: case ccCo: case ccCn: return WordSpace;
+            case ccLu: case ccLl: case ccLt: case ccLm: case ccLo:
+            case ccNd: case ccNl: case ccNo: case ccMn: case ccMc: case ccMe: return WordWord;
+            default: return WordPunctuation;
+        }
+    }
+
+    // Document::CharacterAfter / CharacterBefore over UTF-8; a byte that does not
+    // make a character stands for itself.
+    static unsigned int after(const uint8_t *b, size_t length, size_t pos) {
+        unsigned char lead = b[pos];
+        if (lead < 0x80) return lead;
+        size_t width = lead >= 0xF0 ? 4 : lead >= 0xE0 ? 3 : lead >= 0xC2 ? 2 : 0;
+        if (!width || pos + width > length) return lead;
+        unsigned int ch = lead & (0x7F >> width);
+        for (size_t i = 1; i < width; ++i) {
+            if ((b[pos + i] & 0xC0) != 0x80) return lead;
+            ch = (ch << 6) | (b[pos + i] & 0x3F);
+        }
+        return ch;
+    }
+    static unsigned int before(const uint8_t *b, size_t length, size_t pos) {
+        size_t start = pos - 1;
+        while (start > 0 && pos - start < 4 && (b[start] & 0xC0) == 0x80) --start;
+        if (b[start] >= 0xC2) {
+            size_t width = b[start] >= 0xF0 ? 4 : b[start] >= 0xE0 ? 3 : 2;
+            if (start + width == pos) return after(b, length, start);
+        }
+        return b[pos - 1];
+    }
+    static bool edge(WordClass cc, WordClass next) {
+        return cc != next && (cc == WordWord || cc == WordPunctuation);
+    }
+    // At the start or the end of the text there is a space beyond it.
+    bool isWordAt(const uint8_t *b, size_t length, size_t start, size_t end) const {
+        if (start >= end || start >= length) return false;
+        WordClass first = classOf(after(b, length, start));
+        WordClass beforeFirst = start > 0 ? classOf(before(b, length, start)) : WordSpace;
+        WordClass last = classOf(before(b, length, end));
+        WordClass afterLast = end < length ? classOf(after(b, length, end)) : WordSpace;
+        return edge(first, beforeFirst) && edge(last, afterLast);
+    }
+};
+}
+
+/// The character classes of the view in front, which Scintilla judges words by.
+static WordClassifier ClassifierFor(ScintillaView *sci) {
+    WordClassifier c;
+    for (unsigned int ch = 0; ch < 128; ++ch) {
+        // CharClassify::SetDefaultCharClasses, for want of a view.
+        c.ascii[ch] = ch == '\r' || ch == '\n' ? WordNewLine
+                    : ch < 0x20 || ch == ' ' ? WordSpace
+                    : (isalnum((int)ch) || ch == '_') ? WordWord : WordPunctuation;
+    }
+    if (!sci) return c;
+    struct { int message; WordClass cls; } lists[] = {
+        {SCI_GETWHITESPACECHARS, WordSpace}, {SCI_GETPUNCTUATIONCHARS, WordPunctuation}, {SCI_GETWORDCHARS, WordWord}};
+    unsigned char fromView[128];
+    memset(fromView, WordNewLine, sizeof fromView);   // what no list names is a line end
+    for (auto &list : lists) {
+        long n = [sci message:(unsigned int)list.message wParam:0 lParam:0];
+        if (n <= 0) return c;
+        std::vector<char> chars((size_t)n + 1, 0);
+        [sci message:(unsigned int)list.message wParam:0 lParam:(sptr_t)chars.data()];
+        for (long i = 0; i < n; ++i) {
+            unsigned char ch = (unsigned char)chars[(size_t)i];
+            if (ch < 0x80) fromView[ch] = list.cls;
+        }
+    }
+    memcpy(c.ascii, fromView, sizeof fromView);
+    return c;
+}
+
 #pragma mark - Pattern
 
 /// Turns the spec into one PCRE pattern, so normal, extended and regular
@@ -166,11 +261,6 @@
         body = quoted;
     }
 
-    // Whole word is for the literal modes; in a regular expression it would
-    // rewrite what the user wrote, and Notepad++ greys it out there.
-    if ((spec.options & NppFindWholeWord) && spec.mode != NppSearchRegex) {
-        body = [NSString stringWithFormat:@"\\b(?:%@)\\b", body];
-    }
     // What a pattern says with (*UTF), (*UCP) and the like has to stay at
     // the very start, ahead of the flags put in here.
     NSString *verbs = @"";
@@ -185,7 +275,16 @@
     // default as on Windows; the engine's own default is overridden here.
     [flags appendString:(spec.options & NppFindDotMatchesNewline) ? @"s" : @"-s"];
     body = [NSString stringWithFormat:@"%@(?%@)%@", verbs, flags, body];
-    return [NppRegex regexWithPattern:body];
+    NppRegex *regex = [NppRegex regexWithPattern:body];
+    // Whole word is for the literal modes; in a regular expression Notepad++
+    // greys it out. It is a test of each match, as SCFIND_WHOLEWORD is.
+    if (regex && (spec.options & NppFindWholeWord) && spec.mode != NppSearchRegex) {
+        WordClassifier classes = ClassifierFor(self.sci);
+        regex = [regex regexAcceptingOnly:^BOOL(const uint8_t *bytes, size_t length, NSRange m) {
+            return classes.isWordAt(bytes, length, m.location, NSMaxRange(m));
+        }];
+    }
+    return regex;
 }
 
 /// The part of the document a search may look at.
@@ -220,6 +319,14 @@
 }
 
 - (BOOL)findNext:(NppFindSpec *)spec {
+    // FindReplaceDlg::processFindNext searches from the selection to the end of
+    // the document whatever "In selection" says: the box is for Count, Mark,
+    // Find All and Replace All. Kept, it would search only the match just found.
+    if (spec.options & NppFindInSelection) {
+        NppFindSpec *everywhere = [NppFindSpec specFor:spec.what mode:spec.mode options:spec.options & ~NppFindInSelection];
+        everywhere.replacement = spec.replacement;
+        spec = everywhere;
+    }
     NSArray<NSValue *> *matches = [self rangesOfMatches:spec];
     if (!matches.count) return NO;
 
@@ -309,8 +416,8 @@
         if (g > 0 && (lastClosed < 0 || NSMaxRange(r) > lastEnd)) { lastClosed = (NSInteger)g; lastEnd = NSMaxRange(r); }
     }
     NSRange whole = groups.firstObject.rangeValue;
-    NSString *prefix = bytes(MIN(prefixFrom, whole.location), whole.location);
-    NSString *suffix = bytes(NSMaxRange(whole), MAX(suffixTo, NSMaxRange(whole)));
+    NSString *(^prefix)(void) = ^NSString *{ return bytes(MIN(prefixFrom, whole.location), whole.location); };
+    NSString *(^suffix)(void) = ^NSString *{ return bytes(NSMaxRange(whole), MAX(suffixTo, NSMaxRange(whole))); };
     NSInteger (^named)(NSString *) = nil;
     if (regex) named = ^NSInteger(NSString *name) { return [regex groupNumberForName:name]; };
     return NppBoostFormat(template_, texts, prefix, suffix, lastClosed, named);
@@ -518,24 +625,10 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
 
     [self walkFolder:folder filters:filters recursive:recursive includeHidden:includeHidden
                visit:^(NSString *path, NSString *contents) {
-        NSArray *lines = [EditorController linesOfText:contents];
-        NSMutableString *block = [NSMutableString string];
-        NSUInteger inFile = 0;
-        for (NSUInteger i = 0; i < lines.count; ++i) {
-            NSData *line = [lines[i] dataUsingEncoding:NSUTF8StringEncoding];
-            if (!line.length) continue;
-            if ([regex firstMatchInData:line range:NSMakeRange(0, line.length)].location == NSNotFound) {
-                continue;
-            }
-            inFile++;
-            [block appendFormat:@"\tLine %lu: %@\n", (unsigned long)(i + 1),
-                                [EditorController singleReportLine:lines[i]]];
-        }
+        NSUInteger inFile = [self appendMatchesOf:regex inFile:path contents:contents search:nil to:text];
         if (!inFile) return;
         matchedFiles++;
         hits += inFile;
-        [text appendFormat:@"%@ (%lu hit%@)\n%@\n", path, (unsigned long)inFile,
-                           inFile == 1 ? @"" : @"s", block];
     }];
 
     [text appendFormat:@"\n%lu hit%@ in %lu file%@\n", (unsigned long)hits,
@@ -613,26 +706,39 @@ static BOOL GlobMatches(NSString *pattern, NSString *name) {
 
 #pragma mark - Across files, without holding on to the window
 
-/// The lines of one file that match, as the report writes them; how many.
+/// One file's hits, as the report writes them; how many. As upstream's Find in
+/// Files (processAll with ProcessFindAll over the file in a hidden view): the
+/// pattern runs over the whole text, so a match may cross line ends and an empty
+/// line can match; every match is a hit, and a line with several is listed once
+/// (_finderShowOnlyOneEntryPerFoundLine), numbered as the editor numbers lines -
+/// CR, LF and CRLF each end one.
 - (NSUInteger)appendMatchesOf:(NppRegex *)regex inFile:(NSString *)path contents:(NSString *)contents
-                        search:(NppFileSearch *)search to:(NSMutableString *)report {
-    NSArray<NSString *> *lines = [EditorController linesOfText:contents];
+                        search:(nullable NppFileSearch *)search to:(NSMutableString *)report {
+    NSData *data = [contents dataUsingEncoding:NSUTF8StringEncoding];
+    if (!data.length) return 0;
+    const uint8_t *bytes = (const uint8_t *)data.bytes;
+    const NSUInteger length = data.length;
     NSMutableString *block = [NSMutableString string];
-    NSUInteger inFile = 0;
-    for (NSUInteger i = 0; i < lines.count; ++i) {
-        if (search.cancelled) return 0;
-        NSData *line = [lines[i] dataUsingEncoding:NSUTF8StringEncoding];
-        if (!line.length) continue;
-        NSRange found = [regex firstMatchInData:line range:NSMakeRange(0, line.length)];
-        if (found.location == NSNotFound) continue;
+    __block NSUInteger inFile = 0, line = 0, lineStart = 0, scanned = 0;
+    __block NSInteger listed = -1;
+    [regex enumerateMatchesInData:data range:NSMakeRange(0, length) usingBlock:^(NSRange match, BOOL *stop) {
+        if (search.cancelled) { *stop = YES; return; }
+        for (; scanned < match.location; ++scanned) {
+            if (bytes[scanned] == '\n' || (bytes[scanned] == '\r' && (scanned + 1 >= length || bytes[scanned + 1] != '\n'))) {
+                line++;
+                lineStart = scanned + 1;
+            }
+        }
         inFile++;
-        // A file with CR or mixed line ends leaves carriage returns in
-        // what was read; written out as they are they would each start
-        // a fresh line in the report, and every line below would then
-        // stand for something other than what it says.
-        [block appendFormat:@"\tLine %lu: %@\n", (unsigned long)(i + 1),
-                            [EditorController singleReportLine:lines[i]]];
-    }
+        if ((NSInteger)line == listed) return;
+        listed = (NSInteger)line;
+        NSUInteger lineEnd = lineStart;
+        while (lineEnd < length && bytes[lineEnd] != '\n' && bytes[lineEnd] != '\r') lineEnd++;
+        NSString *text = [[NSString alloc] initWithBytes:bytes + lineStart length:lineEnd - lineStart
+                                                encoding:NSUTF8StringEncoding] ?: @"";
+        [block appendFormat:@"\tLine %lu: %@\n", (unsigned long)(line + 1), text];
+    }];
+    if (search.cancelled) return 0;
     if (inFile) {
         [report appendFormat:@"%@ (%lu hit%@)\n%@\n", path, (unsigned long)inFile,
                              inFile == 1 ? @"" : @"s", block];
