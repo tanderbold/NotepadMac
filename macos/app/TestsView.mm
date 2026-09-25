@@ -613,6 +613,49 @@ void NppTestsViewMenu(AppDelegate *app, EditorController *ed, ScintillaView *sci
                   @"Clone shows the document in both views' tabs; each view keeps its own document in front",
                   cloned && ed.currentDocument == da && [ed documentInSecondaryView] == dc);
 
+            // Coming back to the application with the focus in the second view checks the files on
+            // disk and leaves both views as they were: the main view's tab, the second view's
+            // document (its own or a clone), the focus. A file changed on disk that only the second
+            // view has is reloaded there (prepareBufferChangedDialog brings it up in the view that has it).
+            {
+                NppPreferences *prefs = [NppPreferences shared];
+                BOOL detectWas = prefs.fileAutoDetection;
+                prefs.fileAutoDetection = YES;
+                BOOL (^asBefore)(NppDocument *) = ^BOOL(NppDocument *second) {
+                    return [ed mainCurrentDocument] == da && (void *)[ed.mainSci message:SCI_GETDOCPOINTER] == da.docPointer &&
+                           [ed documentInSecondaryView] == second && [ed otherViewHasFocus] && ed.currentDocument == second;
+                };
+                [ed showDocumentInSecondaryView:db];
+                [app.window makeFirstResponder:ed.secondarySci.content];
+                [ed checkFilesOnDisk];
+                BOOL ownKept = asBefore(db);
+                [ed showDocumentInSecondaryView:dc];
+                [app.window makeFirstResponder:ed.secondarySci.content];
+                [ed checkFilesOnDisk];
+                BOOL cloneKept = asBefore(dc);
+                [@"bbb changed\n" writeToFile:pb atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+                [[NSFileManager defaultManager] setAttributes:@{NSFileModificationDate: [NSDate dateWithTimeIntervalSinceNow:60]}
+                                                 ofItemAtPath:pb error:NULL];
+                ed.scriptedCloseAnswer = NSAlertFirstButtonReturn;       // Reload
+                [ed checkFilesOnDisk];
+                ed.scriptedCloseAnswer = 0;
+                BOOL reloadedThere = asBefore(dc) && !db.modified && [ed.mainViewDocuments isEqualToArray:(@[da, dc])];
+                [ed showDocumentInSecondaryView:db];
+                BOOL newText = [[ed.secondarySci string] isEqualToString:@"bbb changed\n"];
+                // Put back as the checks below expect it: the file as it was, the unsaved "!" on top.
+                [@"bbb\n" writeToFile:pb atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+                [ed.secondarySci setString:@"bbb\n"];
+                [ed.secondarySci message:SCI_SETSAVEPOINT];
+                [ed.secondarySci message:SCI_APPENDTEXT wParam:1 lParam:(sptr_t)"!"];
+                db.fileModificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:pb error:NULL] fileModificationDate];
+                [ed showDocumentInSecondaryView:dc];
+                prefs.fileAutoDetection = detectWas;
+                [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:da]];
+                Check(@"IDM_VIEW_SWITCHTO_OTHER_VIEW (activation keeps the views)",
+                      @"checking the files on disk with the focus in the second view keeps each view's document and the focus; a change to the second view's own file is reloaded there",
+                      ownKept && cloneKept && reloadedThere && newText);
+            }
+
             // Session: both views' tabs, as upstream's mainView and subView File entries.
             NSString *sess = [NSTemporaryDirectory() stringByAppendingPathComponent:@"t_views_session.xml"];
             [ed saveSessionTo:sess error:NULL];
