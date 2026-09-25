@@ -767,6 +767,18 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
             Check(@"IDM_MACRO_STARTRECORDINGMACRO (menu commands)",
                   @"a recordable menu command is recorded by its id, once, and plays back",
                   recordedOnce && replayed);
+
+            // Not recording, a menu command does not look its id up: that walked the whole
+            // menu, 15 ms in the test VM for every command and shortcut.
+            [ed newDocument];
+            NSMenuItem *selectAll = [app.shortcutStore menuItemsByIdentifier][@42007];     // IDM_EDIT_SELECTALL
+            NSDate *started = [NSDate date];
+            for (int i = 0; i < 100; ++i) [app performMenuItem:selectAll];
+            NSTimeInterval perCommand = [[NSDate date] timeIntervalSinceDate:started] / 100;
+            [ed closeDocumentAtIndex:ed.documents.count - 1 discardChanges:YES];
+            Check(@"IDM_EDIT_SELECTALL (a menu command's cost)",
+                  [NSString stringWithFormat:@"a menu command outside a recording takes under 3 ms (%.4f s)", perCommand],
+                  selectAll != nil && perCommand < 0.003);
         }
 
         // Saved macros are in the Macro menu, as on Windows.
@@ -1464,6 +1476,26 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               normalFile && nowRestricted && styledUnderRestriction == 0 &&
               styledNormally == SCE_C_COMMENTLINE);
 
+        // A large file opens as Normal text whatever its extension, as upstream's
+        // determinateFormat has it: a 300 MB .cpp was given the C++ lexer after the
+        // restriction had taken it away, and lexed whole.
+        {
+            NSString *big = [NSTemporaryDirectory() stringByAppendingPathComponent:@"nppmac-large.cpp"];
+            [@"// a comment\nint x = 1;\n" writeToFile:big atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            p.largeFileThresholdMB = 0;
+            BOOL opened = [ed openFileAtPath:big error:NULL];
+            NSString *language = ed.currentDocument.language.name;
+            long lexer = [sci message:SCI_GETLEXER];
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+            p.largeFileThresholdMB = 200;
+            BOOL small = [ed openFileAtPath:big error:NULL] && [ed.currentDocument.language.name isEqualToString:@"cpp"];
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+            [[NSFileManager defaultManager] removeItemAtPath:big error:NULL];
+            Check(@"IDM_SETTING_PREFERENCE (large file language)",
+                  @"a file above the threshold opens as Normal text with no lexer, below it by its extension",
+                  opened && [language isEqualToString:@"normal"] && lexer <= SCLEX_NULL && small);
+        }
+
         // Clickable links.
         p.linksEnabled = YES;
         p.linkCustomSchemes = @"";
@@ -1481,6 +1513,23 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               @"a custom scheme is recognised too",
               custom == 1 && [[ed linkAtPosition:2] hasPrefix:@"obsidian://"]);
         p.linkCustomSchemes = @"";
+
+        // A text full of links: each one's place in bytes was measured from the start of the
+        // text, 20,000 links in 700 KB took seconds. Non-ASCII text between them checks the
+        // offsets still land on the links.
+        {
+            NSMutableString *many = [NSMutableString string];
+            for (int i = 0; i < 20000; ++i) [many appendFormat:@"café %d: https://example.org/p%d ok\n", i, i];
+            SetDoc(ed, many);
+            NSDate *started = [NSDate date];
+            NSUInteger marked = [ed markClickableLinks];
+            NSTimeInterval took = [[NSDate date] timeIntervalSinceDate:started];
+            long lastLine = [sci message:SCI_POSITIONFROMLINE wParam:19999];
+            NSString *last = [ed linkAtPosition:lastLine + 14];
+            Check(@"IDM_SETTING_PREFERENCE (many links)",
+                  [NSString stringWithFormat:@"20,000 links are marked in well under a second (%.3f s), at their own bytes", took],
+                  marked == 20000 && took < 1.0 && [last isEqualToString:@"https://example.org/p19999"]);
+        }
 
         p.linksEnabled = NO;
         SetDoc(ed, @"https://example.org/\n");
@@ -1694,6 +1743,59 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
         Check(@"IDM_SETTING_PREFERENCE (ignore numbers)",
               @"a numeric prefix offers nothing while that is on", numeric.count == 0);
         p.autoCompleteIgnoreNumbers = YES;
+
+        // The words are found in the document's bytes: for any prefix, ASCII or not, case folded
+        // or not, they are the words the whole text split at the separators and compared as
+        // strings gives (what this did before, kept here as the reference).
+        p.autoCompleteSource = NppCompletionWords;
+        NSString *mixed = @"Élan élite ÉLÉGANT e\u0301clat x=eclair;esprit(eclat) KELVIN \u212Aelp straße STRASSE 12 123 1234\n";
+        NSArray *(^reference)(NSString *, BOOL) = ^NSArray *(NSString *prefix, BOOL ignoreCase) {
+            NSCharacterSet *separators = [NSCharacterSet characterSetWithCharactersInString:@" \t\n\r.,;:\"(){}=<>'+!?[]"];
+            NSMutableOrderedSet *found = [NSMutableOrderedSet orderedSet];
+            for (NSString *w in [mixed componentsSeparatedByCharactersInSet:separators]) {
+                if (w.length <= prefix.length) continue;
+                if ([w rangeOfString:prefix options:NSAnchoredSearch | (ignoreCase ? NSCaseInsensitiveSearch : 0)].location != 0) continue;
+                if ([w rangeOfCharacterFromSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location == NSNotFound) continue;
+                [found addObject:w];
+            }
+            return [ed sortedForCompletion:found.array];
+        };
+        BOOL sameWords = YES;
+        for (NSString *language in @[@"sql", @"normal"]) {      // sql's API file ignores case, plain text respects it
+            [ed setLanguageNamed:language];
+            SetDoc(ed, mixed);
+            for (NSString *prefix in @[@"él", @"É", @"ecl", @"e", @"ke", @"K", @"stra", @"STR", @"12", @"x"]) {
+                NSArray *got = [ed completionCandidatesForPrefix:prefix], *want = reference(prefix, [ed completionIgnoresCase]);
+                if (![got isEqualToArray:want]) {
+                    sameWords = NO;
+                    printf("    %s '%s': %s, not %s\n", language.UTF8String, prefix.UTF8String,
+                           [got componentsJoinedByString:@","].UTF8String, [want componentsJoinedByString:@","].UTF8String);
+                }
+            }
+        }
+        Check(@"IDM_EDIT_AUTOCOMPLETE_CURRENTFILE (words in place)",
+              @"the document's words for a prefix are those string comparison finds, split at the same separators",
+              sameWords);
+
+        // It runs on every character typed: in a 10 MB document a keystroke used to copy and
+        // split the whole text (0.8 s in the test VM); the bytes in place take a few ms.
+        [ed setLanguageNamed:@"cpp"];
+        {
+            NSMutableString *big = [NSMutableString stringWithCapacity:11 << 20];
+            for (long i = 0; big.length < (10 << 20); ++i)
+                [big appendFormat:@"static int func_%ld(int a) { return total_%ld + a; }\n", i, i];
+            SetDoc(ed, big);
+        }
+        p.autoCompleteSource = NppCompletionWords;
+        NSDate *started = [NSDate date];
+        NSUInteger offered = 0;
+        for (int i = 0; i < 10; ++i) offered += [ed completionCandidatesForPrefix:@"func_12345"].count;
+        NSTimeInterval perKey = [[NSDate date] timeIntervalSinceDate:started] / 10;
+        Check(@"IDM_EDIT_AUTOCOMPLETE_CURRENTFILE (10 MB document)",
+              [NSString stringWithFormat:@"the words of a 10 MB document are gathered in under 0.25 s (%.3f s)", perKey],
+              perKey < 0.25 && offered == 10 * 10);
+        p.autoCompleteSource = NppCompletionBoth;
+        SetDoc(ed, @"");
 
         // Auto-insertion of the matching character.
         struct { int ch; NSString *want; NSString *flag; } pairs[] = {

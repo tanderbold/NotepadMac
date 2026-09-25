@@ -297,6 +297,76 @@ void NppTestsEncodingAndLanguage(AppDelegate *app, EditorController *ed, Scintil
               [ed.currentDocument.language.name isEqualToString:@"python"] &&
               [sci message:SCI_GETSTYLEAT wParam:0] == SCE_P_COMMENTLINE);
 
+        // Coming back to a tab keeps its lexer and styles: a 10 MB C++ document was lexed whole
+        // on every change of tab (and three times on opening). The styles are those a full
+        // restyle gives, and a change of language or of a word list still restyles.
+        {
+            NSString *(^styles)(void) = ^NSString *(void) {
+                long n = [sci message:SCI_GETLENGTH];
+                std::string buffer((size_t)(2 * n + 2), '\0');
+                Sci_TextRangeFull tr;
+                tr.chrg.cpMin = 0; tr.chrg.cpMax = n; tr.lpstrText = &buffer[0];
+                [sci message:SCI_GETSTYLEDTEXTFULL wParam:0 lParam:(sptr_t)&tr];
+                std::string only;
+                for (long i = 1; i < 2 * n; i += 2) only.push_back(buffer[(size_t)i]);
+                return [NSString stringWithFormat:@"%lu", (unsigned long)std::hash<std::string>()(only)];
+            };
+            NppDocument *previous = ed.currentDocument;
+            [ed newDocument];
+            NppDocument *bigDoc = ed.currentDocument;
+            NSMutableString *big = [NSMutableString stringWithCapacity:11 << 20];
+            for (long i = 0; big.length < (10 << 20); ++i)
+                [big appendFormat:@"/* %ld */ static int f%ld(int a) { return a + %ld; } // \"x\"\n", i, i, i];
+            SetDoc(ed, big);
+            [ed setLanguageNamed:@"cpp"];
+            NSString *before = styles();
+            [ed newDocument];
+            NppDocument *spare = ed.currentDocument;
+            NSDate *started = [NSDate date];
+            [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:bigDoc]];
+            NSTimeInterval back = [[NSDate date] timeIntervalSinceDate:started];
+            NSString *kept = styles();
+            [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+            BOOL same = [kept isEqualToString:before] && [styles() isEqualToString:before];
+            [ed setLanguageNamed:@"python"];
+            NSString *python = styles();
+            [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+            BOOL relexed = ![python isEqualToString:before] && [styles() isEqualToString:python];
+            [ed setLanguageNamed:@"cpp"];
+            [sci setStringProperty:SCI_SETKEYWORDS parameter:0 value:@""];   // "return", "int", "static" no longer words
+            [sci setStringProperty:SCI_SETKEYWORDS parameter:1 value:@""];
+            NppEnsureStyled(sci);
+            NSString *fewer = styles();
+            [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+            BOOL words = ![fewer isEqualToString:before] && [styles() isEqualToString:fewer];
+            Check(@"Language (lexer kept across tabs)",
+                  [NSString stringWithFormat:@"a 10 MB C++ tab comes back in under 0.1 s (%.3f s) styled as a full restyle styles it; "
+                   @"a new language or word list restyles", back],
+                  back < 0.1 && same && relexed && words);
+            if (!(same && relexed && words)) printf("    same %d, relexed %d, words %d\n", same, relexed, words);
+            // Opening it: styled whole once, before it is shown (FileManager::loadFileData fills
+            // the scratch view), without an undo copy of the file: 1.1 s in the test VM before, 0.6 s now.
+            NSString *bigPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"nppmac-big.cpp"];
+            [big writeToFile:bigPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+            started = [NSDate date];
+            BOOL opened = [ed openFileAtPath:bigPath error:NULL];
+            NSTimeInterval openTook = [[NSDate date] timeIntervalSinceDate:started];
+            BOOL styledWhole = [sci message:SCI_GETENDSTYLED] == [sci message:SCI_GETLENGTH];
+            NSString *atOpen = styles();
+            BOOL clean = ![sci message:SCI_CANUNDO] && !ed.currentDocument.modified && [DocText(ed) isEqualToString:big];
+            [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+            Check(@"Language (a large file opened)",
+                  [NSString stringWithFormat:@"a 10 MB C++ file opens styled whole, as a full restyle styles it, with nothing to undo (%.2f s)", openTook],
+                  opened && openTook < 0.85 && styledWhole && [styles() isEqualToString:atOpen] &&
+                  [atOpen isEqualToString:before] && clean);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:ed.currentDocument] discardChanges:YES];
+            [[NSFileManager defaultManager] removeItemAtPath:bigPath error:NULL];
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:bigDoc] discardChanges:YES];
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:spare] discardChanges:YES];
+            if ([ed.documents indexOfObjectIdenticalTo:previous] != NSNotFound)
+                [ed selectDocumentAtIndex:(NSInteger)[ed.documents indexOfObjectIdenticalTo:previous]];
+        }
+
         // Every language the Language menu offers: selecting it must apply the
         // language and produce a working Lexilla lexer.
         int langOK = 0, langBad = 0;

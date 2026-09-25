@@ -22,11 +22,7 @@ static long Utf8Len(NSString *s) {
     long pos = [sci message:SCI_GETCURRENTPOS];
     long start = [sci message:SCI_WORDSTARTPOSITION wParam:(uptr_t)pos lParam:1];
     if (pos <= start) return @"";
-    NSData *data = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    if ((NSUInteger)pos > data.length) return @"";
-    return [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange((NSUInteger)start,
-                                                                            (NSUInteger)(pos - start))]
-                                 encoding:NSUTF8StringEncoding] ?: @"";
+    return NppTextRange(sci, start, pos) ?: @"";
 }
 
 /// Upstream matches case unless the language's API file says so, and in
@@ -58,19 +54,49 @@ static BOOL StartsWith(NSString *word, NSString *prefix, BOOL ignoreCase) {
 }
 
 /// Words of the document that begin with `prefix` and go on past it, less
-/// `exclude` (the word being typed), as getWordArray finds them.
+/// `exclude` (the word being typed), as getWordArray finds them. It runs on
+/// every character typed, so the document's bytes are walked where they are
+/// (upstream searches them in place too) and only a word whose first bytes
+/// can match the prefix becomes a string, to be checked as before.
 - (NSArray<NSString *> *)documentWordsWithPrefix:(NSString *)prefix excluding:(nullable NSString *)exclude {
-    static NSCharacterSet *separators;
+    static bool separator[256];
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        separators = [NSCharacterSet characterSetWithCharactersInString:@" \t\n\r.,;:\"(){}=<>'+!?[]"];
+        for (const char *c = " \t\n\r.,;:\"(){}=<>'+!?[]"; *c; ++c) separator[(unsigned char)*c] = true;
     });
     BOOL ignoreCase = [self completionIgnoresCase];
     BOOL ignoreNumbers = [NppPreferences shared].autoCompleteIgnoreNumbers;
     NSCharacterSet *nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSData *prefixData = [prefix dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+    const unsigned char *pb = (const unsigned char *)prefixData.bytes;
+    const long pn = (long)prefixData.length;
+    BOOL asciiPrefix = YES;
+    for (long k = 0; k < pn; ++k) if (pb[k] >= 0x80) { asciiPrefix = NO; break; }
+
+    ScintillaView *sci = self.sci;
+    const long length = [sci message:SCI_GETLENGTH];
+    const unsigned char *text = (const unsigned char *)[sci message:SCI_GETCHARACTERPOINTER];
     NSMutableOrderedSet *found = [NSMutableOrderedSet orderedSet];
-    for (NSString *w in [([self.sci string] ?: @"") componentsSeparatedByCharactersInSet:separators]) {
-        if (w.length <= prefix.length || !StartsWith(w, prefix, ignoreCase)) continue;
+    for (long i = 0; text && i < length;) {
+        if (separator[text[i]]) { ++i; continue; }
+        const long start = i;
+        while (i < length && !separator[text[i]]) ++i;
+        const long n = i - start;
+        if (asciiPrefix) {
+            // An ASCII prefix: a word no longer than it in bytes is no longer in characters, and a
+            // difference in ASCII bytes before any other is a difference in characters. A word with
+            // other bytes at its start goes to the full comparison (case folding, composition).
+            if (n <= pn) continue;
+            BOOL differs = NO;
+            for (long k = 0; k < pn; ++k) {
+                unsigned char c = text[start + k];
+                if (c >= 0x80) break;
+                if (ignoreCase ? tolower(c) != tolower(pb[k]) : c != pb[k]) { differs = YES; break; }
+            }
+            if (differs) continue;
+        }
+        NSString *w = [[NSString alloc] initWithBytes:text + start length:(NSUInteger)n encoding:NSUTF8StringEncoding];
+        if (!w || w.length <= prefix.length || !StartsWith(w, prefix, ignoreCase)) continue;
         if (exclude && [w isEqualToString:exclude]) continue;
         if (ignoreNumbers && [w rangeOfCharacterFromSet:nonDigits].location == NSNotFound) continue;
         [found addObject:w];
@@ -129,10 +155,7 @@ static const char kLastCompletionKey = 0;
     } else {
         NSMutableOrderedSet *words = [NSMutableOrderedSet orderedSet];
         if (kind == NppCompletionKindWords || kind == NppCompletionKindFunctionsAndWords) {
-            NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *whole = (end <= (long)doc.length)
-                ? [[NSString alloc] initWithData:[doc subdataWithRange:NSMakeRange((NSUInteger)start, (NSUInteger)(end - start))]
-                                        encoding:NSUTF8StringEncoding] : nil;
+            NSString *whole = NppTextRange(sci, start, end);
             [words addObjectsFromArray:[self documentWordsWithPrefix:prefix excluding:whole]];
         }
         if (kind == NppCompletionKindFunctionsBrief || kind == NppCompletionKindFunctionsAndWords) {
@@ -239,18 +262,14 @@ static const char kAutoCloseKey = 0;
     if (![language isEqualToString:@"html"] && ![language isEqualToString:@"xml"]) return nil;
     ScintillaView *sci = self.sci;
     long pos = [sci message:SCI_GETCURRENTPOS];
-    NSString *text = [sci string] ?: @"";
-    NSData *data = [text dataUsingEncoding:NSUTF8StringEncoding];
-    if (pos <= 0 || (NSUInteger)pos > data.length) return nil;
-
-    NSString *before = [[NSString alloc] initWithData:
-        [data subdataWithRange:NSMakeRange(0, (NSUInteger)pos)] encoding:NSUTF8StringEncoding];
-    if (![before hasSuffix:@">"]) return nil;
-
-    NSRange open = [before rangeOfString:@"<" options:NSBackwardsSearch];
-    if (open.location == NSNotFound) return nil;
-    NSString *tag = [before substringWithRange:
-        NSMakeRange(open.location + 1, before.length - open.location - 2)];
+    if (pos <= 0 || [sci message:SCI_GETCHARAT wParam:(uptr_t)(pos - 1)] != '>') return nil;
+    // The last "<" before it, found in the document's bytes in place, not in a copy of all of them.
+    const char *bytes = (const char *)[sci message:SCI_GETRANGEPOINTER wParam:0 lParam:pos];
+    long open = pos - 1;
+    while (bytes && open >= 0 && bytes[open] != '<') --open;
+    if (!bytes || open < 0) return nil;
+    NSString *tag = NppTextRange(sci, open + 1, pos - 1);
+    if (!tag) return nil;
     if (![tag length] || [tag hasPrefix:@"/"] || [tag hasSuffix:@"/"]) return nil;
 
     // Only the element name, dropping any attributes.
@@ -297,10 +316,8 @@ static BOOL LanguageAlwaysBraces(NSString *name) {
     ScintillaView *sci = self.sci;
     long a = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
     long b = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
-    NSData *doc = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-    if (a < 0 || b < a || (NSUInteger)b > doc.length) return @"";
-    return [[NSString alloc] initWithData:[doc subdataWithRange:NSMakeRange((NSUInteger)a, (NSUInteger)(b - a))]
-                                 encoding:NSUTF8StringEncoding] ?: @"";
+    if (a < 0 || b < a) return @"";
+    return NppTextRange(sci, a, b) ?: @"";
 }
 
 /// Whether the first match of `pattern` in the line runs to its end, which is
@@ -563,7 +580,9 @@ static const char kFirstLineNameKey = 0;
     if (!p.untitledFromFirstLine || doc.path) return doc.displayName;
     if (doc != self.currentDocument) return objc_getAssociatedObject(doc, &kFirstLineNameKey) ?: doc.displayName;
 
-    NSString *text = [self.sci string] ?: @"";
+    // The first line only: this runs on every refresh of the tabs and the status bar.
+    ScintillaView *sci = self.sci;
+    NSString *text = NppTextRange(sci, 0, [sci message:SCI_GETLINEENDPOSITION wParam:0]) ?: @"";
     NSString *firstLine = [[text componentsSeparatedByCharactersInSet:
         [NSCharacterSet newlineCharacterSet]] firstObject] ?: @"";
     firstLine = [firstLine stringByTrimmingCharactersInSet:
@@ -644,24 +663,14 @@ static const char kFirstLineNameKey = 0;
 
     // Upstream fills the field only from a selection shorter than the limit.
     if (b > a && p.findFillWithSelection && (b - a) <= MAX(1, p.fillFindWhatThreshold)) {
-        NSData *data = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-        if ((NSUInteger)b <= data.length) {
-            return [[NSString alloc] initWithData:
-                [data subdataWithRange:NSMakeRange((NSUInteger)a, (NSUInteger)(b - a))]
-                                         encoding:NSUTF8StringEncoding] ?: @"";
-        }
+        return NppTextRange(sci, a, b) ?: @"";
     }
     if (b == a && p.findSelectWordUnderCaret) {
         long pos = [sci message:SCI_GETCURRENTPOS];
         long start = [sci message:SCI_WORDSTARTPOSITION wParam:(uptr_t)pos lParam:1];
         long end = [sci message:SCI_WORDENDPOSITION wParam:(uptr_t)pos lParam:1];
         if (end > start) {
-            NSData *data = [([sci string] ?: @"") dataUsingEncoding:NSUTF8StringEncoding];
-            if ((NSUInteger)end <= data.length) {
-                return [[NSString alloc] initWithData:
-                    [data subdataWithRange:NSMakeRange((NSUInteger)start, (NSUInteger)(end - start))]
-                                             encoding:NSUTF8StringEncoding] ?: @"";
-            }
+            return NppTextRange(sci, start, end) ?: @"";
         }
     }
     return @"";

@@ -292,7 +292,7 @@ static long Bgr(NSColor *c, long fallback) {
     long targetStart = [sci message:SCI_GETTARGETSTART], targetEnd = [sci message:SCI_GETTARGETEND];
     long flags = [sci message:SCI_GETSEARCHFLAGS];
     // Styles are what tell markup from strings and comments.
-    [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    NppEnsureStyled(sci);
     TagsPos tags;
     BOOL found = m.matchedTagsPos(tags);
     if (found) {

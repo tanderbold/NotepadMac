@@ -1,5 +1,7 @@
 #import "FunctionListCatalog.h"
 #import "NppRegex.h"
+#include <algorithm>
+#include <vector>
 
 @interface NSString (NppPrefixAt)
 - (BOOL)hasPrefixAtIndex:(NSUInteger)index string:(NSString *)prefix;
@@ -299,14 +301,21 @@ static NSRange NarrowToName(NSData *data, NSRange body, NSArray<NSString *> *exp
 static NSData *DataWithoutComments(NSData *data, NSString *commentExpr);
 
 /// The line a byte offset falls on, counting from zero.
-static NSUInteger LineAtByte(NSData *data, NSUInteger offset) {
+/// Where each line of `data` starts - after a \n, or a \r that is not the first half of a
+/// \r\n - so that the line of a byte is a binary search, not a count from the start of the
+/// text for every function found (which made a 10 MB file's list take minutes).
+static std::vector<NSUInteger> LineStarts(NSData *data) {
     const uint8_t *bytes = (const uint8_t *)data.bytes;
-    NSUInteger line = 0;
-    for (NSUInteger i = 0; i < offset && i < data.length; ++i) {
-        if (bytes[i] == '\n') line++;
-        else if (bytes[i] == '\r' && (i + 1 >= data.length || bytes[i + 1] != '\n')) line++;
+    const NSUInteger n = data.length;
+    std::vector<NSUInteger> starts{0};
+    for (NSUInteger i = 0; i < n; ++i) {
+        if (bytes[i] == '\n' || (bytes[i] == '\r' && (i + 1 >= n || bytes[i + 1] != '\n'))) starts.push_back(i + 1);
     }
-    return line;
+    return starts;
+}
+
+static NSUInteger LineAt(const std::vector<NSUInteger> &starts, NSUInteger offset) {
+    return (NSUInteger)(std::upper_bound(starts.begin(), starts.end(), offset) - starts.begin()) - 1;
 }
 
 /// Upstream searches with SCFIND_REGEXP | SCFIND_POSIX | SCFIND_REGEXP_DOTMATCHESNL
@@ -343,6 +352,8 @@ static NSString *StringFromBytes(NSData *data, NSRange range) {
     // mentioned in a comment is not reported.
     NSData *subject = DataWithoutComments(whole, p.commentExpr);
     NSRange all = NSMakeRange(0, subject.length);
+    const std::vector<NSUInteger> lineStarts = LineStarts(subject);
+    const std::vector<NSUInteger> *lines = &lineStarts;
     NSMutableArray *entries = [NSMutableArray array];
 
     void (^collect)(NSString *, NSArray<NSString *> *, NSRange, NSString *) =
@@ -378,7 +389,7 @@ static NSString *StringFromBytes(NSData *data, NSRange range) {
             NppFunctionEntry *entry = [[NppFunctionEntry alloc] init];
             entry.name = name;
             entry.container = owner;
-            entry.line = LineAtByte(subject, m.location);
+            entry.line = LineAt(*lines, m.location);
             [entries addObject:entry];
         }];
     };
@@ -415,7 +426,7 @@ static NSString *StringFromBytes(NSData *data, NSRange range) {
                 if (entries.count > before) {
                     NppFunctionEntry *entry = [[NppFunctionEntry alloc] init];
                     entry.name = className;
-                    entry.line = LineAtByte(subject, header.location);
+                    entry.line = LineAt(*lines, header.location);
                     entry.isClass = YES;
                     [entries insertObject:entry atIndex:before];
                 }

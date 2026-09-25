@@ -684,6 +684,28 @@ static long SciColor(NSColor *c) {
 
 #pragma mark - Documents
 
+NSString *NppTextRange(ScintillaView *sci, long start, long end) {
+    long length = [sci message:SCI_GETLENGTH];
+    start = MAX(0L, start);
+    end = MIN(end, length);
+    if (end <= start) return @"";
+    std::string buffer((size_t)(end - start) + 1, '\0');
+    Sci_TextRangeFull range;
+    range.chrg.cpMin = start;
+    range.chrg.cpMax = end;
+    range.lpstrText = &buffer[0];
+    [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&range];
+    return [[NSString alloc] initWithBytes:buffer.data() length:(NSUInteger)(end - start) encoding:NSUTF8StringEncoding];
+}
+
+void NppEnsureStyled(ScintillaView *sci) {
+    long length = [sci message:SCI_GETLENGTH];
+    long styled = [sci message:SCI_GETENDSTYLED];
+    if (styled >= length) return;
+    long from = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)[sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)styled]];
+    [sci message:SCI_COLOURISE wParam:(uptr_t)from lParam:-1];
+}
+
 /// A path with its symlinks and "."/".." resolved, as realpath(3) gives it (NSString's own
 /// resolving turns /private/var into /var); the path as given when it no longer exists.
 NSString *NppCanonicalPath(NSString *path) {
@@ -773,21 +795,7 @@ NSDictionary<NSFileAttributeKey, id> *NppFileAttributes(NSString *path) {
 
 + (void)setStreamingThreshold:(unsigned long long)bytes { gStreamingThreshold = bytes ?: 64ULL * 1024 * 1024; }
 
-/// Adds UTF-8 bytes in pieces, with room made for all of them first.
-- (void)setDocumentBytes:(NSData *)utf8 {
-    ScintillaView *sci = self.sciView;
-    BOOL readOnly = [sci message:SCI_GETREADONLY wParam:0 lParam:0] != 0;
-    if (readOnly) [sci message:SCI_SETREADONLY wParam:0 lParam:0];
-    [sci message:SCI_CLEARALL wParam:0 lParam:0];
-    [sci message:SCI_ALLOCATE wParam:(uptr_t)utf8.length lParam:0];
-    const unsigned char *bytes = (const unsigned char *)utf8.bytes;
-    const NSUInteger chunk = 16 * 1024 * 1024;
-    for (NSUInteger at = 0; at < utf8.length; at += chunk) {
-        NSUInteger len = MIN(chunk, utf8.length - at);
-        [sci message:SCI_APPENDTEXT wParam:(uptr_t)len lParam:(sptr_t)(bytes + at)];
-    }
-    if (readOnly) [sci message:SCI_SETREADONLY wParam:1 lParam:0];
-}
+static ScintillaView *ScratchView(void);
 
 /// The file's own text is where change history starts, not a change: with
 /// history on while it was loaded, every line was marked as a saved change
@@ -888,7 +896,10 @@ static void RestartChangeHistory(ScintillaView *sci) {
                                                          : SC_DOCUMENTOPTION_DEFAULT];
     doc.path = path;
     doc.displayName = path.lastPathComponent;
-    doc.language = [[LanguageCatalog sharedCatalog] languageForFileName:path];
+    // A large file is Normal text whatever its name, as upstream's Buffer::determinateFormat has
+    // it (_isLargeFile: L_TEXT): no lexer goes over it, and its contents are not guessed at.
+    doc.language = large ? [[LanguageCatalog sharedCatalog] languageNamed:@"normal"]
+                         : [[LanguageCatalog sharedCatalog] languageForFileName:path];
     doc.encoding = used;
     doc.hasBOM = bom;
     doc.codepage = 0;
@@ -899,11 +910,36 @@ static void RestartChangeHistory(ScintillaView *sci) {
     NppDocument *lone = [self mainTabCount] == 1 ? self.docs.firstObject : nil;
     if (lone && (lone.path || lone.modified || lone.isSearchResults || lone.pinned || [self.subDocs containsObject:lone])) lone = nil;
 
+    // The text goes into the document, and is styled, before the document is shown, as
+    // FileManager::loadFileData fills it in _pscratchTilla: in the editor, every fold level the
+    // lexer set redrew the whole editor (Editor::NotifyModified), which was about half of the time
+    // a file took to open. Without undo, as loadFileData loads (SCI_SETUNDOCOLLECTION false): the
+    // undo buffer is emptied below anyway, and meanwhile it held a second copy of the file. A
+    // user-defined language is set up on the editor itself (configureUserLexerFor:), so it is
+    // styled there, when shown.
+    ScintillaView *scratch = ScratchView();
+    [scratch message:SCI_SETDOCPOINTER wParam:0 lParam:(sptr_t)doc.docPointer];
+    [scratch message:SCI_SETUNDOCOLLECTION wParam:0];
+    if (direct) {
+        [scratch message:SCI_ALLOCATE wParam:(uptr_t)direct.length lParam:0];
+        const unsigned char *bytes = (const unsigned char *)direct.bytes;
+        const NSUInteger chunk = 16 * 1024 * 1024;
+        for (NSUInteger at = 0; at < direct.length; at += chunk)
+            [scratch message:SCI_APPENDTEXT wParam:(uptr_t)MIN(chunk, direct.length - at) lParam:(sptr_t)(bytes + at)];
+    } else {
+        NSData *utf8 = [text dataUsingEncoding:NSUTF8StringEncoding] ?: [NSData data];
+        [scratch message:SCI_ADDTEXT wParam:(uptr_t)utf8.length lParam:(sptr_t)utf8.bytes];
+    }
+    [scratch message:SCI_SETUNDOCOLLECTION wParam:1];
+    [scratch message:SCI_SETEOLMODE wParam:(uptr_t)doc.eolMode lParam:0];
+    if (!large && ![[LanguageCatalog sharedCatalog] userLanguageNamed:doc.language.name]) {
+        [self applyLanguageOfDocument:doc toView:scratch];
+        NppEnsureStyled(scratch);
+    }
+    [scratch message:SCI_SETDOCPOINTER wParam:0 lParam:0];
+
     [self selectDocumentAtIndex:[self addMainViewDocument:doc]];
     if (lone) [self closeDocumentAtIndex:(NSInteger)[self.docs indexOfObject:lone] discardChanges:YES];
-
-    if (direct) [self setDocumentBytes:direct];
-    else [self setDocumentText:text];
     [self.sciView message:SCI_SETEOLMODE wParam:(uptr_t)doc.eolMode lParam:0];
     [self applyPerformanceRestrictions];
     [self.sciView message:SCI_SETSAVEPOINT wParam:0 lParam:0];
@@ -922,8 +958,9 @@ static void RestartChangeHistory(ScintillaView *sci) {
     [self forgetRecentFile:path];
     [self rememberOpenDirectory:path];
 
-    // A name with no extension says nothing, so the contents are asked instead.
-    [self detectLanguageOfCurrentDocumentOffering:self.languageChoiceHandler];
+    // A name with no extension says nothing, so the contents are asked instead - not of a large
+    // file (FileManager::loadFile: "if not a large file ... we use the detected value").
+    if (!large) [self detectLanguageOfCurrentDocumentOffering:self.languageChoiceHandler];
     [[NSNotificationCenter defaultCenter] postNotificationName:NppDocumentOpenedNotification object:self];
     return YES;
 }
@@ -993,10 +1030,22 @@ static void RestartChangeHistory(ScintillaView *sci) {
 /// Documents are created in a scratch view that shows nothing, as upstream
 /// creates them in its _pscratchTilla: SCI_CREATEDOCUMENT resets the folds of
 /// the view it is sent to, which would unfold the document in front.
-- (void *)createScintillaDocument:(long)options {
+static ScintillaView *ScratchView(void) {
     static ScintillaView *scratch;
-    if (!scratch) scratch = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
-    return (void *)[scratch message:SCI_CREATEDOCUMENT wParam:0 lParam:options];
+    if (!scratch) {
+        scratch = [[ScintillaView alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
+        // Every marker in a margin it shows, none in the text: then a fold level the lexer sets
+        // while a file is loaded here redraws only the margin at that line, which is off this
+        // small view and costs nothing, rather than the whole view (Editor::RedrawSelMargin
+        // redraws everything when some marker may be drawn in the text).
+        [scratch message:SCI_SETMARGINWIDTHN wParam:1 lParam:16];
+        [scratch message:SCI_SETMARGINMASKN wParam:1 lParam:(sptr_t)(int)0xFFFFFFFF];
+    }
+    return scratch;
+}
+
+- (void *)createScintillaDocument:(long)options {
+    return (void *)[ScratchView() message:SCI_CREATEDOCUMENT wParam:0 lParam:options];
 }
 
 - (NSArray<NSNumber *> *)currentFoldedLines { return [self foldedLinesInView:self.sci]; }
@@ -1013,7 +1062,7 @@ static void RestartChangeHistory(ScintillaView *sci) {
 - (void)foldLines:(NSArray<NSNumber *> *)lines { [self foldLines:lines inView:self.sci]; }
 
 - (void)foldLines:(NSArray<NSNumber *> *)lines inView:(ScintillaView *)sci {
-    [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    NppEnsureStyled(sci);
     for (NSNumber *line in lines) {
         if (![line isKindOfClass:[NSNumber class]]) continue;
         if ([sci message:SCI_GETFOLDLEVEL wParam:(uptr_t)line.longValue] & SC_FOLDLEVELHEADERFLAG) {
@@ -1551,7 +1600,10 @@ static BOOL gCheckingFilesOnDisk;
 
     long caret = [self.sci message:SCI_GETCURRENTPOS];
     long firstLine = [self.sci message:SCI_GETFIRSTVISIBLELINE];
+    long collecting = [self.sci message:SCI_GETUNDOCOLLECTION];
+    [self.sci message:SCI_SETUNDOCOLLECTION wParam:0];      // as the file is first loaded (loadFileData)
     [self setDocumentText:text];
+    [self.sci message:SCI_SETUNDOCOLLECTION wParam:(uptr_t)collecting];
     if (!doc.codepage) {
         doc.encoding = enc;
         doc.hasBOM = bom;
@@ -2407,7 +2459,7 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     NppUserLanguage *udl = [[LanguageCatalog sharedCatalog] userLanguageNamed:lang.name];
     [self applyTheme];
     if (udl) [self applyUserLanguageStyles:udl];
-    [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+    NppEnsureStyled(sci);
     if (folds.count) [self foldLines:folds];
     if ([self documentMapVisible]) { [self mirrorStylesToDocumentMap]; [self updateDocumentMap]; }
     [self applyWordCharacters];
@@ -2426,13 +2478,31 @@ static NSString *InternalLanguageName(NSString *sessionName) {
     // Notepad++'s table names "phpscript" for PHP, but setXmlLexer gives a .php file the lexer of the page
     // it is - HTML with <?php ?> in it - as it does ASP and JSP; phpscript is for PHP with no page around it.
     NSString *lexerID = [lang.name isEqualToString:@"php"] ? @"hypertext" : (lang.lexerID ?: @"");
-    void *lexer = CreateLexer(lexerID.UTF8String);
-    // The null lexer colours nothing and leaves the fold levels alone, so what the language
-    // before it styled and folded would stay; plain text has neither. Only when a language
-    // lexer goes: a document that had none keeps its levels (the results tab sets its own).
-    BOOL hadLexer = [sci message:SCI_GETLEXER] > SCLEX_NULL;
-    [sci message:SCI_SETILEXER wParam:0 lParam:(sptr_t)lexer];
-    if ([lexerID isEqualToString:@"null"] && hadLexer) [sci message:SCI_CLEARDOCUMENTSTYLE];
+    // The lexer belongs to the Scintilla document. Upstream's defineDocType makes a new one on every
+    // activation, and styles what is shown as it is drawn; here the whole document is styled
+    // (applyLanguage), so a new lexer - whose properties and word lists, all set afresh, restart
+    // the styling at 0 - cost a full restyle on every change of tab. The one the document already
+    // has for this language is kept instead: given the same properties and words again it restyles
+    // nothing, and a changed one (a keyword list, a preference) restyles from where it applies,
+    // as Scintilla's PropertySet and WordListSet report it.
+    static NSMutableDictionary<NSNumber *, NSString *> *configuredFor;
+    if (!configuredFor) configuredFor = [NSMutableDictionary dictionary];
+    NSNumber *docKey = @((uintptr_t)[sci message:SCI_GETDOCPOINTER]);
+    char current[128] = {0};
+    if ([sci message:SCI_GETLEXERLANGUAGE] < (long)sizeof current)
+        [sci message:SCI_GETLEXERLANGUAGE wParam:0 lParam:(sptr_t)current];
+    BOOL keep = lexerID.length && [@(current) isEqualToString:lexerID] &&
+                [configuredFor[docKey] isEqualToString:lang.name ?: @""];
+    if (!keep) {
+        void *lexer = CreateLexer(lexerID.UTF8String);
+        // The null lexer colours nothing and leaves the fold levels alone, so what the language
+        // before it styled and folded would stay; plain text has neither. Only when a language
+        // lexer goes: a document that had none keeps its levels (the results tab sets its own).
+        BOOL hadLexer = [sci message:SCI_GETLEXER] > SCLEX_NULL;
+        [sci message:SCI_SETILEXER wParam:0 lParam:(sptr_t)lexer];
+        if ([lexerID isEqualToString:@"null"] && hadLexer) [sci message:SCI_CLEARDOCUMENTSTYLE];
+        configuredFor[docKey] = lexer ? (lang.name ?: @"") : nil;
+    }
     [sci setLexerProperty:@"fold" value:@"1"];
     [sci setLexerProperty:@"fold.compact" value:@"0"];
     [sci setLexerProperty:@"fold.comment" value:@"1"];

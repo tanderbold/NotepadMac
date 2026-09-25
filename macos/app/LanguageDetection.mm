@@ -261,12 +261,22 @@ static const char kLanguageChoiceHandlerKey = 0;
         NSLog(@"language detection: not asked, %@", reason);
         return @[];
     }
-    NSArray<NppLanguage *> *fitting =
-        [[LanguageCatalog sharedCatalog] languagesMatchingContents:[self.sci string] ?: @""];
+    // Both judges read no more than the first 64K characters (kSampleLimit, the model's
+    // kSampleCharacters), which 256 KB of UTF-8 always holds: that much is read, not the whole
+    // document as a string. It stops at a NUL, as the whole text did ([ScintillaView string]).
+    ScintillaView *sci = self.sci;
+    long length = [sci message:SCI_GETLENGTH];
+    long end = MIN(length, 256L * 1024);
+    while (end < length && ([sci message:SCI_GETCHARAT wParam:(uptr_t)end] & 0xC0) == 0x80) ++end;
+    const char *bytes = end > 0 ? (const char *)[sci message:SCI_GETRANGEPOINTER wParam:0 lParam:end] : NULL;
+    const void *nul = bytes ? memchr(bytes, 0, (size_t)end) : NULL;
+    if (nul) end = (const char *)nul - bytes;
+    NSString *text = NppTextRange(sci, 0, end) ?: @"";
+    NSArray<NppLanguage *> *fitting = [[LanguageCatalog sharedCatalog] languagesMatchingContents:text];
     NSMutableArray<NSString *> *names = [NSMutableArray array];
     for (NppLanguage *one in fitting) [names addObject:one.name];
     NSLog(@"language detection: %lu characters, offered [%@]",
-          (unsigned long)[self.sci string].length, [names componentsJoinedByString:@", "]);
+          (unsigned long)text.length, [names componentsJoinedByString:@", "]);
     return fitting;
 }
 
