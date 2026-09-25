@@ -1399,6 +1399,23 @@ void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *
               custom == 1 && [[ed linkAtPosition:2] hasPrefix:@"obsidian://"]);
         p.linkCustomSchemes = @"";
 
+        // A text full of links: each one's place in bytes was measured from the start of the
+        // text, 20,000 links in 700 KB took seconds. Non-ASCII text between them checks the
+        // offsets still land on the links.
+        {
+            NSMutableString *many = [NSMutableString string];
+            for (int i = 0; i < 20000; ++i) [many appendFormat:@"café %d: https://example.org/p%d ok\n", i, i];
+            SetDoc(ed, many);
+            NSDate *started = [NSDate date];
+            NSUInteger marked = [ed markClickableLinks];
+            NSTimeInterval took = [[NSDate date] timeIntervalSinceDate:started];
+            long lastLine = [sci message:SCI_POSITIONFROMLINE wParam:19999];
+            NSString *last = [ed linkAtPosition:lastLine + 14];
+            Check(@"IDM_SETTING_PREFERENCE (many links)",
+                  [NSString stringWithFormat:@"20,000 links are marked in well under a second (%.3f s), at their own bytes", took],
+                  marked == 20000 && took < 1.0 && [last isEqualToString:@"https://example.org/p19999"]);
+        }
+
         p.linksEnabled = NO;
         SetDoc(ed, @"https://example.org/\n");
         Check(@"IDM_SETTING_PREFERENCE (links off)", @"nothing is marked when links are off",

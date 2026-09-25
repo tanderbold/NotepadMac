@@ -1,5 +1,6 @@
 #import "BehaviourCommands.h"
 #include <string>
+#include <vector>
 #import "SettingsCommands.h"
 #import "SearchCommands.h"
 #import "AdvancedEditCommands.h"
@@ -91,7 +92,12 @@ static BOOL UrlSchemeStartChar(unichar c) {
 /// says could be handled better. Any letter counts here, which settles them.
 static BOOL UrlSchemeDelimiter(unichar c) {
     if (c == '_') return NO;
-    NSCharacterSet *wordLike = [NSCharacterSet alphanumericCharacterSet];
+    // ASCII, which is nearly every character asked about, without the set: its letters and digits
+    // are exactly the set's ASCII members.
+    if (c < 0x80) return !((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+    static NSCharacterSet *wordLike;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{ wordLike = [NSCharacterSet alphanumericCharacterSet]; });
     return ![wordLike characterIsMember:c];
 }
 
@@ -116,15 +122,17 @@ static BOOL UrlQueryDelimiter(unichar c) {
 
 /// Finds the next scheme at or after `start`. Returns NSNotFound when there is
 /// none; otherwise the index where it begins, with its length in `schemeLength`.
-static NSUInteger ScanToUrlStart(NSString *text, NSUInteger start,
+/// `chars` are the text's UTF-16 units: this walks every character of the document, which
+/// characterAtIndex: made the most of the time of a change of tab.
+static NSUInteger ScanToUrlStart(NSString *text, const unichar *chars, NSUInteger start,
                                  NSArray<NSString *> *schemes, NSUInteger *schemeLength) {
     NSUInteger length = text.length, p = start, p0 = 0;
     BOOL inScheme = NO;
     while (p < length) {
-        unichar c = [text characterAtIndex:p];
+        unichar c = chars[p];
         if (!inScheme) {
             if (UrlSchemeStartChar(c) &&
-                (p == 0 || UrlSchemeDelimiter([text characterAtIndex:p - 1]))) {
+                (p == 0 || UrlSchemeDelimiter(chars[p - 1]))) {
                 p0 = p;
                 inScheme = YES;
             }
@@ -266,10 +274,17 @@ static BOOL UrlLooksReal(NSString *candidate) {
         if (trimmed.length && ![schemes containsObject:trimmed]) [schemes addObject:trimmed];
     }
 
+    std::vector<unichar> chars(text.length + 1);
+    [text getCharacters:chars.data() range:NSMakeRange(0, text.length)];
     NSUInteger count = 0, at = 0;
+    // Byte offsets are counted on from the link before, not from the start for each link, which
+    // made a text full of links quadratic. Every link starts at an ASCII letter, never inside a
+    // character, so the pieces add up to what the whole prefix measured.
+    NSUInteger measuredTo = 0;
+    long measuredBytes = 0;
     while (at < text.length) {
         NSUInteger schemeLength = 0;
-        NSUInteger begin = ScanToUrlStart(text, at, schemes, &schemeLength);
+        NSUInteger begin = ScanToUrlStart(text, chars.data(), at, schemes, &schemeLength);
         if (begin == NSNotFound) break;
 
         NSUInteger length = ScanToUrlEnd(text, begin + schemeLength);
@@ -287,7 +302,9 @@ static BOOL UrlLooksReal(NSString *candidate) {
         }
         while (TrimOneTrailingUrlChar(text, begin, &length)) { }
 
-        long startByte = Utf8Len([text substringToIndex:begin]);
+        measuredBytes += Utf8Len([text substringWithRange:NSMakeRange(measuredTo, begin - measuredTo)]);
+        measuredTo = begin;
+        long startByte = measuredBytes;
         long byteLength = Utf8Len([text substringWithRange:NSMakeRange(begin, length)]);
         [sci message:SCI_INDICATORFILLRANGE wParam:(uptr_t)startByte lParam:byteLength];
         count++;
