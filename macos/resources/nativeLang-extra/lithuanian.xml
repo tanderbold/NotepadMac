@@ -108,7 +108,7 @@
     <Item english="Compare: ignore empty lines" text="Palyginimas: ignoruoti tuščias eilutes"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Didž. ženklų skaičius automatiniam paieškos lauko užpildymui"/>
     <Item english="Releases repository" text="Laidų saugykla"/>
-    <Item english="Notepad++ update" text="Notepad++ atnaujinimas"/>
+    <Item english="NotepadMac update" text="NotepadMac atnaujinimas"/>
     <Item english="No update is available." text="Atnaujinimų nėra."/>
     <Item english="An update package is available, do you want to download it?" text="Yra atnaujinimo paketas. Ar norite jį atsisiųsti?"/>
     <Item english="Open the Releases Page" text="Atidaryti laidų puslapį"/>

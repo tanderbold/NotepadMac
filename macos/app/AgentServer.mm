@@ -217,7 +217,7 @@ typedef NSDictionary *_Nullable (^NppToolBlock)(NSDictionary *args, NSError **er
 - (instancetype)init {
     if (!(self = [super init])) return nil;
     _listenFD = -1;
-    _queue = dispatch_queue_create("org.notepad-plus-plus.mac.agent", DISPATCH_QUEUE_CONCURRENT);
+    _queue = dispatch_queue_create("io.github.tanderbold.notepadmac.agent", DISPATCH_QUEUE_CONCURRENT);
     _handlers = [NSMutableDictionary dictionary];
     _clients = [NSMutableSet set];
     [self registerTools];
@@ -412,7 +412,7 @@ static NSDictionary *RPCError(id identifier, NSInteger code, NSString *message) 
         result = @{
             @"protocolVersion": version,
             @"capabilities": @{@"tools": @{@"listChanged": @NO}},
-            @"serverInfo": @{@"name": @"NotepadMac", @"title": @"NotepadMac (Notepad++ for macOS)", @"version": app},
+            @"serverInfo": @{@"name": @"NotepadMac", @"title": @"NotepadMac", @"version": app},
             @"instructions":
                 @"NotepadMac is the user's text editor, a native macOS port of Notepad++. These tools read and change "
                 @"what is open in it - including unsaved text - and use the editor's own engines: the language model "

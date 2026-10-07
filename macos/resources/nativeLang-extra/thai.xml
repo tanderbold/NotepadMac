@@ -93,7 +93,7 @@
     <Item english="Compare: ignore spaces" text="เปรียบเทียบ: ไม่สนช่องว่าง"/>
     <Item english="Compare: ignore empty lines" text="เปรียบเทียบ: ไม่สนบรรทัดว่าง"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="จำนวนอักขระสูงสุดที่จะเติมช่องค้นหาอัตโนมัติ"/>
-    <Item english="Notepad++ update" text="อัพเดท Notepad++"/>
+    <Item english="NotepadMac update" text="อัพเดท NotepadMac"/>
     <Item english="No update is available." text="ไม่มีอัพเดทใหม่"/>
     <Item english="An update package is available, do you want to download it?" text="มีแพ็กเกจอัพเดทใหม่ คุณต้องการดาวน์โหลดหรือไม่?"/>
     <Item english="Open the Releases Page" text="เปิดหน้ารุ่นที่เผยแพร่"/>

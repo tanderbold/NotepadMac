@@ -77,7 +77,7 @@
     <Item english="Compare: ignore case" text="Confront: ignore maiusc/minusc"/>
     <Item english="Compare: ignore spaces" text="Confront: ignore i spazis"/>
     <Item english="Compare: ignore empty lines" text="Confront: ignore lis riis vueidis"/>
-    <Item english="Notepad++ update" text="Inzornament di Notepad++"/>
+    <Item english="NotepadMac update" text="Inzornament di NotepadMac"/>
     <Item english="No update is available." text="Nol è disponibil nissun inzornament."/>
     <Item english="Open the Releases Page" text="Vierç la pagjine des versions"/>
     <Item english="Copy debug info to clipboard" text="Copie lis informazions di debug tai Aponts"/>

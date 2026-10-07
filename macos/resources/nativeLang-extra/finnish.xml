@@ -108,7 +108,7 @@
     <Item english="Compare: ignore empty lines" text="Vertailu: ohita tyhjät rivit"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Hakukentän automaattisen täytön enimmäismerkkimäärä"/>
     <Item english="Releases repository" text="Julkaisujen tietovarasto"/>
-    <Item english="Notepad++ update" text="Notepad++ päivitys"/>
+    <Item english="NotepadMac update" text="NotepadMac päivitys"/>
     <Item english="No update is available." text="Päivitystä ei ole saatavilla."/>
     <Item english="An update package is available, do you want to download it?" text="Päivityspaketti on saatavilla. Haluatko ladata sen?"/>
     <Item english="Open the Releases Page" text="Avaa julkaisusivu"/>

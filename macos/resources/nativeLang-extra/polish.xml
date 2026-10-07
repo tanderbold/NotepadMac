@@ -3,6 +3,9 @@
      english is the text as the port has it; text is what is shown. -->
 <NativeLangExtra name="polski">
     <Item english="About NotepadMac" text="NotepadMac — informacje"/>
+    <Item english="NotepadMac Home" text="Strona domowa NotepadMac"/>
+    <Item english="NotepadMac Project Page" text="Strona projektu NotepadMac"/>
+    <Item english="NotepadMac Community (Forum)" text="Forum społeczności NotepadMac"/>
     <Item english="Hide NotepadMac" text="Ukryj NotepadMac"/>
     <Item english="Hide Others" text="Ukryj pozostałe"/>
     <Item english="Show All" text="Pokaż wszystkie"/>
@@ -110,7 +113,7 @@
     <Item english="Compare: ignore empty lines" text="Porównanie: ignoruj puste linie"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Maks. liczba znaków do automatycznego wypełnienia pola wyszukiwania"/>
     <Item english="Releases repository" text="Repozytorium wydań"/>
-    <Item english="Notepad++ update" text="Aktualizacja Notepad++"/>
+    <Item english="NotepadMac update" text="Aktualizacja NotepadMac"/>
     <Item english="No update is available." text="Brak dostępnych aktualizacji."/>
     <Item english="An update package is available, do you want to download it?" text="Dostępna jest aktualizacja. Czy chcesz ją pobrać?"/>
     <Item english="Open the Releases Page" text="Otwórz stronę wydań"/>
@@ -289,6 +292,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="Polecenie odczytuje dane z pliku, co nie jest tutaj obsługiwane."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formularze i przesyłanie plików nie są odczytywane z polecenia."/>
     <Item english="The command's address is not an http or https address." text="Adres w poleceniu nie jest adresem http ani https."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Nieoficjalna wersja dla macOS. Autorem Notepad++ jest Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ to nazwa edytora Don Ho; NotepadMac nie jest powiązany z projektem Notepad++ ani przez niego popierany."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Zezwól agentom AI na sterowanie edytorem (MCP)"/>
     <!-- Git -->

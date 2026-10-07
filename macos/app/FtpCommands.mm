@@ -72,7 +72,7 @@ static const char kFtpRemotePathsKey = 0;   // local temp path -> @[server, remo
 static dispatch_queue_t FtpQueue(void) {
     static dispatch_queue_t queue;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ queue = dispatch_queue_create("org.notepad-plus-plus.mac.ftp", DISPATCH_QUEUE_SERIAL); });
+    dispatch_once(&once, ^{ queue = dispatch_queue_create("io.github.tanderbold.notepadmac.ftp", DISPATCH_QUEUE_SERIAL); });
     return queue;
 }
 

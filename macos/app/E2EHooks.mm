@@ -359,7 +359,7 @@ static void E2EHookPrinting(void) {
     static NSPasteboard *board;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        board = [NSPasteboard pasteboardWithName:[NSString stringWithFormat:@"org.notepad-plus-plus.mac.e2e.%d", getpid()]];
+        board = [NSPasteboard pasteboardWithName:[NSString stringWithFormat:@"io.github.tanderbold.notepadmac.e2e.%d", getpid()]];
     });
     return board;
 }

@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="비교: 빈 줄 무시"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="찾기 입력란에 자동으로 채울 최대 글자 수"/>
     <Item english="Releases repository" text="릴리스 저장소"/>
-    <Item english="Notepad++ update" text="Notepad++ 업데이트"/>
+    <Item english="NotepadMac update" text="NotepadMac 업데이트"/>
     <Item english="No update is available." text="사용할 수 있는 업데이트가 없습니다."/>
     <Item english="An update package is available, do you want to download it?" text="업데이트 패키지가 있습니다. 다운로드하시겠습니까?"/>
     <Item english="Open the Releases Page" text="릴리스 페이지 열기"/>
@@ -289,6 +289,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="명령이 파일에서 데이터를 읽는데, 여기서는 지원하지 않습니다."/>
     <Item english="Forms and uploads of files are not read from a command." text="양식과 파일 업로드는 명령에서 읽어 오지 않습니다."/>
     <Item english="The command's address is not an http or https address." text="명령의 주소가 http 또는 https 주소가 아닙니다."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="비공식 macOS 포트입니다. Notepad++의 제작자는 Don HO입니다."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++는 Don Ho의 편집기 이름이며, NotepadMac은 Notepad++ 프로젝트와 제휴하거나 그 승인을 받지 않았습니다."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI 에이전트가 편집기를 제어하도록 허용 (MCP)"/>
     <!-- Git -->

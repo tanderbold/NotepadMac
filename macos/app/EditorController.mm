@@ -1408,7 +1408,7 @@ static BOOL gCheckingFilesOnDisk;
             // DoReloadOrNot and DoReloadOrNotAndLooseChange.
             ask.messageText = NppL(@"Reload");
             ask.informativeText = NppLMessage(doc.modified
-                ? @"\"$STR_REPLACE$\"\n\nThis file has been modified by another program.\nDo you want to reload it and lose the changes made in Notepad++?"
+                ? @"\"$STR_REPLACE$\"\n\nThis file has been modified by another program.\nDo you want to reload it and lose the changes made in NotepadMac?"
                 : @"\"$STR_REPLACE$\"\n\nThis file has been modified by another program.\nDo you want to reload it?", doc.path ?: doc.displayName, 0);
             [ask addButtonWithTitle:@"Yes"];
             [ask addButtonWithTitle:@"No"];

@@ -16,7 +16,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-static NSString *const kDefaultBundleID = @"org.notepad-plus-plus.mac";
+static NSString *const kDefaultBundleID = @"io.github.tanderbold.notepadmac";
 
 /* The application this tool ships in (Contents/Helpers/nppmac, reached
  * through the /usr/local/bin symlink too), or nil when it runs on its own. */

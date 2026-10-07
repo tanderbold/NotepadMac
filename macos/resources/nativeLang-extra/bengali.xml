@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="তুলনা: খালি লাইন উপেক্ষা করুন"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="অনুসন্ধান ঘর স্বয়ংক্রিয়ভাবে পূরণের সর্বোচ্চ অক্ষর"/>
     <Item english="Releases repository" text="রিলিজ রিপোজিটরি"/>
-    <Item english="Notepad++ update" text="Notepad++ আপডেট"/>
+    <Item english="NotepadMac update" text="NotepadMac আপডেট"/>
     <Item english="No update is available." text="কোনো আপডেট নেই।"/>
     <Item english="An update package is available, do you want to download it?" text="একটি আপডেট প্যাকেজ পাওয়া গেছে, আপনি কি এটি ডাউনলোড করতে চান?"/>
     <Item english="Open the Releases Page" text="রিলিজ পৃষ্ঠা খুলুন"/>

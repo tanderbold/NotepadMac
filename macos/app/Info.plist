@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Notepad++ for Mac</string>
+	<string>NotepadMac</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -23,7 +23,7 @@
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.notepad-plus-plus.mac</string>
+	<string>io.github.tanderbold.notepadmac</string>
 	<key>CFBundleName</key>
 	<string>NotepadMac</string>
 	<key>CFBundlePackageType</key>

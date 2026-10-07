@@ -578,7 +578,8 @@ static const char kPreviousTabKey = 0;
     NppPreferences *p = [NppPreferences shared];
     NSMutableString *s = [NSMutableString string];
     [s appendFormat:@"%@\n", [NppAboutWindow versionLine]];
-    [s appendFormat:@"macOS port: %@ (build %@)\n", info[@"CFBundleShortVersionString"] ?: @"?", info[@"CFBundleVersion"] ?: @"?"];
+    [s appendFormat:@"Build: %@\n", info[@"CFBundleVersion"] ?: @"?"];
+    [s appendFormat:@"Port of: Notepad++ v%@\n", info[@"NppUpstreamVersion"] ?: @"?"];
     [s appendFormat:@"Build time: %@\n", info[@"NppBuildTime"] ?: @__DATE__ " - " __TIME__];
 #if defined(__clang__)
     [s appendFormat:@"Built with: Clang %s\n", __clang_version__];

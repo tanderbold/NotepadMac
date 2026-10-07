@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="השוואה: התעלם משורות ריקות"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="מספר תווים מרבי למילוי אוטומטי של שדה החיפוש"/>
     <Item english="Releases repository" text="מאגר הגרסאות"/>
-    <Item english="Notepad++ update" text="עדכון Notepad++"/>
+    <Item english="NotepadMac update" text="עדכון NotepadMac"/>
     <Item english="No update is available." text="אין עדכון זמין."/>
     <Item english="An update package is available, do you want to download it?" text="חבילת עדכון זמינה, האם ברצונך להוריד אותה?"/>
     <Item english="Open the Releases Page" text="פתח את דף הגרסאות"/>

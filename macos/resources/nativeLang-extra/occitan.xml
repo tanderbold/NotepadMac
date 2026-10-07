@@ -81,7 +81,7 @@
     <Item english="Compare: ignore case" text="Comparason : ignorar majusculas e minusculas"/>
     <Item english="Compare: ignore spaces" text="Comparason : ignorar los espacis"/>
     <Item english="Compare: ignore empty lines" text="Comparason : ignorar las linhas voidas"/>
-    <Item english="Notepad++ update" text="Mesa a jorn de Notepad++"/>
+    <Item english="NotepadMac update" text="Mesa a jorn de NotepadMac"/>
     <Item english="No update is available." text="I a pas cap de mesa a jorn disponibla."/>
     <Item english="An update package is available, do you want to download it?" text="Un paquet de mesa a jorn es disponible, lo volètz telecargar ?"/>
     <Item english="Open the Releases Page" text="Dobrir la pagina de las versions"/>

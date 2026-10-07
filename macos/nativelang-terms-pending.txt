@@ -285,7 +285,7 @@ german.xml	Pretty Print — Indent Attributes	english	Print
 german.xml	Check XML Syntax Now	term	check
 german.xml	Escape Characters in Selection	term	escape
 german.xml	A line	term	line
-german.xml	Notepad++ update	term	update
+german.xml	NotepadMac update	term	update
 german.xml	No update is available.	term	update
 german.xml	An update package is available, do you want to download it?	term	update
 german.xml	Spell Check	term	check

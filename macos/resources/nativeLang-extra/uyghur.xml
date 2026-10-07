@@ -104,7 +104,7 @@
     <Item english="Compare: ignore spaces" text="سېلىشتۇرۇش: بوشلۇقلارغا پەرۋا قىلماسلىق"/>
     <Item english="Compare: ignore empty lines" text="سېلىشتۇرۇش: قۇرۇق قۇرلارغا پەرۋا قىلماسلىق"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="ئىزدەش رامكىسىنى ئاپتوماتىك تولدۇرىدىغان ئەڭ كۆپ ھەرپ سانى"/>
-    <Item english="Notepad++ update" text="Notepad++ يېڭىلىنىشى"/>
+    <Item english="NotepadMac update" text="NotepadMac يېڭىلىنىشى"/>
     <Item english="No update is available." text="يېڭىلاش يوق."/>
     <Item english="An update package is available, do you want to download it?" text="يېڭىلاش بولىقى بار، چۈشۈرەمسىز؟"/>
     <Item english="Open the Releases Page" text="نەشر بېتىنى ئېچىش"/>

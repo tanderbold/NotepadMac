@@ -3,6 +3,9 @@
      english is the text as the port has it; text is what is shown. -->
 <NativeLangExtra name="Čeština">
     <Item english="About NotepadMac" text="O aplikaci NotepadMac"/>
+    <Item english="NotepadMac Home" text="NotepadMac - domovská stránka"/>
+    <Item english="NotepadMac Project Page" text="NotepadMac - stránka projektu"/>
+    <Item english="NotepadMac Community (Forum)" text="NotepadMac - Community (diskuzní fórum)"/>
     <Item english="Hide NotepadMac" text="Skrýt NotepadMac"/>
     <Item english="Hide Others" text="Skrýt ostatní"/>
     <Item english="Show All" text="Zobrazit vše"/>
@@ -110,7 +113,7 @@
     <Item english="Compare: ignore empty lines" text="Porovnání: ignorovat prázdné řádky"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Maximální počet znaků pro automatické vkládání do políčka &quot;Najít&quot;"/>
     <Item english="Releases repository" text="Repozitář vydání"/>
-    <Item english="Notepad++ update" text="Aktualizace Notepad++"/>
+    <Item english="NotepadMac update" text="Aktualizace NotepadMac"/>
     <Item english="No update is available." text="Žádná aktualizace není k dispozici."/>
     <Item english="An update package is available, do you want to download it?" text="Je k dispozici aktualizace, chcete ji stáhnout?"/>
     <Item english="Open the Releases Page" text="Otevřít stránku vydání"/>
@@ -289,6 +292,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="Příkaz čte data ze souboru, což se zde neprovádí."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formuláře a nahrávání souborů se z příkazu nenačítají."/>
     <Item english="The command's address is not an http or https address." text="Adresa v příkazu není adresa http ani https."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Neoficiální port pro macOS. Autorem Notepad++ je Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ je název editoru od Don Ho; NotepadMac není spojen s projektem Notepad++ ani jím podporován."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Povolit AI agentům ovládat editor (MCP)"/>
     <!-- Git -->

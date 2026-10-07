@@ -3,6 +3,7 @@
      english is the text as the port has it; text is what is shown. -->
 <NativeLangExtra name="Français">
     <Item english="About NotepadMac" text="À propos de NotepadMac"/>
+    <Item english="NotepadMac Community (Forum)" text="Forum NotepadMac"/>
     <Item english="Hide NotepadMac" text="Masquer NotepadMac"/>
     <Item english="Hide Others" text="Masquer les autres"/>
     <Item english="Show All" text="Tout afficher"/>
@@ -110,7 +111,7 @@
     <Item english="Compare: ignore empty lines" text="Comparaison : ignorer les lignes vides"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Nombre max. de caractères à copier dans le champ de recherche"/>
     <Item english="Releases repository" text="Dépôt des versions"/>
-    <Item english="Notepad++ update" text="Mise à jour de Notepad++"/>
+    <Item english="NotepadMac update" text="Mise à jour de NotepadMac"/>
     <Item english="No update is available." text="Aucune mise à jour n’est disponible."/>
     <Item english="An update package is available, do you want to download it?" text="Une mise à jour est disponible, voulez-vous la télécharger ?"/>
     <Item english="Open the Releases Page" text="Ouvrir la page des versions"/>
@@ -289,6 +290,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="La commande lit ses données depuis un fichier, ce qui n’est pas pris en charge ici."/>
     <Item english="Forms and uploads of files are not read from a command." text="Les formulaires et les envois de fichiers ne sont pas lus depuis une commande."/>
     <Item english="The command's address is not an http or https address." text="L’adresse de la commande n’est pas une adresse http ou https."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Un portage non officiel pour macOS. Notepad++ est l'œuvre de Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ est le nom de l'éditeur de Don Ho ; NotepadMac n'est ni affilié au projet Notepad++ ni approuvé par celui-ci."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Permettre aux agents IA de piloter l’éditeur (MCP)"/>
     <!-- Git -->

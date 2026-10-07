@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Samanlikn: ignorer tomme linjer"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Maks. tal på teikn for automatisk utfylling av søkjefeltet"/>
     <Item english="Releases repository" text="Kodelager for utgjevingar"/>
-    <Item english="Notepad++ update" text="Oppdatering av Notepad++"/>
+    <Item english="NotepadMac update" text="Oppdatering av NotepadMac"/>
     <Item english="No update is available." text="Inga oppdatering er tilgjengeleg."/>
     <Item english="An update package is available, do you want to download it?" text="Ei oppdateringspakke er tilgjengeleg. Vil du laste ho ned?"/>
     <Item english="Open the Releases Page" text="Opne sida med utgjevingar"/>

@@ -530,7 +530,7 @@ static NSUInteger gGitRefreshGeneration;
     NSArray *textBefore = textState();
     static dispatch_queue_t queue;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ queue = dispatch_queue_create("org.notepad-plus-plus.mac.git", DISPATCH_QUEUE_SERIAL); });
+    dispatch_once(&once, ^{ queue = dispatch_queue_create("io.github.tanderbold.notepadmac.git", DISPATCH_QUEUE_SERIAL); });
     dispatch_async(queue, ^{
         NSString *root = path ? [NppGit repositoryRootForPath:path] : nil;
         NSString *text = @"";

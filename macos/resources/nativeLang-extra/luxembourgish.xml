@@ -93,7 +93,7 @@
     <Item english="Compare: ignore spaces" text="Verglach: Ofstänn ignoréieren"/>
     <Item english="Compare: ignore empty lines" text="Verglach: eidel Zeilen ignoréieren"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Max. Zeechen fir d'automatescht Ausfëllen vum Sichfeld"/>
-    <Item english="Notepad++ update" text="Aktualiséierung vun Notepad++"/>
+    <Item english="NotepadMac update" text="Aktualiséierung vun NotepadMac"/>
     <Item english="No update is available." text="Et ass keng Aktualiséierung disponibel."/>
     <Item english="An update package is available, do you want to download it?" text="Eng Aktualiséierung ass disponibel. Wëllt Dir se eroflueden?"/>
     <Item english="Copy debug info to clipboard" text="Debug-Info an d'Tëschentablag kopéieren"/>

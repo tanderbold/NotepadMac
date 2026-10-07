@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="比較：唔理空行"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="自動填入搵嘢欄位嘅字元上限"/>
     <Item english="Releases repository" text="發佈版本 repository"/>
-    <Item english="Notepad++ update" text="Notepad++ 更新"/>
+    <Item english="NotepadMac update" text="NotepadMac 更新"/>
     <Item english="No update is available." text="冇更新。"/>
     <Item english="An update package is available, do you want to download it?" text="有更新可以下載，要唔要下載？"/>
     <Item english="Open the Releases Page" text="打開發佈版本網頁"/>

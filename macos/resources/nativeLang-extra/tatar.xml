@@ -106,7 +106,7 @@
     <Item english="Compare: ignore empty lines" text="Чагыштыру: буш юлларны исәпкә алмаска"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Эзләү кырын автоматик тутыру өчен символларның максималь саны"/>
     <Item english="Releases repository" text="Чыгарылышлар репозиторие"/>
-    <Item english="Notepad++ update" text="Notepad++ яңартуы"/>
+    <Item english="NotepadMac update" text="NotepadMac яңартуы"/>
     <Item english="No update is available." text="Яңарту юк."/>
     <Item english="An update package is available, do you want to download it?" text="Яңарту пакеты бар, аны йөкләп алырга телисезме?"/>
     <Item english="Open the Releases Page" text="Чыгарылышлар битен ачарга"/>

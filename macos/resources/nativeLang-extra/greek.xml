@@ -108,7 +108,7 @@
     <Item english="Compare: ignore empty lines" text="Σύγκριση: παράβλεψη κενών γραμμών"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Μέγ. χαρακτήρες για αυτόματη συμπλήρωση του πεδίου εύρεσης"/>
     <Item english="Releases repository" text="Αποθετήριο εκδόσεων"/>
-    <Item english="Notepad++ update" text="Ενημέρωση Notepad++"/>
+    <Item english="NotepadMac update" text="Ενημέρωση NotepadMac"/>
     <Item english="No update is available." text="Δεν υπάρχει διαθέσιμη ενημέρωση."/>
     <Item english="An update package is available, do you want to download it?" text="Υπάρχει διαθέσιμο πακέτο ενημέρωσης, θέλετε να το κατεβάσετε;"/>
     <Item english="Open the Releases Page" text="Άνοιγμα σελίδας εκδόσεων"/>

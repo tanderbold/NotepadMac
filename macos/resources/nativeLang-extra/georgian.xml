@@ -104,7 +104,7 @@
     <Item english="Compare: ignore empty lines" text="შედარება: ცარიელი ხაზების უგულებელყოფა"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="ძებნის ველის ავტოშევსების მაქსიმალური სიმბოლოები"/>
     <Item english="Releases repository" text="რელიზების საცავი"/>
-    <Item english="Notepad++ update" text="Notepad++-ის განახლება"/>
+    <Item english="NotepadMac update" text="NotepadMac-ის განახლება"/>
     <Item english="No update is available." text="განახლება არ არის ხელმისაწვდომი."/>
     <Item english="An update package is available, do you want to download it?" text="ხელმისაწვდომია განახლების პაკეტი, გსურთ მისი გადმოწერა?"/>
     <Item english="Open the Releases Page" text="რელიზების გვერდის გახსნა"/>

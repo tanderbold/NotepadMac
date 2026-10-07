@@ -5,6 +5,9 @@
      Checked by macos/check_nativelang_extra.py. -->
 <NativeLangExtra name="English">
     <Item english="About NotepadMac" text="About NotepadMac"/>
+    <Item english="NotepadMac Home" text="NotepadMac Home"/>
+    <Item english="NotepadMac Project Page" text="NotepadMac Project Page"/>
+    <Item english="NotepadMac Community (Forum)" text="NotepadMac Community (Forum)"/>
     <Item english="Hide NotepadMac" text="Hide NotepadMac"/>
     <Item english="Hide Others" text="Hide Others"/>
     <Item english="Show All" text="Show All"/>
@@ -112,7 +115,7 @@
     <Item english="Compare: ignore empty lines" text="Compare: ignore empty lines"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Max Characters to Auto-Fill Find Field"/>
     <Item english="Releases repository" text="Releases repository"/>
-    <Item english="Notepad++ update" text="Notepad++ update"/>
+    <Item english="NotepadMac update" text="NotepadMac update"/>
     <Item english="No update is available." text="No update is available."/>
     <Item english="An update package is available, do you want to download it?" text="An update package is available, do you want to download it?"/>
     <Item english="Open the Releases Page" text="Open the Releases Page"/>
@@ -293,6 +296,7 @@
     <Item english="Forms and uploads of files are not read from a command." text="Forms and uploads of files are not read from a command."/>
     <Item english="The command's address is not an http or https address." text="The command's address is not an http or https address."/>
     <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="An unofficial macOS port. Notepad++ is by Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Let AI agents drive the editor (MCP)"/>
     <!-- Git -->

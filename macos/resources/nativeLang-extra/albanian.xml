@@ -96,7 +96,7 @@
     <Item english="Compare: ignore spaces" text="Krahasimi: injoro hapësirat"/>
     <Item english="Compare: ignore empty lines" text="Krahasimi: injoro linjat e zbrazëta"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Maks. i karaktereve për auto-plotësimin e fushës së kërkimit"/>
-    <Item english="Notepad++ update" text="Aktualizimi i Notepad++"/>
+    <Item english="NotepadMac update" text="Aktualizimi i NotepadMac"/>
     <Item english="No update is available." text="Nuk ka aktualizim."/>
     <Item english="An update package is available, do you want to download it?" text="Një paketë aktualizimi është e disponueshme, a doni ta shkarkoni?"/>
     <Item english="Open the Releases Page" text="Hap faqen e versioneve"/>

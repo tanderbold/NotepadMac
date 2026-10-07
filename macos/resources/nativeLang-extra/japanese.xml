@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="比較: 空行を無視"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="検索欄に自動入力する最大文字数"/>
     <Item english="Releases repository" text="リリースのリポジトリ"/>
-    <Item english="Notepad++ update" text="Notepad++ のアップデート"/>
+    <Item english="NotepadMac update" text="NotepadMac のアップデート"/>
     <Item english="No update is available." text="利用できるアップデートはありません。"/>
     <Item english="An update package is available, do you want to download it?" text="アップデートパッケージがあります。ダウンロードしますか?"/>
     <Item english="Open the Releases Page" text="リリースページを開く"/>
@@ -289,6 +289,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="コマンドはファイルからデータを読み込みますが、ここでは対応していません。"/>
     <Item english="Forms and uploads of files are not read from a command." text="フォームとファイルのアップロードはコマンドから読み込まれません。"/>
     <Item english="The command's address is not an http or https address." text="コマンドのアドレスが http または https のアドレスではありません。"/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="非公式の macOS 移植版です。Notepad++ の作者は Don HO です。"/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ は Don Ho のエディターの名前です。NotepadMac は Notepad++ プロジェクトとは提携しておらず、その承認も受けていません。"/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="AI エージェントにエディターの操作を許可 (MCP)"/>
     <!-- Git -->

@@ -67,44 +67,61 @@ NSString *NppProjectAddress(NSString *path) {
 #endif
 }
 
+/// The application's name and version, then the build's architecture, as upstream's
+/// "Notepad++ v8.6   (64-bit)" heads its About box and Debug Info.
 + (NSString *)versionLine {
     NSDictionary *info = [NSBundle mainBundle].infoDictionary;
-    return [NSString stringWithFormat:@"Notepad++ v%@   %@",
-            info[@"NppUpstreamVersion"] ?: info[@"CFBundleShortVersionString"] ?: @"?", [self bitness]];
+    return [NSString stringWithFormat:@"NotepadMac v%@   %@", info[@"CFBundleShortVersionString"] ?: @"?", [self bitness]];
+}
+
+/// The build, and the Notepad++ release whose sources it is a port of.
++ (NSString *)portLine {
+    NSDictionary *info = [NSBundle mainBundle].infoDictionary;
+    return [NSString stringWithFormat:@"Build %@, port of Notepad++ v%@",
+            info[@"CFBundleVersion"] ?: @"?", info[@"NppUpstreamVersion"] ?: @"?"];
 }
 
 - (NSPanel *)panel {
     if (_panel) return _panel;
-    NSPanel *p = [[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 440, 470)
+    NSPanel *p = [[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 440, 520)
                                             styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                                               backing:NSBackingStoreBuffered defer:YES];
-    p.title = @"About Notepad++";
+    p.title = @"About NotepadMac";
     p.releasedWhenClosed = NO;
     NSView *v = p.contentView;
     NSDictionary *info = [NSBundle mainBundle].infoDictionary;
 
-    NSImageView *icon = [[NSImageView alloc] initWithFrame:NSMakeRect(180, 380, 80, 80)];
+    // The application's own icon. Upstream's About box has its chameleon; that is Notepad++'s
+    // mark, and this is not Notepad++.
+    NSImageView *icon = [[NSImageView alloc] initWithFrame:NSMakeRect(176, 424, 88, 88)];
     icon.imageScaling = NSImageScaleProportionallyUpOrDown;
     [v addSubview:icon];
     self.icon = icon;
-    [v addSubview:Label([NppAboutWindow versionLine], NSMakeRect(20, 350, 400, 22), [NSFont boldSystemFontOfSize:15])];
-    [v addSubview:Label([NSString stringWithFormat:@"macOS port %@ (build %@)",
-                         info[@"CFBundleShortVersionString"] ?: @"?", info[@"CFBundleVersion"] ?: @"?"],
-                        NSMakeRect(20, 328, 400, 18), [NSFont systemFontOfSize:NSFont.smallSystemFontSize])];
+    [v addSubview:Label([NppAboutWindow versionLine], NSMakeRect(20, 394, 400, 22), [NSFont boldSystemFontOfSize:15])];
+    [v addSubview:Label([NppAboutWindow portLine], NSMakeRect(20, 372, 400, 18), [NSFont systemFontOfSize:NSFont.smallSystemFontSize])];
     NSTextField *built = Label([NSString stringWithFormat:@"Build time: %@", info[@"NppBuildTime"] ?: @__DATE__ " - " __TIME__],
-                               NSMakeRect(20, 306, 400, 18), [NSFont systemFontOfSize:NSFont.smallSystemFontSize]);
+                               NSMakeRect(20, 352, 400, 18), [NSFont systemFontOfSize:NSFont.smallSystemFontSize]);
     built.textColor = [NSColor secondaryLabelColor];   // upstream greys it out
     [v addSubview:built];
     // Whose this is, and where to go with it: the port's own repository. Notepad++'s author is named
-    // as the author of what this is a port of - credit, not a contact.
-    [v addSubview:Label(@"An unofficial macOS port. Notepad++ is by Don HO.", NSMakeRect(20, 280, 400, 18), [NSFont systemFontOfSize:NSFont.systemFontSize])];
-    [v addSubview:LinkButton(NppProjectAddress(@""), NSMakeRect(20, 256, 400, 20), self)];
-    [v addSubview:LinkButton(NppProjectAddress(@"issues"), NSMakeRect(20, 234, 400, 20), self)];
+    // as the author of what this is a port of - credit, not a contact - and the name as his.
+    [v addSubview:Label(@"An unofficial macOS port. Notepad++ is by Don HO.", NSMakeRect(20, 324, 400, 18), [NSFont systemFontOfSize:NSFont.systemFontSize])];
+    NSTextField *name = Label(@"Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project.",
+                              NSMakeRect(20, 278, 400, 44), [NSFont systemFontOfSize:NSFont.smallSystemFontSize]);
+    // Two lines in English, room for three in a longer language.
+    name.cell.wraps = YES;
+    name.cell.lineBreakMode = NSLineBreakByWordWrapping;
+    name.maximumNumberOfLines = 3;
+    name.preferredMaxLayoutWidth = 400;
+    name.textColor = [NSColor secondaryLabelColor];
+    [v addSubview:name];
+    [v addSubview:LinkButton(NppProjectAddress(@""), NSMakeRect(20, 252, 400, 20), self)];
+    [v addSubview:LinkButton(NppProjectAddress(@"issues"), NSMakeRect(20, 230, 400, 20), self)];
 
-    NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 56, 400, 168)];
+    NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 56, 400, 166)];
     scroll.hasVerticalScroller = YES;
     scroll.borderType = NSBezelBorder;
-    NSTextView *licence = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 385, 168)];
+    NSTextView *licence = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 385, 166)];
     licence.editable = NO;
     licence.string = NppLicenceText;
     licence.font = [NSFont systemFontOfSize:NSFont.smallSystemFontSize];
@@ -126,13 +143,8 @@ NSString *NppProjectAddress(NSString *path) {
     if (url) [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
-/// Upstream's chameleon, in its dark-mode colours when the window is dark.
 - (void)updateIcon {
-    NSAppearanceName match = [self.panel.effectiveAppearance bestMatchFromAppearancesWithNames:
-                                @[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
-    NSString *name = [match isEqualToString:NSAppearanceNameDarkAqua] ? @"chameleon_dm" : @"chameleon";
-    NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"ico"];
-    self.icon.image = (path ? [[NSImage alloc] initWithContentsOfFile:path] : nil) ?: NSApp.applicationIconImage;
+    self.icon.image = NSApp.applicationIconImage;
 }
 
 - (void)show {

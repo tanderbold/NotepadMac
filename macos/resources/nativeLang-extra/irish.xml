@@ -91,7 +91,7 @@
     <Item english="Compare: ignore case" text="Comparáid: ná bac le cás na litreacha"/>
     <Item english="Compare: ignore spaces" text="Comparáid: ná bac le spásanna"/>
     <Item english="Compare: ignore empty lines" text="Comparáid: ná bac le línte folmha"/>
-    <Item english="Notepad++ update" text="Nuashonrú Notepad++"/>
+    <Item english="NotepadMac update" text="Nuashonrú NotepadMac"/>
     <Item english="No update is available." text="Níl nuashonrú ar fáil."/>
     <Item english="An update package is available, do you want to download it?" text="Tá pacáiste nuashonraithe ar fáil, ar mhaith leat é a íoslódáil?"/>
     <Item english="Copy debug info to clipboard" text="Cóipeáil an t-eolas dífhabhtaithe chuig an ngearrthaisce"/>

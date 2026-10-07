@@ -93,7 +93,7 @@
     <Item english="Compare: ignore case" text="Vergelyk: ignoreer register"/>
     <Item english="Compare: ignore spaces" text="Vergelyk: ignoreer spasies"/>
     <Item english="Compare: ignore empty lines" text="Vergelyk: ignoreer leë lyne"/>
-    <Item english="Notepad++ update" text="Notepad++-opdatering"/>
+    <Item english="NotepadMac update" text="NotepadMac-opdatering"/>
     <Item english="No update is available." text="Geen opdatering is beskikbaar nie."/>
     <Item english="An update package is available, do you want to download it?" text="'n Opdateringspakket is beskikbaar. Wil jy dit aflaai?"/>
     <Item english="Copy debug info to clipboard" text="Kopieer ontfoutingsinligting na klipbord"/>

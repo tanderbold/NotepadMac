@@ -52,7 +52,7 @@
     <Item english="Compare: ignore case" text="بەراوردكردن: پشتگوێخستنی حاڵەت"/>
     <Item english="Compare: ignore spaces" text="بەراوردكردن: پشتگوێخستنی بۆشاییەكان"/>
     <Item english="Compare: ignore empty lines" text="بەراوردكردن: پشتگوێخستنی هێلە بەتاڵەكان"/>
-    <Item english="Notepad++ update" text="نوێكردنەوەی Notepad++"/>
+    <Item english="NotepadMac update" text="نوێكردنەوەی NotepadMac"/>
     <Item english="No update is available." text="هیچ نوێكردنەوەیەك بەردەست نییە."/>
     <Item english="An update package is available, do you want to download it?" text="پاكێجێكی نوێكردنەوە بەردەستە، دەتەوێت دایبەزێنیت؟"/>
     <Item english="Fonts…" text="فۆنتەكان…"/>

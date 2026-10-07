@@ -1342,6 +1342,12 @@ void NppTestsHttpMacroRunHelp(AppDelegate *app, EditorController *ed, ScintillaV
             }
         }
         Check(@"Help (whose it is)", @"no command of the Help menu sends a user of the Mac version to Notepad++'s site, forum or repository", noneUpstream);
+        // Named as what they lead to: the port's home, project page and forum are NotepadMac's,
+        // the manual is Notepad++'s.
+        Check(@"Help (names)", @"Home, Project Page and Community (Forum) name NotepadMac, the manual Notepad++, and upstream's ids still find them",
+              [[helpItems[@47001] title] isEqualToString:@"NotepadMac Home"] && [[helpItems[@47002] title] isEqualToString:@"NotepadMac Project Page"] &&
+              [[helpItems[@47003] title] isEqualToString:@"Notepad++ Online User Manual"] &&
+              [[helpItems[@47004] title] isEqualToString:@"NotepadMac Community (Forum)"]);
 
         [[NSUserDefaults standardUserDefaults] setObject:@"proxy.example:8080" forKey:@"NppMacUpdaterProxy"];
         Check(@"IDM_CONFUPDATERPROXY", @"remembers the proxy setting",
@@ -1357,7 +1363,7 @@ void NppTestsHttpMacroRunHelp(AppDelegate *app, EditorController *ed, ScintillaV
         }
         NppAboutWindow *aw = [NppAboutWindow shared];
         [aw show];
-        BOOL versionShown = NO, licenceShown = NO, homeLink = NO, issuesLink = NO, upstreamLink = NO;
+        BOOL versionShown = NO, licenceShown = NO, homeLink = NO, issuesLink = NO, upstreamLink = NO, credit = NO, notAffiliated = NO, ownIcon = NO;
         NSMutableArray *views = [NSMutableArray arrayWithObject:aw.panel.contentView];
         while (views.count) {
             NSView *view = views.lastObject; [views removeLastObject];
@@ -1367,13 +1373,28 @@ void NppTestsHttpMacroRunHelp(AppDelegate *app, EditorController *ed, ScintillaV
             if ([view isKindOfClass:[NSButton class]] && [view.identifier isEqualToString:NppProjectAddress(@"")]) homeLink = YES;
             if ([view isKindOfClass:[NSButton class]] && [view.identifier isEqualToString:NppProjectAddress(@"issues")]) issuesLink = YES;
             if ([view isKindOfClass:[NSButton class]] && [view.identifier containsString:@"notepad-plus-plus.org"]) upstreamLink = YES;
+            if ([view isKindOfClass:[NSTextField class]] && [((NSTextField *)view).stringValue isEqualToString:@"An unofficial macOS port. Notepad++ is by Don HO."]) credit = YES;
+            if ([view isKindOfClass:[NSTextField class]] && [((NSTextField *)view).stringValue isEqualToString:
+                    @"Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project."]) {
+                NSTextField *f = (NSTextField *)view;
+                notAffiliated = [f.cell cellSizeForBounds:NSMakeRect(0, 0, NSWidth(f.frame), CGFLOAT_MAX)].height <= NSHeight(f.frame) + 0.5;
+            }
+            if ([view isKindOfClass:[NSImageView class]] && ((NSImageView *)view).image == NSApp.applicationIconImage) ownIcon = YES;
         }
+        NSString *aboutTitle = aw.panel.title;
         BOOL shown = aw.panel.isVisible;
         [aw.panel orderOut:nil];
         Check(@"IDM_ABOUT", @"upstream's About box: version and bitness, build time and the licence - with this port's own repository "
               @"and its Issues where upstream has its site, and no link to Notepad++'s",
               about != nil && about.action == @selector(showAbout:) && shown && versionShown && licenceShown && homeLink && issuesLink && !upstreamLink &&
               [[NppAboutWindow versionLine] containsString:[NppAboutWindow bitness]]);
+        // NotepadMac's About, not Notepad++'s: its own name and icon - no chameleon, which is
+        // Notepad++'s mark - the credit to Don Ho, and that the name Notepad++ is his project's.
+        Check(@"IDM_ABOUT (whose it is)", @"titled About NotepadMac, headed NotepadMac v<version>, shows the application's icon and "
+              @"no chameleon, credits Don Ho and says NotepadMac is not affiliated with the Notepad++ project, the whole of it shown",
+              [aboutTitle isEqualToString:@"About NotepadMac"] && [[NppAboutWindow versionLine] hasPrefix:@"NotepadMac v"] &&
+              [[NppAboutWindow portLine] containsString:@"port of Notepad++ v"] && ownIcon && credit && notAffiliated &&
+              ![[NSBundle mainBundle] pathForResource:@"chameleon" ofType:@"ico"] && ![[NSBundle mainBundle] pathForResource:@"chameleon_dm" ofType:@"ico"]);
 
         NSString *pluginDir = [ed.defaultSessionPath.stringByDeletingLastPathComponent
                                stringByAppendingPathComponent:@"plugins"];
@@ -1471,7 +1492,7 @@ void NppTestsMacExtras(AppDelegate *app, EditorController *ed, ScintillaView *sc
         BOOL ran = [help launchAndReturnError:NULL];
         [help waitUntilExit];
         NSString *cliFile = TempFile(@"t_cli.txt", @"one\ntwo\nthree\nfour\nfive\n");
-        [app cliRequest:[NSNotification notificationWithName:@"org.notepad-plus-plus.mac.cli" object:nil
+        [app cliRequest:[NSNotification notificationWithName:[NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".cli"] object:nil
             userInfo:@{@"files": @[@{@"path": cliFile, @"line": @4}]}]];
         long cliLine = [ed.sci message:SCI_LINEFROMPOSITION
                                 wParam:(uptr_t)[ed.sci message:SCI_GETCURRENTPOS wParam:0 lParam:0] lParam:0];

@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Порівняння: ігнорувати порожні рядки"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Макс. символів для автозаповнення поля пошуку"/>
     <Item english="Releases repository" text="Репозиторій випусків"/>
-    <Item english="Notepad++ update" text="Оновлення Notepad++"/>
+    <Item english="NotepadMac update" text="Оновлення NotepadMac"/>
     <Item english="No update is available." text="Оновлень немає."/>
     <Item english="An update package is available, do you want to download it?" text="Доступне оновлення. Завантажити його?"/>
     <Item english="Open the Releases Page" text="Відкрити сторінку випусків"/>
@@ -289,6 +289,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="Команда читає дані з файлу, тут це не підтримується."/>
     <Item english="Forms and uploads of files are not read from a command." text="Форми та вивантаження файлів із команди не читаються."/>
     <Item english="The command's address is not an http or https address." text="Адреса в команді не є адресою http або https."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Неофіційний порт для macOS. Автор Notepad++ — Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ — назва редактора Don Ho; NotepadMac не пов'язаний із проєктом Notepad++ і не схвалений ним."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Дозволити ШІ-агентам керувати редактором (MCP)"/>
     <!-- Git -->

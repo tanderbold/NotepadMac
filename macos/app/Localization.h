@@ -58,4 +58,23 @@ FOUNDATION_EXPORT NSString *NppLMessage(NSString *english, NSString *_Nullable s
 FOUNDATION_EXPORT NSString *NppEnglishTitle(NSMenuItem *item);
 FOUNDATION_EXPORT NSString *NppEnglishMenuTitle(NSMenu *menu);
 
+/// Where the application names itself, the port's English says NotepadMac and upstream's says
+/// Notepad++ ("About Notepad++", "Enable on Notepad++ startup", "lose the changes made in
+/// Notepad++?"). The text in code is the port's; these two let it use upstream's translation of
+/// upstream's wording. Texts where Notepad++ is the other program - Windows Notepad++, its
+/// formats, its User Defined Languages Collection - are written with Notepad++ and never touched.
+/// Upstream's wording of a text the port wrote naming itself: NotepadMac -> Notepad++.
+FOUNDATION_EXPORT NSString *NppUpstreamWording(NSString *english);
+/// Upstream's translation of such a text, naming this application: "Notepad++" (and "++Notepad",
+/// as Hebrew writes it for right-to-left display) -> NotepadMac. nil when the translation names
+/// it some other way - declined ("Notepadu++"), shortened ("N++"), transliterated - which cannot
+/// be replaced without guessing: the text is then the port's own (nativeLang-extra) or English.
+FOUNDATION_EXPORT NSString *_Nullable NppNamingThisApp(NSString *_Nullable translation);
+/// A command's translation shown for the port's English `english`: as it is when the English names
+/// Notepad++ as the other program (or has "++" of its own: C++), else with NotepadMac for a Notepad++
+/// it names - which can only be this application ("Check for Updates" takes upstream's "Update
+/// Notepad++" by id, "Read-Only on Current Document" a translation of "Read-Only in Notepad++").
+/// nil as NppNamingThisApp.
+FOUNDATION_EXPORT NSString *_Nullable NppCommandNamingThisApp(NSString *_Nullable translation, NSString *english);
+
 NS_ASSUME_NONNULL_END

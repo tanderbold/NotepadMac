@@ -898,7 +898,7 @@ static CGFloat NeededWidth(NSControl *control) {
     y = [self addField:@"Session file ext." key:@"sessionFileExtension" value:p.sessionFileExtension to:v atY:y];
     y = [self addField:@"Workspace file ext." key:@"workspaceFileExtension" value:p.workspaceFileExtension to:v atY:y];
     y = [self addPopup:@"Auto-updater:" key:@"autoUpdateMode"
-                 items:@[@"Disable", @"Enable on Notepad++ startup", @"Enable on Notepad++ exit"]
+                 items:@[@"Disable", @"Enable on NotepadMac startup", @"Enable on NotepadMac exit"]
               selected:p.autoUpdateMode to:v atY:y];
     y = [self addField:@"Releases repository" key:@"updateRepository" value:p.updateRepository to:v atY:y];
     [self endPage:@"MISC." atY:y];

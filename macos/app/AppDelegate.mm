@@ -606,7 +606,7 @@ static NSString *Ordinal(NSUInteger n) {
     // the nppmac inside it.
     [[NSDistributedNotificationCenter defaultCenter]
         addObserver:self selector:@selector(cliRequest:)
-               name:[(NSBundle.mainBundle.bundleIdentifier ?: @"org.notepad-plus-plus.mac") stringByAppendingString:@".cli"] object:nil];
+               name:[(NSBundle.mainBundle.bundleIdentifier ?: NppBundleIdentifier) stringByAppendingString:@".cli"] object:nil];
 
     // Third-party plugins, once everything they may call is up.
     NppPluginHost *host = [NppPluginHost shared];
@@ -1682,10 +1682,11 @@ static NSString *Ordinal(NSUInteger n) {
     // places: the Mac version is released and supported from its repository, and a question about it taken
     // to Notepad++'s site or forum would reach people who did not make it. The manual alone is upstream's:
     // it describes the behaviour this application follows, and there is no other.
-    NSArray *links = @[@[@"Notepad++ Home", [NppProjectAddress(@"") stringByAppendingString:@"#readme"]],
-                       @[@"Notepad++ Project Page", NppProjectAddress(@"")],
+    // The three that lead to the port's places name it; the manual is Notepad++'s.
+    NSArray *links = @[@[@"NotepadMac Home", [NppProjectAddress(@"") stringByAppendingString:@"#readme"]],
+                       @[@"NotepadMac Project Page", NppProjectAddress(@"")],
                        @[@"Notepad++ Online User Manual", @"https://npp-user-manual.org/"],
-                       @[@"Notepad++ Community (Forum)", NppProjectAddress(@"discussions")]];
+                       @[@"NotepadMac Community (Forum)", NppProjectAddress(@"discussions")]];
     for (NSArray *link in links) {
         NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:link[0] action:@selector(openHelpLink:) keyEquivalent:@""];
         mi.target = self; mi.representedObject = link[1];
@@ -2458,7 +2459,7 @@ static NSString *Ordinal(NSUInteger n) {
     if (!getenv("NPPMAC_TEST")) {
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = @"Editing contextMenu";
-        alert.informativeText = @"Editing contextMenu.xml allows you to modify your Notepad++ popup context menu on edit zone.\n"
+        alert.informativeText = @"Editing contextMenu.xml allows you to modify your NotepadMac popup context menu on edit zone.\n"
                                 @"Here the change shows as soon as the file is saved.";
         [alert runModal];
     }
@@ -2877,7 +2878,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     self.runningScript.cancelled = YES;
     static dispatch_queue_t scripts;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ scripts = dispatch_queue_create("org.notepad-plus-plus.mac.scripts", DISPATCH_QUEUE_SERIAL); });
+    dispatch_once(&once, ^{ scripts = dispatch_queue_create("io.github.tanderbold.notepadmac.scripts", DISPATCH_QUEUE_SERIAL); });
     [[NSUserDefaults standardUserDefaults] setObject:text forKey:@"NppMac.execLastScript"];
     NppScriptEngine *engine = [[NppScriptEngine alloc] initWithEditor:self.editor];
     __weak AppDelegate *weakSelf = self;
@@ -3061,7 +3062,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     [NppUpdateChecker fetchLatest:^(NppRelease *release, NSError *error) {
         if (release) { [self offerRelease:release verbose:YES]; return; }
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Notepad++ update";
+        alert.messageText = @"NotepadMac update";
         alert.informativeText = [NSString stringWithFormat:@"%@\n\n%@", error.localizedDescription ?: @"",
                                  [NppUpdateChecker latestReleaseURL].absoluteString];
         [alert addButtonWithTitle:@"OK"];
@@ -3079,7 +3080,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
     BOOL newer = [NppUpdateChecker compareVersion:release.version to:current] == NSOrderedDescending;
     if (!newer && !verbose) return;
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Notepad++ update";
+    alert.messageText = @"NotepadMac update";
     if (!newer) {
         alert.informativeText = [NSString stringWithFormat:@"No update is available.\n\nThis is v%@; the latest release is %@.",
                                  current, release.name];
@@ -3410,7 +3411,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
         if (!answer) {
             NSAlert *ask = [[NSAlert alloc] init];
             ask.messageText = @"Reload";                 // DocReloadWarning
-            ask.informativeText = @"Are you sure you want to reload the current file and lose the changes made in Notepad++?";
+            ask.informativeText = @"Are you sure you want to reload the current file and lose the changes made in NotepadMac?";
             [ask addButtonWithTitle:@"Yes"];
             [ask addButtonWithTitle:@"No"];
             answer = [ask runModal];
@@ -4338,7 +4339,7 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
         {"Reload", "IDM_FILE_RELOAD", NULL, NULL},
         {"Print", "IDM_FILE_PRINT", NULL, NULL},
         {NULL, NULL, NULL, NULL},
-        {"Read-Only in Notepad++", "IDM_EDIT_TOGGLEREADONLY", "toggleReadOnly:", NULL},
+        {"Read-Only in NotepadMac", "IDM_EDIT_TOGGLEREADONLY", "toggleReadOnly:", NULL},
         {"Read-Only Attribute on Disk", "IDM_EDIT_TOGGLESYSTEMREADONLY", "toggleSystemReadOnly:", NULL},
         {NULL, NULL, NULL, NULL},
         {"Copy Full File Path", "IDM_EDIT_FULLPATHTOCLIP", NULL, "Copy to Clipboard"},
@@ -4396,6 +4397,8 @@ static NppMatchFlags FlagsForTag(NSInteger tag) {
         NppLocalization *l10n = [NppLocalization shared];
         NSString *label = !l10n.active ? @(entry.label)
             : ([l10n tabCommandName:identifier] ?: (identifier ? [l10n commandName:identifier] : nil) ?: NppL(@(entry.label)));
+        // Upstream's words naming Notepad++ ("Read-Only in Notepad++"), naming this application.
+        if (l10n.active) label = NppCommandNamingThisApp(label, @(entry.label)) ?: NppCommandNamingThisApp(NppL(@(entry.label)), @(entry.label)) ?: @(entry.label);
         NSMenuItem *copy = [[NSMenuItem alloc] initWithTitle:label action:real.action keyEquivalent:@""];
         copy.target = real.target;
         copy.tag = real.tag;

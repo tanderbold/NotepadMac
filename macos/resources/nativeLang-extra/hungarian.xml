@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Összehasonlítás: üres sorok figyelmen kívül hagyása"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="A karakterek legnagyobb száma a „Keresendő” mező auto. kitöltéséhez"/>
     <Item english="Releases repository" text="Kiadások tárolója"/>
-    <Item english="Notepad++ update" text="Notepad++ frissítés"/>
+    <Item english="NotepadMac update" text="NotepadMac frissítés"/>
     <Item english="No update is available." text="Nincs elérhető frissítés."/>
     <Item english="An update package is available, do you want to download it?" text="Frissítőcsomag érhető el. Szeretné letölteni?"/>
     <Item english="Open the Releases Page" text="A kiadások oldalának megnyitása"/>

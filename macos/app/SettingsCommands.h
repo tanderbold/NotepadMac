@@ -412,4 +412,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether -settingsDir= moved the settings for this launch (Debug Info's "Local Conf mode").
 FOUNDATION_EXPORT BOOL NppSettingsDirectoryOverridden(void);
 
+/// The application's bundle id, and so its preferences domain: io.github.tanderbold.notepadmac.
+FOUNDATION_EXPORT NSString *const NppBundleIdentifier;
+/// The id it had up to 0.3.1, org.notepad-plus-plus.mac: the Notepad++ project's domain, which is
+/// not this application's to use.
+FOUNDATION_EXPORT NSString *const NppFormerBundleIdentifier;
+/// Copies every preference of the domain `from` into the domain `to` when `to` has none yet and
+/// `from` has some, and marks `to` (NppMac.preferencesMigratedFrom) so it is done once; `from` is
+/// left as it was, for an older copy still in use. YES when it copied.
+FOUNDATION_EXPORT BOOL NppMigratePreferences(NSString *from, NSString *to);
+
 NS_ASSUME_NONNULL_END

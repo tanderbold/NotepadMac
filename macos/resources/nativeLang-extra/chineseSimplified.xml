@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="比较：忽略空行"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="自动填入查找框的最大字符数"/>
     <Item english="Releases repository" text="发布版本仓库"/>
-    <Item english="Notepad++ update" text="Notepad++ 更新"/>
+    <Item english="NotepadMac update" text="NotepadMac 更新"/>
     <Item english="No update is available." text="没有可用的更新。"/>
     <Item english="An update package is available, do you want to download it?" text="有可用的更新包，是否下载？"/>
     <Item english="Open the Releases Page" text="打开发布页面"/>
@@ -289,6 +289,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="该命令从文件读取数据，此处不支持。"/>
     <Item english="Forms and uploads of files are not read from a command." text="不会从命令中读取表单和文件上传。"/>
     <Item english="The command's address is not an http or https address." text="命令中的地址不是 http 或 https 地址。"/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="非官方的 macOS 移植版。Notepad++ 的作者是 Don HO。"/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ 是 Don Ho 的编辑器的名称；NotepadMac 与 Notepad++ 项目无关，也未获得其认可。"/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="允许 AI 智能体控制编辑器 (MCP)"/>
     <!-- Git -->

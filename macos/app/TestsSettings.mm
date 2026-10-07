@@ -407,6 +407,35 @@ void NppTestsEditorSettings(AppDelegate *app, EditorController *ed, ScintillaVie
 void NppTestsPreferences(AppDelegate *app, EditorController *ed, ScintillaView *sci) {
     if (NppSectionWanted(@"Settings")) { printf("\n== Settings ==\n");
         NppPreferences *p = [NppPreferences shared];
+        {
+            // The preferences of the former bundle id come over once, on a pair of domains of the
+            // suite's own (never the user's org.notepad-plus-plus.mac or io.github.tanderbold.notepadmac).
+            NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+            NSString *from = [NSString stringWithFormat:@"io.github.tanderbold.notepadmac.test-former-%d", getpid()];
+            NSString *to = [NSString stringWithFormat:@"io.github.tanderbold.notepadmac.test-present-%d", getpid()];
+            [d removePersistentDomainForName:from];
+            [d removePersistentDomainForName:to];
+            BOOL nothingToCopy = !NppMigratePreferences(from, to) && ![d persistentDomainForName:to].count;
+            [d setPersistentDomain:@{@"NppMac.fontName": @"Menlo", @"NppMac.tabSize": @3, @"NSWindow Frame main": @"1 2 3 4"} forName:from];
+            BOOL copied = NppMigratePreferences(from, to);
+            NSDictionary *now = [d persistentDomainForName:to];
+            BOOL all = [now[@"NppMac.fontName"] isEqual:@"Menlo"] && [now[@"NppMac.tabSize"] isEqual:@3] &&
+                       [now[@"NSWindow Frame main"] isEqual:@"1 2 3 4"] && [now[@"NppMac.preferencesMigratedFrom"] isEqual:from] &&
+                       [[d persistentDomainForName:from] count] == 3;
+            // Once: what the user changes afterwards is not overwritten by the old domain.
+            [d setPersistentDomain:@{@"NppMac.fontName": @"Monaco"} forName:to];
+            BOOL once = !NppMigratePreferences(from, to) && [[d persistentDomainForName:to] isEqual:@{@"NppMac.fontName": @"Monaco"}];
+            [d removePersistentDomainForName:from];
+            [d removePersistentDomainForName:to];
+            Check(@"Settings (former bundle id)", @"every preference of the former domain is copied into an empty present one, "
+                  @"marked, once, the former left as it was; nothing is made when there is nothing to copy",
+                  nothingToCopy && copied && all && once);
+            Check(@"Settings (bundle id)", @"the application is io.github.tanderbold.notepadmac, shown as NotepadMac, and its former id is the one migrated from",
+                  [NSBundle.mainBundle.bundleIdentifier isEqualToString:NppBundleIdentifier] &&
+                  [NppBundleIdentifier isEqualToString:@"io.github.tanderbold.notepadmac"] &&
+                  [NppFormerBundleIdentifier isEqualToString:@"org.notepad-plus-plus.mac"] &&
+                  [[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleDisplayName"] isEqualToString:@"NotepadMac"]);
+        }
         NSString *fontBefore = p.fontName;
         p.fontName = @"Courier";
         p.fontSize = 17;
@@ -2737,6 +2766,72 @@ void NppTestsLocalizationAndDefaults(AppDelegate *app, EditorController *ed, Sci
         Check(@"IDM_SETTING_PREFERENCE (localization names)",
               @"tabs take the dialog's names, buttons fit their translation, and the language pop-up matches its files",
               names && popup && pages && oneLine);
+        {
+            // Where the application names itself it is NotepadMac in every language: upstream's
+            // translation with NotepadMac for Notepad++, or - when a translation names it some
+            // other way (Czech "N++", "Notepadu++") - the port's own words or English. Where
+            // Notepad++ is the other program (the UDL Collection, the manual) it stays.
+            NppLocalization *l = [NppLocalization shared];
+            NSDictionary<NSNumber *, NSMenuItem *> *ids = [app.shortcutStore menuItemsByIdentifier];
+            NSArray<NSString *> *texts = @[@"Enable on NotepadMac startup", @"Enable on NotepadMac exit", @"NotepadMac update",
+                                           @"Are you sure you want to reload the current file and lose the changes made in NotepadMac?",
+                                           @"About NotepadMac"];
+            NSMutableArray<NSString *> *wrong = [NSMutableArray array];
+            NSUInteger languages = 0;
+            NSString *ruHome = nil, *deHome = nil, *csHome = nil, *heHome = nil, *deTab = nil, *csReload = nil, *deReload = nil, *ruStartup = nil;
+            for (NSString *file in [[NppLocalization availableLanguages].allKeys sortedArrayUsingSelector:@selector(compare:)]) {
+                if (![l loadLanguageFile:file]) continue;
+                languages++;
+                [l localizeMenu:NSApp.mainMenu identifiers:ids];
+                __block void (^walk)(NSMenu *);
+                void (^__block __weak weakWalk)(NSMenu *);
+                walk = ^(NSMenu *m) {
+                    for (NSMenuItem *it in m.itemArray) {
+                        if (it.submenu) { weakWalk(it.submenu); continue; }
+                        NSString *en = NppEnglishTitle(it);
+                        // A text naming the application keeps the name, and none names Notepad++ where the
+                        // English does not.
+                        if (([it.title containsString:@"++"] && ![en containsString:@"++"]) ||
+                            ([en containsString:@"NotepadMac"] && ![it.title containsString:@"NotepadMac"]))
+                            [wrong addObject:[NSString stringWithFormat:@"%@: %@ -> %@", file, en, it.title]];
+                    }
+                };
+                weakWalk = walk;
+                walk(NSApp.mainMenu);
+                for (NSString *en in texts) {
+                    NSString *t = [en hasPrefix:@"Are you"] ? NppLMessage(en, nil, 0) : NppL(en);
+                    if ([t containsString:@"++"] || ([t containsString:@"Notepad"] && ![t containsString:@"NotepadMac"]))
+                        [wrong addObject:[NSString stringWithFormat:@"%@: %@ -> %@", file, en, t]];
+                }
+                NSMenu *tab = [app buildTabContextMenu];
+                NSString *readOnly = nil;
+                for (NSMenuItem *it in tab.itemArray) if (it.action == NSSelectorFromString(@"toggleReadOnly:")) readOnly = it.title;
+                if ([readOnly containsString:@"++"] || !readOnly) [wrong addObject:[NSString stringWithFormat:@"%@: tab menu %@", file, readOnly]];
+                NSString *home = [ids[@47001] title];
+                if ([file isEqualToString:@"russian.xml"]) { ruHome = home; ruStartup = NppL(@"Enable on NotepadMac startup"); }
+                if ([file isEqualToString:@"german.xml"]) { deHome = home; deTab = readOnly; deReload = NppLMessage(texts[3], nil, 0); }
+                if ([file isEqualToString:@"czech.xml"]) { csHome = home; csReload = NppLMessage(texts[3], nil, 0); }
+                if ([file isEqualToString:@"hebrew.xml"]) heHome = home;
+            }
+            if (wrong.count) printf("    naming Notepad++:\n        %s\n", [wrong componentsJoinedByString:@"\n        "].UTF8String);
+            printf("    own name: ru=%s de=%s cs=%s he=%s tab(de)=%s startup(ru)=%s\n", ruHome.UTF8String, deHome.UTF8String,
+                   csHome.UTF8String, heHome.UTF8String, deTab.UTF8String, ruStartup.UTF8String);
+            [l loadLanguageFile:@""];
+            [app applyLocalization];
+            Check(@"Localization (the application's own name)",
+                  @"in every language the menus, the tab menu, Preferences, the updater and the reload warning name NotepadMac where "
+                  @"upstream names Notepad++ the application, from upstream's translation where it can be, else English",
+                  languages > 80 && !wrong.count && [ruHome isEqualToString:@"Сайт NotepadMac"] && [deHome isEqualToString:@"NotepadMac im Web"] &&
+                  [csHome isEqualToString:@"NotepadMac - domovská stránka"] && [heHome isEqualToString:@"דף הבית NotepadMac"] &&
+                  [deTab isEqualToString:@"Schreibschutz in NotepadMac"] && [deReload containsString:@"in NotepadMac gemachten"] &&
+                  [csReload isEqualToString:texts[3]] &&
+                  NppNamingThisApp(@"Notepadu++") == nil && NppNamingThisApp(@"N++ - domovská stránka") == nil &&
+                  [NppNamingThisApp(@"Сайт Notepad++") isEqualToString:@"Сайт NotepadMac"] &&
+                  [NppUpstreamWording(@"Update NotepadMac") isEqualToString:@"Update Notepad++"] &&
+                  [NppCommandNamingThisApp(@"Обновить Notepad++", @"Check for Updates") isEqualToString:@"Обновить NotepadMac"] &&
+                  [NppCommandNamingThisApp(@"Сборник Notepad++", @"Notepad++ User Defined Languages Collection") isEqualToString:@"Сборник Notepad++"] &&
+                  [NppCommandNamingThisApp(@"C++", @"C++") isEqualToString:@"C++"]);
+        }
         // And back to English, where it all was.
         lp.localizationFile = @"";
         [app applyLocalization];

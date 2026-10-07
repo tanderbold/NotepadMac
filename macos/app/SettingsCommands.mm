@@ -632,6 +632,19 @@ static NSString *gSettingsDirectoryForThisLaunch;
 
 BOOL NppSettingsDirectoryOverridden(void) { return gSettingsDirectoryForThisLaunch.length > 0; }
 
+NSString *const NppBundleIdentifier = @"io.github.tanderbold.notepadmac";
+NSString *const NppFormerBundleIdentifier = @"org.notepad-plus-plus.mac";
+
+BOOL NppMigratePreferences(NSString *from, NSString *to) {
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    NSDictionary *old = [d persistentDomainForName:from];
+    if (!old.count || [d persistentDomainForName:to].count) return NO;
+    NSMutableDictionary *copied = [old mutableCopy];
+    copied[Key(@"preferencesMigratedFrom")] = from;
+    [d setPersistentDomain:copied forName:to];
+    return YES;
+}
+
 - (NSString *)supportDirectory {
     // -settingsDir= on the command line, for this launch only; then the
     // preference; then the default.

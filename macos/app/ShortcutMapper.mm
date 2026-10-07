@@ -483,7 +483,8 @@ static NSString *MenuKey(NSMenuItem *item, NSArray<NSString *> *path) {
         return [byTopAndLabel[exact] intValue];
     }
     if (path.count == 1 && [path[0] isEqualToString:@"Tools"]) return 0;
-    NSString *label = NormalisedLabel(NppEnglishTitle(item));
+    // Where the port names itself ("NotepadMac Home") upstream says Notepad++.
+    NSString *label = NormalisedLabel(NppUpstreamWording(NppEnglishTitle(item)));
     NSMutableArray *whole = [NSMutableArray array];
     for (NSUInteger i = 0; i < path.count; ++i) {
         [whole addObject:NormalisedLabel(i == 0 ? WindowsTopMenu(path[i]) : path[i])];

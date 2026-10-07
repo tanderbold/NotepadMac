@@ -15,8 +15,10 @@ extern NSString *const NppLicenceText;
 + (instancetype)shared;
 - (void)show;
 @property (nonatomic, readonly) NSPanel *panel;
-/// The version line: "Notepad++ v8.9.8   (ARM 64-bit)".
+/// The version line: "NotepadMac v0.3.1   (ARM 64-bit)".
 + (NSString *)versionLine;
+/// "Build 1, port of Notepad++ v8.9.8".
++ (NSString *)portLine;
 /// "(32-bit)", "(64-bit)" or "(ARM 64-bit)", as upstream names the build.
 + (NSString *)bitness;
 @end

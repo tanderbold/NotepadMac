@@ -100,7 +100,7 @@
     <Item english="Compare: ignore empty lines" text="Konparatu: ezikusi lerro hutsak"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Bilaketa-eremua automatikoki betetzeko gehienezko karaktere kopurua"/>
     <Item english="Releases repository" text="Bertsioen biltegia"/>
-    <Item english="Notepad++ update" text="Notepad++ eguneraketa"/>
+    <Item english="NotepadMac update" text="NotepadMac eguneraketa"/>
     <Item english="No update is available." text="Ez dago eguneraketarik eskuragarri."/>
     <Item english="An update package is available, do you want to download it?" text="Eguneraketa pakete bat eskuragarri dago, deskargatu nahi duzu?"/>
     <Item english="Open the Releases Page" text="Ireki Bertsioen Orria"/>

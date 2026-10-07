@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Comparare: ignoră liniile goale"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Număr maxim de caractere completate automat în câmpul de căutare"/>
     <Item english="Releases repository" text="Depozitul cu versiuni"/>
-    <Item english="Notepad++ update" text="Actualizare Notepad++"/>
+    <Item english="NotepadMac update" text="Actualizare NotepadMac"/>
     <Item english="No update is available." text="Nu există nicio actualizare."/>
     <Item english="An update package is available, do you want to download it?" text="Există un pachet de actualizare, dorești să-l descarci?"/>
     <Item english="Open the Releases Page" text="Deschide pagina versiunilor"/>

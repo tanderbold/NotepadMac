@@ -90,7 +90,7 @@
     <Item english="Compare: ignore case" text="Comparar: ignorar mayusclas"/>
     <Item english="Compare: ignore spaces" text="Comparar: ignorar os espacios"/>
     <Item english="Compare: ignore empty lines" text="Comparar: ignorar as linias vuedas"/>
-    <Item english="Notepad++ update" text="Actualización de Notepad++"/>
+    <Item english="NotepadMac update" text="Actualización de NotepadMac"/>
     <Item english="No update is available." text="No i hai garra actualización disponible."/>
     <Item english="Fonts…" text="Tipos de letra…"/>
     <Item english="This document is not valid JSON." text="Iste documento no ye un JSON valido."/>

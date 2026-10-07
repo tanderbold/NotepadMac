@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Poređenje: zanemari prazne redove"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Maks. broj znakova za automatsko popunjavanje polja za pretraživanje"/>
     <Item english="Releases repository" text="Repozitorij izdanja"/>
-    <Item english="Notepad++ update" text="Nadogradnja Notepad++"/>
+    <Item english="NotepadMac update" text="Nadogradnja NotepadMac"/>
     <Item english="No update is available." text="Nema dostupne nadogradnje."/>
     <Item english="An update package is available, do you want to download it?" text="Dostupna je nadogradnja, želite li je preuzeti?"/>
     <Item english="Open the Releases Page" text="Otvori stranicu izdanja"/>

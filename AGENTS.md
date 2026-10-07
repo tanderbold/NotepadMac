@@ -28,8 +28,28 @@ Windows Notepad++ uses, reading Notepad++'s own data files (`langs.model.xml`,
 `stylers.model.xml`, themes, `functionList/*.xml`, `nativeLang/*.xml`,
 `shortcuts.xml`, `session.xml`, `contextMenu.xml`) instead of re-describing them.
 No Xcode project, no package manager: `macos/build.sh` compiles with the Command
-Line Tools. Bundle id `org.notepad-plus-plus.mac`, minimum macOS 11, universal
+Line Tools. Bundle id `io.github.tanderbold.notepadmac`, minimum macOS 11, universal
 (arm64 + x86_64). Licence: GPL, as upstream.
+
+**Name and marks.** NotepadMac is an unofficial port and must never present itself as Notepad++:
+in May 2026 Notepad++'s author had another Mac port renamed for using the name and logo as its
+identity. Wherever the application names itself (window titles, alerts, menus, Debug Info, the
+updater, the MCP server, `nppmac`, Info.plist) it says NotepadMac; "a port of Notepad++", "as in
+Notepad++", Notepad++'s formats, manual and UDL Collection - Notepad++ as the other program - stay.
+No chameleon or Notepad++ artwork: the icon is the port's own picture, `macos/resources/icon-source.png`
+(a rounded square on a dark ground), which `macos/make_icon.m` sets on Apple's grid (824 in 1024,
+185-point corners, a soft shadow; the head alone at 64 px and below):
+`clang -fobjc-arc -framework Cocoa macos/make_icon.m -o /tmp/make_icon && /tmp/make_icon .` writes
+`macos/resources/AppIcon.icns` and `docs/icon.png` (512 px). The About box shows the application's icon.
+
+The bundle id was `org.notepad-plus-plus.mac` (the Notepad++ project's domain) up to 0.3.1. On the
+first launch under the new id, `main` copies that domain's preferences into the new one when the new
+one is empty (`NppMigratePreferences`, once, marked `NppMac.preferencesMigratedFrom`; never under
+`NPPMAC_TEST`/`NPPMAC_E2E` or another id; the suite checks it on a domain pair of its own). The
+Application Support folder (`NotepadMac`) never depended on the id. FTP passwords are Keychain
+internet passwords keyed by server, account, port and protocol - not by the id - so they are still
+found; macOS may ask once whether the renamed application may read them (the item's access list
+names the application that saved it).
 
 ## Build, test, run
 
@@ -67,8 +87,8 @@ bash macos/package.sh                        # .dmg; signs/notarises when NPPMAC
   project, taken by `../npp-tests/tools/shots.py` (English interface, no personal paths).
 - CI: `.github/workflows/macos.yml` (macos-14): universal build, suite, package; the `.dmg`
   is an artifact. **The runner has empty NSUserDefaults** - a test must set every preference it
-  depends on and restore it afterwards. To reproduce locally: `defaults export org.notepad-plus-plus.mac backup.plist`,
-  `defaults delete org.notepad-plus-plus.mac`, run the suite, then `defaults import` the backup. Never
+  depends on and restore it afterwards. To reproduce locally: `defaults export io.github.tanderbold.notepadmac backup.plist`,
+  `defaults delete io.github.tanderbold.notepadmac`, run the suite, then `defaults import` the backup. Never
   leave the user's preferences changed, and do not do this while the user has the app open.
   Its screen is small (about 1024x768, smaller than the 1000x780 window): a check that moves or resizes
   windows must hold there too.
@@ -296,6 +316,23 @@ colon (Taiwanese Mandarin and Cantonese end their labels with it). A literal `|`
 read as `Group|Field` - avoid it. New windows are laid out with Auto Layout so translated text
 cannot be cut; the suite checks that in Russian.
 The translations are model-made and unreviewed by native speakers (said so in `README.md`).
+
+**The application's own name in translations.** The English in code is what the port shows, so a
+text where the application names itself is written with NotepadMac ("NotepadMac Home", "Read-Only in
+NotepadMac", "Enable on NotepadMac startup", "...lose the changes made in NotepadMac?"), and one where
+Notepad++ is the other program keeps Notepad++. The localiser then decides by that English, never by
+a list of ids and never blindly over every text:
+- a text with NotepadMac takes nativeLang-extra's words if it has them, else upstream's translation of
+  upstream's wording (`NppUpstreamWording`: NotepadMac -> Notepad++), by command id or by text, with
+  NotepadMac put where it says Notepad++ (`NppNamingThisApp`; Hebrew's `++Notepad` too);
+- a menu command whose English has no Notepad++ (and no `++` of its own, as C++) but whose upstream
+  translation names it ("Check for Updates" takes "Update Notepad++" by id) gets the same replacement
+  (`NppCommandNamingThisApp`), since it can only mean this application;
+- when the translation names it in a form that cannot be replaced (declined "Notepadu++", "N++",
+  a transliteration - anything still with `++`), it is not used: English (or nativeLang-extra) instead;
+- the Shortcut Mapper finds the command id of such an item by upstream's wording.
+The suite (`Localization (the application's own name)`) loads every language and checks no menu item,
+tab menu item or self-naming message shows Notepad++ where the English does not.
 
 ## The language model (working out a language from a text)
 

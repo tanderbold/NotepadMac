@@ -109,7 +109,7 @@
     <Item english="Compare: ignore empty lines" text="ஒப்பிடு: காலி வரிகளை புறக்கணி"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="தேடல் புலத்தை தானாக நிரப்ப அதிகபட்ச எழுத்துகள்"/>
     <Item english="Releases repository" text="வெளியீடுகள் களஞ்சியம்"/>
-    <Item english="Notepad++ update" text="Notepad++ இற்றைப்படுத்தல்"/>
+    <Item english="NotepadMac update" text="NotepadMac இற்றைப்படுத்தல்"/>
     <Item english="No update is available." text="இற்றைப்படுத்தல் எதுவும் இல்லை."/>
     <Item english="An update package is available, do you want to download it?" text="ஒரு இற்றைப்படுத்தல் தொகுப்பு கிடைக்கிறது, அதைப் பதிவிறக்க விரும்புகிறீர்களா?"/>
     <Item english="Open the Releases Page" text="வெளியீடுகள் பக்கத்தைத் திற"/>

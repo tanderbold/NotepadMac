@@ -90,6 +90,30 @@ NSString *NppLMessage(NSString *english, NSString *string, NSInteger number) {
     return [[NppLocalization shared] message:english string:string number:number];
 }
 
+static NSString *Normalised(NSString *s);
+
+NSString *NppUpstreamWording(NSString *english) {
+    return [english ?: @"" stringByReplacingOccurrencesOfString:@"NotepadMac" withString:@"Notepad++"];
+}
+
+NSString *NppNamingThisApp(NSString *translation) {
+    if (!translation) return nil;
+    NSString *t = [translation stringByReplacingOccurrencesOfString:@"Notepad++" withString:@"NotepadMac"];
+    t = [t stringByReplacingOccurrencesOfString:@"++Notepad" withString:@"NotepadMac"];
+    return [t containsString:@"++"] ? nil : t;
+}
+
+NSString *NppCommandNamingThisApp(NSString *translation, NSString *english) {
+    if (!translation || [english containsString:@"++"] || ![translation containsString:@"++"]) return translation;
+    return NppNamingThisApp(translation);
+}
+
+/// Upstream's translation of English the port wrote naming itself, naming it, from `table`.
+static NSString *NamingThisApp(NSString *english, NSDictionary<NSString *, NSString *> *table) {
+    if (![english containsString:@"NotepadMac"]) return nil;
+    return NppNamingThisApp(table[Normalised(NppUpstreamWording(english))]);
+}
+
 /// Upstream's strings carry & before the access key; && is a literal &.
 static NSString *WithoutAccessKeys(NSString *s) {
     if ([s rangeOfString:@"&"].location == NSNotFound) return s;
@@ -479,7 +503,8 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
 
 - (NSString *)message:(NSString *)english string:(NSString *)string number:(NSInteger)number {
     // Looked up with its placeholders in, filled in afterwards; line breaks are the translation's own.
-    NSString *hit = self.strings.count ? (self.strings[Normalised(english ?: @"")] ?: self.extraStrings[Normalised(english ?: @"")]) : nil;
+    NSString *hit = self.strings.count ? (self.strings[Normalised(english ?: @"")] ?: self.extraStrings[Normalised(english ?: @"")]
+                                          ?: NamingThisApp(english, self.strings)) : nil;
     NSString *text = hit ?: english ?: @"";
     text = [text stringByReplacingOccurrencesOfString:@"$STR_REPLACE$" withString:string ?: @""];
     return [text stringByReplacingOccurrencesOfString:@"$INT_REPLACE$" withString:[NSString stringWithFormat:@"%ld", (long)number]];
@@ -487,7 +512,10 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
 
 - (NSString *)translateTitle:(NSString *)english {
     NSString *key = Normalised(english ?: @"");
-    return [self translate:english hit:self.titles[key] ?: self.strings[key]];
+    NSString *hit = self.titles[key] ?: self.strings[key];
+    // The port's own words for a title naming it first, then upstream's naming Notepad++.
+    if (!hit && self.strings.count) hit = self.extraStrings[key] ?: NamingThisApp(english, self.titles) ?: NamingThisApp(english, self.strings);
+    return [self translate:english hit:hit];
 }
 
 - (NSString *)translate:(NSString *)english hit:(NSString *)hit {
@@ -506,7 +534,7 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
         return [indent stringByAppendingString:[parts componentsJoinedByString:@": "]];
     }
     if (!self.strings.count) return [english containsString:@"&&"] ? WithoutAccessKeys(english) : english;
-    if (!hit) hit = self.extraStrings[Normalised(english)];
+    if (!hit) hit = self.extraStrings[Normalised(english)] ?: NamingThisApp(english, self.strings);
     if (!hit) return english;
     NSString *text = WithoutAccessKeys(hit);
     // Upstream breaks long button texts over two lines; a Mac button has one.
@@ -565,8 +593,9 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             [self localizeMenu:item.submenu byItem:byItem top:NO];
         } else {
             NSNumber *identifier = [byItem objectForKey:item];
-            // "About NotepadMac" and its like are the port's own texts (nativeLang-extra):
-            // upstream's translation of the same command names the Windows application.
+            // "About NotepadMac" and its like name this application: nativeLang-extra's words
+            // when it has them, else upstream's translation with NotepadMac for Notepad++
+            // (NppNamingThisApp), never upstream's as it is.
             BOOL ownName = [english containsString:@"NotepadMac"];
             // The port's own wording for a command wins over upstream's translation of
             // upstream's wording ("Move to Trash", not "Move to Recycle Bin"; "…" set as a
@@ -579,7 +608,14 @@ static NSDictionary<NSString *, NSString *> *Flatten(NSString *path) {
             if (extra && (!identifier || !SameLabel(english, identifier.intValue))) ownName = YES;
             text = (identifier && !ownName) ? [self commandName:identifier.intValue] : nil;
             if (!text && extra && ownName) text = [self translate:english hit:extra];
-            text = text ?: [self translate:english];
+            // A text that names the application keeps naming it: upstream's translation of the
+            // command is taken only when it has the name ("Форум" for "Notepad++ Community (Forum)",
+            // Samogitian "Apleank..." for "About Notepad++" are not).
+            NSString *(^naming)(NSString *) = ^NSString *(NSString *t) {
+                return ![english containsString:@"NotepadMac"] || [t containsString:@"NotepadMac"] ? t : nil;
+            };
+            if (!text && identifier && [english containsString:@"NotepadMac"]) text = naming(NppNamingThisApp([self commandName:identifier.intValue]));
+            text = NppCommandNamingThisApp(text, english) ?: naming(NppCommandNamingThisApp([self translate:english], english)) ?: english;
         }
         item.title = Shown(item, @"title", (self.active ? text : english) ?: @"");
     }

@@ -100,7 +100,7 @@
     <Item english="Compare: ignore spaces" text="Споредба: игнорирај празни места"/>
     <Item english="Compare: ignore empty lines" text="Споредба: игнорирај празни линии"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Макс. карактери за автоматско пополнување на полето за барање"/>
-    <Item english="Notepad++ update" text="Ажурирање на Notepad++"/>
+    <Item english="NotepadMac update" text="Ажурирање на NotepadMac"/>
     <Item english="No update is available." text="Нема достапно ажурирање."/>
     <Item english="An update package is available, do you want to download it?" text="Достапно е ажурирање, дали сакате да го преземете?"/>
     <Item english="Fonts…" text="Фонтови…"/>

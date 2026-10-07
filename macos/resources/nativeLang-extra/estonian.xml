@@ -108,7 +108,7 @@
     <Item english="Compare: ignore empty lines" text="Võrdlus: eira tühje ridu"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Maks. tähemärkide arv otsinguvälja automaatsel täitmisel"/>
     <Item english="Releases repository" text="Väljalasete hoidla"/>
-    <Item english="Notepad++ update" text="Notepad++-i värskendus"/>
+    <Item english="NotepadMac update" text="NotepadMac-i värskendus"/>
     <Item english="No update is available." text="Värskendusi ei ole saadaval."/>
     <Item english="An update package is available, do you want to download it?" text="Värskenduspakett on saadaval. Kas soovid selle alla laadida?"/>
     <Item english="Open the Releases Page" text="Ava väljalasete leht"/>

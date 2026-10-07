@@ -166,11 +166,8 @@ for pair in "NppUpstreamVersion:$NPP_VERSION" "NppScintillaVersion:$(cat "$SCI/v
             "NppLexillaVersion:$(cat "$LEX/version.txt")" "NppBuildTime:$(LC_ALL=C date '+%b %e %Y - %H:%M:%S')"; do
     /usr/libexec/PlistBuddy -c "Add :${pair%%:*} string '${pair#*:}'" "$APP/Contents/Info.plist" >/dev/null
 done
-# The application icon: the Windows icon on a Mac tile with a ⌘ badge (macos/make_icon.m makes it).
+# The application icon, NotepadMac's own (macos/make_icon.m draws it); the About box shows it too.
 cp "$ROOT/macos/resources/AppIcon.icns" "$APP/Contents/Resources/"
-# The About box's chameleon, light and dark, as upstream's resources have it.
-cp "$ROOT/PowerEditor/src/icons/standard/about/chameleon.ico" "$APP/Contents/Resources/chameleon.ico"
-cp "$ROOT/PowerEditor/src/icons/dark/about/chameleon.ico" "$APP/Contents/Resources/chameleon_dm.ico"
 # Notepad++'s own language and colour definitions, read at runtime.
 cp "$ROOT/PowerEditor/src/langs.model.xml"   "$APP/Contents/Resources/"
 cp "$ROOT/PowerEditor/src/stylers.model.xml" "$APP/Contents/Resources/"

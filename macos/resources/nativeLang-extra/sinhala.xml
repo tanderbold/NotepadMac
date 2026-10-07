@@ -105,7 +105,7 @@
     <Item english="Compare: ignore empty lines" text="සැසඳීම: හිස් පේලි නොසලකන්න"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="සෙවුම් කොටුව ස්වයංක්‍රීයව පිරවීමට උපරිම අක්ෂර ගණන"/>
     <Item english="Releases repository" text="නිකුතු ගබඩාව"/>
-    <Item english="Notepad++ update" text="Notepad++ යාවත්කාලීනය"/>
+    <Item english="NotepadMac update" text="NotepadMac යාවත්කාලීනය"/>
     <Item english="No update is available." text="යාවත්කාලීනයක් නොමැත."/>
     <Item english="An update package is available, do you want to download it?" text="යාවත්කාලීන පැකේජයක් ඇත, එය බාගත කරන්නද?"/>
     <Item english="Open the Releases Page" text="නිකුතු පිටුව විවෘත කරන්න"/>

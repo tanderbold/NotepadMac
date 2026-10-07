@@ -77,7 +77,7 @@
     <Item english="Compare: ignore case" text="Paghahambing: baliwalain ang kaso"/>
     <Item english="Compare: ignore spaces" text="Paghahambing: baliwalain ang mga puwang"/>
     <Item english="Compare: ignore empty lines" text="Paghahambing: baliwalain ang mga taludtod na walang laman"/>
-    <Item english="Notepad++ update" text="Update ng Notepad++"/>
+    <Item english="NotepadMac update" text="Update ng NotepadMac"/>
     <Item english="No update is available." text="Walang available na update."/>
     <Item english="An update package is available, do you want to download it?" text="May available na update package, nais ba ninyong i-download ito?"/>
     <Item english="Copy debug info to clipboard" text="Isipi ang debug info sa klipbord"/>

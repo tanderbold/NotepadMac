@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Karşılaştırma: boş satırları yoksay"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Bul Alanını Oto-Doldurma İçin En Fazla Karakter"/>
     <Item english="Releases repository" text="Sürümler deposu"/>
-    <Item english="Notepad++ update" text="Notepad++ güncellemesi"/>
+    <Item english="NotepadMac update" text="NotepadMac güncellemesi"/>
     <Item english="No update is available." text="Kullanılabilir güncelleme yok."/>
     <Item english="An update package is available, do you want to download it?" text="Bir güncelleme paketi mevcut, indirmek ister misiniz?"/>
     <Item english="Open the Releases Page" text="Sürümler Sayfasını Aç"/>
@@ -289,6 +289,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="Komut verilerini bir dosyadan okuyor; bu burada desteklenmiyor."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formlar ve dosya yüklemeleri komuttan okunmaz."/>
     <Item english="The command's address is not an http or https address." text="Komuttaki adres bir http veya https adresi değil."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Resmî olmayan bir macOS uyarlaması. Notepad++, Don HO'nun eseridir."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++, Don Ho'nun düzenleyicisinin adıdır; NotepadMac, Notepad++ projesiyle bağlantılı değildir ve onun tarafından onaylanmamıştır."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Yapay zekâ ajanlarının düzenleyiciyi yönetmesine izin ver (MCP)"/>
     <!-- Git -->

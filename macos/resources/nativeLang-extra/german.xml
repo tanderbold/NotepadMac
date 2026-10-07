@@ -110,7 +110,7 @@
     <Item english="Compare: ignore empty lines" text="Vergleich: Leerzeilen ignorieren"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Max. Zeichen für automatisches Ausfüllen des Suchfelds"/>
     <Item english="Releases repository" text="Repository der Veröffentlichungen"/>
-    <Item english="Notepad++ update" text="Notepad++-Update"/>
+    <Item english="NotepadMac update" text="NotepadMac-Update"/>
     <Item english="No update is available." text="Es ist kein Update verfügbar."/>
     <Item english="An update package is available, do you want to download it?" text="Ein Update-Paket ist verfügbar. Soll es heruntergeladen werden?"/>
     <Item english="Open the Releases Page" text="Seite mit den Veröffentlichungen öffnen"/>
@@ -289,6 +289,8 @@
     <Item english="The command reads its data from a file, which is not done here." text="Der Befehl liest seine Daten aus einer Datei; das wird hier nicht unterstützt."/>
     <Item english="Forms and uploads of files are not read from a command." text="Formulare und Datei-Uploads werden nicht aus einem Befehl gelesen."/>
     <Item english="The command's address is not an http or https address." text="Die Adresse des Befehls ist keine http- oder https-Adresse."/>
+    <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Eine inoffizielle macOS-Portierung. Notepad++ ist von Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ ist der Name des Editors von Don Ho; NotepadMac ist weder mit dem Notepad++-Projekt verbunden noch von ihm unterstützt."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="KI-Agenten den Editor steuern lassen (MCP)"/>
     <!-- Git -->

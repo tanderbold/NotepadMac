@@ -3,6 +3,7 @@
      english is the text as the port has it; text is what is shown. -->
 <NativeLangExtra name="Русский">
     <Item english="About NotepadMac" text="О программе NotepadMac"/>
+    <Item english="NotepadMac Community (Forum)" text="Форум NotepadMac"/>
     <Item english="Hide NotepadMac" text="Скрыть NotepadMac"/>
     <Item english="Hide Others" text="Скрыть остальные"/>
     <Item english="Show All" text="Показать все"/>
@@ -110,7 +111,7 @@
     <Item english="Compare: ignore empty lines" text="Сравнение: игнорировать пустые строки"/>
     <Item english="Max Characters to Auto-Fill Find Field" text="Макс. символов для автозаполнения поля поиска"/>
     <Item english="Releases repository" text="Репозиторий выпусков"/>
-    <Item english="Notepad++ update" text="Обновление Notepad++"/>
+    <Item english="NotepadMac update" text="Обновление NotepadMac"/>
     <Item english="No update is available." text="Обновлений нет."/>
     <Item english="An update package is available, do you want to download it?" text="Доступно обновление. Загрузить его?"/>
     <Item english="Open the Releases Page" text="Открыть страницу выпусков"/>
@@ -291,6 +292,7 @@
     <Item english="Forms and uploads of files are not read from a command." text="Формы и отправка файлов из команды не читаются."/>
     <Item english="The command's address is not an http or https address." text="Адрес в команде не является адресом http или https."/>
     <Item english="An unofficial macOS port. Notepad++ is by Don HO." text="Неофициальный порт для macOS. Автор Notepad++ — Don HO."/>
+    <Item english="Notepad++ is the name of Don Ho's editor; NotepadMac is not affiliated with or endorsed by the Notepad++ project." text="Notepad++ — название редактора Don Ho; NotepadMac не связан с проектом Notepad++ и не одобрен им."/>
     <!-- Agent interface (MCP) -->
     <Item english="Let AI agents drive the editor (MCP)" text="Разрешить ИИ-агентам управлять редактором (MCP)"/>
     <!-- Git -->
