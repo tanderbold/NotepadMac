@@ -1,4 +1,4 @@
-# Notepad++ for macOS — notes for coding agents
+# NotepadMac — notes for coding agents
 
 This repository is a native macOS port of Notepad++. Our code is under `macos/`.
 `PowerEditor/`, `scintilla/`, `lexilla/` and `boostregex/` are a snapshot of upstream Notepad++
@@ -11,6 +11,15 @@ menu-command coverage.
 The maintainers' internal working documents (audit, plan, engineering notes, to-do lists) are
 deliberately **not published**; they live beside the clone in `../workdocs/`. Keep them current
 there, and never add such documents to the repository.
+
+## The name
+
+The product is **NotepadMac**. "Notepad++" is Don Ho's editor and its name: use it only to say what
+NotepadMac is a port of or compatible with ("a native macOS port of Notepad++", "as in Notepad++"),
+never as NotepadMac's own name or title ("Notepad++ for macOS"), and never use Notepad++'s logo
+(the chameleon) or wordmark - in the app, its icon, the site, screenshots or release notes. Always say
+it is unofficial and not endorsed by the Notepad++ project. (Another Mac port was made to rename
+itself over this in 2026.)
 
 ## What it is
 

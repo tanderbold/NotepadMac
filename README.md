@@ -1,4 +1,4 @@
-# Notepad++ for macOS
+# NotepadMac
 
 [![Release](https://img.shields.io/github/v/release/tanderbold/NotepadMac?label=release)](https://github.com/tanderbold/NotepadMac/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/tanderbold/NotepadMac/total?label=downloads)](https://github.com/tanderbold/NotepadMac/releases)
@@ -8,7 +8,7 @@
 [![Apple silicon and Intel](https://img.shields.io/badge/Apple%20silicon-%2B%20Intel-blue)](https://github.com/tanderbold/NotepadMac/releases/latest)
 [![Homebrew](https://img.shields.io/badge/Homebrew-tanderbold%2Ftap-orange)](https://github.com/tanderbold/homebrew-tap)
 
-A native macOS port of Notepad++: the same
+NotepadMac is a native macOS port of the Notepad++ text editor: the same
 editing engine (Scintilla), the same syntax highlighting (Lexilla), the same
 language, colour, theme, function-list and translation files as the Windows
 version - in a Cocoa application that runs on Apple silicon and Intel Macs.
@@ -16,11 +16,12 @@ No Wine, no emulation, no Windows code.
 
 ![NotepadMac editing a Python file, with tabs, the Function List docked on the left and the Document Map on the right, dark theme](docs/screenshots/editor-panels.png)
 
-> An independent, unofficial port. It is not made, released or supported by the
+> An independent, unofficial port. It is not made, released, endorsed or supported by the
 > Notepad++ project: **questions, bug reports and requests about the Mac version
 > belong in the Issues and Discussions of this repository**, not upstream's
 > forum, site or e-mail. Releases of the Mac version are made and signed here.
-> Same licence as Notepad++: GPL.
+> Same licence as Notepad++: GPL. "Notepad++" is the name of Don Ho's editor and is used here only
+> to say what NotepadMac is a port of.
 
 ## What you get
 
