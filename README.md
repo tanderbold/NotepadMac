@@ -1,4 +1,6 @@
-# NotepadMac
+<p align="center"><img src="docs/icon.png" width="160" alt="NotepadMac icon: a thoughtful gorilla at a keyboard"></p>
+
+<h1 align="center">NotepadMac</h1>
 
 [![Release](https://img.shields.io/github/v/release/tanderbold/NotepadMac?label=release)](https://github.com/tanderbold/NotepadMac/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/tanderbold/NotepadMac/total?label=downloads)](https://github.com/tanderbold/NotepadMac/releases)
