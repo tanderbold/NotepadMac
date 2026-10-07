@@ -1047,6 +1047,10 @@ static void RestartChangeHistory(ScintillaView *sci) {
     // focus without taking a key.
     [self.window makeFirstResponder:self.sciView.content];
     self.forcedView = forced;
+    // A document that comes to the front is checked as DSpellCheck checks on NPPN_BUFFERACTIVATED:
+    // it arrives without an edit (loaded off screen, or a tab switched to), which is all the pass
+    // otherwise follows.
+    [self scheduleSpellCheck];
     [[NSNotificationCenter defaultCenter] postNotificationName:NppBufferActivatedNotification object:self];
 }
 
@@ -3739,6 +3743,7 @@ static void MirrorView(ScintillaView *from, ScintillaView *to, BOOL lines, BOOL 
         [self updateDocumentMap];
     }
     [self refreshChrome];
+    [self scheduleSpellCheck];   // the other view's document, as above
     [[NSNotificationCenter defaultCenter] postNotificationName:NppBufferActivatedNotification object:self];
 }
 

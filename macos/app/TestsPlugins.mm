@@ -1163,6 +1163,16 @@ void NppTestsPluginCommands(AppDelegate *app, EditorController *ed, ScintillaVie
                   [sci message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:21]);
             [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
 
+            // Opened, and nothing typed: the pass runs because the document came to the front
+            // (it is loaded off screen, so no edit reaches the visible view).
+            [ed openFileAtPath:TempFile(@"t_spell3.py", @"x = 1  # helo\n") error:&err];
+            ScintillaView *front = ed.sci;
+            NppSettleUntil(^BOOL { return [front message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:10] != 0; }, 3);
+            Check(@"Spell check (a document opened)", @"a file just opened is checked without an edit or a scroll",
+                  [front message:SCI_INDICATORVALUEAT wParam:NPPMAC_SPELL_INDICATOR lParam:10] != 0);
+            [ed closeDocumentAtIndex:(NSInteger)[ed.documents indexOfObject:ed.currentDocument] discardChanges:YES];
+            [ed spellCheckNow];
+
             NSArray<NSMenuItem *> *offers = [ed spellingMenuItemsForPosition:13];
             BOOL hasIgnore = NO, hasLearn = NO;
             NSMenuItem *ignoreItem = nil;
