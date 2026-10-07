@@ -136,7 +136,8 @@ the first time: right-click the app → **Open** → **Open** (or System Setting
 Security → *Open Anyway*).
 
 Settings live in `~/Library/Application Support/NotepadMac/` and in the
-`org.notepad-plus-plus.mac` preferences domain.
+`io.github.tanderbold.notepadmac` preferences domain (`org.notepad-plus-plus.mac` up to 0.3.1;
+the first launch of a newer version copies them over).
 
 ## Writing a plugin
 
