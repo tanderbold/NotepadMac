@@ -14,6 +14,19 @@ LEX="$ROOT/lexilla"
 SRC="$ROOT/macos/app"
 OUT="$ROOT/macos/build"
 
+# The oldest macOS the app runs on, Info.plist's LSMinimumSystemVersion, for every compile and link
+# (clang reads it from the environment, Lexilla's make included). Without it clang targets the SDK of
+# the machine that builds: 0.3.1, built with the macOS 26 SDK, would start on nothing older.
+export MACOSX_DEPLOYMENT_TARGET="$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$SRC/Info.plist")"
+mkdir -p "$OUT"
+if [ "$(cat "$OUT/.deployment-target" 2>/dev/null)" != "$MACOSX_DEPLOYMENT_TARGET" ]; then
+    # Objects made for another target would be linked as they are: build them again.
+    rm -rf "$OUT"/obj-* "$OUT"/uchardet-* "$OUT"/argon2obj-* "$OUT"/cmarkobj-* "$OUT"/compareplusobj-* \
+           "$OUT"/appobj-* "$OUT"/libscintilla-cocoa*.a
+    make -C "$LEX/src" clean >/dev/null 2>&1 || true
+    echo "$MACOSX_DEPLOYMENT_TARGET" > "$OUT/.deployment-target"
+fi
+
 if [ "${NPPMAC_ARCH:-universal}" = "native" ]; then
     ARCHS=()
 else
@@ -212,6 +225,16 @@ cp "$ROOT"/macos/resources/functionList-corrections/*.xml "$APP/Contents/Resourc
 mkdir -p "$APP/Contents/Helpers"
 clang -fobjc-arc -O2 ${ARCHS[@]+"${ARCHS[@]}"} -framework Cocoa \
     "$ROOT/macos/cli/nppmac.m" -o "$APP/Contents/Helpers/nppmac"
+# Every binary of the bundle must run on the macOS Info.plist promises (each architecture's
+# LC_BUILD_VERSION minos), or the app refuses to start there - as 0.3.1 did on macOS 14.
+for bin in "$APP/Contents/MacOS/NotepadMac" "$APP/Contents/Helpers/nppmac"; do
+    for minos in $(otool -l -arch all "$bin" | awk '$1 == "minos" {print $2}'); do
+        if [ "$minos" != "$MACOSX_DEPLOYMENT_TARGET" ]; then
+            echo "error: $bin targets macOS $minos, not $MACOSX_DEPLOYMENT_TARGET (LSMinimumSystemVersion)" >&2
+            exit 1
+        fi
+    done
+done
 # Nested code first, then the bundle: inside out, without the deprecated --deep.
 codesign --force --sign - "$APP/Contents/Helpers/nppmac" 2>/dev/null
 codesign --force --sign - "$APP" 2>/dev/null
