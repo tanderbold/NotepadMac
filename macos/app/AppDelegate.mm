@@ -2916,6 +2916,7 @@ static NSString *LanguageMenuTitle(NSString *name) { return [LanguageCatalog men
                                                 styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskResizable
                                                   backing:NSBackingStoreBuffered defer:NO];
     panel.title = @"Execute NppExec Script";
+    panel.floatingPanel = YES;   // dialogs stay above the editor, as on Windows
     NSView *v = panel.contentView;
     NSPopUpButton *choice = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(16, 340, 488, 26)];
     choice.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;

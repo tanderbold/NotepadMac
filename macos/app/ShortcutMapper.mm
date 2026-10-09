@@ -967,6 +967,7 @@ static void AddComboAttributes(NSXMLElement *e, NppKeyCombo *combo) {
                                            backing:NSBackingStoreBuffered defer:YES];
     _panel.title = @"Shortcut Mapper";
     _panel.releasedWhenClosed = NO;
+    _panel.floatingPanel = YES;   // dialogs stay above the editor, as on Windows
     NSView *content = _panel.contentView;
 
     _tabs = [NSSegmentedControl segmentedControlWithLabels:@[@"Main menu", @"Macros", @"Run commands",

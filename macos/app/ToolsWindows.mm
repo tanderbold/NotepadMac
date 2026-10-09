@@ -120,8 +120,11 @@ static NSPanel *PanelHolding(NSArray<NSView *> *rows, NSString *title, NSString 
                                                   backing:NSBackingStoreBuffered defer:YES];
     panel.title = title;
     panel.releasedWhenClosed = NO;
-    panel.floatingPanel = NO;
-    panel.hidesOnDeactivate = NO;
+    // Windows owns its dialogs to the main window, so they stay above it; a
+    // floating panel is the Mac's way of saying the same. Hiding while the
+    // application is inactive is the panel default and what the app's other
+    // panels do.
+    panel.floatingPanel = YES;
     NSStackView *column = [NSStackView stackViewWithViews:rows];
     column.translatesAutoresizingMaskIntoConstraints = NO;
     column.orientation = NSUserInterfaceLayoutOrientationVertical;

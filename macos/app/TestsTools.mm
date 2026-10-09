@@ -337,6 +337,22 @@ void NppTestsToolsMenu(AppDelegate *app, EditorController *ed, ScintillaView *sc
               [NppEnglishTitle(tools.itemArray[8]) isEqualToString:@"Install Command Line Tool"] &&
               tools.numberOfItems == 9);
 
+        // Every dialog floats above the editor, as Windows' owned dialogs do:
+        // clicking the main window must not bury the Password Generator.
+        NSArray<NSPanel *> *dialogs = @[[NppDigestWindow shared].panel,
+                                        [NppPasswordHashWindow shared].panel,
+                                        [NppBaseWindow shared].panel,
+                                        [NppPasswordWindow shared].panel,
+                                        [NppHttpWindow shared].panel,
+                                        [NppConverterWindow shared].panel,
+                                        [NppQrWindow shared].panel,
+                                        [NppAboutWindow shared].panel,
+                                        [NppDebugInfoWindow shared].panel];
+        BOOL allFloat = YES;
+        for (NSPanel *dialog in dialogs) allFloat = allFloat && dialog.isFloatingPanel && dialog.hidesOnDeactivate;
+        Check(@"Tools (dialogs float)", @"every dialog window is a floating panel that hides with the application",
+              allFloat);
+
         // Notepad++'s ids still find its own digests one level further down, and the
         // port's digests are not taken for them because they too say "Generate…".
         NSDictionary<NSNumber *, NSMenuItem *> *byID = [app.shortcutStore menuItemsByIdentifier];

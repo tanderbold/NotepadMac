@@ -166,6 +166,7 @@ static NSColor *ColourOf(NSString *hex, NSColor *fallback) {
                                                        NSWindowStyleMaskResizable
                                                backing:NSBackingStoreBuffered defer:YES];
     self.panel.title = @"User Defined Language";
+    self.panel.floatingPanel = YES;   // dialogs stay above the editor, as on Windows
     self.panel.releasedWhenClosed = NO;
     self.panel.delegate = self;
     NSView *content = self.panel.contentView;

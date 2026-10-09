@@ -88,6 +88,7 @@ NSString *NppProjectAddress(NSString *path) {
                                               backing:NSBackingStoreBuffered defer:YES];
     p.title = @"About NotepadMac";
     p.releasedWhenClosed = NO;
+    p.floatingPanel = YES;   // dialogs stay above the editor, as on Windows
     NSView *v = p.contentView;
     NSDictionary *info = [NSBundle mainBundle].infoDictionary;
 
@@ -178,6 +179,7 @@ NSString *NppProjectAddress(NSString *path) {
                                               backing:NSBackingStoreBuffered defer:YES];
     p.title = @"Debug Info";
     p.releasedWhenClosed = NO;
+    p.floatingPanel = YES;   // dialogs stay above the editor, as on Windows
     p.minSize = NSMakeSize(400, 300);
     NSView *v = p.contentView;
     NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(16, 56, 528, 408)];
